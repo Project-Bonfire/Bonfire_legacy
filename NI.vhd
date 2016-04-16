@@ -88,11 +88,38 @@ begin
             HS_read_state_out2 <= IDLE;
             HS_write_state_out1 <= IDLE;
             HS_write_state_out2 <= IDLE;
+            read_pointer1 <= "00";
+            read_pointer2 <= "00";
+            write_pointer1 <= "00";
+            write_pointer2 <= "00";
+            FIFO_Mem1<= (others => (others=>'0'));
+            FIFO_Mem2<= (others => (others=>'0'));
         elsif clk'event and clk = '1' then
             HS_read_state_out1 <= HS_read_state_in1;
             HS_read_state_out2 <= HS_read_state_in2;
             HS_write_state_out1 <= HS_write_state_in1;
             HS_write_state_out2 <= HS_write_state_in2;
+            if (CB_write1 = '1' and full1 = '0')then
+                    --write into the memory
+                    -- update the write pointer 
+                    FIFO_Mem1(conv_integer(write_pointer1)) <= RX1;
+                    write_pointer1 <= write_pointer1+ 1;
+            elsif (CB_read1 = '1' and empty1 = '0') then
+                     --read from the memory
+                    --update the read pointer 
+                    read_pointer1 <=  read_pointer1+1;
+             end if;
+
+             if (CB_write2 = '1' and full2 = '0')then
+                    --write into the memory
+                    -- update the write pointer 
+                    FIFO_Mem2(conv_integer(write_pointer2)) <= RX2;
+                    write_pointer2 <= write_pointer2+ 1;
+            elsif (CB_read2 = '1' and empty2 = '0') then
+                     --read from the memory
+                    --update the read pointer 
+                    read_pointer2 <=  read_pointer2+1;
+             end if;
         end if;
     end process;
 
@@ -199,39 +226,6 @@ begin
             when others =>
                 null;
         end case ;
-   end process;
-
-   process(clk, reset)begin
-        if reset = '0' then
-            read_pointer1 <= "00";
-            read_pointer2 <= "00";
-            write_pointer1 <= "00";
-            write_pointer2 <= "00";
-            FIFO_Mem1<= (others => (others=>'0'));
-            FIFO_Mem2<= (others => (others=>'0'));
-        elsif clk'event and clk = '1' then
-            if (CB_write1 = '1' and full1 = '0')then
-                    --write into the memory
-                    -- update the write pointer 
-                    FIFO_Mem1(conv_integer(write_pointer1)) <= RX1;
-                    write_pointer1 <= write_pointer1+ 1;
-            elsif (CB_read1 = '1' and empty1 = '0') then
-                     --read from the memory
-                    --update the read pointer 
-                    read_pointer1 <=  read_pointer1+1;
-             end if;
-
-             if (CB_write2 = '1' and full2 = '0')then
-                    --write into the memory
-                    -- update the write pointer 
-                    FIFO_Mem2(conv_integer(write_pointer2)) <= RX2;
-                    write_pointer2 <= write_pointer2+ 1;
-            elsif (CB_read2 = '1' and empty2 = '0') then
-                     --read from the memory
-                    --update the read pointer 
-                    read_pointer2 <=  read_pointer2+1;
-             end if;
-        end if;
    end process;
 
 
