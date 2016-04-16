@@ -1,3 +1,4 @@
+--Copyright (C) 2016 Siavoosh Payandeh Azad
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -35,16 +36,33 @@ architecture behavior of FIFO is
    SIGNAL HS_state_out,HS_state_in   : STATE_TYPE;
 
 begin
---  previous            FIFO
+
+--  previous            
 --   router                
---     --            ----                                    --             
+--     --            ---- ---------------------------------- --             
 --       |          |                                          |
---     TX|--------->| RX                               Data_out|---->
+--     TX|--------->| RX                               Data_out|----> goes to Xbar and LBDR
 --       |          |                                          | 
---    RTS|--------->| DRTS                                 read|<----
+--    RTS|--------->| DRTS             FIFO                read|<---- Comes from Arbiter
 --       |          |                                          |
 --   DCTS|<---------| CTS                                      |    
---     --            ----                                    -- 
+--     --            ---- ---------------------------------- -- 
+
+
+-- Hand shake protocol!
+--
+--           |<-Valid->|
+--           |   Data  |  
+--      _____ _________ ______
+--  RX  _____X_________X______
+--  DRTS_____|'''''''''|_____
+--  CTS _________|'''''''''|_______
+--
+--               |<-clear->|
+--               | to send |
+
+
+
 
    read_en <= read_en_N or read_en_E or read_en_W or read_en_S or read_en_L;
 
@@ -84,9 +102,10 @@ begin
         
    end process;
 
+--  circular buffer structure
 --                                   <--- WriteP    
 --              ---------------------------------
---              |       |       |       |       |
+--              |   3   |   2   |   1   |   0   |
 --              ---------------------------------
 --                                   <--- readP                              
 
