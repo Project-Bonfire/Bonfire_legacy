@@ -39,7 +39,7 @@ end component;
  
 
 begin
--- all the FIFOs
+
  UUT: router generic map (DATA_WIDTH  => 32, current_address=> 5, Rxy_rst => 60, Cx_rst => 15)
    PORT MAP (reset, clk, 
     DCTS_N, DCTS_E, DCTS_w, DCTS_S, DCTS_L,
