@@ -1,3 +1,4 @@
+--Copyright (C) 2016 Siavoosh Payandeh Azad
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -29,7 +30,7 @@ end component;
  
  signal reset,clk: std_logic :='0';
  signal DCTS_N, DCTS_E, DCTS_w, DCTS_S, DCTS_L: std_logic := '0';
- signal DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L: std_logic := '0';
+ signal DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L: std_logic;
  signal RTS_N, RTS_E, RTS_W, RTS_S, RTS_L: std_logic;
  signal CTS_N, CTS_E, CTS_w, CTS_S, CTS_L: std_logic;
  signal In_N, In_E, In_W, In_S, In_L: std_logic_vector(31 downto 0)  := (others=>'0');
@@ -56,19 +57,13 @@ begin
         wait for clk_period/2; 
    end process;
 
-  reset <= '1' after 10 ns;
+reset <= '1' after 1 ns;
+DCTS_L <= '1' after 20 ns;
+process begin
+wait for 2*clk_period;
+  gen_packet(3, 1, 0, 1, CTS_E, DRTS_E, In_E);
+wait;
+ end process;
 
-  process (clk)
-   begin
-      if clk'event and clk = '1' then
-        if reset = '1' then
-          DRTS_E <= '1';
-          In_E <= Header_gen(1, 1, 0, 1);
-          DCTS_L <= '1';
-          if CTS_E ='1'then
-            In_E <= Body_gen(1, 100);
-          end if; 
-      end if;
-    end if;
-   end process;
+   
 end;

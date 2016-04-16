@@ -9,6 +9,7 @@ package Router_Package is
   function Header_gen(Packet_length, source, destination, packet_id: integer ) return std_logic_vector ;
   function Body_gen(Packet_length, Data: integer ) return std_logic_vector ;
   function Tail_gen(Packet_length, Data: integer ) return std_logic_vector ;
+  procedure gen_packet(Packet_length, source, destination, packet_id: in integer; signal DCTS: in std_logic; signal RTS: out std_logic; signal port_in: out std_logic_vector);
 end Router_Package;
 
 
@@ -46,5 +47,21 @@ Tail_flit := Tail_type &  std_logic_vector(to_unsigned(Data, 28)) & '0';
 return Tail_flit;
 end Tail_gen;
 
+procedure gen_packet(Packet_length, source, destination, packet_id: in integer; signal DCTS: in std_logic; signal RTS: out std_logic; signal port_in: out std_logic_vector) is
+begin
+	port_in <= Header_gen(Packet_length, source, destination, packet_id);
+	RTS <= '1';
+	while (DCTS = '0') loop
+		wait for 1 ns;
+	end loop; 
+	port_in <= Body_gen(Packet_length, 100);
+	wait for 1 ns;
+	while (DCTS = '0') loop
+		wait for 1 ns;
+	end loop;
+	port_in <= Tail_gen(Packet_length, 200);
+	wait for 1 ns;
+	RTS <= '0';
+end gen_packet;
 
 end Router_Package;
