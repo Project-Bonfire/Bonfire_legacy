@@ -59,11 +59,12 @@ begin
 
 reset <= '1' after 1 ns;
 DCTS_L <= '1' after 15 ns;
+DCTS_E <= '1' after 17 ns;
  
 process begin
 
 wait for 2*clk_period;
-  gen_packet(3, 1, 5, 1, CTS_N, DRTS_N, In_N);
+  gen_packet(7, 1, 5, 1, CTS_N, DRTS_N, In_N);
 wait;
  end process;
 
@@ -83,6 +84,12 @@ wait;
  process begin
  wait for 2*clk_period;
   gen_packet(3, 9, 5, 1, CTS_S, DRTS_S, In_S);
+wait;
+ end process;   
+
+  process begin
+ wait for 2*clk_period;
+  gen_packet(9, 5, 2, 1, CTS_L, DRTS_L, In_L);
 wait;
  end process;   
 end;

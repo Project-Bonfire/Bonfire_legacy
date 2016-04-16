@@ -4,6 +4,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 use IEEE.NUMERIC_STD.all;
+ use ieee.math_real.all;
 
 package Router_Package is
   function Header_gen(Packet_length, source, destination, packet_id: integer ) return std_logic_vector ;
@@ -48,16 +49,23 @@ return Tail_flit;
 end Tail_gen;
 
 procedure gen_packet(Packet_length, source, destination, packet_id: in integer; signal DCTS: in std_logic; signal RTS: out std_logic; signal port_in: out std_logic_vector) is
-begin
+
+	variable seed1 :positive ;
+    variable seed2 :positive ;
+    variable rand : real ;
+   begin
 	port_in <= Header_gen(Packet_length, source, destination, packet_id);
 	RTS <= '1';
 	while (DCTS = '0') loop
 		wait for 1 ns;
 	end loop; 
-	port_in <= Body_gen(Packet_length, 100);
-	wait for 1 ns;
-	while (DCTS = '0') loop
+	for I in 0 to Packet_length-2 loop 
+		uniform(seed1, seed2, rand);
+		port_in <= Body_gen(Packet_length, integer(rand*1000.0));
 		wait for 1 ns;
+		while (DCTS = '0') loop
+			wait for 1 ns;
+		end loop;
 	end loop;
 	port_in <= Tail_gen(Packet_length, 200);
 	wait for 1 ns;
