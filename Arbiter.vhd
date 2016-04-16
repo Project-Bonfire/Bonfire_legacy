@@ -79,6 +79,11 @@ begin
                 end if;
         end process;
 
+        -- sets the grans using round robin 
+        -- the order is   L --> N --> E --> W --> S 
+        -- TODO:  this process puts one cycle of idle state between rounds of arbitration! should be fixed!
+        -- basicaly after each round of request, if that request is released others should be checked in the same state. no 
+        -- need for going to IDLE first!
         process(state, Req_N, Req_E, Req_W, Req_S, Req_L)begin
             case(state) is
                 when IDLE =>

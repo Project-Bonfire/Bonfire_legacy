@@ -82,6 +82,7 @@ DCTS1 <= '1' after 10 ns;
 
 DRTS1 <= '1'after 1 ns, '0' after 4 ns;
 
+--TODO: Replace with Packet generation 
 process begin
 wait for 1*clk_period;
 RX1 <= Header_gen(1, 1, 0, 1);

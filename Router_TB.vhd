@@ -61,8 +61,10 @@ reset <= '1' after 1 ns;
 DCTS_L <= '1' after 15 ns;
 DCTS_E <= '1' after 17 ns;
  
-process begin
 
+ --TODO: I have to find a way to better manage this packet generation. I basically want them out of the process
+ --       one way to do it is to add some variable as initial delay....
+process begin
 wait for 2*clk_period;
   gen_packet(7, 1, 5, 1, CTS_N, DRTS_N, In_N);
 wait;
