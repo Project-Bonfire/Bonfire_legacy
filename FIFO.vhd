@@ -68,7 +68,10 @@ begin
 --              ---------------------------------
 --                                   <--- readP   
 
+   --TODO: this is a very bad practice, empty signal should be read by the LBDR to mask the request generator... not like this! 
    Data_out <= FIFO_Mem(conv_integer(read_pointer)) when empty = '0' else (others=>'0');
+
+   
    read_en <= read_en_N or read_en_E or read_en_W or read_en_S or read_en_L;
    read_pointer_in <= read_pointer+1;
    write_pointer_in <= write_pointer+1;
