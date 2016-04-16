@@ -2,6 +2,18 @@
 network_x_size = 2
 network_y_size = 2
 
+def rxy_rst_calculator(node_id):
+  rxy_rst = 0
+
+
+  return rxy_rst
+
+def cx_rst_calculator(node_id):
+  cx_rst = 0
+
+
+  return cx_rst
+
 
 noc_file = open('network_'+str(network_x_size)+"x"+str(network_y_size)+'.vhd', 'w')
 
@@ -81,7 +93,8 @@ noc_file.write("begin\n\n")
 noc_file.write("-- instantiating the routers\n")
 for i in range(0, network_x_size*network_y_size):
     noc_file.write("R_"+str(i)+": router generic map (DATA_WIDTH  => DATA_WIDTH, " +
-                    "current_address=>"+str(i)+", Rxy_rst => 60, " + "Cx_rst => 15)\n")
+                    "current_address=>"+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+", " + 
+                    "Cx_rst => "+str(cx_rst_calculator(i))+")\n")
     noc_file.write("PORT MAP (reset, clk, \n")
     noc_file.write("\tDCTS_N_"+str(i)+", DCTS_E_"+str(i)+", DCTS_W_"+str(i)+", DCTS_S_"+str(i)+", DCTS_L_"+str(i)+",\n")
     noc_file.write("\tDRTS_N_"+str(i)+", DRTS_E_"+str(i)+", DRTS_W_"+str(i)+", DRTS_S_"+str(i)+", DRTS_L_"+str(i)+",\n")
@@ -122,5 +135,3 @@ for i in range(0, network_x_size*network_y_size):
       noc_file.write("DCTS_E_"+str(i)+" <= CTS_W_"+str(i+1)+";\n")
       noc_file.write("-------------------\n") 
 noc_file.write("end;\n")
-
-
