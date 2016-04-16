@@ -1,8 +1,7 @@
 Authors:
 
-Siavoosh Payandeh Azad
-
-Behrad Niazmand
+* Siavoosh Payandeh Azad
+* Behrad Niazmand
 
 License:  	GNU GENERAL PUBLIC LICENSE Version 3
 
