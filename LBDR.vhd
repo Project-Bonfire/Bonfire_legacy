@@ -53,6 +53,12 @@ begin
         Req_W <= ((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2);
         Req_S <= ((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3);
         Req_L <= not N1 and  not E1 and not W1 and not S1;
+      elsif flit_type = "100" then
+        Req_N <= '0';
+        Req_E <= '0';
+        Req_W <= '0';
+        Req_S <= '0';
+        Req_L <= '0';
       end if;
   end if;
   end process;

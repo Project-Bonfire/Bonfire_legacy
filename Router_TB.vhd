@@ -14,9 +14,9 @@ architecture behavior of router_tb is
 component router is
   generic (
         DATA_WIDTH: integer := 32;
-        current_address : integer := 0;
+        current_address : integer := 5;
         Rxy_rst : integer := 60;
-        Cx_rst : integer := 10
+        Cx_rst : integer := 15
     );
     port (
     reset, clk: in std_logic;
@@ -40,7 +40,7 @@ end component;
 
 begin
 -- all the FIFOs
- UUT: router generic map (DATA_WIDTH  => 32, current_address=> 0, Rxy_rst => 60, Cx_rst => 10)
+ UUT: router generic map (DATA_WIDTH  => 32, current_address=> 5, Rxy_rst => 60, Cx_rst => 15)
    PORT MAP (reset, clk, 
     DCTS_N, DCTS_E, DCTS_w, DCTS_S, DCTS_L,
     DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L,
@@ -58,12 +58,31 @@ begin
    end process;
 
 reset <= '1' after 1 ns;
-DCTS_L <= '1' after 20 ns;
+DCTS_L <= '1' after 15 ns;
+ 
 process begin
+
 wait for 2*clk_period;
-  gen_packet(3, 1, 0, 1, CTS_E, DRTS_E, In_E);
+  gen_packet(3, 1, 5, 1, CTS_N, DRTS_N, In_N);
 wait;
  end process;
 
-   
+process begin
+ wait for 2*clk_period;
+  gen_packet(3, 6, 5, 1, CTS_E, DRTS_E, In_E);
+wait;
+ end process;  
+
+ process begin 
+wait for 2*clk_period;
+  gen_packet(3, 4, 5, 1, CTS_W, DRTS_W, In_W);
+wait;
+ end process;  
+
+
+ process begin
+ wait for 2*clk_period;
+  gen_packet(3, 9, 5, 1, CTS_S, DRTS_S, In_S);
+wait;
+ end process;   
 end;
