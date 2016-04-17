@@ -16,10 +16,10 @@ entity router is
     reset, clk: in std_logic;
     DCTS_N, DCTS_E, DCTS_w, DCTS_S, DCTS_L: in std_logic;
     DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L: in std_logic;
-    In_N, In_E, In_W, In_S, In_L : in std_logic_vector (DATA_WIDTH-1 downto 0); -- Maybe better to call data_in ?? No! let it be like this...
+    In_N, In_E, In_W, In_S, In_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
     RTS_N, RTS_E, RTS_W, RTS_S, RTS_L: out std_logic;
     CTS_N, CTS_E, CTS_w, CTS_S, CTS_L: out std_logic;
-    Out_N, Out_E, Out_W, Out_S, Out_L: out std_logic_vector (DATA_WIDTH-1 downto 0) -- Maybe better to call data_out ?? No! let it be like this...
+    Out_N, Out_E, Out_W, Out_S, Out_L: out std_logic_vector (DATA_WIDTH-1 downto 0)
     ); 
 end router; 
 
@@ -87,8 +87,7 @@ architecture behavior of router is
 
   	signal FIFO_D_out_N, FIFO_D_out_E, FIFO_D_out_W, FIFO_D_out_S, FIFO_D_out_L: std_logic_vector(DATA_WIDTH-1 downto 0);
 
-    -- Grant_XY : Grant signal generated from Arbiter for output X connected to ?? of FIFO of input Y
-    -- Question: The Grant signals are connected to the arbiters from one side, but from the other side they are not connected to anywhere, shouldn't they somehow go to read_enable of FIFOs ??
+    -- Grant_XY : Grant signal generated from Arbiter for output X connected to FIFO of input Y
 
  	signal Grant_NN, Grant_NE, Grant_NW, Grant_NS, Grant_NL: std_logic;
  	signal Grant_EN, Grant_EE, Grant_EW, Grant_ES, Grant_EL: std_logic;
@@ -173,8 +172,6 @@ LBDR_L: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, C
 ------------------------------------------------------------------------------------------------------------------------------
 
 -- all the Arbiters
--- Question: The Grant signals are connected to the arbiters from one side, but from the other side they are not connected to anywhere, shouldn't they somehow go to read_enable of FIFOs ??
--- I talked to you about this already!
 Arbiter_N: Arbiter 
    PORT MAP (reset => reset, clk => clk,
           Req_N => '0' , Req_E => Req_EN, Req_W => Req_WN, Req_S => Req_SN, Req_L => Req_LN,

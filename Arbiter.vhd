@@ -23,7 +23,7 @@ architecture behavior of Arbiter is
 --                     ---                              ----          ----
 --                    |                                     |        |    
 --              --->  |Req(s)                           RTS | -----> |DRTS
--- To where ??  <---  |Grant(s)                         DCTS| <----- |CTS
+--              <---  |Grant(s)                         DCTS| <----- |CTS
 --              <---  |FIFO_Read_enable(s)                  |        |
 --              <---  |Xbar_sel                             |        | 
 --              <---  |OBuf_Enable (not sure yet)           |        |
@@ -51,13 +51,13 @@ begin
 
 		-- Process for setting read_enable of input FIFOs based on the Grant given
         process(state, DCTS)begin 
-                if state = IDLE then      -- there is a grant issued! (Why ?? - Because here we check if the state is IDLE, so there shouldn't be any grants, right ?)
+                if state = IDLE then      -- there is a grant issued! 
                     FIFO_Read_N <= '0';
                     FIFO_Read_E <= '0';
                     FIFO_Read_W <= '0';
                     FIFO_Read_S <= '0';
                     FIFO_Read_L <= '0';
-                else   -- If there is a grant issued
+                else   
                     FIFO_Read_N <= '0';
                     FIFO_Read_E <= '0';
                     FIFO_Read_W <= '0';
