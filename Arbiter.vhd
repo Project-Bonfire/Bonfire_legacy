@@ -28,30 +28,37 @@ architecture behavior of Arbiter is
 TYPE STATE_TYPE IS (IDLE, North, East, West, South, Local);
 SIGNAL state,next_state   : STATE_TYPE := IDLE;
 
+SIGNAL RTS_FF: std_logic;
 
 begin
 		-- process for updating the state of arbiter's FSM, also setting RTS based on the state (if Grant is given or not)
         process(clk,reset)begin
             if reset = '0' then
                 state<=IDLE;
-                RTS <= '0';
+                RTS_FF <= '0';
             elsif clk'event and clk = '1' then
                 -- no grant given yet, it might be that there is no request to 
                 -- arbiter or request is there, but the next router's/NI's FIFO is full
                 if next_state = IDLE then 
-                    RTS <= '0';
+                    RTS_FF <= '0';
                 -- if there was a grant given to one of the inputs, 
                 -- tell the next router/NI that the output data is valid
                 else 
-                    RTS <= '1';
+                    if RTS_ff = '1' and DCTS = '1' then
+                        RTS_FF <= '0';
+                    else 
+                        RTS_FF <= '1';
+                    end if;
                 end if ;
                 state <= next_state;
              end if;
 	end process;
 
+    RTS <= RTS_FF;
+
         -- sets the grants using round robin 
         -- the order is   L --> N --> E --> W --> S 
-        process(state, Req_N, Req_E, Req_W, Req_S, Req_L)begin
+        process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS)begin
             Grant_N <= '0';
             Grant_E <= '0';
             Grant_W <= '0';
@@ -76,7 +83,7 @@ begin
                     end if;    
                     
                 when North =>
-                    Grant_N <= '1';
+                    Grant_N <= DCTS;
 
                     Xbar_sel<= "00001";
                     
@@ -95,7 +102,7 @@ begin
                     end if;
                     
                 when East =>
-                    Grant_E <= '1';
+                    Grant_E <= DCTS;
                     Xbar_sel<= "00010";
                     
                     If Req_E = '1' then 
@@ -113,7 +120,7 @@ begin
                     end if;
                     
                 when West =>
-                    Grant_W <= '1';
+                    Grant_W <= DCTS;
                     Xbar_sel<= "00100";
                     
                     If Req_W = '1' then
@@ -131,7 +138,7 @@ begin
                     end if;
                     
                 when South =>
-                    Grant_S <= '1';
+                    Grant_S <= DCTS;
                     Xbar_sel<= "01000";
                     
                     If Req_S = '1' then 
@@ -149,7 +156,7 @@ begin
                     end if;
                     
                 when Local =>
-                    Grant_L <= '1';
+                    Grant_L <= DCTS;
                     Xbar_sel<= "10000";
                     
                     If Req_L = '1' then
