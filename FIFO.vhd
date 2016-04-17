@@ -89,7 +89,8 @@ begin
                     -- update the write pointer 
                     FIFO_Mem(conv_integer(write_pointer)) <= RX;
                     write_pointer <= write_pointer_in;
-            elsif (read_en = '1' and empty = '0') then
+            end if;
+            if (read_en = '1' and empty = '0') then
                     --read from the memory
                     --update the read pointer 
                     read_pointer <=  read_pointer_in;

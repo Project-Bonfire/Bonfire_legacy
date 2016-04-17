@@ -31,7 +31,7 @@ SIGNAL state,next_state   : STATE_TYPE := IDLE;
 SIGNAL RTS_FF: std_logic;
 
 begin
-		-- process for updating the state of arbiter's FSM, also setting RTS based on the state (if Grant is given or not)
+        -- process for updating the state of arbiter's FSM, also setting RTS based on the state (if Grant is given or not)
         process(clk,reset)begin
             if reset = '0' then
                 state<=IDLE;
@@ -52,13 +52,13 @@ begin
                 end if ;
                 state <= next_state;
              end if;
-	end process;
+    end process;
 
     RTS <= RTS_FF;
 
         -- sets the grants using round robin 
         -- the order is   L --> N --> E --> W --> S 
-        process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS)begin
+        process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             Grant_N <= '0';
             Grant_E <= '0';
             Grant_W <= '0';
@@ -83,7 +83,7 @@ begin
                     end if;    
                     
                 when North =>
-                    Grant_N <= DCTS;
+                    Grant_N <= DCTS and RTS_FF and Req_N;
 
                     Xbar_sel<= "00001";
                     
@@ -102,7 +102,7 @@ begin
                     end if;
                     
                 when East =>
-                    Grant_E <= DCTS;
+                    Grant_E <= DCTS and RTS_FF and Req_E;
                     Xbar_sel<= "00010";
                     
                     If Req_E = '1' then 
@@ -120,7 +120,7 @@ begin
                     end if;
                     
                 when West =>
-                    Grant_W <= DCTS;
+                    Grant_W <= DCTS and RTS_FF and Req_W;
                     Xbar_sel<= "00100";
                     
                     If Req_W = '1' then
@@ -138,7 +138,7 @@ begin
                     end if;
                     
                 when South =>
-                    Grant_S <= DCTS;
+                    Grant_S <= DCTS and RTS_FF and Req_S;
                     Xbar_sel<= "01000";
                     
                     If Req_S = '1' then 
@@ -156,7 +156,7 @@ begin
                     end if;
                     
                 when Local =>
-                    Grant_L <= DCTS;
+                    Grant_L <= DCTS and RTS_FF and Req_L;
                     Xbar_sel<= "10000";
                     
                     If Req_L = '1' then

@@ -11,7 +11,7 @@ package Router_Package is
   function Body_gen(Packet_length, Data: integer ) return std_logic_vector ;
   function Tail_gen(Packet_length, Data: integer ) return std_logic_vector ;
   procedure gen_packet(Packet_length, source, destination, packet_id: in integer; signal DCTS: in std_logic; signal RTS: out std_logic; signal port_in: out std_logic_vector);
-  procedure get_packet(DATA_WIDTH: in integer; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector);
+  procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector);
 end Router_Package;
 
 
@@ -73,17 +73,21 @@ procedure gen_packet(Packet_length, source, destination, packet_id: in integer; 
 	RTS <= '0';
 end gen_packet;
 
-procedure get_packet(DATA_WIDTH: in integer; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector) is
+procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector) is
    begin
-   wait until port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001";
+   CTS <= '0';
+   for i in 0 to initial_delay loop 
+   		wait until clk'event and clk ='1';
+   	end loop;
+   while (DRTS = '0') loop
+		wait until clk'event and clk ='1';
+   end loop; 
+   CTS <= '1';
    while (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) /= "100") loop
-		while (DRTS = '0') loop
-			wait for 1 ns;
-		end loop; 
-		CTS <= '1';
-		wait for 1 ns;
-		CTS <= '0';
+   		wait until clk'event and clk ='1';
    end loop;
+   wait until clk'event and clk ='1';
+   CTS <= '0';
 end get_packet;
 
 end Router_Package;

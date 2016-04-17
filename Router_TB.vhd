@@ -58,7 +58,6 @@ begin
    end process;
 
 reset <= '1' after 1 ns;
-DCTS_E <= '1' after 17 ns;
  
 
  --TODO: I have to find a way to better manage this packet generation. I basically want them out of the process
@@ -95,7 +94,11 @@ wait;
  end process;   
 
  process begin
- get_packet(32, DCTS_L, RTS_L, TX_L);
+ get_packet(32, 10,  clk, DCTS_E, RTS_E, TX_E);
+ end process;
+
+ process begin
+ get_packet(32, 15,  clk, DCTS_L, RTS_L, TX_L);
  end process;
 
 end;
