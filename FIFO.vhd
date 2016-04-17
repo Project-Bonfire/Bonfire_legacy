@@ -11,14 +11,14 @@ entity FIFO is
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-            RX: in std_logic_vector(DATA_WIDTH-1 downto 0); 
-            DRTS: in std_logic;
+            Data_in: in std_logic_vector(DATA_WIDTH-1 downto 0); -- Why not called Data_in ??
+            DRTS: in std_logic; -- Based on the general structure of a FIFO, it should have one write_en and one read_en input, DRTS should be write_en I guess. 
             read_en_N : in std_logic;
             read_en_E : in std_logic;
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
-            CTS: out std_logic;
+            CTS: out std_logic; -- Ready signal which tells the previous router/NI that FIFO is not full
             Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0)
     );
 end;
@@ -41,7 +41,7 @@ begin
 --   router                
 --     --            ---- ---------------------------------- --             
 --       |          |                                          |
---     TX|--------->| RX                               Data_out|----> goes to Xbar and LBDR
+--     TX|--------->| Data_in                          Data_out|----> goes to Xbar and LBDR
 --       |          |                                          | 
 --    RTS|--------->| DRTS             FIFO                read|<---- Comes from Arbiter
 --       |          |                                          |
@@ -51,15 +51,15 @@ begin
 
 -- Hand shake protocol!
 --
---           |<-Valid->|
---           |   Data  |  
---      _____ _________ ______
---  RX  _____X_________X______
---  DRTS_____|'''''''''|_____
---  CTS _________|'''''''''|_______
+--                |<-Valid->|
+--                |   Data  |  
+--           _____ _________ ______
+--  Data_in  _____X_________X______
+--  DRTS     _____|'''''''''|_____
+--  CTS      _________|'''''''''|_______
 --
---               |<-clear->|
---               | to send |
+--                    |<-clear->|
+--                    | to send |
 
 --  circular buffer structure
 --                                   <--- WriteP    
@@ -72,9 +72,9 @@ begin
    Data_out <= FIFO_Mem(conv_integer(read_pointer)) when empty = '0' else (others=>'0');
 
    
-   read_en <= read_en_N or read_en_E or read_en_W or read_en_S or read_en_L;
-   read_pointer_in <= read_pointer+1;
-   write_pointer_in <= write_pointer+1;
+   read_en <= read_en_N or read_en_E or read_en_W or read_en_S or read_en_L; -- Why ?? (Would it be a mess if we do this in the top module of the router ?? Because now the FIFO has more inputs, would it affect the checkers evaluation later ??
+   read_pointer_in <= read_pointer+1; -- Trying to make a pseudo-combinational version of FIFO already
+   write_pointer_in <= write_pointer+1; -- Trying to make a pseudo-combinational version of FIFO already
 
    process (clk, reset)begin
         if reset = '0' then
@@ -87,7 +87,7 @@ begin
             if (CB_write = '1' and full = '0')then
                     --write into the memory
                     -- update the write pointer 
-                    FIFO_Mem(conv_integer(write_pointer)) <= RX;
+                    FIFO_Mem(conv_integer(write_pointer)) <= Data_in;
                     write_pointer <= write_pointer_in;
             elsif (read_en = '1' and empty = '0') then
                      --read from the memory
