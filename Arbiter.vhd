@@ -95,7 +95,7 @@ begin
                     Grant_W <= '0';
                     Grant_S <= '0';
                     Grant_L <= '0';
-                    Xbar_sel<= "00000"; -- What would be the meaning of this ??
+                    Xbar_sel<= "00000"; -- What would be the meaning of this ??---> I would like to put it to "00001"
                     
                     If Req_L = '1' then
                         next_state <= Local;
@@ -119,7 +119,7 @@ begin
                     Grant_L <= '0';
                     Xbar_sel<= "00001";
                     
-                    If Req_N = '1' then -- Shouldn't we checker other requests as well here (with the order: N -> E -> W -> S -> L) ??
+                    If Req_N = '1' then -- Shouldn't we checker other requests as well here (with the order: N -> E -> W -> S -> L) ?? yes, thats the TODO!
                         next_state <= North; 
                     else
                         next_state <= IDLE; 
@@ -133,7 +133,7 @@ begin
                     Grant_L <= '0';
                     Xbar_sel<= "00010";
                     
-                    If Req_E = '1' then -- Shouldn't we checker other requests as well here
+                    If Req_E = '1' then -- Shouldn't we checker other requests as well here.  yes, thats the TODO!
                         next_state <= East; 
                     else
                         next_state <= IDLE; 
@@ -147,7 +147,7 @@ begin
                     Grant_L <= '0';
                     Xbar_sel<= "00100";
                     
-                    If Req_W = '1' then -- Shouldn't we checker other requests as well here
+                    If Req_W = '1' then -- Shouldn't we checker other requests as well here.  yes, thats the TODO!
                         next_state <= West; 
                     else
                         next_state <= IDLE; 
@@ -161,7 +161,7 @@ begin
                     Grant_L <= '0';
                     Xbar_sel<= "01000";
                     
-                    If Req_S = '1' then -- Shouldn't we checker other requests as well here
+                    If Req_S = '1' then -- Shouldn't we checker other requests as well here.  yes, thats the TODO!
                         next_state <= South; 
                     else
                         next_state <= IDLE; 
@@ -181,7 +181,7 @@ begin
                         next_state <= IDLE; 
                     end if;
                     
-                when others =>  -- Is it needed ?? Haven't we covered all the cases for STATE ??
+                when others =>  -- Is it needed ?? Haven't we covered all the cases for STATE ?? we can just put null!
                     Grant_N <= '0';
                     Grant_E <= '0';
                     Grant_W <= '0';

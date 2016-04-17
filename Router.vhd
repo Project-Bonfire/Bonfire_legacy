@@ -16,10 +16,10 @@ entity router is
     reset, clk: in std_logic;
     DCTS_N, DCTS_E, DCTS_w, DCTS_S, DCTS_L: in std_logic;
     DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L: in std_logic;
-    In_N, In_E, In_W, In_S, In_L : in std_logic_vector (DATA_WIDTH-1 downto 0); -- Maybe better to call data_in ??
+    In_N, In_E, In_W, In_S, In_L : in std_logic_vector (DATA_WIDTH-1 downto 0); -- Maybe better to call data_in ?? No! let it be like this...
     RTS_N, RTS_E, RTS_W, RTS_S, RTS_L: out std_logic;
     CTS_N, CTS_E, CTS_w, CTS_S, CTS_L: out std_logic;
-    Out_N, Out_E, Out_W, Out_S, Out_L: out std_logic_vector (DATA_WIDTH-1 downto 0) -- Maybe better to call data_out ??
+    Out_N, Out_E, Out_W, Out_S, Out_L: out std_logic_vector (DATA_WIDTH-1 downto 0) -- Maybe better to call data_out ?? No! let it be like this...
     ); 
 end router; 
 
@@ -31,9 +31,9 @@ architecture behavior of router is
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-            Data_in: in std_logic_vector(DATA_WIDTH-1 downto 0);  -- Why not called Data_in ??
+            Data_in: in std_logic_vector(DATA_WIDTH-1 downto 0);  -- Why not called Data_in ??  please turn this back to RX 
             DRTS: in std_logic;
-            read_en_N : in std_logic; -- Why this way ??
+            read_en_N : in std_logic; -- Why this way ?? because at the moment it sounds ok! i can fix it later!
             read_en_E : in std_logic; -- Why this way ??
             read_en_W : in std_logic; -- Why this way ??
             read_en_S : in std_logic; -- Why this way ??
@@ -174,6 +174,7 @@ LBDR_L: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, C
 
 -- all the Arbiters
 -- Question: The Grant signals are connected to the arbiters from one side, but from the other side they are not connected to anywhere, shouldn't they somehow go to read_enable of FIFOs ??
+-- I talked to you about this already!
 Arbiter_N: Arbiter 
    PORT MAP (reset => reset, clk => clk,
           Req_N => '0' , Req_E => Req_EN, Req_W => Req_WN, Req_S => Req_SN, Req_L => Req_LN,

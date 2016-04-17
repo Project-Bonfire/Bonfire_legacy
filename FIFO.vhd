@@ -11,14 +11,17 @@ entity FIFO is
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-            Data_in: in std_logic_vector(DATA_WIDTH-1 downto 0); -- Why not called Data_in ??
+            Data_in: in std_logic_vector(DATA_WIDTH-1 downto 0); -- Why not called Data_in ?? 
+            --because it matches the RX TX protocol can you please turn it to what it was?
             DRTS: in std_logic; -- Based on the general structure of a FIFO, it should have one write_en and one read_en input, DRTS should be write_en I guess. 
+                                -- I want to keep this naming because Karl likes it this way! Please dont change it!
             read_en_N : in std_logic;
             read_en_E : in std_logic;
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
             CTS: out std_logic; -- Ready signal which tells the previous router/NI that FIFO is not full
+                                -- I want to keep this naming because Karl likes it this way! Please dont change it!
             Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0)
     );
 end;
@@ -71,8 +74,10 @@ begin
    --TODO: this is a very bad practice, empty signal should be read by the LBDR to mask the request generator... not like this! 
    Data_out <= FIFO_Mem(conv_integer(read_pointer)) when empty = '0' else (others=>'0');
 
-   
+   -- I frankly dont care at the moment about checkers! we can do it somewhere else! but let it be like this for the time being
    read_en <= read_en_N or read_en_E or read_en_W or read_en_S or read_en_L; -- Why ?? (Would it be a mess if we do this in the top module of the router ?? Because now the FIFO has more inputs, would it affect the checkers evaluation later ??
+   
+   -- whats the use of these comments?
    read_pointer_in <= read_pointer+1; -- Trying to make a pseudo-combinational version of FIFO already
    write_pointer_in <= write_pointer+1; -- Trying to make a pseudo-combinational version of FIFO already
 
@@ -90,7 +95,7 @@ begin
                     FIFO_Mem(conv_integer(write_pointer)) <= Data_in;
                     write_pointer <= write_pointer_in;
             elsif (read_en = '1' and empty = '0') then
-                     --read from the memory
+                    --read from the memory
                     --update the read pointer 
                     read_pointer <=  read_pointer_in;
              end if;
