@@ -25,6 +25,25 @@ architecture behavior of Arbiter is
 --    to XBAR   <---  |Xbar_sel                             |        | 
 --                     --- ---------------------------- ----          ----
 
+ --------------------------------------------------------------------------------------------
+ -- an example of a request/grant + handshake process with next router or NI
+
+--CLK      _|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|__
+
+-- Req     _____|'''''''''''''''''''''''''''''''''''''''''''|________
+
+--         _________ ___________________ _______ _______ _______ ____
+-- TX      _________X_______HEADER______X_Body__X_Body__X__Tail_X____
+
+-- Grant   _________________________|'''|___|'''|___|'''|____________
+
+--  RTs    _________|'''''''''''''''''''|___|'''|___|'''|___|'''|____
+
+--  DCTS   _________________________|'''''''''''''''''''''''''''|____
+--                                  |<---------clear----------->|
+--                                  |         to send           |
+ --------------------------------------------------------------------------------------------
+
 TYPE STATE_TYPE IS (IDLE, North, East, West, South, Local);
 SIGNAL state,next_state   : STATE_TYPE := IDLE;
 
@@ -57,7 +76,7 @@ begin
     RTS <= RTS_FF;
 
         -- sets the grants using round robin 
-        -- the order is   L --> N --> E --> W --> S 
+        -- the order is   L --> N --> E --> W --> S  and then back to L
         process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             Grant_N <= '0';
             Grant_E <= '0';

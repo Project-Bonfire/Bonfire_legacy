@@ -64,32 +64,32 @@ reset <= '1' after 1 ns;
  --       one way to do it is to add some variable as initial delay....
 process begin
 wait for 2*clk_period;
-  gen_packet(7, 1, 5, 1, CTS_N, DRTS_N, RX_N);
+  gen_packet(7, 1, 5, 1, 0, CTS_N, DRTS_N, RX_N);
 wait;
  end process;
 
 process begin
  wait for 2*clk_period;
-  gen_packet(3, 6, 5, 1, CTS_E, DRTS_E, RX_E);
+  gen_packet(3, 6, 5, 1, 0, CTS_E, DRTS_E, RX_E);
 wait;
  end process;  
 
  process begin 
 wait for 2*clk_period;
-  gen_packet(3, 4, 5, 1, CTS_W, DRTS_W, RX_W);
+  gen_packet(3, 4, 5, 1, 0, CTS_W, DRTS_W, RX_W);
 wait;
  end process;  
 
 
  process begin
  wait for 2*clk_period;
-  gen_packet(3, 9, 5, 1, CTS_S, DRTS_S, RX_S);
+  gen_packet(3, 9, 5, 1, 0, CTS_S, DRTS_S, RX_S);
 wait;
  end process;   
 
   process begin
  wait for 2*clk_period;
-  gen_packet(9, 5, 2, 1, CTS_L, DRTS_L, RX_L);
+  gen_packet(9, 5, 2, 1, 0, CTS_L, DRTS_L, RX_L);
 wait;
  end process;   
 

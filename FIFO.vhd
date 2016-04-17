@@ -36,7 +36,8 @@ architecture behavior of FIFO is
    SIGNAL HS_state_out,HS_state_in   : STATE_TYPE;
 
 begin
-
+ --------------------------------------------------------------------------------------------
+--                           block diagram of the FIFO!
 --  previous            
 --   router                
 --     --            ---- ---------------------------------- --             
@@ -47,8 +48,7 @@ begin
 --       |          |                               (N,E,W,S,L)|
 --   DCTS|<---------| CTS                                      |    
 --     --            ---- ---------------------------------- -- 
-
-
+ --------------------------------------------------------------------------------------------
 -- Hand shake protocol!
 --
 --                |<-Valid->|
@@ -60,13 +60,14 @@ begin
 --
 --                    |<-clear->|
 --                    | to send |
-
+ --------------------------------------------------------------------------------------------
 --  circular buffer structure
 --                                   <--- WriteP    
 --              ---------------------------------
 --              |   3   |   2   |   1   |   0   |
 --              ---------------------------------
 --                                   <--- readP   
+ --------------------------------------------------------------------------------------------
 
    --TODO: this is a very bad practice, empty signal should be read by the LBDR to mask the request generator... not like this! 
    Data_out <= FIFO_Mem(conv_integer(read_pointer)) when empty = '0' else (others=>'0');
