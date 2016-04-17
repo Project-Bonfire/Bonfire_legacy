@@ -31,13 +31,13 @@ architecture behavior of router is
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-            Data_in: in std_logic_vector(DATA_WIDTH-1 downto 0);  -- Why not called Data_in ??  please turn this back to RX 
+            RX: in std_logic_vector (DATA_WIDTH-1 downto 0); 
             DRTS: in std_logic;
-            read_en_N : in std_logic; -- Why this way ?? because at the moment it sounds ok! i can fix it later!
-            read_en_E : in std_logic; -- Why this way ??
-            read_en_W : in std_logic; -- Why this way ??
-            read_en_S : in std_logic; -- Why this way ??
-            read_en_L : in std_logic; -- Why this way ??
+            read_en_N : in std_logic;  -- TODO: fixing this later.
+            read_en_E : in std_logic; 
+            read_en_W : in std_logic; 
+            read_en_S : in std_logic; 
+            read_en_L : in std_logic;
             CTS: out std_logic;
             Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0)
     );
@@ -120,27 +120,27 @@ begin
 
 -- all the FIFOs
  FIFO_N: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, Data_in => In_N, DRTS => DRTS_N, 
+   PORT MAP (reset => reset, clk => clk, RX => In_N, DRTS => DRTS_N, 
    			read_en_N => '0', read_en_E =>read_en_EN, read_en_W =>read_en_WN, read_en_S =>read_en_SN, read_en_L =>read_en_LN, 
    			CTS => CTS_N, Data_out => FIFO_D_out_N);      
 
  FIFO_E: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, Data_in => In_E, DRTS => DRTS_E, 
+   PORT MAP (reset => reset, clk => clk, RX => In_E, DRTS => DRTS_E, 
    			read_en_N => read_en_NE, read_en_E =>'0', read_en_W =>read_en_WE, read_en_S =>read_en_SE, read_en_L =>read_en_LE, 
    			CTS => CTS_E, Data_out => FIFO_D_out_E);     
 
  FIFO_W: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, Data_in => In_W, DRTS => DRTS_W, 
+   PORT MAP (reset => reset, clk => clk, RX => In_W, DRTS => DRTS_W, 
    			read_en_N => read_en_NW, read_en_E =>read_en_EW, read_en_W =>'0', read_en_S =>read_en_SW, read_en_L =>read_en_LW, 
    			CTS => CTS_W, Data_out => FIFO_D_out_W);
 
  FIFO_S: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, Data_in => In_S, DRTS => DRTS_S, 
+   PORT MAP (reset => reset, clk => clk, RX => In_S, DRTS => DRTS_S, 
    			read_en_N => read_en_NS, read_en_E =>read_en_ES, read_en_W =>read_en_WS, read_en_S =>'0', read_en_L =>read_en_LS, 
    			CTS => CTS_S, Data_out => FIFO_D_out_S); 
 
  FIFO_L: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, Data_in => In_L, DRTS => DRTS_L, 
+   PORT MAP (reset => reset, clk => clk, RX => In_L, DRTS => DRTS_L, 
    			read_en_N => read_en_NL, read_en_E =>read_en_EL, read_en_W =>read_en_WL, read_en_S =>read_en_SL, read_en_L =>'0',
    			CTS => CTS_L, Data_out => FIFO_D_out_L); 
 ------------------------------------------------------------------------------------------------------------------------------

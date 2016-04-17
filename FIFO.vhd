@@ -11,17 +11,14 @@ entity FIFO is
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-            Data_in: in std_logic_vector(DATA_WIDTH-1 downto 0); -- Why not called Data_in ?? 
-            --because it matches the RX TX protocol can you please turn it to what it was?
-            DRTS: in std_logic; -- Based on the general structure of a FIFO, it should have one write_en and one read_en input, DRTS should be write_en I guess. 
-                                -- I want to keep this naming because Karl likes it this way! Please dont change it!
+            RX: in std_logic_vector(DATA_WIDTH-1 downto 0); 
+            DRTS: in std_logic;  
             read_en_N : in std_logic;
             read_en_E : in std_logic;
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
-            CTS: out std_logic; -- Ready signal which tells the previous router/NI that FIFO is not full
-                                -- I want to keep this naming because Karl likes it this way! Please dont change it!
+            CTS: out std_logic; 
             Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0)
     );
 end;
@@ -44,7 +41,7 @@ begin
 --   router                
 --     --            ---- ---------------------------------- --             
 --       |          |                                          |
---     TX|--------->| Data_in                          Data_out|----> goes to Xbar and LBDR
+--     TX|--------->| RX                               Data_out|----> goes to Xbar and LBDR
 --       |          |                                          | 
 --    RTS|--------->| DRTS             FIFO                read|<---- Comes from Arbiter
 --       |          |                                          |
@@ -57,7 +54,7 @@ begin
 --                |<-Valid->|
 --                |   Data  |  
 --           _____ _________ ______
---  Data_in  _____X_________X______
+--  RX       _____X_________X______
 --  DRTS     _____|'''''''''|_____
 --  CTS      _________|'''''''''|_______
 --
@@ -92,7 +89,7 @@ begin
             if (CB_write = '1' and full = '0')then
                     --write into the memory
                     -- update the write pointer 
-                    FIFO_Mem(conv_integer(write_pointer)) <= Data_in;
+                    FIFO_Mem(conv_integer(write_pointer)) <= RX;
                     write_pointer <= write_pointer_in;
             elsif (read_en = '1' and empty = '0') then
                     --read from the memory
