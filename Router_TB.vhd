@@ -58,7 +58,6 @@ begin
    end process;
 
 reset <= '1' after 1 ns;
-DCTS_L <= '1' after 15 ns;
 DCTS_E <= '1' after 17 ns;
  
 
@@ -94,4 +93,9 @@ wait;
   gen_packet(9, 5, 2, 1, CTS_L, DRTS_L, RX_L);
 wait;
  end process;   
+
+ process begin
+ get_packet(32, DCTS_L, RTS_L, TX_L);
+ end process;
+
 end;
