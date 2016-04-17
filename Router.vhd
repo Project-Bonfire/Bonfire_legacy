@@ -16,10 +16,10 @@ entity router is
     reset, clk: in std_logic;
     DCTS_N, DCTS_E, DCTS_w, DCTS_S, DCTS_L: in std_logic;
     DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L: in std_logic;
-    In_N, In_E, In_W, In_S, In_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
+    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
     RTS_N, RTS_E, RTS_W, RTS_S, RTS_L: out std_logic;
     CTS_N, CTS_E, CTS_w, CTS_S, CTS_L: out std_logic;
-    Out_N, Out_E, Out_W, Out_S, Out_L: out std_logic_vector (DATA_WIDTH-1 downto 0)
+    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0)
     ); 
 end router; 
 
@@ -33,7 +33,7 @@ architecture behavior of router is
             clk: in  std_logic;
             RX: in std_logic_vector (DATA_WIDTH-1 downto 0); 
             DRTS: in std_logic;
-            read_en_N : in std_logic;  -- TODO: fixing this later.
+            read_en_N : in std_logic;   
             read_en_E : in std_logic; 
             read_en_W : in std_logic; 
             read_en_S : in std_logic; 
@@ -51,7 +51,6 @@ architecture behavior of router is
             DCTS: in std_logic;
             Grant_N, Grant_E, Grant_W, Grant_S, Grant_L:out std_logic;
             Xbar_sel : out std_logic_vector(4 downto 0);
-            FIFO_Read_N, FIFO_Read_E, FIFO_Read_w, FIFO_Read_S, FIFO_Read_L: out std_logic;
             RTS: out std_logic
             );
 	end COMPONENT;
@@ -101,15 +100,6 @@ architecture behavior of router is
  	signal Req_NS, Req_ES, Req_WS, Req_SS, Req_LS: std_logic;
  	signal Req_NL, Req_EL, Req_WL, Req_SL, Req_LL: std_logic;
 
-    -- read_en_XY : read_enable signal generated from Arbiter for output X connected to read_enable of FIFO of input Y
-    -- read_en_XX : Since U-turns are not allowed, this signal is left floating/hanging in the air unconncted
-    
- 	signal read_en_NN, read_en_NE, read_en_NW, read_en_NS, read_en_NL:  std_logic;
- 	signal read_en_EN, read_en_EE, read_en_EW, read_en_ES, read_en_EL:  std_logic;
- 	signal read_en_WN, read_en_WE, read_en_WW, read_en_WS, read_en_WL:  std_logic;
- 	signal read_en_SN, read_en_SE, read_en_SW, read_en_SS, read_en_SL:  std_logic;
- 	signal read_en_LN, read_en_LE, read_en_LW, read_en_LS, read_en_LL:  std_logic;
-
  	signal Xbar_sel_N, Xbar_sel_E, Xbar_sel_W, Xbar_sel_S, Xbar_sel_L: std_logic_vector(4 downto 0);
 begin
 	
@@ -119,28 +109,28 @@ begin
 
 -- all the FIFOs
  FIFO_N: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, RX => In_N, DRTS => DRTS_N, 
-   			read_en_N => '0', read_en_E =>read_en_EN, read_en_W =>read_en_WN, read_en_S =>read_en_SN, read_en_L =>read_en_LN, 
+   PORT MAP (reset => reset, clk => clk, RX => RX_N, DRTS => DRTS_N, 
+   			read_en_N => '0', read_en_E =>Grant_EN, read_en_W =>Grant_WN, read_en_S =>Grant_SN, read_en_L =>Grant_LN, 
    			CTS => CTS_N, Data_out => FIFO_D_out_N);      
 
  FIFO_E: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, RX => In_E, DRTS => DRTS_E, 
-   			read_en_N => read_en_NE, read_en_E =>'0', read_en_W =>read_en_WE, read_en_S =>read_en_SE, read_en_L =>read_en_LE, 
+   PORT MAP (reset => reset, clk => clk, RX => RX_E, DRTS => DRTS_E, 
+   			read_en_N => Grant_NE, read_en_E =>'0', read_en_W =>Grant_WE, read_en_S =>Grant_SE, read_en_L =>Grant_LE, 
    			CTS => CTS_E, Data_out => FIFO_D_out_E);     
 
  FIFO_W: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, RX => In_W, DRTS => DRTS_W, 
-   			read_en_N => read_en_NW, read_en_E =>read_en_EW, read_en_W =>'0', read_en_S =>read_en_SW, read_en_L =>read_en_LW, 
+   PORT MAP (reset => reset, clk => clk, RX => RX_W, DRTS => DRTS_W, 
+   			read_en_N => Grant_NW, read_en_E =>Grant_EW, read_en_W =>'0', read_en_S =>Grant_SW, read_en_L =>Grant_LW, 
    			CTS => CTS_W, Data_out => FIFO_D_out_W);
 
  FIFO_S: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, RX => In_S, DRTS => DRTS_S, 
-   			read_en_N => read_en_NS, read_en_E =>read_en_ES, read_en_W =>read_en_WS, read_en_S =>'0', read_en_L =>read_en_LS, 
+   PORT MAP (reset => reset, clk => clk, RX => RX_S, DRTS => DRTS_S, 
+   			read_en_N => Grant_NS, read_en_E =>Grant_ES, read_en_W =>Grant_WS, read_en_S =>'0', read_en_L =>Grant_LS, 
    			CTS => CTS_S, Data_out => FIFO_D_out_S); 
 
  FIFO_L: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, RX => In_L, DRTS => DRTS_L, 
-   			read_en_N => read_en_NL, read_en_E =>read_en_EL, read_en_W =>read_en_WL, read_en_S =>read_en_SL, read_en_L =>'0',
+   PORT MAP (reset => reset, clk => clk, RX => RX_L, DRTS => DRTS_L, 
+   			read_en_N => Grant_NL, read_en_E =>Grant_EL, read_en_W =>Grant_WL, read_en_S => Grant_SL, read_en_L =>'0',
    			CTS => CTS_L, Data_out => FIFO_D_out_L); 
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
@@ -177,7 +167,6 @@ Arbiter_N: Arbiter
           Req_N => '0' , Req_E => Req_EN, Req_W => Req_WN, Req_S => Req_SN, Req_L => Req_LN,
           DCTS => DCTS_N, Grant_N => Grant_NN, Grant_E => Grant_NE, Grant_W => Grant_NW, Grant_S => Grant_NS, Grant_L => Grant_NL,
           Xbar_sel => Xbar_sel_N, 
-          FIFO_Read_N => read_en_NN, FIFO_Read_E => read_en_NE, FIFO_Read_W => read_en_NW, FIFO_Read_S => read_en_NS, FIFO_Read_L => read_en_NL, 
           RTS =>  RTS_N
         );     
 
@@ -186,7 +175,6 @@ Arbiter_N: Arbiter
           Req_N => Req_NE , Req_E => '0', Req_W => Req_WE, Req_S => Req_SE, Req_L => Req_LE,
           DCTS => DCTS_E, Grant_N => Grant_EN, Grant_E => Grant_EE, Grant_W => Grant_EW, Grant_S => Grant_ES, Grant_L => Grant_EL,
           Xbar_sel => Xbar_sel_E, 
-          FIFO_Read_N => read_en_EN, FIFO_Read_E => read_en_EE, FIFO_Read_W => read_en_EW, FIFO_Read_S => read_en_ES, FIFO_Read_L => read_en_EL, 
           RTS =>  RTS_E
         );  
 
@@ -195,7 +183,6 @@ Arbiter_N: Arbiter
           Req_N => Req_NW , Req_E => Req_EW, Req_W => '0', Req_S => Req_SW, Req_L => Req_LW,
           DCTS => DCTS_W, Grant_N => Grant_WN, Grant_E => Grant_WE, Grant_W => Grant_WW, Grant_S => Grant_WS, Grant_L => Grant_WL,
           Xbar_sel => Xbar_sel_W, 
-          FIFO_Read_N => read_en_WN, FIFO_Read_E => read_en_WE, FIFO_Read_W => read_en_WW, FIFO_Read_S => read_en_WS, FIFO_Read_L => read_en_WL, 
           RTS =>  RTS_W
         );      
 
@@ -204,7 +191,6 @@ Arbiter_N: Arbiter
           Req_N => Req_NS , Req_E => Req_ES, Req_W => Req_WS, Req_S => '0', Req_L => Req_LS,
           DCTS => DCTS_S, Grant_N => Grant_SN, Grant_E => Grant_SE, Grant_W => Grant_SW, Grant_S => Grant_SS, Grant_L => Grant_SL,
           Xbar_sel => Xbar_sel_S, 
-          FIFO_Read_N => read_en_SN, FIFO_Read_E => read_en_SE, FIFO_Read_W => read_en_SW, FIFO_Read_S => read_en_SS, FIFO_Read_L => read_en_SL, 
           RTS =>  RTS_S
         );   
 
@@ -213,7 +199,6 @@ Arbiter_N: Arbiter
           Req_N => Req_NL , Req_E => Req_EL, Req_W => Req_WL, Req_S => Req_SL, Req_L => '0',
           DCTS => DCTS_L, Grant_N => Grant_LN, Grant_E => Grant_LE, Grant_W => Grant_LW, Grant_S => Grant_LS, Grant_L => Grant_LL,
           Xbar_sel => Xbar_sel_L, 
-          FIFO_Read_N => read_en_LN, FIFO_Read_E => read_en_LE, FIFO_Read_W => read_en_LW, FIFO_Read_S => read_en_LS, FIFO_Read_L => read_en_LL, 
           RTS =>  RTS_L
         );          
         
@@ -224,22 +209,17 @@ Arbiter_N: Arbiter
 -- all the Xbars
 XBAR_N: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
-        sel => Xbar_sel_N,  Data_out=> Out_N);
+        sel => Xbar_sel_N,  Data_out=> TX_N);
 XBAR_E: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
-        sel => Xbar_sel_E,  Data_out=> Out_E);
+        sel => Xbar_sel_E,  Data_out=> TX_E);
 XBAR_W: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
-        sel => Xbar_sel_W,  Data_out=> Out_W);
+        sel => Xbar_sel_W,  Data_out=> TX_W);
 XBAR_S: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
-        sel => Xbar_sel_S,  Data_out=> Out_S);
+        sel => Xbar_sel_S,  Data_out=> TX_S);
 XBAR_L: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
-        sel => Xbar_sel_L,  Data_out=> Out_L);
-
-------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-
+        sel => Xbar_sel_L,  Data_out=> TX_L);
 end;

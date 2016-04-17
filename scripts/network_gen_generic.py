@@ -38,13 +38,13 @@ noc_file.write("port (reset: in  std_logic; \n")
 noc_file.write("\tclk: in  std_logic; \n")
 for i in range(network_x_size*network_y_size):
   noc_file.write("\t--------------\n")
-  noc_file.write("\tIn_L_"+str(i)+": in std_logic_vector (DATA_WIDTH-1 downto 0)\n")
+  noc_file.write("\tRX_L_"+str(i)+": in std_logic_vector (DATA_WIDTH-1 downto 0)\n")
   noc_file.write("\tRTS_L_"+str(i)+", CTS_L_"+str(i)+": out std_logic\n")
   noc_file.write("\tDRTS_L_"+str(i)+", DCTS_L_"+str(i)+": in std_logic\n")
   if i == network_x_size*network_y_size-1:
-    noc_file.write("\tOut_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
+    noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
   else:
-    noc_file.write("\tOut_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0);\n")
+    noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0);\n")
 noc_file.write("            ); \n")
 noc_file.write("end network_"+str(network_x_size)+"x"+str(network_y_size)+"; \n")
 
@@ -63,10 +63,10 @@ noc_file.write("    port (\n")
 noc_file.write("    reset, clk: in std_logic;\n")
 noc_file.write("    DCTS_N, DCTS_E, DCTS_w, DCTS_S, DCTS_L: in std_logic;\n")
 noc_file.write("    DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L: in std_logic;\n")
-noc_file.write("    In_N, In_E, In_W, In_S, In_L : in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
+noc_file.write("    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
 noc_file.write("    RTS_N, RTS_E, RTS_W, RTS_S, RTS_L: out std_logic;\n")
 noc_file.write("    CTS_N, CTS_E, CTS_w, CTS_S, CTS_L: out std_logic;\n")
-noc_file.write("    Out_N, Out_E, Out_W, Out_S, Out_L: out std_logic_vector (DATA_WIDTH-1 downto 0));\n")
+noc_file.write("    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0));\n")
 noc_file.write("end component; \n")
 noc_file.write("\n")
 noc_file.write("-- generating bulk signals. not all of them are used in the design...\n")
@@ -77,7 +77,7 @@ for i in range(0, network_x_size*network_y_size):
     noc_file.write("\tsignal DRTS_N_"+str(i)+", DRTS_E_"+str(i)+", DRTS_W_"+str(i)+", DRTS_S_"+str(i) + ": std_logic;\n")
 noc_file.write("\n")
 for i in range(0, network_x_size*network_y_size):
-    noc_file.write("\tsignal In_N_"+str(i)+", In_E_"+str(i)+", In_W_"+str(i)+", In_S_"+str(i) +
+    noc_file.write("\tsignal RX_N_"+str(i)+", RX_E_"+str(i)+", RX_W_"+str(i)+", RX_S_"+str(i) +
       " : std_logic_vector (DATA_WIDTH-1 downto 0);\n")
 noc_file.write("\n")
 for i in range(0, network_x_size*network_y_size):
@@ -87,7 +87,7 @@ for i in range(0, network_x_size*network_y_size):
     noc_file.write("\tsignal RTS_N_"+str(i)+", RTS_E_"+str(i)+", RTS_W_"+str(i)+", RTS_S_"+str(i) + ": std_logic;\n")
 noc_file.write("\n")
 for i in range(0, network_x_size*network_y_size):
-    noc_file.write("\tsignal Out_N_"+str(i)+", Out_E_"+str(i)+", Out_W_"+str(i)+", Out_S_"+str(i)+
+    noc_file.write("\tsignal TX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+
                    " : std_logic_vector (DATA_WIDTH-1 downto 0);\n")
 noc_file.write("begin\n\n")
 noc_file.write("-- instantiating the routers\n")
@@ -98,10 +98,10 @@ for i in range(0, network_x_size*network_y_size):
     noc_file.write("PORT MAP (reset, clk, \n")
     noc_file.write("\tDCTS_N_"+str(i)+", DCTS_E_"+str(i)+", DCTS_W_"+str(i)+", DCTS_S_"+str(i)+", DCTS_L_"+str(i)+",\n")
     noc_file.write("\tDRTS_N_"+str(i)+", DRTS_E_"+str(i)+", DRTS_W_"+str(i)+", DRTS_S_"+str(i)+", DRTS_L_"+str(i)+",\n")
-    noc_file.write("\tIn_N_"+str(i)+", In_E_"+str(i)+", In_W_"+str(i)+", In_S_"+str(i)+", In_L_"+str(i)+",\n")
+    noc_file.write("\tRX_N_"+str(i)+", RX_E_"+str(i)+", RX_W_"+str(i)+", RX_S_"+str(i)+", RX_L_"+str(i)+",\n")
     noc_file.write("\tRTS_N_"+str(i)+", RTS_E_"+str(i)+", RTS_W_"+str(i)+", RTS_S_"+str(i)+", RTS_L_"+str(i)+",\n")
     noc_file.write("\tCTS_N_"+str(i)+", CTS_E_"+str(i)+", CTS_w_"+str(i)+", CTS_S_"+str(i)+", CTS_L_"+str(i)+",\n")
-    noc_file.write("\tOut_N_"+str(i)+", Out_E_"+str(i)+", Out_W_"+str(i)+", Out_S_"+str(i)+", Out_L_"+str(i)+"); \n\n")
+    noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_"+str(i)+"); \n\n")
 noc_file.write("-- binding the routers together\n")
 noc_file.write("-- vertical ins/outs\n")
 for i in range(0, network_x_size*network_y_size):
@@ -109,8 +109,8 @@ for i in range(0, network_x_size*network_y_size):
   node_y = i / network_y_size
   if node_y != network_y_size-1:
       noc_file.write("-- connecting router: "+str(i)+ " to router: "+str(i+network_x_size)+" and vice versa\n")
-      noc_file.write("In_N_"+str(i+network_x_size)+"<= Out_S_"+str(i)+";\n")
-      noc_file.write("In_S_"+str(i)+"<= Out_N_"+str(i+network_x_size)+";\n")
+      noc_file.write("RX_N_"+str(i+network_x_size)+"<= TX_S_"+str(i)+";\n")
+      noc_file.write("RX_S_"+str(i)+"<= TX_N_"+str(i+network_x_size)+";\n")
 
       noc_file.write("DRTS_N_"+str(i+network_x_size)+" <= RTS_S_"+str(i)+";\n")
       noc_file.write("DCTS_S_"+str(i)+" <= CTS_N_"+str(i+network_x_size)+";\n")
@@ -125,8 +125,8 @@ for i in range(0, network_x_size*network_y_size):
   node_y = i / network_y_size
   if node_x != network_x_size -1 :
       noc_file.write("-- connecting router: "+str(i)+ " to router: "+str(i+1)+" and vice versa\n")
-      noc_file.write("In_E_"+str(i)+" <= Out_W_"+str(i+1)+";\n")
-      noc_file.write("In_W_"+str(i+1)+" <= Out_E_"+str(i)+";\n")
+      noc_file.write("RX_E_"+str(i)+" <= TX_W_"+str(i+1)+";\n")
+      noc_file.write("RX_W_"+str(i+1)+" <= TX_E_"+str(i)+";\n")
 
       noc_file.write("DRTS_E_"+str(i)+" <= RTS_W_"+str(i+1)+";\n")
       noc_file.write("DCTS_W_"+str(i+1)+" <= CTS_E_"+str(i)+";\n")

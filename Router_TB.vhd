@@ -22,10 +22,10 @@ component router is
     reset, clk: in std_logic;
     DCTS_N, DCTS_E, DCTS_w, DCTS_S, DCTS_L: in std_logic;
     DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L: in std_logic;
-    In_N, In_E, In_W, In_S, In_L : in std_logic_vector (DATA_WIDTH-1 downto 0);
+    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
     RTS_N, RTS_E, RTS_W, RTS_S, RTS_L: out std_logic;
     CTS_N, CTS_E, CTS_w, CTS_S, CTS_L: out std_logic;
-    Out_N, Out_E, Out_W, Out_S, Out_L: out std_logic_vector (DATA_WIDTH-1 downto 0));
+    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0));
 end component; 
  
  signal reset,clk: std_logic :='0';
@@ -33,8 +33,8 @@ end component;
  signal DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L: std_logic;
  signal RTS_N, RTS_E, RTS_W, RTS_S, RTS_L: std_logic;
  signal CTS_N, CTS_E, CTS_w, CTS_S, CTS_L: std_logic;
- signal In_N, In_E, In_W, In_S, In_L: std_logic_vector(31 downto 0)  := (others=>'0');
- signal Out_N, Out_E, Out_W, Out_S, Out_L: std_logic_vector(31 downto 0);
+ signal RX_N, RX_E, RX_W, RX_S, RX_L: std_logic_vector(31 downto 0)  := (others=>'0');
+ signal TX_N, TX_E, TX_W, TX_S, TX_L: std_logic_vector(31 downto 0);
  constant clk_period : time := 1 ns;
  
 
@@ -44,10 +44,10 @@ begin
    PORT MAP (reset, clk, 
     DCTS_N, DCTS_E, DCTS_w, DCTS_S, DCTS_L,
     DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L,
-    In_N, In_E, In_W, In_S, In_L,
+    RX_N, RX_E, RX_W, RX_S, RX_L,
     RTS_N, RTS_E, RTS_W, RTS_S, RTS_L,
     CTS_N, CTS_E, CTS_w, CTS_S, CTS_L,
-    Out_N, Out_E, Out_W, Out_S, Out_L);  
+    TX_N, TX_E, TX_W, TX_S, TX_L);  
 
    clk_process :process
    begin
@@ -66,32 +66,32 @@ DCTS_E <= '1' after 17 ns;
  --       one way to do it is to add some variable as initial delay....
 process begin
 wait for 2*clk_period;
-  gen_packet(7, 1, 5, 1, CTS_N, DRTS_N, In_N);
+  gen_packet(7, 1, 5, 1, CTS_N, DRTS_N, RX_N);
 wait;
  end process;
 
 process begin
  wait for 2*clk_period;
-  gen_packet(3, 6, 5, 1, CTS_E, DRTS_E, In_E);
+  gen_packet(3, 6, 5, 1, CTS_E, DRTS_E, RX_E);
 wait;
  end process;  
 
  process begin 
 wait for 2*clk_period;
-  gen_packet(3, 4, 5, 1, CTS_W, DRTS_W, In_W);
+  gen_packet(3, 4, 5, 1, CTS_W, DRTS_W, RX_W);
 wait;
  end process;  
 
 
  process begin
  wait for 2*clk_period;
-  gen_packet(3, 9, 5, 1, CTS_S, DRTS_S, In_S);
+  gen_packet(3, 9, 5, 1, CTS_S, DRTS_S, RX_S);
 wait;
  end process;   
 
   process begin
  wait for 2*clk_period;
-  gen_packet(9, 5, 2, 1, CTS_L, DRTS_L, In_L);
+  gen_packet(9, 5, 2, 1, CTS_L, DRTS_L, RX_L);
 wait;
  end process;   
 end;
