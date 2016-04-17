@@ -17,13 +17,13 @@ entity Arbiter is
 end;
 
 architecture behavior of Arbiter is
---                                     Arbiter             next router/NI
---                     ---                              ----          ----
---              --->  |Req(s)                           RTS | -----> |DRTS
---              <---  |Grant(s)                         DCTS| <----- |CTS
---              <---  |Xbar_sel                             |        | 
---              <---  |OBuf_Enable (not sure yet)           |        |
---                     ----                             ----          ----
+--                                                                        next
+--                                     Arbiter                        router or NI
+--                     --- ---------------------------- ----          ----
+--   from LBDR  --->  |Req(s)                           RTS | -----> |DRTS
+--    To FIFO   <---  |Grant(s)                         DCTS| <----- |CTS
+--    to XBAR   <---  |Xbar_sel                             |        | 
+--                     --- ---------------------------- ----          ----
 
 TYPE STATE_TYPE IS (IDLE, North, East, West, South, Local);
 SIGNAL state,next_state   : STATE_TYPE := IDLE;

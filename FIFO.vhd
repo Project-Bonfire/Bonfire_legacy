@@ -43,8 +43,8 @@ begin
 --       |          |                                          |
 --     TX|--------->| RX                               Data_out|----> goes to Xbar and LBDR
 --       |          |                                          | 
---    RTS|--------->| DRTS             FIFO                read|<---- Comes from Arbiter
---       |          |                                          |
+--    RTS|--------->| DRTS             FIFO             read_en|<---- Comes from Arbiters (N,E,W,S,L)
+--       |          |                               (N,E,W,S,L)|
 --   DCTS|<---------| CTS                                      |    
 --     --            ---- ---------------------------------- -- 
 
@@ -71,12 +71,10 @@ begin
    --TODO: this is a very bad practice, empty signal should be read by the LBDR to mask the request generator... not like this! 
    Data_out <= FIFO_Mem(conv_integer(read_pointer)) when empty = '0' else (others=>'0');
 
-   -- I frankly dont care at the moment about checkers! we can do it somewhere else! but let it be like this for the time being
-   read_en <= read_en_N or read_en_E or read_en_W or read_en_S or read_en_L; -- Why ?? (Would it be a mess if we do this in the top module of the router ?? Because now the FIFO has more inputs, would it affect the checkers evaluation later ??
+   read_en <= read_en_N or read_en_E or read_en_W or read_en_S or read_en_L; 
    
-   -- whats the use of these comments?
-   read_pointer_in <= read_pointer+1; -- Trying to make a pseudo-combinational version of FIFO already
-   write_pointer_in <= write_pointer+1; -- Trying to make a pseudo-combinational version of FIFO already
+   read_pointer_in <= read_pointer+1;  
+   write_pointer_in <= write_pointer+1; 
 
    process (clk, reset)begin
         if reset = '0' then
