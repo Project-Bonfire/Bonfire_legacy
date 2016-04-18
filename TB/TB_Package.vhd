@@ -84,7 +84,8 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
 	end loop;
   RTS <= '1';
 	port_in <= Tail_gen(Packet_length, 200);
-	while (DCTS = '1') loop
+  wait until clk'event and clk ='1';
+	while (DCTS = '0') loop
       wait until clk'event and clk ='1';
   end loop;
 	RTS <= '0';
