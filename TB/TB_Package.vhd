@@ -88,6 +88,7 @@ end gen_packet;
 procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; 
 	                 signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector) is
 -- initial_delay: waits for this number of clock cycles before sending the packet!
+  variable source_node, destination_node: integer;
    begin
    while true loop
        CTS <= '0';
@@ -97,12 +98,17 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
        while (DRTS = '0') loop
     		wait until clk'event and clk ='1';
        end loop; 
-       CTS <= '1';
+       CTS <= '1';        
        while (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) /= "100") loop
+           if (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001") then
+              source_node := to_integer(signed(port_in(12 downto 9)));
+              destination_node := to_integer(signed(port_in(16 downto 13)));
+           end if; 
        		wait until clk'event and clk ='1';
        end loop;
        wait until clk'event and clk ='1';
        CTS <= '0';
+      report "Packet recived at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node);
    end loop;
 end get_packet;
 
