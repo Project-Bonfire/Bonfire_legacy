@@ -59,11 +59,7 @@ begin
 
 reset <= '1' after 1 ns;
  
-
- --TODO: I have to find a way to better manage this packet generation. I basically want them out of the process
- --       one way to do it is to add some variable as initial delay....
- 
- 
+  
   gen_packet(7, 1, 5, 1, 2, clk, CTS_N, DRTS_N, RX_N);
   gen_packet(3, 4, 5, 1, 2, clk,CTS_W, DRTS_W, RX_W);
   gen_packet(3, 6, 5, 1, 2, clk, CTS_E, DRTS_E, RX_E);
