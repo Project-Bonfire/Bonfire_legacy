@@ -4,7 +4,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-use work.Router_Package.all;
+use work.TB_Package.all;
 entity router_tb is
 	 
 end router_tb; 
