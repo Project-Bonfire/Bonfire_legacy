@@ -14,9 +14,6 @@ package TB_Package is
   procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector);
 end TB_Package;
 
-
-
-
 package body TB_Package is
 constant Header_type : std_logic_vector := "001";
 constant Body_type : std_logic_vector := "010";

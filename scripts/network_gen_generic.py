@@ -4,8 +4,6 @@ network_y_size = 4
 
 def rxy_rst_calculator(node_id):
   rxy_rst = 60
-
-
   return rxy_rst
 
 def cx_rst_calculator(node_id):
@@ -60,7 +58,6 @@ for i in range(network_x_size*network_y_size):
 noc_file.write("            ); \n")
 noc_file.write("end network_"+str(network_x_size)+"x"+str(network_y_size)+"; \n")
 
-
 noc_file.write("\n\n")
 noc_file.write("architecture behavior of network_"+str(network_x_size)+"x"+str(network_y_size)+" is\n\n")
 noc_file.write("-- Declaring router component\n")
@@ -102,6 +99,33 @@ for i in range(0, network_x_size*network_y_size):
     noc_file.write("\tsignal TX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+
                    " : std_logic_vector (DATA_WIDTH-1 downto 0);\n")
 noc_file.write("begin\n\n")
+
+noc_file.write("\n\n")
+noc_file.write("--        organizaiton of the network:\n")
+noc_file.write("--     x --------------->\n")
+for j in range(0, network_y_size):
+    if j == 0:  
+      noc_file.write("--  y  ")
+    else:
+      noc_file.write("--  |  ")
+    for i in range(0, network_x_size):
+      noc_file.write("       ----")
+    noc_file.write("\n")
+    noc_file.write("--  |   ")
+    for i in range(0, network_x_size):
+      if (i+network_x_size*j)>=10:
+        noc_file.write("     | "+str(i+network_x_size*j)+" |")
+      else:
+        noc_file.write("     | "+str(i+network_x_size*j)+"  |")
+    noc_file.write("\n")
+    if j == network_y_size-1:
+      noc_file.write("--  +  ")
+    else:
+      noc_file.write("--  |  ")
+    for i in range(0, network_x_size):
+      noc_file.write("       ----")
+    noc_file.write("\n")
+noc_file.write("\n")
 noc_file.write("-- instantiating the routers\n")
 for i in range(0, network_x_size*network_y_size):
     noc_file.write("R_"+str(i)+": router generic map (DATA_WIDTH  => DATA_WIDTH, " +
