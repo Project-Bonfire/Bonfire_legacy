@@ -66,22 +66,27 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
    		wait until clk'event and clk ='1';
    	end loop;
 	wait until clk'event and clk ='0';	
+ 
   report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination);
 	port_in <= Header_gen(Packet_length, source, destination, packet_id);
 	RTS <= '1';
 	while (DCTS = '0') loop
-		wait for 1 ns;
+		wait until clk'event and clk ='1';
 	end loop; 
-	for I in 0 to Packet_length-3 loop 
+  RTS <= '1';
+ 	for I in 0 to Packet_length-3 loop 
 		uniform(seed1, seed2, rand);
 		port_in <= Body_gen(Packet_length, integer(rand*1000.0));
 		wait for 1 ns;
 		while (DCTS = '0') loop
-			wait for 1 ns;
+			wait until clk'event and clk ='1';
 		end loop;
 	end loop;
+  RTS <= '1';
 	port_in <= Tail_gen(Packet_length, 200);
-	wait for 1 ns;
+	while (DCTS = '1') loop
+      wait until clk'event and clk ='1';
+  end loop;
 	RTS <= '0';
 end gen_packet;
 
@@ -113,4 +118,5 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
 end get_packet;
 
 end TB_Package;
+
 

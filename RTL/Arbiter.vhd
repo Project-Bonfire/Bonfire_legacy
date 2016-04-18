@@ -58,7 +58,7 @@ begin
             elsif clk'event and clk = '1' then
                 -- no grant given yet, it might be that there is no request to 
                 -- arbiter or request is there, but the next router's/NI's FIFO is full
-                if next_state = IDLE then 
+                if state = IDLE then 
                     RTS_FF <= '0';
                 -- if there was a grant given to one of the inputs, 
                 -- tell the next router/NI that the output data is valid
@@ -69,7 +69,11 @@ begin
                         RTS_FF <= '1';
                     end if;
                 end if ;
-                state <= next_state;
+                if RTS_ff = '1' and DCTS = '0' then 
+                    state <= state;
+                else
+                    state <= next_state;
+                end if;
              end if;
     end process;
 

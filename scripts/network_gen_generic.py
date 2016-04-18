@@ -1,18 +1,31 @@
 
-network_x_size = 2
-network_y_size = 2
+network_x_size = 4
+network_y_size = 4
 
 def rxy_rst_calculator(node_id):
-  rxy_rst = 0
+  rxy_rst = 60
 
 
   return rxy_rst
 
 def cx_rst_calculator(node_id):
   cx_rst = 0
+  node_x = i % network_y_size
+  node_y = i / network_y_size
+  c_n = 1
+  c_e = 1
+  c_w = 1
+  c_s = 1 
+  if node_y == 0 : 
+    c_n = 0
+  if node_y == network_y_size-1 : 
+    c_s = 0
+  if node_x == 0:
+    c_w = 0
+  if node_x == network_x_size-1: 
+    c_e = 0
+  return c_s*8+c_w*4+c_e*2+c_n
 
-
-  return cx_rst
 
 
 noc_file = open('network_'+str(network_x_size)+"x"+str(network_y_size)+'.vhd', 'w')
@@ -29,18 +42,17 @@ noc_file.write("------------------------------------------------------------\n\n
 noc_file.write("library ieee;\n")
 noc_file.write("use ieee.std_logic_1164.all;\n")
 noc_file.write("use IEEE.STD_LOGIC_ARITH.ALL;\n")
-noc_file.write("use IEEE.STD_LOGIC_UNSIGNED.ALL;\n")
-noc_file.write("use work.Router_Package.all;\n\n")
-
+noc_file.write("use IEEE.STD_LOGIC_UNSIGNED.ALL;\n\n")
+ 
 noc_file.write("entity network_"+str(network_x_size)+"x"+str(network_y_size)+" is\n")
 noc_file.write(" generic (DATA_WIDTH: integer := 32);\n")
 noc_file.write("port (reset: in  std_logic; \n")
 noc_file.write("\tclk: in  std_logic; \n")
 for i in range(network_x_size*network_y_size):
   noc_file.write("\t--------------\n")
-  noc_file.write("\tRX_L_"+str(i)+": in std_logic_vector (DATA_WIDTH-1 downto 0)\n")
-  noc_file.write("\tRTS_L_"+str(i)+", CTS_L_"+str(i)+": out std_logic\n")
-  noc_file.write("\tDRTS_L_"+str(i)+", DCTS_L_"+str(i)+": in std_logic\n")
+  noc_file.write("\tRX_L_"+str(i)+": in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
+  noc_file.write("\tRTS_L_"+str(i)+", CTS_L_"+str(i)+": out std_logic;\n")
+  noc_file.write("\tDRTS_L_"+str(i)+", DCTS_L_"+str(i)+": in std_logic;\n")
   if i == network_x_size*network_y_size-1:
     noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
   else:
