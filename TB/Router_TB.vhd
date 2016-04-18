@@ -62,43 +62,18 @@ reset <= '1' after 1 ns;
 
  --TODO: I have to find a way to better manage this packet generation. I basically want them out of the process
  --       one way to do it is to add some variable as initial delay....
-process begin
+ 
  
   gen_packet(7, 1, 5, 1, 2, clk, CTS_N, DRTS_N, RX_N);
-wait;
- end process;
-
-process begin
- 
-  gen_packet(3, 6, 5, 1, 2, clk, CTS_E, DRTS_E, RX_E);
-wait;
- end process;  
-
- process begin 
- 
   gen_packet(3, 4, 5, 1, 2, clk,CTS_W, DRTS_W, RX_W);
-wait;
- end process;  
-
-
- process begin
- 
+  gen_packet(3, 6, 5, 1, 2, clk, CTS_E, DRTS_E, RX_E);
   gen_packet(3, 9, 5, 1, 2, clk,CTS_S, DRTS_S, RX_S);
-wait;
- end process;   
-
-  process begin
- 
   gen_packet(9, 5, 2, 1, 2, clk, CTS_L, DRTS_L, RX_L);
-wait;
- end process;   
 
- process begin
- get_packet(32, 10,  clk, DCTS_E, RTS_E, TX_E);
- end process;
+ 
+  get_packet(32, 10,  clk, DCTS_E, RTS_E, TX_E);
+  get_packet(32, 15,  clk, DCTS_L, RTS_L, TX_L);
+ 
 
- process begin
- get_packet(32, 15,  clk, DCTS_L, RTS_L, TX_L);
- end process;
 
 end;
