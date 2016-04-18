@@ -36,7 +36,7 @@ end component;
  signal RX_N, RX_E, RX_W, RX_S, RX_L: std_logic_vector(31 downto 0)  := (others=>'0');
  signal TX_N, TX_E, TX_W, TX_S, TX_L: std_logic_vector(31 downto 0);
  constant clk_period : time := 1 ns;
- 
+ constant simulation_time : time := 100 ns;
 
 begin
 
@@ -71,5 +71,10 @@ reset <= '1' after 1 ns;
   get_packet(32, 15,  clk, DCTS_L, RTS_L, TX_L);
  
 
+STIM: process
+begin
+   wait until now > simulation_time;
+   wait;     
+end process STIM;
 
 end;

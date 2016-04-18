@@ -102,7 +102,7 @@ begin
                     end if;    
                     
                 when North =>
-                    Grant_N <= DCTS and RTS_FF and Req_N;
+                    Grant_N <= DCTS and RTS_FF ;
 
                     Xbar_sel<= "00001";
                     
@@ -121,7 +121,7 @@ begin
                     end if;
                     
                 when East =>
-                    Grant_E <= DCTS and RTS_FF and Req_E;
+                    Grant_E <= DCTS and RTS_FF;
                     Xbar_sel<= "00010";
                     
                     If Req_E = '1' then 
@@ -139,7 +139,7 @@ begin
                     end if;
                     
                 when West =>
-                    Grant_W <= DCTS and RTS_FF and Req_W;
+                    Grant_W <= DCTS and RTS_FF;
                     Xbar_sel<= "00100";
                     
                     If Req_W = '1' then
@@ -157,7 +157,7 @@ begin
                     end if;
                     
                 when South =>
-                    Grant_S <= DCTS and RTS_FF and Req_S;
+                    Grant_S <= DCTS and RTS_FF;
                     Xbar_sel<= "01000";
                     
                     If Req_S = '1' then 
@@ -175,7 +175,7 @@ begin
                     end if;
                     
                 when Local =>
-                    Grant_L <= DCTS and RTS_FF and Req_L;
+                    Grant_L <= DCTS and RTS_FF;
                     Xbar_sel<= "10000";
                     
                     If Req_L = '1' then

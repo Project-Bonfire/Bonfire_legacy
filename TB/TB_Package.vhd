@@ -66,6 +66,7 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
    		wait until clk'event and clk ='1';
    	end loop;
 	wait until clk'event and clk ='0';	
+  report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination);
 	port_in <= Header_gen(Packet_length, source, destination, packet_id);
 	RTS <= '1';
 	while (DCTS = '0') loop
@@ -88,19 +89,21 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
 	                 signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector) is
 -- initial_delay: waits for this number of clock cycles before sending the packet!
    begin
-   CTS <= '0';
-   for i in 0 to initial_delay loop 
-   		wait until clk'event and clk ='1';
-   	end loop;
-   while (DRTS = '0') loop
-		wait until clk'event and clk ='1';
-   end loop; 
-   CTS <= '1';
-   while (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) /= "100") loop
-   		wait until clk'event and clk ='1';
+   while true loop
+       CTS <= '0';
+       for i in 0 to initial_delay loop 
+       		wait until clk'event and clk ='1';
+       	end loop;
+       while (DRTS = '0') loop
+    		wait until clk'event and clk ='1';
+       end loop; 
+       CTS <= '1';
+       while (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) /= "100") loop
+       		wait until clk'event and clk ='1';
+       end loop;
+       wait until clk'event and clk ='1';
+       CTS <= '0';
    end loop;
-   wait until clk'event and clk ='1';
-   CTS <= '0';
 end get_packet;
 
 end TB_Package;
