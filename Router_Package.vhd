@@ -10,7 +10,7 @@ package Router_Package is
   function Header_gen(Packet_length, source, destination, packet_id: integer ) return std_logic_vector ;
   function Body_gen(Packet_length, Data: integer ) return std_logic_vector ;
   function Tail_gen(Packet_length, Data: integer ) return std_logic_vector ;
-  procedure gen_packet(Packet_length, source, destination, packet_id, initial_delay: in integer; signal DCTS: in std_logic; signal RTS: out std_logic; signal port_in: out std_logic_vector);
+  procedure gen_packet(Packet_length, source, destination, packet_id, initial_delay: in integer;  signal clk: in std_logic;  signal DCTS: in std_logic; signal RTS: out std_logic; signal port_in: out std_logic_vector);
   procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector);
 end Router_Package;
 
@@ -49,7 +49,7 @@ Tail_flit := Tail_type &  std_logic_vector(to_unsigned(Data, 28)) & '0';
 return Tail_flit;
 end Tail_gen;
 
-procedure gen_packet(Packet_length, source, destination, packet_id, initial_delay: in integer; 
+procedure gen_packet(Packet_length, source, destination, packet_id, initial_delay: in integer;  signal clk: in std_logic; 
                      signal DCTS: in std_logic; signal RTS: out std_logic; 
                      signal port_in: out std_logic_vector) is
 -- Packet_length of 3 means it has 1 header, 1 body and 1 tail. the number of body packets are equal to Packet_length-2
