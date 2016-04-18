@@ -119,7 +119,7 @@ for j in range(0, network_y_size):
         noc_file.write("     | "+str(i+network_x_size*j)+"  |")
     noc_file.write("\n")
     if j == network_y_size-1:
-      noc_file.write("--  +  ")
+      noc_file.write("--  v  ")
     else:
       noc_file.write("--  |  ")
     for i in range(0, network_x_size):
