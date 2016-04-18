@@ -19,7 +19,7 @@ noc_file.write("library ieee;\n")
 noc_file.write("use ieee.std_logic_1164.all;\n")
 noc_file.write("use IEEE.STD_LOGIC_ARITH.ALL;\n")
 noc_file.write("use IEEE.STD_LOGIC_UNSIGNED.ALL;\n")
-noc_file.write("use work.Router_Package.all;\n\n")
+noc_file.write("use work.TB_Package.all;\n\n")
 
 noc_file.write("entity tb_network_"+str(network_x_size)+"x"+str(network_y_size)+" is\n")
  
