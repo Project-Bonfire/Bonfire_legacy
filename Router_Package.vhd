@@ -65,7 +65,7 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
    for i in 0 to initial_delay loop 
    		wait until clk'event and clk ='1';
    	end loop;
-
+	wait until clk'event and clk ='0';	
 	port_in <= Header_gen(Packet_length, source, destination, packet_id);
 	RTS <= '1';
 	while (DCTS = '0') loop
