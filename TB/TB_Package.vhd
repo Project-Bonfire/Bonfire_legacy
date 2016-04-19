@@ -65,9 +65,9 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
   --wait untill the falling edge of the clock to avoid race!
   report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination);
 	port_in <= Header_gen(Packet_length, source, destination, packet_id);
-
   wait until clk'event and clk ='1';
 	RTS <= '1';
+  wait until DCTS'event and DCTS ='1';
 	wait for 1 ns;
   RTS <= '0';
 
