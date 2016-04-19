@@ -85,15 +85,15 @@ for i in range(network_x_size*network_y_size):
 noc_file.write("\n")
 noc_file.write("-- connecting the packet generators\n")
 for i in range(0, network_x_size*network_y_size):  
-  random_node = random.randint(0, network_x_size*network_y_size)
+  random_node = random.randint(0, network_x_size*network_y_size-1)
   while i == random_node:
-    random_node = random.randint(0, network_x_size*network_y_size)
+    random_node = random.randint(0, (network_x_size*network_y_size)-1)
   random_length  = random.randint(3, 10)
   noc_file.write("gen_packet("+str(random_length)+", "+str(i)+", "+str(random_node)+", 1, 2, clk, CTS_L_"+str(i)+", DRTS_L_"+str(i)+", RX_L_"+str(i)+");\n")
 
 noc_file.write("\n")
 noc_file.write("-- connecting the packet receivers\n")
-for i in range(network_x_size*network_y_size):    
+for i in range(0, network_x_size*network_y_size):    
   noc_file.write("get_packet("+str(data_width)+", 5,  clk, DCTS_L_"+str(i)+", RTS_L_"+str(i)+", TX_L_"+str(i)+");\n")
 
 noc_file.write("end;\n")
