@@ -97,10 +97,8 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
    begin
    while true loop
        CTS <= '0';
-       for i in 0 to initial_delay loop 
-       		wait until clk'event and clk ='1';
-       	end loop;
-       wait until DRTS'event and DRTS ='1';
+
+        wait until DRTS'event and DRTS ='1';
        CTS <= '1';  
        wait until clk'event and clk ='1';      
        CTS <= '0';
