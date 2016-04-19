@@ -10,7 +10,7 @@ package TB_Package is
   function Header_gen(Packet_length, source, destination, packet_id: integer ) return std_logic_vector ;
   function Body_gen(Packet_length, Data: integer ) return std_logic_vector ;
   function Tail_gen(Packet_length, Data: integer ) return std_logic_vector ;
-  procedure gen_packet(Packet_length, source, destination, packet_id, initial_delay: in integer;  signal clk: in std_logic;  signal DCTS: in std_logic; signal RTS: out std_logic; signal port_in: out std_logic_vector);
+  procedure gen_packet(Packet_length, source, destination, packet_id, initial_delay: in integer; finish_time: in time;  signal clk: in std_logic;  signal DCTS: in std_logic; signal RTS: out std_logic; signal port_in: out std_logic_vector);
   procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector);
 end TB_Package;
 
@@ -46,7 +46,7 @@ Tail_flit := Tail_type &  std_logic_vector(to_unsigned(Data, 28)) & '0';
 return Tail_flit;
 end Tail_gen;
 
-procedure gen_packet(Packet_length, source, destination, packet_id, initial_delay: in integer;  signal clk: in std_logic; 
+procedure gen_packet(Packet_length, source, destination, packet_id, initial_delay: in integer;  finish_time: in time; signal clk: in std_logic; 
                      signal DCTS: in std_logic; signal RTS: out std_logic; 
                      signal port_in: out std_logic_vector) is
 -- Packet_length of 3 means it has 1 header, 1 body and 1 tail. the number of body packets are equal to Packet_length-2
@@ -57,11 +57,18 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
 	variable seed1 :positive ;
     variable seed2 :positive ;
     variable rand : real ;
+    variable first_time :boolean := true;
    begin
+   while true loop
+
    RTS <= '0';
-   for i in 0 to initial_delay loop 
-   		wait until clk'event and clk ='0';
-   	end loop;
+   if first_time = true then 
+     for i in 0 to initial_delay loop 
+     		wait until clk'event and clk ='0';
+     	end loop;
+    else
+      wait until clk'event and clk ='0';
+    end if;
   --wait untill the falling edge of the clock to avoid race!
   report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination);
 	port_in <= Header_gen(Packet_length, source, destination, packet_id);
@@ -78,6 +85,7 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
 		port_in <= Body_gen(Packet_length, integer(rand*1000.0));
 		wait until clk'event and clk ='1';
     RTS <= '1';
+    wait until DCTS'event and DCTS ='1';
     wait for 1 ns;
     RTS <= '0';
 	end loop;
@@ -86,8 +94,13 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
 	port_in <= Tail_gen(Packet_length, 200);
     wait until clk'event and clk ='1';
     RTS <= '1';
+    wait until DCTS'event and DCTS ='1';
     wait for 1 ns;
     RTS <= '0';
+    if now > 100 ns then 
+        wait;
+    end if;
+  end loop;
 end gen_packet;
 
 procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; 
@@ -114,6 +127,7 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
        end loop;
 
       report "Packet recived at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node);
+ 
    end loop;
 end get_packet;
 
