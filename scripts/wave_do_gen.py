@@ -21,6 +21,12 @@ for i in range(0 , network_x_size*network_y_size):
 	wave_file.write("add wave -noupdate -color Violet :tb_network_4x4:RTS_L_"+str(i)+"\n") 
 	wave_file.write("add wave -noupdate -color Violet :tb_network_4x4:DCTS_L_"+str(i)+"\n")
  	wave_file.write("add wave -noupdate :tb_network_4x4:clk\n")
+for i in range(0 , network_x_size*network_y_size):
+ 	wave_file.write("add wave -noupdate :tb_network_4x4:NoC:R_"+str(i)+":FIFO_L:full\n")
+wave_file.write("add wave -noupdate :tb_network_4x4:clk\n")
+for i in range(0 , network_x_size*network_y_size):
+ 	wave_file.write("add wave -noupdate :tb_network_4x4:NoC:R_"+str(i)+":FIFO_L:empty\n")
+wave_file.write("add wave -noupdate :tb_network_4x4:clk\n")
 wave_file.write("TreeUpdate [SetDefaultTree]\n")
 wave_file.write("WaveRestoreCursors\n")
 wave_file.write("quietly wave cursor active 0\n")
