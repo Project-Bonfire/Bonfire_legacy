@@ -58,37 +58,36 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
     variable seed2 :positive ;
     variable rand : real ;
    begin
-
+   RTS <= '0';
    for i in 0 to initial_delay loop 
-   		wait until clk'event and clk ='1';
+   		wait until clk'event and clk ='0';
    	end loop;
   --wait untill the falling edge of the clock to avoid race!
-	wait until clk'event and clk ='0';	
- 
   report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination);
 	port_in <= Header_gen(Packet_length, source, destination, packet_id);
+
+  wait until clk'event and clk ='1';
 	RTS <= '1';
-	while (DCTS = '0') loop
-		wait until clk'event and clk ='1';
-	end loop; 
-  RTS <= '1';
+	wait for 1 ns;
+  RTS <= '0';
+
  	for I in 0 to Packet_length-3 loop 
 		uniform(seed1, seed2, rand);
+     
     wait until clk'event and clk ='0';
 		port_in <= Body_gen(Packet_length, integer(rand*1000.0));
-		wait for 1 ns;
-		while (DCTS = '0') loop
-			wait until clk'event and clk ='1';
-		end loop;
+		wait until clk'event and clk ='1';
+    RTS <= '1';
+    wait for 1 ns;
+    RTS <= '0';
 	end loop;
-  RTS <= '1';
+  
   wait until clk'event and clk ='0';
 	port_in <= Tail_gen(Packet_length, 200);
-  wait until clk'event and clk ='1';
-	while (DCTS = '0') loop
-      wait until clk'event and clk ='1';
-  end loop;
-	RTS <= '0';
+    wait until clk'event and clk ='1';
+    RTS <= '1';
+    wait for 1 ns;
+    RTS <= '0';
 end gen_packet;
 
 procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; 
@@ -101,19 +100,21 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
        for i in 0 to initial_delay loop 
        		wait until clk'event and clk ='1';
        	end loop;
-       while (DRTS = '0') loop
-    		wait until clk'event and clk ='1';
-       end loop; 
-       CTS <= '1';        
+       wait until DRTS'event and DRTS ='1';
+       CTS <= '1';  
+       wait until clk'event and clk ='1';      
+       CTS <= '0';
        while (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) /= "100") loop
+          wait until DRTS'event and DRTS ='1';
+          CTS <= '1';  
            if (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001") then
               source_node := to_integer(signed(port_in(12 downto 9)));
               destination_node := to_integer(signed(port_in(16 downto 13)));
            end if; 
        		wait until clk'event and clk ='1';
+          CTS <= '0';
        end loop;
-       wait until clk'event and clk ='1';
-       CTS <= '0';
+
       report "Packet recived at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node);
    end loop;
 end get_packet;
