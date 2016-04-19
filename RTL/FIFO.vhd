@@ -19,6 +19,7 @@ entity FIFO is
             read_en_S : in std_logic;
             read_en_L : in std_logic;
             CTS: out std_logic; 
+            empty_out: out std_logic; 
             Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0)
     );
 end;
@@ -69,9 +70,9 @@ begin
 --                                   <--- readP   
  --------------------------------------------------------------------------------------------
 
-   Data_out <= FIFO_Mem(conv_integer(read_pointer)) when empty = '0' else (others =>'0') ;
+   Data_out <= FIFO_Mem(conv_integer(read_pointer));
    read_en <= (read_en_N or read_en_E or read_en_W or read_en_S or read_en_L) and not empty; 
-   
+   empty_out <= empty;
    read_pointer_in <= read_pointer+1;  
    write_pointer_in <= write_pointer+1; 
 

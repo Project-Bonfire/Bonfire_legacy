@@ -15,6 +15,7 @@ entity LBDR is
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
+            empty: in  std_logic;
             flit_type: in std_logic_vector(2 downto 0);
             dst_addr: in std_logic_vector(3 downto 0);
             Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic
@@ -48,7 +49,7 @@ begin
       Req_S <= '0';
       Req_L <= '0';
   elsif clk'event and clk = '1' then
-     if flit_type = "001" then
+     if flit_type = "001" and empty = '0' then
         Req_N <= ((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0);
         Req_E <= ((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1);
         Req_W <= ((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2);
