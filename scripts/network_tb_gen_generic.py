@@ -89,7 +89,10 @@ for i in range(0, network_x_size*network_y_size):
   while i == random_node:
     random_node = random.randint(0, (network_x_size*network_y_size)-1)
   random_length  = random.randint(3, 10)
-  noc_file.write("gen_packet("+str(random_length)+", "+str(i)+", "+str(random_node)+", 1, 2, clk, CTS_L_"+str(i)+", DRTS_L_"+str(i)+", RX_L_"+str(i)+");\n")
+  random_start = random.randint(3, 50)
+  random_end = random.randint(random_start, 200)
+
+  noc_file.write("gen_packet("+str(random_length)+", "+str(i)+", "+str(random_node)+", 1, "+str(random_start)+", "+str(random_end)+" ns, clk, CTS_L_"+str(i)+", DRTS_L_"+str(i)+", RX_L_"+str(i)+");\n")
 
 noc_file.write("\n")
 noc_file.write("-- connecting the packet receivers\n")
