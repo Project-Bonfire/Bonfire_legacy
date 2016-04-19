@@ -10,7 +10,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-use work.TB_package.all;
+use work.TB_Package.all;
 
 entity tb_network_4x4 is
 end tb_network_4x4; 
@@ -190,22 +190,22 @@ PORT MAP (reset, clk,
 	RX_L_15, RTS_L_15, CTS_L_15, DRTS_L_15, DCTS_L_15, TX_L_15);
 
 -- connecting the packet generators
-gen_packet(9, 0, 10, 1, 2, clk, CTS_L_0, DRTS_L_0, RX_L_0);
-gen_packet(6, 1, 12, 1, 2, clk, CTS_L_1, DRTS_L_1, RX_L_1);
-gen_packet(8, 2, 11, 1, 2, clk, CTS_L_2, DRTS_L_2, RX_L_2);
-gen_packet(4, 3, 10, 1, 2, clk, CTS_L_3, DRTS_L_3, RX_L_3);
-gen_packet(10, 4, 3, 1, 2, clk, CTS_L_4, DRTS_L_4, RX_L_4);
-gen_packet(7, 5, 9, 1, 2, clk, CTS_L_5, DRTS_L_5, RX_L_5);
-gen_packet(10, 6, 1, 1, 2, clk, CTS_L_6, DRTS_L_6, RX_L_6);
-gen_packet(5, 7, 13, 1, 2, clk, CTS_L_7, DRTS_L_7, RX_L_7);
-gen_packet(4, 8, 11, 1, 2, clk, CTS_L_8, DRTS_L_8, RX_L_8);
-gen_packet(4, 9, 12, 1, 2, clk, CTS_L_9, DRTS_L_9, RX_L_9);
-gen_packet(3, 10, 11, 1, 2, clk, CTS_L_10, DRTS_L_10, RX_L_10);
-gen_packet(6, 11, 4, 1, 2, clk, CTS_L_11, DRTS_L_11, RX_L_11);
-gen_packet(4, 12, 6, 1, 2, clk, CTS_L_12, DRTS_L_12, RX_L_12);
-gen_packet(10, 13, 6, 1, 2, clk, CTS_L_13, DRTS_L_13, RX_L_13);
-gen_packet(6, 14, 0, 1, 2, clk, CTS_L_14, DRTS_L_14, RX_L_14);
-gen_packet(9, 15, 8, 1, 2, clk, CTS_L_15, DRTS_L_15, RX_L_15);
+gen_packet(10, 0, 6, 1, 29, 162 ns, clk, CTS_L_0, DRTS_L_0, RX_L_0);
+gen_packet(10, 1, 5, 1, 23, 75 ns, clk, CTS_L_1, DRTS_L_1, RX_L_1);
+gen_packet(8, 2, 14, 1, 11, 188 ns, clk, CTS_L_2, DRTS_L_2, RX_L_2);
+gen_packet(10, 3, 0, 1, 24, 42 ns, clk, CTS_L_3, DRTS_L_3, RX_L_3);
+gen_packet(7, 4, 7, 1, 32, 72 ns, clk, CTS_L_4, DRTS_L_4, RX_L_4);
+gen_packet(4, 5, 12, 1, 23, 83 ns, clk, CTS_L_5, DRTS_L_5, RX_L_5);
+gen_packet(10, 6, 9, 1, 43, 117 ns, clk, CTS_L_6, DRTS_L_6, RX_L_6);
+gen_packet(10, 7, 10, 1, 16, 177 ns, clk, CTS_L_7, DRTS_L_7, RX_L_7);
+gen_packet(8, 8, 12, 1, 44, 78 ns, clk, CTS_L_8, DRTS_L_8, RX_L_8);
+gen_packet(9, 9, 11, 1, 33, 165 ns, clk, CTS_L_9, DRTS_L_9, RX_L_9);
+gen_packet(4, 10, 2, 1, 35, 101 ns, clk, CTS_L_10, DRTS_L_10, RX_L_10);
+gen_packet(5, 11, 12, 1, 42, 126 ns, clk, CTS_L_11, DRTS_L_11, RX_L_11);
+gen_packet(9, 12, 2, 1, 6, 154 ns, clk, CTS_L_12, DRTS_L_12, RX_L_12);
+gen_packet(3, 13, 9, 1, 23, 117 ns, clk, CTS_L_13, DRTS_L_13, RX_L_13);
+gen_packet(10, 14, 15, 1, 13, 145 ns, clk, CTS_L_14, DRTS_L_14, RX_L_14);
+gen_packet(10, 15, 9, 1, 46, 51 ns, clk, CTS_L_15, DRTS_L_15, RX_L_15);
 
 -- connecting the packet receivers
 get_packet(32, 5,  clk, DCTS_L_0, RTS_L_0, TX_L_0);
@@ -225,4 +225,3 @@ get_packet(32, 5,  clk, DCTS_L_13, RTS_L_13, TX_L_13);
 get_packet(32, 5,  clk, DCTS_L_14, RTS_L_14, TX_L_14);
 get_packet(32, 5,  clk, DCTS_L_15, RTS_L_15, TX_L_15);
 end;
-
