@@ -40,38 +40,56 @@ def gen_router_component(router_type, noc_file):
 	noc_file.write("    ") 
 	for port in ["N", "E", "W", "S", "L"]:
 		if port not in router_type:
-			noc_file.write("DCTS_"+str(port)+",") 
+			if port == "L": 
+				noc_file.write("DCTS_"+str(port)) 
+			else:
+				noc_file.write("DCTS_"+str(port)+",") 
 	noc_file.write(": in std_logic;\n")
 
 	noc_file.write("    ") 
 	for port in ["N", "E", "W", "S", "L"]:
 		if port not in router_type:
-			noc_file.write("DRTS_"+str(port)+",") 
+			if port == "L": 
+				noc_file.write("DRTS_"+str(port)) 
+			else:
+				noc_file.write("DRTS_"+str(port)+",") 
 	noc_file.write(": in std_logic;\n")
 
 	noc_file.write("    ") 
 	for port in ["N", "E", "W", "S", "L"]:
 		if port not in router_type:
-			noc_file.write("RX_"+str(port)+",") 
+			if port == "L": 
+				noc_file.write("RX_"+str(port)) 	
+			else:
+				noc_file.write("RX_"+str(port)+",") 
 	noc_file.write(": in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
 
  	noc_file.write("    ") 
 	for port in ["N", "E", "W", "S", "L"]:
 		if port not in router_type:
-			noc_file.write("RTS_"+str(port)+",") 
-	noc_file.write(": in std_logic;\n")
+			if port == "L": 
+				noc_file.write("RTS_"+str(port)) 
+			else:
+				noc_file.write("RTS_"+str(port)+",") 
+	noc_file.write(": out std_logic;\n")
 
  	noc_file.write("    ") 
 	for port in ["N", "E", "W", "S", "L"]:
 		if port not in router_type:
-			noc_file.write("CTS_"+str(port)+",") 
-	noc_file.write(": in std_logic;\n")
+			if port == "L": 
+				noc_file.write("CTS_"+str(port)) 
+			else:
+				noc_file.write("CTS_"+str(port)+",") 
+	noc_file.write(": out std_logic;\n")
 
  	noc_file.write("    ") 
 	for port in ["N", "E", "W", "S", "L"]:
 		if port not in router_type:
-			noc_file.write("TX_"+str(port)+",") 
-	noc_file.write(": in std_logic_vector (DATA_WIDTH-1 downto 0));\n")
+			if port == "L": 
+				noc_file.write("TX_"+str(port)) 
+			else:
+				noc_file.write("TX_"+str(port)+",") 
+	noc_file.write(": out std_logic_vector (DATA_WIDTH-1 downto 0));\n")
 	noc_file.write("end component; \n")
 	noc_file.write("\n")
 	return None
@@ -117,7 +135,7 @@ def generate_mapping_signals(node_number, router_type, noc_file):
 				noc_file.write("TX_"+str(port)+"_"+str(node_number))
 			else:
 				noc_file.write("TX_"+str(port)+"_"+str(node_number)+",")
-	noc_file.write("));")
+	noc_file.write(");")
 	noc_file.write("\n\n")
 	return None
 
@@ -161,60 +179,66 @@ def instantiate_routers(node_number, noc_file):
   			generate_mapping_signals(node_number, "", noc_file)
 	return None
 
-def gen_signal_for_node(router_type, noc_file):
+def gen_signal_for_node(router_type, node_number, noc_file):
+	last_port = None
+	port_list = ["N", "E", "W", "S"]
+	for i in range(0, len(port_list)):
+		if port_list[i] not in router_type:
+			last_port = port_list[i]	
+
 	noc_file.write("\tsignal ")
-	for port in ["N", "E", "W", "S", "L"]:
+	for port in ["N", "E", "W", "S"]:
 		if port not in router_type:
-			if port == "L":
-				noc_file.write("DCTS_"+str(port)+"_"+str(i))
+			if port == last_port:
+				noc_file.write("DCTS_"+str(port)+"_"+str(node_number))
 			else:
-				noc_file.write("DCTS_"+str(port)+"_"+str(i)+",")
+				noc_file.write("DCTS_"+str(port)+"_"+str(node_number)+",")
 	noc_file.write(": std_logic;\n")
 
 	noc_file.write("\tsignal ")
-	for port in ["N", "E", "W", "S", "L"]:
+	for port in ["N", "E", "W", "S"]:
 		if port not in router_type:
-			if port == "L":
-				noc_file.write("DRTS_"+str(port)+"_"+str(i)) 
+			if port == last_port:
+				noc_file.write("DRTS_"+str(port)+"_"+str(node_number)) 
 			else:
-				noc_file.write("DRTS_"+str(port)+"_"+str(i)+",")
+				noc_file.write("DRTS_"+str(port)+"_"+str(node_number)+",")
 	noc_file.write(": std_logic;\n")
 	
 	noc_file.write("\tsignal ")
-	for port in ["N", "E", "W", "S", "L"]:
+	for port in ["N", "E", "W", "S"]:
 		if port not in router_type:
-			if port == "L":
-				noc_file.write("RX_"+str(port)+"_"+str(i)) 
+			if port == last_port:
+				noc_file.write("RX_"+str(port)+"_"+str(node_number)) 
 			else:
-				noc_file.write("RX_"+str(port)+"_"+str(i)+",")
-	noc_file.write(": std_logic_vector (DATA_WIDTH-1 downto 0)\n")
+				noc_file.write("RX_"+str(port)+"_"+str(node_number)+",")
+	noc_file.write(": std_logic_vector (DATA_WIDTH-1 downto 0);\n")
 	
 	noc_file.write("\tsignal ")
-	for port in ["N", "E", "W", "S", "L"]:
+	for port in ["N", "E", "W", "S"]:
 		if port not in router_type:
-			if port == "L":
-				noc_file.write("CTS_N_"+str(port)+"_"+str(i))
+			if port == last_port:
+				noc_file.write("CTS_"+str(port)+"_"+str(node_number))
 			else:
-				noc_file.write("CTS_N_"+str(port)+"_"+str(i)+",")
+				noc_file.write("CTS_"+str(port)+"_"+str(node_number)+",")
 	noc_file.write(": std_logic;\n")
 	
 	noc_file.write("\tsignal ")
-	for port in ["N", "E", "W", "S", "L"]:
+	for port in ["N", "E", "W", "S"]:
 		if port not in router_type:
-			if port == "L":
-				noc_file.write("RTS_"+str(port)+"_"+str(i))
+			if port == last_port:
+				noc_file.write("RTS_"+str(port)+"_"+str(node_number))
 			else:
-				noc_file.write("RTS_"+str(port)+"_"+str(i)+",")
+				noc_file.write("RTS_"+str(port)+"_"+str(node_number)+",")
 	noc_file.write(": std_logic;\n")
 	
 	noc_file.write("\tsignal ")
-	for port in ["N", "E", "W", "S", "L"]:
+	for port in ["N", "E", "W", "S"]:
 		if port not in router_type:
-			if port == "L":
-				 noc_file.write("TX_"+str(port)+"_"+str(i))
+			if port == last_port:
+				 noc_file.write("TX_"+str(port)+"_"+str(node_number))
 			else:
-				noc_file.write("TX_"+str(port)+"_"+str(i)+",")
-	noc_file.write(": std_logic_vector (DATA_WIDTH-1 downto 0)\n\n")
+				noc_file.write("TX_"+str(port)+"_"+str(node_number)+",")
+	noc_file.write(": std_logic_vector (DATA_WIDTH-1 downto 0);\n\n")
 	return None
 
 def gen_bulk_signal(node_number, noc_file):
@@ -222,25 +246,25 @@ def gen_bulk_signal(node_number, noc_file):
   	node_y = i / network_dime  	
   	if node_x == 0: 	
   		if node_y == 0:		# NW
-  			gen_signal_for_node("NW", noc_file)
+  			gen_signal_for_node("NW", node_number, noc_file)
   		elif node_y == network_dime-1: 
-  			gen_signal_for_node("SW", noc_file)
+  			gen_signal_for_node("SW", node_number, noc_file)
   		else:
-  			gen_signal_for_node("W", noc_file)
+  			gen_signal_for_node("W", node_number, noc_file)
   	elif node_x == network_dime-1:
   		if node_y == 0:
-  			gen_signal_for_node("NE", noc_file)
+  			gen_signal_for_node("NE", node_number,noc_file)
   		elif node_y == network_dime-1:
-  			gen_signal_for_node("SE", noc_file)
+  			gen_signal_for_node("SE", node_number, noc_file)
   		else:
-  			gen_signal_for_node("E", noc_file)
+  			gen_signal_for_node("E", node_number, noc_file)
   	else:
   		if node_y == 0:
-  			gen_signal_for_node("N", noc_file)
+  			gen_signal_for_node("N", node_number, noc_file)
   		elif node_y == network_dime-1:
-  			gen_signal_for_node("S", noc_file)
+  			gen_signal_for_node("S", node_number, noc_file)
   		else:
-  			gen_signal_for_node("", noc_file)
+  			gen_signal_for_node("", node_number, noc_file)
 	return None
 
 
