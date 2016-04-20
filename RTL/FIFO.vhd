@@ -28,7 +28,7 @@ architecture behavior of FIFO is
    signal read_pointer, read_pointer_in,  write_pointer, write_pointer_in: std_logic_vector(1 downto 0);
    signal full, empty: std_logic;
    signal CB_write: std_logic;
-   signal read_en: std_logic;
+   signal read_en, write_en: std_logic;
 
    type FIFO_Mem_type is array (0 to 3) of std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_Mem : FIFO_Mem_type ;
@@ -70,11 +70,7 @@ begin
 --                                   <--- readP   
  --------------------------------------------------------------------------------------------
 
-   Data_out <= FIFO_Mem(conv_integer(read_pointer));
-   read_en <= (read_en_N or read_en_E or read_en_W or read_en_S or read_en_L) and not empty; 
-   empty_out <= empty;
-   read_pointer_in <= read_pointer+1;  
-   write_pointer_in <= write_pointer+1; 
+
 
    process (clk, reset)begin
         if reset = '0' then
@@ -84,19 +80,39 @@ begin
             FIFO_Mem<= (others => (others=>'0'));
         elsif clk'event and clk = '1' then
             HS_state_out <= HS_state_in;
-            if (CB_write = '1' and full = '0')then
-                    --write into the memory
-                    -- update the write pointer 
-                    FIFO_Mem(conv_integer(write_pointer)) <= RX;
-                    write_pointer <= write_pointer_in;
+            write_pointer <= write_pointer_in;
+            if write_en = '1' then
+                --write into the memory
+                -- update the write pointer 
+                FIFO_Mem(conv_integer(write_pointer)) <= RX;
             end if;
-            if (read_en = '1' and empty = '0') then
-                    --read from the memory
-                    --update the read pointer 
-                    read_pointer <=  read_pointer_in;
-             end if;
+            read_pointer <=  read_pointer_in;
         end if;
     end process;
+    
+   -- combinatorial part
+   Data_out <= FIFO_Mem(conv_integer(read_pointer));
+   read_en <= (read_en_N or read_en_E or read_en_W or read_en_S or read_en_L) and not empty; 
+   empty_out <= empty;
+   write_en <= CB_write and not full;
+
+   process(write_en, write_pointer)begin
+     if write_en = '1'then
+        write_pointer_in <= write_pointer+1; 
+     else
+        write_pointer_in <= write_pointer; 
+     end if;
+   end process;
+
+
+
+   process(read_en, empty, read_pointer)begin
+        if (read_en = '1' and empty = '0') then
+            read_pointer_in <= read_pointer+1; 
+        else 
+            read_pointer_in <= read_pointer; 
+        end if;
+   end process;
 
    process(HS_state_out, full, DRTS) begin
         case(HS_state_out) is
