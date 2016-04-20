@@ -45,48 +45,45 @@ architecture behavior of Arbiter is
  --------------------------------------------------------------------------------------------
 
 TYPE STATE_TYPE IS (IDLE, North, East, West, South, Local);
-SIGNAL state, next_state, state_in   : STATE_TYPE := IDLE;
+SIGNAL state, next_state   : STATE_TYPE := IDLE;
 
 SIGNAL RTS_FF, RTS_FF_in: std_logic;
 
 begin
         -- process for updating the state of arbiter's FSM, also setting RTS based on the state (if Grant is given or not)
-        process(clk,reset)begin
-            if reset = '0' then
-                state <= IDLE;
-                RTS_FF <= '0';
-            elsif clk'event and clk = '1' then
+         process(clk,reset)begin
+             if reset = '0' then
+                 state<=IDLE;
+                 RTS_FF <= '0';
+             elsif clk'event and clk = '1' then
                 -- no grant given yet, it might be that there is no request to 
                 -- arbiter or request is there, but the next router's/NI's FIFO is full
-                RTS_FF <= RTS_FF_in;
-                state <= state_in;
-            end if;
-    end process;
+                RTS_FF <= RTS_FF_in;    
+                if RTS_FF = '1' and DCTS = '0' then 
+                     state <= state;
+                else
+                     state <= next_state;
+                end if;    
+              end if;
+     end process;
 
     RTS <= RTS_FF;
 
 -- anything below here is pure combinational
-process(RTS_FF, DCTS, state, next_state)begin
-    if RTS_FF = '1' and DCTS = '0' then 
-        state_in <= state;
-    else
-        state_in <= next_state;
-    end if;
-end process;
 
-process (state, RTS_FF, DCTS)begin
+process(state, RTS_FF, DCTS)begin
     if state = IDLE then 
-            RTS_FF_in <= '0';
+        RTS_FF_in <= '0';
         -- if there was a grant given to one of the inputs, 
         -- tell the next router/NI that the output data is valid
     else 
-        if RTS_ff = '1' and DCTS = '1' then
+        if RTS_FF = '1' and DCTS = '1' then
             RTS_FF_in <= '0';
         else 
             RTS_FF_in <= '1';
         end if;
     end if ;
-process;
+end process; 
 
 -- sets the grants using round robin 
 -- the order is   L --> N --> E --> W --> S  and then back to L
