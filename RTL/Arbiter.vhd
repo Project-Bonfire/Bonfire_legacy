@@ -45,7 +45,7 @@ architecture behavior of Arbiter is
  --------------------------------------------------------------------------------------------
 
 TYPE STATE_TYPE IS (IDLE, North, East, West, South, Local);
-SIGNAL state,next_state   : STATE_TYPE := IDLE;
+SIGNAL state, next_state, state_in   : STATE_TYPE := IDLE;
 
 SIGNAL RTS_FF, RTS_FF_in: std_logic;
 
@@ -53,23 +53,26 @@ begin
         -- process for updating the state of arbiter's FSM, also setting RTS based on the state (if Grant is given or not)
         process(clk,reset)begin
             if reset = '0' then
-                state<=IDLE;
+                state <= IDLE;
                 RTS_FF <= '0';
             elsif clk'event and clk = '1' then
                 -- no grant given yet, it might be that there is no request to 
                 -- arbiter or request is there, but the next router's/NI's FIFO is full
-                RTS_FF <= RTS_FF_in
-                if RTS_FF = '1' and DCTS = '0' then 
-                    state <= state;
-                else
-                    state <= next_state;
-                end if;
-             end if;
+                RTS_FF <= RTS_FF_in;
+                state <= state_in;
+            end if;
     end process;
 
     RTS <= RTS_FF;
 
 -- anything below here is pure combinational
+process(RTS_FF, DCTS, state, next_state)begin
+    if RTS_FF = '1' and DCTS = '0' then 
+        state_in <= state;
+    else
+        state_in <= next_state;
+    end if;
+end process;
 
 process (state, RTS_FF, DCTS)begin
     if state = IDLE then 
