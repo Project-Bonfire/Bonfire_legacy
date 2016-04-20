@@ -79,6 +79,8 @@ begin
 
     RTS <= RTS_FF;
 
+
+-- anything below here is pure combinational
         -- sets the grants using round robin 
         -- the order is   L --> N --> E --> W --> S  and then back to L
         process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
