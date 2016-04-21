@@ -33,7 +33,8 @@ def gen_router_component(router_type, noc_file):
 	noc_file.write("        DATA_WIDTH: integer := 32;\n")
 	noc_file.write("        current_address : integer := 5;\n")
 	noc_file.write("        Rxy_rst : integer := 60;\n")
-	noc_file.write("        Cx_rst : integer := 15\n")
+	noc_file.write("        Cx_rst : integer := 15;\n")
+	noc_file.write("        NoC_size : integer := 4\n")
 	noc_file.write("    );\n")
 	noc_file.write("    port (\n")
 	noc_file.write("    reset, clk: in std_logic;\n")
@@ -101,7 +102,7 @@ def generate_mapping_signals(node_number, router_type, noc_file):
 		router_name = "router_"+router_type
 	noc_file.write("R_"+str(i)+": "+str(router_name)+" generic map (DATA_WIDTH  => DATA_WIDTH, " +
                     "current_address=>"+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+", " + 
-                    "Cx_rst => "+str(cx_rst_calculator(i))+")\n")
+                    "Cx_rst => "+str(cx_rst_calculator(i))+", NoC_size=>"+str(network_dime)+")\n")
   	noc_file.write("PORT MAP (reset, clk, \n")
 	noc_file.write("\t")
 	for port in ["N", "E", "W", "S", "L"]:

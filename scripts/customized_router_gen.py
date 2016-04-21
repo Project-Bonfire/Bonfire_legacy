@@ -20,7 +20,8 @@ def gen_customized_router(router_type, router_file):
   router_file.write("        DATA_WIDTH: integer := 32;\n")
   router_file.write("        current_address : integer := 0;\n")
   router_file.write("        Rxy_rst : integer := 60;\n")
-  router_file.write("        Cx_rst : integer := 10\n")
+  router_file.write("        Cx_rst : integer := 10;\n")
+  router_file.write("        NoC_size : integer := 4\n")
   router_file.write("    );\n")
   router_file.write("    port (\n")
   router_file.write("    reset, clk: in std_logic;\n")
@@ -128,7 +129,8 @@ def gen_customized_router(router_type, router_file):
   router_file.write("    generic (\n")
   router_file.write("        cur_addr_rst: integer := 0;\n")
   router_file.write("        Rxy_rst: integer := 60;\n")
-  router_file.write("        Cx_rst: integer := 8\n")
+  router_file.write("        Cx_rst: integer := 8;\n")
+  router_file.write("        NoC_size : integer := 4\n")
   router_file.write("    );\n")
   router_file.write("    port (  reset: in  std_logic;\n")
   router_file.write("            clk: in  std_logic;\n")
@@ -248,7 +250,7 @@ def gen_customized_router(router_type, router_file):
   router_file.write("-- all the LBDRs\n")
   for port in ["N", "E", "W", "S", "L"]:
     if port not in router_type:
-      router_file.write("LBDR_"+str(port)+": LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst)\n")
+      router_file.write("LBDR_"+str(port)+": LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)\n")
       router_file.write("	   PORT MAP (reset => reset, clk => clk, empty => empty_"+str(port)+", flit_type => FIFO_D_out_"+str(port)+"(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_"+str(port)+"(DATA_WIDTH-16 downto DATA_WIDTH-19) ,\n")
       router_file.write("   		 	 Req_N=> Req_"+str(port)+"N, Req_E=>Req_"+str(port)+"E, Req_W=>Req_"+str(port)+"W, Req_S=>Req_"+str(port)+"S, Req_L=>Req_"+str(port)+"L);\n")
       router_file.write("\n")
