@@ -202,7 +202,7 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
        end loop;
 
       report "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) & " with length: "& integer'image(P_length) & " counter: "& integer'image(counter);
-      assert (P_length=counter) report "wrong packet size" severity error;
+      assert (P_length=counter) report "wrong packet size" severity failure;
 
  
    end loop;
