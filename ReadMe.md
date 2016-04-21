@@ -33,3 +33,7 @@ The folder structure of the project is as follows:
 			  This folder also includes the "TB_Package.vhd" file which defines the functions and procedures defined in VHDL for generation and reception of packets during simulation (used for implementing traffic patterns)
 
 -------------------------------------------------------------------------------------------------
+
+Latency model of the router: (Similar to Dally's theory)
+T_total = #hops (# of links) x T_r (router's delay to transmit one header flit) + [ L (packet length)/b (bandwidth) x T_handshake (always 2 clk cycles)]
+T_r is always 3.
