@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 use IEEE.NUMERIC_STD.all;
  use ieee.math_real.all;
- 
+ use std.textio.all;
 
 package TB_Package is
   function Header_gen(Packet_length, source, destination, packet_id: integer ) return std_logic_vector ;
@@ -61,6 +61,8 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
     variable rand : real ;
     variable first_time :boolean := true;
     variable destination_id: integer;
+      variable LINEVARIABLE : line; 
+   file VEC_FILE : text is out "sent.txt";
    begin
    while true loop
 
@@ -75,6 +77,8 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
 
   --wait untill the falling edge of the clock to avoid race!
   report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination);
+  write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination) & " with length: "& integer'image(Packet_length));
+  writeline(VEC_FILE, LINEVARIABLE);
   port_in <= Header_gen(Packet_length, source, destination, packet_id);
   wait until clk'event and clk ='1';
   RTS <= '1';
@@ -177,7 +181,11 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
                    signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector) is
 -- initial_delay: waits for this number of clock cycles before sending the packet!
   variable source_node, destination_node, P_length, counter: integer;
+  variable LINEVARIABLE : line; 
+   file VEC_FILE : text is out "recieved.txt";
    begin
+
+
    while true loop
        counter := 0;
        CTS <= '0';
@@ -203,8 +211,8 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
 
       report "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) & " with length: "& integer'image(P_length) & " counter: "& integer'image(counter);
       assert (P_length=counter) report "wrong packet size" severity failure;
-
- 
+       write(LINEVARIABLE, "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) & " with length: "& integer'image(P_length));
+       writeline(VEC_FILE, LINEVARIABLE);
    end loop;
 end get_packet;
 
