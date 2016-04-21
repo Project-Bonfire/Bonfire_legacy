@@ -119,10 +119,12 @@ procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in 
 -- packet id: packet identification number! TODO: has to be implemented!
 -- initial_delay: waits for this number of clock cycles before sending the packet!
   variable seed1 :positive ;
-    variable seed2 :positive ;
-    variable rand : real ;
-    variable first_time :boolean := true;
-    variable destination_id: integer;
+   variable seed2 :positive ;
+   variable rand : real ;
+   variable first_time :boolean := true;
+   variable destination_id: integer;
+   variable LINEVARIABLE : line; 
+   file VEC_FILE : text is out "sent.txt";
    begin
    while true loop
 
@@ -145,6 +147,8 @@ procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in 
 
   --wait untill the falling edge of the clock to avoid race!
   report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id);
+  write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: "& integer'image(Packet_length));
+  writeline(VEC_FILE, LINEVARIABLE);
   port_in <= Header_gen(Packet_length, source, destination_id, packet_id);
   wait until clk'event and clk ='1';
   RTS <= '1';
