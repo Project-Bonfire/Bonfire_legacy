@@ -3,13 +3,14 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 use IEEE.NUMERIC_STD.all;
  use ieee.math_real.all;
+ 
 
 package TB_Package is
   function Header_gen(Packet_length, source, destination, packet_id: integer ) return std_logic_vector ;
   function Body_gen(Packet_length, Data: integer ) return std_logic_vector ;
   function Tail_gen(Packet_length, Data: integer ) return std_logic_vector ;
   procedure gen_packet(Packet_length, source, destination, packet_id, initial_delay: in integer; finish_time: in time;  signal clk: in std_logic;  signal DCTS: in std_logic; signal RTS: out std_logic; signal port_in: out std_logic_vector);
-  procedure gen_random_packet(Packet_length, source, destination, packet_id, initial_delay: in integer;  finish_time: in time; signal clk: in std_logic; 
+  procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in integer; finish_time: in time; signal clk: in std_logic; 
                      signal DCTS: in std_logic; signal RTS: out std_logic; 
                      signal port_in: out std_logic_vector);
   procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector);
@@ -106,12 +107,11 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
   end loop;
 end gen_packet;
 
-procedure gen_random_packet(Packet_length, source, destination, packet_id, initial_delay: in integer;  finish_time: in time; signal clk: in std_logic; 
+procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in integer; finish_time: in time; signal clk: in std_logic; 
                      signal DCTS: in std_logic; signal RTS: out std_logic; 
                      signal port_in: out std_logic_vector) is
 -- Packet_length of 3 means it has 1 header, 1 body and 1 tail. the number of body packets are equal to Packet_length-2
 -- source: id of the source node
--- destination: id of the destination node
 -- packet id: packet identification number! TODO: has to be implemented!
 -- initial_delay: waits for this number of clock cycles before sending the packet!
   variable seed1 :positive ;
@@ -140,7 +140,7 @@ procedure gen_random_packet(Packet_length, source, destination, packet_id, initi
   end loop;
 
   --wait untill the falling edge of the clock to avoid race!
-  report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination);
+  report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id);
   port_in <= Header_gen(Packet_length, source, destination_id, packet_id);
   wait until clk'event and clk ='1';
   RTS <= '1';
