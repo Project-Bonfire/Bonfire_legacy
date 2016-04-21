@@ -1,5 +1,9 @@
+import sys
 
-network_dime = 2
+if '-D'  in sys.argv[1:]:
+  network_dime = int(sys.argv[sys.argv.index('-D')+1])
+else:
+  network_dime = 4
 
 def rxy_rst_calculator(node_id):
   rxy_rst = 60
