@@ -136,7 +136,7 @@ def gen_customized_router(router_type, router_file):
   router_file.write("            clk: in  std_logic;\n")
   router_file.write("            empty: in  std_logic;\n")
   router_file.write("            flit_type: in std_logic_vector(2 downto 0);\n")
-  router_file.write("            dst_addr: in std_logic_vector(3 downto 0);\n")
+  router_file.write("            dst_addr: in std_logic_vector(NoC_size-1 downto 0);\n")
   router_file.write("            Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic\n")
   router_file.write("            );\n")
   router_file.write("	end COMPONENT;\n")
@@ -251,7 +251,7 @@ def gen_customized_router(router_type, router_file):
   for port in ["N", "E", "W", "S", "L"]:
     if port not in router_type:
       router_file.write("LBDR_"+str(port)+": LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)\n")
-      router_file.write("	   PORT MAP (reset => reset, clk => clk, empty => empty_"+str(port)+", flit_type => FIFO_D_out_"+str(port)+"(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_"+str(port)+"(DATA_WIDTH-16 downto DATA_WIDTH-19) ,\n")
+      router_file.write("	   PORT MAP (reset => reset, clk => clk, empty => empty_"+str(port)+", flit_type => FIFO_D_out_"+str(port)+"(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_"+str(port)+"(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,\n")
       router_file.write("   		 	 Req_N=> Req_"+str(port)+"N, Req_E=>Req_"+str(port)+"E, Req_W=>Req_"+str(port)+"W, Req_S=>Req_"+str(port)+"S, Req_L=>Req_"+str(port)+"L);\n")
       router_file.write("\n")
    

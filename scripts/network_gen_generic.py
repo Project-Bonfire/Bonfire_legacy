@@ -1,6 +1,5 @@
 
-network_dime = 4
-network_dime = 4
+network_dime = 2
 
 def rxy_rst_calculator(node_id):
   rxy_rst = 60

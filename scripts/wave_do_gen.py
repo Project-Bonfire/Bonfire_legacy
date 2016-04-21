@@ -1,32 +1,33 @@
-network_x_size = 4
-network_y_size = 4
+network_x_size = 2
+network_y_size = 2
 wave_file = open('wave_'+str(network_x_size)+"x"+str(network_y_size)+'.do', 'w')
 
+tb_name= "tb_network_"+str(network_x_size)+"x"+str(network_y_size)
 
 wave_file.write("onerror {resume}\n")
 wave_file.write("quietly WaveActivateNextPane {} 0\n")
 for i in range(0 , network_x_size*network_y_size):
-	wave_file.write("add wave -noupdate -color green -radix decimal :tb_network_4x4:RX_L_"+str(i)+"\n")
-wave_file.write("add wave -noupdate :tb_network_4x4:clk\n")
-wave_file.write("add wave -noupdate :tb_network_4x4:clk\n")
+	wave_file.write("add wave -noupdate -color green -radix decimal :"+tb_name+":RX_L_"+str(i)+"\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 for i in range(0 , network_x_size*network_y_size):
-	wave_file.write("add wave -noupdate -color green -radix decimal :tb_network_4x4:TX_L_"+str(i)+"\n")
-wave_file.write("add wave -noupdate :tb_network_4x4:clk\n")
-wave_file.write("add wave -noupdate :tb_network_4x4:clk\n")
+	wave_file.write("add wave -noupdate -color green -radix decimal :"+tb_name+":TX_L_"+str(i)+"\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 for i in range(0 , network_x_size*network_y_size):
-	wave_file.write("add wave -noupdate -color Gold -radix decimal :tb_network_4x4:RX_L_"+str(i)+"\n")
-	wave_file.write("add wave -noupdate -color Gold :tb_network_4x4:CTS_L_"+str(i)+"\n")
-	wave_file.write("add wave -noupdate -color Gold :tb_network_4x4:DRTS_L_"+str(i)+"\n")
-	wave_file.write("add wave -noupdate -color Violet -radix decimal :tb_network_4x4:TX_L_"+str(i)+"\n")
-	wave_file.write("add wave -noupdate -color Violet :tb_network_4x4:RTS_L_"+str(i)+"\n") 
-	wave_file.write("add wave -noupdate -color Violet :tb_network_4x4:DCTS_L_"+str(i)+"\n")
- 	wave_file.write("add wave -noupdate :tb_network_4x4:clk\n")
+	wave_file.write("add wave -noupdate -color Gold -radix decimal :"+tb_name+":RX_L_"+str(i)+"\n")
+	wave_file.write("add wave -noupdate -color Gold :"+tb_name+":CTS_L_"+str(i)+"\n")
+	wave_file.write("add wave -noupdate -color Gold :"+tb_name+":DRTS_L_"+str(i)+"\n")
+	wave_file.write("add wave -noupdate -color Violet -radix decimal :"+tb_name+":TX_L_"+str(i)+"\n")
+	wave_file.write("add wave -noupdate -color Violet :"+tb_name+":RTS_L_"+str(i)+"\n") 
+	wave_file.write("add wave -noupdate -color Violet :"+tb_name+":DCTS_L_"+str(i)+"\n")
+ 	wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 for i in range(0 , network_x_size*network_y_size):
- 	wave_file.write("add wave -noupdate :tb_network_4x4:NoC:R_"+str(i)+":FIFO_L:full\n")
-wave_file.write("add wave -noupdate :tb_network_4x4:clk\n")
+ 	wave_file.write("add wave -noupdate :"+tb_name+":NoC:R_"+str(i)+":FIFO_L:full\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 for i in range(0 , network_x_size*network_y_size):
- 	wave_file.write("add wave -noupdate :tb_network_4x4:NoC:R_"+str(i)+":FIFO_L:empty\n")
-wave_file.write("add wave -noupdate :tb_network_4x4:clk\n")
+ 	wave_file.write("add wave -noupdate :"+tb_name+":NoC:R_"+str(i)+":FIFO_L:empty\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 wave_file.write("TreeUpdate [SetDefaultTree]\n")
 wave_file.write("WaveRestoreCursors\n")
 wave_file.write("quietly wave cursor active 0\n")

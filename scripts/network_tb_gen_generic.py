@@ -1,8 +1,8 @@
 
 import random 
 
-network_x_size = 4
-network_y_size = 4
+network_x_size = 2
+network_y_size = 2
 data_width = 32
 noc_file = open('tb_network_'+str(network_x_size)+"x"+str(network_y_size)+'.vhd', 'w')
 
