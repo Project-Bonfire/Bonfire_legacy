@@ -176,27 +176,34 @@ end gen_random_packet;
 procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; 
                    signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector) is
 -- initial_delay: waits for this number of clock cycles before sending the packet!
-  variable source_node, destination_node: integer;
+  variable source_node, destination_node, P_length, counter: integer;
    begin
    while true loop
+       counter := 0;
        CTS <= '0';
 
         wait until DRTS'event and DRTS ='1';
        CTS <= '1';  
-       wait until clk'event and clk ='1';      
+       wait until clk'event and clk ='1';     
+       counter := counter+1;
+       if (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001") then
+              
+              P_length := to_integer(unsigned(port_in(28 downto 17)));
+              destination_node := to_integer(unsigned(port_in(16 downto 13)));
+              source_node := to_integer(unsigned(port_in(12 downto 9)));
+       end if;         
        CTS <= '0';
        while (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) /= "100") loop
           wait until DRTS'event and DRTS ='1';
           CTS <= '1';  
-           if (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001") then
-              source_node := to_integer(signed(port_in(12 downto 9)));
-              destination_node := to_integer(signed(port_in(16 downto 13)));
-           end if; 
           wait until clk'event and clk ='1';
+          counter := counter+1;  
           CTS <= '0';
        end loop;
 
-      report "Packet recived at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node);
+      report "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) & " with length: "& integer'image(P_length) & " counter: "& integer'image(counter);
+      assert (P_length=counter) report "wrong packet size" severity error;
+
  
    end loop;
 end get_packet;
