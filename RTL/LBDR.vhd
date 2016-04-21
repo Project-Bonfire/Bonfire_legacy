@@ -23,7 +23,7 @@ end LBDR;
 
 architecture behavior of LBDR is
 
-  signal Cx:  std_logic_vector(NoC_size-1 downto 0);
+  signal Cx:  std_logic_vector(3 downto 0);
   signal Rxy:  std_logic_vector(7 downto 0);
   signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  
   signal N1, E1, W1, S1  :std_logic :='0';  
