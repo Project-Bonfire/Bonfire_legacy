@@ -105,7 +105,7 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
     wait until DCTS'event and DCTS ='1';
     wait for 1 ns;
     RTS <= '0';
-    if now > 1000 ns then 
+    if now > finish_time then 
         wait;
     end if;
   end loop;
@@ -138,11 +138,11 @@ procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in 
     end if;
 
   uniform(seed1, seed2, rand);
-  destination_id := integer(rand*15.0);
+  destination_id := integer(rand*3.0);
 
   while (destination_id = source) loop 
     uniform(seed1, seed2, rand);
-    destination_id := integer(rand*15.0);
+    destination_id := integer(rand*3.0);
   end loop;
 
   --wait untill the falling edge of the clock to avoid race!
@@ -175,7 +175,7 @@ procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in 
     wait until DCTS'event and DCTS ='1';
     wait for 1 ns;
     RTS <= '0';
-    if now > 1000 ns then 
+    if now > finish_time then 
         wait;
     end if;
   end loop;
