@@ -35,10 +35,10 @@ begin
   Rxy      <= std_logic_vector(to_unsigned(Rxy_rst, Rxy'length));
   cur_addr <= std_logic_vector(to_unsigned(cur_addr_rst, cur_addr'length));
 
-  N1 <= '1' when  dst_addr(NoC_size-1 downto 2) < cur_addr(NoC_size-1 downto 2) else '0';
-  E1 <= '1' when  cur_addr(1 downto 0) < dst_addr(1 downto 0) else '0';
-  W1 <= '1' when  dst_addr(1 downto 0) < cur_addr(1 downto 0) else '0';
-  S1 <= '1' when  cur_addr(NoC_size-1 downto 2) < dst_addr(NoC_size-1 downto 2) else '0';
+  N1 <= '1' when  dst_addr(NoC_size-1 downto NoC_size/2) < cur_addr(NoC_size-1 downto NoC_size/2) else '0';
+  E1 <= '1' when  cur_addr((NoC_size/2)-1 downto 0) < dst_addr((NoC_size/2)-1 downto 0) else '0';
+  W1 <= '1' when  dst_addr((NoC_size/2)-1 downto 0) < cur_addr((NoC_size/2)-1 downto 0) else '0';
+  S1 <= '1' when  cur_addr(NoC_size-1 downto NoC_size/2) < dst_addr(NoC_size-1 downto NoC_size/2) else '0';
 
 
 process(clk, reset)
