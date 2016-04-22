@@ -82,8 +82,8 @@ begin
 --                                   <--- readP          
 
  
-   TX2 <= FIFO_Mem2(conv_integer(read_pointer2))when empty2='0' else (others=>'0');
-   TX1 <= FIFO_Mem1(conv_integer(read_pointer1))when empty2='0' else (others=>'0');
+   TX2 <= FIFO_Mem2(conv_integer(read_pointer2));
+   TX1 <= FIFO_Mem1(conv_integer(read_pointer1));
 
    
    RTS2 <= RTS_FF2;

@@ -31,10 +31,8 @@ process(sel, North_in, East_in, West_in, South_in, Local_in) begin
     		Data_out <= West_in;
     	when "01000" =>
     		Data_out <= South_in;
-    	when "10000" =>
-    		Data_out <= Local_in;	
     	when others =>
-    		Data_out <= (others=>'0');
+    		Data_out <= Local_in;	
     end case;
    end process;
 end;
