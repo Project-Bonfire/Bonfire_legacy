@@ -124,12 +124,6 @@ begin
                     FIFO_Mem2(conv_integer(write_pointer2)) <= RX2;
                     write_pointer2 <= write_pointer2+ 1;
             end if;
-            if (RTS_FF2 = '1' and empty2 = '0') then
-                     --read from the memory
-                    --update the read pointer 
-                    read_pointer2 <=  read_pointer2+1;
-             end if;
-
             if (CB_write1 = '1' and full1 = '0')then
                     --write into the memory
                     -- update the write pointer 
@@ -171,6 +165,14 @@ begin
     end if;    
 end process;
 
+ process(RTS_FF2, DCTS2, HS_write_state_out2, HS_write_state_in2)begin
+    if RTS_FF2 = '1' and DCTS2 = '0' then 
+        HS_write_state_next2 <= HS_write_state_out2;
+    else
+        HS_write_state_next2 <= HS_write_state_in2;
+    end if;    
+end process;
+
 process(HS_write_state_out1, RTS_FF1, DCTS1, empty1)begin
     if HS_write_state_out1 = IDLE then 
         RTS_FF1_in <= '0';
@@ -188,14 +190,6 @@ process(HS_write_state_out1, RTS_FF1, DCTS1, empty1)begin
         end if;
     end if ;
 end process; 
-
- process(RTS_FF2, DCTS2, HS_write_state_out2, HS_write_state_in2)begin
-    if RTS_FF2 = '1' and DCTS2 = '0' then 
-        HS_write_state_next2 <= HS_write_state_out2;
-    else
-        HS_write_state_next2 <= HS_write_state_in2;
-    end if;    
-end process;
 
 process(HS_write_state_out2, RTS_FF2, DCTS2, empty2)begin
     if HS_write_state_out2 = IDLE then 
@@ -217,130 +211,130 @@ end process;
 
 
 --module 1 read from outside
-   process(HS_read_state_out1, full1, DRTS1) begin
-        case(HS_read_state_out1) is
-            when IDLE =>
-                if DRTS1 = '1' and full1 ='0' then
-                    HS_read_state_in1 <= READ_DATA;
-                    CTS1 <= '1';
-                    CB_write1 <= '1';
-                else
-                    HS_read_state_in1 <= IDLE;
-                    CTS1 <= '0';
-                    CB_write1 <= '0';
-                end if;
-            when READ_DATA =>
-                if DRTS1 = '1' and full1 ='0' then
-                    HS_read_state_in1 <= READ_DATA;
-                    CTS1 <= '1';
-                    CB_write1 <= '1';
-                else
-                    HS_read_state_in1 <= IDLE;
-                    CTS1 <= '0';
-                    CB_write1 <= '0';
-                end if;
-            when others =>
-                null;
-        end case ;
-   end process;
+process(HS_read_state_out1, full1, DRTS1) begin
+    case(HS_read_state_out1) is
+        when IDLE =>
+            if DRTS1 = '1' and full1 ='0' then
+                HS_read_state_in1 <= READ_DATA;
+                CTS1 <= '1';
+                CB_write1 <= '1';
+            else
+                HS_read_state_in1 <= IDLE;
+                CTS1 <= '0';
+                CB_write1 <= '0';
+            end if;
+        when READ_DATA =>
+            if DRTS1 = '1' and full1 ='0' then
+                HS_read_state_in1 <= READ_DATA;
+                CTS1 <= '1';
+                CB_write1 <= '1';
+            else
+                HS_read_state_in1 <= IDLE;
+                CTS1 <= '0';
+                CB_write1 <= '0';
+            end if;
+        when others =>
+            null;
+    end case ;
+end process;
 
  
 
 --module 1 write to outside
-     process(HS_write_state_out1, empty1) begin
-        case(HS_write_state_out1) is
-            when IDLE =>
-                if empty1 ='0' then
-                    HS_write_state_in1 <= WRITE_DATA;
-                 else
-                    HS_write_state_in1 <= IDLE; 
-                 end if;
-            when WRITE_DATA =>
-                if empty1 ='0' then
-                    HS_write_state_in1 <= WRITE_DATA;
-                else
-                    HS_write_state_in1 <= IDLE;
-                 end if;
-            when others =>
-                null;
-        end case ;
-   end process;
+process(HS_write_state_out1, empty1) begin
+    case(HS_write_state_out1) is
+        when IDLE =>
+            if empty1 ='0' then
+                HS_write_state_in1 <= WRITE_DATA;
+             else
+                HS_write_state_in1 <= IDLE; 
+             end if;
+        when WRITE_DATA =>
+            if empty1 ='0' then
+                HS_write_state_in1 <= WRITE_DATA;
+            else
+                HS_write_state_in1 <= IDLE;
+             end if;
+        when others =>
+            null;
+    end case ;
+end process;
 
 --module 2 read from outside
-   process(HS_read_state_out2, full2, DRTS2) begin
-        case(HS_read_state_out2) is
-            when IDLE =>
-                if DRTS2 = '1' and full2 ='0' then
-                    HS_read_state_in2 <= READ_DATA;
-                    CTS2 <= '1';
-                    CB_write2 <= '1';
-                else
-                    HS_read_state_in2 <= IDLE;
-                    CTS2 <= '0';
-                    CB_write2 <= '0';
-                end if;
-            when READ_DATA =>
-                if DRTS2 = '1' and full2 ='0' then
-                    HS_read_state_in2 <= READ_DATA;
-                    CTS2 <= '1';
-                    CB_write2 <= '1';
-                else
-                    HS_read_state_in2 <= IDLE;
-                    CTS2 <= '0';
-                    CB_write2 <= '0';
-                end if;
-            when others =>
-                null;
-        end case ;
-   end process;
+process(HS_read_state_out2, full2, DRTS2) begin
+     case(HS_read_state_out2) is
+         when IDLE =>
+             if DRTS2 = '1' and full2 ='0' then
+                 HS_read_state_in2 <= READ_DATA;
+                 CTS2 <= '1';
+                 CB_write2 <= '1';
+             else
+                 HS_read_state_in2 <= IDLE;
+                 CTS2 <= '0';
+                 CB_write2 <= '0';
+             end if;
+         when READ_DATA =>
+             if DRTS2 = '1' and full2 ='0' then
+                 HS_read_state_in2 <= READ_DATA;
+                 CTS2 <= '1';
+                 CB_write2 <= '1';
+             else
+                 HS_read_state_in2 <= IDLE;
+                 CTS2 <= '0';
+                 CB_write2 <= '0';
+             end if;
+         when others =>
+             null;
+     end case ;
+end process;
 
  
 
 --module 2 write to outside
-     process(HS_write_state_out2, empty2) begin
-        case(HS_write_state_out2) is
-            when IDLE =>
-                if  empty2 ='0' then
-                    HS_write_state_in2 <= WRITE_DATA;
-                 else
-                    HS_write_state_in2 <= IDLE; 
-                 end if;
-            when WRITE_DATA =>
-                if empty2 ='0' then
-                    HS_write_state_in2 <= WRITE_DATA;
-                    
-                else
-                    HS_write_state_in2 <= IDLE;
-                 end if;
-            when others =>
-                null;
-        end case ;
-   end process;
-
-
-    process(write_pointer2, read_pointer2, write_pointer1, read_pointer1)begin
-        if read_pointer2 = write_pointer2  then
-                empty2 <= '1';
+process(HS_write_state_out2, empty2) begin
+   case(HS_write_state_out2) is
+       when IDLE =>
+           if  empty2 ='0' then
+               HS_write_state_in2 <= WRITE_DATA;
             else
-                empty2 <= '0';
+               HS_write_state_in2 <= IDLE; 
             end if;
-        if write_pointer2 = read_pointer2 - 1 then
-                full2 <= '1';
-            else
-                full2 <= '0'; 
-            end if; 
-
-         if read_pointer1 = write_pointer1  then
-                empty1 <= '1';
-            else
-                empty1 <= '0';
+       when WRITE_DATA =>
+           if empty2 ='0' then
+               HS_write_state_in2 <= WRITE_DATA;
+               
+           else
+               HS_write_state_in2 <= IDLE;
             end if;
-        if write_pointer1 = read_pointer1 - 1 then
-                full1 <= '1';
-            else
-                full1 <= '0'; 
-            end if; 
-    end process;
+       when others =>
+           null;
+   end case ;
+end process;
+
+
+process(write_pointer2, read_pointer2, write_pointer1, read_pointer1)begin
+    if read_pointer2 = write_pointer2  then
+            empty2 <= '1';
+        else
+            empty2 <= '0';
+        end if;
+    if write_pointer2 = read_pointer2 - 1 then
+            full2 <= '1';
+        else
+            full2 <= '0'; 
+        end if; 
+
+     if read_pointer1 = write_pointer1  then
+            empty1 <= '1';
+        else
+            empty1 <= '0';
+        end if;
+    if write_pointer1 = read_pointer1 - 1 then
+            full1 <= '1';
+        else
+            full1 <= '0'; 
+        end if; 
+end process;
 
 
 
