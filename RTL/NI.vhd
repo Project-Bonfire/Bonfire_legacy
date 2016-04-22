@@ -58,8 +58,8 @@ begin
 --   CTS |--------->| DCTS1                                CTS1|---->   | DCTS_L_R_?
 --       |          |                    NI                    |        |
 --     TX|--------->| RX2                                   TX2|---->   | RX_L_R_?
---    RTS|--------->| DRTS2                                RTS2|<----   | DRTS_L_R_?
---   DCTS|<---------| CTS2                                DCTS2|---->   | CTS_L_R_?
+--    RTS|--------->| DRTS2                                RTS2|---->   | DRTS_L_R_?
+--   DCTS|<---------| CTS2                                DCTS2|<----   | CTS_L_R_?
 --     --            ---- ---------------------------------- --          --
 
 -- Hand shake protocol!
@@ -140,16 +140,16 @@ begin
 
 
 
-   process(RTS_FF1, empty1, read_pointer1)begin
-        if (RTS_FF1 = '1' and empty1 = '0') then
+   process(RTS_FF1, empty1, DCTS1, read_pointer1)begin
+        if (RTS_FF1 = '1' and DCTS1='1' and empty1 = '0') then
             read_pointer1_in <= read_pointer1+1; 
         else 
             read_pointer1_in <= read_pointer1; 
         end if;
    end process;
 
-    process(RTS_FF2, empty2, read_pointer2)begin
-        if (RTS_FF2 = '1' and empty2 = '0') then
+    process(RTS_FF2, empty2, DCTS2, read_pointer2)begin
+        if (RTS_FF2 = '1'  and DCTS2='1' and empty2 = '0') then
             read_pointer2_in <= read_pointer2+1; 
         else 
             read_pointer2_in <= read_pointer2; 
