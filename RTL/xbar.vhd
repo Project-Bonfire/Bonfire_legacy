@@ -34,7 +34,7 @@ process(sel, North_in, East_in, West_in, South_in, Local_in) begin
     	when "10000" =>
     		Data_out <= Local_in;	
     	when others =>
-    		null;
+    		Data_out <= (others=>'0');
     end case;
    end process;
 end;
