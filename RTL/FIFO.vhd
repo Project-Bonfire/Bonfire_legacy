@@ -27,7 +27,6 @@ end;
 architecture behavior of FIFO is
    signal read_pointer, read_pointer_in,  write_pointer, write_pointer_in: std_logic_vector(1 downto 0);
    signal full, empty: std_logic;
-   signal CB_write: std_logic;
    signal read_en, write_en: std_logic;
 
    type FIFO_Mem_type is array (0 to 3) of std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -83,7 +82,6 @@ begin
             write_pointer <= write_pointer_in;
             if write_en = '1' then
                 --write into the memory
-                -- update the write pointer 
                 FIFO_Mem(conv_integer(write_pointer)) <= RX;
             end if;
             read_pointer <=  read_pointer_in;
@@ -94,7 +92,6 @@ begin
    Data_out <= FIFO_Mem(conv_integer(read_pointer));
    read_en <= (read_en_N or read_en_E or read_en_W or read_en_S or read_en_L) and not empty; 
    empty_out <= empty;
-   write_en <= CB_write and not full;
 
    process(write_en, write_pointer)begin
      if write_en = '1'then
@@ -120,21 +117,21 @@ begin
                 if DRTS = '1' and full ='0' then
                     HS_state_in <= READ_DATA;
                     CTS <= '1';
-                    CB_write <= '1';
+                    write_en <= '1';
                 else
                     HS_state_in <= IDLE;
                     CTS <= '0';
-                    CB_write <= '0';
+                    write_en <= '0';
                 end if;
             when READ_DATA =>
                 if DRTS = '1' and full ='0' then
                     HS_state_in <= READ_DATA;
                     CTS <= '1';
-                    CB_write <= '1';
+                    write_en <= '1';
                 else
                     HS_state_in <= IDLE;
                     CTS <= '0';
-                    CB_write <= '0';
+                    write_en <= '0';
                 end if;
             when others =>
                 null;
