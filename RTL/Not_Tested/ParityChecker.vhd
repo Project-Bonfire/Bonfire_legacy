@@ -14,6 +14,6 @@ end parity_checker;
 architecture behavior of parity_checker is
 begin 
 
-fault_out <= RTS and (XOR_REDUCE(RX))
+fault_out <= '0' when (RTS and (XOR_REDUCE(RX(DATAWIDTH-1 downto 1)))) = RX(0) else '1';
 
 end;
