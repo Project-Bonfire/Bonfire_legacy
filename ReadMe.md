@@ -16,7 +16,7 @@ This project implements a simple NoC router which does not use any Virtual Chann
 - Arbitration unit (Arbiter) implemented using a Finite State Machine (FSM) based on Round-Robin (RR) prioritization, per each output port
 - Crossbar Switch (Xbar) implemented as Multiplexers (MUX) per each output port
 
-
+-------------------------------------------------------------------------------------------------
 
 The folder structure of the project is as follows: 
 
