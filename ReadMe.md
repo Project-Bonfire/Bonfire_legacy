@@ -23,17 +23,25 @@ The folder structure of the project is as follows:
 "RTL" folder : includes the VHDL RTL files for the FIFO, LBDR, Arbiter, Xbar and the Router (as top module).
 
 "scripts" folder : includes scripts in Python for :
-	* Generation of customized routers (with some ports not existing, depending on the location of the router in the network) (customized_router_gen.py)
-	* Generation of a Network-on-Chip in VHDL, consisting of the routers in generic mode (network_gen_generic.py)
-	* Generation of a Network-on-Chip in VHDL, consisting of the routers in customized mode (network_gen_customized.py)
-	* Generation of Test-bench in VHDL for the network of routers in generic mode (network_tb_gen_generic.py)
-	* Generation of waves for simulation of the whole network using Mentor Graphics ModelSim
 
-"TB" folder : includes individual Test-benches for different modules of the router (FIFO, Arbiter and the Router as top module)
-			  This folder also includes the "TB_Package.vhd" file which defines the functions and procedures defined in VHDL for generation and reception of packets during simulation (used for implementing traffic patterns)
+ * Generation of customized routers (with some ports not existing, depending on the location of the router in the network) (customized_router_gen.py)
+ * Generation of a Network-on-Chip in VHDL, consisting of the routers in generic mode (network_gen_generic.py)
+ * Generation of a Network-on-Chip in VHDL, consisting of the routers in customized mode (network_gen_customized.py) 
+ * Generation of Test-bench in VHDL for the network of routers in generic mode (network_tb_gen_generic.py)
+ * Generation of waves for simulation of the whole network using Mentor Graphics ModelSim
+
+"TB" folder : includes individual Test-benches for different modules of the router (FIFO, Arbiter and the Router as top module) This folder also includes the "TB_Package.vhd" file which defines the functions and procedures defined in VHDL for generation and reception of packets during simulation (used for implementing traffic patterns)
 
 -------------------------------------------------------------------------------------------------
 
 Latency model of the router: (Similar to Dally's theory)
-T_total = #hops (# of links) x T_r (router's delay to transmit one header flit) + [ L (packet length)/b (bandwidth) x T_handshake (always 2 clk cycles)]
-T_r is always 3.
+
+T_total = #hops x T_r + [ L/b x T_handshake ]
+
+
+where: 
+ * T_r: router's delay to transmit one header flit. is always 3
+ * #hops: # of links
+ * L: packet length
+ * b: bandwidth
+ * T_handshake: always 2 clk cycles
