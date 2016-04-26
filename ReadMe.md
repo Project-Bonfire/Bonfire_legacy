@@ -22,13 +22,21 @@ The folder structure of the project is as follows:
 
 "RTL" folder : includes the VHDL RTL files for the FIFO, LBDR, Arbiter, Xbar and the Router (as top module).
 
-"scripts" folder : includes scripts in Python for :
+"scripts" folder : includes scripts in Python:
 
- * Generation of customized routers (with some ports not existing, depending on the location of the router in the network) (customized_router_gen.py)
- * Generation of a Network-on-Chip in VHDL, consisting of the routers in generic mode (network_gen_generic.py)
- * Generation of a Network-on-Chip in VHDL, consisting of the routers in customized mode (network_gen_customized.py) 
- * Generation of Test-bench in VHDL for the network of routers in generic mode (network_tb_gen_generic.py)
- * Generation of waves for simulation of the whole network using Mentor Graphics ModelSim
+* network_gen_parameterized.py
+	* -D [size]: sets the size of the network
+	* -NI: adds Network Interface to the network ports
+	* -P: uses router_parity instead of base-router
+* network_tb_gen_parameterized.py
+	* -D [size]: sets the size of the network
+	* -Rand: generates random traffic patterns
+* wave_do_gen: generates wave.do file for the network testbench
+	* -D [size]: generates the wave.do for the specific size
+* Customized_network folder contains:
+	* customized_router_gen: generates customized routers (base-router) for specific places in the network
+	* network_gen_customized: generates a network out of customized routers
+		* -D [size]: sets the size of the network 	
 
 "TB" folder : includes individual Test-benches for different modules of the router (FIFO, Arbiter and the Router as top module) This folder also includes the "TB_Package.vhd" file which defines the functions and procedures defined in VHDL for generation and reception of packets during simulation (used for implementing traffic patterns)
 
