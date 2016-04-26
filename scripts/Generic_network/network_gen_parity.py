@@ -29,7 +29,7 @@ def cx_rst_calculator(node_id):
 
 
 
-noc_file = open('network_'+str(network_dime)+"x"+str(network_dime)+'.vhd', 'w')
+noc_file = open('network_parity_'+str(network_dime)+"x"+str(network_dime)+'.vhd', 'w')
 
 
 noc_file.write("--Copyright (C) 2016 Siavoosh Payandeh Azad\n")
@@ -64,7 +64,7 @@ noc_file.write("end network_"+str(network_dime)+"x"+str(network_dime)+"; \n")
 noc_file.write("\n\n")
 noc_file.write("architecture behavior of network_"+str(network_dime)+"x"+str(network_dime)+" is\n\n")
 noc_file.write("-- Declaring router component\n")
-noc_file.write("component router is\n")
+noc_file.write("component router_parity is\n")
 noc_file.write(" generic (\n")
 noc_file.write("        DATA_WIDTH: integer := 32;\n")
 noc_file.write("        current_address : integer := 5;\n")
@@ -137,7 +137,7 @@ for j in range(0, network_dime):
 noc_file.write("\n")
 noc_file.write("-- instantiating the routers\n")
 for i in range(0, network_dime*network_dime):
-    noc_file.write("R_"+str(i)+": router generic map (DATA_WIDTH  => DATA_WIDTH, " +
+    noc_file.write("R_"+str(i)+": router_parity generic map (DATA_WIDTH  => DATA_WIDTH, " +
                     "current_address=>"+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+", " + 
                     "Cx_rst => "+str(cx_rst_calculator(i))+", NoC_size=>"+str(network_dime)+")\n")
     noc_file.write("PORT MAP (reset, clk, \n")

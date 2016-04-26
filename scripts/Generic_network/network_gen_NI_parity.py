@@ -29,7 +29,7 @@ def cx_rst_calculator(node_id):
 
 
 
-noc_file = open('network_NI_'+str(network_dime)+"x"+str(network_dime)+'.vhd', 'w')
+noc_file = open('network_NI_parity_'+str(network_dime)+"x"+str(network_dime)+'.vhd', 'w')
 
 
 noc_file.write("--Copyright (C) 2016 Siavoosh Payandeh Azad\n")
@@ -64,7 +64,7 @@ noc_file.write("end network_"+str(network_dime)+"x"+str(network_dime)+"; \n")
 noc_file.write("\n\n")
 noc_file.write("architecture behavior of network_"+str(network_dime)+"x"+str(network_dime)+" is\n\n")
 noc_file.write("-- Declaring router component\n")
-noc_file.write("component router is\n")
+noc_file.write("component router_parity is\n")
 noc_file.write(" generic (\n")
 noc_file.write("        DATA_WIDTH: integer := 32;\n")
 noc_file.write("        current_address : integer := 5;\n")
@@ -79,7 +79,8 @@ noc_file.write("    DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L: in std_logic;\n")
 noc_file.write("    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
 noc_file.write("    RTS_N, RTS_E, RTS_W, RTS_S, RTS_L: out std_logic;\n")
 noc_file.write("    CTS_N, CTS_E, CTS_w, CTS_S, CTS_L: out std_logic;\n")
-noc_file.write("    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0));\n")
+noc_file.write("    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);\n")
+noc_file.write("    fault_out_N, fault_out_E, fault_out_W, fault_out_S, fault_out_L: out std_logic);\n")
 noc_file.write("end component; \n")
 noc_file.write("\n\n")
 
@@ -128,6 +129,10 @@ noc_file.write("\n")
 for i in range(0, network_dime*network_dime):
     noc_file.write("\tsignal TX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+
                    " : std_logic_vector (DATA_WIDTH-1 downto 0);\n")
+noc_file.write("\n")
+for i in range(0, network_dime*network_dime):
+  noc_file.write("\tsignal fault_out_N_"+str(i)+", fault_out_E_"+str(i)+", fault_out_W_"+str(i)+", fault_out_S_"+str(i)+", fault_out_L_"+str(i)+": std_logic;\n")
+
 noc_file.write("begin\n\n")
 
 noc_file.write("\n\n")
@@ -158,7 +163,7 @@ for j in range(0, network_dime):
 noc_file.write("\n")
 noc_file.write("-- instantiating the routers\n")
 for i in range(0, network_dime*network_dime):
-    noc_file.write("R_"+str(i)+": router generic map (DATA_WIDTH  => DATA_WIDTH, " +
+    noc_file.write("R_"+str(i)+": router_parity generic map (DATA_WIDTH  => DATA_WIDTH, " +
                     "current_address=>"+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+", " + 
                     "Cx_rst => "+str(cx_rst_calculator(i))+", NoC_size=>"+str(network_dime)+")\n")
     noc_file.write("PORT MAP (reset, clk, \n")
@@ -167,7 +172,8 @@ for i in range(0, network_dime*network_dime):
     noc_file.write("\tRX_N_"+str(i)+", RX_E_"+str(i)+", RX_W_"+str(i)+", RX_S_"+str(i)+", RX_L_R_"+str(i)+",\n")
     noc_file.write("\tRTS_N_"+str(i)+", RTS_E_"+str(i)+", RTS_W_"+str(i)+", RTS_S_"+str(i)+", RTS_L_R_"+str(i)+",\n")
     noc_file.write("\tCTS_N_"+str(i)+", CTS_E_"+str(i)+", CTS_w_"+str(i)+", CTS_S_"+str(i)+", CTS_L_R_"+str(i)+",\n")
-    noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_R_"+str(i)+"); \n\n")
+    noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_R_"+str(i)+",\n")
+    noc_file.write("\tfault_out_N_"+str(i)+", fault_out_E_"+str(i)+", fault_out_W_"+str(i)+", fault_out_S_"+str(i)+", fault_out_L_"+str(i)+");\n\n")
 noc_file.write("\n")
 noc_file.write("-- instantiating the NI\n")
 for i in range(0, network_dime*network_dime):

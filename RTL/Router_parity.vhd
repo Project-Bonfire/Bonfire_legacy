@@ -5,7 +5,7 @@ use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity router is
+entity router_parity is
 	generic (
         DATA_WIDTH: integer := 32;
         current_address : integer := 0;
@@ -23,9 +23,9 @@ entity router is
     TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);
     fault_out_N, fault_out_E, fault_out_W, fault_out_S, fault_out_L:out std_logic
     ); 
-end router; 
+end router_parity; 
 
-architecture behavior of router is
+architecture behavior of router_parity is
   
   COMPONENT parity_checker is 
   generic(DATA_WIDTH : integer := 32);
