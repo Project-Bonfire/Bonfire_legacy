@@ -4,6 +4,7 @@ use ieee.std_logic_unsigned.all;
 use IEEE.NUMERIC_STD.all;
  use ieee.math_real.all;
  use std.textio.all;
+ use ieee.std_logic_misc.all;
 
 package TB_Package is
   function Header_gen(Packet_length, source, destination, packet_id: integer ) return std_logic_vector ;
@@ -26,7 +27,8 @@ function Header_gen(Packet_length, source, destination, packet_id: integer)
 variable Header_flit: std_logic_vector (31 downto 0);
 begin
 Header_flit := Header_type &  std_logic_vector(to_unsigned(Packet_length, 12)) & std_logic_vector(to_unsigned(destination, 4)) & 
-         std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(packet_id, 8)) & '0';
+         std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(packet_id, 8)) & XOR_REDUCE(Header_type &  std_logic_vector(to_unsigned(Packet_length, 12)) & std_logic_vector(to_unsigned(destination, 4)) & 
+         std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(packet_id, 8)));
 return Header_flit;
 end Header_gen;
 
@@ -35,7 +37,7 @@ function Body_gen(Packet_length, Data: integer)
               return std_logic_vector is
 variable Body_flit: std_logic_vector (31 downto 0);
 begin
-Body_flit := Body_type &  std_logic_vector(to_unsigned(Data, 28)) & '0';
+Body_flit := Body_type &  std_logic_vector(to_unsigned(Data, 28)) & XOR_REDUCE(Body_type & std_logic_vector(to_unsigned(Data, 28)));
 return Body_flit;
 end Body_gen;
 
@@ -44,7 +46,7 @@ function Tail_gen(Packet_length, Data: integer)
               return std_logic_vector is
 variable Tail_flit: std_logic_vector (31 downto 0);
 begin
-Tail_flit := Tail_type &  std_logic_vector(to_unsigned(Data, 28)) & '0';
+Tail_flit := Tail_type &  std_logic_vector(to_unsigned(Data, 28)) & XOR_REDUCE(Tail_type & std_logic_vector(to_unsigned(Data, 28)));
 return Tail_flit;
 end Tail_gen;
 
@@ -152,6 +154,7 @@ procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in 
   port_in <= Header_gen(Packet_length, source, destination_id, packet_id);
   wait until clk'event and clk ='1';
   RTS <= '1';
+   
   wait until DCTS'event and DCTS ='1';
   wait for 1 ns;
   RTS <= '0';
@@ -163,6 +166,7 @@ procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in 
     port_in <= Body_gen(Packet_length, integer(rand*1000.0));
     wait until clk'event and clk ='1';
     RTS <= '1';
+     
     wait until DCTS'event and DCTS ='1';
     wait for 1 ns;
     RTS <= '0';
@@ -172,11 +176,12 @@ procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in 
   port_in <= Tail_gen(Packet_length, 200);
     wait until clk'event and clk ='1';
     RTS <= '1';
+     
     wait until DCTS'event and DCTS ='1';
     wait for 1 ns;
     RTS <= '0';
-    if now > finish_time then 
-        wait;
+    if now > 1000 ns then 
+        wait; 
     end if;
   end loop;
 end gen_random_packet;
@@ -197,9 +202,9 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
         wait until DRTS'event and DRTS ='1';
        CTS <= '1';  
        wait until clk'event and clk ='1';     
-       counter := counter+1;
+       
        if (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001") then
-              
+              counter := 1;	
               P_length := to_integer(unsigned(port_in(28 downto 17)));
               destination_node := to_integer(unsigned(port_in(16 downto 13)));
               source_node := to_integer(unsigned(port_in(12 downto 9)));
