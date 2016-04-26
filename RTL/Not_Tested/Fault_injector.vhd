@@ -25,6 +25,7 @@ begin
 --      1   |    0   |  0     |   1   
 --      X   |    0   |  1     |   1                     
 --      X   |    1   |  0     |   0      
+
   mask <=  std_logic_vector(to_unsigned(to_integer(signed(address)), mask'length));
   Gen_faulty:
   for i in 0 to DATA_WIDTH-1 generate

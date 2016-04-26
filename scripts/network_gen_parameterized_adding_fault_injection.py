@@ -58,6 +58,8 @@ if add_NI:
   file_name += '_NI'
 if add_parity:
   file_name += '_parity'
+if add_FI:
+  file_name += '_FI'
 
 noc_file = open(file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd', 'w')
 
@@ -73,7 +75,10 @@ noc_file.write("------------------------------------------------------------\n\n
 noc_file.write("library ieee;\n")
 noc_file.write("use ieee.std_logic_1164.all;\n")
 noc_file.write("use IEEE.STD_LOGIC_ARITH.ALL;\n")
-noc_file.write("use IEEE.STD_LOGIC_UNSIGNED.ALL;\n\n")
+noc_file.write("use IEEE.STD_LOGIC_UNSIGNED.ALL;\n")
+noc_file.write("USE ieee.numeric_std.ALL; \n")
+noc_file.write("use IEEE.math_real.\"ceil\";\n")
+noc_file.write("use IEEE.math_real.\"log2\";\n\n")
  
 noc_file.write("entity network_"+str(network_dime)+"x"+str(network_dime)+" is\n")
 noc_file.write(" generic (DATA_WIDTH: integer := 32);\n")
@@ -84,10 +89,34 @@ for i in range(network_dime*network_dime):
   noc_file.write("\tRX_L_"+str(i)+": in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
   noc_file.write("\tRTS_L_"+str(i)+", CTS_L_"+str(i)+": out std_logic;\n")
   noc_file.write("\tDRTS_L_"+str(i)+", DCTS_L_"+str(i)+": in std_logic;\n")
-  if i == network_dime*network_dime-1:
+  if i == network_dime*network_dime-1 and  add_FI == False:
     noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
   else:
     noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0);\n")
+
+if add_FI:
+  noc_file.write("\t--fault injector signals\n")
+  for i in range(0, network_dime*network_dime):
+    node_x = i % network_dime
+    node_y = i / network_dime
+    if node_y != network_dime-1:
+      noc_file.write("\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i) +
+                     "_"+str(i+network_dime)+": std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);\n")
+      noc_file.write("\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
+                         ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+": std_logic;\n\n")
+  for i in range(0, network_dime*network_dime):
+      node_x = i % network_dime
+      node_y = i / network_dime
+      if node_x != network_dime -1 :
+          noc_file.write("\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) +
+                         ": std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);\n")
+          if node_y != network_dime -1 :
+              noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta0_"+str(i+1)+"_"+str(i)+": std_logic;\n\n")
+          else:
+            noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": std_logic\n")
+
 noc_file.write("            ); \n")
 noc_file.write("end network_"+str(network_dime)+"x"+str(network_dime)+"; \n")
 
@@ -271,7 +300,8 @@ for i in range(0, network_dime*network_dime):
 
     if add_parity:
       noc_file.write(",\n")
-      noc_file.write("\tfault_out_N_"+str(i)+", fault_out_E_"+str(i)+", fault_out_W_"+str(i)+", fault_out_S_"+str(i)+", fault_out_L_"+str(i)+");\n\n")
+      noc_file.write("\tfault_out_N_"+str(i)+", fault_out_E_"+str(i)+", fault_out_W_"+str(i) +
+                     ", fault_out_S_"+str(i)+", fault_out_L_"+str(i)+");\n\n")
     else:
       noc_file.write("); \n\n")
 
@@ -296,38 +326,88 @@ if add_NI:
     noc_file.write("         RTS2=>  DRTS_L_R_"+str(i)+",\n")
     noc_file.write("         CTS2=>  CTS_L_"+str(i)+" \n")
     noc_file.write("  );\n")
-noc_file.write("---------------------------------------------------------------\n")
 
-noc_file.write("-- binding the routers together\n")
-noc_file.write("-- vertical ins/outs\n")
-for i in range(0, network_dime*network_dime):
-  node_x = i % network_dime
-  node_y = i / network_dime
-  if node_y != network_dime-1:
-      noc_file.write("-- connecting router: "+str(i)+ " to router: "+str(i+network_dime)+" and vice versa\n")
-      noc_file.write("RX_N_"+str(i+network_dime)+"<= TX_S_"+str(i)+";\n")
-      noc_file.write("RX_S_"+str(i)+"<= TX_N_"+str(i+network_dime)+";\n")
+if add_FI:
+    noc_file.write("-- instantiating the Fault fault_injector\n")
+    noc_file.write("-- vertical FIs\n")
+    for i in range(0, network_dime*network_dime):
+      node_x = i % network_dime
+      node_y = i / network_dime
+      if node_y != network_dime-1:
 
-      noc_file.write("DRTS_N_"+str(i+network_dime)+" <= RTS_S_"+str(i)+";\n")
-      noc_file.write("DCTS_S_"+str(i)+" <= CTS_N_"+str(i+network_dime)+";\n")
+        noc_file.write("FI_"+str(i)+"_"+str(i+network_dime)+": fault_injector generic map(DATA_WIDTH => DATA_WIDTH) \n")
+        noc_file.write(" port map(\n")
+        noc_file.write("    data_in => TX_S_"+str(i)+",\n")
+        noc_file.write("    address => FI_Add_"+str(i)+"_"+str(i+network_dime)+",\n")
+        noc_file.write("    sta_0 => sta0_"+str(i)+"_"+str(i+network_dime)+",\n")
+        noc_file.write("    sta_1 => sta1_"+str(i)+"_"+str(i+network_dime)+",\n")
+        noc_file.write("    data_out => RX_N_"+str(i+network_dime)+" \n")
+        noc_file.write("    );\n")
 
-      noc_file.write("DRTS_S_"+str(i)+" <= RTS_N_"+str(i+network_dime)+";\n")
-      noc_file.write("DCTS_N_"+str(i+network_dime)+" <= CTS_S_"+str(i)+";\n")
-      noc_file.write("-------------------\n") 
-noc_file.write("\n")      
-noc_file.write("-- horizontal ins/outs\n")
-for i in range(0, network_dime*network_dime):
-  node_x = i % network_dime
-  node_y = i / network_dime
-  if node_x != network_dime -1 :
-      noc_file.write("-- connecting router: "+str(i)+ " to router: "+str(i+1)+" and vice versa\n")
-      noc_file.write("RX_E_"+str(i)+" <= TX_W_"+str(i+1)+";\n")
-      noc_file.write("RX_W_"+str(i+1)+" <= TX_E_"+str(i)+";\n")
+        noc_file.write("FI_"+str(i+network_dime)+"_"+str(i)+": fault_injector generic map(DATA_WIDTH => DATA_WIDTH) \n")
+        noc_file.write(" port map(\n")
+        noc_file.write("    data_in => TX_N_"+str(i+network_dime)+",\n")
+        noc_file.write("    address => FI_Add_"+str(i+network_dime)+"_"+str(i)+",\n")
+        noc_file.write("    sta_0 => sta0_"+str(i+network_dime)+"_"+str(i)+",\n")
+        noc_file.write("    sta_1 => sta1_"+str(i+network_dime)+"_"+str(i)+",\n")
+        noc_file.write("    data_out => RX_S_"+str(i)+"\n")
+        noc_file.write("    );\n")
+    noc_file.write("\n")
 
-      noc_file.write("DRTS_E_"+str(i)+" <= RTS_W_"+str(i+1)+";\n")
-      noc_file.write("DCTS_W_"+str(i+1)+" <= CTS_E_"+str(i)+";\n")
+    noc_file.write("-- horizontal FIs\n")
+    for i in range(0, network_dime*network_dime):
+      node_x = i % network_dime
+      node_y = i / network_dime
+      if node_x != network_dime -1 :
+        noc_file.write("FI_"+str(i)+"_"+str(i+1)+": fault_injector generic map(DATA_WIDTH => DATA_WIDTH) \n")
+        noc_file.write(" port map(\n")
+        noc_file.write("    data_in => TX_E_"+str(i)+",\n")
+        noc_file.write("    address => FI_Add_"+str(i)+"_"+str(i+1)+",\n")
+        noc_file.write("    sta_0 => sta0_"+str(i)+"_"+str(i+1)+",\n")
+        noc_file.write("    sta_1 => sta1_"+str(i)+"_"+str(i+1)+",\n")
+        noc_file.write("    data_out =>  RX_W_"+str(i+1)+"\n")
+        noc_file.write("    );\n")
 
-      noc_file.write("DRTS_W_"+str(i+1)+" <= RTS_E_"+str(i)+";\n")
-      noc_file.write("DCTS_E_"+str(i)+" <= CTS_W_"+str(i+1)+";\n")
-      noc_file.write("-------------------\n") 
-noc_file.write("end;\n")
+        noc_file.write("FI_"+str(i+1)+"_"+str(i)+": fault_injector generic map(DATA_WIDTH => DATA_WIDTH) \n")
+        noc_file.write(" port map(\n")
+        noc_file.write("    data_in => TX_W_"+str(i+1)+",\n")
+        noc_file.write("    address => FI_Add_"+str(i+1)+"_"+str(i)+",\n")
+        noc_file.write("    sta_0 => sta0_"+str(i+1)+"_"+str(i)+",\n")
+        noc_file.write("    sta_1 => sta1_"+str(i+1)+"_"+str(i)+",\n")
+        noc_file.write("    data_out => RX_E_"+str(i)+"\n")
+        noc_file.write("    );\n")
+else:
+  noc_file.write("---------------------------------------------------------------\n")  
+  noc_file.write("-- binding the routers together\n")
+  noc_file.write("-- vertical ins/outs\n")
+  for i in range(0, network_dime*network_dime):
+    node_x = i % network_dime
+    node_y = i / network_dime
+    if node_y != network_dime-1:
+        noc_file.write("-- connecting router: "+str(i)+ " to router: "+str(i+network_dime)+" and vice versa\n")
+        noc_file.write("RX_N_"+str(i+network_dime)+"<= TX_S_"+str(i)+";\n")
+        noc_file.write("RX_S_"+str(i)+"<= TX_N_"+str(i+network_dime)+";\n")
+
+        noc_file.write("DRTS_N_"+str(i+network_dime)+" <= RTS_S_"+str(i)+";\n")
+        noc_file.write("DCTS_S_"+str(i)+" <= CTS_N_"+str(i+network_dime)+";\n")
+
+        noc_file.write("DRTS_S_"+str(i)+" <= RTS_N_"+str(i+network_dime)+";\n")
+        noc_file.write("DCTS_N_"+str(i+network_dime)+" <= CTS_S_"+str(i)+";\n")
+        noc_file.write("-------------------\n") 
+  noc_file.write("\n")      
+  noc_file.write("-- horizontal ins/outs\n")
+  for i in range(0, network_dime*network_dime):
+    node_x = i % network_dime
+    node_y = i / network_dime
+    if node_x != network_dime -1 :
+        noc_file.write("-- connecting router: "+str(i)+ " to router: "+str(i+1)+" and vice versa\n")
+        noc_file.write("RX_E_"+str(i)+" <= TX_W_"+str(i+1)+";\n")
+        noc_file.write("RX_W_"+str(i+1)+" <= TX_E_"+str(i)+";\n")
+
+        noc_file.write("DRTS_E_"+str(i)+" <= RTS_W_"+str(i+1)+";\n")
+        noc_file.write("DCTS_W_"+str(i+1)+" <= CTS_E_"+str(i)+";\n")
+
+        noc_file.write("DRTS_W_"+str(i+1)+" <= RTS_E_"+str(i)+";\n")
+        noc_file.write("DCTS_E_"+str(i)+" <= CTS_W_"+str(i+1)+";\n")
+        noc_file.write("-------------------\n") 
+  noc_file.write("end;\n")
