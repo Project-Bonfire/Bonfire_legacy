@@ -101,21 +101,21 @@ if add_FI:
     node_y = i / network_dime
     if node_y != network_dime-1:
       noc_file.write("\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i) +
-                     "_"+str(i+network_dime)+": std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);\n")
+                     "_"+str(i+network_dime)+": in std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);\n")
       noc_file.write("\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
-                         ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+": std_logic;\n\n")
+                         ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+": in std_logic;\n\n")
   for i in range(0, network_dime*network_dime):
       node_x = i % network_dime
       node_y = i / network_dime
       if node_x != network_dime -1 :
           noc_file.write("\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) +
-                         ": std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);\n")
+                         ": in std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);\n")
           if node_y != network_dime -1 :
               noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
-                             ", sta0_"+str(i+1)+"_"+str(i)+", sta0_"+str(i+1)+"_"+str(i)+": std_logic;\n\n")
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic;\n\n")
           else:
             noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
-                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": std_logic\n")
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic\n")
 
 noc_file.write("            ); \n")
 noc_file.write("end network_"+str(network_dime)+"x"+str(network_dime)+"; \n")
@@ -410,4 +410,5 @@ else:
         noc_file.write("DRTS_W_"+str(i+1)+" <= RTS_E_"+str(i)+";\n")
         noc_file.write("DCTS_E_"+str(i)+" <= CTS_W_"+str(i+1)+";\n")
         noc_file.write("-------------------\n") 
-  noc_file.write("end;\n")
+
+noc_file.write("end;\n")
