@@ -202,8 +202,8 @@ for i in range(0, network_dime*network_dime):
 
 
 noc_file.write("\n")
-noc_file.write("-- connecting the fault generators\n")
 if add_FI:
+  noc_file.write("-- connecting the fault generators\n")
   for i in range(0, network_dime*network_dime):  
     node_x = i % network_dime
     node_y = i / network_dime
