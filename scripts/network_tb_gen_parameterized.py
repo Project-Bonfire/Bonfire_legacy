@@ -16,9 +16,20 @@ if '-Rand'  in sys.argv[1:]:
 else:
   random_dest = False
 
+if '-FI'  in sys.argv[1:]: 
+  add_FI = True
+else:
+  add_FI = False
 
 data_width = 32
-noc_file = open('tb_network_'+str(network_dime)+"x"+str(network_dime)+'_random.vhd', 'w')
+
+file_name= 'tb_network'
+if random_dest:
+  file_name += '_rand'
+if add_FI:
+  file_name += '_FI'
+
+noc_file = open(file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd', 'w')
 
 
 noc_file.write("--Copyright (C) 2016 Siavoosh Payandeh Azad\n")
@@ -34,6 +45,9 @@ noc_file.write("use ieee.std_logic_1164.all;\n")
 noc_file.write("use IEEE.STD_LOGIC_ARITH.ALL;\n")
 noc_file.write("use IEEE.STD_LOGIC_UNSIGNED.ALL;\n")
 noc_file.write("use work.TB_Package.all;\n\n")
+noc_file.write("USE ieee.numeric_std.ALL; \n")
+noc_file.write("use IEEE.math_real.\"ceil\";\n")
+noc_file.write("use IEEE.math_real.\"log2\";\n\n")
 
 noc_file.write("entity tb_network_"+str(network_dime)+"x"+str(network_dime)+" is\n")
  
@@ -55,10 +69,34 @@ for i in range(network_dime*network_dime):
   noc_file.write("\tRX_L_"+str(i)+": in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
   noc_file.write("\tRTS_L_"+str(i)+", CTS_L_"+str(i)+": out std_logic;\n")
   noc_file.write("\tDRTS_L_"+str(i)+", DCTS_L_"+str(i)+": in std_logic;\n")
-  if i == network_dime*network_dime-1:
+  if i == network_dime*network_dime-1 and add_FI == False:
     noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
   else:
     noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0);\n")
+
+if add_FI:
+  noc_file.write("\t--fault injector signals\n")
+  for i in range(0, network_dime*network_dime):
+    node_x = i % network_dime
+    node_y = i / network_dime
+    if node_y != network_dime-1:
+      noc_file.write("\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i) +
+                     "_"+str(i+network_dime)+": in std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);\n")
+      noc_file.write("\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
+                         ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+": in std_logic;\n\n")
+  for i in range(0, network_dime*network_dime):
+      node_x = i % network_dime
+      node_y = i / network_dime
+      if node_x != network_dime -1 :
+          noc_file.write("\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) +
+                         ": in std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);\n")
+          if node_y != network_dime -1 :
+              noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic;\n\n")
+          else:
+            noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic\n")
+
 noc_file.write("            ); \n")
 noc_file.write("end component; \n")
 
@@ -68,6 +106,27 @@ for i in range(0, network_dime*network_dime):
     noc_file.write("\tsignal RX_L_"+str(i)+", TX_L_"+str(i)+":  std_logic_vector ("+str(data_width-1)+" downto 0);\n")
     noc_file.write("\tsignal RTS_L_"+str(i)+", DRTS_L_"+str(i)+", CTS_L_"+str(i)+", DCTS_L_"+str(i) + ": std_logic;\n")
     noc_file.write("\t--------------\n")
+noc_file.write("\n")    
+noc_file.write("\t--fault injector signals\n")
+for i in range(0, network_dime*network_dime):
+  node_x = i % network_dime
+  node_y = i / network_dime
+  if node_y != network_dime-1:
+    noc_file.write("\tsignal FI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i) +
+                   "_"+str(i+network_dime)+": std_logic_vector(integer(ceil(log2(real("+str(data_width-1)+"))))-1 downto 0) := (others=>'0');\n")
+    noc_file.write("\tsignal sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
+                       ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+": std_logic :='0';\n\n")
+for i in range(0, network_dime*network_dime):
+    node_x = i % network_dime
+    node_y = i / network_dime
+    if node_x != network_dime -1 :
+        noc_file.write("\tsignal FI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) +
+                       ": std_logic_vector(integer(ceil(log2(real("+str(data_width-1)+"))))-1 downto 0):= (others=>'0');\n")
+        noc_file.write("\tsignal sta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
+                        ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": std_logic :='0';\n\n")
+
+
+
 noc_file.write(" constant clk_period : time := 1 ns;\n")
 noc_file.write("signal reset,clk: std_logic :='0';\n")
 
@@ -91,11 +150,30 @@ noc_file.write("NoC: network_"+str(network_dime)+"x"+str(network_dime)+" generic
 noc_file.write("PORT MAP (reset, clk, \n")
 for i in range(network_dime*network_dime):    
   noc_file.write("\tRX_L_"+str(i)+", RTS_L_"+str(i)+", CTS_L_"+str(i)+", DRTS_L_"+str(i)+", DCTS_L_"+str(i)+", ")
-  if i == network_dime*network_dime-1:
+  if i == network_dime*network_dime-1 and add_FI==False:
     noc_file.write("TX_L_"+str(i)+");\n")
   else:
     noc_file.write("TX_L_"+str(i)+",\n")
-
+if add_FI:
+  noc_file.write("\t--fault injector signals\n")
+  for i in range(0, network_dime*network_dime):
+    node_x = i % network_dime
+    node_y = i / network_dime
+    if node_y != network_dime-1:
+      noc_file.write("\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+network_dime)+", \n")
+      noc_file.write("\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
+                       ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+",\n\n")
+  for i in range(0, network_dime*network_dime):
+      node_x = i % network_dime
+      node_y = i / network_dime
+      if node_x != network_dime -1 :
+          noc_file.write("\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) + ",\n")
+          if node_y != network_dime -1 :
+              noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+",\n")
+          else:
+            noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+");\n")
 noc_file.write("\n")
 noc_file.write("-- connecting the packet generators\n")
 if random_dest:
@@ -105,18 +183,18 @@ if random_dest:
     random_end = random.randint(random_start, 200)
 
     noc_file.write("gen_random_packet("+str(random_length)+", "+str(i)+", 1, "+str(random_start)+", " +
-      str(random_end)+" ns, clk, CTS_L_"+str(i)+", DRTS_L_"+str(i)+", RX_L_"+str(i)+");\n")
+                    str(random_end)+" ns, clk, CTS_L_"+str(i)+", DRTS_L_"+str(i)+", RX_L_"+str(i)+");\n")
 else:
   for i in range(0, network_dime*network_dime):  
-  random_node = random.randint(0, network_dime*network_dime-1)
-  while i == random_node:
-    random_node = random.randint(0, (network_dime*network_dime)-1)
-  random_length  = random.randint(3, 10)
-  random_start = random.randint(3, 50)
-  random_end = random.randint(random_start, 200)
+    random_node = random.randint(0, network_dime*network_dime-1)
+    while i == random_node:
+      random_node = random.randint(0, (network_dime*network_dime)-1)
+    random_length  = random.randint(3, 10)
+    random_start = random.randint(3, 50)
+    random_end = random.randint(random_start, 200)
 
-  noc_file.write("gen_packet("+str(random_length)+", "+str(i)+", "+str(random_node)+", 1, "+str(random_start) +
-    ", "+str(random_end)+" ns, clk, CTS_L_"+str(i)+", DRTS_L_"+str(i)+", RX_L_"+str(i)+");\n")
+    noc_file.write("gen_packet("+str(random_length)+", "+str(i)+", "+str(random_node)+", 1, "+str(random_start) +
+                    ", "+str(random_end)+" ns, clk, CTS_L_"+str(i)+", DRTS_L_"+str(i)+", RX_L_"+str(i)+");\n")
 
 noc_file.write("\n")
 noc_file.write("-- connecting the packet receivers\n")
