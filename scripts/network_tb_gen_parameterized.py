@@ -195,10 +195,27 @@ else:
 
     noc_file.write("gen_packet("+str(random_length)+", "+str(i)+", "+str(random_node)+", 1, "+str(random_start) +
                     ", "+str(random_end)+" ns, clk, CTS_L_"+str(i)+", DRTS_L_"+str(i)+", RX_L_"+str(i)+");\n")
-
 noc_file.write("\n")
 noc_file.write("-- connecting the packet receivers\n")
 for i in range(0, network_dime*network_dime):    
   noc_file.write("get_packet("+str(data_width)+", 5,  clk, DCTS_L_"+str(i)+", RTS_L_"+str(i)+", TX_L_"+str(i)+");\n")
+
+
+noc_file.write("\n")
+noc_file.write("-- connecting the fault generators\n")
+if add_FI:
+  for i in range(0, network_dime*network_dime):  
+    node_x = i % network_dime
+    node_y = i / network_dime
+    if node_x != network_dime -1 :
+      random_delay = random.randint(100, 200)
+      noc_file.write("gen_fault(sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i+1)+"_"+str(i)+", "+str(random_delay)+");\n")
+      random_delay = random.randint(100, 200)
+      noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1)+", FI_Add_"+str(i)+"_"+str(i+1)+", "+str(random_delay)+");\n")
+    if node_y != network_dime-1:
+      random_delay = random.randint(100, 200)
+      noc_file.write("gen_fault(sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i+network_dime)+"_"+str(i)+", "+str(random_delay)+");\n")
+      random_delay = random.randint(100, 200)
+      noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime)+", FI_Add_"+str(i)+"_"+str(i+network_dime)+", "+str(random_delay)+");\n")
 
 noc_file.write("end;\n")

@@ -15,6 +15,7 @@ package TB_Package is
                      signal DCTS: in std_logic; signal RTS: out std_logic; 
                      signal port_in: out std_logic_vector);
   procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector);
+  procedure gen_fault(signal sta_0, sta_1: out std_logic; signal address: out std_logic_vector; delay: in integer);
 end TB_Package;
 
 package body TB_Package is
@@ -224,5 +225,28 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
        writeline(VEC_FILE, LINEVARIABLE);
    end loop;
 end get_packet;
+
+
+procedure gen_fault(signal sta_0, sta_1: out std_logic; signal address: out std_logic_vector; delay: in integer) is
+  variable seed1 :positive ;
+   variable seed2 :positive ;
+   variable rand : real;
+begin 
+  sta_0 <= '0';
+  sta_1 <= '0';
+  while true loop
+      sta_0 <= '0';
+      sta_1 <= '0';
+      for I in 0 to delay loop 
+        wait for 1 ns;
+      end loop;
+      uniform(seed1, seed2, rand);
+      address <= std_logic_vector(to_unsigned(integer(rand*31.0), 5));
+      uniform(seed1, seed2, rand);
+      sta_0 <= '1';
+      sta_1 <= '0';
+      wait for 1 ns;
+  end loop;
+end gen_fault;
 
 end TB_Package;
