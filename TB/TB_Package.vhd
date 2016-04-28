@@ -15,7 +15,7 @@ package TB_Package is
                      signal DCTS: in std_logic; signal RTS: out std_logic; 
                      signal port_in: out std_logic_vector);
   procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector);
-  procedure gen_fault(signal sta_0, sta_1: out std_logic; signal address: out std_logic_vector; delay: in integer);
+  procedure gen_fault(signal sta_0, sta_1: out std_logic; signal address: out std_logic_vector; delay, seed_1, seed_2: in integer);
 end TB_Package;
 
 package body TB_Package is
@@ -227,10 +227,11 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
 end get_packet;
 
 
-procedure gen_fault(signal sta_0, sta_1: out std_logic; signal address: out std_logic_vector; delay: in integer) is
-  variable seed1 :positive ;
-   variable seed2 :positive ;
+procedure gen_fault(signal sta_0, sta_1: out std_logic; signal address: out std_logic_vector; delay, seed_1, seed_2: in integer) is
+  variable seed1 :positive := seed_1;
+   variable seed2 :positive := seed_2;
    variable rand : real;
+   variable stuck: integer;
 begin 
   sta_0 <= '0';
   sta_1 <= '0';
@@ -243,8 +244,14 @@ begin
       uniform(seed1, seed2, rand);
       address <= std_logic_vector(to_unsigned(integer(rand*31.0), 5));
       uniform(seed1, seed2, rand);
-      sta_0 <= '1';
-      sta_1 <= '0';
+      stuck := integer(rand*11.0);
+      if stuck > 5 then
+        sta_0 <= '1';
+        sta_1 <= '0';
+      else
+        sta_0 <= '0';
+        sta_1 <= '1';
+       end if; 
       wait for 1 ns;
   end loop;
 end gen_fault;
