@@ -159,7 +159,7 @@ procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in 
   RTS <= '1';
    
   wait until DCTS'event and DCTS ='1';
-  wait for 1 ns;
+  wait until clk'event and clk ='1';
   RTS <= '0';
 
   for I in 0 to Packet_length-3 loop 
@@ -171,7 +171,7 @@ procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in 
     RTS <= '1';
      
     wait until DCTS'event and DCTS ='1';
-    wait for 1 ns;
+    wait until clk'event and clk ='1';
     RTS <= '0';
   end loop;
   
@@ -181,7 +181,7 @@ procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in 
     RTS <= '1';
      
     wait until DCTS'event and DCTS ='1';
-    wait for 1 ns;
+    wait until clk'event and clk ='1';
     RTS <= '0';
     if now > 1000 ns then 
         wait; 
