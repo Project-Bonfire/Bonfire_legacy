@@ -28,6 +28,7 @@ architecture behavior of FIFO is
    signal read_pointer, read_pointer_in,  write_pointer, write_pointer_in: std_logic_vector(1 downto 0);
    signal full, empty: std_logic;
    signal read_en, write_en: std_logic;
+   signal CTS_in, CTS_out: std_logic;
 
    type FIFO_Mem_type is array (0 to 3) of std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_Mem : FIFO_Mem_type ;
@@ -76,6 +77,7 @@ begin
             HS_state_out <= IDLE;
             read_pointer <= "00";
             write_pointer <= "00";
+            CTS_out<='0';
             FIFO_Mem<= (others => (others=>'0'));
         elsif clk'event and clk = '1' then
             HS_state_out <= HS_state_in;
@@ -85,9 +87,11 @@ begin
                 FIFO_Mem(conv_integer(write_pointer)) <= RX;
             end if;
             read_pointer <=  read_pointer_in;
+            CTS_out<=CTS_in;
         end if;
     end process;
-    
+
+    CTS <= CTS_out;
    -- combinatorial part
    Data_out <= FIFO_Mem(conv_integer(read_pointer));
    read_en <= (read_en_N or read_en_E or read_en_W or read_en_S or read_en_L) and not empty; 
@@ -114,23 +118,23 @@ begin
    process(HS_state_out, full, DRTS) begin
         case(HS_state_out) is
             when IDLE =>
-                if DRTS = '1' and full ='0' then
+                if CTS_out = '0' and DRTS = '1' and full ='0' then
                     HS_state_in <= READ_DATA;
-                    CTS <= '1';
+                    CTS_in <= '1';
                     write_en <= '1';
                 else
                     HS_state_in <= IDLE;
-                    CTS <= '0';
+                    CTS_in <= '0';
                     write_en <= '0';
                 end if;
             when READ_DATA =>
-                if DRTS = '1' and full ='0' then
+                if CTS_out = '0' and DRTS = '1' and full ='0' then
                     HS_state_in <= READ_DATA;
-                    CTS <= '1';
+                    CTS_in <= '1';
                     write_en <= '1';
                 else
                     HS_state_in <= IDLE;
-                    CTS <= '0';
+                    CTS_in <= '0';
                     write_en <= '0';
                 end if;
             when others =>

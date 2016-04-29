@@ -22,6 +22,7 @@ architecture behavior of NI_channel is
    signal read_pointer, write_pointer, read_pointer_in: std_logic_vector(1 downto 0);
    signal full, empty: std_logic;
    signal CB_write: std_logic;
+   signal CTS_in, CTS_out: std_logic;
  
    type FIFO_Mem_type is array (0 to 3) of std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_Mem : FIFO_Mem_type ;
@@ -53,9 +54,8 @@ begin
 --                                   <--- readP          
 
  
-   TX <= FIFO_Mem(conv_integer(read_pointer));
-   RTS <= RTS_FF;
-
+   
+   
    process (clk, reset)begin
         if reset = '0' then
  
@@ -65,7 +65,7 @@ begin
             RTS_FF <= '0';
             write_pointer <= "00";
             FIFO_Mem <= (others => (others=>'0'));
-
+            CTS_out<= '0';
 
         elsif clk'event and clk = '1' then
             RTS_FF <= RTS_FF_in; 
@@ -79,10 +79,13 @@ begin
                     write_pointer <= write_pointer+ 1;
             end if;
             read_pointer <=  read_pointer_in;
- 
+            CTS_out<=CTS_in;
         end if;
     end process;
 
+    TX <= FIFO_Mem(conv_integer(read_pointer));
+    RTS <= RTS_FF;
+    CTS <= CTS_out;
 
 
    process(RTS_FF, empty, DCTS, read_pointer)begin
@@ -125,23 +128,23 @@ end process;
 process(HS_read_state_out, full, DRTS) begin
     case(HS_read_state_out) is
         when IDLE =>
-            if DRTS = '1' and full ='0' then
+            if CTS_out = '0' and DRTS = '1' and full ='0' then
                 HS_read_state_in <= READ_DATA;
-                CTS <= '1';
+                CTS_in <= '1';
                 CB_write <= '1';
             else
                 HS_read_state_in <= IDLE;
-                CTS <= '0';
+                CTS_in <= '0';
                 CB_write <= '0';
             end if;
         when READ_DATA =>
-            if DRTS = '1' and full ='0' then
+            if CTS_out = '0' and DRTS = '1' and full ='0' then
                 HS_read_state_in <= READ_DATA;
-                CTS <= '1';
+                CTS_in <= '1';
                 CB_write <= '1';
             else
                 HS_read_state_in <= IDLE;
-                CTS <= '0';
+                CTS_in <= '0';
                 CB_write <= '0';
             end if;
         when others =>
