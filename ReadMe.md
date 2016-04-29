@@ -45,6 +45,9 @@ The folder structure of the project is as follows:
 
 -------------------------------------------------------------------------------------------------
 
+This part is not valid at this time. It used to work when the T_handshake was 2 clk cycles. now we changed the handshake time to 3 but we have not verified that.
+
+
 Latency model of the router: (Similar to Dally's theory)
 
 T_total = #hops x T_r + [ L/b x T_handshake ]
@@ -55,4 +58,4 @@ where:
  * #hops: # of links
  * L: packet length
  * b: bandwidth
- * T_handshake: always 2 clk cycles
+ * T_handshake: always 3 clk cycles
