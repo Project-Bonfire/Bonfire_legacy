@@ -97,6 +97,7 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
     Grant_W <= '0';
     Grant_S <= '0';
     Grant_L <= '0';
+    Xbar_sel<= "00000"; 
     case(state) is
         when IDLE =>
             Xbar_sel<= "00000"; 
