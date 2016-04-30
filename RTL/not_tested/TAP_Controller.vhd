@@ -25,9 +25,6 @@ TYPE TAP_STATE_TYPE IS (test_reset, run_idle, select_dr_scan, capture_dr, shift_
     SIGNAL TAP_state, TAP_state_in   : TAP_STATE_TYPE;
 
     signal IR_shift_reg_in, IR_shift_reg_out: std_logic_vector(4 downto 0);
-
-    -- internal shift register for i dont know what!
-    signal DR_shift_reg1_in, DR_shift_reg1_out: std_logic_vector(31 downto 0);
     
     signal ID_counter_out, ID_counter_in: std_logic_vector(4 downto 0);
     signal BYPASS_REG_IN, BYPASS_REG_OUT: std_logic;
@@ -43,13 +40,12 @@ process (TCK, TRST)begin
         TAP_state <= test_reset;
         ID_counter_out <= (others => '0');
         IR_shift_reg_out <= (others => '0');
-        DR_shift_reg1_out <= (others => '0');
 
     elsif TCK'event and TCK = '1' then
         TAP_state <= TAP_state_in;
         ID_counter_out <= ID_counter_in ;
         IR_shift_reg_out <= IR_shift_reg_in;
-        DR_shift_reg1_out <= DR_shift_reg1_in;
+
     end if;
 end process;
 
@@ -78,18 +74,16 @@ process(TAP_state, TMS) begin
     end case ;
 end process;
 
-process(TAP_state, TDI, IR_shift_reg_out, DR_shift_reg1_out, BYPASS_REG_OUT, IDCODE_out) begin
+process(TAP_state, TDI, IR_shift_reg_out, BYPASS_REG_OUT, IDCODE_out) begin
 
     -- default values
-    DR_shift_reg1_in <= DR_shift_reg1_out;
     BYPASS_REG_IN <= BYPASS_REG_OUT;
     IR_shift_reg_in <= IR_shift_reg_out;
     ID_counter_in <= ID_counter_out;
-    ShiftDR <= '0';
-    Mode <= '0';
+    ShiftDR <= '0';     --primary input outputs are connected to scan registers!
+    Mode <= '0';        --primary input outputs are connected to pins
     SC_OUT <= '0'
-    TDO <= '0';
-     
+
     if TAP_state = shift_ir then 
         IR_shift_reg_in <= TDI & IR_shift_reg_out(IR_DEPTH-1 downto 1);
         TDO <= IR_shift_reg_out(0);
@@ -97,16 +91,13 @@ process(TAP_state, TDI, IR_shift_reg_out, DR_shift_reg1_out, BYPASS_REG_OUT, IDC
     elsif TAP_state = shift_dr then 
         case(IR_shift_reg_out) is
             when "00000" =>   -- EXTEST: shifting (mandatory) 
-                    SC_OUT <= TDI;
-                    TDO <= SC_IN;
-                    ShiftDR <= '1';
+                SC_OUT <= TDI;
+                TDO <= SC_IN;
+                ShiftDR <= '1'; --scan registers are loaded with SCAN INPUT!
             when "00001" =>   -- PRELOAD (mandatory)
                 SC_OUT <= TDI;
                 TDO <= SC_IN;
-                ShiftDR <= '1';
-            when "00010" =>   -- I made this up!
-                DR_shift_reg1_in <= TDI & DR_shift_reg1_out(31 downto 1);
-                TDO <= DR_shift_reg1_out(0);
+                ShiftDR <= '1';     --scan registers are loaded with SCAN INPUT!
             when "11111"  =>   --BYPASS (mandatory)
                 BYPASS_REG_IN <= TDI;
                 TDO <= BYPASS_REG_OUT;
@@ -116,17 +107,17 @@ process(TAP_state, TDI, IR_shift_reg_out, DR_shift_reg1_out, BYPASS_REG_OUT, IDC
         end case ;
 
     elsif TAP_state = capture_dr then
+        TDO <= SC_IN;
         case(IR_shift_reg_out) is
             when "00000" =>   -- EXTEST: driving and sensing (mandatory)
                 if TMS = '1' then
                     SC_OUT <= TDI;
-                    TDO <= SC_IN;
                     Mode <= '1';
                 end if;
             when "00001" =>   -- SAMPLE (mandatory)
                 if TMS = '1' then
                     SC_OUT <= TDI;
-                    TDO <= SC_IN;
+                    Mode <= '0';
                 end if;
         end case ;
     end if;
