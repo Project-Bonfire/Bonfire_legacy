@@ -10,6 +10,11 @@ entity TAP is
         TMS: in std_logic;      -- Test Mode Select  
         TDI: in std_logic;      -- Test Data In
         TDO: out std_logic      -- Test Data out
+
+        SC_IN: in std_logic;    -- Scan chain to TAP
+        SC_OUT: out std_logic;   -- TAP to Scan chain 
+        ShiftDR: out std_logic;
+        Mode: out std_logic
     );
 end;
 
@@ -21,6 +26,7 @@ TYPE TAP_STATE_TYPE IS (test_reset, run_idle, select_dr_scan, capture_dr, shift_
 
     signal IR_shift_reg_in, IR_shift_reg_out: std_logic_vector(4 downto 0);
 
+    -- internal shift register for i dont know what!
     signal DR_shift_reg1_in, DR_shift_reg1_out: std_logic_vector(31 downto 0);
     
     signal ID_counter_out, ID_counter_in: std_logic_vector(4 downto 0);
@@ -30,6 +36,7 @@ TYPE TAP_STATE_TYPE IS (test_reset, run_idle, select_dr_scan, capture_dr, shift_
 begin
 
 -- http://www.corelis.com/images/diagrams/mainbuildingblocksofaJTAGde.jpg
+-- http://www.gojtag.com/sites/default/files/BS%20testing%20-%20goJTAG%20v.11.02%20print.pdf
 
 process (TCK, TRST)begin
     if TRST = '0' then
@@ -78,26 +85,49 @@ process(TAP_state, TDI, IR_shift_reg_out, DR_shift_reg1_out, BYPASS_REG_OUT, IDC
     BYPASS_REG_IN <= BYPASS_REG_OUT;
     IR_shift_reg_in <= IR_shift_reg_out;
     ID_counter_in <= ID_counter_out;
-
+    ShiftDR <= '0';
+    Mode <= '0';
+    SC_OUT <= '0'
+    TDO <= '0';
+     
     if TAP_state = shift_ir then 
         IR_shift_reg_in <= TDI & IR_shift_reg_out(IR_DEPTH-1 downto 1);
         TDO <= IR_shift_reg_out(0);
 
     elsif TAP_state = shift_dr then 
         case(IR_shift_reg_out) is
-            when "00000" =>   -- EXTEST (mandatory TODO: I have to figure out what it does!)
-                null;
-            when "00001" =>   -- SAMPLE/PRELOAD (mandatory TODO: I have to figure out what it does!)
-                null;
+            when "00000" =>   -- EXTEST: shifting (mandatory) 
+                    SC_OUT <= TDI;
+                    TDO <= SC_IN;
+                    ShiftDR <= '1';
+            when "00001" =>   -- PRELOAD (mandatory)
+                SC_OUT <= TDI;
+                TDO <= SC_IN;
+                ShiftDR <= '1';
             when "00010" =>   -- I made this up!
-                    DR_shift_reg1_in <= TDI & DR_shift_reg1_out(31 downto 1);
-                    TDO <= DR_shift_reg1_out(0);
+                DR_shift_reg1_in <= TDI & DR_shift_reg1_out(31 downto 1);
+                TDO <= DR_shift_reg1_out(0);
             when "11111"  =>   --BYPASS (mandatory)
                 BYPASS_REG_IN <= TDI;
                 TDO <= BYPASS_REG_OUT;
             when "00100"  =>   --IDCODE (this is optional but meh!)
                 ID_counter_in <= ID_counter_out+1;
                 TDO <= ID(ID_counter_out);
+        end case ;
+
+    elsif TAP_state = capture_dr then
+        case(IR_shift_reg_out) is
+            when "00000" =>   -- EXTEST: driving and sensing (mandatory)
+                if TMS = '1' then
+                    SC_OUT <= TDI;
+                    TDO <= SC_IN;
+                    Mode <= '1';
+                end if;
+            when "00001" =>   -- SAMPLE (mandatory)
+                if TMS = '1' then
+                    SC_OUT <= TDI;
+                    TDO <= SC_IN;
+                end if;
         end case ;
     end if;
 end process;
