@@ -197,8 +197,10 @@ else:
                     ", "+str(random_end)+" ns, clk, CTS_L_"+str(i)+", DRTS_L_"+str(i)+", RX_L_"+str(i)+");\n")
 noc_file.write("\n")
 noc_file.write("-- connecting the packet receivers\n")
+noc_file.write("-- Arguments are:\n")
+noc_file.write("--      data_width, inital delay, node_id, clk, DCTS, RTS, TX\n")
 for i in range(0, network_dime*network_dime):    
-  noc_file.write("get_packet("+str(data_width)+", 5,  clk, DCTS_L_"+str(i)+", RTS_L_"+str(i)+", TX_L_"+str(i)+");\n")
+  noc_file.write("get_packet("+str(data_width)+", 5, "+str(i)+", clk, DCTS_L_"+str(i)+", RTS_L_"+str(i)+", TX_L_"+str(i)+");\n")
 
 
 noc_file.write("\n")
@@ -211,19 +213,23 @@ if add_FI:
       random_delay = random.randint(100, 200)
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
-      noc_file.write("gen_fault(sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i+1)+"_"+str(i)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
+      noc_file.write("gen_fault(sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i) +
+                     ", FI_Add_"+str(i+1)+"_"+str(i)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
       random_delay = random.randint(100, 200)
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
-      noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1)+", FI_Add_"+str(i)+"_"+str(i+1)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
+      noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
+                     ", FI_Add_"+str(i)+"_"+str(i+1)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
     if node_y != network_dime-1:
       random_delay = random.randint(100, 200)
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
-      noc_file.write("gen_fault(sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i+network_dime)+"_"+str(i)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
+      noc_file.write("gen_fault(sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime) +
+                     "_"+str(i)+", FI_Add_"+str(i+network_dime)+"_"+str(i)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
       random_delay = random.randint(100, 200)
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
-      noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime)+", FI_Add_"+str(i)+"_"+str(i+network_dime)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
+      noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
+                     ", FI_Add_"+str(i)+"_"+str(i+network_dime)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
 
 noc_file.write("end;\n")
