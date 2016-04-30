@@ -37,9 +37,9 @@ architecture behavior of Arbiter is
 
 -- Grant   _________________________|'''|___|'''|___|'''|____________
 
---  RTs    _________|'''''''''''''''''''|___|'''|___|'''|___|'''|____
+--  RTs    _________|'''''''''''''''''''|___|'''''''|___|'''''''|____
 
---  DCTS   _________________________|'''|___|'''|___|'''|___|'''|____
+--  DCTS   _________________________|'''|_______|'''|_______|'''|____
 --                                  |<---------clear----------->|
 --                                  |         to send           |
  --------------------------------------------------------------------------------------------
@@ -63,9 +63,10 @@ begin
               end if;
      end process;
 
-    RTS <= RTS_FF;
-
 -- anything below here is pure combinational
+
+RTS <= RTS_FF;
+
 process(RTS_FF, DCTS, state, next_state)begin
     if RTS_FF = '1' and DCTS = '0' then 
         state_in <= state;
@@ -188,7 +189,7 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
                 next_state <= IDLE; 
             end if;
             
-        when Local =>
+        when others => -- Local
             Grant_L <= DCTS and RTS_FF;
             Xbar_sel<= "10000";
             
@@ -205,8 +206,6 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             else
                 next_state <= IDLE; 
             end if;
-        when others =>  
-            null;
     end case ;
 end process;
 
