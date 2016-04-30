@@ -14,6 +14,7 @@ entity TAP is
         SC_IN: in std_logic;    -- Scan chain to TAP
         SC_OUT: out std_logic;   -- TAP to Scan chain 
         ShiftDR: out std_logic;
+        UpdateDR: out std_logic;
         Mode: out std_logic
     );
 end;
@@ -83,6 +84,8 @@ process(TAP_state, TDI, IR_shift_reg_out, BYPASS_REG_OUT, IDCODE_out) begin
     ShiftDR <= '0';     --primary input outputs are connected to scan registers!
     Mode <= '0';        --primary input outputs are connected to pins
     SC_OUT <= '0'
+    UpdateDR <= '0';
+    TDO <= '0';
 
     if TAP_state = shift_ir then 
         IR_shift_reg_in <= TDI & IR_shift_reg_out(IR_DEPTH-1 downto 1);
@@ -120,7 +123,11 @@ process(TAP_state, TDI, IR_shift_reg_out, BYPASS_REG_OUT, IDCODE_out) begin
                     Mode <= '0';
                 end if;
         end case ;
+
+    elsif TAP_state = update_dr then
+        UpdateDR <= '1';
     end if;
+    
 end process;
 
 
