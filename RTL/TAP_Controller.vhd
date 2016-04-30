@@ -4,10 +4,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity TAP is
-    generic (
-        DATA_WIDTH: integer := 8
-    );
     port (
+        reset : in std_logic;
         TMS: in std_logic;
         TCK: in std_logic
     );
@@ -23,8 +21,10 @@ begin
 
 
 
-process (TCK)begin
-    if TCK'event and TCK = '1' then
+process (TCK, reset)begin
+    if reset = '0' then
+        TAP_state <= test_reset;
+    elsif TCK'event and TCK = '1' then
         TAP_state <= TAP_state_in;
     end if;
 end process;
