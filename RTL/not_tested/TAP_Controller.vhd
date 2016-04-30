@@ -29,7 +29,7 @@ TYPE TAP_STATE_TYPE IS (test_reset, run_idle, select_dr_scan, capture_dr, shift_
     constant ID: std_logic_vector(31 downto 0) := "00000000000000000000000000000000";
 begin
 
-
+-- http://www.corelis.com/images/diagrams/mainbuildingblocksofaJTAGde.jpg
 
 process (TCK, TRST)begin
     if TRST = '0' then
