@@ -18,6 +18,22 @@ end;
 architecture behavior of scan_cell is
     signal capture_scan_cell_in, capture_scan_cell_out: std_logic;
     signal update_hold_cell_in, update_hold_cell_out: std_logic;
+             
+------------------------------------------------------------                                                             
+--                             SC_OUT           _                       
+--                              |              | \                            
+--  Data_In ---o----------------€--------------|  |___ Data_out
+--             |                |           ___|  |                        
+--             |   _      ___   |   ___    |   |▲/                           
+--             |__| \    |   |  |  |   |   |    |                                
+--                |  |___|   |--o--|   |___|   Mode                                       
+--    SC_IN ------|  |   |   |     |   |                                             
+--                |▲/    |_▲_|     |_▲_|                                              
+--                 |       |         |                          
+--             ShiftDR  ClockDR    UpdateDR                    
+------------------------------------------------------------
+
+
 begin
 
 
