@@ -5,17 +5,19 @@ use ieee.std_logic_1164.all;
 
 entity TAP is
     port (
+        -- signals from the PC!
         TRST : in std_logic;    -- Test Reset
         TCK: in std_logic;      -- Test Clock
         TMS: in std_logic;      -- Test Mode Select  
         TDI: in std_logic;      -- Test Data In
         TDO: out std_logic      -- Test Data out
 
+        -- signals to the boundry scan cell
         SC_IN: in std_logic;    -- Scan chain to TAP
         SC_OUT: out std_logic;   -- TAP to Scan chain 
+        CaptureDR: out std_logic;
         ShiftDR: out std_logic;
-        UpdateDR: out std_logic;
-        Mode: out std_logic
+        UpdateDR: out std_logic
     );
 end;
 
@@ -75,59 +77,63 @@ process(TAP_state, TMS) begin
     end case ;
 end process;
 
-process(TAP_state, TDI, IR_shift_reg_out, BYPASS_REG_OUT, IDCODE_out) begin
+process(TAP_state, TDI, IR_shift_reg_out, SC_IN,  BYPASS_REG_OUT) begin
 
     -- default values
     BYPASS_REG_IN <= BYPASS_REG_OUT;
     IR_shift_reg_in <= IR_shift_reg_out;
     ID_counter_in <= ID_counter_out;
-    ShiftDR <= '0';     --primary input outputs are connected to scan registers!
-    Mode <= '0';        --primary input outputs are connected to pins
-    SC_OUT <= '0'
+
+    CaptureDR<= '0';
     UpdateDR <= '0';
+    ShiftDR <= '0';     --primary input outputs are connected to scan registers!
+
+    SC_OUT <= '0';
     TDO <= '0';
 
-    if TAP_state = shift_ir then 
-        IR_shift_reg_in <= TDI & IR_shift_reg_out(IR_DEPTH-1 downto 1);
-        TDO <= IR_shift_reg_out(0);
-
-    elsif TAP_state = shift_dr then 
-        case(IR_shift_reg_out) is
-            when "00000" =>   -- EXTEST: shifting (mandatory) 
-                SC_OUT <= TDI;
-                TDO <= SC_IN;
-                ShiftDR <= '1'; --scan registers are loaded with SCAN INPUT!
-            when "00001" =>   -- PRELOAD (mandatory)
-                SC_OUT <= TDI;
-                TDO <= SC_IN;
-                ShiftDR <= '1';     --scan registers are loaded with SCAN INPUT!
-            when "11111"  =>   --BYPASS (mandatory)
-                BYPASS_REG_IN <= TDI;
-                TDO <= BYPASS_REG_OUT;
-            when "00100"  =>   --IDCODE (this is optional but meh!)
-                ID_counter_in <= ID_counter_out+1;
-                TDO <= ID(ID_counter_out);
-        end case ;
-
-    elsif TAP_state = capture_dr then
-        TDO <= SC_IN;
-        case(IR_shift_reg_out) is
-            when "00000" =>   -- EXTEST: driving and sensing (mandatory)
-                if TMS = '1' then
+    case TAP_state is 
+        when test_reset =>
+            null;
+        when shift_ir =>
+            IR_shift_reg_in <= TDI & IR_shift_reg_out(IR_DEPTH-1 downto 1);
+            TDO <= IR_shift_reg_out(0);
+        when shift_dr =>
+            case(IR_shift_reg_out) is
+                when "00000" =>   -- EXTEST: shifting (mandatory) 
                     SC_OUT <= TDI;
-                    Mode <= '1';
-                end if;
-            when "00001" =>   -- SAMPLE (mandatory)
-                if TMS = '1' then
+                    TDO <= SC_IN;
+                    ShiftDR <= '1'; --scan registers are loaded with SCAN INPUT!
+                when "00001" =>   -- PRELOAD (mandatory)
                     SC_OUT <= TDI;
-                    Mode <= '0';
-                end if;
-        end case ;
+                    TDO <= SC_IN;
+                    ShiftDR <= '1';     --scan registers are loaded with SCAN INPUT!
+                when "11111"  =>   --BYPASS (mandatory)
+                    BYPASS_REG_IN <= TDI;
+                    TDO <= BYPASS_REG_OUT;
+                when "00100"  =>   --IDCODE (this is optional but meh!)
+                    ID_counter_in <= ID_counter_out+1;
+                    TDO <= ID(ID_counter_out);
+                when others =>
+                    null;
+            end case ;
+        when capture_dr =>
+            CaptureDR<='1';
+            case(IR_shift_reg_out) is
+                when "00000" =>   -- EXTEST: driving and sensing (mandatory)
+                    TDO <= SC_IN;
+                    SC_OUT <= TDI;
+                when "00001" =>   -- SAMPLE (mandatory)
+                    SC_OUT <= TDI;
+                    TDO <= SC_IN;
+                when others =>
+                    null;
+            end case ;
+        when update_dr =>
+            UpdateDR <= '1';
+        when others =>
+            null;
+    end case;
 
-    elsif TAP_state = update_dr then
-        UpdateDR <= '1';
-    end if;
-    
 end process;
 
 
