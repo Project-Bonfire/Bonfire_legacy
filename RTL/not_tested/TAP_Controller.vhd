@@ -17,6 +17,7 @@ entity TAP is
         SC_OUT: out std_logic;   -- TAP to Scan chain 
         CaptureDR: out std_logic;
         ShiftDR: out std_logic;
+        EXTEST: out std_logic;
         UpdateDR: out std_logic
     );
 end;
@@ -66,7 +67,7 @@ architecture behavior of TAP is
 --           |                               |                      |                                                                                       
 --           '-------------------------------o----------------------'                                                      
 --                                                                                                  
-------------------------------------------------------------
+
 
 TYPE TAP_STATE_TYPE IS (test_reset, run_idle, select_dr_scan, capture_dr, shift_dr, exit1_dr,
                         pause_dr, exit2_dr, update_dr, select_ir_scan, capture_ir, shift_ir,
@@ -136,6 +137,7 @@ process(TAP_state, TDI, IR_shift_reg_out, SC_IN,  BYPASS_REG_OUT) begin
 
     SC_OUT <= '0';
     TDO <= '0';
+    EXTEST<= '0';
 
     case TAP_state is 
         when test_reset =>
@@ -148,6 +150,7 @@ process(TAP_state, TDI, IR_shift_reg_out, SC_IN,  BYPASS_REG_OUT) begin
                 when "00000" =>   -- EXTEST: shifting (mandatory) 
                     SC_OUT <= TDI;
                     TDO <= SC_IN;
+                    EXTEST <= '1';
                     ShiftDR <= '1'; --scan registers are loaded with SCAN INPUT!
                 when "00001" =>   -- PRELOAD (mandatory)
                     SC_OUT <= TDI;
@@ -168,6 +171,7 @@ process(TAP_state, TDI, IR_shift_reg_out, SC_IN,  BYPASS_REG_OUT) begin
                 when "00000" =>   -- EXTEST: driving and sensing (mandatory)
                     TDO <= SC_IN;
                     SC_OUT <= TDI;
+                    EXTEST <= '1';÷
                 when "00001" =>   -- SAMPLE (mandatory)
                     SC_OUT <= TDI;
                     TDO <= SC_IN;
