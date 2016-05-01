@@ -74,7 +74,8 @@ TYPE TAP_STATE_TYPE IS (test_reset, run_idle, select_dr_scan, capture_dr, shift_
                         exit1_ir, pause_ir, exit2_ir, update_ir);
     SIGNAL TAP_state, TAP_state_in   : TAP_STATE_TYPE;
 
-    signal IR_shift_reg_in, IR_shift_reg_out: std_logic_vector(4 downto 0);
+    signal IR_shift_reg_in, IR_shift_reg_out: std_logic_vector(3 downto 0);
+    signal IR_in, IR_out: std_logic_vector(3 downto 0);
     
     signal ID_counter_out, ID_counter_in: std_logic_vector(4 downto 0);
     signal BYPASS_REG_IN, BYPASS_REG_OUT: std_logic;
@@ -90,19 +91,19 @@ process (TCK, TRST)begin
         TAP_state <= test_reset;
         ID_counter_out <= (others => '0');
         IR_shift_reg_out <= (others => '0');
-
+        IR_out <= (others => '0')
     elsif TCK'event and TCK = '1' then
         TAP_state <= TAP_state_in;
         ID_counter_out <= ID_counter_in ;
         IR_shift_reg_out <= IR_shift_reg_in;
-
+        IR_out <= IR_in;
     end if;
 end process;
 
 
 -- everything bellow here should be combinational!
 
-
+-- the state machine 
 process(TAP_state, TMS) begin 
     case(TAP_state) is
         when test_reset =>      TAP_state_in <= run_idle when TMS = '0' else test_reset;
@@ -124,57 +125,35 @@ process(TAP_state, TMS) begin
     end case ;
 end process;
 
-process(TAP_state, TDI, IR_shift_reg_out, SC_IN,  BYPASS_REG_OUT) begin
+
+-- everything else
+process(TAP_state, TDI, IR_out, SC_IN,  BYPASS_REG_OUT) begin
 
     -- default values
-    BYPASS_REG_IN <= BYPASS_REG_OUT;
-    IR_shift_reg_in <= IR_shift_reg_out;
-    ID_counter_in <= ID_counter_out;
 
     CaptureDR<= '0';
     UpdateDR <= '0';
     ShiftDR <= '0';     --primary input outputs are connected to scan registers!
-
-    SC_OUT <= '0';
-    TDO <= '0';
     EXTEST<= '0';
 
     case TAP_state is 
-        when test_reset =>
-            null;
-        when shift_ir =>
-            IR_shift_reg_in <= TDI & IR_shift_reg_out(IR_DEPTH-1 downto 1);
-            TDO <= IR_shift_reg_out(0);
         when shift_dr =>
-            case(IR_shift_reg_out) is
-                when "00000" =>   -- EXTEST: shifting (mandatory) 
-                    SC_OUT <= TDI;
-                    TDO <= SC_IN;
+            case(IR_out) is
+                when "0000" =>   -- EXTEST: shifting (mandatory) 
                     EXTEST <= '1';
                     ShiftDR <= '1'; --scan registers are loaded with SCAN INPUT!
-                when "00001" =>   -- PRELOAD (mandatory)
-                    SC_OUT <= TDI;
-                    TDO <= SC_IN;
+                when "0001" =>   -- PRELOAD (mandatory)
                     ShiftDR <= '1';     --scan registers are loaded with SCAN INPUT!
-                when "11111"  =>   --BYPASS (mandatory)
-                    BYPASS_REG_IN <= TDI;
-                    TDO <= BYPASS_REG_OUT;
-                when "00100"  =>   --IDCODE (this is optional but meh!)
-                    ID_counter_in <= ID_counter_out+1;
-                    TDO <= ID(ID_counter_out);
                 when others =>
                     null;
             end case ;
         when capture_dr =>
-            CaptureDR<='1';
-            case(IR_shift_reg_out) is
-                when "00000" =>   -- EXTEST: driving and sensing (mandatory)
-                    TDO <= SC_IN;
-                    SC_OUT <= TDI;
-                    EXTEST <= '1';÷
-                when "00001" =>   -- SAMPLE (mandatory)
-                    SC_OUT <= TDI;
-                    TDO <= SC_IN;
+            case(IR_out) is
+                when "0000" =>   -- EXTEST: driving and sensing (mandatory)
+                    CaptureDR<='1';
+                    EXTEST <= '1';
+                when "0001" =>   -- SAMPLE (mandatory)
+                    CaptureDR<='1';
                 when others =>
                     null;
             end case ;
@@ -183,9 +162,65 @@ process(TAP_state, TDI, IR_shift_reg_out, SC_IN,  BYPASS_REG_OUT) begin
         when others =>
             null;
     end case;
-
 end process;
 
+
+process(TAP_state, IR_out) begin
+    if TAP_state = update_ir then 
+        IR_in <= IR_shift_reg_out;
+    else
+        IR_in<= IR_out;
+    end if;
+end process:
+
+
+process(TAP_state, TDI, IR_out, IR_shift_reg_out, SC_IN,  BYPASS_REG_OUT) begin
+
+    -- default values
+    BYPASS_REG_IN <= BYPASS_REG_OUT;
+    IR_shift_reg_in <= IR_shift_reg_out;
+    ID_counter_in <= ID_counter_out;
+
+    SC_OUT <= 'Z';
+    TDO <= 'Z';
+
+    case TAP_state is 
+        when shift_ir =>
+            IR_shift_reg_in <= TDI & IR_shift_reg_out(IR_DEPTH-1 downto 1);
+            TDO <= IR_shift_reg_out(0);
+        when shift_dr =>
+            case(IR_out) is
+                when "0000" =>   -- EXTEST: shifting (mandatory) 
+                    SC_OUT <= TDI;
+                    TDO <= SC_IN;
+                when "0001" =>   -- PRELOAD (mandatory)
+                    SC_OUT <= TDI;
+                    TDO <= SC_IN;
+                when "1111"  =>   --BYPASS (mandatory)
+                    BYPASS_REG_IN <= TDI;
+                    TDO <= BYPASS_REG_OUT;
+                when "0010"  =>   --IDCODE (this is optional but meh!)
+                    ID_counter_in <= ID_counter_out+1;
+                    TDO <= ID(ID_counter_out);
+                when others =>
+                    null;
+            end case ;
+        when capture_dr =>
+            case(IR_out) is
+                when "0000" =>   -- EXTEST: driving and sensing (mandatory)
+                    TDO <= SC_IN;
+                    SC_OUT <= TDI;
+                when "0001" =>   -- SAMPLE (mandatory)
+                    SC_OUT <= TDI;
+                    TDO <= SC_IN;
+                when others =>
+                    null;
+            end case ;
+        when others =>
+            null;
+    end case;
+
+end process;
 
 end;
 

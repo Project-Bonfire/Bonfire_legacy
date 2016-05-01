@@ -37,7 +37,7 @@ architecture behavior of scan_cell is
 --                     |         |     
 --                     |         |    
 --       CaptureDR or ShiftDR    UpdateDR     
---                  as enable   as enable
+--                  as enable     as enable
 ------------------------------------------------------------
 
 
