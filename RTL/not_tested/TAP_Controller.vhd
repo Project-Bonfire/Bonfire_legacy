@@ -2,6 +2,9 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+ 
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+ USE ieee.numeric_std.ALL; 
 
 entity TAP is
     port (
@@ -10,7 +13,7 @@ entity TAP is
         TCK: in std_logic;      -- Test Clock
         TMS: in std_logic;      -- Test Mode Select  
         TDI: in std_logic;      -- Test Data In
-        TDO: out std_logic      -- Test Data out
+        TDO: out std_logic;      -- Test Data out
 
         -- signals to the boundry scan cell
         SC_IN: in std_logic;    -- Scan chain to TAP
@@ -91,7 +94,7 @@ process (TCK, TRST)begin
         TAP_state <= test_reset;
         ID_counter_out <= (others => '0');
         IR_shift_reg_out <= (others => '0');
-        IR_out <= (others => '0')
+        IR_out <= (others => '0');
     elsif TCK'event and TCK = '1' then
         TAP_state <= TAP_state_in;
         ID_counter_out <= ID_counter_in ;
@@ -106,26 +109,25 @@ end process;
 -- the state machine 
 process(TAP_state, TMS) begin 
     case(TAP_state) is
-        when test_reset =>      TAP_state_in <= run_idle when TMS = '0' else test_reset;
-        when run_idle =>        TAP_state_in <= run_idle when TMS = '0' else select_dr_scan;
-        when select_dr_scan =>  TAP_state_in <= capture_dr when TMS = '0' else select_ir_scan;
-        when capture_dr =>      TAP_state_in <= shift_dr when TMS = '0' else exit1_dr;
-        when shift_dr =>        TAP_state_in <= shift_dr when TMS = '0' else exit1_dr;
-        when exit1_dr =>        TAP_state_in <= pause_dr when TMS = '0' else update_dr;
-        when pause_dr =>        TAP_state_in <= pause_dr when TMS = '0' else exit2_dr;
-        when exit2_dr =>        TAP_state_in <= shift_dr when TMS = '0' else update_dr;
-        when update_dr =>       TAP_state_in <= run_idle when TMS = '0' else select_dr_scan;
-        when select_ir_scan =>  TAP_state_in <= capture_ir when TMS = '0' else test_reset;
-        when capture_ir =>      TAP_state_in <= shift_ir when TMS = '0' else exit1_ir;
-        when shift_ir =>        TAP_state_in <= shift_ir when TMS = '0' else exit1_ir;
-        when exit1_ir =>        TAP_state_in <= pause_ir when TMS = '0' else update_ir;
-        when pause_ir =>        TAP_state_in <= pause_ir when TMS = '0' else exit2_ir;
-        when exit2_ir =>        TAP_state_in <= shift_ir when TMS = '0' else update_ir;
-        when update_ir =>       TAP_state_in <= run_idle when TMS = '0' else select_dr_scan;
+        when test_reset => 	if  TMS = '0' then TAP_state_in <= run_idle; else  TAP_state_in <=test_reset; end if;
+        when run_idle =>        if  TMS = '0' then TAP_state_in <= run_idle; else  TAP_state_in <=select_dr_scan; end if;
+        when select_dr_scan =>  if  TMS = '0' then TAP_state_in <= capture_dr; else  TAP_state_in <=select_ir_scan; end if;
+        when capture_dr =>      if  TMS = '0' then TAP_state_in <= shift_dr ; else  TAP_state_in <=exit1_dr; end if;
+        when shift_dr =>        if  TMS = '0' then TAP_state_in <= shift_dr  ; else  TAP_state_in <=exit1_dr; end if;
+        when exit1_dr =>        if  TMS = '0' then TAP_state_in <= pause_dr  ; else  TAP_state_in <=update_dr; end if;
+        when pause_dr =>        if  TMS = '0' then TAP_state_in <= pause_dr  ; else  TAP_state_in <=exit2_dr; end if;
+        when exit2_dr =>        if  TMS = '0' then TAP_state_in <= shift_dr  ; else  TAP_state_in <=update_dr; end if;
+        when update_dr =>       if  TMS = '0' then TAP_state_in <= run_idle  ; else  TAP_state_in <=select_dr_scan; end if;
+        when select_ir_scan =>  if  TMS = '0' then TAP_state_in <= capture_ir; else  TAP_state_in <=test_reset; end if;
+        when capture_ir =>      if  TMS = '0' then TAP_state_in <= shift_ir  ; else  TAP_state_in <=exit1_ir; end if;
+        when shift_ir =>        if  TMS = '0' then TAP_state_in <= shift_ir  ; else  TAP_state_in <=exit1_ir; end if;
+        when exit1_ir =>        if  TMS = '0' then TAP_state_in <= pause_ir  ; else  TAP_state_in <=update_ir; end if;
+        when pause_ir =>        if  TMS = '0' then TAP_state_in <= pause_ir  ; else  TAP_state_in <=exit2_ir; end if;
+        when exit2_ir =>        if  TMS = '0' then TAP_state_in <= shift_ir  ; else  TAP_state_in <=update_ir; end if;
+        when update_ir =>       if  TMS = '0' then TAP_state_in <= run_idle  ; else  TAP_state_in <=select_dr_scan; end if;
     end case ;
 end process;
-
-
+ 
 -- everything else
 process(TAP_state, TDI, IR_out, SC_IN,  BYPASS_REG_OUT) begin
 
@@ -171,7 +173,7 @@ process(TAP_state, IR_out) begin
     else
         IR_in<= IR_out;
     end if;
-end process:
+end process;
 
 
 process(TAP_state, TDI, IR_out, IR_shift_reg_out, SC_IN,  BYPASS_REG_OUT) begin
@@ -186,7 +188,7 @@ process(TAP_state, TDI, IR_out, IR_shift_reg_out, SC_IN,  BYPASS_REG_OUT) begin
 
     case TAP_state is 
         when shift_ir =>
-            IR_shift_reg_in <= TDI & IR_shift_reg_out(IR_DEPTH-1 downto 1);
+            IR_shift_reg_in <= TDI & IR_shift_reg_out(3 downto 1);
             TDO <= IR_shift_reg_out(0);
         when shift_dr =>
             case(IR_out) is
@@ -201,7 +203,7 @@ process(TAP_state, TDI, IR_out, IR_shift_reg_out, SC_IN,  BYPASS_REG_OUT) begin
                     TDO <= BYPASS_REG_OUT;
                 when "0010"  =>   --IDCODE (this is optional but meh!)
                     ID_counter_in <= ID_counter_out+1;
-                    TDO <= ID(ID_counter_out);
+                    TDO <= ID(to_integer(unsigned(ID_counter_out)));
                 when others =>
                     null;
             end case ;

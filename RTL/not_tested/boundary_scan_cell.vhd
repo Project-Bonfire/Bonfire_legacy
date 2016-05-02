@@ -63,14 +63,14 @@ update_hold_cell_in <= capture_scan_cell_out;
 process(update_hold_cell_out, Data_In, EXTEST)begin
     case EXTEST is 
         when '0' => Data_out <=  Data_In;
-        others => Data_out <=  update_hold_cell_out;
+        when others => Data_out <=   update_hold_cell_out;
     end case;
 end process;
 
 process(update_hold_cell_out, Data_In, CaptureDR)begin
     case CaptureDR is 
         when '0' => capture_scan_cell_in <=  SC_IN ;
-        others => capture_scan_cell_in <=  Data_In;
+        when others => capture_scan_cell_in <=  Data_In;
     end case;
 end process;
 
