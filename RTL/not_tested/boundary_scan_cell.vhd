@@ -67,7 +67,7 @@ process(update_hold_cell_out, Data_In, EXTEST)begin
     end case;
 end process;
 
-process(update_hold_cell_out, Data_In, CaptureDR)begin
+process(SC_IN, Data_In, CaptureDR)begin
     case CaptureDR is 
         when '0' => capture_scan_cell_in <=  SC_IN ;
         when others => capture_scan_cell_in <=  Data_In;
