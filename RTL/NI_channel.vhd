@@ -55,7 +55,6 @@ begin
 
  
    
-   
    process (clk, reset)begin
         if reset = '0' then
  
@@ -83,6 +82,8 @@ begin
         end if;
     end process;
 
+-- anything below here is pure combinational
+
     TX <= FIFO_Mem(conv_integer(read_pointer));
     RTS <= RTS_FF;
     CTS <= CTS_out;
@@ -97,7 +98,7 @@ begin
    end process;
 
 
- process(RTS_FF, DCTS, HS_write_state_out, HS_write_state_in)begin
+process(RTS_FF, DCTS, HS_write_state_out, HS_write_state_in)begin
     if RTS_FF = '1' and DCTS = '0' then 
         HS_write_state_next <= HS_write_state_out;
     else
@@ -112,7 +113,7 @@ process(HS_write_state_out, RTS_FF, DCTS, empty)begin
         -- if there was a grant given to one of the inputs, 
         -- tell the next router/NI that the output data is valid
     else 
-        if  empty = '0' then 
+        if empty = '0' then 
             if RTS_FF = '1' and DCTS = '1' then
                 RTS_FF_in <= '0';
             else 
@@ -137,7 +138,7 @@ process(HS_read_state_out, full, DRTS) begin
                 CTS_in <= '0';
                 CB_write <= '0';
             end if;
-        when READ_DATA =>
+        when others  => -- READ_DATA
             if CTS_out = '0' and DRTS = '1' and full ='0' then
                 HS_read_state_in <= READ_DATA;
                 CTS_in <= '1';
@@ -147,12 +148,8 @@ process(HS_read_state_out, full, DRTS) begin
                 CTS_in <= '0';
                 CB_write <= '0';
             end if;
-        when others =>
-            null;
     end case ;
 end process;
-
- 
 
 -- write to outside
 process(HS_write_state_out, empty) begin
@@ -163,19 +160,17 @@ process(HS_write_state_out, empty) begin
              else
                 HS_write_state_in <= IDLE; 
              end if;
-        when WRITE_DATA =>
+        when others => -- WRITE_DATA
             if empty ='0' then
                 HS_write_state_in <= WRITE_DATA;
             else
                 HS_write_state_in <= IDLE;
              end if;
-        when others =>
-            null;
     end case ;
 end process;
 
-process(write_pointer, read_pointer)begin
 
+process(write_pointer, read_pointer)begin
      if read_pointer = write_pointer  then
             empty <= '1';
         else

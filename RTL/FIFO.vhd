@@ -57,10 +57,9 @@ begin
 --           _____ _________ ______
 --  RX       _____X_________X______ 
 --  DRTS     _____|'''''''''|_____
---  CTS      _________|'''''''''|_______
+--  CTS      __________|''''|_______
 --
---                    |<-clear->|
---                    | to send |
+
  --------------------------------------------------------------------------------------------
 --  circular buffer structure
 --                                   <--- WriteP    
@@ -91,11 +90,13 @@ begin
         end if;
     end process;
 
-    CTS <= CTS_out;
+ -- anything below here is pure combinational
+ 
    -- combinatorial part
    Data_out <= FIFO_Mem(conv_integer(read_pointer));
    read_en <= (read_en_N or read_en_E or read_en_W or read_en_S or read_en_L) and not empty; 
    empty_out <= empty;
+   CTS <= CTS_out;
 
    process(write_en, write_pointer)begin
      if write_en = '1'then
@@ -104,8 +105,6 @@ begin
         write_pointer_in <= write_pointer; 
      end if;
    end process;
-
-
 
    process(read_en, empty, read_pointer)begin
         if (read_en = '1' and empty = '0') then
@@ -127,7 +126,7 @@ begin
                     CTS_in <= '0';
                     write_en <= '0';
                 end if;
-            when READ_DATA =>
+            when others => -- READ_DATA
                 if CTS_out = '0' and DRTS = '1' and full ='0' then
                     HS_state_in <= READ_DATA;
                     CTS_in <= '1';
@@ -137,8 +136,6 @@ begin
                     CTS_in <= '0';
                     write_en <= '0';
                 end if;
-            when others =>
-                null;
         end case ;
         
    end process;

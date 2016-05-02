@@ -14,7 +14,7 @@ package TB_Package is
   procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in integer; finish_time: in time; signal clk: in std_logic; 
                      signal DCTS: in std_logic; signal RTS: out std_logic; 
                      signal port_in: out std_logic_vector);
-  procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector);
+  procedure get_packet(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector);
   procedure gen_fault(signal sta_0, sta_1: out std_logic; signal address: out std_logic_vector; delay, seed_1, seed_2: in integer);
 end TB_Package;
 
@@ -28,8 +28,9 @@ function Header_gen(Packet_length, source, destination, packet_id: integer)
 variable Header_flit: std_logic_vector (31 downto 0);
 begin
 Header_flit := Header_type &  std_logic_vector(to_unsigned(Packet_length, 12)) & std_logic_vector(to_unsigned(destination, 4)) & 
-         std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(packet_id, 8)) & XOR_REDUCE(Header_type &  std_logic_vector(to_unsigned(Packet_length, 12)) & std_logic_vector(to_unsigned(destination, 4)) & 
-         std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(packet_id, 8)));
+               std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(packet_id, 8)) & XOR_REDUCE(Header_type &  
+               std_logic_vector(to_unsigned(Packet_length, 12)) & std_logic_vector(to_unsigned(destination, 4)) & 
+               std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(packet_id, 8)));
 return Header_flit;
 end Header_gen;
 
@@ -51,7 +52,8 @@ Tail_flit := Tail_type &  std_logic_vector(to_unsigned(Data, 28)) & XOR_REDUCE(T
 return Tail_flit;
 end Tail_gen;
 
-procedure gen_packet(Packet_length, source, destination, packet_id, initial_delay: in integer;  finish_time: in time; signal clk: in std_logic; 
+procedure gen_packet(Packet_length, source, destination, packet_id, initial_delay: in integer;  
+                     finish_time: in time; signal clk: in std_logic; 
                      signal DCTS: in std_logic; signal RTS: out std_logic; 
                      signal port_in: out std_logic_vector) is
 -- Packet_length of 3 means it has 1 header, 1 body and 1 tail. the number of body packets are equal to Packet_length-2
@@ -116,9 +118,10 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
   end loop;
 end gen_packet;
 
-procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in integer; finish_time: in time; signal clk: in std_logic; 
-                     signal DCTS: in std_logic; signal RTS: out std_logic; 
-                     signal port_in: out std_logic_vector) is
+procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in integer; 
+                            finish_time: in time; signal clk: in std_logic; 
+                            signal DCTS: in std_logic; signal RTS: out std_logic; 
+                            signal port_in: out std_logic_vector) is
 -- Packet_length of 3 means it has 1 header, 1 body and 1 tail. the number of body packets are equal to Packet_length-2
 -- source: id of the source node
 -- packet id: packet identification number! TODO: has to be implemented!
@@ -189,8 +192,8 @@ procedure gen_random_packet(Packet_length, source, packet_id, initial_delay: in 
   end loop;
 end gen_random_packet;
 
-procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal clk: in std_logic; 
-                   signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector) is
+procedure get_packet(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; 
+                     signal CTS: out std_logic; signal DRTS: in std_logic; signal port_in: in std_logic_vector) is
 -- initial_delay: waits for this number of clock cycles before sending the packet!
   variable source_node, destination_node, P_length, counter: integer;
   variable LINEVARIABLE : line; 
@@ -225,6 +228,7 @@ procedure get_packet(DATA_WIDTH: in integer; initial_delay: in integer; signal c
 
       report "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) & " with length: "& integer'image(P_length) & " counter: "& integer'image(counter);
       assert (P_length=counter) report "wrong packet size" severity failure;
+      assert (Node_ID=destination_node) report "wrong packet destination " severity failure;
        write(LINEVARIABLE, "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) & " with length: "& integer'image(P_length));
        writeline(VEC_FILE, LINEVARIABLE);
    end loop;
