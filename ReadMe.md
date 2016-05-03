@@ -1,6 +1,7 @@
 Authors:
 
 * Siavoosh Payandeh Azad
+* Karl Janson
 * Behrad Niazmand
 
 License:  	GNU GENERAL PUBLIC LICENSE Version 3
@@ -29,18 +30,11 @@ The folder structure of the project is as follows:
 	* -NI: adds Network Interface to the network ports
 	* -P: uses router_parity instead of base-router
 	* -FI: adds fault injectos
-* network_tb_gen_parameterized.py
-	* -D [size]: sets the size of the network
-	* -Rand: generates random traffic patterns
-	* -FI: adds fault injectors
-* wave_do_gen: generates wave.do file for the network testbench
-	* -D [size]: generates the wave.do for the specific size
 * Customized_network folder contains:
 	* customized_router_gen: generates customized routers (base-router) for specific places in the network
 	* network_gen_customized: generates a network out of customized routers
 		* -D [size]: sets the size of the network 	
-* backup: contains the old scripts
-
+ 
 "TB" folder : includes individual Test-benches for different modules of the router (FIFO, Arbiter and the Router as top module) This folder also includes the "TB_Package.vhd" file which defines the functions and procedures defined in VHDL for generation and reception of packets during simulation (used for implementing traffic patterns)
 
 -------------------------------------------------------------------------------------------------
