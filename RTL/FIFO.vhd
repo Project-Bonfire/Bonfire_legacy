@@ -114,7 +114,7 @@ begin
         end if;
    end process;
 
-   process(HS_state_out, full, DRTS) begin
+   process(HS_state_out, full, DRTS, CTS_out) begin
         case(HS_state_out) is
             when IDLE =>
                 if CTS_out = '0' and DRTS = '1' and full ='0' then
