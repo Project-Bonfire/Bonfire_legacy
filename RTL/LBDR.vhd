@@ -67,7 +67,7 @@ Req_W <= Req_W_FF;
 Req_S <= Req_S_FF;
 Req_L <= Req_L_FF;
 
-process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty)begin
+process(N1, E1, W1, S1, Rxy, Cx, flit_type, emptyReq_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF)begin
  if flit_type = "001" and empty = '0' then
         Req_N_in <= ((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0);
         Req_E_in <= ((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1);
