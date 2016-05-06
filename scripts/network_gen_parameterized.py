@@ -9,10 +9,18 @@ import sys
 #         -NI: adds NI to network
 #         -P adds parity checker to the network
 
-
-
+if '--help' in sys.argv[1:]:
+  print "\t-D [network size]: it makes a network of [size]X[size]. Size can be only multiples of two. default value is 4."
+  print "\t-P: adds parity to each router input. in this case you need router_parity instead of normal router"
+  print "\t-NI: adds network interface to each router's local port"
+  print "\t-FI: adds fault injector units to all the links (except the local) in the network"
+  print "\t-o: specifies the name and path of the output file. default path is current folder!"
+  print "\t**Example: python network_gen_parameterized.py -D 2 -NI -P -FI -o ../output.vhd"
+  print "\t           generates a 2X2 network that has network interface and parity checker and fault injectors into ../output.vhd"
 if '-D'  in sys.argv[1:]:
   network_dime = int(sys.argv[sys.argv.index('-D')+1])
+  if network_dime % 2 != 0:
+    raise ValueError("wrong network size. please choose multiples of 2. for example 4!")
 else:
   network_dime = 4
 
@@ -30,6 +38,21 @@ if '-FI'  in sys.argv[1:]:
   add_FI = True
 else:
   add_FI = False
+
+file_name= 'network'
+if add_NI:
+  file_name += '_NI'
+if add_parity:
+  file_name += '_parity'
+if add_FI:
+  file_name += '_FI'
+
+if '-o'  in sys.argv[1:]: 
+  file_path = sys.argv[sys.argv.index('-o')+1]
+  if ".vhd" not in file_path:
+      raise ValueError("wrong file extention. only vhdl files are accepted!")
+else:
+  file_path = file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd'
 
 def rxy_rst_calculator(node_id):
   rxy_rst = 60
@@ -53,15 +76,9 @@ def cx_rst_calculator(node_id):
     c_e = 0
   return c_s*8+c_w*4+c_e*2+c_n
 
-file_name= 'network'
-if add_NI:
-  file_name += '_NI'
-if add_parity:
-  file_name += '_parity'
-if add_FI:
-  file_name += '_FI'
 
-noc_file = open(file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd', 'w')
+
+noc_file = open(file_path, 'w')
 
 
 noc_file.write("--Copyright (C) 2016 Siavoosh Payandeh Azad\n")
