@@ -1,0 +1,221 @@
+
+STAT#    103 Nods,  46 Vars,  33 Grps,  13 Inps,  0 Cons,  9 Outs
+
+MODE#   STRUCTURAL
+
+
+VAR#   0:  (i_______)  "empty"
+VAR#   1:  (i_______)  "Req_N_FF"
+VAR#   2:  (i_______)  "Req_E_FF"
+VAR#   3:  (i_______)  "Req_W_FF"
+VAR#   4:  (i_______)  "Req_S_FF"
+VAR#   5:  (i_______)  "Req_L_FF"
+VAR#   6:  (i_______)  "flit_type[2]"
+VAR#   7:  (i_______)  "flit_type[1]"
+VAR#   8:  (i_______)  "flit_type[0]"
+VAR#   9:  (i_______)  "dst_addr[3]"
+VAR#   10:  (i_______)  "dst_addr[2]"
+VAR#   11:  (i_______)  "dst_addr[1]"
+VAR#   12:  (i_______)  "dst_addr[0]"
+
+VAR#   13:  (________)  "empty"
+GRP#    0: BEG =   0, LEN =   1 -----
+   0   0:  (____)	(	0	0)  V = 0     "empty"
+
+VAR#   14:  (________)  "flit_type[2]"
+GRP#    1: BEG =   1, LEN =   1 -----
+   1   0:  (____)	(	0	0)  V = 6     "flit_type[2]"
+
+VAR#   15:  (________)  "flit_type[1]"
+GRP#    2: BEG =   2, LEN =   1 -----
+   2   0:  (____)	(	0	0)  V = 7     "flit_type[1]"
+
+VAR#   16:  (________)  "flit_type[0]"
+GRP#    3: BEG =   3, LEN =   1 -----
+   3   0:  (____)	(	0	0)  V = 8     "flit_type[0]"
+
+VAR#   17:  (________)  "dst_addr[3]"
+GRP#    4: BEG =   4, LEN =   1 -----
+   4   0:  (____)	(	0	0)  V = 9     "dst_addr[3]"
+
+VAR#   18:  (________)  "dst_addr[2]"
+GRP#    5: BEG =   5, LEN =   1 -----
+   5   0:  (____)	(	0	0)  V = 10     "dst_addr[2]"
+
+VAR#   19:  (________)  "dst_addr[1]"
+GRP#    6: BEG =   6, LEN =   1 -----
+   6   0:  (____)	(	0	0)  V = 11     "dst_addr[1]"
+
+VAR#   20:  (________)  "dst_addr[0]"
+GRP#    7: BEG =   7, LEN =   1 -----
+   7   0:  (____)	(	0	0)  V = 12     "dst_addr[0]"
+
+VAR#   21:  (________)  "LBDR>U96>z"
+GRP#    8: BEG =   8, LEN =   4 -----
+   8   0:  (____)	(	1	0)  V = 13     "LBDR>empty"
+   9   1:  (I___)	(	2	0)  V = 16     "LBDR>U97>a"
+   10   2:  (____)	(	3	0)  V = 14     "LBDR>U96>c"
+   11   3:  (____)	(	0	0)  V = 15     "LBDR>U96>d"
+
+VAR#   22:  (________)  "LBDR>U88>z"
+GRP#    9: BEG =   12, LEN =   3 -----
+   12   0:  (____)	(	1	0)  V = 19     "LBDR>U88>a"
+   13   1:  (____)	(	2	0)  V = 21     "LBDR>U88>b"
+   14   2:  (I___)	(	0	0)  V = 20     "LBDR>U89>a"
+
+VAR#   23:  (________)  "LBDR>U92>z"
+GRP#    10: BEG =   15, LEN =   4 -----
+   15   0:  (____)	(	1	3)  V = 16     "LBDR>U93>a"
+   16   1:  (____)	(	2	3)  V = 15     "LBDR>U93>b"
+   17   2:  (I___)	(	0	3)  V = 14     "LBDR>U94>a"
+   18   3:  (____)	(	0	0)  V = 21     "LBDR>U92>b"
+
+VAR#   24:  (________)  "LBDR>U80>z"
+GRP#    11: BEG =   19, LEN =   5 -----
+   19   0:  (I___)	(	3	1)  V = 21     "LBDR>U80>a"
+   20   1:  (I___)	(	3	2)  V = 20     "LBDR>U81>a"
+   21   2:  (I___)	(	3	0)  V = 19     "LBDR>U81>b"
+   22   3:  (____)	(	0	4)  V = 3     "Req_W_FF"
+   23   4:  (____)	(	0	0)  V = 23     "LBDR>U80>d"
+
+VAR#   25:  (________)  "LBDR>U82>z"
+GRP#    12: BEG =   24, LEN =   4 -----
+   24   0:  (I___)	(	2	1)  V = 22     "LBDR>U82>a"
+   25   1:  (____)	(	2	0)  V = 17     "LBDR>U83>a"
+   26   2:  (____)	(	0	3)  V = 4     "Req_S_FF"
+   27   3:  (____)	(	0	0)  V = 23     "LBDR>U82>d"
+
+VAR#   26:  (________)  "LBDR>U84>z"
+GRP#    13: BEG =   28, LEN =   5 -----
+   28   0:  (I___)	(	3	1)  V = 22     "LBDR>U84>a"
+   29   1:  (I___)	(	3	2)  V = 18     "LBDR>U85>a"
+   30   2:  (I___)	(	3	0)  V = 17     "LBDR>U85>b"
+   31   3:  (____)	(	0	4)  V = 1     "Req_N_FF"
+   32   4:  (____)	(	0	0)  V = 23     "LBDR>U84>d"
+
+VAR#   27:  (________)  "LBDR>U91>z"
+GRP#    14: BEG =   33, LEN =   4 -----
+   33   0:  (I___)	(	2	1)  V = 21     "LBDR>U91>a"
+   34   1:  (____)	(	2	0)  V = 19     "LBDR>U95>a"
+   35   2:  (____)	(	0	3)  V = 2     "Req_E_FF"
+   36   3:  (____)	(	0	0)  V = 23     "LBDR>U91>d"
+
+VAR#   28:  (________)  "LBDR>U86>z"
+GRP#    15: BEG =   37, LEN =   5 -----
+   37   0:  (____)	(	3	1)  V = 18     "LBDR>U90>a"
+   38   1:  (I___)	(	3	2)  V = 17     "LBDR>U87>a"
+   39   2:  (I___)	(	3	0)  V = 22     "LBDR>U87>b"
+   40   3:  (____)	(	0	4)  V = 5     "Req_L_FF"
+   41   4:  (____)	(	0	0)  V = 23     "LBDR>U86>d"
+
+VAR#   29:  (________)  "CHECKERS>U122>z"
+GRP#    16: BEG =   42, LEN =   1 -----
+   42   0:  (I___)	(	0	0)  V = 26     "CHECKERS>U122>a"
+
+VAR#   30:  (________)  "CHECKERS>U127>z"
+GRP#    17: BEG =   43, LEN =   1 -----
+   43   0:  (I___)	(	0	0)  V = 25     "CHECKERS>U127>a"
+
+VAR#   31:  (________)  "CHECKERS>U132>z"
+GRP#    18: BEG =   44, LEN =   2 -----
+   44   0:  (____)	(	1	0)  V = 27     "CHECKERS>U132>a"
+   45   1:  (____)	(	0	0)  V = 26     "CHECKERS>U132>b"
+
+VAR#   32:  (________)  "CHECKERS>U135>z"
+GRP#    19: BEG =   46, LEN =   1 -----
+   46   0:  (I___)	(	0	0)  V = 19     "CHECKERS>dst_addr_3_0__1 "
+
+VAR#   33:  (________)  "CHECKERS>U136>z"
+GRP#    20: BEG =   47, LEN =   1 -----
+   47   0:  (I___)	(	0	0)  V = 28     "CHECKERS>U136>a"
+
+VAR#   34:  (________)  "CHECKERS>U137>z"
+GRP#    21: BEG =   48, LEN =   1 -----
+   48   0:  (I___)	(	0	0)  V = 17     "CHECKERS>U137>a"
+
+VAR#   35:  (________)  "CHECKERS>U139>z"
+GRP#    22: BEG =   49, LEN =   4 -----
+   49   0:  (____)	(	1	0)  V = 13     "CHECKERS>U139>a"
+   50   1:  (I___)	(	2	0)  V = 16     "CHECKERS>U140>a"
+   51   2:  (____)	(	3	0)  V = 14     "CHECKERS>U139>c"
+   52   3:  (____)	(	0	0)  V = 15     "CHECKERS>U139>d"
+
+VAR#   36:  (________)  "CHECKERS>U138>z"
+GRP#    23: BEG =   53, LEN =   1 -----
+   53   0:  (I___)	(	0	0)  V = 35     "CHECKERS>U138>a"
+
+VAR#   37:  (_o______)  "err_LBDR_dst_addr_checker"
+GRP#    24: BEG =   54, LEN =   12 -----
+   54   0:  (____)	(	0	1)  V = 36     "CHECKERS>U110>a"
+   55   1:  (I___)	(	3	2)  V = 27     "CHECKERS>U111>a"
+   56   2:  (I___)	(	3	0)  V = 32     "CHECKERS>U111>b"
+   57   3:  (I___)	(	0	4)  V = 24     "CHECKERS>U111>c"
+   58   4:  (____)	(	6	5)  V = 32     "CHECKERS>U112>a"
+   59   5:  (I___)	(	6	0)  V = 20     "CHECKERS>U116>a"
+   60   6:  (I___)	(	8	7)  V = 18     "CHECKERS>U115>a"
+   61   7:  (I___)	(	8	9)  V = 31     "CHECKERS>U115>b"
+   62   8:  (I___)	(	0	9)  V = 34     "CHECKERS>U113>b"
+   63   9:  (I___)	(	11	10)  V = 25     "CHECKERS>U114>a"
+   64   10:  (I___)	(	11	0)  V = 27     "CHECKERS>U114>b"
+   65   11:  (I___)	(	0	0)  V = 17     "CHECKERS>U113>d"
+
+VAR#   38:  (_o______)  "err_LBDR_Req_onehot"
+GRP#    25: BEG =   66, LEN =   21 -----
+   66   0:  (I___)	(	1	5)  V = 35     "CHECKERS>U117>a"
+   67   1:  (I___)	(	0	2)  V = 13     "CHECKERS>U128>a"
+   68   2:  (____)	(	0	3)  V = 15     "CHECKERS>U129>a"
+   69   3:  (I___)	(	0	4)  V = 14     "CHECKERS>U128>c"
+   70   4:  (I___)	(	0	5)  V = 16     "CHECKERS>U128>d"
+   71   5:  (____)	(	6	7)  V = 24     "CHECKERS>U126>a"
+   72   6:  (____)	(	9	7)  V = 30     "CHECKERS>U126>b"
+   73   7:  (I___)	(	8	11)  V = 30     "CHECKERS>U126>c"
+   74   8:  (I___)	(	9	11)  V = 24     "CHECKERS>U126>d"
+   75   9:  (I___)	(	10	11)  V = 33     "CHECKERS>U124>b"
+   76   10:  (____)	(	0	11)  V = 31     "CHECKERS>U125>a"
+   77   11:  (I___)	(	12	14)  V = 27     "CHECKERS>U123>a"
+   78   12:  (I___)	(	13	14)  V = 33     "CHECKERS>U123>b"
+   79   13:  (I___)	(	19	14)  V = 29     "CHECKERS>U120>b"
+   80   14:  (____)	(	15	17)  V = 27     "CHECKERS>U121>a"
+   81   15:  (____)	(	16	17)  V = 28     "CHECKERS>U121>b"
+   82   16:  (____)	(	19	17)  V = 29     "CHECKERS>U120>d"
+   83   17:  (____)	(	18	0)  V = 31     "CHECKERS>U119>a"
+   84   18:  (____)	(	19	0)  V = 33     "CHECKERS>U119>b"
+   85   19:  (____)	(	20	0)  V = 24     "CHECKERS>U118>c"
+   86   20:  (____)	(	0	0)  V = 25     "CHECKERS>U118>d"
+
+VAR#   39:  (_o______)  "err_LBDR_Req_allzero"
+GRP#    26: BEG =   87, LEN =   5 -----
+   87   0:  (____)	(	0	1)  V = 13     "CHECKERS>U130>a"
+   88   1:  (____)	(	2	0)  V = 28     "CHECKERS>U131>a"
+   89   2:  (____)	(	3	0)  V = 31     "CHECKERS>U131>b"
+   90   3:  (____)	(	4	0)  V = 24     "CHECKERS>U131>c"
+   91   4:  (____)	(	0	0)  V = 25     "CHECKERS>U131>d"
+
+VAR#   40:  (_o______)  "err_LBDR_Req_Local"
+GRP#    27: BEG =   92, LEN =   6 -----
+   92   0:  (____)	(	0	1)  V = 20     "CHECKERS>U133>a"
+   93   1:  (____)	(	0	2)  V = 36     "CHECKERS>U133>b"
+   94   2:  (____)	(	0	3)  V = 18     "CHECKERS>U133>c"
+   95   3:  (____)	(	0	4)  V = 34     "CHECKERS>U134>a"
+   96   4:  (____)	(	0	5)  V = 33     "CHECKERS>U134>b"
+   97   5:  (____)	(	0	0)  V = 32     "CHECKERS>U134>c"
+
+VAR#   41:  (_o______)  "Req_W"
+GRP#    28: BEG =   98, LEN =   1 -----
+   98   0:  (____)	(	0	0)  V = 24     "fan_Req_W"
+
+VAR#   42:  (_o______)  "Req_S"
+GRP#    29: BEG =   99, LEN =   1 -----
+   99   0:  (____)	(	0	0)  V = 25     "fan_Req_S"
+
+VAR#   43:  (_o______)  "Req_N"
+GRP#    30: BEG =   100, LEN =   1 -----
+   100   0:  (____)	(	0	0)  V = 26     "fan_Req_N"
+
+VAR#   44:  (_o______)  "Req_L"
+GRP#    31: BEG =   101, LEN =   1 -----
+   101   0:  (____)	(	0	0)  V = 28     "fan_Req_L"
+
+VAR#   45:  (_o______)  "Req_E"
+GRP#    32: BEG =   102, LEN =   1 -----
+   102   0:  (____)	(	0	0)  V = 27     "fan_Req_E"
