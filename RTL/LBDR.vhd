@@ -1,3 +1,5 @@
+--Copyright (C) 2016 Siavoosh Payandeh Azad Behrad Niazmand
+
 library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
