@@ -3,15 +3,15 @@ use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity crc_encoder is 
+entity crc is 
 port(rst, clk: in std_logic;
      data_in: in std_logic;
      ready : out std_logic;
      crc_out: out std_logic_vector (7 downto 0)
      );
-end crc_encoder;
+end crc;
 
-architecture beh of crc_encoder is
+architecture beh of crc is
 
  signal crc_in, crc: std_logic_vector (7 downto 0);
 signal counter, counter_in : std_logic_vector (5 downto 0);
@@ -45,7 +45,7 @@ if rst = '0' then
 	counter_in <= (others => '0');
 	ready <= '0';
 else
-	if counter = "100000" then 
+	if counter = "101000" then 
 		counter_in <= (others => '0');
 		ready <= '1';
 	else
