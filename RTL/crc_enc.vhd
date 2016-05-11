@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
-
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity crc_encoder is 
 port(rst, clk: in std_logic;
@@ -12,7 +13,7 @@ end crc_encoder;
 
 architecture beh of crc_encoder is
 
-signal crc_in, crc: std_logic_vector (7 downto 0);
+ signal crc_in, crc: std_logic_vector (7 downto 0);
 signal counter, counter_in : std_logic_vector (5 downto 0);
 begin 
 
@@ -20,9 +21,10 @@ process(clk, rst) begin
 	if rst = '0' then
 		crc <= (others => '0');
 		counter <= (others => '0');
-	elsif clk'event and clk = '1' then
+ 	elsif clk'event and clk = '1' then
 		crc <= crc_in;
 		counter <= counter_in;
+ 
 	end if;
 end process;
 
@@ -36,15 +38,21 @@ crc_in(6) <= crc(5);
 crc_in(7) <= crc(6);
 
 crc_out <= crc;
+ 
 
-process(counter)begin
-	if counter == "10000" then 
+process(counter, rst)begin
+if rst = '0' then 
+	counter_in <= (others => '0');
+	ready <= '0';
+else
+	if counter = "100000" then 
 		counter_in <= (others => '0');
 		ready <= '1';
 	else
 		counter_in <= counter + 1;
 		ready <= '0';
 	end if;
+end if;
 end process;
 
 end architecture; 

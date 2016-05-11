@@ -17,6 +17,7 @@ if '--help' in sys.argv[1:]:
   print "\t-o: specifies the name and path of the output file. default path is current folder!"
   print "\t**Example: python network_gen_parameterized.py -D 2 -NI -P -FI -o ../output.vhd"
   print "\t           generates a 2X2 network that has network interface and parity checker and fault injectors into ../output.vhd"
+  sys.exit()
 if '-D'  in sys.argv[1:]:
   network_dime = int(sys.argv[sys.argv.index('-D')+1])
   if network_dime % 2 != 0:
