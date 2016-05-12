@@ -1,0 +1,513 @@
+
+STAT#    236 Nods,  99 Vars,  86 Grps,  13 Inps,  0 Cons,  21 Outs
+
+MODE#   STRUCTURAL
+
+
+VAR#   0:  (i_______)  "Req_N"
+VAR#   1:  (i_______)  "Req_E"
+VAR#   2:  (i_______)  "Req_W"
+VAR#   3:  (i_______)  "Req_S"
+VAR#   4:  (i_______)  "Req_L"
+VAR#   5:  (i_______)  "DCTS"
+VAR#   6:  (i_______)  "RTS_FF"
+VAR#   7:  (i_______)  "state[5]"
+VAR#   8:  (i_______)  "state[4]"
+VAR#   9:  (i_______)  "state[3]"
+VAR#   10:  (i_______)  "state[2]"
+VAR#   11:  (i_______)  "state[1]"
+VAR#   12:  (i_______)  "state[0]"
+
+VAR#   13:  (________)  "Req_N"
+GRP#    0: BEG =   0, LEN =   1 -----
+   0   0:  (____)	(	0	0)  V = 0     "Req_N"
+
+VAR#   14:  (________)  "Req_E"
+GRP#    1: BEG =   1, LEN =   1 -----
+   1   0:  (____)	(	0	0)  V = 1     "Req_E"
+
+VAR#   15:  (________)  "Req_W"
+GRP#    2: BEG =   2, LEN =   1 -----
+   2   0:  (____)	(	0	0)  V = 2     "Req_W"
+
+VAR#   16:  (________)  "Req_S"
+GRP#    3: BEG =   3, LEN =   1 -----
+   3   0:  (____)	(	0	0)  V = 3     "Req_S"
+
+VAR#   17:  (________)  "Req_L"
+GRP#    4: BEG =   4, LEN =   1 -----
+   4   0:  (____)	(	0	0)  V = 4     "Req_L"
+
+VAR#   18:  (________)  "DCTS"
+GRP#    5: BEG =   5, LEN =   1 -----
+   5   0:  (____)	(	0	0)  V = 5     "DCTS"
+
+VAR#   19:  (________)  "RTS_FF"
+GRP#    6: BEG =   6, LEN =   1 -----
+   6   0:  (____)	(	0	0)  V = 6     "RTS_FF"
+
+VAR#   20:  (________)  "state[5]"
+GRP#    7: BEG =   7, LEN =   1 -----
+   7   0:  (____)	(	0	0)  V = 7     "state[5]"
+
+VAR#   21:  (________)  "state[4]"
+GRP#    8: BEG =   8, LEN =   1 -----
+   8   0:  (____)	(	0	0)  V = 8     "state[4]"
+
+VAR#   22:  (________)  "state[3]"
+GRP#    9: BEG =   9, LEN =   1 -----
+   9   0:  (____)	(	0	0)  V = 9     "state[3]"
+
+VAR#   23:  (________)  "state[2]"
+GRP#    10: BEG =   10, LEN =   1 -----
+   10   0:  (____)	(	0	0)  V = 10     "state[2]"
+
+VAR#   24:  (________)  "state[1]"
+GRP#    11: BEG =   11, LEN =   1 -----
+   11   0:  (____)	(	0	0)  V = 11     "state[1]"
+
+VAR#   25:  (________)  "state[0]"
+GRP#    12: BEG =   12, LEN =   1 -----
+   12   0:  (____)	(	0	0)  V = 12     "state[0]"
+
+VAR#   26:  (________)  "ARBITER>U120>z"
+GRP#    13: BEG =   13, LEN =   1 -----
+   13   0:  (I___)	(	0	0)  V = 16     "ARBITER>U120>a"
+
+VAR#   27:  (________)  "ARBITER>U139>z"
+GRP#    14: BEG =   14, LEN =   3 -----
+   14   0:  (____)	(	1	0)  V = 15     "ARBITER>U139>a"
+   15   1:  (____)	(	2	0)  V = 16     "ARBITER>U139>b"
+   16   2:  (____)	(	0	0)  V = 14     "ARBITER>U139>c"
+
+VAR#   28:  (________)  "ARBITER>U140>z"
+GRP#    15: BEG =   17, LEN =   2 -----
+   17   0:  (____)	(	1	0)  V = 17     "ARBITER>U140>a"
+   18   1:  (____)	(	0	0)  V = 13     "ARBITER>U140>b"
+
+VAR#   29:  (________)  "ARBITER>U148>z"
+GRP#    16: BEG =   19, LEN =   1 -----
+   19   0:  (I___)	(	0	0)  V = 21     "ARBITER>U148>a"
+
+VAR#   30:  (________)  "ARBITER>U151>z"
+GRP#    17: BEG =   20, LEN =   1 -----
+   20   0:  (I___)	(	0	0)  V = 25     "ARBITER>U151>a"
+
+VAR#   31:  (________)  "ARBITER>U152>z"
+GRP#    18: BEG =   21, LEN =   1 -----
+   21   0:  (I___)	(	0	0)  V = 24     "ARBITER>U152>a"
+
+VAR#   32:  (________)  "ARBITER>U164>z"
+GRP#    19: BEG =   22, LEN =   2 -----
+   22   0:  (____)	(	1	0)  V = 23     "ARBITER>U164>a"
+   23   1:  (____)	(	0	0)  V = 22     "ARBITER>U164>b"
+
+VAR#   33:  (________)  "ARBITER>U165>z"
+GRP#    20: BEG =   24, LEN =   1 -----
+   24   0:  (I___)	(	0	0)  V = 23     "ARBITER>U165>a"
+
+VAR#   34:  (________)  "ARBITER>U169>z"
+GRP#    21: BEG =   25, LEN =   1 -----
+   25   0:  (I___)	(	0	0)  V = 22     "ARBITER>U169>a"
+
+VAR#   35:  (________)  "ARBITER>U171>z"
+GRP#    22: BEG =   26, LEN =   2 -----
+   26   0:  (____)	(	1	0)  V = 25     "ARBITER>U171>a"
+   27   1:  (____)	(	0	0)  V = 20     "ARBITER>U171>b"
+
+VAR#   36:  (________)  "ARBITER>U172>z"
+GRP#    23: BEG =   28, LEN =   2 -----
+   28   0:  (____)	(	0	1)  V = 19     "ARBITER>U172>a"
+   29   1:  (____)	(	0	0)  V = 18     "ARBITER>U172>b"
+
+VAR#   37:  (________)  "ARBITER>U119>z"
+GRP#    24: BEG =   30, LEN =   1 -----
+   30   0:  (I___)	(	0	0)  V = 28     "ARBITER>U119>a"
+
+VAR#   38:  (________)  "ARBITER>U136>z"
+GRP#    25: BEG =   31, LEN =   2 -----
+   31   0:  (I___)	(	0	1)  V = 18     "ARBITER>U137>a"
+   32   1:  (____)	(	0	0)  V = 19     "ARBITER>U136>b"
+
+VAR#   39:  (________)  "ARBITER>U147>z"
+GRP#    26: BEG =   33, LEN =   4 -----
+   33   0:  (____)	(	1	0)  V = 32     "ARBITER>U147>a"
+   34   1:  (____)	(	2	0)  V = 29     "ARBITER>U147>b"
+   35   2:  (____)	(	3	0)  V = 24     "ARBITER>U147>c"
+   36   3:  (____)	(	0	0)  V = 35     "ARBITER>U147>d"
+
+VAR#   40:  (________)  "ARBITER>U163>z"
+GRP#    27: BEG =   37, LEN =   2 -----
+   37   0:  (____)	(	1	0)  V = 21     "ARBITER>U163>a"
+   38   1:  (____)	(	0	0)  V = 32     "ARBITER>U163>b"
+
+VAR#   41:  (________)  "ARBITER>U170>z"
+GRP#    28: BEG =   39, LEN =   3 -----
+   39   0:  (____)	(	1	0)  V = 21     "ARBITER>U170>a"
+   40   1:  (____)	(	2	0)  V = 24     "ARBITER>U170>b"
+   41   2:  (____)	(	0	0)  V = 35     "ARBITER>U170>c"
+
+VAR#   42:  (________)  "ARBITER>U135>z"
+GRP#    29: BEG =   42, LEN =   1 -----
+   42   0:  (I___)	(	0	0)  V = 38     "ARBITER>U135>a"
+
+VAR#   43:  (________)  "ARBITER>U146>z"
+GRP#    30: BEG =   43, LEN =   1 -----
+   43   0:  (I___)	(	0	0)  V = 39     "ARBITER>U146>a"
+
+VAR#   44:  (________)  "ARBITER>U155>z"
+GRP#    31: BEG =   44, LEN =   3 -----
+   44   0:  (____)	(	1	0)  V = 22     "ARBITER>U155>a"
+   45   1:  (____)	(	2	0)  V = 41     "ARBITER>U155>b"
+   46   2:  (____)	(	0	0)  V = 33     "ARBITER>U155>c"
+
+VAR#   45:  (________)  "ARBITER>U162>z"
+GRP#    32: BEG =   47, LEN =   1 -----
+   47   0:  (I___)	(	0	0)  V = 40     "ARBITER>U162>a"
+
+VAR#   46:  (________)  "ARBITER>U168>z"
+GRP#    33: BEG =   48, LEN =   3 -----
+   48   0:  (____)	(	1	0)  V = 23     "ARBITER>U168>a"
+   49   1:  (____)	(	2	0)  V = 41     "ARBITER>U168>b"
+   50   2:  (____)	(	0	0)  V = 34     "ARBITER>U168>c"
+
+VAR#   47:  (________)  "ARBITER>U134>z"
+GRP#    34: BEG =   51, LEN =   5 -----
+   51   0:  (I___)	(	2	1)  V = 28     "ARBITER>U138>a"
+   52   1:  (I___)	(	2	3)  V = 27     "ARBITER>U138>b"
+   53   2:  (I___)	(	0	3)  V = 42     "ARBITER>U134>b"
+   54   3:  (I___)	(	4	0)  V = 30     "ARBITER>U134>c"
+   55   4:  (I___)	(	0	0)  V = 38     "ARBITER>U134>d"
+
+VAR#   48:  (________)  "ARBITER>U143>z"
+GRP#    35: BEG =   56, LEN =   4 -----
+   56   0:  (I___)	(	0	1)  V = 40     "ARBITER>U144>a"
+   57   1:  (I___)	(	0	2)  V = 30     "ARBITER>U144>b"
+   58   2:  (I___)	(	0	3)  V = 20     "ARBITER>U144>c"
+   59   3:  (I___)	(	0	0)  V = 24     "ARBITER>U144>d"
+
+VAR#   49:  (________)  "ARBITER>U145>z"
+GRP#    36: BEG =   60, LEN =   2 -----
+   60   0:  (____)	(	0	1)  V = 36     "ARBITER>U145>a"
+   61   1:  (____)	(	0	0)  V = 43     "ARBITER>U145>b"
+
+VAR#   50:  (________)  "ARBITER>U150>z"
+GRP#    37: BEG =   62, LEN =   4 -----
+   62   0:  (____)	(	0	1)  V = 20     "ARBITER>U150>a"
+   63   1:  (____)	(	0	2)  V = 45     "ARBITER>U150>b"
+   64   2:  (____)	(	0	3)  V = 31     "ARBITER>U150>c"
+   65   3:  (____)	(	0	0)  V = 30     "ARBITER>U150>d"
+
+VAR#   51:  (________)  "ARBITER>U154>z"
+GRP#    38: BEG =   66, LEN =   1 -----
+   66   0:  (I___)	(	0	0)  V = 44     "ARBITER>U154>a"
+
+VAR#   52:  (________)  "ARBITER>U167>z"
+GRP#    39: BEG =   67, LEN =   1 -----
+   67   0:  (I___)	(	0	0)  V = 46     "ARBITER>U167>a"
+
+VAR#   53:  (________)  "ARBITER>U149>z"
+GRP#    40: BEG =   68, LEN =   2 -----
+   68   0:  (____)	(	0	1)  V = 50     "ARBITER>U149>a"
+   69   1:  (____)	(	0	0)  V = 36     "ARBITER>U149>b"
+
+VAR#   54:  (________)  "ARBITER>U153>z"
+GRP#    41: BEG =   70, LEN =   2 -----
+   70   0:  (____)	(	0	1)  V = 36     "ARBITER>U153>a"
+   71   1:  (____)	(	0	0)  V = 51     "ARBITER>U153>b"
+
+VAR#   55:  (________)  "ARBITER>U157>z"
+GRP#    42: BEG =   72, LEN =   11 -----
+   72   0:  (I___)	(	2	1)  V = 34     "ARBITER>U157>a"
+   73   1:  (I___)	(	2	0)  V = 33     "ARBITER>U157>b"
+   74   2:  (____)	(	3	4)  V = 45     "ARBITER>U160>a"
+   75   3:  (____)	(	6	4)  V = 35     "ARBITER>U160>b"
+   76   4:  (I___)	(	5	0)  V = 35     "ARBITER>U161>a"
+   77   5:  (____)	(	6	0)  V = 40     "ARBITER>U160>d"
+   78   6:  (____)	(	8	7)  V = 21     "ARBITER>U158>a"
+   79   7:  (____)	(	8	0)  V = 32     "ARBITER>U158>b"
+   80   8:  (____)	(	10	9)  V = 25     "ARBITER>U159>a"
+   81   9:  (____)	(	10	0)  V = 20     "ARBITER>U159>b"
+   82   10:  (____)	(	0	0)  V = 24     "ARBITER>U158>d"
+
+VAR#   56:  (________)  "ARBITER>U166>z"
+GRP#    43: BEG =   83, LEN =   2 -----
+   83   0:  (____)	(	0	1)  V = 36     "ARBITER>U166>a"
+   84   1:  (____)	(	0	0)  V = 52     "ARBITER>U166>b"
+
+VAR#   57:  (________)  "ARBITER>U130>z"
+GRP#    44: BEG =   85, LEN =   3 -----
+   85   0:  (I___)	(	2	1)  V = 15     "ARBITER>U130>a"
+   86   1:  (I___)	(	2	0)  V = 39     "ARBITER>U130>b"
+   87   2:  (____)	(	0	0)  V = 50     "ARBITER>U131>a"
+
+VAR#   58:  (________)  "ARBITER>U156>z"
+GRP#    45: BEG =   88, LEN =   2 -----
+   88   0:  (____)	(	0	1)  V = 36     "ARBITER>U156>a"
+   89   1:  (____)	(	0	0)  V = 55     "ARBITER>U156>b"
+
+VAR#   59:  (________)  "ARBITER>U116>z"
+GRP#    46: BEG =   90, LEN =   6 -----
+   90   0:  (I___)	(	2	1)  V = 13     "ARBITER>U116>a"
+   91   1:  (I___)	(	2	0)  V = 44     "ARBITER>U116>b"
+   92   2:  (I___)	(	3	0)  V = 46     "ARBITER>U116>c"
+   93   3:  (____)	(	4	5)  V = 55     "ARBITER>U117>a"
+   94   4:  (____)	(	0	5)  V = 48     "ARBITER>U117>b"
+   95   5:  (____)	(	0	0)  V = 37     "ARBITER>U117>c"
+
+VAR#   60:  (________)  "ARBITER>U129>z"
+GRP#    47: BEG =   96, LEN =   1 -----
+   96   0:  (I___)	(	0	0)  V = 57     "ARBITER>U129>a"
+
+VAR#   61:  (________)  "ARBITER>U113>z"
+GRP#    48: BEG =   97, LEN =   1 -----
+   97   0:  (I___)	(	0	0)  V = 59     "ARBITER>U113>a"
+
+VAR#   62:  (________)  "ARBITER>U114>z"
+GRP#    49: BEG =   98, LEN =   8 -----
+   98   0:  (____)	(	3	1)  V = 57     "ARBITER>U118>a"
+   99   1:  (____)	(	3	2)  V = 26     "ARBITER>U118>b"
+   100   2:  (____)	(	3	4)  V = 37     "ARBITER>U118>c"
+   101   3:  (____)	(	5	4)  V = 59     "ARBITER>U115>b"
+   102   4:  (____)	(	5	6)  V = 14     "ARBITER>U115>c"
+   103   5:  (I___)	(	0	6)  V = 42     "ARBITER>U114>b"
+   104   6:  (I___)	(	7	0)  V = 34     "ARBITER>U114>c"
+   105   7:  (I___)	(	0	0)  V = 38     "ARBITER>U114>d"
+
+VAR#   63:  (________)  "ARBITER>U127>z"
+GRP#    50: BEG =   106, LEN =   6 -----
+   106   0:  (____)	(	1	0)  V = 55     "ARBITER>U127>a"
+   107   1:  (____)	(	2	0)  V = 48     "ARBITER>U127>b"
+   108   2:  (I___)	(	4	3)  V = 16     "ARBITER>U128>a"
+   109   3:  (I___)	(	4	0)  V = 60     "ARBITER>U128>b"
+   110   4:  (I___)	(	0	5)  V = 46     "ARBITER>U128>c"
+   111   5:  (I___)	(	0	0)  V = 27     "ARBITER>U128>d"
+
+VAR#   64:  (________)  "ARBITER>U109>z"
+GRP#    51: BEG =   112, LEN =   9 -----
+   112   0:  (I___)	(	1	3)  V = 61     "ARBITER>U111>a"
+   113   1:  (I___)	(	4	2)  V = 16     "ARBITER>U112>a"
+   114   2:  (I___)	(	4	3)  V = 28     "ARBITER>U112>b"
+   115   3:  (I___)	(	4	5)  V = 14     "ARBITER>U111>c"
+   116   4:  (____)	(	6	5)  V = 43     "ARBITER>U110>b"
+   117   5:  (____)	(	6	7)  V = 15     "ARBITER>U110>c"
+   118   6:  (I___)	(	0	7)  V = 42     "ARBITER>U109>b"
+   119   7:  (I___)	(	8	0)  V = 29     "ARBITER>U109>c"
+   120   8:  (I___)	(	0	0)  V = 38     "ARBITER>U109>d"
+
+VAR#   65:  (________)  "ARBITER>U125>z"
+GRP#    52: BEG =   121, LEN =   7 -----
+   121   0:  (I___)	(	2	1)  V = 27     "ARBITER>U133>a"
+   122   1:  (I___)	(	2	3)  V = 13     "ARBITER>U133>b"
+   123   2:  (____)	(	4	3)  V = 63     "ARBITER>U126>b"
+   124   3:  (____)	(	4	5)  V = 17     "ARBITER>U126>c"
+   125   4:  (I___)	(	0	5)  V = 42     "ARBITER>U125>b"
+   126   5:  (I___)	(	6	0)  V = 31     "ARBITER>U125>c"
+   127   6:  (I___)	(	0	0)  V = 38     "ARBITER>U125>d"
+
+VAR#   66:  (________)  "ARBITER>U105>z"
+GRP#    53: BEG =   128, LEN =   8 -----
+   128   0:  (I___)	(	3	1)  V = 14     "ARBITER>U108>a"
+   129   1:  (I___)	(	3	2)  V = 15     "ARBITER>U108>b"
+   130   2:  (I___)	(	3	4)  V = 61     "ARBITER>U108>c"
+   131   3:  (I___)	(	6	4)  V = 60     "ARBITER>U107>b"
+   132   4:  (I___)	(	6	5)  V = 26     "ARBITER>U107>c"
+   133   5:  (____)	(	6	0)  V = 42     "ARBITER>U106>b"
+   134   6:  (____)	(	0	7)  V = 20     "ARBITER>U106>c"
+   135   7:  (____)	(	0	0)  V = 38     "ARBITER>U106>d"
+
+VAR#   67:  (________)  "ARBITER>U121>z"
+GRP#    54: BEG =   136, LEN =   7 -----
+   136   0:  (____)	(	2	1)  V = 63     "ARBITER>U123>a"
+   137   1:  (I___)	(	2	3)  V = 17     "ARBITER>U124>a"
+   138   2:  (____)	(	4	3)  V = 51     "ARBITER>U122>b"
+   139   3:  (____)	(	4	5)  V = 13     "ARBITER>U122>c"
+   140   4:  (I___)	(	0	5)  V = 42     "ARBITER>U121>b"
+   141   5:  (I___)	(	6	0)  V = 33     "ARBITER>U121>c"
+   142   6:  (I___)	(	0	0)  V = 38     "ARBITER>U121>d"
+
+VAR#   68:  (________)  "CHECKERS>U116>z"
+GRP#    55: BEG =   143, LEN =   1 -----
+   143   0:  (I___)	(	0	0)  V = 64     "CHECKERS>U116>a"
+
+VAR#   69:  (________)  "CHECKERS>U117>z"
+GRP#    56: BEG =   144, LEN =   1 -----
+   144   0:  (I___)	(	0	0)  V = 62     "CHECKERS>U117>a"
+
+VAR#   70:  (________)  "CHECKERS>U119>z"
+GRP#    57: BEG =   145, LEN =   1 -----
+   145   0:  (I___)	(	0	0)  V = 47     "CHECKERS>U119>a"
+
+VAR#   71:  (________)  "CHECKERS>U120>z"
+GRP#    58: BEG =   146, LEN =   1 -----
+   146   0:  (I___)	(	0	0)  V = 65     "CHECKERS>U120>a"
+
+VAR#   72:  (________)  "CHECKERS>U121>z"
+GRP#    59: BEG =   147, LEN =   1 -----
+   147   0:  (I___)	(	0	0)  V = 67     "CHECKERS>U121>a"
+
+VAR#   73:  (________)  "CHECKERS>U138>z"
+GRP#    60: BEG =   148, LEN =   2 -----
+   148   0:  (____)	(	1	0)  V = 56     "CHECKERS>U138>a"
+   149   1:  (____)	(	0	0)  V = 58     "CHECKERS>U138>b"
+
+VAR#   74:  (________)  "CHECKERS>U141>z"
+GRP#    61: BEG =   150, LEN =   3 -----
+   150   0:  (____)	(	1	0)  V = 49     "CHECKERS>U141>a"
+   151   1:  (____)	(	2	0)  V = 53     "CHECKERS>U141>b"
+   152   2:  (____)	(	0	0)  V = 54     "CHECKERS>U141>c"
+
+VAR#   75:  (________)  "CHECKERS>U118>z"
+GRP#    62: BEG =   153, LEN =   3 -----
+   153   0:  (____)	(	0	1)  V = 72     "CHECKERS>U118>a"
+   154   1:  (____)	(	0	2)  V = 71     "CHECKERS>U118>b"
+   155   2:  (____)	(	0	0)  V = 70     "CHECKERS>U118>c"
+
+VAR#   76:  (________)  "CHECKERS>U132>z"
+GRP#    63: BEG =   156, LEN =   5 -----
+   156   0:  (____)	(	1	0)  V = 17     "CHECKERS>Req_L"
+   157   1:  (____)	(	2	0)  V = 14     "CHECKERS>Req_E"
+   158   2:  (____)	(	3	0)  V = 15     "CHECKERS>Req_W"
+   159   3:  (____)	(	4	0)  V = 16     "CHECKERS>Req_S"
+   160   4:  (____)	(	0	0)  V = 13     "CHECKERS>Req_N"
+
+VAR#   77:  (________)  "CHECKERS>U140>z"
+GRP#    64: BEG =   161, LEN =   1 -----
+   161   0:  (I___)	(	0	0)  V = 74     "CHECKERS>U140>a"
+
+VAR#   78:  (_o______)  "state_in[5]"
+GRP#    65: BEG =   162, LEN =   1 -----
+   162   0:  (____)	(	0	0)  V = 66     "fan_state_in_5_0__5 "
+
+VAR#   79:  (_o______)  "state_in[4]"
+GRP#    66: BEG =   163, LEN =   1 -----
+   163   0:  (____)	(	0	0)  V = 64     "fan_state_in_5_0__4 "
+
+VAR#   80:  (_o______)  "state_in[3]"
+GRP#    67: BEG =   164, LEN =   1 -----
+   164   0:  (____)	(	0	0)  V = 62     "fan_state_in_5_0__3 "
+
+VAR#   81:  (_o______)  "state_in[2]"
+GRP#    68: BEG =   165, LEN =   1 -----
+   165   0:  (____)	(	0	0)  V = 67     "fan_state_in_5_0__2 "
+
+VAR#   82:  (_o______)  "state_in[1]"
+GRP#    69: BEG =   166, LEN =   1 -----
+   166   0:  (____)	(	0	0)  V = 65     "fan_state_in_5_0__1 "
+
+VAR#   83:  (_o______)  "state_in[0]"
+GRP#    70: BEG =   167, LEN =   1 -----
+   167   0:  (____)	(	0	0)  V = 47     "fan_state_in_5_0__0 "
+
+VAR#   84:  (_o______)  "err_Arbiter_state_onehot"
+GRP#    71: BEG =   168, LEN =   21 -----
+   168   0:  (I___)	(	1	6)  V = 75     "CHECKERS>U114>a"
+   169   1:  (____)	(	2	3)  V = 64     "CHECKERS>U115>a"
+   170   2:  (____)	(	5	3)  V = 69     "CHECKERS>U115>b"
+   171   3:  (____)	(	4	6)  V = 62     "CHECKERS>U115>c"
+   172   4:  (____)	(	5	6)  V = 68     "CHECKERS>U115>d"
+   173   5:  (____)	(	0	6)  V = 66     "CHECKERS>U113>a"
+   174   6:  (I___)	(	7	10)  V = 69     "CHECKERS>U112>a"
+   175   7:  (I___)	(	8	10)  V = 68     "CHECKERS>U112>b"
+   176   8:  (I___)	(	9	10)  V = 75     "CHECKERS>U112>c"
+   177   9:  (I___)	(	0	10)  V = 66     "CHECKERS>U111>d"
+   178   10:  (____)	(	11	0)  V = 62     "CHECKERS>U107>a"
+   179   11:  (____)	(	12	13)  V = 65     "CHECKERS>U110>a"
+   180   12:  (____)	(	15	13)  V = 70     "CHECKERS>U110>b"
+   181   13:  (____)	(	14	16)  V = 47     "CHECKERS>U110>c"
+   182   14:  (____)	(	15	16)  V = 71     "CHECKERS>U110>d"
+   183   15:  (I___)	(	19	16)  V = 72     "CHECKERS>U108>b"
+   184   16:  (I___)	(	17	0)  V = 70     "CHECKERS>U109>a"
+   185   17:  (I___)	(	18	0)  V = 71     "CHECKERS>U109>b"
+   186   18:  (I___)	(	19	0)  V = 67     "CHECKERS>U108>d"
+   187   19:  (____)	(	20	0)  V = 66     "CHECKERS>U107>c"
+   188   20:  (____)	(	0	0)  V = 64     "CHECKERS>U107>d"
+
+VAR#   85:  (_o______)  "err_Arbiter_no_req_Grant"
+GRP#    72: BEG =   189, LEN =   4 -----
+   189   0:  (I___)	(	1	2)  V = 77     "CHECKERS>U122>a"
+   190   1:  (____)	(	0	2)  V = 73     "CHECKERS>U123>a"
+   191   2:  (I___)	(	0	3)  V = 76     "CHECKERS>U122>c"
+   192   3:  (I___)	(	0	0)  V = 18     "CHECKERS>DCTS"
+
+VAR#   86:  (_o______)  "err_Arbiter_Xbar_sel_onehot"
+GRP#    73: BEG =   193, LEN =   17 -----
+   193   0:  (____)	(	1	4)  V = 43     "CHECKERS>U129>a"
+   194   1:  (____)	(	2	4)  V = 51     "CHECKERS>U129>b"
+   195   2:  (____)	(	3	4)  V = 55     "CHECKERS>U129>c"
+   196   3:  (____)	(	0	4)  V = 50     "CHECKERS>U129>d"
+   197   4:  (____)	(	5	8)  V = 43     "CHECKERS>U128>a"
+   198   5:  (____)	(	6	8)  V = 52     "CHECKERS>U128>b"
+   199   6:  (____)	(	7	8)  V = 55     "CHECKERS>U128>c"
+   200   7:  (____)	(	0	8)  V = 50     "CHECKERS>U128>d"
+   201   8:  (____)	(	0	9)  V = 76     "CHECKERS>U124>c"
+   202   9:  (____)	(	10	0)  V = 51     "CHECKERS>U125>a"
+   203   10:  (____)	(	11	0)  V = 52     "CHECKERS>U125>b"
+   204   11:  (____)	(	13	12)  V = 50     "CHECKERS>U127>from0"
+   205   12:  (____)	(	13	0)  V = 55     "CHECKERS>U127>from1"
+   206   13:  (____)	(	15	14)  V = 55     "CHECKERS>U127>from2"
+   207   14:  (____)	(	15	0)  V = 43     "CHECKERS>U127>from3"
+   208   15:  (____)	(	0	16)  V = 50     "CHECKERS>U127>from4"
+   209   16:  (____)	(	0	0)  V = 43     "CHECKERS>U127>from5"
+
+VAR#   87:  (_o______)  "err_Arbiter_Grants_onehot"
+GRP#    74: BEG =   210, LEN =   14 -----
+   210   0:  (I___)	(	1	2)  V = 77     "CHECKERS>U130>a"
+   211   1:  (____)	(	0	2)  V = 56     "CHECKERS>U139>a"
+   212   2:  (____)	(	3	5)  V = 73     "CHECKERS>U134>a"
+   213   3:  (____)	(	4	5)  V = 49     "CHECKERS>U137>a"
+   214   4:  (____)	(	0	5)  V = 54     "CHECKERS>U137>b"
+   215   5:  (____)	(	6	8)  V = 49     "CHECKERS>U136>a"
+   216   6:  (____)	(	7	8)  V = 53     "CHECKERS>U136>b"
+   217   7:  (____)	(	0	8)  V = 73     "CHECKERS>U136>c"
+   218   8:  (____)	(	9	11)  V = 53     "CHECKERS>U135>a"
+   219   9:  (____)	(	10	11)  V = 54     "CHECKERS>U135>b"
+   220   10:  (____)	(	0	11)  V = 73     "CHECKERS>U135>c"
+   221   11:  (____)	(	12	13)  V = 58     "CHECKERS>U131>a"
+   222   12:  (____)	(	0	13)  V = 74     "CHECKERS>U131>b"
+   223   13:  (____)	(	0	0)  V = 76     "CHECKERS>U131>c"
+
+VAR#   88:  (_o______)  "Xbar_sel[4]"
+GRP#    75: BEG =   224, LEN =   1 -----
+   224   0:  (____)	(	0	0)  V = 55     "fan_Xbar_sel_4_0__4 "
+
+VAR#   89:  (_o______)  "Xbar_sel[3]"
+GRP#    76: BEG =   225, LEN =   1 -----
+   225   0:  (____)	(	0	0)  V = 50     "fan_Xbar_sel_4_0__3 "
+
+VAR#   90:  (_o______)  "Xbar_sel[2]"
+GRP#    77: BEG =   226, LEN =   1 -----
+   226   0:  (____)	(	0	0)  V = 43     "fan_Xbar_sel_4_0__2 "
+
+VAR#   91:  (_o______)  "Xbar_sel[1]"
+GRP#    78: BEG =   227, LEN =   1 -----
+   227   0:  (____)	(	0	0)  V = 52     "fan_Xbar_sel_4_0__1 "
+
+VAR#   92:  (_o______)  "Xbar_sel[0]"
+GRP#    79: BEG =   228, LEN =   1 -----
+   228   0:  (____)	(	0	0)  V = 51     "fan_Xbar_sel_4_0__0 "
+
+VAR#   93:  (_o______)  "RTS_FF_in"
+GRP#    80: BEG =   229, LEN =   2 -----
+   229   0:  (I___)	(	0	1)  V = 36     "ARBITER>U142>a"
+   230   1:  (I___)	(	0	0)  V = 48     "ARBITER>U142>b"
+
+VAR#   94:  (_o______)  "Grant_W"
+GRP#    81: BEG =   231, LEN =   1 -----
+   231   0:  (____)	(	0	0)  V = 49     "fan_Grant_W"
+
+VAR#   95:  (_o______)  "Grant_S"
+GRP#    82: BEG =   232, LEN =   1 -----
+   232   0:  (____)	(	0	0)  V = 53     "fan_Grant_S"
+
+VAR#   96:  (_o______)  "Grant_N"
+GRP#    83: BEG =   233, LEN =   1 -----
+   233   0:  (____)	(	0	0)  V = 54     "fan_Grant_N"
+
+VAR#   97:  (_o______)  "Grant_L"
+GRP#    84: BEG =   234, LEN =   1 -----
+   234   0:  (____)	(	0	0)  V = 58     "fan_Grant_L"
+
+VAR#   98:  (_o______)  "Grant_E"
+GRP#    85: BEG =   235, LEN =   1 -----
+   235   0:  (____)	(	0	0)  V = 56     "fan_Grant_E"
