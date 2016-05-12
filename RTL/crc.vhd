@@ -38,21 +38,15 @@ crc_in(6) <= crc(5);
 crc_in(7) <= crc(6);
 
 crc_out <= crc;
- 
 
-process(counter, rst)begin
-if rst = '0' then 
-	counter_in <= (others => '0');
-	ready <= '0';
-else
-	if counter = "101000" then 
+process(counter)begin
+	if counter = "101001" then 
 		counter_in <= (others => '0');
 		ready <= '1';
 	else
 		counter_in <= counter + 1;
 		ready <= '0';
 	end if;
-end if;
 end process;
 
 end architecture; 
