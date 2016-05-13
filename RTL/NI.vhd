@@ -7,7 +7,8 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity NI is
     generic (
-        DATA_WIDTH: integer := 32
+        DATA_WIDTH: integer := 32;
+        NI_DEPTH: integer:=16
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
@@ -28,7 +29,8 @@ architecture behavior of NI is
 
 component NI_channel is
     generic (
-        DATA_WIDTH: integer := 32
+        DATA_WIDTH: integer := 32;
+        NI_DEPTH: integer:=16
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
@@ -61,13 +63,13 @@ begin
 --              ---------------------------------
 --                                   <--- readP          
 
-Channel_1: NI_channel generic map(DATA_WIDTH => DATA_WIDTH)
+Channel_1: NI_channel generic map(DATA_WIDTH => DATA_WIDTH, NI_DEPTH => NI_DEPTH)
             port map(reset=>reset, clk =>clk, 
                 RX => RX1, TX => TX1, 
                 DRTS=>DRTS1, DCTS=>DCTS1,
                 RTS=>RTS1,CTS=>CTS1);
 
-Channel_2: NI_channel generic map(DATA_WIDTH => DATA_WIDTH)
+Channel_2: NI_channel generic map(DATA_WIDTH => DATA_WIDTH, NI_DEPTH => NI_DEPTH)
             port map(reset=>reset, clk =>clk, 
                 RX => RX2, TX => TX2, 
                 DRTS=>DRTS2, DCTS=>DCTS2,

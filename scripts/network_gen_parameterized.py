@@ -32,8 +32,10 @@ else:
 
 if '-NI'  in sys.argv[1:]: 
   add_NI = True
+   
 else:
   add_NI = False
+   
 
 if '-FI'  in sys.argv[1:]: 
   add_FI = True
@@ -99,7 +101,10 @@ noc_file.write("use IEEE.math_real.\"ceil\";\n")
 noc_file.write("use IEEE.math_real.\"log2\";\n\n")
  
 noc_file.write("entity network_"+str(network_dime)+"x"+str(network_dime)+" is\n")
-noc_file.write(" generic (DATA_WIDTH: integer := 32);\n")
+if add_NI:
+  noc_file.write(" generic (DATA_WIDTH: integer := 32; NI_DEPTH: integer:= 16);\n")
+else:
+  noc_file.write(" generic (DATA_WIDTH: integer := 32);\n")
 noc_file.write("port (reset: in  std_logic; \n")
 noc_file.write("\tclk: in  std_logic; \n")
 for i in range(network_dime*network_dime):
@@ -171,7 +176,7 @@ noc_file.write("\n\n")
 if add_NI:
   noc_file.write("component NI is\n")
   noc_file.write("    generic (\n")
-  noc_file.write("        DATA_WIDTH: integer := 32\n")
+  noc_file.write("        DATA_WIDTH: integer := 32; NI_DEPTH: integer := 16\n")
   noc_file.write("    );\n")
   noc_file.write("    port (  reset: in  std_logic;\n")
   noc_file.write("            clk: in  std_logic;\n")
@@ -328,7 +333,7 @@ noc_file.write("\n")
 if add_NI:
   noc_file.write("-- instantiating the NI\n")
   for i in range(0, network_dime*network_dime):
-    noc_file.write("NI_"+str(i)+":  NI generic map (DATA_WIDTH  => DATA_WIDTH)\n")
+    noc_file.write("NI_"+str(i)+":  NI generic map (DATA_WIDTH  => DATA_WIDTH, NI_DEPTH => NI_DEPTH )\n")
     noc_file.write("port map(reset=> reset, clk=>clk,\n")
     noc_file.write("         RX1=> TX_L_R_"+str(i)+",  \n")
     noc_file.write("         TX1=> TX_L_"+str(i)+",  \n") 

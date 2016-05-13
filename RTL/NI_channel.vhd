@@ -4,10 +4,12 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.math_real.all;
 
 entity NI_channel is
     generic (
-        DATA_WIDTH: integer := 32
+        DATA_WIDTH: integer := 32;
+        NI_DEPTH: integer:=16
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
@@ -19,12 +21,12 @@ entity NI_channel is
 end NI_channel;
 
 architecture behavior of NI_channel is
-   signal read_pointer, write_pointer, read_pointer_in: std_logic_vector(1 downto 0);
+   signal read_pointer, write_pointer, read_pointer_in: std_logic_vector(integer(ceil(log2(real(NI_DEPTH))))-1 downto 0);
    signal full, empty: std_logic;
    signal CB_write: std_logic;
    signal CTS_in, CTS_out: std_logic;
  
-   type FIFO_Mem_type is array (0 to 3) of std_logic_vector(DATA_WIDTH-1 downto 0);
+   type FIFO_Mem_type is array (0 to NI_DEPTH-1) of std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_Mem : FIFO_Mem_type ;
 
    TYPE READ_STATE_TYPE IS (IDLE, READ_DATA);
@@ -60,9 +62,9 @@ begin
  
             HS_read_state_out <= IDLE;
             HS_write_state_out <= IDLE;
-            read_pointer <= "00";
+            read_pointer <= (others=>'0');
             RTS_FF <= '0';
-            write_pointer <= "00";
+            write_pointer <= (others=>'0');
             FIFO_Mem <= (others => (others=>'0'));
             CTS_out<= '0';
 
