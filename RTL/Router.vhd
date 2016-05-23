@@ -68,7 +68,7 @@ architecture behavior of router is
             clk: in  std_logic;
             empty: in  std_logic;
             flit_type: in std_logic_vector(2 downto 0);
-            dst_addr: in std_logic_vector(3 downto 0);
+            dst_addr: in std_logic_vector(NoC_size-1 downto 0);
             Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic
             );
 	end COMPONENT;
