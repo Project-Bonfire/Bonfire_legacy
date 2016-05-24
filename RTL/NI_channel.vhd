@@ -128,7 +128,7 @@ process(HS_write_state_out, RTS_FF, DCTS, empty)begin
 end process; 
 
 -- read from outside
-process(HS_read_state_out, full, DRTS) begin
+process(HS_read_state_out, full, DRTS, CTS_out) begin
     case(HS_read_state_out) is
         when IDLE =>
             if CTS_out = '0' and DRTS = '1' and full ='0' then
