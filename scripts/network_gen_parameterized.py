@@ -97,9 +97,13 @@ noc_file.write("use ieee.std_logic_1164.all;\n")
 noc_file.write("use IEEE.STD_LOGIC_ARITH.ALL;\n")
 noc_file.write("use IEEE.STD_LOGIC_UNSIGNED.ALL;\n")
 noc_file.write("USE ieee.numeric_std.ALL; \n")
-noc_file.write("use IEEE.math_real.\"ceil\";\n")
-noc_file.write("use IEEE.math_real.\"log2\";\n\n")
- 
+
+if add_FI:
+  noc_file.write("use IEEE.math_real.\"ceil\";\n")
+  noc_file.write("use IEEE.math_real.\"log2\";\n")
+
+noc_file.write("\n")
+
 noc_file.write("entity network_"+str(network_dime)+"x"+str(network_dime)+" is\n")
 if add_NI:
   noc_file.write(" generic (DATA_WIDTH: integer := 32; NI_DEPTH: integer:= 16);\n")
