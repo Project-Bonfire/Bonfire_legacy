@@ -1,6 +1,7 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
 import sys
+from math import ceil, log
 
 # MAN:
 # you should run this as
@@ -12,6 +13,7 @@ import sys
 if '--help' in sys.argv[1:]:
   print "\t-D [network size]: it makes a network of [size]X[size]. Size can be only multiples of two. default value is 4."
   print "\t-P: adds parity to each router input. in this case you need router_parity instead of normal router"
+  print "\t-DW [data_width]: sets the data width of the network!"
   print "\t-NI: adds network interface to each router's local port"
   print "\t-FI: adds fault injector units to all the links (except the local) in the network"
   print "\t-o: specifies the name and path of the output file. default path is current folder!"
@@ -21,9 +23,17 @@ if '--help' in sys.argv[1:]:
 if '-D'  in sys.argv[1:]:
   network_dime = int(sys.argv[sys.argv.index('-D')+1])
   if network_dime % 2 != 0:
-    raise ValueError("wrong network size. please choose multiples of 2. for example 4!")
+    raise ValueError("wrong network size. please choose powers of 2. for example 4!")
 else:
   network_dime = 4
+
+if '-DW' in sys.argv[1:]:
+  data_width = int(sys.argv[sys.argv.index('-DW')+1])
+  if data_width % 2 != 0:
+    raise ValueError("wrong data width. please choose powers of 2. for example 32!")
+else:
+  data_width = 32
+
 
 if '-P'  in sys.argv[1:]: 
   add_parity = True
@@ -39,7 +49,9 @@ else:
 
 if '-FI'  in sys.argv[1:]: 
   add_FI = True
+  fi_addres_width = int(ceil(log(data_width,2)))   
 else:
+  fi_addres_width = None
   add_FI = False
 
 file_name= 'network'
@@ -98,10 +110,6 @@ noc_file.write("use IEEE.STD_LOGIC_ARITH.ALL;\n")
 noc_file.write("use IEEE.STD_LOGIC_UNSIGNED.ALL;\n")
 noc_file.write("USE ieee.numeric_std.ALL; \n")
 
-if add_FI:
-  noc_file.write("use IEEE.math_real.\"ceil\";\n")
-  noc_file.write("use IEEE.math_real.\"log2\";\n")
-
 noc_file.write("\n")
 
 noc_file.write("entity network_"+str(network_dime)+"x"+str(network_dime)+" is\n")
@@ -127,8 +135,9 @@ if add_FI:
     node_x = i % network_dime
     node_y = i / network_dime
     if node_y != network_dime-1:
+
       noc_file.write("\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i) +
-                     "_"+str(i+network_dime)+": in std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);\n")
+                     "_"+str(i+network_dime)+": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n")
       noc_file.write("\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
                          ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+": in std_logic;\n\n")
   for i in range(0, network_dime*network_dime):
@@ -136,7 +145,7 @@ if add_FI:
       node_y = i / network_dime
       if node_x != network_dime -1 :
           noc_file.write("\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) +
-                         ": in std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);\n")
+                         ": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n")
           if node_y != network_dime -1 :
               noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
                              ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic;\n\n")
@@ -203,7 +212,7 @@ if add_FI:
   noc_file.write("  generic(DATA_WIDTH : integer := 32);\n")
   noc_file.write("  port(\n")
   noc_file.write("    data_in: in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
-  noc_file.write("    address: in std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);\n")
+  noc_file.write("    address: in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n")
   noc_file.write("    sta_0: in std_logic;\n")
   noc_file.write("    sta_1: in std_logic;\n")
   noc_file.write("    data_out: out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
