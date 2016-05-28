@@ -5,32 +5,33 @@ use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity Arbiter_pseudo is
-    port (  Req_N, Req_E, Req_W, Req_S, Req_L:in std_logic; -- From LBDR modules
+entity Arbiter is
+    port (  reset: in  std_logic;
+            clk: in  std_logic;
+            Req_N, Req_E, Req_W, Req_S, Req_L:in std_logic; -- From LBDR modules
             DCTS: in std_logic; -- Getting the CTS signal from the input FIFO of the next router/NI (for hand-shaking)
-            RTS_FF: in std_logic;
-            state: in std_logic_vector (5 downto 0); -- 6 states for Arbiter's FSM
-
             Grant_N, Grant_E, Grant_W, Grant_S, Grant_L:out std_logic; -- Grants given to LBDR requests (encoded as one-hot)
-            Xbar_sel : out std_logic_vector (4 downto 0); -- select lines for XBAR
-            RTS_FF_in: out std_logic; -- Valid output which is sent to the next router/NI to specify that the data on the output port is valid
-            state_in: out std_logic_vector (5 downto 0) -- 6 states for Arbiter's FSM
+            Xbar_sel : out std_logic_vector(4 downto 0); -- select lines for XBAR
+            RTS: out std_logic; -- Valid output which is sent to the next router/NI to specify that the data on the output port is valid
+
+            -- Checker outputs
+            err_Arbiter_Grants_onehot, err_Arbiter_Xbar_sel_onehot, err_Arbiter_state_onehot, err_Arbiter_no_req_Grant: out std_logic            
             );
 end;
 
-architecture behavior of Arbiter_pseudo is
+architecture behavior of Arbiter is
 --                                                                        next
 --                                     Arbiter                        router or NI
---                     -------------------------------------          ----
+--                     --- ---------------------------- ----          ----
 --   from LBDR  --->  |Req(s)                           RTS | -----> |DRTS
 --    To FIFO   <---  |Grant(s)                         DCTS| <----- |CTS
 --    to XBAR   <---  |Xbar_sel                             |        | 
---                     -------------------------------------          ----
+--                     --- ---------------------------- ----          ----
 
  --------------------------------------------------------------------------------------------
  -- an example of a request/grant + handshake process with next router or NI
 
--- CLK      _|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|__
+--CLK      _|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|_|'|__
 
 -- Req     _____|'''''''''''''''''''''''''''''''''''''''''''|________
 
@@ -46,7 +47,20 @@ architecture behavior of Arbiter_pseudo is
 --                                  |         to send           |
  --------------------------------------------------------------------------------------------
 
-SIGNAL next_state: std_logic_vector (5 downto 0); --  : STATE_TYPE := IDLE;
+component Arbiter_checkers is
+    port (  Req_N, Req_E, Req_W, Req_S, Req_L:in std_logic;
+            DCTS: in std_logic; 
+            Grant_N, Grant_E, Grant_W, Grant_S, Grant_L: in  std_logic;
+            Xbar_sel : in std_logic_vector(4 downto 0);
+            state_in: in std_logic_vector (5 downto 0);
+
+            -- Checker outputs
+            err_Arbiter_Grants_onehot, err_Arbiter_Xbar_sel_onehot, err_Arbiter_state_onehot, err_Arbiter_no_req_Grant: out std_logic
+            );
+end component;
+
+
+-- TYPE STATE_TYPE IS (IDLE, North, East, West, South, Local);
 CONSTANT IDLE: std_logic_vector (5 downto 0) := "000001";
 CONSTANT Local: std_logic_vector (5 downto 0) := "000010";
 CONSTANT North: std_logic_vector (5 downto 0) := "000100";
@@ -54,9 +68,29 @@ CONSTANT East: std_logic_vector (5 downto 0) := "001000";
 CONSTANT West: std_logic_vector (5 downto 0) := "010000";
 CONSTANT South: std_logic_vector (5 downto 0) := "100000";
 
+SIGNAL state, state_in, next_state : std_logic_vector (5 downto 0) := IDLE; -- : STATE_TYPE := IDLE;
+
+SIGNAL RTS_FF, RTS_FF_in: std_logic;
+SIGNAL Grant_N_sig, Grant_E_sig, Grant_W_sig, Grant_S_sig, Grant_L_sig: std_logic;
+SIGNAL Xbar_sel_sig: std_logic_vector(4 downto 0);
+
 begin
+        -- process for updating the state of arbiter's FSM, also setting RTS based on the state (if Grant is given or not)
+         process(clk, reset)begin
+             if reset = '0' then
+                 state<=IDLE;
+                 RTS_FF <= '0';
+             elsif clk'event and clk = '1' then
+                -- no grant given yet, it might be that there is no request to 
+                -- arbiter or request is there, but the next router's/NI's FIFO is full
+                state <= state_in;
+                RTS_FF <= RTS_FF_in;   
+              end if;
+     end process;
 
 -- anything below here is pure combinational
+
+RTS <= RTS_FF;
 
 process(RTS_FF, DCTS, state, next_state)begin
     if RTS_FF = '1' and DCTS = '0' then 
@@ -83,7 +117,7 @@ end process;
 
 -- sets the grants using round robin 
 -- the order is   L --> N --> E --> W --> S  and then back to L
-process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
+process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
     Grant_N <= '0';
     Grant_E <= '0';
     Grant_W <= '0';
@@ -199,5 +233,13 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
             end if;
     end case ;
 end process;
+
+Arbitercheckers: Arbiter_checkers PORT MAP (Req_N => Req_N, Req_E => Req_E, Req_W => Req_W, Req_S => Req_S, Req_L => Req_L, 
+                                            DCTS => DCTS, 
+                                            Grant_N => Grant_N_sig, Grant_E => Grant_E_sig, Grant_W => Grant_W_sig, Grant_S => Grant_S_sig, Grant_L => Grant_L_sig, 
+                                            Xbar_sel => Xbar_sel_sig, 
+                                            state_in => state_in, 
+                                            err_Arbiter_Grants_onehot => err_Arbiter_Grants_onehot, err_Arbiter_Xbar_sel_onehot => err_Arbiter_Xbar_sel_onehot, err_Arbiter_state_onehot => err_Arbiter_state_onehot, err_Arbiter_no_req_Grant => err_Arbiter_no_req_Grant);
+
 
 end;

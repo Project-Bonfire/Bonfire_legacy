@@ -36,7 +36,7 @@ begin
 
 -- Checkers
 
--- When FIFO has not received a request, it cannot send Clear to Send (When DRTS=0, CTS must be 0)!
+-- When FIFO has not received a request, It can not send Clear to Send (When DRTS=0, CTS must be 0)!
 process(DRTS, CTS_in) begin
 	if (DRTS = '0' and CTS_in = '1') then
 		err_FIFO_control_part_DRTS_CTS <= '1';
@@ -90,7 +90,7 @@ process(full_out, empty_out) begin
 	end if;
 end process;
 
--- If read_pointer and write_pointer are pointing to the same location, empty must be high (active) !
+-- if read_pointer and write_pointer are pointing to the same location, empty must be high (active) !
 process(read_pointer, write_pointer, empty_out) begin
 	if ((read_pointer = write_pointer) and empty_out = '0') then
 		err_FIFO_empty <= '1';
@@ -99,7 +99,7 @@ process(read_pointer, write_pointer, empty_out) begin
 	end if;
 end process;
 
--- If read_pointer is pointing to one location after write_pointer (in a circular manner), full must be high (active) !
+-- if read_pointer is pointing to one location after write_pointer (in a circular manner), full must be high (active) !
 process(read_pointer, write_pointer, full_out) begin
 	if ( (write_pointer = read_pointer - 1) and full_out = '0') then
 		err_FIFO_full <= '1';
