@@ -95,7 +95,7 @@ begin
                   when "0010" => FIFO_MEM_2 <= RX;
                   when "0100" => FIFO_MEM_3 <= RX;
                   when "1000" => FIFO_MEM_4 <= RX;                   
-                  when others => FIFO_MEM_1 <= RX; -- why ? 
+                  when others => FIFO_MEM_1 <= RX;  
                 end case ;
             end if;
             read_pointer <=  read_pointer_in;
@@ -112,7 +112,7 @@ begin
           when "0010" => Data_out <= FIFO_MEM_2;
           when "0100" => Data_out <= FIFO_MEM_3;
           when "1000" => Data_out <= FIFO_MEM_4;
-          when others => Data_out <= FIFO_MEM_1; -- why ? 
+          when others => Data_out <= FIFO_MEM_1; 
         end case ;
    end process;
 
