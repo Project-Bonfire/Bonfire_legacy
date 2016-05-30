@@ -13,16 +13,16 @@ entity FIFO_control_part_pseudo is
             read_en_S : in std_logic;
             read_en_L : in std_logic;
             CTS_out : in std_logic; -- pseudo-input
-            read_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
-            write_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
-            --read_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
-            --write_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
+            --read_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
+            --write_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
+            read_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
+            write_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
 
             CTS_in: out std_logic; -- pseudo-output
-            read_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
-            write_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
-            --read_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
-            --write_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
+            --read_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
+            --write_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
+            read_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
+            write_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
             empty_out: out std_logic;
             full_out: out std_logic;
             read_en_out: out std_logic;
@@ -84,8 +84,8 @@ begin
    process(write_en, write_pointer) 
    begin
      if write_en = '1' then
-         write_pointer_in <= write_pointer+1; 
-      -- write_pointer_in <= write_pointer(2 downto 0) & write_pointer(3);
+      --   write_pointer_in <= write_pointer+1; 
+       write_pointer_in <= write_pointer(2 downto 0) & write_pointer(3);
      else
         write_pointer_in <= write_pointer; 
      end if;
@@ -93,8 +93,8 @@ begin
 
    process(read_en, empty, read_pointer) begin
         if (read_en = '1' and empty = '0') then
-            read_pointer_in <= read_pointer+1; 
-         -- read_pointer_in <= read_pointer(2 downto 0) & read_pointer(3);            
+         --   read_pointer_in <= read_pointer+1; 
+          read_pointer_in <= read_pointer(2 downto 0) & read_pointer(3);            
         else 
             read_pointer_in <= read_pointer; 
         end if;
@@ -135,8 +135,8 @@ begin
                 empty <= '0';
             end if;
 
-        -- if (write_pointer = read_pointer(0) & read_pointer(3 downto 1)) then
-        if write_pointer = read_pointer - 1 then
+        if (write_pointer = read_pointer(0) & read_pointer(3 downto 1)) then
+--        if write_pointer = read_pointer - 1 then
                 full <= '1';
             else
                 full <= '0'; 

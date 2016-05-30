@@ -13,12 +13,12 @@ entity FIFO_control_part_with_checkers_top is
             read_en_S : in std_logic;
             read_en_L : in std_logic;
             CTS_out : in std_logic; -- pseudo-input
-            read_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
-            write_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
+            read_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
+            write_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
 
             CTS_in: out std_logic; -- pseudo-output
-            read_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
-            write_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
+            read_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
+            write_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
             empty_out: out std_logic;
             full_out: out std_logic;
             read_en_out: out std_logic;
@@ -27,8 +27,8 @@ entity FIFO_control_part_with_checkers_top is
             -- Checker outputs
             err_FIFO_control_part_DRTS_CTS, err_FIFO_read_pointer_update, err_FIFO_write_pointer_update: out std_logic;
             err_FIFO_read_pointer_not_update, err_FIFO_write_pointer_not_update: out std_logic;
-            err_FIFO_full_empty, err_FIFO_empty, err_FIFO_full: out std_logic
-            --err_FIFO_read_pointer_onehot, err_FIFO_write_pointer_onehot: out std_logic // REMOVED 
+            err_FIFO_full_empty, err_FIFO_empty, err_FIFO_full: out std_logic; 
+            err_FIFO_read_pointer_onehot, err_FIFO_write_pointer_onehot: out std_logic
     );
 end FIFO_control_part_with_checkers_top;
 
@@ -42,12 +42,12 @@ component FIFO_control_part_pseudo is
             read_en_S : in std_logic;
             read_en_L : in std_logic;
             CTS_out : in std_logic; -- pseudo-input
-            read_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
-            write_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
+            read_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
+            write_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
 
             CTS_in: out std_logic; -- pseudo-output
-            read_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
-            write_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
+            read_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
+            write_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
             empty_out: out std_logic;
             full_out: out std_logic;
             read_en_out: out std_logic;
@@ -63,10 +63,10 @@ component FIFO_control_part_checkers is
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
-            read_pointer: in std_logic_vector(1 downto 0);
-            read_pointer_in: in std_logic_vector(1 downto 0);
-            write_pointer: in std_logic_vector(1 downto 0); 
-            write_pointer_in: in std_logic_vector(1 downto 0); 
+            read_pointer: in std_logic_vector(3 downto 0);
+            read_pointer_in: in std_logic_vector(3 downto 0);
+            write_pointer: in std_logic_vector(3 downto 0); 
+            write_pointer_in: in std_logic_vector(3 downto 0); 
             empty_out: in std_logic;
             full_out: in std_logic;
             read_en_out: in std_logic;
@@ -75,13 +75,13 @@ component FIFO_control_part_checkers is
             -- Checker outputs
             err_FIFO_control_part_DRTS_CTS, err_FIFO_read_pointer_update, err_FIFO_write_pointer_update: out std_logic;
             err_FIFO_read_pointer_not_update, err_FIFO_write_pointer_not_update: out std_logic;
-            err_FIFO_full_empty, err_FIFO_empty, err_FIFO_full: out std_logic
-            --err_FIFO_read_pointer_onehot, err_FIFO_write_pointer_onehot: out std_logic // REMOVED 
+            err_FIFO_full_empty, err_FIFO_empty, err_FIFO_full: out std_logic;
+            err_FIFO_read_pointer_onehot, err_FIFO_write_pointer_onehot: out std_logic
             );
 end component;
 
 signal CTS_in_sig, empty_out_sig, full_out_sig, read_en_out_sig, write_en_out_sig: std_logic;
-signal read_pointer_in_sig, write_pointer_in_sig: std_logic_vector(1 downto 0);
+signal read_pointer_in_sig, write_pointer_in_sig: std_logic_vector(3 downto 0);
 
 begin 
 
@@ -119,9 +119,9 @@ CHECKERS: FIFO_control_part_checkers port map (DRTS => DRTS,
                                                err_FIFO_write_pointer_not_update => err_FIFO_write_pointer_not_update,
                                                err_FIFO_full_empty => err_FIFO_full_empty, 
                                                err_FIFO_empty => err_FIFO_empty, 
-                                               err_FIFO_full => err_FIFO_full
-                                               --err_FIFO_read_pointer_onehot => err_FIFO_read_pointer_onehot, // REMOVED
-                                               --err_FIFO_write_pointer_onehot => err_FIFO_write_pointer_onehot // REMOVED
+                                               err_FIFO_full => err_FIFO_full, 
+                                               err_FIFO_read_pointer_onehot => err_FIFO_read_pointer_onehot,
+                                               err_FIFO_write_pointer_onehot => err_FIFO_write_pointer_onehot
                                               );
 
 end behavior;

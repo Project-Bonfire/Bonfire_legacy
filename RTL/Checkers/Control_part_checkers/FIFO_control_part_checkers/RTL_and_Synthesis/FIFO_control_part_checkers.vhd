@@ -13,10 +13,10 @@ entity FIFO_control_part_checkers is
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
-            read_pointer: in std_logic_vector(1 downto 0);
-            read_pointer_in: in std_logic_vector(1 downto 0);
-            write_pointer: in std_logic_vector(1 downto 0); 
-            write_pointer_in: in std_logic_vector(1 downto 0); 
+            read_pointer: in std_logic_vector(3 downto 0);
+            read_pointer_in: in std_logic_vector(3 downto 0);
+            write_pointer: in std_logic_vector(3 downto 0); 
+            write_pointer_in: in std_logic_vector(3 downto 0); 
             empty_out: in std_logic;
             full_out: in std_logic;
             read_en_out: in std_logic;
@@ -25,8 +25,8 @@ entity FIFO_control_part_checkers is
             -- Checker outputs
             err_FIFO_control_part_DRTS_CTS, err_FIFO_read_pointer_update, err_FIFO_write_pointer_update: out std_logic;
             err_FIFO_read_pointer_not_update, err_FIFO_write_pointer_not_update: out std_logic;
-            err_FIFO_full_empty, err_FIFO_empty, err_FIFO_full: out std_logic
-            --err_FIFO_read_pointer_onehot, err_FIFO_write_pointer_onehot: out std_logic // REMOVED 
+            err_FIFO_full_empty, err_FIFO_empty, err_FIFO_full: out std_logic;
+            err_FIFO_read_pointer_onehot, err_FIFO_write_pointer_onehot: out std_logic
             );
 end FIFO_control_part_checkers;
 
@@ -36,7 +36,7 @@ begin
 
 -- Checkers
 
--- When FIFO has not received a request, it cannot send Clear to Send (When DRTS=0, CTS must be 0)!
+-- When FIFO has not received a request, It can not send Clear to Send (When DRTS=0, CTS must be 0)!
 process(DRTS, CTS_in) begin
 	if (DRTS = '0' and CTS_in = '1') then
 		err_FIFO_control_part_DRTS_CTS <= '1';
@@ -90,7 +90,7 @@ process(full_out, empty_out) begin
 	end if;
 end process;
 
--- If read_pointer and write_pointer are pointing to the same location, empty must be high (active) !
+-- if read_pointer and write_pointer are pointing to the same location, empty must be high (active) !
 process(read_pointer, write_pointer, empty_out) begin
 	if ((read_pointer = write_pointer) and empty_out = '0') then
 		err_FIFO_empty <= '1';
@@ -99,7 +99,7 @@ process(read_pointer, write_pointer, empty_out) begin
 	end if;
 end process;
 
--- If read_pointer is pointing to one location after write_pointer (in a circular manner), full must be high (active) !
+-- if read_pointer is pointing to one location after write_pointer (in a circular manner), full must be high (active) !
 process(read_pointer, write_pointer, full_out) begin
 	if ( (write_pointer = read_pointer - 1) and full_out = '0') then
 		err_FIFO_full <= '1';
@@ -108,23 +108,21 @@ process(read_pointer, write_pointer, full_out) begin
 	end if;
 end process;
 
--- REMOVED: The delayed read pointer of FIFO must be one-hot!
---process(read_pointer_in) begin
---	if (read_pointer_in /= "0001" and read_pointer_in /= "0010" and read_pointer_in /= "0100" and read_pointer_in /= "1000") then
---		err_FIFO_read_pointer_onehot <= '1';
---	else
---		err_FIFO_read_pointer_onehot <= '0';
---	end if;
---end process;
+process(read_pointer, read_pointer_in) begin
+	if ((read_pointer /= "0001" and read_pointer /= "0010" and read_pointer /= "0100" and read_pointer /= "1000") or (read_pointer_in /= "0001" and read_pointer_in /= "0010" and read_pointer_in /= "0100" and read_pointer_in /= "1000")) then
+		err_FIFO_read_pointer_onehot <= '1';
+	else
+		err_FIFO_read_pointer_onehot <= '0';
+	end if;
+end process;
 
--- REMOVED: The write pointer of FIFO must be one-hot!
---process(write_pointer) begin
---	if (write_pointer /= "0001" and write_pointer /= "0010" and write_pointer /= "0100" and write_pointer /= "1000") then
---		err_FIFO_write_pointer_onehot <= '1';
---	else
---		err_FIFO_write_pointer_onehot <= '0';
---	end if;
---end process;
+process(write_pointer, write_pointer_in) begin
+	if ((write_pointer /= "0001" and write_pointer /= "0010" and write_pointer /= "0100" and write_pointer /= "1000")or (write_pointer_in /= "0001" and write_pointer_in /= "0010" and write_pointer_in /= "0100" and write_pointer_in /= "1000")) then
+		err_FIFO_write_pointer_onehot <= '1';
+	else
+		err_FIFO_write_pointer_onehot <= '0';
+	end if;
+end process;
 
 
 end behavior;

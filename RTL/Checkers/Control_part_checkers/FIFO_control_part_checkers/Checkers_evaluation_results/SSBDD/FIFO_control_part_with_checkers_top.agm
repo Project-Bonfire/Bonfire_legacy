@@ -1,5 +1,5 @@
 
-STAT#    140 Nods,  71 Vars,  60 Grps,  11 Inps,  0 Cons,  17 Outs
+STAT#    302 Nods,  110 Vars,  95 Grps,  15 Inps,  0 Cons,  23 Outs
 
 MODE#   STRUCTURAL
 
@@ -11,327 +11,598 @@ VAR#   3:  (i_______)  "read_en_W"
 VAR#   4:  (i_______)  "read_en_S"
 VAR#   5:  (i_______)  "read_en_L"
 VAR#   6:  (i_______)  "CTS_out"
-VAR#   7:  (i_______)  "read_pointer[1]"
-VAR#   8:  (i_______)  "read_pointer[0]"
-VAR#   9:  (i_______)  "write_pointer[1]"
-VAR#   10:  (i_______)  "write_pointer[0]"
+VAR#   7:  (i_______)  "read_pointer[3]"
+VAR#   8:  (i_______)  "read_pointer[2]"
+VAR#   9:  (i_______)  "read_pointer[1]"
+VAR#   10:  (i_______)  "read_pointer[0]"
+VAR#   11:  (i_______)  "write_pointer[3]"
+VAR#   12:  (i_______)  "write_pointer[2]"
+VAR#   13:  (i_______)  "write_pointer[1]"
+VAR#   14:  (i_______)  "write_pointer[0]"
 
-VAR#   11:  (________)  "DRTS"
+VAR#   15:  (________)  "DRTS"
 GRP#    0: BEG =   0, LEN =   1 -----
    0   0:  (____)	(	0	0)  V = 0     "DRTS"
 
-VAR#   12:  (________)  "read_en_N"
+VAR#   16:  (________)  "read_en_N"
 GRP#    1: BEG =   1, LEN =   1 -----
    1   0:  (____)	(	0	0)  V = 1     "read_en_N"
 
-VAR#   13:  (________)  "read_en_E"
+VAR#   17:  (________)  "read_en_E"
 GRP#    2: BEG =   2, LEN =   1 -----
    2   0:  (____)	(	0	0)  V = 2     "read_en_E"
 
-VAR#   14:  (________)  "read_en_W"
+VAR#   18:  (________)  "read_en_W"
 GRP#    3: BEG =   3, LEN =   1 -----
    3   0:  (____)	(	0	0)  V = 3     "read_en_W"
 
-VAR#   15:  (________)  "read_en_S"
+VAR#   19:  (________)  "read_en_S"
 GRP#    4: BEG =   4, LEN =   1 -----
    4   0:  (____)	(	0	0)  V = 4     "read_en_S"
 
-VAR#   16:  (________)  "read_en_L"
+VAR#   20:  (________)  "read_en_L"
 GRP#    5: BEG =   5, LEN =   1 -----
    5   0:  (____)	(	0	0)  V = 5     "read_en_L"
 
-VAR#   17:  (________)  "read_pointer[1]"
+VAR#   21:  (________)  "read_pointer[3]"
 GRP#    6: BEG =   6, LEN =   1 -----
-   6   0:  (____)	(	0	0)  V = 7     "read_pointer[1]"
+   6   0:  (____)	(	0	0)  V = 7     "read_pointer[3]"
 
-VAR#   18:  (________)  "read_pointer[0]"
+VAR#   22:  (________)  "read_pointer[2]"
 GRP#    7: BEG =   7, LEN =   1 -----
-   7   0:  (____)	(	0	0)  V = 8     "read_pointer[0]"
+   7   0:  (____)	(	0	0)  V = 8     "read_pointer[2]"
 
-VAR#   19:  (________)  "write_pointer[1]"
+VAR#   23:  (________)  "read_pointer[1]"
 GRP#    8: BEG =   8, LEN =   1 -----
-   8   0:  (____)	(	0	0)  V = 9     "write_pointer[1]"
+   8   0:  (____)	(	0	0)  V = 9     "read_pointer[1]"
 
-VAR#   20:  (________)  "write_pointer[0]"
+VAR#   24:  (________)  "read_pointer[0]"
 GRP#    9: BEG =   9, LEN =   1 -----
-   9   0:  (____)	(	0	0)  V = 10     "write_pointer[0]"
+   9   0:  (____)	(	0	0)  V = 10     "read_pointer[0]"
 
-VAR#   21:  (________)  "FIFO_CONTROL_PART>U92>z"
+VAR#   25:  (________)  "write_pointer[3]"
 GRP#    10: BEG =   10, LEN =   1 -----
-   10   0:  (I___)	(	0	0)  V = 20     "FIFO_CONTROL_PART>U92>a"
+   10   0:  (____)	(	0	0)  V = 11     "write_pointer[3]"
 
-VAR#   22:  (________)  "FIFO_CONTROL_PART>U93>z"
+VAR#   26:  (________)  "write_pointer[2]"
 GRP#    11: BEG =   11, LEN =   1 -----
-   11   0:  (I___)	(	0	0)  V = 18     "FIFO_CONTROL_PART>U93>a"
+   11   0:  (____)	(	0	0)  V = 12     "write_pointer[2]"
 
-VAR#   23:  (________)  "FIFO_CONTROL_PART>U88>z"
-GRP#    12: BEG =   12, LEN =   4 -----
-   12   0:  (I___)	(	2	1)  V = 19     "FIFO_CONTROL_PART>U88>a"
-   13   1:  (____)	(	2	0)  V = 17     "FIFO_CONTROL_PART>U90>a"
-   14   2:  (I___)	(	0	3)  V = 17     "FIFO_CONTROL_PART>U88>c"
-   15   3:  (____)	(	0	0)  V = 19     "FIFO_CONTROL_PART>U89>a"
+VAR#   27:  (________)  "write_pointer[1]"
+GRP#    12: BEG =   12, LEN =   1 -----
+   12   0:  (____)	(	0	0)  V = 13     "write_pointer[1]"
 
-VAR#   24:  (________)  "FIFO_CONTROL_PART>U91>z"
-GRP#    13: BEG =   16, LEN =   4 -----
-   16   0:  (I___)	(	2	1)  V = 20     "FIFO_CONTROL_PART>U91>a"
-   17   1:  (I___)	(	2	0)  V = 22     "FIFO_CONTROL_PART>U91>b"
-   18   2:  (I___)	(	0	3)  V = 18     "FIFO_CONTROL_PART>U91>c"
-   19   3:  (I___)	(	0	0)  V = 21     "FIFO_CONTROL_PART>U91>d"
+VAR#   28:  (________)  "write_pointer[0]"
+GRP#    13: BEG =   13, LEN =   1 -----
+   13   0:  (____)	(	0	0)  V = 14     "write_pointer[0]"
 
-VAR#   25:  (________)  "FIFO_CONTROL_PART>U87>z"
-GRP#    14: BEG =   20, LEN =   2 -----
-   20   0:  (____)	(	1	0)  V = 24     "FIFO_CONTROL_PART>U87>a"
-   21   1:  (____)	(	0	0)  V = 23     "FIFO_CONTROL_PART>U87>b"
+VAR#   29:  (________)  "FIFO_CONTROL_PART>U81>z"
+GRP#    14: BEG =   14, LEN =   1 -----
+   14   0:  (I___)	(	0	0)  V = 27     "FIFO_CONTROL_PART>U81>a"
 
-VAR#   26:  (________)  "FIFO_CONTROL_PART>U81>z"
-GRP#    15: BEG =   22, LEN =   6 -----
-   22   0:  (I___)	(	5	1)  V = 14     "FIFO_CONTROL_PART>read_en_W"
-   23   1:  (I___)	(	5	2)  V = 15     "FIFO_CONTROL_PART>read_en_S"
-   24   2:  (I___)	(	5	3)  V = 12     "FIFO_CONTROL_PART>read_en_N"
-   25   3:  (I___)	(	5	4)  V = 16     "FIFO_CONTROL_PART>read_en_L"
-   26   4:  (I___)	(	5	0)  V = 13     "FIFO_CONTROL_PART>read_en_E"
-   27   5:  (I___)	(	0	0)  V = 25     "FIFO_CONTROL_PART>U81>c"
+VAR#   30:  (________)  "FIFO_CONTROL_PART>U82>z"
+GRP#    15: BEG =   15, LEN =   1 -----
+   15   0:  (I___)	(	0	0)  V = 23     "FIFO_CONTROL_PART>U82>a"
 
-VAR#   27:  (________)  "FIFO_CONTROL_PART>U84>z"
-GRP#    16: BEG =   28, LEN =   5 -----
-   28   0:  (____)	(	0	1)  V = 24     "FIFO_CONTROL_PART>U84>a"
-   29   1:  (I___)	(	3	2)  V = 23     "FIFO_CONTROL_PART>U85>a"
-   30   2:  (I___)	(	3	0)  V = 22     "FIFO_CONTROL_PART>U85>b"
-   31   3:  (____)	(	0	4)  V = 23     "FIFO_CONTROL_PART>U85>c"
-   32   4:  (____)	(	0	0)  V = 22     "FIFO_CONTROL_PART>U85>d"
+VAR#   31:  (________)  "FIFO_CONTROL_PART>U84>z"
+GRP#    16: BEG =   16, LEN =   1 -----
+   16   0:  (I___)	(	0	0)  V = 28     "FIFO_CONTROL_PART>U84>a"
 
-VAR#   28:  (________)  "FIFO_CONTROL_PART>U86>z"
-GRP#    17: BEG =   33, LEN =   1 -----
-   33   0:  (I___)	(	0	0)  V = 25     "FIFO_CONTROL_PART>U86>a"
+VAR#   32:  (________)  "FIFO_CONTROL_PART>U85>z"
+GRP#    17: BEG =   17, LEN =   1 -----
+   17   0:  (I___)	(	0	0)  V = 24     "FIFO_CONTROL_PART>U85>a"
 
-VAR#   29:  (________)  "FIFO_CONTROL_PART>U75>z"
-GRP#    18: BEG =   34, LEN =   3 -----
-   34   0:  (____)	(	1	0)  V = 6     "CTS_out"
-   35   1:  (____)	(	2	0)  V = 27     "FIFO_CONTROL_PART>U75>b"
-   36   2:  (I___)	(	0	0)  V = 11     "FIFO_CONTROL_PART>DRTS"
+VAR#   33:  (________)  "FIFO_CONTROL_PART>U87>z"
+GRP#    18: BEG =   18, LEN =   1 -----
+   18   0:  (I___)	(	0	0)  V = 25     "FIFO_CONTROL_PART>U87>a"
 
-VAR#   30:  (________)  "FIFO_CONTROL_PART>U78>z"
-GRP#    19: BEG =   37, LEN =   2 -----
-   37   0:  (____)	(	1	0)  V = 22     "FIFO_CONTROL_PART>U78>a"
-   38   1:  (____)	(	0	0)  V = 26     "FIFO_CONTROL_PART>U78>b"
+VAR#   34:  (________)  "FIFO_CONTROL_PART>U88>z"
+GRP#    19: BEG =   19, LEN =   1 -----
+   19   0:  (I___)	(	0	0)  V = 21     "FIFO_CONTROL_PART>U88>a"
 
-VAR#   31:  (________)  "FIFO_CONTROL_PART>U80>z"
-GRP#    20: BEG =   39, LEN =   1 -----
-   39   0:  (I___)	(	0	0)  V = 26     "FIFO_CONTROL_PART>U80>a"
+VAR#   35:  (________)  "FIFO_CONTROL_PART>U90>z"
+GRP#    20: BEG =   20, LEN =   1 -----
+   20   0:  (I___)	(	0	0)  V = 26     "FIFO_CONTROL_PART>U90>a"
 
-VAR#   32:  (________)  "FIFO_CONTROL_PART>U70>z"
-GRP#    21: BEG =   40, LEN =   1 -----
-   40   0:  (I___)	(	0	0)  V = 29     "FIFO_CONTROL_PART>U70>a"
+VAR#   36:  (________)  "FIFO_CONTROL_PART>U91>z"
+GRP#    21: BEG =   21, LEN =   1 -----
+   21   0:  (I___)	(	0	0)  V = 22     "FIFO_CONTROL_PART>U91>a"
 
-VAR#   33:  (________)  "FIFO_CONTROL_PART>U72>z"
-GRP#    22: BEG =   41, LEN =   2 -----
-   41   0:  (____)	(	1	0)  V = 21     "FIFO_CONTROL_PART>U72>a"
-   42   1:  (____)	(	0	0)  V = 29     "FIFO_CONTROL_PART>U72>b"
+VAR#   37:  (________)  "FIFO_CONTROL_PART>U73>z"
+GRP#    22: BEG =   22, LEN =   16 -----
+   22   0:  (I___)	(	2	1)  V = 27     "FIFO_CONTROL_PART>U77>a"
+   23   1:  (I___)	(	2	0)  V = 36     "FIFO_CONTROL_PART>U77>b"
+   24   2:  (I___)	(	4	3)  V = 22     "FIFO_CONTROL_PART>U77>c"
+   25   3:  (I___)	(	4	0)  V = 29     "FIFO_CONTROL_PART>U77>d"
+   26   4:  (I___)	(	6	5)  V = 26     "FIFO_CONTROL_PART>U76>a"
+   27   5:  (I___)	(	6	0)  V = 34     "FIFO_CONTROL_PART>U76>b"
+   28   6:  (I___)	(	8	7)  V = 21     "FIFO_CONTROL_PART>U76>c"
+   29   7:  (I___)	(	8	0)  V = 35     "FIFO_CONTROL_PART>U76>d"
+   30   8:  (I___)	(	10	9)  V = 25     "FIFO_CONTROL_PART>U75>a"
+   31   9:  (I___)	(	10	0)  V = 32     "FIFO_CONTROL_PART>U75>b"
+   32   10:  (I___)	(	12	11)  V = 24     "FIFO_CONTROL_PART>U75>c"
+   33   11:  (I___)	(	12	0)  V = 33     "FIFO_CONTROL_PART>U75>d"
+   34   12:  (I___)	(	14	13)  V = 28     "FIFO_CONTROL_PART>U74>a"
+   35   13:  (I___)	(	14	0)  V = 30     "FIFO_CONTROL_PART>U74>b"
+   36   14:  (I___)	(	0	15)  V = 23     "FIFO_CONTROL_PART>U74>c"
+   37   15:  (I___)	(	0	0)  V = 31     "FIFO_CONTROL_PART>U74>d"
 
-VAR#   34:  (________)  "FIFO_CONTROL_PART>U74>z"
-GRP#    23: BEG =   43, LEN =   1 -----
-   43   0:  (I___)	(	0	0)  V = 29     "FIFO_CONTROL_PART>U74>a"
+VAR#   38:  (________)  "FIFO_CONTROL_PART>U79>z"
+GRP#    23: BEG =   38, LEN =   16 -----
+   38   0:  (I___)	(	2	1)  V = 26     "FIFO_CONTROL_PART>U89>a"
+   39   1:  (I___)	(	2	0)  V = 36     "FIFO_CONTROL_PART>U89>b"
+   40   2:  (I___)	(	4	3)  V = 22     "FIFO_CONTROL_PART>U89>c"
+   41   3:  (I___)	(	4	0)  V = 35     "FIFO_CONTROL_PART>U89>d"
+   42   4:  (I___)	(	6	5)  V = 25     "FIFO_CONTROL_PART>U86>a"
+   43   5:  (I___)	(	6	0)  V = 34     "FIFO_CONTROL_PART>U86>b"
+   44   6:  (I___)	(	8	7)  V = 21     "FIFO_CONTROL_PART>U86>c"
+   45   7:  (I___)	(	8	0)  V = 33     "FIFO_CONTROL_PART>U86>d"
+   46   8:  (I___)	(	10	9)  V = 28     "FIFO_CONTROL_PART>U83>a"
+   47   9:  (I___)	(	10	0)  V = 32     "FIFO_CONTROL_PART>U83>b"
+   48   10:  (I___)	(	12	11)  V = 24     "FIFO_CONTROL_PART>U83>c"
+   49   11:  (I___)	(	12	0)  V = 31     "FIFO_CONTROL_PART>U83>d"
+   50   12:  (I___)	(	14	13)  V = 27     "FIFO_CONTROL_PART>U80>a"
+   51   13:  (I___)	(	14	0)  V = 30     "FIFO_CONTROL_PART>U80>b"
+   52   14:  (I___)	(	0	15)  V = 23     "FIFO_CONTROL_PART>U80>c"
+   53   15:  (I___)	(	0	0)  V = 29     "FIFO_CONTROL_PART>U80>d"
 
-VAR#   35:  (________)  "FIFO_CONTROL_PART>U77>z"
-GRP#    24: BEG =   44, LEN =   4 -----
-   44   0:  (I___)	(	2	1)  V = 17     "FIFO_CONTROL_PART>U77>a"
-   45   1:  (I___)	(	2	0)  V = 30     "FIFO_CONTROL_PART>U77>b"
-   46   2:  (____)	(	0	3)  V = 30     "FIFO_CONTROL_PART>U77>c"
-   47   3:  (____)	(	0	0)  V = 17     "FIFO_CONTROL_PART>U77>d"
+VAR#   39:  (________)  "FIFO_CONTROL_PART>U62>z"
+GRP#    24: BEG =   54, LEN =   3 -----
+   54   0:  (I___)	(	0	1)  V = 6     "CTS_out"
+   55   1:  (____)	(	0	2)  V = 37     "FIFO_CONTROL_PART>U62>b"
+   56   2:  (____)	(	0	0)  V = 15     "FIFO_CONTROL_PART>DRTS"
 
-VAR#   36:  (________)  "FIFO_CONTROL_PART>U79>z"
-GRP#    25: BEG =   48, LEN =   4 -----
-   48   0:  (I___)	(	2	1)  V = 18     "FIFO_CONTROL_PART>U79>a"
-   49   1:  (I___)	(	2	0)  V = 26     "FIFO_CONTROL_PART>U79>b"
-   50   2:  (I___)	(	0	3)  V = 31     "FIFO_CONTROL_PART>U79>c"
-   51   3:  (I___)	(	0	0)  V = 22     "FIFO_CONTROL_PART>U79>d"
+VAR#   40:  (________)  "FIFO_CONTROL_PART>U69>z"
+GRP#    25: BEG =   57, LEN =   6 -----
+   57   0:  (I___)	(	5	1)  V = 18     "FIFO_CONTROL_PART>read_en_W"
+   58   1:  (I___)	(	5	2)  V = 19     "FIFO_CONTROL_PART>read_en_S"
+   59   2:  (I___)	(	5	3)  V = 16     "FIFO_CONTROL_PART>read_en_N"
+   60   3:  (I___)	(	5	4)  V = 20     "FIFO_CONTROL_PART>read_en_L"
+   61   4:  (I___)	(	5	0)  V = 17     "FIFO_CONTROL_PART>read_en_E"
+   62   5:  (I___)	(	0	0)  V = 38     "FIFO_CONTROL_PART>U69>c"
 
-VAR#   37:  (________)  "FIFO_CONTROL_PART>U71>z"
-GRP#    26: BEG =   52, LEN =   4 -----
-   52   0:  (I___)	(	2	1)  V = 19     "FIFO_CONTROL_PART>U71>a"
-   53   1:  (I___)	(	2	0)  V = 33     "FIFO_CONTROL_PART>U71>b"
-   54   2:  (____)	(	0	3)  V = 33     "FIFO_CONTROL_PART>U71>c"
-   55   3:  (____)	(	0	0)  V = 19     "FIFO_CONTROL_PART>U71>d"
+VAR#   41:  (________)  "FIFO_CONTROL_PART>U72>z"
+GRP#    26: BEG =   63, LEN =   1 -----
+   63   0:  (I___)	(	0	0)  V = 37     "FIFO_CONTROL_PART>U72>a"
 
-VAR#   38:  (________)  "FIFO_CONTROL_PART>U73>z"
-GRP#    27: BEG =   56, LEN =   4 -----
-   56   0:  (I___)	(	2	1)  V = 20     "FIFO_CONTROL_PART>U73>a"
-   57   1:  (I___)	(	2	0)  V = 29     "FIFO_CONTROL_PART>U73>b"
-   58   2:  (I___)	(	0	3)  V = 34     "FIFO_CONTROL_PART>U73>c"
-   59   3:  (I___)	(	0	0)  V = 21     "FIFO_CONTROL_PART>U73>d"
+VAR#   42:  (________)  "FIFO_CONTROL_PART>U78>z"
+GRP#    27: BEG =   64, LEN =   1 -----
+   64   0:  (I___)	(	0	0)  V = 38     "FIFO_CONTROL_PART>U78>a"
 
-VAR#   39:  (________)  "CHECKERS>U137>z"
-GRP#    28: BEG =   60, LEN =   1 -----
-   60   0:  (I___)	(	0	0)  V = 12     "CHECKERS>read_en_N"
+VAR#   43:  (________)  "FIFO_CONTROL_PART>U61>z"
+GRP#    28: BEG =   65, LEN =   1 -----
+   65   0:  (I___)	(	0	0)  V = 39     "FIFO_CONTROL_PART>U61>a"
 
-VAR#   40:  (________)  "CHECKERS>U138>z"
-GRP#    29: BEG =   61, LEN =   1 -----
-   61   0:  (I___)	(	0	0)  V = 16     "CHECKERS>read_en_L"
+VAR#   44:  (________)  "FIFO_CONTROL_PART>U68>z"
+GRP#    29: BEG =   66, LEN =   1 -----
+   66   0:  (I___)	(	0	0)  V = 40     "FIFO_CONTROL_PART>U68>a"
 
-VAR#   41:  (________)  "CHECKERS>U139>z"
-GRP#    30: BEG =   62, LEN =   1 -----
-   62   0:  (I___)	(	0	0)  V = 13     "CHECKERS>read_en_E"
+VAR#   45:  (________)  "FIFO_CONTROL_PART>U55>z"
+GRP#    30: BEG =   67, LEN =   1 -----
+   67   0:  (I___)	(	0	0)  V = 43     "FIFO_CONTROL_PART>U55>a"
 
-VAR#   42:  (________)  "CHECKERS>U140>z"
-GRP#    31: BEG =   63, LEN =   1 -----
-   63   0:  (I___)	(	0	0)  V = 31     "CHECKERS>read_en_out"
+VAR#   46:  (________)  "FIFO_CONTROL_PART>U56>z"
+GRP#    31: BEG =   68, LEN =   1 -----
+   68   0:  (I___)	(	0	0)  V = 43     "FIFO_CONTROL_PART>U56>a"
 
-VAR#   43:  (________)  "CHECKERS>U141>z"
-GRP#    32: BEG =   64, LEN =   1 -----
-   64   0:  (I___)	(	0	0)  V = 14     "CHECKERS>read_en_W"
+VAR#   47:  (________)  "FIFO_CONTROL_PART>U57>z"
+GRP#    32: BEG =   69, LEN =   4 -----
+   69   0:  (I___)	(	1	2)  V = 33     "FIFO_CONTROL_PART>U57>a"
+   70   1:  (I___)	(	0	2)  V = 43     "FIFO_CONTROL_PART>U57>b"
+   71   2:  (I___)	(	3	0)  V = 35     "FIFO_CONTROL_PART>U57>c"
+   72   3:  (I___)	(	0	0)  V = 45     "FIFO_CONTROL_PART>U57>d"
 
-VAR#   44:  (________)  "CHECKERS>U142>z"
-GRP#    33: BEG =   65, LEN =   1 -----
-   65   0:  (I___)	(	0	0)  V = 15     "CHECKERS>read_en_S"
+VAR#   48:  (________)  "FIFO_CONTROL_PART>U58>z"
+GRP#    33: BEG =   73, LEN =   4 -----
+   73   0:  (I___)	(	1	2)  V = 35     "FIFO_CONTROL_PART>U58>a"
+   74   1:  (I___)	(	0	2)  V = 43     "FIFO_CONTROL_PART>U58>b"
+   75   2:  (I___)	(	3	0)  V = 29     "FIFO_CONTROL_PART>U58>c"
+   76   3:  (I___)	(	0	0)  V = 39     "FIFO_CONTROL_PART>U58>d"
 
-VAR#   45:  (________)  "CHECKERS>U145>z"
-GRP#    34: BEG =   66, LEN =   1 -----
-   66   0:  (I___)	(	0	0)  V = 27     "CHECKERS>U145>a"
+VAR#   49:  (________)  "FIFO_CONTROL_PART>U59>z"
+GRP#    34: BEG =   77, LEN =   4 -----
+   77   0:  (I___)	(	1	2)  V = 29     "FIFO_CONTROL_PART>U59>a"
+   78   1:  (I___)	(	0	2)  V = 43     "FIFO_CONTROL_PART>U59>b"
+   79   2:  (I___)	(	3	0)  V = 31     "FIFO_CONTROL_PART>U59>c"
+   80   3:  (I___)	(	0	0)  V = 46     "FIFO_CONTROL_PART>U59>d"
 
-VAR#   46:  (________)  "CHECKERS>U151>z"
-GRP#    35: BEG =   67, LEN =   1 -----
-   67   0:  (I___)	(	0	0)  V = 20     "CHECKERS>U151>a"
+VAR#   50:  (________)  "FIFO_CONTROL_PART>U60>z"
+GRP#    35: BEG =   81, LEN =   4 -----
+   81   0:  (I___)	(	1	2)  V = 31     "FIFO_CONTROL_PART>U60>a"
+   82   1:  (I___)	(	0	2)  V = 43     "FIFO_CONTROL_PART>U60>b"
+   83   2:  (I___)	(	3	0)  V = 33     "FIFO_CONTROL_PART>U60>c"
+   84   3:  (I___)	(	0	0)  V = 45     "FIFO_CONTROL_PART>U60>d"
 
-VAR#   47:  (________)  "CHECKERS>U152>z"
-GRP#    36: BEG =   68, LEN =   1 -----
-   68   0:  (I___)	(	0	0)  V = 18     "CHECKERS>U152>a"
+VAR#   51:  (________)  "FIFO_CONTROL_PART>U64>z"
+GRP#    36: BEG =   85, LEN =   4 -----
+   85   0:  (I___)	(	1	2)  V = 36     "FIFO_CONTROL_PART>U64>a"
+   86   1:  (I___)	(	0	2)  V = 44     "FIFO_CONTROL_PART>U64>b"
+   87   2:  (I___)	(	3	0)  V = 34     "FIFO_CONTROL_PART>U64>c"
+   88   3:  (I___)	(	0	0)  V = 40     "FIFO_CONTROL_PART>U64>d"
 
-VAR#   48:  (________)  "CHECKERS>U153>z"
-GRP#    37: BEG =   69, LEN =   1 -----
-   69   0:  (I___)	(	0	0)  V = 28     "CHECKERS>U153>a"
+VAR#   52:  (________)  "FIFO_CONTROL_PART>U65>z"
+GRP#    37: BEG =   89, LEN =   4 -----
+   89   0:  (I___)	(	1	2)  V = 30     "FIFO_CONTROL_PART>U65>a"
+   90   1:  (I___)	(	0	2)  V = 44     "FIFO_CONTROL_PART>U65>b"
+   91   2:  (I___)	(	3	0)  V = 36     "FIFO_CONTROL_PART>U65>c"
+   92   3:  (I___)	(	0	0)  V = 40     "FIFO_CONTROL_PART>U65>d"
 
-VAR#   49:  (________)  "CHECKERS>U155>z"
-GRP#    38: BEG =   70, LEN =   1 -----
-   70   0:  (I___)	(	0	0)  V = 17     "CHECKERS>U155>a"
+VAR#   53:  (________)  "FIFO_CONTROL_PART>U66>z"
+GRP#    38: BEG =   93, LEN =   4 -----
+   93   0:  (I___)	(	1	2)  V = 32     "FIFO_CONTROL_PART>U66>a"
+   94   1:  (I___)	(	0	2)  V = 44     "FIFO_CONTROL_PART>U66>b"
+   95   2:  (I___)	(	3	0)  V = 30     "FIFO_CONTROL_PART>U66>c"
+   96   3:  (I___)	(	0	0)  V = 40     "FIFO_CONTROL_PART>U66>d"
 
-VAR#   50:  (________)  "CHECKERS>U156>z"
-GRP#    39: BEG =   71, LEN =   1 -----
-   71   0:  (I___)	(	0	0)  V = 19     "CHECKERS>U156>a"
+VAR#   54:  (________)  "FIFO_CONTROL_PART>U67>z"
+GRP#    39: BEG =   97, LEN =   4 -----
+   97   0:  (I___)	(	1	2)  V = 34     "FIFO_CONTROL_PART>U67>a"
+   98   1:  (I___)	(	0	2)  V = 44     "FIFO_CONTROL_PART>U67>b"
+   99   2:  (I___)	(	3	0)  V = 32     "FIFO_CONTROL_PART>U67>c"
+   100   3:  (I___)	(	0	0)  V = 40     "FIFO_CONTROL_PART>U67>d"
 
-VAR#   51:  (________)  "CHECKERS>U154>z"
-GRP#    40: BEG =   72, LEN =   4 -----
-   72   0:  (I___)	(	1	2)  V = 50     "CHECKERS>U154>a"
-   73   1:  (I___)	(	0	2)  V = 17     "CHECKERS>U154>b"
-   74   2:  (I___)	(	3	0)  V = 49     "CHECKERS>U154>c"
-   75   3:  (I___)	(	0	0)  V = 19     "CHECKERS>U154>d"
+VAR#   55:  (________)  "CHECKERS>U219>z"
+GRP#    40: BEG =   101, LEN =   1 -----
+   101   0:  (I___)	(	0	0)  V = 49     "CHECKERS>U219>a"
 
-VAR#   52:  (________)  "CHECKERS>U132>z"
-GRP#    41: BEG =   76, LEN =   8 -----
-   76   0:  (I___)	(	2	1)  V = 36     "CHECKERS>U134>a"
-   77   1:  (I___)	(	2	0)  V = 47     "CHECKERS>U134>b"
-   78   2:  (____)	(	4	3)  V = 47     "CHECKERS>U134>c"
-   79   3:  (____)	(	4	0)  V = 36     "CHECKERS>U134>d"
-   80   4:  (I___)	(	6	5)  V = 35     "CHECKERS>U133>a"
-   81   5:  (I___)	(	6	0)  V = 49     "CHECKERS>U133>b"
-   82   6:  (____)	(	0	7)  V = 49     "CHECKERS>U133>c"
-   83   7:  (____)	(	0	0)  V = 35     "CHECKERS>U133>d"
+VAR#   56:  (________)  "CHECKERS>U221>z"
+GRP#    41: BEG =   102, LEN =   1 -----
+   102   0:  (I___)	(	0	0)  V = 50     "CHECKERS>U221>a"
 
-VAR#   53:  (________)  "CHECKERS>U123>z"
-GRP#    42: BEG =   84, LEN =   8 -----
-   84   0:  (____)	(	1	2)  V = 38     "CHECKERS>U126>a"
-   85   1:  (____)	(	0	2)  V = 46     "CHECKERS>U126>b"
-   86   2:  (I___)	(	3	4)  V = 46     "CHECKERS>U126>c"
-   87   3:  (I___)	(	0	4)  V = 38     "CHECKERS>U126>d"
-   88   4:  (____)	(	5	6)  V = 37     "CHECKERS>U125>a"
-   89   5:  (____)	(	0	6)  V = 50     "CHECKERS>U125>b"
-   90   6:  (I___)	(	7	0)  V = 50     "CHECKERS>U125>c"
-   91   7:  (I___)	(	0	0)  V = 37     "CHECKERS>U125>d"
+VAR#   57:  (________)  "CHECKERS>U223>z"
+GRP#    42: BEG =   103, LEN =   1 -----
+   103   0:  (I___)	(	0	0)  V = 47     "CHECKERS>U223>a"
 
-VAR#   54:  (_o______)  "write_pointer_in[1]"
-GRP#    43: BEG =   92, LEN =   1 -----
-   92   0:  (____)	(	0	0)  V = 37     "fan_write_pointer_in_1_0__1 "
+VAR#   58:  (________)  "CHECKERS>U225>z"
+GRP#    43: BEG =   104, LEN =   1 -----
+   104   0:  (I___)	(	0	0)  V = 48     "CHECKERS>U225>a"
 
-VAR#   55:  (_o______)  "write_pointer_in[0]"
-GRP#    44: BEG =   93, LEN =   1 -----
-   93   0:  (____)	(	0	0)  V = 38     "fan_write_pointer_in_1_0__0 "
+VAR#   59:  (________)  "CHECKERS>U245>z"
+GRP#    44: BEG =   105, LEN =   1 -----
+   105   0:  (I___)	(	0	0)  V = 53     "CHECKERS>U245>a"
 
-VAR#   56:  (_o______)  "write_en_out"
-GRP#    45: BEG =   94, LEN =   1 -----
-   94   0:  (____)	(	0	0)  V = 32     "fan_write_en_out"
+VAR#   60:  (________)  "CHECKERS>U247>z"
+GRP#    45: BEG =   106, LEN =   1 -----
+   106   0:  (I___)	(	0	0)  V = 54     "CHECKERS>U247>a"
 
-VAR#   57:  (_o______)  "read_pointer_in[1]"
-GRP#    46: BEG =   95, LEN =   1 -----
-   95   0:  (____)	(	0	0)  V = 35     "fan_read_pointer_in_1_0__1 "
+VAR#   61:  (________)  "CHECKERS>U249>z"
+GRP#    46: BEG =   107, LEN =   1 -----
+   107   0:  (I___)	(	0	0)  V = 51     "CHECKERS>U249>a"
 
-VAR#   58:  (_o______)  "read_pointer_in[0]"
-GRP#    47: BEG =   96, LEN =   1 -----
-   96   0:  (____)	(	0	0)  V = 36     "fan_read_pointer_in_1_0__0 "
+VAR#   62:  (________)  "CHECKERS>U251>z"
+GRP#    47: BEG =   108, LEN =   1 -----
+   108   0:  (I___)	(	0	0)  V = 52     "CHECKERS>U251>a"
 
-VAR#   59:  (_o______)  "read_en_out"
-GRP#    48: BEG =   97, LEN =   1 -----
-   97   0:  (____)	(	0	0)  V = 31     "fan_read_en_out"
+VAR#   63:  (________)  "CHECKERS>U254>z"
+GRP#    48: BEG =   109, LEN =   1 -----
+   109   0:  (I___)	(	0	0)  V = 16     "CHECKERS>read_en_N"
 
-VAR#   60:  (_o______)  "full_out"
-GRP#    49: BEG =   98, LEN =   1 -----
-   98   0:  (____)	(	0	0)  V = 27     "fan_full_out"
+VAR#   64:  (________)  "CHECKERS>U255>z"
+GRP#    49: BEG =   110, LEN =   1 -----
+   110   0:  (I___)	(	0	0)  V = 20     "CHECKERS>read_en_L"
 
-VAR#   61:  (_o______)  "err_FIFO_write_pointer_update"
-GRP#    50: BEG =   99, LEN =   3 -----
-   99   0:  (____)	(	0	1)  V = 53     "CHECKERS>U121>a"
-   100   1:  (____)	(	0	2)  V = 45     "CHECKERS>U121>b"
-   101   2:  (____)	(	0	0)  V = 32     "CHECKERS>U121>c"
+VAR#   65:  (________)  "CHECKERS>U256>z"
+GRP#    50: BEG =   111, LEN =   1 -----
+   111   0:  (I___)	(	0	0)  V = 17     "CHECKERS>read_en_E"
 
-VAR#   62:  (_o______)  "err_FIFO_write_pointer_not_update"
-GRP#    51: BEG =   102, LEN =   3 -----
-   102   0:  (I___)	(	1	2)  V = 32     "CHECKERS>U122>a"
-   103   1:  (I___)	(	0	2)  V = 45     "CHECKERS>U122>b"
-   104   2:  (I___)	(	0	0)  V = 53     "CHECKERS>U122>c"
+VAR#   66:  (________)  "CHECKERS>U257>z"
+GRP#    51: BEG =   112, LEN =   1 -----
+   112   0:  (I___)	(	0	0)  V = 44     "CHECKERS>read_en_out"
 
-VAR#   63:  (_o______)  "err_FIFO_read_pointer_update"
-GRP#    52: BEG =   105, LEN =   8 -----
-   105   0:  (I___)	(	1	6)  V = 40     "CHECKERS>U129>a"
-   106   1:  (I___)	(	2	6)  V = 39     "CHECKERS>U129>b"
-   107   2:  (I___)	(	3	6)  V = 41     "CHECKERS>U129>c"
-   108   3:  (I___)	(	4	6)  V = 43     "CHECKERS>U128>a"
-   109   4:  (I___)	(	5	6)  V = 42     "CHECKERS>U128>b"
-   110   5:  (I___)	(	0	6)  V = 44     "CHECKERS>U128>c"
-   111   6:  (I___)	(	0	7)  V = 52     "CHECKERS>U127>c"
-   112   7:  (I___)	(	0	0)  V = 28     "CHECKERS>U127>d"
+VAR#   67:  (________)  "CHECKERS>U258>z"
+GRP#    52: BEG =   113, LEN =   1 -----
+   113   0:  (I___)	(	0	0)  V = 18     "CHECKERS>read_en_W"
 
-VAR#   64:  (_o______)  "err_FIFO_read_pointer_not_update"
-GRP#    53: BEG =   113, LEN =   8 -----
-   113   0:  (I___)	(	1	7)  V = 48     "CHECKERS>U130>a"
-   114   1:  (I___)	(	0	2)  V = 44     "CHECKERS>U135>a"
-   115   2:  (I___)	(	0	3)  V = 43     "CHECKERS>U135>b"
-   116   3:  (I___)	(	0	4)  V = 42     "CHECKERS>U135>c"
-   117   4:  (I___)	(	0	5)  V = 41     "CHECKERS>U136>a"
-   118   5:  (I___)	(	0	6)  V = 40     "CHECKERS>U136>b"
-   119   6:  (I___)	(	0	7)  V = 39     "CHECKERS>U136>c"
-   120   7:  (____)	(	0	0)  V = 52     "CHECKERS>U131>a"
+VAR#   68:  (________)  "CHECKERS>U259>z"
+GRP#    53: BEG =   114, LEN =   1 -----
+   114   0:  (I___)	(	0	0)  V = 19     "CHECKERS>read_en_S"
 
-VAR#   65:  (_o______)  "err_FIFO_full_empty"
-GRP#    54: BEG =   121, LEN =   2 -----
-   121   0:  (____)	(	0	1)  V = 27     "CHECKERS>U143>a"
-   122   1:  (____)	(	0	0)  V = 28     "CHECKERS>U143>b"
+VAR#   69:  (________)  "CHECKERS>U262>z"
+GRP#    54: BEG =   115, LEN =   1 -----
+   115   0:  (I___)	(	0	0)  V = 41     "CHECKERS>U262>a"
 
-VAR#   66:  (_o______)  "err_FIFO_full"
-GRP#    55: BEG =   123, LEN =   7 -----
-   123   0:  (I___)	(	2	1)  V = 51     "CHECKERS>U148>a"
-   124   1:  (I___)	(	2	3)  V = 46     "CHECKERS>U148>b"
-   125   2:  (I___)	(	0	3)  V = 47     "CHECKERS>U146>b"
-   126   3:  (____)	(	5	4)  V = 46     "CHECKERS>U147>a"
-   127   4:  (____)	(	5	6)  V = 51     "CHECKERS>U147>b"
-   128   5:  (____)	(	0	6)  V = 47     "CHECKERS>U146>d"
-   129   6:  (____)	(	0	0)  V = 45     "CHECKERS>U144>b"
+VAR#   70:  (________)  "CHECKERS>U276>z"
+GRP#    55: BEG =   116, LEN =   1 -----
+   116   0:  (I___)	(	0	0)  V = 28     "CHECKERS>U276>a"
 
-VAR#   67:  (_o______)  "err_FIFO_empty"
-GRP#    56: BEG =   130, LEN =   6 -----
-   130   0:  (____)	(	0	1)  V = 51     "CHECKERS>U149>a"
-   131   1:  (____)	(	0	2)  V = 48     "CHECKERS>U149>b"
-   132   2:  (I___)	(	3	4)  V = 20     "CHECKERS>U150>a"
-   133   3:  (I___)	(	0	4)  V = 47     "CHECKERS>U150>b"
-   134   4:  (I___)	(	5	0)  V = 18     "CHECKERS>U150>c"
-   135   5:  (I___)	(	0	0)  V = 46     "CHECKERS>U150>d"
+VAR#   71:  (________)  "CHECKERS>U277>z"
+GRP#    56: BEG =   117, LEN =   1 -----
+   117   0:  (I___)	(	0	0)  V = 24     "CHECKERS>U277>a"
 
-VAR#   68:  (_o______)  "err_FIFO_control_part_DRTS_CTS"
-GRP#    57: BEG =   136, LEN =   2 -----
-   136   0:  (____)	(	0	1)  V = 34     "CHECKERS>CTS_in"
-   137   1:  (I___)	(	0	0)  V = 11     "CHECKERS>DRTS"
+VAR#   72:  (________)  "CHECKERS>U278>z"
+GRP#    57: BEG =   118, LEN =   1 -----
+   118   0:  (I___)	(	0	0)  V = 42     "CHECKERS>U278>a"
 
-VAR#   69:  (_o______)  "empty_out"
-GRP#    58: BEG =   138, LEN =   1 -----
-   138   0:  (____)	(	0	0)  V = 28     "fan_empty_out"
+VAR#   73:  (________)  "CHECKERS>U280>z"
+GRP#    58: BEG =   119, LEN =   1 -----
+   119   0:  (I___)	(	0	0)  V = 23     "CHECKERS>U280>a"
 
-VAR#   70:  (_o______)  "CTS_in"
-GRP#    59: BEG =   139, LEN =   1 -----
-   139   0:  (____)	(	0	0)  V = 34     "fan_CTS_in"
+VAR#   74:  (________)  "CHECKERS>U281>z"
+GRP#    59: BEG =   120, LEN =   1 -----
+   120   0:  (I___)	(	0	0)  V = 27     "CHECKERS>U281>a"
+
+VAR#   75:  (________)  "CHECKERS>U283>z"
+GRP#    60: BEG =   121, LEN =   1 -----
+   121   0:  (I___)	(	0	0)  V = 26     "CHECKERS>U283>a"
+
+VAR#   76:  (________)  "CHECKERS>U284>z"
+GRP#    61: BEG =   122, LEN =   1 -----
+   122   0:  (I___)	(	0	0)  V = 22     "CHECKERS>U284>a"
+
+VAR#   77:  (________)  "CHECKERS>U286>z"
+GRP#    62: BEG =   123, LEN =   1 -----
+   123   0:  (I___)	(	0	0)  V = 25     "CHECKERS>U286>a"
+
+VAR#   78:  (________)  "CHECKERS>U287>z"
+GRP#    63: BEG =   124, LEN =   1 -----
+   124   0:  (I___)	(	0	0)  V = 21     "CHECKERS>U287>a"
+
+VAR#   79:  (________)  "CHECKERS>U268>z"
+GRP#    64: BEG =   125, LEN =   2 -----
+   125   0:  (____)	(	0	1)  V = 71     "CHECKERS>U268>a"
+   126   1:  (____)	(	0	0)  V = 73     "CHECKERS>U268>b"
+
+VAR#   80:  (________)  "CHECKERS>U269>z"
+GRP#    65: BEG =   127, LEN =   4 -----
+   127   0:  (I___)	(	2	1)  V = 25     "CHECKERS>U269>a"
+   128   1:  (I___)	(	2	0)  V = 78     "CHECKERS>U269>b"
+   129   2:  (I___)	(	0	3)  V = 21     "CHECKERS>U269>c"
+   130   3:  (I___)	(	0	0)  V = 77     "CHECKERS>U269>d"
+
+VAR#   81:  (________)  "CHECKERS>U279>z"
+GRP#    66: BEG =   131, LEN =   4 -----
+   131   0:  (I___)	(	1	2)  V = 74     "CHECKERS>U279>a"
+   132   1:  (I___)	(	0	2)  V = 23     "CHECKERS>U279>b"
+   133   2:  (I___)	(	3	0)  V = 73     "CHECKERS>U279>c"
+   134   3:  (I___)	(	0	0)  V = 27     "CHECKERS>U279>d"
+
+VAR#   82:  (________)  "CHECKERS>U243>z"
+GRP#    67: BEG =   135, LEN =   16 -----
+   135   0:  (I___)	(	2	1)  V = 52     "CHECKERS>U250>a"
+   136   1:  (I___)	(	2	0)  V = 76     "CHECKERS>U250>b"
+   137   2:  (I___)	(	4	3)  V = 22     "CHECKERS>U250>c"
+   138   3:  (I___)	(	4	0)  V = 62     "CHECKERS>U250>d"
+   139   4:  (I___)	(	6	5)  V = 51     "CHECKERS>U248>a"
+   140   5:  (I___)	(	6	0)  V = 78     "CHECKERS>U248>b"
+   141   6:  (I___)	(	8	7)  V = 21     "CHECKERS>U248>c"
+   142   7:  (I___)	(	8	0)  V = 61     "CHECKERS>U248>d"
+   143   8:  (I___)	(	10	9)  V = 54     "CHECKERS>U246>a"
+   144   9:  (I___)	(	10	0)  V = 71     "CHECKERS>U246>b"
+   145   10:  (I___)	(	12	11)  V = 24     "CHECKERS>U246>c"
+   146   11:  (I___)	(	12	0)  V = 60     "CHECKERS>U246>d"
+   147   12:  (I___)	(	14	13)  V = 53     "CHECKERS>U244>a"
+   148   13:  (I___)	(	14	0)  V = 73     "CHECKERS>U244>b"
+   149   14:  (I___)	(	0	15)  V = 23     "CHECKERS>U244>c"
+   150   15:  (I___)	(	0	0)  V = 59     "CHECKERS>U244>d"
+
+VAR#   83:  (________)  "CHECKERS>U267>z"
+GRP#    68: BEG =   151, LEN =   1 -----
+   151   0:  (I___)	(	0	0)  V = 79     "CHECKERS>U267>a"
+
+VAR#   84:  (________)  "CHECKERS>U216>z"
+GRP#    69: BEG =   152, LEN =   16 -----
+   152   0:  (____)	(	1	2)  V = 48     "CHECKERS>U224>a"
+   153   1:  (____)	(	0	2)  V = 75     "CHECKERS>U224>b"
+   154   2:  (____)	(	3	4)  V = 26     "CHECKERS>U224>c"
+   155   3:  (____)	(	0	4)  V = 58     "CHECKERS>U224>d"
+   156   4:  (____)	(	5	6)  V = 47     "CHECKERS>U222>a"
+   157   5:  (____)	(	0	6)  V = 77     "CHECKERS>U222>b"
+   158   6:  (____)	(	7	8)  V = 25     "CHECKERS>U222>c"
+   159   7:  (____)	(	0	8)  V = 57     "CHECKERS>U222>d"
+   160   8:  (____)	(	9	10)  V = 50     "CHECKERS>U220>a"
+   161   9:  (____)	(	0	10)  V = 70     "CHECKERS>U220>b"
+   162   10:  (____)	(	11	12)  V = 28     "CHECKERS>U220>c"
+   163   11:  (____)	(	0	12)  V = 56     "CHECKERS>U220>d"
+   164   12:  (____)	(	13	14)  V = 49     "CHECKERS>U218>a"
+   165   13:  (____)	(	0	14)  V = 74     "CHECKERS>U218>b"
+   166   14:  (____)	(	15	0)  V = 27     "CHECKERS>U218>c"
+   167   15:  (____)	(	0	0)  V = 55     "CHECKERS>U218>d"
+
+VAR#   85:  (________)  "CHECKERS>U266>z"
+GRP#    70: BEG =   168, LEN =   2 -----
+   168   0:  (____)	(	1	0)  V = 22     "CHECKERS>U266>a"
+   169   1:  (____)	(	0	0)  V = 83     "CHECKERS>U266>b"
+
+VAR#   86:  (________)  "CHECKERS>U264>z"
+GRP#    71: BEG =   170, LEN =   3 -----
+   170   0:  (I___)	(	2	1)  V = 79     "CHECKERS>U264>a"
+   171   1:  (I___)	(	2	0)  V = 76     "CHECKERS>U264>b"
+   172   2:  (I___)	(	0	0)  V = 85     "CHECKERS>U264>c"
+
+VAR#   87:  (_o______)  "write_pointer_in[3]"
+GRP#    72: BEG =   173, LEN =   1 -----
+   173   0:  (____)	(	0	0)  V = 47     "fan_write_pointer_in_3_0__3 "
+
+VAR#   88:  (_o______)  "write_pointer_in[2]"
+GRP#    73: BEG =   174, LEN =   1 -----
+   174   0:  (____)	(	0	0)  V = 48     "fan_write_pointer_in_3_0__2 "
+
+VAR#   89:  (_o______)  "write_pointer_in[1]"
+GRP#    74: BEG =   175, LEN =   1 -----
+   175   0:  (____)	(	0	0)  V = 49     "fan_write_pointer_in_3_0__1 "
+
+VAR#   90:  (_o______)  "write_pointer_in[0]"
+GRP#    75: BEG =   176, LEN =   1 -----
+   176   0:  (____)	(	0	0)  V = 50     "fan_write_pointer_in_3_0__0 "
+
+VAR#   91:  (_o______)  "write_en_out"
+GRP#    76: BEG =   177, LEN =   1 -----
+   177   0:  (____)	(	0	0)  V = 46     "fan_write_en_out"
+
+VAR#   92:  (_o______)  "read_pointer_in[3]"
+GRP#    77: BEG =   178, LEN =   1 -----
+   178   0:  (____)	(	0	0)  V = 51     "fan_read_pointer_in_3_0__3 "
+
+VAR#   93:  (_o______)  "read_pointer_in[2]"
+GRP#    78: BEG =   179, LEN =   1 -----
+   179   0:  (____)	(	0	0)  V = 52     "fan_read_pointer_in_3_0__2 "
+
+VAR#   94:  (_o______)  "read_pointer_in[1]"
+GRP#    79: BEG =   180, LEN =   1 -----
+   180   0:  (____)	(	0	0)  V = 53     "fan_read_pointer_in_3_0__1 "
+
+VAR#   95:  (_o______)  "read_pointer_in[0]"
+GRP#    80: BEG =   181, LEN =   1 -----
+   181   0:  (____)	(	0	0)  V = 54     "fan_read_pointer_in_3_0__0 "
+
+VAR#   96:  (_o______)  "read_en_out"
+GRP#    81: BEG =   182, LEN =   1 -----
+   182   0:  (____)	(	0	0)  V = 44     "fan_read_en_out"
+
+VAR#   97:  (_o______)  "full_out"
+GRP#    82: BEG =   183, LEN =   1 -----
+   183   0:  (____)	(	0	0)  V = 41     "fan_full_out"
+
+VAR#   98:  (_o______)  "err_FIFO_write_pointer_update"
+GRP#    83: BEG =   184, LEN =   3 -----
+   184   0:  (____)	(	0	1)  V = 84     "CHECKERS>U201>a"
+   185   1:  (____)	(	0	2)  V = 69     "CHECKERS>U201>b"
+   186   2:  (____)	(	0	0)  V = 46     "CHECKERS>U201>c"
+
+VAR#   99:  (_o______)  "err_FIFO_write_pointer_onehot"
+GRP#    84: BEG =   187, LEN =   32 -----
+   187   0:  (____)	(	1	3)  V = 49     "CHECKERS>U214>a"
+   188   1:  (____)	(	2	3)  V = 50     "CHECKERS>U214>b"
+   189   2:  (____)	(	4	3)  V = 57     "CHECKERS>U214>c"
+   190   3:  (____)	(	4	8)  V = 58     "CHECKERS>U212>b"
+   191   4:  (____)	(	5	7)  V = 47     "CHECKERS>U213>a"
+   192   5:  (____)	(	6	7)  V = 49     "CHECKERS>U213>b"
+   193   6:  (____)	(	16	7)  V = 50     "CHECKERS>U213>c"
+   194   7:  (____)	(	16	8)  V = 48     "CHECKERS>U212>d"
+   195   8:  (____)	(	9	11)  V = 47     "CHECKERS>U211>a"
+   196   9:  (____)	(	10	11)  V = 48     "CHECKERS>U211>b"
+   197   10:  (____)	(	12	11)  V = 55     "CHECKERS>U211>c"
+   198   11:  (____)	(	12	0)  V = 56     "CHECKERS>U209>b"
+   199   12:  (____)	(	13	15)  V = 47     "CHECKERS>U210>a"
+   200   13:  (____)	(	14	15)  V = 48     "CHECKERS>U210>b"
+   201   14:  (____)	(	16	15)  V = 49     "CHECKERS>U210>c"
+   202   15:  (____)	(	16	0)  V = 50     "CHECKERS>U209>d"
+   203   16:  (____)	(	17	19)  V = 27     "CHECKERS>U208>a"
+   204   17:  (____)	(	18	19)  V = 28     "CHECKERS>U208>b"
+   205   18:  (____)	(	20	19)  V = 77     "CHECKERS>U208>c"
+   206   19:  (____)	(	20	24)  V = 75     "CHECKERS>U206>b"
+   207   20:  (____)	(	21	23)  V = 25     "CHECKERS>U207>a"
+   208   21:  (____)	(	22	23)  V = 27     "CHECKERS>U207>b"
+   209   22:  (____)	(	0	23)  V = 28     "CHECKERS>U207>c"
+   210   23:  (____)	(	0	24)  V = 26     "CHECKERS>U206>d"
+   211   24:  (____)	(	25	27)  V = 25     "CHECKERS>U205>a"
+   212   25:  (____)	(	26	27)  V = 26     "CHECKERS>U205>b"
+   213   26:  (____)	(	28	27)  V = 74     "CHECKERS>U205>c"
+   214   27:  (____)	(	28	0)  V = 70     "CHECKERS>U203>b"
+   215   28:  (____)	(	29	31)  V = 25     "CHECKERS>U204>a"
+   216   29:  (____)	(	30	31)  V = 26     "CHECKERS>U204>b"
+   217   30:  (____)	(	0	31)  V = 27     "CHECKERS>U204>c"
+   218   31:  (____)	(	0	0)  V = 28     "CHECKERS>U203>d"
+
+VAR#   100:  (_o______)  "err_FIFO_write_pointer_not_update"
+GRP#    85: BEG =   219, LEN =   3 -----
+   219   0:  (I___)	(	1	2)  V = 46     "CHECKERS>U215>a"
+   220   1:  (I___)	(	0	2)  V = 69     "CHECKERS>U215>b"
+   221   2:  (I___)	(	0	0)  V = 84     "CHECKERS>U215>c"
+
+VAR#   101:  (_o______)  "err_FIFO_read_pointer_update"
+GRP#    86: BEG =   222, LEN =   8 -----
+   222   0:  (I___)	(	1	6)  V = 64     "CHECKERS>U228>a"
+   223   1:  (I___)	(	2	6)  V = 63     "CHECKERS>U228>b"
+   224   2:  (I___)	(	3	6)  V = 65     "CHECKERS>U228>c"
+   225   3:  (I___)	(	4	6)  V = 67     "CHECKERS>U227>a"
+   226   4:  (I___)	(	5	6)  V = 66     "CHECKERS>U227>b"
+   227   5:  (I___)	(	0	6)  V = 68     "CHECKERS>U227>c"
+   228   6:  (I___)	(	0	7)  V = 82     "CHECKERS>U226>c"
+   229   7:  (I___)	(	0	0)  V = 42     "CHECKERS>U226>d"
+
+VAR#   102:  (_o______)  "err_FIFO_read_pointer_onehot"
+GRP#    87: BEG =   230, LEN =   29 -----
+   230   0:  (____)	(	1	3)  V = 53     "CHECKERS>U240>a"
+   231   1:  (____)	(	2	3)  V = 54     "CHECKERS>U240>b"
+   232   2:  (____)	(	4	3)  V = 61     "CHECKERS>U240>c"
+   233   3:  (____)	(	4	8)  V = 62     "CHECKERS>U238>b"
+   234   4:  (____)	(	5	7)  V = 51     "CHECKERS>U239>a"
+   235   5:  (____)	(	6	7)  V = 53     "CHECKERS>U239>b"
+   236   6:  (____)	(	16	7)  V = 54     "CHECKERS>U239>c"
+   237   7:  (____)	(	16	8)  V = 52     "CHECKERS>U238>d"
+   238   8:  (____)	(	9	11)  V = 51     "CHECKERS>U237>a"
+   239   9:  (____)	(	10	11)  V = 52     "CHECKERS>U237>b"
+   240   10:  (____)	(	12	11)  V = 59     "CHECKERS>U237>c"
+   241   11:  (____)	(	12	0)  V = 60     "CHECKERS>U235>b"
+   242   12:  (____)	(	13	15)  V = 51     "CHECKERS>U236>a"
+   243   13:  (____)	(	14	15)  V = 52     "CHECKERS>U236>b"
+   244   14:  (____)	(	16	15)  V = 53     "CHECKERS>U236>c"
+   245   15:  (____)	(	16	0)  V = 54     "CHECKERS>U235>d"
+   246   16:  (____)	(	17	18)  V = 76     "CHECKERS>U234>a"
+   247   17:  (____)	(	19	18)  V = 83     "CHECKERS>U234>b"
+   248   18:  (____)	(	19	21)  V = 78     "CHECKERS>U233>b"
+   249   19:  (____)	(	0	20)  V = 85     "CHECKERS>U233>c"
+   250   20:  (____)	(	0	21)  V = 21     "CHECKERS>U233>d"
+   251   21:  (____)	(	22	24)  V = 21     "CHECKERS>U232>a"
+   252   22:  (____)	(	23	24)  V = 22     "CHECKERS>U232>b"
+   253   23:  (____)	(	25	24)  V = 73     "CHECKERS>U232>c"
+   254   24:  (____)	(	25	0)  V = 71     "CHECKERS>U230>b"
+   255   25:  (____)	(	26	28)  V = 21     "CHECKERS>U231>a"
+   256   26:  (____)	(	27	28)  V = 22     "CHECKERS>U231>b"
+   257   27:  (____)	(	0	28)  V = 23     "CHECKERS>U231>c"
+   258   28:  (____)	(	0	0)  V = 24     "CHECKERS>U230>d"
+
+VAR#   103:  (_o______)  "err_FIFO_read_pointer_not_update"
+GRP#    88: BEG =   259, LEN =   8 -----
+   259   0:  (I___)	(	1	7)  V = 72     "CHECKERS>U241>a"
+   260   1:  (I___)	(	0	2)  V = 68     "CHECKERS>U252>a"
+   261   2:  (I___)	(	0	3)  V = 67     "CHECKERS>U252>b"
+   262   3:  (I___)	(	0	4)  V = 66     "CHECKERS>U252>c"
+   263   4:  (I___)	(	0	5)  V = 65     "CHECKERS>U253>a"
+   264   5:  (I___)	(	0	6)  V = 64     "CHECKERS>U253>b"
+   265   6:  (I___)	(	0	7)  V = 63     "CHECKERS>U253>c"
+   266   7:  (____)	(	0	0)  V = 82     "CHECKERS>U242>a"
+
+VAR#   104:  (_o______)  "err_FIFO_full_empty"
+GRP#    89: BEG =   267, LEN =   2 -----
+   267   0:  (____)	(	0	1)  V = 41     "CHECKERS>U260>a"
+   268   1:  (____)	(	0	0)  V = 42     "CHECKERS>U260>b"
+
+VAR#   105:  (_o______)  "err_FIFO_full"
+GRP#    90: BEG =   269, LEN =   15 -----
+   269   0:  (I___)	(	2	1)  V = 81     "CHECKERS>U272>a"
+   270   1:  (I___)	(	2	3)  V = 70     "CHECKERS>U272>b"
+   271   2:  (I___)	(	0	3)  V = 71     "CHECKERS>U270>b"
+   272   3:  (____)	(	5	4)  V = 70     "CHECKERS>U271>a"
+   273   4:  (____)	(	5	6)  V = 81     "CHECKERS>U271>b"
+   274   5:  (____)	(	0	6)  V = 71     "CHECKERS>U270>d"
+   275   6:  (I___)	(	7	8)  V = 80     "CHECKERS>U265>a"
+   276   7:  (I___)	(	0	8)  V = 85     "CHECKERS>U265>b"
+   277   8:  (____)	(	9	10)  V = 85     "CHECKERS>U265>c"
+   278   9:  (____)	(	0	10)  V = 80     "CHECKERS>U265>d"
+   279   10:  (I___)	(	12	11)  V = 26     "CHECKERS>U263>a"
+   280   11:  (I___)	(	12	14)  V = 86     "CHECKERS>U263>b"
+   281   12:  (____)	(	0	13)  V = 86     "CHECKERS>U263>c"
+   282   13:  (____)	(	0	14)  V = 26     "CHECKERS>U263>d"
+   283   14:  (____)	(	0	0)  V = 69     "CHECKERS>U261>d"
+
+VAR#   106:  (_o______)  "err_FIFO_empty"
+GRP#    91: BEG =   284, LEN =   14 -----
+   284   0:  (I___)	(	1	2)  V = 25     "CHECKERS>U285>a"
+   285   1:  (I___)	(	0	2)  V = 78     "CHECKERS>U285>b"
+   286   2:  (I___)	(	3	4)  V = 21     "CHECKERS>U285>c"
+   287   3:  (I___)	(	0	4)  V = 77     "CHECKERS>U285>d"
+   288   4:  (I___)	(	5	6)  V = 26     "CHECKERS>U282>a"
+   289   5:  (I___)	(	0	6)  V = 76     "CHECKERS>U282>b"
+   290   6:  (I___)	(	7	8)  V = 22     "CHECKERS>U282>c"
+   291   7:  (I___)	(	0	8)  V = 75     "CHECKERS>U282>d"
+   292   8:  (____)	(	0	9)  V = 81     "CHECKERS>U274>a"
+   293   9:  (____)	(	0	10)  V = 72     "CHECKERS>U274>b"
+   294   10:  (I___)	(	11	12)  V = 28     "CHECKERS>U275>a"
+   295   11:  (I___)	(	0	12)  V = 71     "CHECKERS>U275>b"
+   296   12:  (I___)	(	13	0)  V = 24     "CHECKERS>U275>c"
+   297   13:  (I___)	(	0	0)  V = 70     "CHECKERS>U275>d"
+
+VAR#   107:  (_o______)  "err_FIFO_control_part_DRTS_CTS"
+GRP#    92: BEG =   298, LEN =   2 -----
+   298   0:  (____)	(	0	1)  V = 45     "CHECKERS>CTS_in"
+   299   1:  (I___)	(	0	0)  V = 15     "CHECKERS>DRTS"
+
+VAR#   108:  (_o______)  "empty_out"
+GRP#    93: BEG =   300, LEN =   1 -----
+   300   0:  (____)	(	0	0)  V = 42     "fan_empty_out"
+
+VAR#   109:  (_o______)  "CTS_in"
+GRP#    94: BEG =   301, LEN =   1 -----
+   301   0:  (____)	(	0	0)  V = 45     "fan_CTS_in"
