@@ -17,7 +17,7 @@ entity FIFO_control_part_with_checkers_top is
             --write_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
             read_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
             write_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
-            RX : in std_logic_vector(31 downto 0);
+            RX : in std_logic_vector (31 downto 0);
             CTS_in: out std_logic; -- pseudo-output
             --read_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
             --write_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
