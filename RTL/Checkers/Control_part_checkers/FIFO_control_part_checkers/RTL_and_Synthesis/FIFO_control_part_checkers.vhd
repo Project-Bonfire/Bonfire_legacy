@@ -108,6 +108,7 @@ process(read_pointer, write_pointer, full_out) begin
 	end if;
 end process;
 
+-- The read_pointer of FIFO must follow the one-hot fashion (both the previous value and the current value)
 process(read_pointer, read_pointer_in) begin
 	if ((read_pointer /= "0001" and read_pointer /= "0010" and read_pointer /= "0100" and read_pointer /= "1000") or (read_pointer_in /= "0001" and read_pointer_in /= "0010" and read_pointer_in /= "0100" and read_pointer_in /= "1000")) then
 		err_FIFO_read_pointer_onehot <= '1';
@@ -116,6 +117,7 @@ process(read_pointer, read_pointer_in) begin
 	end if;
 end process;
 
+-- The write_pointer of FIFO must follow the one-hot fashion (both the previous value and the current value)
 process(write_pointer, write_pointer_in) begin
 	if ((write_pointer /= "0001" and write_pointer /= "0010" and write_pointer /= "0100" and write_pointer /= "1000")or (write_pointer_in /= "0001" and write_pointer_in /= "0010" and write_pointer_in /= "0100" and write_pointer_in /= "1000")) then
 		err_FIFO_write_pointer_onehot <= '1';
