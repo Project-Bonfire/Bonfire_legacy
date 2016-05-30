@@ -17,16 +17,19 @@ entity FIFO_control_part_pseudo is
             --write_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
             read_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
             write_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
-
+            RX : in std_logic_vector(31 downto 0);
             CTS_in: out std_logic; -- pseudo-output
             --read_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
             --write_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
             read_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
             write_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
+            FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4: in std_logic_vector(31 downto 0);            
+            FIFO_MEM_1_in, FIFO_MEM_2_in, FIFO_MEM_3_in, FIFO_MEM_4_in: out std_logic_vector(31 downto 0);
             empty_out: out std_logic;
             full_out: out std_logic;
             read_en_out: out std_logic;
-            write_en_out: out std_logic            
+            write_en_out: out std_logic;
+            Data_out: out std_logic_vector(31 downto 0)          
     );
 end;
 
@@ -80,6 +83,26 @@ begin
    full_out <= full;
    read_en_out <= read_en;
    write_en_out <= write_en;
+
+   process(RX, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4)begin
+      case( write_pointer ) is
+          when "0001" => FIFO_MEM_1_in <= RX;         FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+          when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= RX;         FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+          when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= RX;         FIFO_MEM_4_in <= FIFO_MEM_4; 
+          when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= RX;                  
+          when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+      end case ;
+   end process;
+
+   process(read_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4)begin
+        case( read_pointer ) is
+          when "0001" => Data_out <= FIFO_MEM_1;
+          when "0010" => Data_out <= FIFO_MEM_2;
+          when "0100" => Data_out <= FIFO_MEM_3;
+          when "1000" => Data_out <= FIFO_MEM_4;
+          when others => Data_out <= FIFO_MEM_1; -- why ? 
+        end case ;
+   end process;   
 
    process(write_en, write_pointer) 
    begin
