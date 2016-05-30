@@ -43,18 +43,18 @@ syndrome(6) <=  XOR_REDUCE(hamming_in(38 downto 0));
             no_error   <= '1';
             d_err_det  <= '0';
             s_err_corr <= '0';
-            dataout(31 downto 0) <= hamming_in(31 downto 0);
+            dataout <= hamming_in(31 downto 0);
 
         elsif (syndrome(6) = '1') then -----------------------------------------------single bit error
             no_error   <= '0';
            d_err_det  <= '0';
            s_err_corr <= '1';
-           dataout(31 downto 0) <= hamming_in(31 downto 0);     -- to cover all the bits
+           dataout <= hamming_in(31 downto 0);     -- to cover all the bits
 
             Case syndrome(5 downto 0) is
 
                 when "000000"|"000001"|"000010"|"000100"|"001000"|"010000"|"100000" =>   ------ this implies the error is only in parity bits, not data.
-                dataout(31 downto 0) <= hamming_in(31 downto 0); 
+                dataout <= hamming_in(31 downto 0); 
 
                 when "000011" => dataout(0) <= not hamming_in(0);
                 when "000101" => dataout(1) <= not hamming_in(1);
@@ -96,7 +96,11 @@ syndrome(6) <=  XOR_REDUCE(hamming_in(38 downto 0));
             d_err_det  <= '1';
             s_err_corr <= '0';
             dataout <= (others=> '0');
-
+        ELSE
+            no_error   <= '0';
+            d_err_det  <= '1';
+            s_err_corr <= '0';
+            dataout <= (others=> '0');
         END if;
  END process;
 

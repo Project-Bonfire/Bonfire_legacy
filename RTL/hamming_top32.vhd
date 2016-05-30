@@ -4,7 +4,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use ieee.std_logic_misc.all;
 use IEEE.NUMERIC_STD.all;
-use work.all;
+-- use work.all;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -52,8 +52,8 @@ signal dataout_sig : std_logic_vector (38 downto 0);
 signal datain_sig, data_out_sig : std_logic_vector (31 downto 0); 
 signal serr_sig, derr_sig, ne_sig : std_logic;
 
-FOR Hamenc : hamming_encoder USE ENTITY work.hamming_encoder;
-FOR Hamdec : hamming_decoder USE ENTITY work.hamming_decoder;
+-- FOR Hamenc : hamming_encoder USE ENTITY work.hamming_encoder;
+-- FOR Hamdec : hamming_decoder USE ENTITY work.hamming_decoder;
 
 begin
 
