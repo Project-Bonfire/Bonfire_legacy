@@ -169,7 +169,7 @@ begin
                 empty <= '0';
             end if;
 --      if write_pointer = read_pointer>>1 then
-	if write_pointer = read_pointer(0)&read_pointer(3 downto 1) then
+	      if write_pointer = read_pointer(0)&read_pointer(3 downto 1) then
                 full <= '1';
             else
                 full <= '0'; 
