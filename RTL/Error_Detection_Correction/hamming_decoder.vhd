@@ -39,23 +39,26 @@ syndrome(6) <=  XOR_REDUCE(hamming_in(38 downto 0));
 
  PROCESS(hamming_in, syndrome)
  BEGIN
-        if (syndrome = "0000000") then -------no errors
-            no_error   <= '1';
-            d_err_det  <= '0';
+        if syndrome(6) = '0' then 
             s_err_corr <= '0';
-            dataout <= hamming_in(31 downto 0);
+            if (syndrome = "0000000") then -------no errors
+                no_error   <= '1';
+                d_err_det  <= '0';
+                dataout <= hamming_in(31 downto 0);
+            else    --  (syndrome(5 downto 0) /= "000000")
+                no_error   <= '0';
+                d_err_det  <= '1';
+                dataout <= (others=> '0');
+            end if;
 
-        elsif (syndrome(6) = '1') then -----------------------------------------------single bit error
+        else -----------------------------------------------single bit error syndrome(6) = '1'
             no_error   <= '0';
-           d_err_det  <= '0';
-           s_err_corr <= '1';
-           dataout <= hamming_in(31 downto 0);     -- to cover all the bits
-
+            d_err_det  <= '0';
+            s_err_corr <= '1';
+            dataout <= hamming_in(31 downto 0);     -- to cover all the bits
             Case syndrome(5 downto 0) is
-
                 when "000000"|"000001"|"000010"|"000100"|"001000"|"010000"|"100000" =>   ------ this implies the error is only in parity bits, not data.
                 dataout <= hamming_in(31 downto 0); 
-
                 when "000011" => dataout(0) <= not hamming_in(0);
                 when "000101" => dataout(1) <= not hamming_in(1);
                 when "000110" => dataout(2) <= not hamming_in(2);
@@ -89,18 +92,7 @@ syndrome(6) <=  XOR_REDUCE(hamming_in(38 downto 0));
                 when "100101" => dataout(30) <= not hamming_in(30);
                 when "100110" => dataout(31) <= not hamming_in(31);
                 when others=> dataout <= (others=> '0');
-            END Case;
-        ----------------------------- double error detection-----------------------------
-        ELSIF (syndrome(6) = '0') AND (syndrome(5 downto 0) /= "000000") THEN
-            no_error   <= '0';
-            d_err_det  <= '1';
-            s_err_corr <= '0';
-            dataout <= (others=> '0');
-        ELSE
-            no_error   <= '0';
-            d_err_det  <= '1';
-            s_err_corr <= '0';
-            dataout <= (others=> '0');
+            END Case;   
         END if;
  END process;
 
