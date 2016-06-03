@@ -30,10 +30,10 @@ architecture behavior of FIFO is
    signal read_en, write_en: std_logic;
    signal CTS_in, CTS_out: std_logic;
 
-   signal FIFO_MEM_1 : std_logic_vector(DATA_WIDTH-1 downto 0);
-   signal FIFO_MEM_2 : std_logic_vector(DATA_WIDTH-1 downto 0);
-   signal FIFO_MEM_3 : std_logic_vector(DATA_WIDTH-1 downto 0);
-   signal FIFO_MEM_4 : std_logic_vector(DATA_WIDTH-1 downto 0);
+   signal FIFO_MEM_1, FIFO_MEM_1_in : std_logic_vector(DATA_WIDTH-1 downto 0);
+   signal FIFO_MEM_2, FIFO_MEM_2_in : std_logic_vector(DATA_WIDTH-1 downto 0);
+   signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(DATA_WIDTH-1 downto 0);
+   signal FIFO_MEM_4, FIFO_MEM_4_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    
    TYPE STATE_TYPE IS (IDLE, READ_DATA);
    SIGNAL HS_state_out,HS_state_in   : STATE_TYPE;
@@ -90,13 +90,10 @@ begin
             write_pointer <= write_pointer_in;
             if write_en = '1' then
                 --write into the memory
-                case( write_pointer ) is
-                  when "0001" => FIFO_MEM_1 <= RX;
-                  when "0010" => FIFO_MEM_2 <= RX;
-                  when "0100" => FIFO_MEM_3 <= RX;
-                  when "1000" => FIFO_MEM_4 <= RX;                   
-                  when others => FIFO_MEM_1 <= RX;  
-                end case ;
+                  FIFO_MEM_1 <= FIFO_MEM_1_in;
+                  FIFO_MEM_2 <= FIFO_MEM_2_in;
+                  FIFO_MEM_3 <= FIFO_MEM_3_in;
+                  FIFO_MEM_4 <= FIFO_MEM_4_in;                   
             end if;
             read_pointer <=  read_pointer_in;
             CTS_out<=CTS_in;
@@ -106,6 +103,16 @@ begin
  -- anything below here is pure combinational
  
    -- combinatorial part
+   process(RX, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4)begin
+      case( write_pointer ) is
+          when "0001" => FIFO_MEM_1_in <= RX;         FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+          when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= RX;         FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+          when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= RX;         FIFO_MEM_4_in <= FIFO_MEM_4; 
+          when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= RX;                  
+          when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+      end case ;
+   end process;
+
    process(read_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4)begin
         case( read_pointer ) is
           when "0001" => Data_out <= FIFO_MEM_1;
@@ -169,7 +176,7 @@ begin
                 empty <= '0';
             end if;
 --      if write_pointer = read_pointer>>1 then
-	      if write_pointer = read_pointer(0)&read_pointer(3 downto 1) then
+	if write_pointer = read_pointer(0)&read_pointer(3 downto 1) then
                 full <= '1';
             else
                 full <= '0'; 
