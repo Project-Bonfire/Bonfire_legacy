@@ -4,8 +4,8 @@
 def gen_elbdr_checker_top(checker_id):
     name_string = ""
     for i in checker_id:
-        name_string += str(i)
-    elbdr_checker_top = open("checker_vhdl/elbdr_checker"+name_string+"_top.vhd", 'w')
+        name_string += str(i)+"_"
+    elbdr_checker_top = open("checker_vhdl/elbdr_checker"+name_string[:len(name_string)-1]+"_top.vhd", 'w')
 
     elbdr_checker_top.write("library ieee;\n")
     elbdr_checker_top.write("use ieee.std_logic_1164.all;\n")
@@ -31,13 +31,14 @@ def gen_elbdr_checker_top(checker_id):
     elbdr_checker_top.write("\n")
     elbdr_checker_top.write("            -- Checker outputs\n")
     string_to_write = ""
-    if 1 in checker_id:
+
+    if '1' in checker_id:
         string_to_write += "err_LBDR_Req_onehot,"
-    if 2 in checker_id:
+    if '2' in checker_id:
         string_to_write += "err_LBDR_dst_addr_checker,"
-    if 3 in checker_id:
+    if '3' in checker_id:
         string_to_write += "err_LBDR_Req_tail_allzero,"
-    if 4 in checker_id:
+    if '4' in checker_id:
         string_to_write += "err_LBDR_Req_allzero,"
 
     elbdr_checker_top.write(string_to_write[:len(string_to_write)-1]+": out std_logic -- , err_LBDR_Req_not_Local : out std_logic\n")
@@ -75,13 +76,13 @@ def gen_elbdr_checker_top(checker_id):
     elbdr_checker_top.write("            -- Checker outputs\n")
 
     string_to_write = ""
-    if 1 in checker_id:
+    if '1' in checker_id:
         string_to_write += "err_LBDR_Req_onehot,"
-    if 2 in checker_id:
+    if '2' in checker_id:
         string_to_write += "err_LBDR_dst_addr_checker,"
-    if 3 in checker_id:
+    if '3' in checker_id:
         string_to_write += "err_LBDR_Req_tail_allzero,"
-    if 4 in checker_id:
+    if '4' in checker_id:
         string_to_write += "err_LBDR_Req_allzero,"
 
     elbdr_checker_top.write(string_to_write[:len(string_to_write)-1]+": out std_logic -- , err_LBDR_Req_not_Local : out std_logic\n")
@@ -110,13 +111,13 @@ def gen_elbdr_checker_top(checker_id):
     elbdr_checker_top.write("                         port map (empty=>empty, flit_type=>flit_type, \n")
     elbdr_checker_top.write("								  Req_N_in=>Req_N_sig, Req_W_in=>Req_W_sig, Req_S_in=>Req_S_sig, Req_L_in=>Req_L_sig, dst_addr => dst_addr,\n")
     string_to_write = ""
-    if 1 in checker_id:
+    if '1' in checker_id:
         string_to_write += "err_LBDR_Req_onehot => err_LBDR_Req_onehot,,"
-    if 2 in checker_id:
+    if '2' in checker_id:
         string_to_write += "err_LBDR_dst_addr_checker => err_LBDR_dst_addr_checker,"
-    if 3 in checker_id:
+    if '3' in checker_id:
         string_to_write += "err_LBDR_Req_tail_allzero => err_LBDR_Req_tail_allzero,"
-    if 4 in checker_id:
+    if '4' in checker_id:
         string_to_write += "err_LBDR_Req_allzero => err_LBDR_Req_allzero,"
 
     elbdr_checker_top.write(string_to_write[:len(string_to_write)-1]+");\n")

@@ -2,13 +2,43 @@
 
 import package_file
 from file_generator import generate_specific_file
+from area_coverage_calc import calculate_coverage
+
 
 def calculate_cost(current_selected_list):
     # this cost would be the fault coverage of a set of checkers
-    cost = 0
-    generate_specific_file(current_selected_list)
-    # todo: here we have to synthesise it, and calculate the coverage
-    for item in current_selected_list:
-        cost += package_file.list_of_candidates[item][0]
-    print "Cost:", cost
-    return cost
+    coverage = 0
+
+    # i want to use this part for initializing the  dictionary
+    if len(current_selected_list) == 1:
+        new_key = current_selected_list[0]
+        if new_key not in package_file.list_of_candidates.keys():
+            coverage = calculate_coverage (current_selected_list)
+            package_file.list_of_candidates[new_key] = [coverage, None]
+        else:
+            coverage = calculate_coverage (current_selected_list)
+            package_file.list_of_candidates[new_key][0] = coverage
+
+    elif len(current_selected_list) > 1:
+        new_key = ""
+        for i in sorted(current_selected_list):
+            new_key += i + "_"
+        new_key = new_key[:len(new_key) - 1]
+
+        if new_key not in package_file.list_of_candidates.keys():
+            # this is actually how it should be!
+            generate_specific_file(current_selected_list)
+            coverage = calculate_coverage (current_selected_list)
+            package_file.list_of_candidates[new_key] = [coverage, None]
+
+        else:
+            # this is for the time being
+            if package_file.list_of_candidates[new_key][0] is None:
+                coverage = calculate_coverage (current_selected_list)
+                package_file.list_of_candidates[new_key][0] = coverage
+            else:
+                coverage = package_file.list_of_candidates[new_key][0]
+
+
+    print "coverage:", coverage
+    return coverage

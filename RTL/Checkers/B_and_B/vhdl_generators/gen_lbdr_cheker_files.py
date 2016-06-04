@@ -4,8 +4,8 @@
 def gen_lbdr_checkers(checker_id):
     name_string = ""
     for i in checker_id:
-        name_string += str(i)
-    lbdr_checker_vhd = open("checker_vhdl/lbdr_checker"+name_string+".vhd", 'w')
+        name_string += str(i)+"_"
+    lbdr_checker_vhd = open("checker_vhdl/lbdr_checker"+name_string[:len(name_string)-1]+".vhd", 'w')
 
     lbdr_checker_vhd.write("library ieee;\n")
     lbdr_checker_vhd.write("use ieee.std_logic_1164.all;\n")
@@ -28,13 +28,13 @@ def gen_lbdr_checkers(checker_id):
 
     lbdr_checker_vhd.write("            ")
     string_to_be_written = ""
-    if 1 in checker_id:
+    if '1' in checker_id:
         string_to_be_written += "err_LBDR_Req_onehot,"
-    if 2 in checker_id:
+    if '2' in checker_id:
         string_to_be_written += "err_LBDR_Req_allzero,"
-    if 3 in checker_id:
+    if '3' in checker_id:
         string_to_be_written += "err_LBDR_dst_addr_checker,"
-    if 4 in checker_id:
+    if '4' in checker_id:
         string_to_be_written += "err_LBDR_Req_Local,"
 
     lbdr_checker_vhd.write(string_to_be_written[:len(string_to_be_written)-1]+": out std_logic\n")
@@ -53,7 +53,7 @@ def gen_lbdr_checkers(checker_id):
     lbdr_checker_vhd.write("-- Implementing checkers in form of concurrent assignments (combinational assertions)\n")
     lbdr_checker_vhd.write("\n")
 
-    if 1 in checker_id:
+    if '1' in checker_id:
         lbdr_checker_vhd.write("-- If empty is zero (If FIFO is not empty), Request outputs of LBDR must be one-hot\n")
         lbdr_checker_vhd.write("process(flit_type, empty, Req_N, Req_E, Req_W, Req_S, Req_L)begin\n")
         lbdr_checker_vhd.write("if (flit_type = \"010\" or flit_type = \"001\") then\n")
@@ -69,12 +69,12 @@ def gen_lbdr_checkers(checker_id):
         lbdr_checker_vhd.write("end process;\n")
         lbdr_checker_vhd.write("\n")
 
-    if 2 in checker_id:
+    if '2' in checker_id:
         lbdr_checker_vhd.write("-- If empty is one (If FIFO is empty), all the Request outputs of LBDR must be zero\n")
         lbdr_checker_vhd.write("err_LBDR_Req_allzero <= empty and (Req_N or Req_E or Req_W or Req_S or Req_L);\n")
         lbdr_checker_vhd.write("\n")
 
-    if 3 in checker_id:
+    if '3' in checker_id:
         lbdr_checker_vhd.write("-- Checking destination address (Depending on the location of the destination node "
                                "with respect to the current node, if wrong requests from LBDR\n")
         lbdr_checker_vhd.write("-- go active, there is a fault!)\n")
@@ -98,7 +98,7 @@ def gen_lbdr_checkers(checker_id):
         lbdr_checker_vhd.write("end process;\n")
         lbdr_checker_vhd.write("\n")
 
-    if 4 in checker_id:
+    if '4' in checker_id:
         lbdr_checker_vhd.write("-- If the header flit has reached its destination node, the L output "
                                 "request of LBDR must go active and others must be zero!\n")
         lbdr_checker_vhd.write("process (dst_addr, Req_N, Req_E, Req_W, cur_addr, empty, flit_type, empty)\n")

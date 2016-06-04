@@ -1,6 +1,8 @@
 # copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 from file_generator import generate_initial_files
-
+from cost_function import calculate_cost
+import package_file
+from area_coverage_calc import calculate_area
 
 def build_list_of_candidates():
     """
@@ -8,17 +10,25 @@ def build_list_of_candidates():
     calculate the coverage, build and return the list of candidates.
     :return: dictionary of all the candidates as keys and pair of [coverage, area] as the valye
     """
-    list_of_candidates = {1: [45, 5],
-                          2: [48, 8],
-                          3: [35, 3]}
-
     generate_initial_files()
-    # todo: we need to synthesize and calculate the coverage and area!
+    print "initializing the list of candidates"
+    for item in package_file.list_of_checkers:
+        print "calculating area for item:", item
+        list_of_initial_candidates = [item]
 
-    if not check_list_of_candidates_format(list_of_candidates):
+        area = calculate_area([item])
+        package_file.list_of_candidates[item] = [None, area]
+        print "area:", area
+
+        print "calculating coverage for item:", item
+        calculate_cost(list_of_initial_candidates)
+        print "------------------------------"
+
+    if not check_list_of_candidates_format(package_file.list_of_candidates):
         raise ValueError("list_of_candidates is corrupt!")
 
-    return list_of_candidates
+    # package_file.list_of_candidates = list_of_candidates
+    return None
 
 
 def check_list_of_candidates_format(list_of_candidates):

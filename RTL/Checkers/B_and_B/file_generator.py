@@ -27,7 +27,7 @@ def make_folders():
 def generate_specific_file(current_selected_list):
     if len(current_selected_list) == 0:
         return None
-    
+
     if package_file.unit_under_test == "LBDR":
         gen_lbdr_cheker_files.gen_lbdr_checkers(current_selected_list)
 
@@ -39,12 +39,12 @@ def generate_specific_file(current_selected_list):
 
 def generate_initial_files():
     if package_file.unit_under_test == "LBDR":
-        for i in range(1, 5):
+        for i in package_file.list_of_checkers:
             list_of_checkers = [i]
             gen_lbdr_cheker_files.gen_lbdr_checkers(list_of_checkers)
 
     elif package_file.unit_under_test == "ELBDR":
-        for i in range(1, 5):
+        for i in package_file.list_of_checkers:
             list_of_checkers = [i]
             gen_elbdr_cheker_files.gen_elbdr_checkers(list_of_checkers)
             gen_elbdr_checker_top.gen_elbdr_checker_top(list_of_checkers)

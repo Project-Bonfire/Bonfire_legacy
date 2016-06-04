@@ -4,8 +4,8 @@
 def gen_elbdr_checker_top(checker_id):
     name_string = ""
     for i in checker_id:
-        name_string += str(i)
-    elbdr_synth_script = open("synthesis_scripts/ELBDR_with_checkers_"+name_string+"_synthesis.script", 'w')
+        name_string += str(i)+"_"
+    elbdr_synth_script = open("synthesis_scripts/ELBDR_with_checkers_"+name_string[:len(name_string)-1]+"_synthesis.script", 'w')
 
     elbdr_synth_script.write("/* Bus Naming variables */\n")
     elbdr_synth_script.write("\n")
