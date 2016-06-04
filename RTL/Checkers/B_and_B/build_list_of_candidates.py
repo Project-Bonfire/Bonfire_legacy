@@ -1,4 +1,4 @@
-# copyright 2016 siavoosh payanceh azad
+# copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 
 
 def build_list_of_candidates():
@@ -10,4 +10,17 @@ def build_list_of_candidates():
     list_of_candidates = {"1": [45, 5],
                           "2": [48, 8],
                           "3": [35, 3]}
+
+    if not check_list_of_candidates_format(list_of_candidates):
+        raise ValueError("list_of_candidates is corrupt!")
+    
     return list_of_candidates
+
+
+def check_list_of_candidates_format(list_of_candidates):
+    if not type(list_of_candidates) == dict:
+        return False
+    for item in list_of_candidates:
+        if not type(list_of_candidates[item]) == list:
+            return False
+    return True

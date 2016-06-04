@@ -1,4 +1,4 @@
-# copyright 2016 siavoosh payanceh azad
+# copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 
 import package_file
 

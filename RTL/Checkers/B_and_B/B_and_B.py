@@ -1,4 +1,4 @@
-# copyright 2016 siavoosh payanceh azad
+# copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 
 import copy
 from build_list_of_candidates import build_list_of_candidates
@@ -9,10 +9,6 @@ import package_file
 # we need to prepare a dictionary of all the single checker's info
 # The dictionary format is the following     checker number:  [coverage,  area]
 package_file.list_of_candidates = build_list_of_candidates()
-
-
-# size max is the maximum allowed area for the sum of checkers!
-
 
 # best solution keeps a list of all the selected checkers which are used in the best solution
 best_solution = None
@@ -93,7 +89,6 @@ def bound(excluded_items):
     :param excluded_items:  list of all items that are decided to be left out
     :return: the optimistic guess of the possibility of improvement.
     """
-
     global optimistic_guess
     optimistic_value = 0
     for item in package_file.list_of_candidates:
@@ -110,5 +105,5 @@ def bound(excluded_items):
 
 branch(package_file.list_of_candidates, [], [])
 print "------------------------------"
-print "best solution:", best_solution
-print "cost:", best_cost
+print "\033[32m* NOTE::\033[0m best solution:", best_solution
+print "\033[32m* NOTE::\033[0m cost:", best_cost
