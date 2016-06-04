@@ -1,5 +1,5 @@
 # copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
-
+from file_generator import generate_initial_files
 
 def build_list_of_candidates():
     """
@@ -11,9 +11,11 @@ def build_list_of_candidates():
                           "2": [48, 8],
                           "3": [35, 3]}
 
+    generate_initial_files()
+
     if not check_list_of_candidates_format(list_of_candidates):
         raise ValueError("list_of_candidates is corrupt!")
-    
+
     return list_of_candidates
 
 

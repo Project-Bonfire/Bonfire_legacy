@@ -2,6 +2,7 @@
 
 import package_file
 
+
 def calculate_cost(current_selected_list):
     # this cost would be the fault coverage of a set of checkers
     cost = 0

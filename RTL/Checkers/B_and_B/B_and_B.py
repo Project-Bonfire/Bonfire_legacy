@@ -6,17 +6,7 @@ from cost_function import calculate_cost
 from check_feasibility import check_feasibility
 import package_file
 
-# we need to prepare a dictionary of all the single checker's info
-# The dictionary format is the following     checker number:  [coverage,  area]
-package_file.list_of_candidates = build_list_of_candidates()
-
-# best solution keeps a list of all the selected checkers which are used in the best solution
-best_solution = None
-# the area of the best solution
-best_cost = 0
-
-# this is the maximum possible coverage that sum of the checkers can get
-optimistic_guess = 100
+from file_generator import make_folders
 
 
 def branch(candidates_list, selected_list, excluded_list):
@@ -102,6 +92,18 @@ def bound(excluded_items):
     print "optimistic value:", optimistic_value
     return optimistic_value
 
+make_folders()
+# we need to prepare a dictionary of all the single checker's info
+# The dictionary format is the following     checker number:  [coverage,  area]
+package_file.list_of_candidates = build_list_of_candidates()
+
+# best solution keeps a list of all the selected checkers which are used in the best solution
+best_solution = None
+# the area of the best solution
+best_cost = 0
+
+# this is the maximum possible coverage that sum of the checkers can get
+optimistic_guess = 100
 
 branch(package_file.list_of_candidates, [], [])
 print "------------------------------"
