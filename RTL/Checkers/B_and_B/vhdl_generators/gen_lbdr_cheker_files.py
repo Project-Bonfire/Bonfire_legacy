@@ -1,3 +1,6 @@
+# copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
+
+
 def gen_lbdr_checkers(checker_id):
     name_string = ""
     for i in checker_id:
@@ -22,7 +25,6 @@ def gen_lbdr_checkers(checker_id):
     lbdr_checker_vhd.write("            dst_addr: in std_logic_vector(NoC_size-1 downto 0);\n")
     lbdr_checker_vhd.write("\n")
     lbdr_checker_vhd.write("            -- Checker outputs\n")
-
 
     lbdr_checker_vhd.write("            ")
     string_to_be_written = ""
@@ -74,7 +76,7 @@ def gen_lbdr_checkers(checker_id):
 
     if 3 in checker_id:
         lbdr_checker_vhd.write("-- Checking destination address (Depending on the location of the destination node "
-                                "with respect to the current node, if wrong requests from LBDR\n")
+                               "with respect to the current node, if wrong requests from LBDR\n")
         lbdr_checker_vhd.write("-- go active, there is a fault!)\n")
         lbdr_checker_vhd.write("process (dst_addr, Req_N, Req_E, Req_W, cur_addr, empty, flit_type)\n")
         lbdr_checker_vhd.write("begin\n")
@@ -101,7 +103,8 @@ def gen_lbdr_checkers(checker_id):
                                 "request of LBDR must go active and others must be zero!\n")
         lbdr_checker_vhd.write("process (dst_addr, Req_N, Req_E, Req_W, cur_addr, empty, flit_type, empty)\n")
         lbdr_checker_vhd.write("begin\n")
-        lbdr_checker_vhd.write("	if ( (empty = '0') and (flit_type = \"001\") and (dst_addr = cur_addr) and (Req_L = '0') ) then\n")
+        lbdr_checker_vhd.write("	if ( (empty = '0') and (flit_type = \"001\") and "
+                               "(dst_addr = cur_addr) and (Req_L = '0') ) then\n")
         lbdr_checker_vhd.write("		err_LBDR_Req_Local <= '1';\n")
         lbdr_checker_vhd.write("	else\n")
         lbdr_checker_vhd.write("		err_LBDR_Req_Local <= '0';\n")

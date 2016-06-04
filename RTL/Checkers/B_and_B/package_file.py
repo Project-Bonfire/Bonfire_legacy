@@ -6,5 +6,5 @@ list_of_candidates = {}
 size_max = 10
 
 # UUT can be "LBDR", "ELBDR"
-unit_under_test = "LBDR"
+unit_under_test = "ELBDR"
 

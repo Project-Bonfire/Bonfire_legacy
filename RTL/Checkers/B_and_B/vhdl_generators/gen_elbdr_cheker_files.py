@@ -1,3 +1,5 @@
+# copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
+
 def gen_elbdr_checkers(checker_id):
     name_string = ""
     for i in checker_id:
