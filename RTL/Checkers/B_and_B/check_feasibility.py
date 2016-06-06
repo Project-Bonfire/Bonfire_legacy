@@ -17,7 +17,7 @@ def check_feasibility(current_selected_list, chosen_item):
         for i in sorted(general_list):
             new_key += i + "_"
         new_key = new_key[:len(new_key) - 1]
-
+        print "checking the feasibility for the following key:", new_key
         if new_key not in package_file.list_of_candidates.keys():      # this item has not been processed before!
             # generate the files!
             generate_specific_file(general_list)

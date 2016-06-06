@@ -4,9 +4,10 @@ import copy
 from build_list_of_candidates import build_list_of_candidates
 from cost_function import calculate_cost
 from check_feasibility import check_feasibility
+from area_coverage_calc import calculate_area
+from area_coverage_calc import calculate_coverage
 import package_file
-
-from file_generator import make_folders
+from file_generator import make_folders, generate_specific_file
 
 
 def branch(candidates_list, selected_list, excluded_list):
@@ -81,9 +82,16 @@ def bound(excluded_items):
     """
     global optimistic_guess
     optimistic_value = 0
+    non_excluded_item = []
     for item in package_file.list_of_checkers:
         if item not in excluded_items:
-            optimistic_value += package_file.list_of_candidates[item][0]
+            non_excluded_item.append(item)
+            # todo: to make it more precise we should actually calculate the coverage.
+            # optimistic_value += package_file.list_of_candidates[item][0]
+    print "non excluded items:", non_excluded_item
+    generate_specific_file(non_excluded_item)
+    calculate_area(non_excluded_item)
+    optimistic_value = calculate_coverage(non_excluded_item)
 
     # the point here is that in some cases the things that checkers, check, might overlap and that
     # can result in optimistic_value to be over 100% which doesnt make sense!
@@ -109,3 +117,4 @@ branch(package_file.list_of_candidates, [], [])
 print "------------------------------"
 print "\033[32m* NOTE::\033[0m best solution:", best_solution
 print "\033[32m* NOTE::\033[0m coverage:", best_cost
+print package_file.list_of_candidates

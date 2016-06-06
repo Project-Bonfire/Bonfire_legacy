@@ -13,21 +13,24 @@ def build_list_of_candidates():
     generate_initial_files()
     print "initializing the list of candidates"
     for item in package_file.list_of_checkers:
-        print "calculating area for item:", item
-        list_of_initial_candidates = [item]
+       print "calculating area for item:", item
+       list_of_initial_candidates = [item]
+       area = calculate_area([item])
+       package_file.list_of_candidates[item] = [None, area]
+       print "area:", area
+       print "calculating coverage for item:", item
+       calculate_cost(list_of_initial_candidates)
+       print "\033[32m* NOTE::\033[0m current result for list of candidates: ", package_file.list_of_candidates
+       print "------------------------------"
 
-        area = calculate_area([item])
-        package_file.list_of_candidates[item] = [None, area]
-        print "area:", area
-
-        print "calculating coverage for item:", item
-        calculate_cost(list_of_initial_candidates)
-        print "------------------------------"
-
+ 
     if not check_list_of_candidates_format(package_file.list_of_candidates):
         raise ValueError("list_of_candidates is corrupt!")
 
     # package_file.list_of_candidates = list_of_candidates
+    print "\033[32m* NOTE::\033[0m results for list of candidates:" 
+    print package_file.list_of_candidates
+    print "------------------------------"
     return None
 
 

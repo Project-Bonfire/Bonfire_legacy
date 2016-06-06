@@ -105,5 +105,6 @@ def gen_elbdr_checkers(checker_id):
         elbdr_checker_vhd.write("end process;\n")
         elbdr_checker_vhd.write("\n")
     elbdr_checker_vhd.write("end behavior;\n")
+    elbdr_checker_vhd.close()
 
 

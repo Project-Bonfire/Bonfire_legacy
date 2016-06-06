@@ -112,7 +112,7 @@ def gen_elbdr_checker_top(checker_id):
     elbdr_checker_top.write("								  Req_N_in=>Req_N_sig, Req_W_in=>Req_W_sig, Req_S_in=>Req_S_sig, Req_L_in=>Req_L_sig, dst_addr => dst_addr,\n")
     string_to_write = ""
     if '1' in checker_id:
-        string_to_write += "err_LBDR_Req_onehot => err_LBDR_Req_onehot,,"
+        string_to_write += "err_LBDR_Req_onehot => err_LBDR_Req_onehot,"
     if '2' in checker_id:
         string_to_write += "err_LBDR_dst_addr_checker => err_LBDR_dst_addr_checker,"
     if '3' in checker_id:
@@ -125,4 +125,6 @@ def gen_elbdr_checker_top(checker_id):
     elbdr_checker_top.write("                                  -- err_LBDR_Req_not_Local => err_LBDR_Req_not_Local);\n")
     elbdr_checker_top.write("\n")
     elbdr_checker_top.write("end behavior;\n")
+    
+    elbdr_checker_top.close()
 
