@@ -1,3 +1,4 @@
 .DS_Store
 scripts/*.vhd
 *.pyc
+RTL/Checkers/B_and_B/*.vhd
