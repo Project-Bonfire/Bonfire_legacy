@@ -12,35 +12,28 @@ entity FIFO_control_part_pseudo is
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
-            CTS_out : in std_logic; -- pseudo-input
-            --read_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
-            --write_pointer: in std_logic_vector(1 downto 0); -- pseudo-input
-            read_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
-            write_pointer: in std_logic_vector(3 downto 0); -- pseudo-input
-            RX : in std_logic_vector(31 downto 0);
-            CTS_in: out std_logic; -- pseudo-output
-            --read_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
-            --write_pointer_in: out std_logic_vector(1 downto 0); -- pseudo-output
-            read_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
-            write_pointer_in: out std_logic_vector(3 downto 0); -- pseudo-output
-            FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4: in std_logic_vector(31 downto 0);            
-            FIFO_MEM_1_in, FIFO_MEM_2_in, FIFO_MEM_3_in, FIFO_MEM_4_in: out std_logic_vector(31 downto 0);
-            empty_out: out std_logic;
+            read_pointer: in std_logic_vector(3 downto 0);
+            write_pointer: in std_logic_vector(3 downto 0);
+            CTS_out: in std_logic;
+            HS_state_out: in std_logic_vector(1 downto 0);
+
+            CTS_in: out std_logic; 
+            empty_out: out std_logic; 
             full_out: out std_logic;
+            read_pointer_in: out std_logic_vector(3 downto 0); 
+            write_pointer_in: out std_logic_vector(3 downto 0);
             read_en_out: out std_logic;
-            write_en_out: out std_logic;
-            Data_out: out std_logic_vector(31 downto 0)          
+            write_en_out: out std_logic; 
+            HS_state_in: out std_logic_vector(1 downto 0)
     );
-end;
+end FIFO_control_part_pseudo;
 
 architecture behavior of FIFO_control_part_pseudo is
-    
    signal full, empty: std_logic;
    signal read_en, write_en: std_logic;
-
-   TYPE STATE_TYPE IS (IDLE, READ_DATA);
-
-   SIGNAL HS_state_out,HS_state_in   : STATE_TYPE;
+   
+   CONSTANT IDLE: std_logic_vector (1 downto 0) := "01";
+   CONSTANT READ_DATA: std_logic_vector (1 downto 0) := "10";
 
 begin
  --------------------------------------------------------------------------------------------
@@ -77,47 +70,25 @@ begin
 
  -- anything below here is pure combinational
  
-   -- combinational part
+   -- combinatorial part
+
    read_en <= (read_en_N or read_en_E or read_en_W or read_en_S or read_en_L) and not empty; 
    empty_out <= empty;
-   full_out <= full;
    read_en_out <= read_en;
    write_en_out <= write_en;
+   full_out <= full;
 
-   process(RX, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4)begin
-      case( write_pointer ) is
-          when "0001" => FIFO_MEM_1_in <= RX;         FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-          when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= RX;         FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-          when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= RX;         FIFO_MEM_4_in <= FIFO_MEM_4; 
-          when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= RX;                  
-          when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-      end case ;
-   end process;
-
-   process(read_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4)begin
-        case( read_pointer ) is
-          when "0001" => Data_out <= FIFO_MEM_1;
-          when "0010" => Data_out <= FIFO_MEM_2;
-          when "0100" => Data_out <= FIFO_MEM_3;
-          when "1000" => Data_out <= FIFO_MEM_4;
-          when others => Data_out <= FIFO_MEM_1; -- why ? 
-        end case ;
-   end process;   
-
-   process(write_en, write_pointer) 
-   begin
-     if write_en = '1' then
-      --   write_pointer_in <= write_pointer+1; 
-       write_pointer_in <= write_pointer(2 downto 0) & write_pointer(3);
+   process(write_en, write_pointer)begin
+     if write_en = '1'then
+        write_pointer_in <= write_pointer(2 downto 0)&write_pointer(3); 
      else
         write_pointer_in <= write_pointer; 
      end if;
    end process;
 
-   process(read_en, empty, read_pointer) begin
+   process(read_en, empty, read_pointer)begin
         if (read_en = '1' and empty = '0') then
-         --   read_pointer_in <= read_pointer+1; 
-          read_pointer_in <= read_pointer(2 downto 0) & read_pointer(3);            
+            read_pointer_in <= read_pointer(2 downto 0)&read_pointer(3); 
         else 
             read_pointer_in <= read_pointer; 
         end if;
@@ -135,8 +106,7 @@ begin
                     CTS_in <= '0';
                     write_en <= '0';
                 end if;
-
-            when others => -- The same as READ_DATA
+            when READ_DATA => -- READ_DATA
                 if CTS_out = '0' and DRTS = '1' and full ='0' then
                     HS_state_in <= READ_DATA;
                     CTS_in <= '1';
@@ -145,21 +115,23 @@ begin
                     HS_state_in <= IDLE;
                     CTS_in <= '0';
                     write_en <= '0';
-                end if;            
+                end if;
+            when others => -- Invalid
+                HS_state_in <= IDLE;
+                CTS_in <= '0';
+                write_en <= '0';                
         end case ;
         
    end process;
                         
     process(write_pointer, read_pointer) begin
-
-        if (read_pointer = write_pointer)  then
+        if read_pointer = write_pointer  then
                 empty <= '1';
             else
                 empty <= '0';
             end if;
 
-        if (write_pointer = read_pointer(0) & read_pointer(3 downto 1)) then
---        if write_pointer = read_pointer - 1 then
+	if write_pointer = read_pointer(0)&read_pointer(3 downto 1) then
                 full <= '1';
             else
                 full <= '0'; 
