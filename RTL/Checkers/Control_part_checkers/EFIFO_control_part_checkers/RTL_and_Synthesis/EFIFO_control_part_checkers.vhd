@@ -5,12 +5,11 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.NUMERIC_STD.all;
 use IEEE.MATH_REAL.ALL;
 
-entity FIFO_control_part_checkers is
+entity EFIFO_control_part_checkers is
     port (  DRTS: in std_logic;
     		CTS_out: in std_logic;
             CTS_in: in std_logic;
             read_en_N : in std_logic;
-            read_en_E : in std_logic;            
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
@@ -37,11 +36,11 @@ entity FIFO_control_part_checkers is
             err_FIFO_read_en_empty: out std_logic;
             err_FIFO_read_en_empty1: out std_logic
             );
-end FIFO_control_part_checkers;
+end EFIFO_control_part_checkers;
 
-architecture behavior of FIFO_control_part_checkers is
+architecture behavior of EFIFO_control_part_checkers is
 
-signal read_en_signals: std_logic_vector(4 downto 0);
+signal read_en_signals: std_logic_vector(3 downto 0);
 
 begin 
 
@@ -74,11 +73,11 @@ process(CTS_out, DRTS, full_out, CTS_in) begin
 	end if;
 end process;
 
-read_en_signals <= read_en_N & read_en_E & read_en_W & read_en_S & read_en_L;
+read_en_signals <= read_en_N & read_en_W & read_en_S & read_en_L;
 
 -- Read_en from Arbiters can either be all zeros or must be one-hot!
 process(read_en_out, empty_out, read_en_signals) begin
-	if ( (read_en_out = '1' and empty_out = '0' and read_en_signals /= "10000" and read_en_signals /= "01000" and read_en_signals /= "00100" and read_en_signals /= "00010" and read_en_signals /= "00001") or (read_en_out = '0' and empty_out = '0' and read_en_signals /="00000" ) ) then
+	if ( (read_en_out = '1' and empty_out = '0' and read_en_signals /= "1000" and read_en_signals /= "0100" and read_en_signals /= "0010" and read_en_signals /= "0001") or (read_en_out = '0' and empty_out = '0' and read_en_signals /="0000" ) ) then
 		err_FIFO_read_en_onehot <= '1';
 	else 
 		err_FIFO_read_en_onehot <= '0';
@@ -86,7 +85,7 @@ process(read_en_out, empty_out, read_en_signals) begin
 end process;
 
 process(read_en_signals, empty_out, read_en_out) begin
-	if ( (read_en_signals = "00000" or empty_out = '1') and read_en_out = '1' ) then
+	if ( (read_en_signals = "0000" or empty_out = '1') and read_en_out = '1' ) then
 		err_FIFO_read_en_empty <= '1';
 	else 
 		err_FIFO_read_en_empty <= '0';
@@ -94,7 +93,7 @@ process(read_en_signals, empty_out, read_en_out) begin
 end process;
 
 process(read_en_N, read_en_W, read_en_S, read_en_L, empty_out) begin
-	if ( (read_en_N = '1' or read_en_E = '1' or read_en_W = '1' or read_en_S = '1' or read_en_L = '1') and empty_out = '0' and read_en_out = '0' ) then
+	if ( (read_en_N = '1' or read_en_W = '1' or read_en_S = '1' or read_en_L = '1') and empty_out = '0' and read_en_out = '0' ) then
 		err_FIFO_read_en_empty1 <= '1';
 	else 
 		err_FIFO_read_en_empty1 <= '0';
@@ -182,7 +181,7 @@ process(write_en_out, full_out) begin
 end process;
 
 process(read_pointer, read_pointer_in) begin
-	if ((read_pointer /= "00001" and read_pointer /= "00010" and read_pointer /= "00100" and read_pointer /= "01000" and read_pointer /= "10000") or (read_pointer_in /= "00001" and read_pointer_in /= "00010" and read_pointer_in /= "00100" and read_pointer_in /= "01000" and read_pointer_in /= "10000")) then
+	if ((read_pointer /= "0001" and read_pointer /= "0010" and read_pointer /= "0100" and read_pointer /= "1000") or (read_pointer_in /= "0001" and read_pointer_in /= "0010" and read_pointer_in /= "0100" and read_pointer_in /= "1000")) then
 		err_FIFO_read_pointer_onehot <= '1';
 	else
 		err_FIFO_read_pointer_onehot <= '0';
@@ -190,7 +189,7 @@ process(read_pointer, read_pointer_in) begin
 end process;
 
 process(write_pointer, write_pointer_in) begin
-	if ((write_pointer /= "00001" and write_pointer /= "00010" and write_pointer /= "00100" and write_pointer /= "01000" and write_pointer /= "10000")or (write_pointer_in /= "00001" and write_pointer_in /= "00010" and write_pointer_in /= "00100" and write_pointer_in /= "01000" and write_pointer_in /= "10000")) then
+	if ((write_pointer /= "0001" and write_pointer /= "0010" and write_pointer /= "0100" and write_pointer /= "1000")or (write_pointer_in /= "0001" and write_pointer_in /= "0010" and write_pointer_in /= "0100" and write_pointer_in /= "1000")) then
 		err_FIFO_write_pointer_onehot <= '1';
 	else
 		err_FIFO_write_pointer_onehot <= '0';

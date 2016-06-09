@@ -5,10 +5,9 @@ use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity FIFO_control_part_pseudo is
+entity EFIFO_control_part_pseudo is
     port (  DRTS: in std_logic;  
             read_en_N : in std_logic;
-            read_en_E : in std_logic;
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
@@ -26,26 +25,23 @@ entity FIFO_control_part_pseudo is
             write_en_out: out std_logic; 
             HS_state_in: out std_logic_vector(1 downto 0)
     );
-end FIFO_control_part_pseudo;
+end EFIFO_control_part_pseudo;
 
-architecture behavior of FIFO_control_part_pseudo is
+architecture behavior of EFIFO_control_part_pseudo is
    signal full, empty: std_logic;
    signal read_en, write_en: std_logic;
    
-   CONSTANT IDLE: std_logic_vector (1 downto 0) := "01";
-   CONSTANT READ_DATA: std_logic_vector (1 downto 0) := "10";
-
 begin
  --------------------------------------------------------------------------------------------
---                           block diagram of the FIFO!
+--                           block diagram of the East FIFO!
 --  previous            
 --   router                
 --     --            ------------------------------------------             
 --       |          |                                          |
 --     TX|--------->| RX                               Data_out|----> goes to Xbar and LBDR
 --       |          |                                          | 
---    RTS|--------->| DRTS             FIFO             read_en|<---- Comes from Arbiters (N,E,W,S,L)
---       |          |                               (N,E,W,S,L)|
+--    RTS|--------->| DRTS             E_FIFO           read_en|<---- Comes from Arbiters (N,W,S,L)
+--       |          |                                 (N,W,S,L)|
 --   DCTS|<---------| CTS                                      |    
 --     --            ------------------------------------------ 
  --------------------------------------------------------------------------------------------
@@ -72,7 +68,7 @@ begin
  
    -- combinatorial part
 
-   read_en <= (read_en_N or read_en_E or read_en_W or read_en_S or read_en_L) and not empty; 
+   read_en <= (read_en_N or read_en_W or read_en_S or read_en_L) and not empty; 
    empty_out <= empty;
    read_en_out <= read_en;
    write_en_out <= write_en;
@@ -95,32 +91,31 @@ begin
    end process;
 
    process(HS_state_out, full, DRTS, CTS_out) begin
-        case(HS_state_out) is
-            when IDLE =>
+        if (HS_state_out = "01") then
                 if CTS_out = '0' and DRTS = '1' and full ='0' then
-                    HS_state_in <= READ_DATA;
+                    HS_state_in <= "10";
                     CTS_in <= '1';
                     write_en <= '1';
                 else
-                    HS_state_in <= IDLE;
+                    HS_state_in <= "01";
                     CTS_in <= '0';
                     write_en <= '0';
                 end if;
-            when READ_DATA => -- READ_DATA
+         elsif (HS_state_out = "10") then -- READ_DATA
                 if CTS_out = '0' and DRTS = '1' and full ='0' then
-                    HS_state_in <= READ_DATA;
+                    HS_state_in <= "10";
                     CTS_in <= '1';
                     write_en <= '1';
                 else
-                    HS_state_in <= IDLE;
+                    HS_state_in <= "01";
                     CTS_in <= '0';
                     write_en <= '0';
                 end if;
-            when others => -- Invalid
-                HS_state_in <= IDLE;
-                CTS_in <= '0';
-                write_en <= '0';                
-        end case ;
+         else  
+                    HS_state_in <= "01";
+                    CTS_in <= '0';
+                    write_en <= '0';                
+        end if;
         
    end process;
                         

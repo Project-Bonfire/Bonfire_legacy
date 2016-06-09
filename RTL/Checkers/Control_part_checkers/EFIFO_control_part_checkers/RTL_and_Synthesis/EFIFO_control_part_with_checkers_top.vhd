@@ -5,10 +5,9 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.NUMERIC_STD.all;
 use IEEE.MATH_REAL.ALL;
 
-entity FIFO_control_part_with_checkers_top is
+entity EFIFO_control_part_with_checkers_top is
     port (  DRTS: in std_logic;  
             read_en_N : in std_logic;
-            read_en_E : in std_logic;                        
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
@@ -39,14 +38,13 @@ entity FIFO_control_part_with_checkers_top is
             err_FIFO_read_en_empty: out std_logic;
             err_FIFO_read_en_empty1: out std_logic
     );
-end FIFO_control_part_with_checkers_top;
+end EFIFO_control_part_with_checkers_top;
 
-architecture behavior of FIFO_control_part_with_checkers_top is
+architecture behavior of EFIFO_control_part_with_checkers_top is
 
-component FIFO_control_part_pseudo is
+component EFIFO_control_part_pseudo is
     port (  DRTS: in std_logic;  
             read_en_N : in std_logic;
-            read_en_E : in std_logic;                        
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
@@ -66,12 +64,11 @@ component FIFO_control_part_pseudo is
     );
 end component;
 
-component FIFO_control_part_checkers is
+component EFIFO_control_part_checkers is
     port (  DRTS: in std_logic;
             CTS_out: in std_logic;
             CTS_in: in std_logic;
             read_en_N : in std_logic;
-            read_en_E : in std_logic;                        
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
@@ -116,8 +113,8 @@ write_en_out <= write_en_out_sig;
 HS_state_in <= HS_state_in_sig;
 
 -- FEIFO Control Part instantiation
-FIFO_CONTROL_PART: FIFO_control_part_pseudo port map (DRTS => DRTS, 
-                                                      read_en_N => read_en_N, read_en_E => read_en_E, read_en_W => read_en_W, read_en_S => read_en_S, read_en_L => read_en_L,
+EFIFO_CONTROL_PART: EFIFO_control_part_pseudo port map (DRTS => DRTS, 
+                                                      read_en_N => read_en_N, read_en_W => read_en_W, read_en_S => read_en_S, read_en_L => read_en_L,
                                                       CTS_out => CTS_out,
                                                       read_pointer => read_pointer, write_pointer => write_pointer, 
                                                       HS_state_out => HS_state_out,
@@ -129,9 +126,9 @@ FIFO_CONTROL_PART: FIFO_control_part_pseudo port map (DRTS => DRTS,
 						                                          );
                                   
 -- Checkers instantiation
-CHECKERS: FIFO_control_part_checkers port map (DRTS => DRTS,
+CHECKERS: EFIFO_control_part_checkers port map (DRTS => DRTS,
                                                CTS_in => CTS_in_sig, CTS_out => CTS_out,
-                                               read_en_N => read_en_N, read_en_E => read_en_E, read_en_W => read_en_W, read_en_S => read_en_S, read_en_L => read_en_L,
+                                               read_en_N => read_en_N, read_en_W => read_en_W, read_en_S => read_en_S, read_en_L => read_en_L,
                                                read_pointer => read_pointer, read_pointer_in => read_pointer_in_sig, write_pointer => write_pointer, write_pointer_in => write_pointer_in_sig,
                                                empty_out => empty_out_sig, full_out => full_out_sig, 
                                                read_en_out => read_en_out_sig, write_en_out => write_en_out_sig,
