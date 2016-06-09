@@ -6,7 +6,8 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity Arbiter_pseudo is
-    port (  Req_N, Req_E, Req_W, Req_S, Req_L:in std_logic; -- From LBDR modules
+    port   (  
+            Req_N, Req_E, Req_W,Req_S, Req_L:in std_logic; -- From LBDR modules
             DCTS: in std_logic; -- Getting the CTS signal from the input FIFO of the next router/NI (for hand-shaking)
             RTS_FF: in std_logic;
             state: in std_logic_vector (5 downto 0); -- 6 states for Arbiter's FSM
@@ -14,8 +15,9 @@ entity Arbiter_pseudo is
             Grant_N, Grant_E, Grant_W, Grant_S, Grant_L:out std_logic; -- Grants given to LBDR requests (encoded as one-hot)
             Xbar_sel : out std_logic_vector (4 downto 0); -- select lines for XBAR
             RTS_FF_in: out std_logic; -- Valid output which is sent to the next router/NI to specify that the data on the output port is valid
-            state_in: out std_logic_vector (5 downto 0) -- 6 states for Arbiter's FSM
-            );
+            state_in: out std_logic_vector (5 downto 0); -- 6 states for Arbiter's FSM
+            next_state_out: out std_logic_vector (5 downto 0) -- 6 states for Arbiter's FSM
+           );
 end;
 
 architecture behavior of Arbiter_pseudo is
@@ -56,6 +58,8 @@ CONSTANT South: std_logic_vector (5 downto 0) := "100000";
 
 begin
 
+next_state_out <= next_state;
+
 -- anything below here is pure combinational
 
 process(RTS_FF, DCTS, state, next_state)begin
@@ -65,7 +69,6 @@ process(RTS_FF, DCTS, state, next_state)begin
         state_in <= next_state;
     end if;    
 end process;
-
 
 process(state, RTS_FF, DCTS)begin
     if state = IDLE then 
@@ -84,12 +87,14 @@ end process;
 -- sets the grants using round robin 
 -- the order is   L --> N --> E --> W --> S  and then back to L
 process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
+
     Grant_N <= '0';
     Grant_E <= '0';
     Grant_W <= '0';
     Grant_S <= '0';
     Grant_L <= '0';
     Xbar_sel<= "00000"; 
+    
     case(state) is
         when IDLE =>
             Xbar_sel<= "00000"; 
@@ -103,7 +108,7 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
             elsif Req_W = '1' then
                 next_state <= West;
             elsif Req_S = '1' then
-                next_state <= South;
+                next_state <= South;                
             else
                 next_state <= IDLE;
             end if;    
@@ -119,7 +124,7 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
             elsif Req_W = '1' then
                 next_state <= West;
             elsif Req_S = '1' then
-                next_state <= South;
+                next_state <= South;                
             elsif Req_L = '1' then
                 next_state <= Local;
             else
@@ -135,7 +140,7 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
             elsif Req_W = '1' then
                 next_state <= West;
             elsif Req_S = '1' then
-                next_state <= South;
+                next_state <= South;                
             elsif Req_L = '1' then
                 next_state <= Local;
             elsif Req_N = '1' then
@@ -151,7 +156,7 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
             If Req_W = '1' then
                 next_state <= West; 
             elsif Req_S = '1' then
-                next_state <= South;
+                next_state <= South;                
             elsif Req_L = '1' then
                 next_state <= Local;
             elsif Req_N = '1' then
@@ -161,7 +166,7 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
             else
                 next_state <= IDLE; 
             end if;
-            
+
         when South =>
             Grant_S <= DCTS and RTS_FF;
             Xbar_sel<= "01000";
@@ -178,8 +183,8 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
                 next_state <= West;
             else
                 next_state <= IDLE; 
-            end if;
-            
+            end if;            
+                        
         when others => -- Local
             Grant_L <= DCTS and RTS_FF;
             Xbar_sel<= "10000";
@@ -193,10 +198,11 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
             elsif Req_W = '1' then
                 next_state <= West;
             elsif Req_S = '1' then
-                next_state <= South;
+                next_state <= South;                
             else
                 next_state <= IDLE; 
             end if;
+
     end case ;
 end process;
 
