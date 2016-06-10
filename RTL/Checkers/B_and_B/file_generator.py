@@ -1,9 +1,10 @@
 # copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 
 import os
+
 import package_file
 from vhdl_generators import gen_elbdr_cheker_files, gen_elbdr_checker_top
-from script_generators import gen_elbdr_synth_script
+import gen_unit_synth_script
 
 
 def make_folders():
@@ -27,18 +28,16 @@ def make_folders():
 def generate_specific_file(current_selected_list):
     if len(current_selected_list) == 0:
         return None
-
     if package_file.unit_under_test == "ELBDR":
         gen_elbdr_cheker_files.gen_elbdr_checkers(current_selected_list)
         gen_elbdr_checker_top.gen_elbdr_checker_top(current_selected_list)
-        gen_elbdr_synth_script.gen_elbdr_checker_top(current_selected_list)
+        gen_unit_synth_script.gen_unit_checker_script(current_selected_list)
 
 
 def generate_initial_files():
-
     if package_file.unit_under_test == "ELBDR":
         for i in package_file.list_of_checkers:
             list_of_checkers = [i]
             gen_elbdr_cheker_files.gen_elbdr_checkers(list_of_checkers)
             gen_elbdr_checker_top.gen_elbdr_checker_top(list_of_checkers)
-            gen_elbdr_synth_script.gen_elbdr_checker_top(list_of_checkers)
+            gen_unit_synth_script.gen_unit_checker_script(list_of_checkers)

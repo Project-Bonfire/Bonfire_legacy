@@ -4,6 +4,7 @@ from cost_function import calculate_cost
 import package_file
 from area_coverage_calc import calculate_area
 
+
 def build_list_of_candidates():
     """
     This function should basically synthesise the checkers individually and

@@ -3,6 +3,7 @@ import package_file
 from file_generator import generate_specific_file
 from area_coverage_calc import calculate_area
 
+
 def check_feasibility(current_selected_list, chosen_item):
     # in thus function we should check if the area of
     # the checkers goes over the limit

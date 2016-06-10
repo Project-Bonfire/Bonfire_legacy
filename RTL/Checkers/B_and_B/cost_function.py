@@ -13,11 +13,11 @@ def calculate_cost(current_selected_list):
     if len(current_selected_list) == 1:
         new_key = current_selected_list[0]
         if new_key not in package_file.list_of_candidates.keys():
-            coverage = calculate_coverage (current_selected_list)
+            coverage = calculate_coverage(current_selected_list)
             package_file.list_of_candidates[new_key] = [coverage, None]
         else:
             if package_file.list_of_candidates[new_key][0] is None:
-                coverage = calculate_coverage (current_selected_list)
+                coverage = calculate_coverage(current_selected_list)
                 package_file.list_of_candidates[new_key][0] = coverage
             else:
                 coverage = package_file.list_of_candidates[new_key][0]
@@ -31,17 +31,16 @@ def calculate_cost(current_selected_list):
         if new_key not in package_file.list_of_candidates.keys():
             # this is actually how it should be!
             generate_specific_file(current_selected_list)
-            coverage = calculate_coverage (current_selected_list)
+            coverage = calculate_coverage(current_selected_list)
             package_file.list_of_candidates[new_key] = [coverage, None]
 
         else:
             # this is for the time being
             if package_file.list_of_candidates[new_key][0] is None:
-                coverage = calculate_coverage (current_selected_list)
+                coverage = calculate_coverage(current_selected_list)
                 package_file.list_of_candidates[new_key][0] = coverage
             else:
                 coverage = package_file.list_of_candidates[new_key][0]
-
 
     print "coverage:", coverage
     return coverage
