@@ -7,11 +7,15 @@ list_of_checkers = ["1", "2", "3", "4"]
 # size max is the maximum allowed area for the sum of checkers!
 size_max = 80
 
-# UUT can be "ELBDR" make sure its capital
-unit_under_test = "ELBDR"
-module_file_name = "ELBDR_pseudo.vhd"
+# UUT can be "ELBDR", "LBDR" make sure its capital
+unit_under_test = "LBDR"
+# module file name points to the vhdl file of the pseudo combinational module you are working on
+module_file_name = "LBDR_pseudo.vhd"
 
-# ------------------------------
+# --------------------------------------------
+#                Anything bellow
+#       This is for testing... do not touch!
+# --------------------------------------------
 test_mode = False
 
 # here i assume that the area of the module is 40
