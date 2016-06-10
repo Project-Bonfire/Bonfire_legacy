@@ -13,6 +13,7 @@ def build_list_of_candidates():
     """
     generate_initial_files()
     print "initializing the list of candidates"
+    """
     for item in package_file.list_of_checkers:
        print "calculating area for item:", item
        list_of_initial_candidates = [item]
@@ -23,7 +24,9 @@ def build_list_of_candidates():
        calculate_cost(list_of_initial_candidates)
        print "\033[32m* NOTE::\033[0m current result for list of candidates: ", package_file.list_of_candidates
        print "------------------------------"
-
+    """
+    for item in package_file.list_of_checkers:
+        package_file.list_of_candidates[item] = [None, None]
  
     if not check_list_of_candidates_format(package_file.list_of_candidates):
         raise ValueError("list_of_candidates is corrupt!")

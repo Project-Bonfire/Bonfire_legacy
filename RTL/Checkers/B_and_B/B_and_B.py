@@ -29,7 +29,7 @@ def branch(candidates_list, selected_list, excluded_list):
     # if we pick the item
     print "trying picking the item", item
     if not check_feasibility(current_selected_list, item):
-        print "\033[91m* NOTE::\033[0m Non feasible solution!... aborting!"
+        pass
     else:
         current_selected_list.append(item)
         if item in current_excluded_list:
@@ -81,13 +81,13 @@ def bound(excluded_items):
     :return: the optimistic guess of the possibility of improvement.
     """
     global optimistic_guess
-    optimistic_value = 0
+    # optimistic_value = 0
     non_excluded_item = []
     for item in package_file.list_of_checkers:
         if item not in excluded_items:
             non_excluded_item.append(item)
-            # todo: to make it more precise we should actually calculate the coverage.
             # optimistic_value += package_file.list_of_candidates[item][0]
+
     print "non excluded items:", non_excluded_item
     generate_specific_file(non_excluded_item)
     calculate_area(non_excluded_item)

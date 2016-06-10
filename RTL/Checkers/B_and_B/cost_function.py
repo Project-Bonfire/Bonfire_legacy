@@ -33,7 +33,6 @@ def calculate_cost(current_selected_list):
             generate_specific_file(current_selected_list)
             coverage = calculate_coverage(current_selected_list)
             package_file.list_of_candidates[new_key] = [coverage, None]
-
         else:
             # this is for the time being
             if package_file.list_of_candidates[new_key][0] is None:
