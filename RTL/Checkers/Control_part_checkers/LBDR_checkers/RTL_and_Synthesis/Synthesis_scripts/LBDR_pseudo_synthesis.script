@@ -44,7 +44,8 @@ edifout_pin_name_propery_name = "pinName"
 /* Important! */
 
 edifout_numerical_array_members = "true" 
-edifout_no_array = "false"
+/*edifout_no_array = "false"*/
+edifout_no_array = "true"
 
 /********************************************/
 /*  Now starts the synthesis:               */

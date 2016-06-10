@@ -18,10 +18,12 @@ entity LBDR_with_checkers_top is
             Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: in std_logic;
             
             -- LBDR outputs
-             Req_N , Req_E , Req_W , Req_S , Req_L : out std_logic;
+            Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: out std_logic;
 
             -- Checker outputs
-            err_LBDR_Req_onehot, err_LBDR_Req_allzero, err_LBDR_dst_addr_checker, err_LBDR_Req_Local: out std_logic
+            err_LBDR_Req_onehot, err_LBDR_Req_onehot1, err_LBDR_dst_addr_checker : out std_logic ;
+            err_LBDR_valid_flit_type, err_LBDR_valid_flit_type1, err_LBDR_valid_flit_type2, err_LBDR_valid_flit_type3, err_LBDR_valid_flit_type4, err_LBDR_valid_flit_type5 : out std_logic; 
+            err_LBDR_Req_tail_allzero, err_LBDR_Req_Local, err_LBDR_Req_Local1 : out std_logic
             );
 end LBDR_with_checkers_top;
 
@@ -38,8 +40,8 @@ component LBDR_pseudo is
             flit_type: in std_logic_vector(2 downto 0);
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
             Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: in std_logic;
-            
-             Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: out std_logic
+
+            Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: out std_logic
             );
 end component;
 
@@ -50,36 +52,61 @@ component LBDR_checkers is
     );
     port (  empty: in  std_logic;
             flit_type: in std_logic_vector(2 downto 0);
-            Req_N, Req_E, Req_W, Req_S, Req_L: in std_logic;
+            Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: in std_logic;
+            Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: in std_logic;
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
 
             -- Checker outputs
-            err_LBDR_Req_onehot, err_LBDR_Req_allzero, err_LBDR_dst_addr_checker, err_LBDR_Req_Local: out std_logic
+            err_LBDR_Req_onehot, err_LBDR_Req_onehot1, err_LBDR_dst_addr_checker : out std_logic ;
+            err_LBDR_valid_flit_type, err_LBDR_valid_flit_type1, err_LBDR_valid_flit_type2, err_LBDR_valid_flit_type3, err_LBDR_valid_flit_type4, err_LBDR_valid_flit_type5 : out std_logic; 
+            err_LBDR_Req_tail_allzero, err_LBDR_Req_Local, err_LBDR_Req_Local1 : out std_logic
             );
 end component;
 
-signal Req_N_sig, Req_E_sig, Req_W_sig, Req_S_sig, Req_L_sig: std_logic;
+signal Req_N_in_sig, Req_E_in_sig, Req_W_in_sig, Req_S_in_sig, Req_L_in_sig: std_logic;
 
 begin 
 
-Req_N <= Req_N_sig;
-Req_E <= Req_E_sig;
-Req_W <= Req_W_sig;
-Req_S <= Req_S_sig;
-Req_L <= Req_L_sig;
+Req_N_in <= Req_N_in_sig;
+Req_E_in <= Req_E_in_sig;
+Req_W_in <= Req_W_in_sig;
+Req_S_in <= Req_S_in_sig;
+Req_L_in <= Req_L_in_sig;
 
 
 -- LBDR instantiation
 LBDR: LBDR_pseudo generic map (cur_addr_rst => 5, Rxy_rst => 60, Cx_rst => 15, NoC_size => 4)
- 				  port map (empty=>empty, flit_type=>flit_type, dst_addr=>dst_addr, 
-							Req_N_FF=>Req_N_FF, Req_E_FF=>Req_E_FF, Req_W_FF=>Req_W_FF, Req_S_FF=>Req_S_FF, Req_L_FF=>Req_L_FF,
- 							Req_N_in=>Req_N_sig, Req_E_in=>Req_E_sig, Req_W_in=>Req_W_sig, Req_S_in=>Req_S_sig, Req_L_in=>Req_L_sig);
+ 				     port map (empty=>empty, flit_type=>flit_type, dst_addr=>dst_addr, 
+							   Req_N_FF=>Req_N_FF, Req_E_FF=>Req_E_FF, Req_W_FF=>Req_W_FF, Req_S_FF=>Req_S_FF, Req_L_FF=>Req_L_FF,
+ 							   Req_N_in=>Req_N_in_sig, Req_E_in=>Req_E_in_sig, Req_W_in=>Req_W_in_sig, Req_S_in=>Req_S_in_sig, Req_L_in=>Req_L_in_sig);
 
 -- Checkers instantiation
-CHECKERS: LBDR_checkers generic map (cur_addr_rst => 5, NoC_size => 4)
-                        port map (empty=>empty, flit_type=>flit_type, 
-								  Req_N=>Req_N_sig, Req_E=>Req_E_sig, Req_W=>Req_W_sig, Req_S=>Req_S_sig, Req_L=>Req_L_sig, 
-								  dst_addr => dst_addr, err_LBDR_Req_onehot=>err_LBDR_Req_onehot, err_LBDR_Req_allzero=>err_LBDR_Req_allzero,
-                                  err_LBDR_dst_addr_checker => err_LBDR_dst_addr_checker, err_LBDR_Req_Local => err_LBDR_Req_Local);
+CHECKERS: LBDR_checkers  generic map (cur_addr_rst => 5, NoC_size => 4)
+                         port map (empty=>empty, flit_type=>flit_type,
+                                  Req_N_FF=>Req_N_FF, 
+                                  Req_E_FF=>Req_E_FF, 
+                                  Req_W_FF=>Req_W_FF, 
+                                  Req_S_FF=>Req_S_FF,
+                                  Req_L_FF=>Req_L_FF,
+								                  Req_N_in=>Req_N_in_sig, 
+                                  Req_E_in=>Req_E_in_sig, 
+                                  Req_W_in=>Req_W_in_sig, 
+                                  Req_S_in=>Req_S_in_sig, 
+                                  Req_L_in=>Req_L_in_sig, 
+                                  dst_addr => dst_addr,
+
+								                  err_LBDR_Req_onehot => err_LBDR_Req_onehot, 
+                                  err_LBDR_Req_onehot1 => err_LBDR_Req_onehot1, 
+                                  err_LBDR_dst_addr_checker => err_LBDR_dst_addr_checker, 
+                                  err_LBDR_Req_tail_allzero => err_LBDR_Req_tail_allzero, 
+                                  err_LBDR_Req_Local => err_LBDR_Req_Local, 
+                                  err_LBDR_Req_Local1 => err_LBDR_Req_Local1, 
+                                  err_LBDR_valid_flit_type => err_LBDR_valid_flit_type, 
+                                  err_LBDR_valid_flit_type1 => err_LBDR_valid_flit_type1,
+                                  err_LBDR_valid_flit_type2 => err_LBDR_valid_flit_type2, 
+                                  err_LBDR_valid_flit_type3 => err_LBDR_valid_flit_type3,
+                                  err_LBDR_valid_flit_type4 => err_LBDR_valid_flit_type4,
+                                  err_LBDR_valid_flit_type5 => err_LBDR_valid_flit_type5
+                                  );
 
 end behavior;
