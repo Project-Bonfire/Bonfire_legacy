@@ -33,10 +33,12 @@ echo "Now running performing Fault Simulating using Turbo Tester Analyze tool ..
 
 cd ..
 mkdir area_results
-cp temp/area*.txt ../area_results/
+cp temp/area*.txt area_results/
 
+variable="$5"
+echo $variable
 mkdir coverage_results
-cp temp/fstat ../coverage_results/fstat"$4"
+cp temp/fstat coverage_results/fstat"$variable"
 
 #cd temp
 #rm -f -r ./*
