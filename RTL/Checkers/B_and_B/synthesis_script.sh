@@ -4,6 +4,7 @@
 # CHECKERS_FILE = $2
 # TOP_MODULE_FILE = $3
 # SYNTHESIS_SCRIPT_FILE = $4
+# name_string = $5
 
 mkdir temp
 
@@ -33,6 +34,9 @@ echo "Now running performing Fault Simulating using Turbo Tester Analyze tool ..
 cd ..
 mkdir area_results
 cp temp/area*.txt ../area_results/
+
+mkdir coverage_results
+cp temp/fstat ../coverage_results/fstat"$4"
 
 #cd temp
 #rm -f -r ./*

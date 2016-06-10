@@ -26,7 +26,7 @@ def run_synthesis_script_and_report_area(list_of_selected_checkers):
     script_file_name = package_file.unit_under_test+"_with_checkers_"+name_string+"_synthesis.script"
 
     os.system("sh ./synthesis_script.sh" + " " + package_file.module_file_name + " " + checkers_file_name + " " +
-              top_file_name + " " + script_file_name)
+              top_file_name + " " + script_file_name + " " + name_string)
     return parse_area_report("temp/area"+name_string+".txt")
 
 
@@ -53,5 +53,9 @@ def parse_coverage_report(file_name):
 
 
 def calculate_coverage(list_of_selected_checkers):
+    name_string = ""
+    for i in list_of_selected_checkers:
+        name_string += str(i)+"_"
+    name_string = name_string[:len(name_string)-1]
     # todo: here we have to synthesise it, and calculate the coverage
-    return parse_coverage_report("temp/fstat")
+    return parse_coverage_report("coverage_results/fstat"+str(name_string))
