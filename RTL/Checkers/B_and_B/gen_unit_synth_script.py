@@ -71,7 +71,7 @@ def gen_unit_checker_script(checker_id):
                                 "class/IVDA, class/IVDAP, class/B2I, class/B2IP, class/B3I, class/B3IP, class/AO4P, "
                                 "class/NR*, class/EO1P, class/ND*}\n")
     unit_synthesis_script.write("\n")
-    unit_synthesis_script.write("analyze -format vhdl "+package_file.module_file_name+".vhd\n")
+    unit_synthesis_script.write("analyze -format vhdl "+package_file.module_file_name+"\n")
     unit_synthesis_script.write("analyze -format vhdl "+package_file.unit_under_test.lower()+"_checker" +
                                 name_string[:len(name_string)-1]+".vhd\n")
     unit_synthesis_script.write("\n")
