@@ -100,6 +100,10 @@ def bound(excluded_items):
     print "optimistic value:", optimistic_value
     return optimistic_value
 
+
+for i in range(1, package_file.number_of_checkers+1):
+    package_file.list_of_checkers.append(str(i))
+
 make_folders()
 # we need to prepare a dictionary of all the single checker's info
 # The dictionary format is the following     checker number:  [coverage,  area]
