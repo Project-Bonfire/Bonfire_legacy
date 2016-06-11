@@ -83,7 +83,7 @@ component FIFO_control_part_checkers is
             full_out: in std_logic;
             read_en_out: in std_logic;
             write_en_out: in std_logic; 
-            HS_state_in: out std_logic_vector(1 downto 0);         
+            HS_state_in: in std_logic_vector(1 downto 0);         
 
             -- Checker outputs
             err_FIFO_control_part_DRTS_CTS, err_FIFO_write_pointer_update: out std_logic;

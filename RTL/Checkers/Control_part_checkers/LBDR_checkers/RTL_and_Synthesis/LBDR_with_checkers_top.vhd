@@ -82,31 +82,32 @@ LBDR: LBDR_pseudo generic map (cur_addr_rst => 5, Rxy_rst => 60, Cx_rst => 15, N
 
 -- Checkers instantiation
 CHECKERS: LBDR_checkers  generic map (cur_addr_rst => 5, NoC_size => 4)
-                         port map (empty=>empty, flit_type=>flit_type,
-                                  Req_N_FF=>Req_N_FF, 
-                                  Req_E_FF=>Req_E_FF, 
-                                  Req_W_FF=>Req_W_FF, 
-                                  Req_S_FF=>Req_S_FF,
-                                  Req_L_FF=>Req_L_FF,
-								                  Req_N_in=>Req_N_in_sig, 
-                                  Req_E_in=>Req_E_in_sig, 
-                                  Req_W_in=>Req_W_in_sig, 
-                                  Req_S_in=>Req_S_in_sig, 
-                                  Req_L_in=>Req_L_in_sig, 
-                                  dst_addr => dst_addr,
-
-								                  err_LBDR_Req_onehot => err_LBDR_Req_onehot, 
-                                  err_LBDR_Req_onehot1 => err_LBDR_Req_onehot1, 
-                                  err_LBDR_dst_addr_checker => err_LBDR_dst_addr_checker, 
-                                  err_LBDR_Req_tail_allzero => err_LBDR_Req_tail_allzero, 
-                                  err_LBDR_Req_Local => err_LBDR_Req_Local, 
-                                  err_LBDR_Req_Local1 => err_LBDR_Req_Local1, 
-                                  err_LBDR_valid_flit_type => err_LBDR_valid_flit_type, 
-                                  err_LBDR_valid_flit_type1 => err_LBDR_valid_flit_type1,
-                                  err_LBDR_valid_flit_type2 => err_LBDR_valid_flit_type2, 
-                                  err_LBDR_valid_flit_type3 => err_LBDR_valid_flit_type3,
-                                  err_LBDR_valid_flit_type4 => err_LBDR_valid_flit_type4,
-                                  err_LBDR_valid_flit_type5 => err_LBDR_valid_flit_type5
+                         port map (empty => empty, 
+                                   flit_type => flit_type,
+                                   Req_N_FF => Req_N_FF, 
+                                   Req_E_FF => Req_E_FF, 
+                                   Req_W_FF => Req_W_FF, 
+                                   Req_S_FF => Req_S_FF,
+                                   Req_L_FF => Req_L_FF,
+								                   Req_N_in => Req_N_in_sig, 
+                                   Req_E_in => Req_E_in_sig, 
+                                   Req_W_in => Req_W_in_sig, 
+                                   Req_S_in => Req_S_in_sig, 
+                                   Req_L_in => Req_L_in_sig, 
+                                   dst_addr => dst_addr,
+ 
+								                   err_LBDR_Req_onehot => err_LBDR_Req_onehot, 
+                                   err_LBDR_Req_onehot1 => err_LBDR_Req_onehot1, 
+                                   err_LBDR_dst_addr_checker => err_LBDR_dst_addr_checker, 
+                                   err_LBDR_Req_tail_allzero => err_LBDR_Req_tail_allzero, 
+                                   err_LBDR_Req_Local => err_LBDR_Req_Local, 
+                                   err_LBDR_Req_Local1 => err_LBDR_Req_Local1, 
+                                   err_LBDR_valid_flit_type => err_LBDR_valid_flit_type, 
+                                   err_LBDR_valid_flit_type1 => err_LBDR_valid_flit_type1,
+                                   err_LBDR_valid_flit_type2 => err_LBDR_valid_flit_type2, 
+                                   err_LBDR_valid_flit_type3 => err_LBDR_valid_flit_type3,
+                                   err_LBDR_valid_flit_type4 => err_LBDR_valid_flit_type4,
+                                   err_LBDR_valid_flit_type5 => err_LBDR_valid_flit_type5
                                   );
 
 end behavior;

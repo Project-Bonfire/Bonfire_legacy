@@ -5,3 +5,4 @@ RTL/Checkers/B_and_B/checker_vhdl/*.vhd
 RTL/Checkers/B_and_B/synthesis_scripts/*.script
 RTL/Checkers/B_and_B/temp/*
 RTL/Checkers/B_and_B/logs/*
+*.bak
