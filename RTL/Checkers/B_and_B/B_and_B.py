@@ -1,4 +1,13 @@
 # copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
+# ---------------------------------------------------------
+# this is a branch and bound solution for the checker's
+# selection problem which actually is a knapsack problem
+# we have a bunch of checkers for each module each having
+# their specific area and coverage.
+# this means that our knapsack problem tries to maximize the
+# coverage, while the area is the feasibility constraint.
+# ---------------------------------------------------------
+
 
 import copy
 from build_list_of_candidates import build_list_of_candidates
@@ -8,7 +17,32 @@ from area_coverage_calc import calculate_area
 from area_coverage_calc import calculate_coverage
 import package_file
 from file_generator import make_folders, generate_specific_file
+import sys
 
+if '--help' in sys.argv[1:]:
+    print " ____  _    ____ "
+    print "/  __\/.\  /  __\\"
+    print "| | //\ _\_| | //"
+    print "| |_\\\\/|/ /| |_\\\\"
+    print "\____/\__/\\\\____/"
+    print "\n"
+    print "Welcome to checker's Branch and Bound (B&B), To use this tool, " \
+          "\tyou need to do the following:"
+    print "\t1. add a script that generates VHDL files for your checkers and top module "
+    print "\t2. copy the module's pseudo combinational VHDL file in the folder"
+    print "\t3. change the package_file parameters according to your design"
+    print "\t\t- set the number_of_checkers to the number of checkers you have implemented"
+    print "\t\t- set size_max to maximum size you can afford for the checkers+pseudo combinational"
+    print "\t\t- set unit_under_test and module_file_name, follow instructions inside the file"
+    print "\t\t- if you need more info, set debug to True"
+    # todo: we have to fix this number 4:
+    print "\t4. manually change the module name in synthesis_script.sh (its going to be fixed at some point)"
+    print "\t5. copy analyze tool into the B&B folder"
+    print "\t6. set up your synthesis tool environment. and run B_and_B.py"
+    print "\t7. be patient, it will take a while..."
+    print "\t8. if you got an error, find Siavoosh!"
+    print "\ngood luck, you're gonna need it!\n"
+    sys.exit()
 
 def branch(candidates_list, selected_list, excluded_list):
     global best_cost, best_solution
@@ -80,7 +114,6 @@ def bound(excluded_items):
     :param excluded_items:  list of all items that are decided to be left out
     :return: the optimistic guess of the possibility of improvement.
     """
-    global optimistic_guess
     # optimistic_value = 0
     non_excluded_item = []
     for item in package_file.list_of_checkers:
@@ -93,10 +126,6 @@ def bound(excluded_items):
     calculate_area(non_excluded_item)
     optimistic_value = calculate_coverage(non_excluded_item)
 
-    # the point here is that in some cases the things that checkers, check, might overlap and that
-    # can result in optimistic_value to be over 100% which doesnt make sense!
-    if optimistic_value > optimistic_guess:
-        optimistic_value = optimistic_guess
     print "optimistic value:", optimistic_value
     return optimistic_value
 
@@ -114,8 +143,6 @@ best_solution = None
 # the area of the best solution
 best_cost = 0
 
-# this is the maximum possible coverage that sum of the checkers can get
-optimistic_guess = 100
 print "\033[32m* NOTE::\033[0m starting branch and bound optimization!"
 branch(package_file.list_of_candidates, [], [])
 print "------------------------------"

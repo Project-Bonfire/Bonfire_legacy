@@ -11,7 +11,7 @@ unit_under_test = "LBDR"
 # module file name points to the vhdl file of the pseudo combinational module you are working on
 module_file_name = "LBDR_pseudo.vhd"
 
-
+debug = False
 # --------------------------------------------
 #                Anything bellow
 #       This is  internal use, do not touch!
