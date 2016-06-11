@@ -8,7 +8,8 @@ from area_coverage_calc import calculate_coverage
 def calculate_cost(current_selected_list):
     # this cost would be the fault coverage of a set of checkers
     coverage = 0
-    print "calculating coverage for items:", current_selected_list
+    print "\t------------------"
+    print "\tcalculating coverage for items:", current_selected_list
     # i want to use this part for initializing the  dictionary
     if len(current_selected_list) == 1:
         new_key = current_selected_list[0]
@@ -41,5 +42,6 @@ def calculate_cost(current_selected_list):
             else:
                 coverage = package_file.list_of_candidates[new_key][0]
 
-    print "coverage:", coverage
+    print "\t\tcoverage:", coverage
+    print "\t------------------"
     return coverage

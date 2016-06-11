@@ -48,7 +48,7 @@ if '--help' in sys.argv[1:]:
 
 
 def branch(candidates_list, selected_list, excluded_list):
-    global best_cost, best_solution
+    global best_cost, best_solution, progress_counter
 
     # we don't want to change the original values
     current_excluded_list = copy.deepcopy(excluded_list)
@@ -66,22 +66,36 @@ def branch(candidates_list, selected_list, excluded_list):
     # if we pick the item
     print "trying picking the item", item
     if not check_feasibility(current_selected_list, item):
-        pass
+        number_of_remaining_cases = package_file.number_of_checkers-(len(current_selected_list) + 1)
+        if number_of_remaining_cases > 0:
+            progress_counter += 2**(number_of_remaining_cases+1) - 2
+        else:
+            progress_counter += 1
+        print "progress", float(progress_counter)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
     else:
         current_selected_list.append(item)
         if item in current_excluded_list:
             print "we should not get here!"
             current_excluded_list.remove(item)
         cost = calculate_cost(current_selected_list)
+
+        progress_counter += 1
+        print "progress", float(progress_counter)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
+
         if cost > best_cost:
             print "\033[32m* NOTE::\033[0m found better solution with cost:", cost
             best_cost = cost
             best_solution = copy.deepcopy(current_selected_list)
 
+
         if len(current_candidate_list) > 0:
             optimistic_value = bound(current_excluded_list)
             if optimistic_value < best_cost:
                 print "\033[91m* NOTE::\033[0m bounded!"
+
+                progress_counter += 2**(len(current_excluded_list)+1) - 2
+                print "progress", progress_counter/(2**package_file.number_of_checkers)*100, "%"
+
                 return
             branch(current_candidate_list, current_selected_list, current_excluded_list)
 
@@ -91,6 +105,10 @@ def branch(candidates_list, selected_list, excluded_list):
     print "excluded list at start:", excluded_list
     print "Item to be branched:", item
     print "not picking the item", item
+
+    progress_counter += 1
+    print "progress", float(progress_counter)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
+
     if item in current_selected_list:
         current_selected_list.remove(item)
     cost = calculate_cost(current_selected_list)
@@ -98,11 +116,16 @@ def branch(candidates_list, selected_list, excluded_list):
         print "\033[32m* NOTE::\033[0m found better solution with cost:", cost
         best_cost = cost
         best_solution = copy.deepcopy(current_selected_list)
+
     if len(current_candidate_list) > 0:
         current_excluded_list.append(item)
         optimistic_value = bound(current_excluded_list)
         if optimistic_value < best_cost:
             print "\033[91m* NOTE::\033[0m bounded!"
+
+            progress_counter += 2**(len(current_candidate_list)+1) - 2
+            print "progress", float(progress_counter)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
+
             return
         branch(current_candidate_list, current_selected_list, current_excluded_list)
     return
@@ -133,6 +156,8 @@ def bound(excluded_items):
     return optimistic_value
 
 
+
+progress_counter = 0
 for i in range(1, package_file.number_of_checkers+1):
     package_file.list_of_checkers.append(str(i))
 
@@ -154,4 +179,4 @@ branch(package_file.list_of_candidates, [], [])
 print "------------------------------"
 print "\033[32m* NOTE::\033[0m best solution:", best_solution
 print "\033[32m* NOTE::\033[0m coverage:", best_cost
-print package_file.list_of_candidates
+# print package_file.list_of_candidates

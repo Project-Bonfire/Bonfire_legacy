@@ -32,8 +32,8 @@ def build_list_of_candidates():
         raise ValueError("list_of_candidates is corrupt!")
 
     # package_file.list_of_candidates = list_of_candidates
-    print "\033[32m* NOTE::\033[0m results for list of candidates:" 
-    print package_file.list_of_candidates
+    # print "\033[32m* NOTE::\033[0m results for list of candidates:"
+    # print package_file.list_of_candidates
     print "------------------------------"
     return None
 
