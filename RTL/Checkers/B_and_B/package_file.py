@@ -19,6 +19,7 @@ debug = False
 
 list_of_candidates = {}
 list_of_checkers = []
+log_folder = "logs"
 
 # --------------------------------------------
 #                Anything bellow

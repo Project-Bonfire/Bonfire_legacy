@@ -24,6 +24,14 @@ def make_folders():
     for vhd_file in file_list:
         os.remove(checkers_vhdl_directory+'/'+vhd_file)
 
+    log_folder = "logs"
+    if not os.path.isdir(log_folder):
+        os.makedirs(log_folder)
+
+    file_list = [log_file for log_file in os.listdir(log_folder) if log_file.endswith(".log")]
+    for log_file in file_list:
+        os.remove(log_folder+'/'+log_file)
+
 
 def generate_specific_file(current_selected_list):
     if len(current_selected_list) == 0:

@@ -18,6 +18,8 @@ from area_coverage_calc import calculate_coverage
 import package_file
 from file_generator import make_folders, generate_specific_file
 import sys
+import logger
+
 
 if '--help' in sys.argv[1:]:
     print " ____  _    ____ "
@@ -43,6 +45,7 @@ if '--help' in sys.argv[1:]:
     print "\t8. if you got an error, find Siavoosh!"
     print "\ngood luck, you're gonna need it!\n"
     sys.exit()
+
 
 def branch(candidates_list, selected_list, excluded_list):
     global best_cost, best_solution
@@ -137,6 +140,9 @@ make_folders()
 # we need to prepare a dictionary of all the single checker's info
 # The dictionary format is the following     checker number:  [coverage,  area]
 build_list_of_candidates()
+
+# Just for getting a copy of the current console
+sys.stdout = logger.Logger()
 
 # best solution keeps a list of all the selected checkers which are used in the best solution
 best_solution = None
