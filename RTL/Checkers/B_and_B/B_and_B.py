@@ -87,7 +87,6 @@ def branch(candidates_list, selected_list, excluded_list):
             best_cost = cost
             best_solution = copy.deepcopy(current_selected_list)
 
-
         if len(current_candidate_list) > 0:
             optimistic_value = bound(current_excluded_list)
             if optimistic_value < best_cost:
@@ -154,7 +153,6 @@ def bound(excluded_items):
 
     print "optimistic value:", optimistic_value
     return optimistic_value
-
 
 
 progress_counter = 0

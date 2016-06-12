@@ -2,7 +2,7 @@
 
 import package_file
 import os
-
+import os.path
 
 def calculate_area(list_of_selected_checkers):
     if len(list_of_selected_checkers) == 1:
@@ -39,8 +39,12 @@ def run_synthesis_script_and_report_area(list_of_selected_checkers):
         print "$5: name string:", name_string
 
     os.system("sh ./synthesis_script.sh" + " " + package_file.module_file_name + " " + checkers_file_name + " " +
-              top_file_name + " " + script_file_name + " " + name_string)
-    return parse_area_report("temp/area"+name_string+".txt")
+              top_file_name + " " + script_file_name + " " + name_string + " " + package_file.unit_under_test)
+
+    if os.path.isfile("temp/area"+name_string+".txt"):
+        return parse_area_report("temp/area"+name_string+".txt")
+    else:
+        raise ValueError("area"+name_string+".txt not found")
 
 
 def parse_area_report(file_name):

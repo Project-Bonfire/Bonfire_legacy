@@ -5,6 +5,7 @@
 # TOP_MODULE_FILE = $3
 # SYNTHESIS_SCRIPT_FILE = $4
 # name_string = $5
+# module_name = $6
 
 mkdir temp
 
@@ -18,7 +19,7 @@ cp ../../../synthesis_design_analyzer/.synopsys_vss.setup temp/
 cp ../../../synthesis_design_analyzer/class.lib temp/
 cp ../../../synthesis_design_analyzer/import temp/
 cp analyze temp/
-cp LBDR_with_checkers_top.inp temp/
+cp $6_with_checkers_top.inp temp/
 
 cd temp
 mkdir work
@@ -26,10 +27,10 @@ mkdir work
 echo "Now running Synopsys Design Compiler ... Please grab a cup of coffee, while we do the rest of the work for you!"
 dc_shell -f "$4"
 
-./import LBDR_with_checkers_top.edif class.lib
+./import $6_with_checkers_top.edif class.lib
 
 echo "Now running performing Fault Simulating using Turbo Tester Analyze tool ... We're almost finished!"
-./analyze -no_drop -chk_eval -chk_module_name CHECKERS LBDR_with_checkers_top
+./analyze -no_drop -chk_eval -chk_module_name CHECKERS $6_with_checkers_top
 
 cd ..
 mkdir area_results
