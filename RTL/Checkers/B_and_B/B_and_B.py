@@ -71,7 +71,7 @@ def branch(candidates_list, selected_list, excluded_list):
             progress_counter += 2**(number_of_remaining_cases+1) - 2
         else:
             progress_counter += 1
-        print "progress", float(progress_counter)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
+        report_progress(progress_counter)
     else:
         current_selected_list.append(item)
         if item in current_excluded_list:
@@ -80,7 +80,7 @@ def branch(candidates_list, selected_list, excluded_list):
         cost = calculate_cost(current_selected_list)
 
         progress_counter += 1
-        print "progress", float(progress_counter)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
+        report_progress(progress_counter)
 
         if cost > best_cost:
             print "\033[32m* NOTE::\033[0m found better solution with cost:", cost
@@ -89,11 +89,11 @@ def branch(candidates_list, selected_list, excluded_list):
 
         if len(current_candidate_list) > 0:
             optimistic_value = bound(current_excluded_list)
+            # print "here",current_candidate_list, current_selected_list, current_excluded_list
             if optimistic_value < best_cost:
                 print "\033[91m* NOTE::\033[0m bounded!"
-
-                progress_counter += 2**(len(current_excluded_list)+1) - 2
-                print "progress", progress_counter/(2**package_file.number_of_checkers)*100, "%"
+                progress_counter += 2**(len(current_candidate_list)+1) - 2
+                report_progress(progress_counter)
 
                 return
             branch(current_candidate_list, current_selected_list, current_excluded_list)
@@ -106,7 +106,7 @@ def branch(candidates_list, selected_list, excluded_list):
     print "not picking the item", item
 
     progress_counter += 1
-    print "progress", float(progress_counter)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
+    report_progress(progress_counter)
 
     if item in current_selected_list:
         current_selected_list.remove(item)
@@ -121,9 +121,8 @@ def branch(candidates_list, selected_list, excluded_list):
         optimistic_value = bound(current_excluded_list)
         if optimistic_value < best_cost:
             print "\033[91m* NOTE::\033[0m bounded!"
-
             progress_counter += 2**(len(current_candidate_list)+1) - 2
-            print "progress", float(progress_counter)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
+            report_progress(progress_counter)
 
             return
         branch(current_candidate_list, current_selected_list, current_excluded_list)
@@ -153,6 +152,11 @@ def bound(excluded_items):
 
     print "optimistic value:", optimistic_value
     return optimistic_value
+
+
+def report_progress(progress_counter_value):
+    print "progress", float(progress_counter_value)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
+    return None
 
 
 progress_counter = 0
