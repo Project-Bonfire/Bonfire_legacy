@@ -188,7 +188,7 @@ def gen_lbdr_checker_top(checker_id):
     if '10' in checker_id:
         string_to_write += "err_LBDR_Req_tail_allzero => err_LBDR_Req_tail_allzero,"
     if '11' in checker_id:
-        string_to_write += "err_LBDR_Req_Local => err_LBDR_Req_Local"
+        string_to_write += "err_LBDR_Req_Local => err_LBDR_Req_Local,"
     if '12' in checker_id:
         string_to_write += "err_LBDR_Req_Local1 => err_LBDR_Req_Local1,"
 
