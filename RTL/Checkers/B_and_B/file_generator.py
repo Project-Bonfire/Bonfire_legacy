@@ -46,6 +46,11 @@ def generate_specific_file(current_selected_list):
         gen_lbdr_checker_top.gen_lbdr_checker_top(current_selected_list)
         gen_unit_synth_script.gen_unit_checker_script(current_selected_list)
 
+    if package_file.unit_under_test == "FIFO":
+        gen_lbdr_cheker_files.gen_lbdr_checkers(current_selected_list)
+        gen_lbdr_checker_top.gen_lbdr_checker_top(current_selected_list)
+        gen_unit_synth_script.gen_unit_checker_script(current_selected_list)
+
 
 def generate_initial_files():
     if package_file.unit_under_test == "ELBDR":
@@ -56,6 +61,13 @@ def generate_initial_files():
             gen_unit_synth_script.gen_unit_checker_script(list_of_checkers)
 
     if package_file.unit_under_test == "LBDR":
+        for i in package_file.list_of_checkers:
+            list_of_checkers = [i]
+            gen_lbdr_cheker_files.gen_lbdr_checkers(list_of_checkers)
+            gen_lbdr_checker_top.gen_lbdr_checker_top(list_of_checkers)
+            gen_unit_synth_script.gen_unit_checker_script(list_of_checkers)
+
+    if package_file.unit_under_test == "FIFO":
         for i in package_file.list_of_checkers:
             list_of_checkers = [i]
             gen_lbdr_cheker_files.gen_lbdr_checkers(list_of_checkers)
