@@ -2,7 +2,7 @@
 
 
 
-number_of_checkers = 17
+number_of_checkers = 3
 # size max is the maximum allowed area for the sum of checkers!
 size_max = 80
 
@@ -25,7 +25,7 @@ log_folder = "logs"
 #                Anything bellow
 #       This is for testing... do not touch!
 # --------------------------------------------
-test_mode = False
+test_mode = True
 
 # here i assume that the area of the module is 40
 area_coverage_results = {"1": [50, 40],    # 10
