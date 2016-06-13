@@ -2,14 +2,14 @@
 
 
 
-number_of_checkers = 12
+number_of_checkers = 17
 # size max is the maximum allowed area for the sum of checkers!
 size_max = 80
 
-# UUT can be "ELBDR", "LBDR" make sure its capital
-unit_under_test = "LBDR"
+# UUT can be "ELBDR", "LBDR", "FIFO" make sure its capital
+unit_under_test = "FIFO"
 # module file name points to the vhdl file of the pseudo combinational module you are working on
-module_file_name = "LBDR_pseudo.vhd"
+module_file_name = "FIFO_control_part_pseudo.vhd"
 
 debug = False
 # --------------------------------------------
