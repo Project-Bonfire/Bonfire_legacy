@@ -1,0 +1,17 @@
+[32m* NOTE::[0m starting greedy optimization!
+[('1', [40, 50]), ('4', [43, 53]), ('3', [50, 52]), ('2', [50, 51])]
+1
+checking the feasibility for the following key: 1
+[32m* NOTE::[0m feasible solution with area: 50
+4
+checking the feasibility for the following key: 1_4
+[32m* NOTE::[0m feasible solution with area: 63
+3
+checking the feasibility for the following key: 1_3_4
+[32m* NOTE::[0m feasible solution with area: 76
+2
+checking the feasibility for the following key: 1_2_3_4
+[91m* NOTE::[0m Non feasible solution!... aborting!
+------------------------------
+[32m* NOTE::[0m best solution: ['1', '4', '3']
+[32m* NOTE::[0m coverage: 89
