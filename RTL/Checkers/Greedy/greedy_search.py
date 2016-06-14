@@ -39,7 +39,7 @@ for item in package_file.list_of_checkers:
     package_file.list_of_candidates[item] = [coverage, area]
 
 # sorting the dictionary based on the coverage
-sorted_coverage = sorted(package_file.list_of_candidates.items(),  key=lambda e: e[1][0])
+sorted_coverage = sorted(package_file.list_of_candidates.items(),  key=lambda e: e[1][0], reverse=True)
 
 print sorted_coverage
 
@@ -48,6 +48,10 @@ for item in sorted_coverage:
     print item[0]
     if check_feasibility(current_list, item[0]):
         current_list.append(item[0])
+        coverage = calculate_coverage(current_list)
+        print "coverage:", coverage
+        if coverage == 100:
+        	break
 
 print "------------------------------"
 print "\033[32m* NOTE::\033[0m best solution:", current_list

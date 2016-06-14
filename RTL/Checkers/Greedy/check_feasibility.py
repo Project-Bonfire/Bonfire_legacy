@@ -35,7 +35,7 @@ def check_feasibility(current_selected_list, chosen_item):
 
             else:   # we have the area! no need for re-calculation!
                 area = package_file.list_of_candidates[new_key][1]
-
+	print "area:", area
     if area > package_file.size_max:
         print "\033[91m* NOTE::\033[0m Non feasible solution!... aborting!"
         return False

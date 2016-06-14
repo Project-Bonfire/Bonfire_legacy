@@ -2,7 +2,7 @@
 
 
 
-number_of_checkers = 4
+number_of_checkers = 12
 # size max is the maximum allowed area for the sum of checkers!
 size_max = 80
 
