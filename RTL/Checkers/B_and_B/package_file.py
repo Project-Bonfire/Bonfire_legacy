@@ -2,14 +2,14 @@
 
 
 
-number_of_checkers = 3
+number_of_checkers = 12
 # size max is the maximum allowed area for the sum of checkers!
 size_max = 80
 
 # UUT can be "ELBDR", "LBDR", "FIFO_control_part" make sure its capital
-unit_under_test = "FIFO_control_part"
+unit_under_test = "LBDR"
 # module file name points to the vhdl file of the pseudo combinational module you are working on
-module_file_name = "FIFO_control_part_pseudo.vhd"
+module_file_name = "LBDR_pseudo.vhd"
 
 debug = False
 # --------------------------------------------
@@ -25,7 +25,7 @@ log_folder = "logs"
 #                Anything bellow
 #       This is for testing... do not touch!
 # --------------------------------------------
-test_mode = True
+test_mode = False
 
 # here i assume that the area of the module is 40
 area_coverage_results = {"1": [50, 40],    # 10

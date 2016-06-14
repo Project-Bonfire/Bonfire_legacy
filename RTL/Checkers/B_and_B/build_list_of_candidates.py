@@ -1,8 +1,6 @@
 # copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 from file_generator import generate_initial_files
-from cost_function import calculate_cost
 import package_file
-from area_coverage_calc import calculate_area
 
 
 def build_list_of_candidates():

@@ -7,17 +7,17 @@ import os.path
 def calculate_area(list_of_selected_checkers):
     if len(list_of_selected_checkers) == 1:
         if list_of_selected_checkers[0] not in package_file.list_of_candidates.keys():
-            return run_synthesis_script_and_report_area(list_of_selected_checkers[0])
+            return run_synthesis_script_and_report_area([list_of_selected_checkers[0]])
         else:
             if package_file.list_of_candidates[list_of_selected_checkers[0]][1] is None:
-                return run_synthesis_script_and_report_area(list_of_selected_checkers[0])
+                return run_synthesis_script_and_report_area([list_of_selected_checkers[0]])
     else:
         return run_synthesis_script_and_report_area(list_of_selected_checkers)
 
 
 def run_synthesis_script_and_report_area(list_of_selected_checkers):
     name_string = ""
-    for i in list_of_selected_checkers:
+    for i in sorted(list_of_selected_checkers):
         name_string += str(i)+"_"
     name_string = name_string[:len(name_string)-1]
     # print "here", name_string
@@ -82,7 +82,7 @@ def parse_coverage_report(file_name):
 
 def calculate_coverage(list_of_selected_checkers):
     name_string = ""
-    for i in list_of_selected_checkers:
+    for i in sorted(list_of_selected_checkers):
         name_string += str(i)+"_"
     name_string = name_string[:len(name_string)-1]
 

@@ -10,6 +10,8 @@
 
 
 import copy
+import sys
+
 from build_list_of_candidates import build_list_of_candidates
 from cost_function import calculate_cost
 from check_feasibility import check_feasibility
@@ -17,7 +19,7 @@ from area_coverage_calc import calculate_area
 from area_coverage_calc import calculate_coverage
 import package_file
 from file_generator import make_folders, generate_specific_file
-import sys
+from for_testing import gen_dummy_dict
 import logger
 
 
@@ -163,6 +165,8 @@ progress_counter = 0
 for i in range(1, package_file.number_of_checkers+1):
     package_file.list_of_checkers.append(str(i))
 
+if package_file.test_mode:
+    package_file.area_coverage_results = copy.deepcopy(gen_dummy_dict())
 
 make_folders()
 # we need to prepare a dictionary of all the single checker's info
