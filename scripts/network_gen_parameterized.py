@@ -6,7 +6,7 @@ from math import ceil, log
 # MAN:
 # you should run this as
 # python network_gen_parameterized.py [options]
-#         -D [size]:  allows you to set the size of the network. it can be powers of two. 
+#         -D [size]:  allows you to set the size of the network. it can be powers of two.
 #         -NI: adds NI to network
 #         -P adds parity checker to the network
 
@@ -35,21 +35,21 @@ else:
   data_width = 32
 
 
-if '-P'  in sys.argv[1:]: 
+if '-P'  in sys.argv[1:]:
   add_parity = True
 else:
   add_parity = False
 
-if '-NI'  in sys.argv[1:]: 
+if '-NI'  in sys.argv[1:]:
   add_NI = True
-   
+
 else:
   add_NI = False
-   
 
-if '-FI'  in sys.argv[1:]: 
+
+if '-FI'  in sys.argv[1:]:
   add_FI = True
-  fi_addres_width = int(ceil(log(data_width,2)))   
+  fi_addres_width = int(ceil(log(data_width,2)))
 else:
   fi_addres_width = None
   add_FI = False
@@ -62,7 +62,7 @@ if add_parity:
 if add_FI:
   file_name += '_FI'
 
-if '-o'  in sys.argv[1:]: 
+if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
   if ".vhd" not in file_path:
       raise ValueError("wrong file extention. only vhdl files are accepted!")
@@ -75,19 +75,19 @@ def rxy_rst_calculator(node_id):
 
 def cx_rst_calculator(node_id):
   cx_rst = 0
-  node_x = i % network_dime
-  node_y = i / network_dime
+  node_x = node_id % network_dime
+  node_y = node_id / network_dime
   c_n = 1
   c_e = 1
   c_w = 1
-  c_s = 1 
-  if node_y == 0 : 
+  c_s = 1
+  if node_y == 0 :
     c_n = 0
-  if node_y == network_dime-1 : 
+  if node_y == network_dime-1 :
     c_s = 0
   if node_x == 0:
     c_w = 0
-  if node_x == network_dime-1: 
+  if node_x == network_dime-1:
     c_e = 0
   return c_s*8+c_w*4+c_e*2+c_n
 
@@ -257,7 +257,7 @@ noc_file.write("\n\n")
 noc_file.write("--        organizaiton of the network:\n")
 noc_file.write("--     x --------------->\n")
 for j in range(0, network_dime):
-    if j == 0:  
+    if j == 0:
       noc_file.write("--  y  ")
     else:
       noc_file.write("--  |  ")
@@ -315,7 +315,7 @@ for i in range(0, network_dime*network_dime):
     else:
       noc_file.write("R_"+str(i)+": router generic map (DATA_WIDTH  => DATA_WIDTH, ")
 
-    noc_file.write("current_address=>"+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+", " + 
+    noc_file.write("current_address=>"+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+", " +
                    "Cx_rst => "+str(cx_rst_calculator(i))+", NoC_size=>"+str(network_dime)+")\n")
     noc_file.write("PORT MAP (reset, clk, \n")
     if add_NI:
@@ -325,7 +325,7 @@ for i in range(0, network_dime*network_dime):
       noc_file.write("\tRTS_N_"+str(i)+", RTS_E_"+str(i)+", RTS_W_"+str(i)+", RTS_S_"+str(i)+", RTS_L_R_"+str(i)+",\n")
       noc_file.write("\tCTS_N_"+str(i)+", CTS_E_"+str(i)+", CTS_w_"+str(i)+", CTS_S_"+str(i)+", CTS_L_R_"+str(i)+",\n")
       noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_R_"+str(i))
-      
+
     else:
       noc_file.write("\tDCTS_N_"+str(i)+", DCTS_E_"+str(i)+", DCTS_W_"+str(i)+", DCTS_S_"+str(i)+", DCTS_L_"+str(i)+",\n")
       noc_file.write("\tDRTS_N_"+str(i)+", DRTS_E_"+str(i)+", DRTS_W_"+str(i)+", DRTS_S_"+str(i)+", DRTS_L_"+str(i)+",\n")
@@ -349,16 +349,16 @@ if add_NI:
     noc_file.write("NI_"+str(i)+":  NI generic map (DATA_WIDTH  => DATA_WIDTH, NI_DEPTH => NI_DEPTH )\n")
     noc_file.write("port map(reset=> reset, clk=>clk,\n")
     noc_file.write("         RX1=> TX_L_R_"+str(i)+",  \n")
-    noc_file.write("         TX1=> TX_L_"+str(i)+",  \n") 
+    noc_file.write("         TX1=> TX_L_"+str(i)+",  \n")
     noc_file.write("         DRTS1=> RTS_L_R_"+str(i)+" ,   \n")
     noc_file.write("         DCTS1=> DCTS_L_"+str(i)+",  \n")
     noc_file.write("         RTS1=> RTS_L_"+str(i)+",  \n")
     noc_file.write("         CTS1=>  DCTS_L_R_"+str(i)+",  \n")
     noc_file.write("        ----------------------\n")
     noc_file.write("         RX2=> RX_L_"+str(i)+",  \n")
-    noc_file.write("         TX2=> RX_L_R_"+str(i)+"  ,\n")   
+    noc_file.write("         TX2=> RX_L_R_"+str(i)+"  ,\n")
     noc_file.write("         DRTS2=> DRTS_L_"+str(i)+",\n")
-    noc_file.write("         DCTS2=> CTS_L_R_"+str(i)+" ,\n")  
+    noc_file.write("         DCTS2=> CTS_L_R_"+str(i)+" ,\n")
     noc_file.write("         RTS2=>  DRTS_L_R_"+str(i)+",\n")
     noc_file.write("         CTS2=>  CTS_L_"+str(i)+" \n")
     noc_file.write("  );\n")
@@ -413,7 +413,7 @@ if add_FI:
         noc_file.write("    data_out => RX_E_"+str(i)+"\n")
         noc_file.write("    );\n")
 else:
-  noc_file.write("---------------------------------------------------------------\n")  
+  noc_file.write("---------------------------------------------------------------\n")
   noc_file.write("-- binding the routers together\n")
   noc_file.write("-- vertical ins/outs\n")
   for i in range(0, network_dime*network_dime):
@@ -423,8 +423,8 @@ else:
         noc_file.write("-- connecting router: "+str(i)+ " to router: "+str(i+network_dime)+" and vice versa\n")
         noc_file.write("RX_N_"+str(i+network_dime)+"<= TX_S_"+str(i)+";\n")
         noc_file.write("RX_S_"+str(i)+"<= TX_N_"+str(i+network_dime)+";\n")
-        noc_file.write("-------------------\n") 
-  noc_file.write("\n")      
+        noc_file.write("-------------------\n")
+  noc_file.write("\n")
   noc_file.write("-- horizontal ins/outs\n")
   for i in range(0, network_dime*network_dime):
     node_x = i % network_dime
@@ -433,9 +433,9 @@ else:
         noc_file.write("-- connecting router: "+str(i)+ " to router: "+str(i+1)+" and vice versa\n")
         noc_file.write("RX_E_"+str(i)+" <= TX_W_"+str(i+1)+";\n")
         noc_file.write("RX_W_"+str(i+1)+" <= TX_E_"+str(i)+";\n")
-        noc_file.write("-------------------\n") 
+        noc_file.write("-------------------\n")
 
-noc_file.write("---------------------------------------------------------------\n")  
+noc_file.write("---------------------------------------------------------------\n")
 noc_file.write("-- binding the routers together\n")
 noc_file.write("-- vertical handshakes\n")
 for i in range(0, network_dime*network_dime):
@@ -445,11 +445,11 @@ for i in range(0, network_dime*network_dime):
       noc_file.write("-- connecting router: "+str(i)+ " to router: "+str(i+network_dime)+" and vice versa\n")
       noc_file.write("DRTS_N_"+str(i+network_dime)+" <= RTS_S_"+str(i)+";\n")
       noc_file.write("DCTS_S_"+str(i)+" <= CTS_N_"+str(i+network_dime)+";\n")
-      
+
       noc_file.write("DRTS_S_"+str(i)+" <= RTS_N_"+str(i+network_dime)+";\n")
       noc_file.write("DCTS_N_"+str(i+network_dime)+" <= CTS_S_"+str(i)+";\n")
-      noc_file.write("-------------------\n") 
-noc_file.write("\n")      
+      noc_file.write("-------------------\n")
+noc_file.write("\n")
 noc_file.write("-- horizontal handshakes\n")
 for i in range(0, network_dime*network_dime):
   node_x = i % network_dime
@@ -458,9 +458,9 @@ for i in range(0, network_dime*network_dime):
       noc_file.write("-- connecting router: "+str(i)+ " to router: "+str(i+1)+" and vice versa\n")
       noc_file.write("DRTS_E_"+str(i)+" <= RTS_W_"+str(i+1)+";\n")
       noc_file.write("DCTS_W_"+str(i+1)+" <= CTS_E_"+str(i)+";\n")
-      
+
       noc_file.write("DRTS_W_"+str(i+1)+" <= RTS_E_"+str(i)+";\n")
       noc_file.write("DCTS_E_"+str(i)+" <= CTS_W_"+str(i+1)+";\n")
-      noc_file.write("-------------------\n") 
+      noc_file.write("-------------------\n")
 
 noc_file.write("end;\n")
