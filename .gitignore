@@ -14,3 +14,8 @@ RTL/Checkers/Greedy/logs/*
 *.bak
 
 *.png
+
+xgui
+component.xml
+.directory
+.Xil
