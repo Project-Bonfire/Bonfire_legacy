@@ -1,8 +1,11 @@
 # copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 
-import package_file
 import os
 import os.path
+
+import package_file
+from misc import name_string_generator
+
 
 def calculate_area(list_of_selected_checkers):
     if len(list_of_selected_checkers) == 1:
@@ -16,11 +19,8 @@ def calculate_area(list_of_selected_checkers):
 
 
 def run_synthesis_script_and_report_area(list_of_selected_checkers):
-    name_string = ""
-    for i in sorted(list_of_selected_checkers):
-        name_string += str(i)+"_"
-    name_string = name_string[:len(name_string)-1]
-    # print "here", name_string
+
+    name_string = name_string_generator(list_of_selected_checkers)
 
     if package_file.test_mode:
         return package_file.area_coverage_results[name_string][0]
@@ -81,10 +81,7 @@ def parse_coverage_report(file_name):
 
 
 def calculate_coverage(list_of_selected_checkers):
-    name_string = ""
-    for i in sorted(list_of_selected_checkers):
-        name_string += str(i)+"_"
-    name_string = name_string[:len(name_string)-1]
+    name_string = name_string_generator(list_of_selected_checkers)
 
     if package_file.test_mode:
         return package_file.area_coverage_results[name_string][1]

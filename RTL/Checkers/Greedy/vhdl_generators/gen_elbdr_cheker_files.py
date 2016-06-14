@@ -1,10 +1,10 @@
 # copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
+from misc import name_string_generator
 
 def gen_elbdr_checkers(checker_id):
-    name_string = ""
-    for i in checker_id:
-        name_string += str(i)+"_"
-    elbdr_checker_vhd = open("checker_vhdl/elbdr_checker"+name_string[:len(name_string)-1]+".vhd", 'w')
+    name_string = name_string_generator(checker_id)
+
+    elbdr_checker_vhd = open("checker_vhdl/elbdr_checker"+name_string+".vhd", 'w')
 
     elbdr_checker_vhd.write("library ieee;\n")
     elbdr_checker_vhd.write("use ieee.std_logic_1164.all;\n")

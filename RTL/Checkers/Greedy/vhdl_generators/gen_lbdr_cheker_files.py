@@ -1,10 +1,10 @@
 # copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
+from misc import name_string_generator
 
 def gen_lbdr_checkers(checker_id):
-    name_string = ""
-    for i in checker_id:
-        name_string += str(i) + "_"
-    lbdr_checker_vhd = open("checker_vhdl/lbdr_checker" + name_string[:len(name_string) - 1] + ".vhd", 'w')
+    name_string = name_string_generator(checker_id)
+
+    lbdr_checker_vhd = open("checker_vhdl/lbdr_checker" + name_string + ".vhd", 'w')
 
     lbdr_checker_vhd.write("\n")
     lbdr_checker_vhd.write("library ieee;\n")
