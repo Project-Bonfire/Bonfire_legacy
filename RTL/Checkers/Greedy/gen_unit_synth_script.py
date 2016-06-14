@@ -1,15 +1,13 @@
 # copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 import package_file
-
+from misc import name_string_generator
 
 def gen_unit_checker_script(checker_id):
 
-    name_string = ""
-    for i in checker_id:
-        name_string += str(i)+"_"
-    # print name_string[:len(name_string)-1]
+    name_string = name_string_generator(checker_id)
+
     unit_synthesis_script = open("synthesis_scripts/"+package_file.unit_under_test+"_with_checkers_" +
-                                 name_string[:len(name_string)-1]+"_synthesis.script", 'w')
+                                 name_string+"_synthesis.script", 'w')
 
     unit_synthesis_script.write("/* Bus Naming variables */\n")
     unit_synthesis_script.write("\n")
@@ -73,10 +71,10 @@ def gen_unit_checker_script(checker_id):
     unit_synthesis_script.write("\n")
     unit_synthesis_script.write("analyze -format vhdl "+package_file.module_file_name+"\n")
     unit_synthesis_script.write("analyze -format vhdl "+package_file.unit_under_test.lower()+"_checker" +
-                                name_string[:len(name_string)-1]+".vhd\n")
+                                name_string+".vhd\n")
     unit_synthesis_script.write("\n")
     unit_synthesis_script.write("analyze -format vhdl "+package_file.unit_under_test.lower()+"_checker" +
-                                name_string[:len(name_string)-1]+"_top.vhd\n")
+                                name_string+"_top.vhd\n")
     unit_synthesis_script.write("\n")
     unit_synthesis_script.write("elaborate "+package_file.unit_under_test+"_with_checkers_top -update\n")
     unit_synthesis_script.write("current_design = "+package_file.unit_under_test+"_with_checkers_top\n")
@@ -86,7 +84,7 @@ def gen_unit_checker_script(checker_id):
     unit_synthesis_script.write("\n")
     unit_synthesis_script.write("write -format edif -hierarchy -output " + package_file.unit_under_test +
                                 "_with_checkers_top.edif\n")
-    unit_synthesis_script.write("report_area > area"+name_string[:len(name_string)-1]+".txt\n")
+    unit_synthesis_script.write("report_area > area"+name_string+".txt\n")
     unit_synthesis_script.write("exit\n")
 
     unit_synthesis_script.close()
