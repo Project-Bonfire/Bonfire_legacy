@@ -9,10 +9,10 @@ from misc import name_string_generator
 def calculate_area(list_of_selected_checkers):
     if len(list_of_selected_checkers) == 1:
         if list_of_selected_checkers[0] not in package_file.list_of_candidates.keys():
-            return run_synthesis_script_and_report_area(list_of_selected_checkers[0])
+            return run_synthesis_script_and_report_area([list_of_selected_checkers[0]])
         else:
             if package_file.list_of_candidates[list_of_selected_checkers[0]][1] is None:
-                return run_synthesis_script_and_report_area(list_of_selected_checkers[0])
+                return run_synthesis_script_and_report_area([list_of_selected_checkers[0]])
     else:
         return run_synthesis_script_and_report_area(list_of_selected_checkers)
 

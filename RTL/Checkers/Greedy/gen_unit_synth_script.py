@@ -2,6 +2,7 @@
 import package_file
 from misc import name_string_generator
 
+
 def gen_unit_checker_script(checker_id):
 
     name_string = name_string_generator(checker_id)
