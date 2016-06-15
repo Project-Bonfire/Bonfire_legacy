@@ -2,7 +2,7 @@
 
 
 
-number_of_checkers = 12
+number_of_checkers = 4
 # size max is the maximum allowed area for the sum of checkers!
 size_max = 80
 
@@ -12,6 +12,8 @@ unit_under_test = "LBDR"
 module_file_name = "LBDR_pseudo.vhd"
 
 debug = False
+# cost function can be "cov" or "val_density"
+cost_function_type= "cov"
 # --------------------------------------------
 #                Anything bellow
 #       This is  internal use, do not touch!
@@ -25,7 +27,7 @@ log_folder = "logs"
 #                Anything bellow
 #       This is for testing... do not touch!
 # --------------------------------------------
-test_mode = False
+test_mode = True
 
 # here i assume that the area of the module is 40
 area_coverage_results = {"1": [50, 40],    # 10

@@ -7,6 +7,7 @@ from build_list_of_candidates import build_list_of_candidates
 from check_feasibility import check_feasibility
 from area_coverage_calc import calculate_area
 from area_coverage_calc import calculate_coverage
+from cost_function import calculate_coverage_cost, calculate_value_density
 import package_file
 from file_generator import make_folders, generate_specific_file
 import sys
@@ -35,25 +36,29 @@ print "\033[32m* NOTE::\033[0m starting greedy optimization!"
 
 for item in package_file.list_of_checkers:
     area = calculate_area([item])
-    coverage = calculate_coverage([item])
-    package_file.list_of_candidates[item] = [coverage, area]
+    package_file.list_of_candidates[item] = [None, area]
+    if package_file.cost_function_type == "cov":
+        package_file.list_of_candidates[item] = [calculate_coverage_cost([item]), area]
+    elif package_file.cost_function_type == "val_density":
+        package_file.list_of_candidates[item] = [calculate_value_density([item]), area]
+
 
 # sorting the dictionary based on the coverage
 sorted_coverage = sorted(package_file.list_of_candidates.items(),  key=lambda e: e[1][0], reverse=True)
 
-print sorted_coverage
+print "sorted list of checkers:", sorted_coverage
 
 current_list = []
 for item in sorted_coverage:
-    print item[0]
+    print "------------------------------"
+    print "Picking item:", item[0]
     if check_feasibility(current_list, item[0]):
         current_list.append(item[0])
         coverage = calculate_coverage(current_list)
         print "coverage:", coverage
         if coverage == 100:
-        	break
+            break
 
 print "------------------------------"
 print "\033[32m* NOTE::\033[0m best solution:", current_list
 print "\033[32m* NOTE::\033[0m coverage:", calculate_coverage(current_list)
-# print package_file.list_of_candidates
