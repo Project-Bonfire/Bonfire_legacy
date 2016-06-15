@@ -18,6 +18,7 @@ from check_feasibility import check_feasibility
 from area_coverage_calc import calculate_area
 from area_coverage_calc import calculate_coverage
 import package_file
+from misc import name_string_generator
 from file_generator import make_folders, generate_specific_file
 from for_testing import gen_dummy_dict
 import logger
@@ -50,7 +51,7 @@ if '--help' in sys.argv[1:]:
 
 
 def branch(candidates_list, selected_list, excluded_list):
-    global best_cost, best_solution, progress_counter
+    global best_cost, best_solution, progress_counter, best_area
 
     # we don't want to change the original values
     current_excluded_list = copy.deepcopy(excluded_list)
@@ -85,9 +86,12 @@ def branch(candidates_list, selected_list, excluded_list):
         report_progress(progress_counter)
 
         if cost > best_cost:
-            print "\033[32m* NOTE::\033[0m found better solution with cost:", cost
-            best_cost = cost
-            best_solution = copy.deepcopy(current_selected_list)
+            item_number = name_string_generator(current_selected_list)
+            if package_file.list_of_candidates[item_number][1]< best_area:
+                print "\033[32m* NOTE::\033[0m found better solution with cost:", cost, "and area:", package_file.list_of_candidates[item_number][1]
+                best_cost = cost
+                best_area = package_file.list_of_candidates[item_number][1]
+                best_solution = copy.deepcopy(current_selected_list)
 
         if len(current_candidate_list) > 0:
             optimistic_value = bound(current_excluded_list)
@@ -114,9 +118,12 @@ def branch(candidates_list, selected_list, excluded_list):
         current_selected_list.remove(item)
     cost = calculate_cost(current_selected_list)
     if cost > best_cost:
-        print "\033[32m* NOTE::\033[0m found better solution with cost:", cost
-        best_cost = cost
-        best_solution = copy.deepcopy(current_selected_list)
+        item_number = name_string_generator(current_selected_list)
+        if package_file.list_of_candidates[item_number][1]< best_area:
+            print "\033[32m* NOTE::\033[0m found better solution with cost:", cost, "and area:", package_file.list_of_candidates[item_number][1]
+            best_cost = cost
+            best_area = package_file.list_of_candidates[item_number][1]
+            best_solution = copy.deepcopy(current_selected_list)
 
     if len(current_candidate_list) > 0:
         current_excluded_list.append(item)
@@ -180,10 +187,12 @@ sys.stdout = logger.Logger()
 best_solution = None
 # the area of the best solution
 best_cost = 0
+best_area = package_file.size_max
 
 print "\033[32m* NOTE::\033[0m starting branch and bound optimization!"
 branch(package_file.list_of_candidates, [], [])
 print "------------------------------"
 print "\033[32m* NOTE::\033[0m best solution:", best_solution
 print "\033[32m* NOTE::\033[0m coverage:", best_cost
+print "\033[32m* NOTE::\033[0m area:", best_area
 # print package_file.list_of_candidates

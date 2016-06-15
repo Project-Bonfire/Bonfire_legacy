@@ -22,5 +22,5 @@ def gen_dummy_dict():
                 name_string += str(k)+"_"
             name_string = name_string[:len(name_string)-1]
             # print name_string
-            new_dict[name_string] = [random.randint(1, 100), random.randint(1, 80)]
+            new_dict[name_string] = [random.randint(10, 100), random.randint(50, 80)]
     return new_dict

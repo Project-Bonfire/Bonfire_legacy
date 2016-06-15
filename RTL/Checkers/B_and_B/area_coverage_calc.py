@@ -23,7 +23,7 @@ def run_synthesis_script_and_report_area(list_of_selected_checkers):
     name_string = name_string_generator(list_of_selected_checkers)
 
     if package_file.test_mode:
-        return package_file.area_coverage_results[name_string][0]
+        return package_file.area_coverage_results[name_string][1]
 
     checkers_file_name = package_file.unit_under_test.lower()+"_checker"+name_string+".vhd"
     top_file_name = package_file.unit_under_test.lower()+"_checker"+name_string+"_top.vhd"
@@ -84,7 +84,7 @@ def calculate_coverage(list_of_selected_checkers):
     name_string = name_string_generator(list_of_selected_checkers)
 
     if package_file.test_mode:
-        return package_file.area_coverage_results[name_string][1]
+        return package_file.area_coverage_results[name_string][0]
 
     # todo: here we have to synthesise it, and calculate the coverage
     return parse_coverage_report("coverage_results/fstat"+str(name_string))
