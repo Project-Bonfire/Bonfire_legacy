@@ -29,7 +29,7 @@ def find_essential_checker():
     for node in range(0, number_of_nodes):
         detecting_checkers = []
         for checker in package_file.list_of_detection_info_sa0.keys():
-            if package_file.list_of_detection_info_sa0[checker][node] != 0:
+            if int(package_file.list_of_detection_info_sa0[checker][node]) != 0:
                 detecting_checkers.append(checker)
         if len(detecting_checkers) == 0:
             print "non detectable node found(SA0):", node
@@ -41,7 +41,7 @@ def find_essential_checker():
     for node in range(0, number_of_nodes):
         detecting_checkers = []
         for checker in package_file.list_of_detection_info_sa1.keys():
-            if package_file.list_of_detection_info_sa1[checker][node] != 0:
+            if (package_file.list_of_detection_info_sa1[checker][node]) != 0:
                 detecting_checkers.append(checker)
         if len(detecting_checkers) == 0:
             print "non detectable node found(SA1):", node
