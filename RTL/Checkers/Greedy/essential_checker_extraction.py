@@ -51,3 +51,50 @@ def find_essential_checker():
                 list_of_essential_checkers.append(detecting_checkers[0])
 
     return list_of_essential_checkers
+
+
+def find_dominant_checker():
+    print "-------------------------------------------------------------"
+    list_of_dominance = []
+    candidates_for_deletion = []
+    for checker1 in package_file.list_of_detection_info_sa0:
+        for checker2 in package_file.list_of_detection_info_sa0:
+            if checker1 != checker2:
+                dominant = True
+                for node in range(0, len(package_file.list_of_detection_info_sa0[checker1])):
+                    checker1_value = int(package_file.list_of_detection_info_sa0[checker1][node])
+                    checker2_value = int(package_file.list_of_detection_info_sa0[checker2][node])
+                    if checker1_value > checker2_value:
+                        dominant = False
+                for node in range(0, len(package_file.list_of_detection_info_sa1[checker1])):
+                    checker1_value = int(package_file.list_of_detection_info_sa1[checker1][node])
+                    checker2_value = int(package_file.list_of_detection_info_sa1[checker2][node])
+                    if checker1_value > checker2_value:
+                        dominant = False
+                if dominant:
+                    list_of_dominance.append([checker2, checker1])
+                    print "checker", checker2, "dominates checker", checker1
+    print "-------------------------"
+    for item in list_of_dominance:
+        reversed_item = [item[1], item[0]]
+        if reversed_item in list_of_dominance:
+            print item[1], item[0], "are essentially the same!"
+            area_item_0 = package_file.list_of_candidates[item[0]]
+            area_item_1 = package_file.list_of_candidates[item[1]]
+            if area_item_1 > area_item_0:
+                list_of_dominance.remove(reversed_item)
+            else:
+                list_of_dominance.remove(item)
+
+    print "final list of dominance:", list_of_dominance
+    for item in list_of_dominance:
+        if item[1] not in candidates_for_deletion:
+            candidates_for_deletion.append(item[1])
+        if item[1] in package_file.list_of_detection_info_sa0:
+            package_file.list_of_detection_info_sa0.pop(item[1])
+            print "removed", item[1], "from list_of_detection_info_sa0"
+        if item[1] in package_file.list_of_detection_info_sa1:
+            package_file.list_of_detection_info_sa1.pop(item[1])
+            print "removed", item[1], "from list_of_detection_info_sa1"
+    print "candidates for deletion:", candidates_for_deletion
+    return candidates_for_deletion
