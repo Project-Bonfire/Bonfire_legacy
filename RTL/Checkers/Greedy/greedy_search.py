@@ -9,7 +9,8 @@ from area_coverage_calc import calculate_area
 from area_coverage_calc import calculate_coverage
 from cost_function import calculate_coverage_cost, calculate_value_density
 import package_file
-from file_generator import make_folders, generate_specific_file
+from file_generator import make_folders
+from essential_checker_extraction import find_essential_checker
 import sys
 import logger
 
@@ -47,6 +48,20 @@ for item in package_file.list_of_checkers:
 sorted_coverage = sorted(package_file.list_of_candidates.items(),  key=lambda e: e[1][0], reverse=True)
 
 print "sorted list of checkers:", sorted_coverage
+print "------------------------------"
+print "printing the checkers detection tables"
+print "stuck at 0:"
+for item in package_file.list_of_detection_info_sa0:
+    print item, package_file.list_of_detection_info_sa0[item]
+print "------------------------------"
+print "printing the checkers detection tables"
+print "stuck at 1:"
+for item in package_file.list_of_detection_info_sa1:
+    print item, package_file.list_of_detection_info_sa1[item]
+
+print "------------------------------"
+list_of_essential_checkers=find_essential_checker()
+print "list of essential checkers:", list_of_essential_checkers
 
 current_list = []
 for item in sorted_coverage:
@@ -62,3 +77,4 @@ for item in sorted_coverage:
 print "------------------------------"
 print "\033[32m* NOTE::\033[0m best solution:", current_list
 print "\033[32m* NOTE::\033[0m coverage:", calculate_coverage(current_list)
+

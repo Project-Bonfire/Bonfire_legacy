@@ -22,7 +22,8 @@ cost_function_type= "cov"
 list_of_candidates = {}
 list_of_checkers = []
 log_folder = "logs"
-
+list_of_detection_info_sa0 = {}
+list_of_detection_info_sa1 = {}
 # --------------------------------------------
 #                Anything bellow
 #       This is for testing... do not touch!
