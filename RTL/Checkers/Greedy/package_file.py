@@ -2,9 +2,9 @@
 
 
 
-number_of_checkers = 4
+number_of_checkers = 12
 # size max is the maximum allowed area for the sum of checkers!
-size_max = 80
+size_max = 154
 
 # UUT can be "ELBDR", "LBDR", "FIFO_control_part" make sure its capital
 unit_under_test = "LBDR"
@@ -13,7 +13,9 @@ module_file_name = "LBDR_pseudo.vhd"
 
 debug = False
 # cost function can be "cov" or "val_density"
-cost_function_type= "cov"
+cost_function_type= "val_density"
+keep_dominant_checkers = True
+delete_dominated_checkers = False
 # --------------------------------------------
 #                Anything bellow
 #       This is  internal use, do not touch!
