@@ -5,6 +5,9 @@ import copy
 def extract_checker_info(name_string):
     package_file.list_of_detection_info_sa0[name_string]=[]
     package_file.list_of_detection_info_sa1[name_string]=[]
+
+    package_file.list_of_true_misses_sa0[name_string]=[]
+    package_file.list_of_true_misses_sa1[name_string]=[]
     area_report_file = open("coverage_results/fstat"+str(name_string), 'r')
     line = area_report_file.readline()
     while line != "":
@@ -15,7 +18,12 @@ def extract_checker_info(name_string):
                 if "|" in item:
                     package_file.list_of_detection_info_sa0[name_string].append(item.split("|")[0])
                     package_file.list_of_detection_info_sa1[name_string].append(item.split("|")[1])
-            break
+        if "amount of True Misses" in line:
+            line = area_report_file.readline()
+            for item in  line.split(" "):
+                if "|" in item:
+                    package_file.list_of_true_misses_sa0[name_string].append(item.split("|")[0])
+                    package_file.list_of_true_misses_sa1[name_string].append(item.split("|")[1])
     print package_file.list_of_detection_info_sa0
     print package_file.list_of_detection_info_sa1
     return None
@@ -140,6 +148,7 @@ def cleanup_checker_selection():
             for checker in temp_copy_sa0:
                 temp_copy_sa0[checker][node] = 0
 
+    print "single dominant checkers for sta0:", selected_checkers_sa0
     for node in range(0, len(temp_copy_sa1[random_item])):
         best_checker = None
         best_detection = 0
@@ -164,7 +173,7 @@ def cleanup_checker_selection():
             for checker in temp_copy_sa1:
                 temp_copy_sa1[checker][node] = 0
 
-
+    print "single dominant checkers for sta1:", selected_checkers_sa1
     for checker in selected_checkers_sa0:
         for node in range(0, len(temp_copy_sa0[checker])):
             if temp_copy_sa0[checker][node] == 1:

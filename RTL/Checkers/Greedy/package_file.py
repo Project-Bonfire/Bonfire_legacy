@@ -13,7 +13,7 @@ module_file_name = "LBDR_pseudo.vhd"
 
 debug = False
 # cost function can be "cov" or "val_density"
-cost_function_type= "val_density"
+cost_function_type= "cov"
 keep_dominant_checkers = True
 delete_dominated_checkers = False
 # --------------------------------------------
@@ -26,11 +26,14 @@ list_of_checkers = []
 log_folder = "logs"
 list_of_detection_info_sa0 = {}
 list_of_detection_info_sa1 = {}
+
+list_of_true_misses_sa0 = {}
+list_of_true_misses_sa1 = {}
 # --------------------------------------------
 #                Anything bellow
 #       This is for testing... do not touch!
 # --------------------------------------------
-test_mode = True
+test_mode = False
 
 # here i assume that the area of the module is 40
 area_coverage_results = {"1": [50, 40],    # 10
