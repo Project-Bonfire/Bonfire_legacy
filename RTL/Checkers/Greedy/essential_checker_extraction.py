@@ -224,3 +224,116 @@ def cleanup_checker_selection():
     print "selected single dominant checkers:", final_selected_list
     print "selected checkers for optimization:", checkers_for_optimization
     return final_selected_list, checkers_for_optimization
+
+
+
+def cleanup_true_miss_selection():
+    temp_copy_sa0 = copy.deepcopy(package_file.list_of_true_misses_sa0)
+    temp_copy_sa1 = copy.deepcopy(package_file.list_of_true_misses_sa1)
+
+    random_item = temp_copy_sa0.keys()[0]
+
+    selected_checkers_sa0 = []
+    selected_checkers_sa1 = []
+    checkers_for_optimization =[]
+
+    for node in range(0, len(temp_copy_sa0[random_item])):
+        best_checker = None
+        best_true_miss_rate = float('inf')
+        for checker in temp_copy_sa0:
+            true_miss_rate = int(temp_copy_sa0[checker][node])
+            if true_miss_rate >= 0:
+                if true_miss_rate < best_true_miss_rate:
+                    best_true_miss_rate = true_miss_rate
+                    best_checker = checker
+        if best_true_miss_rate == 0:
+            count = 0
+            for checker in temp_copy_sa0:
+                if int(package_file.list_of_true_misses_sa0[checker][node]) == best_true_miss_rate:
+                    temp_copy_sa0[checker][node] = 1
+                    count += 1
+                else:
+                    temp_copy_sa0[checker][node] = 0
+            if count == 1:
+                if best_checker not in selected_checkers_sa0:
+                    selected_checkers_sa0.append(best_checker)
+        else:
+            for checker in temp_copy_sa0:
+                temp_copy_sa0[checker][node] = 0
+
+    print "single dominant checkers for sta0:", selected_checkers_sa0
+    for node in range(0, len(temp_copy_sa1[random_item])):
+        best_checker = None
+        best_true_miss_rate = float('inf')
+        for checker in temp_copy_sa1:
+            true_miss_rate = int(temp_copy_sa1[checker][node])
+            if true_miss_rate >= 0:
+                if true_miss_rate < best_true_miss_rate:
+                    best_true_miss_rate = true_miss_rate
+                    best_checker = checker
+        if best_true_miss_rate == 0:
+            count = 0
+            for checker in temp_copy_sa1:
+                if int(package_file.list_of_true_misses_sa1[checker][node]) == best_true_miss_rate:
+                    temp_copy_sa1[checker][node] = 1
+                    count += 1
+                else:
+                    temp_copy_sa1[checker][node] = 0
+            if count == 1:
+                if best_checker not in selected_checkers_sa1:
+                    selected_checkers_sa1.append(best_checker)
+        else:
+            for checker in temp_copy_sa1:
+                temp_copy_sa1[checker][node] = 0
+
+    print "single dominant checkers for sta1:", selected_checkers_sa1
+    for checker in selected_checkers_sa0:
+        for node in range(0, len(temp_copy_sa0[checker])):
+            if temp_copy_sa0[checker][node] == 1:
+                for checker2 in temp_copy_sa0.keys():
+                    if checker2 not in selected_checkers_sa0:
+                        if temp_copy_sa0[checker2][node] == 1:
+                            temp_copy_sa0[checker2][node] = 0
+
+    for checker in selected_checkers_sa1:
+        for node in range(0, len(temp_copy_sa1[checker])):
+            if temp_copy_sa1[checker][node] == 1:
+                for checker2 in temp_copy_sa1.keys():
+                    if checker2 not in selected_checkers_sa1:
+                        if temp_copy_sa1[checker2][node] == 1:
+                            temp_copy_sa1[checker2][node] = 0
+
+    for item in temp_copy_sa1:
+        if item not in selected_checkers_sa1:
+            if sum(temp_copy_sa1[item])>0:
+                if item not in checkers_for_optimization:
+                    checkers_for_optimization.append(item)
+
+    for item in temp_copy_sa0:
+        if item not in selected_checkers_sa0:
+            if sum(temp_copy_sa0[item])>0:
+                if item not in checkers_for_optimization:
+                    checkers_for_optimization.append(item)
+
+
+    print "-----------------"
+    for checker in sorted(temp_copy_sa0.keys()):
+        print checker,
+        for item in temp_copy_sa0[checker]:
+            print item,
+        print ""
+    print "-----------------"
+    for checker in sorted(temp_copy_sa1.keys()):
+        print checker,
+        for item in temp_copy_sa1[checker]:
+            print item,
+        print ""
+
+    final_selected_list = copy.deepcopy(selected_checkers_sa0)
+    for item in selected_checkers_sa1:
+        if item not in selected_checkers_sa1:
+            final_selected_list.append(item)
+
+    print "selected single dominant checkers:", final_selected_list
+    print "selected checkers for optimization:", checkers_for_optimization
+    return final_selected_list, checkers_for_optimization

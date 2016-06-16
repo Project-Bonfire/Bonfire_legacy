@@ -62,8 +62,7 @@ print "stuck at 1:"
 for item in package_file.list_of_true_misses_sa0:
     print item, package_file.list_of_true_misses_sa0[item]
 
-sys.exit()
-
+# todo: need to do this for the true miss values
 if package_file.keep_dominant_checkers:
 
     print "------------------------------"
