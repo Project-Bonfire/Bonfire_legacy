@@ -1,7 +1,6 @@
 # copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 
 
-
 number_of_checkers = 12
 # size max is the maximum allowed area for the sum of checkers!
 size_max = 154
@@ -11,11 +10,11 @@ unit_under_test = "LBDR"
 # module file name points to the vhdl file of the pseudo combinational module you are working on
 module_file_name = "LBDR_pseudo.vhd"
 
-debug = False
+debug = True
 # cost function can be "cov" or "val_density"
-cost_function_type= "cov"
-keep_dominant_checkers = True
-delete_dominated_checkers = False
+cost_function_type = "val_density"
+extract_essential_checkers = False
+
 # --------------------------------------------
 #                Anything bellow
 #       This is  internal use, do not touch!
