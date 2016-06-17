@@ -54,8 +54,9 @@ def find_essential_checker():
         count = 0
         for checker in temp_copy_sa0:
             if int(package_file.list_of_true_misses_sa0[checker][node]) == best_true_miss_rate:
-                temp_copy_sa0[checker][node] = 1
-                count += 1
+                if int(package_file.list_of_detection_info_sa0[checker][node]) > 0:
+                    temp_copy_sa0[checker][node] = 1
+                    count += 1
             else:
                 temp_copy_sa0[checker][node] = 0
         if count == 1:
@@ -80,8 +81,9 @@ def find_essential_checker():
         count = 0
         for checker in temp_copy_sa1:
             if int(package_file.list_of_true_misses_sa1[checker][node]) == best_true_miss_rate:
-                temp_copy_sa1[checker][node] = 1
-                count += 1
+                if int(package_file.list_of_detection_info_sa1[checker][node]) > 0:
+                    temp_copy_sa1[checker][node] = 1
+                    count += 1
             else:
                 temp_copy_sa1[checker][node] = 0
         if count == 1:
