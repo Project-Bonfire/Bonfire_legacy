@@ -50,7 +50,7 @@ def find_essential_checker():
                     best_true_miss_rate = true_miss_rate
                     best_checker = checker
 
-        #if best_true_miss_rate == 0:
+        # if best_true_miss_rate == 0:
         count = 0
         for checker in temp_copy_sa0:
             if int(package_file.list_of_true_misses_sa0[checker][node]) == best_true_miss_rate:
@@ -77,7 +77,7 @@ def find_essential_checker():
                 if true_miss_rate < best_true_miss_rate:
                     best_true_miss_rate = true_miss_rate
                     best_checker = checker
-        #if best_true_miss_rate == 0:
+        # if best_true_miss_rate == 0:
         count = 0
         for checker in temp_copy_sa1:
             if int(package_file.list_of_true_misses_sa1[checker][node]) == best_true_miss_rate:
@@ -89,7 +89,7 @@ def find_essential_checker():
         if count == 1:
             if best_checker not in selected_checkers_sa1:
                 selected_checkers_sa1.append(best_checker)
-        #else:
+        # else:
         #    for checker in temp_copy_sa1:
         #        temp_copy_sa1[checker][node] = 0
 
@@ -127,7 +127,7 @@ def find_essential_checker():
 
     final_selected_list = []
     for item in selected_checkers_sa0:
-    	final_selected_list.append(str(item))
+        final_selected_list.append(str(item))
     for item in selected_checkers_sa1:
         if item not in selected_checkers_sa1:
             final_selected_list.append(str(item))
