@@ -13,7 +13,7 @@ module_file_name = "LBDR_pseudo.vhd"
 debug = True
 # cost function can be "cov" or "val_density"
 cost_function_type = "val_density"
-extract_essential_checkers = False
+extract_essential_checkers = True
 
 # --------------------------------------------
 #                Anything bellow

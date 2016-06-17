@@ -54,7 +54,7 @@ def find_essential_checker():
         count = 0
         for checker in temp_copy_sa0:
             if int(package_file.list_of_true_misses_sa0[checker][node]) == best_true_miss_rate:
-                if int(package_file.list_of_detection_info_sa0[checker][node]) > 0:
+                if int(package_file.list_of_detection_info_sa0[str(checker)][node]) > 0:
                     temp_copy_sa0[checker][node] = 1
                     count += 1
             else:
@@ -81,7 +81,7 @@ def find_essential_checker():
         count = 0
         for checker in temp_copy_sa1:
             if int(package_file.list_of_true_misses_sa1[checker][node]) == best_true_miss_rate:
-                if int(package_file.list_of_detection_info_sa1[checker][node]) > 0:
+                if int(package_file.list_of_detection_info_sa1[str(checker)][node]) > 0:
                     temp_copy_sa1[checker][node] = 1
                     count += 1
             else:
@@ -125,15 +125,17 @@ def find_essential_checker():
             print ""
         print "-----------------"
 
-    final_selected_list = copy.deepcopy(selected_checkers_sa0)
+    final_selected_list = []
+    for item in selected_checkers_sa0:
+    	final_selected_list.append(str(item))
     for item in selected_checkers_sa1:
         if item not in selected_checkers_sa1:
-            final_selected_list.append(item)
+            final_selected_list.append(str(item))
 
     for item in temp_copy_sa0.keys():
-        if item not in final_selected_list:
-            if item not in checkers_for_optimization:
-                checkers_for_optimization.append(item)
+        if str(item) not in final_selected_list:
+            if str(item) not in checkers_for_optimization:
+                checkers_for_optimization.append(str(item))
 
     print "selected single dominant checkers:", final_selected_list
     print "selected checkers for optimization:", checkers_for_optimization
