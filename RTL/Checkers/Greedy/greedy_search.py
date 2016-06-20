@@ -11,6 +11,7 @@ from file_generator import make_folders
 from essential_checker_extraction import find_essential_checker
 import sys
 import logger
+from for_testing import gen_dummy_dict
 
 
 if '--help' in sys.argv[1:]:
@@ -29,32 +30,21 @@ build_list_of_candidates()
 sys.stdout = logger.Logger()
 
 # the area of the best solution
-best_cost = 0
+best_coverage = 0
 
 print "\033[32m* NOTE::\033[0m starting greedy optimization!"
 
-for item in package_file.list_of_checkers:
-    area = calculate_area([item])
-    package_file.list_of_candidates[item] = [None, area]
-    if package_file.cost_function_type == "cov":
-        package_file.list_of_candidates[item] = [calculate_coverage_cost([item]), area]
-    elif package_file.cost_function_type == "val_density":
-        package_file.list_of_candidates[item] = [calculate_value_density([item]), area]
 
 
-# sorting the dictionary based on the coverage
-sorted_coverage = sorted(package_file.list_of_candidates.items(),  key=lambda e: e[1][0], reverse=True)
-print "sorted list of checkers:", sorted_coverage
-
-"""
-sorted_coverage = [('9', [0.88065714285714292, 70.0]), ('8', [0.68822807017543863, 57.0]),
+if package_file.test_mode:
+    sorted_coverage = [('9', [0.88065714285714292, 70.0]), ('8', [0.68822807017543863, 57.0]),
                    ('5', [0.57208888888888887, 45.0]), ('3', [0.48573584905660377, 53.0]),
                    ('4', [0.44386206896551722, 58.0]), ('2', [0.40863492063492063, 63.0]),
                    ('1', [0.38423880597014926, 67.0]), ('7', [0.37858823529411767, 68.0]),
                    ('6', [0.22650000000000001, 52.0]), ('12', [0.21811111111111112, 54.0]),
                    ('10', [0.062266666666666665, 45.0]), ('11', [0.042962264150943397, 53.0])]
 
-package_file.list_of_detection_info_sa0 = {
+    package_file.list_of_detection_info_sa0 = {
     '11': ['0', '4', '0', '0', '0', '0', '5', '0', '0', '0', '2', '5', '0', '0', '2', '2', '0', '0', '0', '0', '0', '0',
            '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
     '10': ['0', '0', '0', '0', '0', '8', '0', '0', '0', '0', '0', '8', '0', '0', '0', '0', '16', '0', '0', '0', '8',
@@ -80,7 +70,7 @@ package_file.list_of_detection_info_sa0 = {
     '8': ['0', '0', '0', '0', '0', '32', '0', '0', '0', '0', '0', '32', '0', '0', '0', '0', '64', '0', '0', '0', '32',
           '0', '0', '0', '0', '64', '0', '0', '0', '0', '0', '32', '0', '0']}
 
-package_file.list_of_detection_info_sa1 = {
+    package_file.list_of_detection_info_sa1 = {
     '11': ['4', '0', '4', '4', '5', '5', '0', '0', '0', '0', '0', '0', '5', '5', '0', '0', '0', '0', '0', '0', '0', '0',
            '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
     '10': ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
@@ -106,7 +96,7 @@ package_file.list_of_detection_info_sa1 = {
     '8': ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '128', '0', '0', '0', '128', '0', '0',
           '0', '0', '128', '0', '0', '0', '128', '0', '0', '0', '0', '128', '0']}
 
-package_file.list_of_true_misses_sa0 = {
+    package_file.list_of_true_misses_sa0 = {
     11: ['0', '60', '0', '0', '20', '40', '15', '0', '0', '0', '158', '0', '5', '55', '30', '30', '40', '20', '20',
          '32', '32', '110', '10', '32', '32', '55', '5', '5', '32', '32', '80', '40', '32', '32'],
     10: ['0', '64', '0', '0', '20', '32', '20', '0', '0', '0', '160', '32', '20', '20', '32', '32', '94', '10', '32',
@@ -132,7 +122,7 @@ package_file.list_of_true_misses_sa0 = {
     8: ['0', '64', '0', '0', '20', '8', '20', '0', '0', '0', '160', '8', '20', '20', '32', '32', '46', '10', '32', '32',
         '23', '5', '5', '32', '32', '16', '40', '32', '32', '5', '5', '23', '32', '32']}
 
-package_file.list_of_true_misses_sa1 = {
+    package_file.list_of_true_misses_sa1 = {
     11: ['60', '0', '60', '60', '15', '15', '20', '0', '0', '0', '64', '5', '0', '0', '128', '15', '20', '20', '20',
          '128', '12', '10', '10', '128', '14', '5', '5', '5', '128', '15', '40', '40', '128', '8'],
     10: ['64', '0', '64', '64', '20', '20', '20', '0', '0', '0', '64', '20', '20', '20', '128', '12', '10', '10', '128',
@@ -157,8 +147,21 @@ package_file.list_of_true_misses_sa1 = {
         '14', '5', '5', '5', '0', '15', '40', '40', '0', '8', '5', '5', '5', '0', '15'],
     8: ['64', '0', '64', '64', '20', '20', '20', '0', '0', '0', '64', '20', '20', '20', '0', '12', '10', '10', '0',
         '14', '5', '5', '5', '0', '15', '40', '40', '0', '8', '5', '5', '5', '0', '15']
-}
-"""
+    }
+    package_file.area_coverage_results = copy.deepcopy(gen_dummy_dict())
+
+else:
+    for item in package_file.list_of_checkers:
+        area = calculate_area([item])
+        package_file.list_of_candidates[item] = [None, area]
+        if package_file.cost_function_type == "cov":
+            package_file.list_of_candidates[item] = [calculate_coverage_cost([item]), area]
+        elif package_file.cost_function_type == "val_density":
+            package_file.list_of_candidates[item] = [calculate_value_density([item]), area]
+    # sorting the dictionary based on the coverage
+    sorted_coverage = sorted(package_file.list_of_candidates.items(),  key=lambda e: e[1][0], reverse=True)
+
+print "sorted list of checkers:", sorted_coverage
 
 if package_file.debug:
     print "------------------------------"
@@ -190,16 +193,26 @@ print "starting optimization with ", current_list, "checkers already chosen"
 print "and running greedy algorithm on ", checkers_for_optimization
 if check_feasibility(current_list[1:], current_list[0]):
     print "starting sequence is feasible...  going further..."
+    coverage = calculate_coverage(current_list)
+    print "starting coverage:", coverage
+    best_coverage = coverage
     for item in sorted_coverage:
         if item[0] in checkers_for_optimization:
             print "------------------------------"
-            print "Picking item:", item[0]
+            print "Trying picking item:", item[0]
             if item not in current_list:
                 if check_feasibility(current_list, item[0]):
-                    current_list.append(item[0])
-                    coverage = calculate_coverage(current_list)
+                    list_for_coverage_check = current_list+[item[0]]
+                    coverage = calculate_coverage(list_for_coverage_check)
                     print "coverage:", coverage
+                    if coverage > best_coverage:
+                        current_list.append(item[0])
+                        best_coverage = coverage
+                        print "coverage improved to:", coverage
+                    else:
+                        print "\033[91m* NOTE::\033[0m No improvement is made. ignoring the item..."
                     if coverage == 100:
+                        print "100% coverage reached! ending the search!"
                         break
 
 print "------------------------------"
