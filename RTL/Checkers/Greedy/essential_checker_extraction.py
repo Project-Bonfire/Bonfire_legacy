@@ -45,10 +45,11 @@ def find_essential_checker():
         best_true_miss_rate = float('inf')
         for checker in temp_copy_sa0:
             true_miss_rate = int(temp_copy_sa0[checker][node])
-            if true_miss_rate >= 0:
-                if true_miss_rate < best_true_miss_rate:
-                    best_true_miss_rate = true_miss_rate
-                    best_checker = checker
+            if int(package_file.list_of_detection_info_sa0[str(checker)][node]) > 0:
+	            if true_miss_rate >= 0:
+	                if true_miss_rate < best_true_miss_rate:
+	                    best_true_miss_rate = true_miss_rate
+	                    best_checker = checker
 
         # if best_true_miss_rate == 0:
         count = 0
@@ -57,6 +58,8 @@ def find_essential_checker():
                 if int(package_file.list_of_detection_info_sa0[str(checker)][node]) > 0:
                     temp_copy_sa0[checker][node] = 1
                     count += 1
+                else:
+                	temp_copy_sa0[checker][node] = 0
             else:
                 temp_copy_sa0[checker][node] = 0
         if count == 1:
@@ -73,10 +76,11 @@ def find_essential_checker():
         best_true_miss_rate = float('inf')
         for checker in temp_copy_sa1:
             true_miss_rate = int(temp_copy_sa1[checker][node])
-            if true_miss_rate >= 0:
-                if true_miss_rate < best_true_miss_rate:
-                    best_true_miss_rate = true_miss_rate
-                    best_checker = checker
+            if int(package_file.list_of_detection_info_sa0[str(checker)][node]) > 0:
+	            if true_miss_rate >= 0:
+	                if true_miss_rate < best_true_miss_rate:
+	                    best_true_miss_rate = true_miss_rate
+	                    best_checker = checker
         # if best_true_miss_rate == 0:
         count = 0
         for checker in temp_copy_sa1:
@@ -84,6 +88,8 @@ def find_essential_checker():
                 if int(package_file.list_of_detection_info_sa1[str(checker)][node]) > 0:
                     temp_copy_sa1[checker][node] = 1
                     count += 1
+                else:
+                	temp_copy_sa1[checker][node] = 0
             else:
                 temp_copy_sa1[checker][node] = 0
         if count == 1:
@@ -129,7 +135,7 @@ def find_essential_checker():
     for item in selected_checkers_sa0:
         final_selected_list.append(str(item))
     for item in selected_checkers_sa1:
-        if item not in selected_checkers_sa1:
+        if item not in selected_checkers_sa0:
             final_selected_list.append(str(item))
 
     for item in temp_copy_sa0.keys():
