@@ -76,7 +76,7 @@ def find_essential_checker():
         best_true_miss_rate = float('inf')
         for checker in temp_copy_sa1:
             true_miss_rate = int(temp_copy_sa1[checker][node])
-            if int(package_file.list_of_detection_info_sa0[str(checker)][node]) > 0:
+            if int(package_file.list_of_detection_info_sa1[str(checker)][node]) > 0:
 	            if true_miss_rate >= 0:
 	                if true_miss_rate < best_true_miss_rate:
 	                    best_true_miss_rate = true_miss_rate
