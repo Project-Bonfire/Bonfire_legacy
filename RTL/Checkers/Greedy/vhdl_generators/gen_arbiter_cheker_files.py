@@ -29,7 +29,7 @@ def gen_arbiter_checkers(checker_id):
     arbiter_checker_vhd.write("           RTS_FF_in: in std_logic;\n")
     arbiter_checker_vhd.write("\n")
 
-    arbiter_checker_vhd.write("           -- Checker outputs")
+    arbiter_checker_vhd.write("           -- Checker outputs \n")
 
     string_to_write = ""
 
