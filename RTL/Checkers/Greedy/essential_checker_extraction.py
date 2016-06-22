@@ -25,8 +25,8 @@ def extract_checker_info(name_string):
                 if "|" in item:
                     package_file.list_of_true_misses_sa0[name_string].append(item.split("|")[0])
                     package_file.list_of_true_misses_sa1[name_string].append(item.split("|")[1])
-    print package_file.list_of_detection_info_sa0
-    print package_file.list_of_detection_info_sa1
+    # print package_file.list_of_detection_info_sa0
+    # print package_file.list_of_detection_info_sa1
     return None
 
 
@@ -118,15 +118,16 @@ def find_essential_checker():
 
     if package_file.debug:
         print "-----------------"
-        print "printing the checkers detection table (0-1)"
+        print "printing the checkers true misses table (0-1)"
         print "stuck at 0:"
         for checker in sorted(temp_copy_sa0.keys()):
             print checker,
             for item in temp_copy_sa0[checker]:
                 print item,
             print ""
+
         print "-----------------"
-        print "printing the checkers detection table (0-1)"
+        print "printing the checkers true misses table (0-1)"
         print "stuck at 1:"
         for checker in sorted(temp_copy_sa1.keys()):
             print checker,
