@@ -24,8 +24,12 @@ def build_list_of_candidates():
        print "------------------------------"
     """
     for item in package_file.list_of_checkers:
+      if package_file.use_essential_checkers:
+        if item not in package_file.essential_checkers:
+          package_file.list_of_candidates[item] = [None, None]
+      else:
         package_file.list_of_candidates[item] = [None, None]
- 
+        
     if not check_list_of_candidates_format(package_file.list_of_candidates):
         raise ValueError("list_of_candidates is corrupt!")
 

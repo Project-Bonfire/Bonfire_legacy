@@ -192,7 +192,12 @@ best_cost = 0
 best_area = package_file.size_max
 
 print "\033[32m* NOTE::\033[0m starting branch and bound optimization!"
-branch(package_file.list_of_candidates, [], [])
+
+if not package_file.use_essential_checkers:
+    package_file.essential_checkers = []
+print "starting process with the following non essential checkers:", package_file.list_of_candidates.keys()
+print "starting process with the following checkers:", package_file.essential_checkers
+branch(package_file.list_of_candidates, package_file.essential_checkers, [])
 print "------------------------------"
 print "\033[32m* NOTE::\033[0m best solution:", best_solution
 print "\033[32m* NOTE::\033[0m coverage:", best_cost
