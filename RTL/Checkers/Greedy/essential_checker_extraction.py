@@ -9,7 +9,7 @@ def extract_checker_info(name_string):
 
     package_file.list_of_true_misses_sa0[name_string] = []
     package_file.list_of_true_misses_sa1[name_string] = []
-    area_report_file = open("coverage_results/fstat"+str(name_string), 'r')
+    area_report_file = open("coverage_results/fstat" + str(name_string), 'r')
     line = area_report_file.readline()
     while line != "":
         line = area_report_file.readline()
@@ -46,10 +46,10 @@ def find_essential_checker():
         for checker in temp_copy_sa0:
             true_miss_rate = int(temp_copy_sa0[checker][node])
             if int(package_file.list_of_detection_info_sa0[str(checker)][node]) > 0:
-	            if true_miss_rate >= 0:
-	                if true_miss_rate < best_true_miss_rate:
-	                    best_true_miss_rate = true_miss_rate
-	                    best_checker = checker
+                if true_miss_rate >= 0:
+                    if true_miss_rate < best_true_miss_rate:
+                        best_true_miss_rate = true_miss_rate
+                        best_checker = checker
 
         # if best_true_miss_rate == 0:
         count = 0
@@ -59,15 +59,15 @@ def find_essential_checker():
                     temp_copy_sa0[checker][node] = 1
                     count += 1
                 else:
-                	temp_copy_sa0[checker][node] = 0
+                    temp_copy_sa0[checker][node] = 0
             else:
                 temp_copy_sa0[checker][node] = 0
         if count == 1:
             if best_checker not in selected_checkers_sa0:
                 selected_checkers_sa0.append(best_checker)
-        # else:
-        #    for checker in temp_copy_sa0:
-        #        temp_copy_sa0[checker][node] = 0
+                # else:
+                #    for checker in temp_copy_sa0:
+                #        temp_copy_sa0[checker][node] = 0
 
     print "single dominant checkers for sta0:", selected_checkers_sa0
 
@@ -77,10 +77,10 @@ def find_essential_checker():
         for checker in temp_copy_sa1:
             true_miss_rate = int(temp_copy_sa1[checker][node])
             if int(package_file.list_of_detection_info_sa1[str(checker)][node]) > 0:
-	            if true_miss_rate >= 0:
-	                if true_miss_rate < best_true_miss_rate:
-	                    best_true_miss_rate = true_miss_rate
-	                    best_checker = checker
+                if true_miss_rate >= 0:
+                    if true_miss_rate < best_true_miss_rate:
+                        best_true_miss_rate = true_miss_rate
+                        best_checker = checker
         # if best_true_miss_rate == 0:
         count = 0
         for checker in temp_copy_sa1:
@@ -89,15 +89,15 @@ def find_essential_checker():
                     temp_copy_sa1[checker][node] = 1
                     count += 1
                 else:
-                	temp_copy_sa1[checker][node] = 0
+                    temp_copy_sa1[checker][node] = 0
             else:
                 temp_copy_sa1[checker][node] = 0
         if count == 1:
             if best_checker not in selected_checkers_sa1:
                 selected_checkers_sa1.append(best_checker)
-        # else:
-        #    for checker in temp_copy_sa1:
-        #        temp_copy_sa1[checker][node] = 0
+                # else:
+                #    for checker in temp_copy_sa1:
+                #        temp_copy_sa1[checker][node] = 0
 
     print "single dominant checkers for sta1:", selected_checkers_sa1
     for checker in selected_checkers_sa0:
@@ -118,12 +118,16 @@ def find_essential_checker():
 
     if package_file.debug:
         print "-----------------"
+        print "printing the checkers detection table (0-1)"
+        print "stuck at 0:"
         for checker in sorted(temp_copy_sa0.keys()):
             print checker,
             for item in temp_copy_sa0[checker]:
                 print item,
             print ""
         print "-----------------"
+        print "printing the checkers detection table (0-1)"
+        print "stuck at 1:"
         for checker in sorted(temp_copy_sa1.keys()):
             print checker,
             for item in temp_copy_sa1[checker]:
