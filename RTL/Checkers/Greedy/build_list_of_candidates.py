@@ -25,7 +25,7 @@ def build_list_of_candidates():
     """
     for item in package_file.list_of_checkers:
         package_file.list_of_candidates[item] = [None, None]
- 
+
     if not check_list_of_candidates_format(package_file.list_of_candidates):
         raise ValueError("list_of_candidates is corrupt!")
 

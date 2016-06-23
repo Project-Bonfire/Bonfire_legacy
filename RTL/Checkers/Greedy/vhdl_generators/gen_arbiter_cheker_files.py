@@ -136,7 +136,7 @@ def gen_arbiter_checkers(checker_id):
     if '51' in checker_id:
         string_to_write += "err_Arbiter_no_Grant,\n"
 
-    string_to_write = string_to_write[:len(string_to_write) - 3]
+    string_to_write = string_to_write[:len(string_to_write) - 2]
     string_to_write += " : out std_logic\n"
 
     arbiter_checker_vhd.write(string_to_write)
