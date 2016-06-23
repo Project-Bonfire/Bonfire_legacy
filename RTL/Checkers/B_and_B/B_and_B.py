@@ -195,8 +195,13 @@ print "\033[32m* NOTE::\033[0m starting branch and bound optimization!"
 
 if not package_file.use_essential_checkers:
     package_file.essential_checkers = []
+else:
+    calculate_area(package_file.essential_checkers)
+    calculate_coverage(package_file.essential_checkers)
+    
 print "starting process with the following non essential checkers:", package_file.list_of_candidates.keys()
 print "starting process with the following checkers:", package_file.essential_checkers
+
 branch(package_file.list_of_candidates, package_file.essential_checkers, [])
 print "------------------------------"
 print "\033[32m* NOTE::\033[0m best solution:", best_solution
