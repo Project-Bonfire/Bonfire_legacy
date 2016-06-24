@@ -51,3 +51,18 @@ def report_detection_tables():
                 print package_file.list_of_true_misses_sa1[item][node],
             print ""
         print "------------------------------"
+
+
+def report_config():
+    print "      Config File Report"
+    print "------------------------------"
+    print "Unit Under Test:", package_file.unit_under_test
+    print "number of checkers:", package_file.number_of_checkers
+    print "size max:", package_file.size_max
+    print "selection function:", package_file.cost_function_type
+    print "essential checker extraction:", package_file.extract_essential_checkers
+    if package_file.test_mode:
+        print "test mode: \033[91m ON\033[0m"
+    else:
+        print "test mode: \033[32m OFF\033[0m"
+    print "---------------------------------"

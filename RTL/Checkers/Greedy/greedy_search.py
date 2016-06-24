@@ -8,8 +8,9 @@ from area_coverage_calc import calculate_coverage
 from cost_function import calculate_coverage_cost, calculate_value_density
 import package_file
 from file_generator import make_folders
-from reports import report_detection_tables
+from reports import report_detection_tables, report_config
 from essential_checker_extraction import find_essential_checker
+from extract_dominant_true_detection import find_dominant_true_detect_checker
 import sys
 import logger
 from for_testing import gen_dummy_dict, initialize_LBDR
@@ -29,6 +30,7 @@ build_list_of_candidates()
 # Just for getting a copy of the current console
 sys.stdout = logger.Logger()
 
+report_config()
 
 print "\033[32m* NOTE::\033[0m starting greedy optimization!"
 
@@ -48,10 +50,12 @@ else:
     sorted_coverage = sorted(package_file.list_of_candidates.items(), key=lambda e: e[1][0], reverse=True)
 
 report_detection_tables()
-print "sorted list of checkers:", sorted_coverage
 
+if package_file.debug:
+    print "sorted list of checkers:", sorted_coverage
 
 if package_file.extract_essential_checkers:
+    find_dominant_true_detect_checker()
     current_list, checkers_for_optimization = copy.deepcopy(find_essential_checker())
 else:
     current_list = []
@@ -93,7 +97,10 @@ for item in sorted_coverage:
                 if coverage == 100:
                     print "100% coverage reached! ending the search!"
                     break
-
 print "------------------------------"
+report_config()
+
 print "\033[32m* NOTE::\033[0m best solution:", current_list
 print "\033[32m* NOTE::\033[0m coverage:", calculate_coverage(current_list)
+print "\033[32m* NOTE::\033[0m area:", calculate_area(current_list)
+
