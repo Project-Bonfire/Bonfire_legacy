@@ -166,7 +166,7 @@ def bound(excluded_items):
 
 
 def report_progress(progress_counter_value):
-    print "progress", float(progress_counter_value)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
+    # print "progress", float(progress_counter_value)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
     return None
 
 
