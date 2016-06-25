@@ -87,12 +87,22 @@ def branch(candidates_list, selected_list, excluded_list):
 
         if cost > best_cost:
             item_number = name_string_generator(current_selected_list)
+            print "\033[32m* NOTE::\033[0m found better solution with cost:", cost, "and area:", \
+                  package_file.list_of_candidates[item_number][1]
+            best_cost = cost
+            best_area = package_file.list_of_candidates[item_number][1]
+            best_solution = copy.deepcopy(current_selected_list)
+        if cost == best_cost:
+            item_number = name_string_generator(current_selected_list)
             if package_file.list_of_candidates[item_number][1] < best_area:
-                print "\033[32m* NOTE::\033[0m found better solution with cost:", cost, "and area:", \
-                    package_file.list_of_candidates[item_number][1]
+                item_number = name_string_generator(current_selected_list)
+                print "\033[32m* NOTE::\033[0m found better solution with same cost:", cost, "and better area:", \
+                      package_file.list_of_candidates[item_number][1]
                 best_cost = cost
                 best_area = package_file.list_of_candidates[item_number][1]
                 best_solution = copy.deepcopy(current_selected_list)
+
+
 
         if len(current_candidate_list) > 0:
             optimistic_value = bound(current_excluded_list)
@@ -120,8 +130,16 @@ def branch(candidates_list, selected_list, excluded_list):
     cost = calculate_cost(current_selected_list)
     if cost > best_cost:
         item_number = name_string_generator(current_selected_list)
+        print "\033[32m* NOTE::\033[0m found better solution with cost:", cost, "and area:", \
+                package_file.list_of_candidates[item_number][1]
+        best_cost = cost
+        best_area = package_file.list_of_candidates[item_number][1]
+        best_solution = copy.deepcopy(current_selected_list)
+
+    if cost == best_cost:
+        item_number = name_string_generator(current_selected_list)
         if package_file.list_of_candidates[item_number][1] < best_area:
-            print "\033[32m* NOTE::\033[0m found better solution with cost:", cost, "and area:", \
+            print "\033[32m* NOTE::\033[0m found better solution with same cost:", cost, "and better area:", \
                 package_file.list_of_candidates[item_number][1]
             best_cost = cost
             best_area = package_file.list_of_candidates[item_number][1]
