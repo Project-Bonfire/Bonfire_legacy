@@ -39,7 +39,10 @@ def report_detection_tables():
         for item in package_file.list_of_true_misses_sa0:
             print item,
             for node in range(0, len(package_file.list_of_true_misses_sa0[item])):
-                print package_file.list_of_true_misses_sa0[item][node],
+                if int(package_file.list_of_detection_info_sa0[str(item)][node]) == 0:
+                    print "ND",
+                else:
+                    print package_file.list_of_true_misses_sa0[item][node],
             print ""
 
         print "------------------------------"
@@ -48,7 +51,10 @@ def report_detection_tables():
         for item in package_file.list_of_true_misses_sa1:
             print item,
             for node in range(0, len(package_file.list_of_true_misses_sa1[item])):
-                print package_file.list_of_true_misses_sa1[item][node],
+                if int(package_file.list_of_detection_info_sa1[str(item)][node]) == 0:
+                    print "ND",
+                else:
+                    print package_file.list_of_true_misses_sa1[item][node],
             print ""
         print "------------------------------"
 
