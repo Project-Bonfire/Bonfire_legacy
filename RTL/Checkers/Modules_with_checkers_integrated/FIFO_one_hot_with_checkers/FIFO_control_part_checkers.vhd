@@ -25,18 +25,25 @@ entity FIFO_control_part_checkers is
             HS_state_in: in std_logic_vector(1 downto 0);         
 
             -- Checker outputs
-            err_FIFO_control_part_DRTS_CTS, err_FIFO_write_pointer_update: out std_logic;
-            err_FIFO_read_pointer_not_update, err_FIFO_write_pointer_not_update: out std_logic;
-            err_FIFO_full_empty, err_FIFO_empty, err_FIFO_empty1, err_FIFO_full: out std_logic;
-            err_FIFO_read_pointer_onehot, err_FIFO_write_pointer_onehot: out std_logic;
+            -- FIFO Control Part with dominant checkers and the ones that give in total 100% CEI and FC
+            err_FIFO_control_part_DRTS_CTS: out std_logic; 
+            err_FIFO_write_pointer_update: out std_logic;
+            err_FIFO_read_pointer_not_update: out std_logic; 
+            err_FIFO_write_pointer_not_update: out std_logic;
+            err_FIFO_full_empty: out std_logic;
+            err_FIFO_empty: out std_logic; 
+            err_FIFO_empty1: out std_logic;
+            err_FIFO_full: out std_logic;
+            err_FIFO_read_pointer_onehot: out std_logic; 
+            err_FIFO_write_pointer_onehot: out std_logic;
             err_FIFO_HS_state_onehot: out std_logic;
             err_FIFO_read_en_onehot: out std_logic; 
             err_FIFO_read_from_empty_FIFO: out std_logic; 
             err_FIFO_write_to_full_FIFO: out std_logic;
-            err_FIFO_control_part_CTS_in_CTS_out: out std_logic; 
-            err_FIFO_read_en_empty: out std_logic;
-            err_FIFO_read_en_empty1: out std_logic
+            err_FIFO_control_part_CTS_in_CTS_out: out std_logic;
+            err_FIFO_read_en_empty: out std_logic
             );
+
 end FIFO_control_part_checkers;
 
 architecture behavior of FIFO_control_part_checkers is
@@ -90,14 +97,6 @@ process(read_en_signals, empty_out, read_en_out) begin
 		err_FIFO_read_en_empty <= '1';
 	else 
 		err_FIFO_read_en_empty <= '0';
-	end if;
-end process;
-
-process(read_en_N, read_en_W, read_en_S, read_en_L, empty_out) begin
-	if ( (read_en_N = '1' or read_en_E = '1' or read_en_W = '1' or read_en_S = '1' or read_en_L = '1') and empty_out = '0' and read_en_out = '0' ) then
-		err_FIFO_read_en_empty1 <= '1';
-	else 
-		err_FIFO_read_en_empty1 <= '0';
 	end if;
 end process;
 

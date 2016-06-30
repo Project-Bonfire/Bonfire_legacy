@@ -21,10 +21,20 @@ entity LBDR is
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
             Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic; 
 
-            err_LBDR_Req_onehot, err_LBDR_Req_onehot1, err_LBDR_dst_addr_checker : out std_logic ;
-            err_LBDR_valid_flit_type, err_LBDR_valid_flit_type1, err_LBDR_valid_flit_type2, err_LBDR_valid_flit_type3, err_LBDR_valid_flit_type4, err_LBDR_valid_flit_type5 : out std_logic; 
-            err_LBDR_Req_tail_allzero, err_LBDR_Req_Local, err_LBDR_Req_Local1 : out std_logic
-            );
+            -- Checker outputs
+            -- LBDR with dominant checkers and the ones that give in total 100% CEI and FC
+            err_LBDR_Req_onehot :out std_logic; 
+            err_LBDR_Req_onehot1 :out std_logic;
+            err_LBDR_dst_addr_checker :out std_logic;
+            err_LBDR_valid_flit_type :out std_logic;
+            err_LBDR_valid_flit_type2 :out std_logic;
+            err_LBDR_valid_flit_type3 :out std_logic;
+            err_LBDR_valid_flit_type4 :out std_logic;
+            err_LBDR_valid_flit_type5 :out std_logic; 
+            err_LBDR_Req_tail_allzero :out std_logic;
+            err_LBDR_Req_Local :out std_logic;
+            err_LBDR_Req_Local1 :out std_logic
+           );
 end LBDR;
 
 architecture behavior of LBDR is
@@ -48,9 +58,18 @@ component LBDR_checkers is
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
 
             -- Checker outputs
-            err_LBDR_Req_onehot, err_LBDR_Req_onehot1, err_LBDR_dst_addr_checker : out std_logic ;
-            err_LBDR_valid_flit_type, err_LBDR_valid_flit_type1, err_LBDR_valid_flit_type2, err_LBDR_valid_flit_type3, err_LBDR_valid_flit_type4, err_LBDR_valid_flit_type5 : out std_logic; 
-            err_LBDR_Req_tail_allzero, err_LBDR_Req_Local, err_LBDR_Req_Local1 : out std_logic
+            -- LBDR with essential checkers and the ones that give in total 100% CEI and FC
+            err_LBDR_Req_onehot :out std_logic; 
+            err_LBDR_Req_onehot1 :out std_logic;
+            err_LBDR_dst_addr_checker :out std_logic;
+            err_LBDR_valid_flit_type :out std_logic;
+            err_LBDR_valid_flit_type2 :out std_logic;
+            err_LBDR_valid_flit_type3 :out std_logic;
+            err_LBDR_valid_flit_type4 :out std_logic;
+            err_LBDR_valid_flit_type5 :out std_logic; 
+            err_LBDR_Req_tail_allzero :out std_logic;
+            err_LBDR_Req_Local :out std_logic;
+            err_LBDR_Req_Local1 :out std_logic
             );
 end component;
 
@@ -84,14 +103,13 @@ LBDRCHECKERS: LBDR_checkers generic map (cur_addr_rst => cur_addr_rst, NoC_size 
                                       err_LBDR_Req_onehot1      => err_LBDR_Req_onehot1, 
                                       err_LBDR_dst_addr_checker => err_LBDR_dst_addr_checker, 
                                       err_LBDR_Req_tail_allzero => err_LBDR_Req_tail_allzero, 
-                                      err_LBDR_Req_Local        => err_LBDR_Req_Local, 
-                                      err_LBDR_Req_Local1       => err_LBDR_Req_Local1, 
                                       err_LBDR_valid_flit_type  => err_LBDR_valid_flit_type, 
-                                      err_LBDR_valid_flit_type1 => err_LBDR_valid_flit_type1,
                                       err_LBDR_valid_flit_type2 => err_LBDR_valid_flit_type2, 
                                       err_LBDR_valid_flit_type3 => err_LBDR_valid_flit_type3,
                                       err_LBDR_valid_flit_type4 => err_LBDR_valid_flit_type4,
-                                      err_LBDR_valid_flit_type5 => err_LBDR_valid_flit_type5
+                                      err_LBDR_valid_flit_type5 => err_LBDR_valid_flit_type5, 
+                                      err_LBDR_Req_Local        => err_LBDR_Req_Local, 
+                                      err_LBDR_Req_Local1       => err_LBDR_Req_Local1                                     
                                      );
 
 process(clk, reset)
@@ -127,12 +145,14 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
         Req_W_in <= ((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2);
         Req_S_in <= ((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3);
         Req_L_in <= not N1 and  not E1 and not W1 and not S1;
+
   elsif flit_type = "100" then
         Req_N_in <= '0';
         Req_E_in <= '0';
         Req_W_in <= '0';
         Req_S_in <= '0';
         Req_L_in <= '0';
+
   else
         Req_N_in <= Req_N_FF;
         Req_E_in <= Req_E_FF;

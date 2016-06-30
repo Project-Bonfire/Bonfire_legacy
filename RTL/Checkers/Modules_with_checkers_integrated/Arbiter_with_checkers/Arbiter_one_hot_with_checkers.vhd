@@ -16,26 +16,56 @@ entity Arbiter is
             RTS: out std_logic; -- Valid output which is sent to the next router/NI to specify that the data on the output port is valid
 
             -- Checker outputs
+            -- Arbiter with dominant checkers and the ones that give in total 100% CEI and FC            
             err_Arbiter_Xbar_sel_onehot: out std_logic;
---          err_Arbiter_no_req_Grant: out std_logic;
             err_Arbiter_DCTS_RTS: out std_logic; 
             err_Arbiter_DCTS_RTS1: out std_logic; 
             err_Arbiter_DCTS_RTS2: out std_logic; 
             err_Arbiter_DCTS_RTS3: out std_logic; 
             err_Arbiter_state_and_grants_onehot: out std_logic; 
+            err_Arbiter_state_and_grants_onehot1: out std_logic; 
             err_Arbiter_no_req_state_change: out std_logic; 
             err_Arbiter_valid_state: out std_logic;
-            Serr_switchgrantN, Serr_switchgrantE, Serr_switchgrantW, Serr_switchgrantS, Serr_switchgrantL: out std_logic;
-            err_Arbiter_state_update, err_Arbiter_state_RTS_FF_in: out std_logic; 
-            Serr_switchgrantN_not_active, Serr_switchgrantE_not_active, Serr_switchgrantW_not_active, Serr_switchgrantS_not_active, Serr_switchgrantL_not_active: out std_logic;
-            Serr_switchgrantN_not_active1, Serr_switchgrantE_not_active1, Serr_switchgrantW_not_active1, Serr_switchgrantS_not_active1, Serr_switchgrantL_not_active1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_IDLE, err_Arbiter_Xbar_sel_invalid_North, err_Arbiter_Xbar_sel_invalid_East, err_Arbiter_Xbar_sel_invalid_West, err_Arbiter_Xbar_sel_invalid_South, err_Arbiter_Xbar_sel_invalid_Local: out std_logic; --, err_Arbiter_Xbar_sel_invalid_Local: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_North1, err_Arbiter_Xbar_sel_invalid_East1, err_Arbiter_Xbar_sel_invalid_West1, err_Arbiter_Xbar_sel_invalid_South1, err_Arbiter_Xbar_sel_invalid_Local1: out std_logic;
-            Serr_priorityIDLE3, Serr_priorityL3, Serr_priorityN3, Serr_priorityE3, Serr_priorityW3, Serr_priorityS3: out std_logic;
-            Serr_switchgrantN1, Serr_switchgrantE1, Serr_switchgrantW1, Serr_switchgrantS1, Serr_switchgrantL1: out std_logic;
-            err_Arbiter_state_not_update: out std_logic; 
-            err_Arbiter_no_Grant: out std_logic
---          err_Arbiter_invalid_state: out std_logic -- , err_Arbiter_invalid_state1, err_Arbiter_invalid_state2, err_Arbiter_invalid_state3: out std_logic
+            err_Arbiter_switchgrantN: out std_logic;
+            err_Arbiter_switchgrantE: out std_logic;
+            err_Arbiter_switchgrantW: out std_logic;
+            err_Arbiter_switchgrantS: out std_logic;
+            err_Arbiter_switchgrantL: out std_logic;
+            err_Arbiter_state_update: out std_logic;
+            err_Arbiter_state_RTS_FF_in: out std_logic; 
+            err_Arbiter_switchgrantN_not_active: out std_logic;
+            err_Arbiter_switchgrantE_not_active: out std_logic;
+            err_Arbiter_switchgrantW_not_active: out std_logic;
+            err_Arbiter_switchgrantS_not_active: out std_logic;
+            err_Arbiter_switchgrantL_not_active: out std_logic;
+            err_Arbiter_switchgrantN_not_active1: out std_logic;
+            err_Arbiter_switchgrantE_not_active1: out std_logic;
+            err_Arbiter_switchgrantW_not_active1: out std_logic;
+            err_Arbiter_switchgrantS_not_active1: out std_logic;
+            err_Arbiter_switchgrantL_not_active1: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_IDLE: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_North: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_East: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_West: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_South: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_Local: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_North1: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_East1: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_West1: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_South1: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_Local1: out std_logic;
+            err_Arbiter_priorityIDLE3: out std_logic;
+            err_Arbiter_priorityL3: out std_logic;
+            err_Arbiter_priorityN3: out std_logic;
+            err_Arbiter_priorityE3: out std_logic;
+            err_Arbiter_priorityW3: out std_logic;
+            err_Arbiter_priorityS3: out std_logic;
+            err_Arbiter_switchgrantN1: out std_logic;
+            err_Arbiter_switchgrantE1: out std_logic;
+            err_Arbiter_switchgrantW1: out std_logic;
+            err_Arbiter_switchgrantS1: out std_logic;
+            err_Arbiter_switchgrantL1: out std_logic;
+            err_Arbiter_state_not_update: out std_logic
             );
 end;
 
@@ -96,26 +126,56 @@ component Arbiter_checkers is
             RTS_FF_in: in std_logic;
 
             -- Checker outputs
+            -- Arbiter with dominant checkers and the ones that give in total 100% CEI and FC            
             err_Arbiter_Xbar_sel_onehot: out std_logic;
---          err_Arbiter_no_req_Grant: out std_logic;
             err_Arbiter_DCTS_RTS: out std_logic; 
             err_Arbiter_DCTS_RTS1: out std_logic; 
             err_Arbiter_DCTS_RTS2: out std_logic; 
             err_Arbiter_DCTS_RTS3: out std_logic; 
             err_Arbiter_state_and_grants_onehot: out std_logic; 
+            err_Arbiter_state_and_grants_onehot1: out std_logic; 
             err_Arbiter_no_req_state_change: out std_logic; 
             err_Arbiter_valid_state: out std_logic;
-            Serr_switchgrantN, Serr_switchgrantE, Serr_switchgrantW, Serr_switchgrantS, Serr_switchgrantL: out std_logic;
-            err_Arbiter_state_update, err_Arbiter_state_RTS_FF_in: out std_logic; 
-            Serr_switchgrantN_not_active, Serr_switchgrantE_not_active, Serr_switchgrantW_not_active, Serr_switchgrantS_not_active, Serr_switchgrantL_not_active: out std_logic;
-            Serr_switchgrantN_not_active1, Serr_switchgrantE_not_active1, Serr_switchgrantW_not_active1, Serr_switchgrantS_not_active1, Serr_switchgrantL_not_active1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_IDLE, err_Arbiter_Xbar_sel_invalid_North, err_Arbiter_Xbar_sel_invalid_East, err_Arbiter_Xbar_sel_invalid_West, err_Arbiter_Xbar_sel_invalid_South, err_Arbiter_Xbar_sel_invalid_Local: out std_logic; --, err_Arbiter_Xbar_sel_invalid_Local: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_North1, err_Arbiter_Xbar_sel_invalid_East1, err_Arbiter_Xbar_sel_invalid_West1, err_Arbiter_Xbar_sel_invalid_South1, err_Arbiter_Xbar_sel_invalid_Local1: out std_logic;
-            Serr_priorityIDLE3, Serr_priorityL3, Serr_priorityN3, Serr_priorityE3, Serr_priorityW3, Serr_priorityS3: out std_logic;
-            Serr_switchgrantN1, Serr_switchgrantE1, Serr_switchgrantW1, Serr_switchgrantS1, Serr_switchgrantL1: out std_logic;
-            err_Arbiter_state_not_update: out std_logic; 
-            err_Arbiter_no_Grant: out std_logic
---          err_Arbiter_invalid_state: out std_logic -- , err_Arbiter_invalid_state1, err_Arbiter_invalid_state2, err_Arbiter_invalid_state3: out std_logic
+            err_Arbiter_switchgrantN: out std_logic;
+            err_Arbiter_switchgrantE: out std_logic;
+            err_Arbiter_switchgrantW: out std_logic;
+            err_Arbiter_switchgrantS: out std_logic;
+            err_Arbiter_switchgrantL: out std_logic;
+            err_Arbiter_state_update: out std_logic;
+            err_Arbiter_state_RTS_FF_in: out std_logic; 
+            err_Arbiter_switchgrantN_not_active: out std_logic;
+            err_Arbiter_switchgrantE_not_active: out std_logic;
+            err_Arbiter_switchgrantW_not_active: out std_logic;
+            err_Arbiter_switchgrantS_not_active: out std_logic;
+            err_Arbiter_switchgrantL_not_active: out std_logic;
+            err_Arbiter_switchgrantN_not_active1: out std_logic;
+            err_Arbiter_switchgrantE_not_active1: out std_logic;
+            err_Arbiter_switchgrantW_not_active1: out std_logic;
+            err_Arbiter_switchgrantS_not_active1: out std_logic;
+            err_Arbiter_switchgrantL_not_active1: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_IDLE: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_North: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_East: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_West: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_South: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_Local: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_North1: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_East1: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_West1: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_South1: out std_logic;
+            err_Arbiter_Xbar_sel_invalid_Local1: out std_logic;
+            err_Arbiter_priorityIDLE3: out std_logic;
+            err_Arbiter_priorityL3: out std_logic;
+            err_Arbiter_priorityN3: out std_logic;
+            err_Arbiter_priorityE3: out std_logic;
+            err_Arbiter_priorityW3: out std_logic;
+            err_Arbiter_priorityS3: out std_logic;
+            err_Arbiter_switchgrantN1: out std_logic;
+            err_Arbiter_switchgrantE1: out std_logic;
+            err_Arbiter_switchgrantW1: out std_logic;
+            err_Arbiter_switchgrantS1: out std_logic;
+            err_Arbiter_switchgrantL1: out std_logic;
+            err_Arbiter_state_not_update: out std_logic
             );
 end component;
 
@@ -127,10 +187,9 @@ ARBITERCHECKERS: Arbiter_checkers port map (
                                       Req_N => Req_N, 
                                       Req_E => Req_E, 
                                       Req_W => Req_W, 
-                                      Req_S=>Req_S, 
+                                      Req_S => Req_S, 
                                       Req_L => Req_L,
-                                      DCTS => DCTS, 
-                                      RTS_FF => RTS_FF,
+                                      DCTS => DCTS,                                       
                                       Grant_N => Grant_N_sig, 
                                       Grant_E => Grant_E_sig, 
                                       Grant_W => Grant_W_sig, 
@@ -140,34 +199,35 @@ ARBITERCHECKERS: Arbiter_checkers port map (
                                       state => state, 
                                       state_in => state_in,
                                       next_state_out => next_state,
+                                      RTS_FF => RTS_FF,
                                       RTS_FF_in => RTS_FF_in, 
 
                                       err_Arbiter_Xbar_sel_onehot => err_Arbiter_Xbar_sel_onehot, 
-                                      -- err_Arbiter_no_req_Grant => err_Arbiter_no_req_Grant, 
                                       err_Arbiter_DCTS_RTS => err_Arbiter_DCTS_RTS, 
                                       err_Arbiter_DCTS_RTS1 => err_Arbiter_DCTS_RTS1,
                                       err_Arbiter_DCTS_RTS2 => err_Arbiter_DCTS_RTS2,
                                       err_Arbiter_DCTS_RTS3 => err_Arbiter_DCTS_RTS3,
                                       err_Arbiter_state_and_grants_onehot => err_Arbiter_state_and_grants_onehot, 
+                                      err_Arbiter_state_and_grants_onehot1 => err_Arbiter_state_and_grants_onehot1, 
                                       err_Arbiter_no_req_state_change => err_Arbiter_no_req_state_change, 
                                       err_Arbiter_valid_state => err_Arbiter_valid_state, 
-                                      Serr_switchgrantN => Serr_switchgrantN, 
-                                      Serr_switchgrantE => Serr_switchgrantE,
-                                      Serr_switchgrantW => Serr_switchgrantW, 
-                                      Serr_switchgrantS => Serr_switchgrantS, 
-                                      Serr_switchgrantL => Serr_switchgrantL, 
+                                      err_Arbiter_switchgrantN => err_Arbiter_switchgrantN, 
+                                      err_Arbiter_switchgrantE => err_Arbiter_switchgrantE,
+                                      err_Arbiter_switchgrantW => err_Arbiter_switchgrantW, 
+                                      err_Arbiter_switchgrantS => err_Arbiter_switchgrantS, 
+                                      err_Arbiter_switchgrantL => err_Arbiter_switchgrantL, 
                                       err_Arbiter_state_update => err_Arbiter_state_update, 
                                       err_Arbiter_state_RTS_FF_in => err_Arbiter_state_RTS_FF_in, 
-                                      Serr_switchgrantN_not_active => Serr_switchgrantN_not_active,
-                                      Serr_switchgrantN_not_active1 => Serr_switchgrantN_not_active1,
-                                      Serr_switchgrantE_not_active => Serr_switchgrantE_not_active, 
-                                      Serr_switchgrantE_not_active1 => Serr_switchgrantE_not_active1, 
-                                      Serr_switchgrantW_not_active => Serr_switchgrantW_not_active, 
-                                      Serr_switchgrantW_not_active1 => Serr_switchgrantW_not_active1, 
-                                      Serr_switchgrantS_not_active => Serr_switchgrantS_not_active, 
-                                      Serr_switchgrantS_not_active1 => Serr_switchgrantS_not_active1, 
-                                      Serr_switchgrantL_not_active => Serr_switchgrantL_not_active, 
-                                      Serr_switchgrantL_not_active1 => Serr_switchgrantL_not_active1, 
+                                      err_Arbiter_switchgrantN_not_active => err_Arbiter_switchgrantN_not_active,
+                                      err_Arbiter_switchgrantN_not_active1 => err_Arbiter_switchgrantN_not_active1,
+                                      err_Arbiter_switchgrantE_not_active => err_Arbiter_switchgrantE_not_active, 
+                                      err_Arbiter_switchgrantE_not_active1 => err_Arbiter_switchgrantE_not_active1, 
+                                      err_Arbiter_switchgrantW_not_active => err_Arbiter_switchgrantW_not_active, 
+                                      err_Arbiter_switchgrantW_not_active1 => err_Arbiter_switchgrantW_not_active1, 
+                                      err_Arbiter_switchgrantS_not_active => err_Arbiter_switchgrantS_not_active, 
+                                      err_Arbiter_switchgrantS_not_active1 => err_Arbiter_switchgrantS_not_active1, 
+                                      err_Arbiter_switchgrantL_not_active => err_Arbiter_switchgrantL_not_active, 
+                                      err_Arbiter_switchgrantL_not_active1 => err_Arbiter_switchgrantL_not_active1, 
                                       err_Arbiter_Xbar_sel_invalid_IDLE => err_Arbiter_Xbar_sel_invalid_IDLE,
                                       err_Arbiter_Xbar_sel_invalid_North => err_Arbiter_Xbar_sel_invalid_North, 
                                       err_Arbiter_Xbar_sel_invalid_North1 => err_Arbiter_Xbar_sel_invalid_North1,
@@ -179,23 +239,18 @@ ARBITERCHECKERS: Arbiter_checkers port map (
                                       err_Arbiter_Xbar_sel_invalid_South1 => err_Arbiter_Xbar_sel_invalid_South1, 
                                       err_Arbiter_Xbar_sel_invalid_Local => err_Arbiter_Xbar_sel_invalid_Local, 
                                       err_Arbiter_Xbar_sel_invalid_Local1 => err_Arbiter_Xbar_sel_invalid_Local1, 
-                                      Serr_priorityIDLE3 => Serr_priorityIDLE3, 
-                                      Serr_priorityL3 => Serr_priorityL3, 
-                                      Serr_priorityN3 => Serr_priorityN3, 
-                                      Serr_priorityE3 => Serr_priorityE3, 
-                                      Serr_priorityW3 => Serr_priorityW3, 
-                                      Serr_priorityS3 => Serr_priorityS3, 
-                                      Serr_switchgrantN1 => Serr_switchgrantN1,
-                                      Serr_switchgrantE1 => Serr_switchgrantE1,
-                                      Serr_switchgrantW1 => Serr_switchgrantW1,
-                                      Serr_switchgrantS1 => Serr_switchgrantS1,
-                                      Serr_switchgrantL1 => Serr_switchgrantL1,
-                                      err_Arbiter_state_not_update => err_Arbiter_state_not_update, 
-                                      err_Arbiter_no_Grant => err_Arbiter_no_Grant
-                                      --err_Arbiter_invalid_state => err_Arbiter_invalid_state, 
-                                      --err_Arbiter_invalid_state1 => err_Arbiter_invalid_state1,
-                                      --err_Arbiter_invalid_state2 => err_Arbiter_invalid_state2, 
-                                      --err_Arbiter_invalid_state3 => err_Arbiter_invalid_state3
+                                      err_Arbiter_priorityIDLE3 => err_Arbiter_priorityIDLE3, 
+                                      err_Arbiter_priorityL3 => err_Arbiter_priorityL3, 
+                                      err_Arbiter_priorityN3 => err_Arbiter_priorityN3, 
+                                      err_Arbiter_priorityE3 => err_Arbiter_priorityE3, 
+                                      err_Arbiter_priorityW3 => err_Arbiter_priorityW3, 
+                                      err_Arbiter_priorityS3 => err_Arbiter_priorityS3, 
+                                      err_Arbiter_switchgrantN1 => err_Arbiter_switchgrantN1,
+                                      err_Arbiter_switchgrantE1 => err_Arbiter_switchgrantE1,
+                                      err_Arbiter_switchgrantW1 => err_Arbiter_switchgrantW1,
+                                      err_Arbiter_switchgrantS1 => err_Arbiter_switchgrantS1,
+                                      err_Arbiter_switchgrantL1 => err_Arbiter_switchgrantL1,
+                                      err_Arbiter_state_not_update => err_Arbiter_state_not_update
                                      );
 
 
@@ -215,6 +270,14 @@ ARBITERCHECKERS: Arbiter_checkers port map (
 -- anything below here is pure combinational
 
 RTS <= RTS_FF;
+
+-- Becuase of checkers we did this!
+Grant_N <= Grant_N_sig;
+Grant_E <= Grant_E_sig;
+Grant_W <= Grant_W_sig;
+Grant_S <= Grant_S_sig;
+Grant_L <= Grant_L_sig;
+Xbar_sel <= Xbar_sel_sig;
 
 process(RTS_FF, DCTS, state, next_state)begin
     if RTS_FF = '1' and DCTS = '0' then 
@@ -242,15 +305,15 @@ end process;
 -- sets the grants using round robin 
 -- the order is   L --> N --> E --> W --> S  and then back to L
 process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
-    Grant_N <= '0';
-    Grant_E <= '0';
-    Grant_W <= '0';
-    Grant_S <= '0';
-    Grant_L <= '0';
-    Xbar_sel<= "00000"; 
+    Grant_N_sig <= '0';
+    Grant_E_sig <= '0';
+    Grant_W_sig <= '0';
+    Grant_S_sig <= '0';
+    Grant_L_sig <= '0';
+    Xbar_sel_sig <= "00000"; 
     case(state) is
         when IDLE =>
-            Xbar_sel<= "00000"; 
+            Xbar_sel_sig <= "00000"; 
             
             If Req_L = '1' then
                 next_state <= Local;
@@ -267,8 +330,8 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             end if;    
             
         when North =>
-            Grant_N <= DCTS and RTS_FF ;
-            Xbar_sel<= "00001";
+            Grant_N_sig <= DCTS and RTS_FF ;
+            Xbar_sel_sig <= "00001";
             
             If Req_N = '1' then 
                 next_state <= North; 
@@ -285,8 +348,8 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             end if;
                     
         when East =>
-            Grant_E <= DCTS and RTS_FF;
-            Xbar_sel<= "00010";
+            Grant_E_sig <= DCTS and RTS_FF;
+            Xbar_sel_sig <= "00010";
             
             If Req_E = '1' then 
                 next_state <= East; 
@@ -303,8 +366,8 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             end if;
             
         when West =>
-            Grant_W <= DCTS and RTS_FF;
-            Xbar_sel<= "00100";
+            Grant_W_sig <= DCTS and RTS_FF;
+            Xbar_sel_sig <= "00100";
             
             If Req_W = '1' then
                 next_state <= West; 
@@ -321,8 +384,8 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             end if;
             
         when South =>
-            Grant_S <= DCTS and RTS_FF;
-            Xbar_sel<= "01000";
+            Grant_S_sig <= DCTS and RTS_FF;
+            Xbar_sel_sig <= "01000";
             
             If Req_S = '1' then 
                 next_state <= South; 
@@ -339,8 +402,8 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             end if;
             
         when others => -- Local
-            Grant_L <= DCTS and RTS_FF;
-            Xbar_sel<= "10000";
+            Grant_L_sig <= DCTS and RTS_FF;
+            Xbar_sel_sig <= "10000";
             
             If Req_L = '1' then
                 next_state <= Local; 
