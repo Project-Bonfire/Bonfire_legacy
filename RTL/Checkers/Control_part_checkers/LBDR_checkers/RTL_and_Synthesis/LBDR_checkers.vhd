@@ -17,9 +17,17 @@ entity LBDR_checkers is
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
 
             -- Checker outputs
-            err_LBDR_Req_onehot, err_LBDR_Req_onehot1, err_LBDR_dst_addr_checker : out std_logic ;
-            err_LBDR_valid_flit_type, err_LBDR_valid_flit_type1, err_LBDR_valid_flit_type2, err_LBDR_valid_flit_type3, err_LBDR_valid_flit_type4, err_LBDR_valid_flit_type5 : out std_logic; 
-            err_LBDR_Req_tail_allzero, err_LBDR_Req_Local, err_LBDR_Req_Local1 : out std_logic
+            err_LBDR_Req_onehot :out std_logic; 
+            err_LBDR_Req_onehot1 :out std_logic;
+            err_LBDR_dst_addr_checker :out std_logic;
+            err_LBDR_valid_flit_type :out std_logic;
+            err_LBDR_valid_flit_type2 :out std_logic;
+            err_LBDR_valid_flit_type3 :out std_logic;
+            err_LBDR_valid_flit_type4 :out std_logic;
+            err_LBDR_valid_flit_type5 :out std_logic; 
+            err_LBDR_Req_tail_allzero :out std_logic;
+            err_LBDR_Req_Local :out std_logic;
+            err_LBDR_Req_Local1 :out std_logic
             );
 end LBDR_checkers;
 
@@ -48,8 +56,8 @@ end if;
 end process;
 
 -- Body flit
-process(flit_type, Requests)begin
-if (flit_type = "010" and Requests /= "10000" and Requests /= "01000" and Requests /= "00100" and Requests /= "00010" and Requests /= "00001") then
+process(flit_type, Requests) begin
+if (flit_type = "010" and Requests /= "00000" and Requests /= "10000" and Requests /= "01000" and Requests /= "00100" and Requests /= "00010" and Requests /= "00001") then
     err_LBDR_Req_onehot1 <= '1';
 else
     err_LBDR_Req_onehot1 <= '0';
@@ -57,7 +65,7 @@ end if;
 end process;
 
 -- For tail flit, all output requests of LBDR must be zero!
-process(flit_type, Requests)begin
+process(flit_type, Requests) begin
     if (flit_type = "100" and Requests /= "00000" ) then
         err_LBDR_Req_tail_allzero <= '1';
     else 
@@ -70,7 +78,7 @@ end process;
 process (empty, flit_type, dst_addr, cur_addr, Req_N_in, Req_E_in, Req_W_in, Req_S_in)
 begin
     -- North-East
-    if (empty = '0' and flit_type = "001" and    (dst_addr(NoC_size-1 downto NoC_size/2) < cur_addr(NoC_size-1 downto NoC_size/2)) and (cur_addr((NoC_size/2)-1 downto 0) < dst_addr((NoC_size/2)-1 downto 0)) and Req_E_in = '0') then 
+    if (empty = '0' and flit_type = "001" and (dst_addr(NoC_size-1 downto NoC_size/2) < cur_addr(NoC_size-1 downto NoC_size/2)) and (cur_addr((NoC_size/2)-1 downto 0) < dst_addr((NoC_size/2)-1 downto 0)) and Req_E_in = '0') then 
         err_LBDR_dst_addr_checker <= '1';
 
     -- North-West
@@ -126,21 +134,12 @@ begin
     end if;
 end process;
 
-process (empty, flit_type, Requests)
+process (flit_type, Requests)
 begin
     if ( (Requests = "00001" or Requests = "00010" or Requests = "00100" or Requests = "01000" or Requests = "10000") and flit_type /= "001" and flit_type /= "010") then
         err_LBDR_valid_flit_type <= '1';
     else 
         err_LBDR_valid_flit_type <= '0';
-    end if;
-end process;
-
-process (flit_type, Requests)
-begin
-    if ( Requests = "00000" and flit_type /= "100") then
-        err_LBDR_valid_flit_type1 <= '1';
-    else 
-        err_LBDR_valid_flit_type1 <= '0';
     end if;
 end process;
 
@@ -171,7 +170,7 @@ begin
     end if;
 end process;
 
-process (empty, flit_type, Requests)
+process (empty, flit_type, Requests, Requests_FF)
 begin
     if ( ( (empty = '1' and flit_type /= "001") or flit_type = "010") and Requests /= Requests_FF) then
         err_LBDR_valid_flit_type5 <= '1';

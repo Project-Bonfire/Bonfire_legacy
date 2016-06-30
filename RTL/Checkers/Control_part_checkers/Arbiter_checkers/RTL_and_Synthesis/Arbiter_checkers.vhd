@@ -18,8 +18,8 @@ entity Arbiter_checkers is
             RTS_FF_in: in std_logic;
 
             -- Checker outputs
+            -- Arbiter with essential checkers and the ones that give in total 100% CEI and FC            
             err_Arbiter_Xbar_sel_onehot: out std_logic;
-            err_Arbiter_no_req_Grant: out std_logic;
             err_Arbiter_DCTS_RTS: out std_logic; 
             err_Arbiter_DCTS_RTS1: out std_logic; 
             err_Arbiter_DCTS_RTS2: out std_logic; 
@@ -67,12 +67,7 @@ entity Arbiter_checkers is
             err_Arbiter_switchgrantW1: out std_logic;
             err_Arbiter_switchgrantS1: out std_logic;
             err_Arbiter_switchgrantL1: out std_logic;
-            err_Arbiter_state_not_update: out std_logic;
-            err_Arbiter_no_Grant: out std_logic
-            --err_Arbiter_invalid_state: out std_logic;
-            --err_Arbiter_invalid_state1: out std_logic
-            --err_Arbiter_invalid_state2: out std_logic;
-            --err_Arbiter_invalid_state3: out std_logic
+            err_Arbiter_state_not_update: out std_logic
             );
 end Arbiter_checkers;
 
@@ -91,7 +86,6 @@ begin
 
 -- Arbiter select lines for Crossbar Switch must be one-hot!  
 process(Xbar_sel) begin
---	if (DCTS = '1' and RTS_FF = '1' and (Req_N = '1' or Req_E = '1' or Req_W = '1' or Req_L = '1') and Xbar_sel /= "0001" and Xbar_sel /= "0010" and Xbar_sel /= "0100" and Xbar_sel /= "1000" ) then
 	if (Xbar_sel /= "00000" and Xbar_sel /= "00001" and Xbar_sel /= "00010" and Xbar_sel /= "00100" and Xbar_sel /= "01000" and Xbar_sel /= "10000") then
 		err_Arbiter_Xbar_sel_onehot <= '1';		
 	else
@@ -99,14 +93,6 @@ process(Xbar_sel) begin
 	end if;
 end process;
 
--- If there is no request for arbitration and the next router/NI is also not ready to receive any flits, the arbiter must not active any Grant signals in its output!
-process(Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF_in, Grant_N, Grant_E, Grant_W, Grant_S, Grant_L) begin
-	if ( (Req_N = '0' and Req_E = '0' and Req_W = '0' and Req_S = '0' and Req_L = '0') and (Grant_N = '1' or Grant_E = '1' or Grant_W = '1' or Grant_S = '1' or Grant_L = '1') ) then
-		err_Arbiter_no_req_Grant <= '1';
-	else 
-		err_Arbiter_no_req_Grant <= '0';
-	end if;	
-end process;
 
 process(state, RTS_FF, DCTS, RTS_FF_in) begin
 	if ( (state = North or state = East or state = West or state = South or state = Local) and  RTS_FF = '1' and DCTS = '1' and RTS_FF_in = '1') then
@@ -500,47 +486,5 @@ process (RTS_FF, DCTS, next_state_out, state_in) begin
    		err_Arbiter_state_not_update <= '0';
    	end if;
 end process;
-
-process(state, RTS_FF, DCTS, Grant_N, Grant_E, Grant_W, Grant_S, Grant_L) begin
-	if (state /= IDLE and RTS_FF = '1' and DCTS = '1' and Grant_N = '0' and Grant_E = '0' and Grant_W = '0' and Grant_S = '0' and Grant_L = '0') then
-		err_Arbiter_no_Grant <= '1';
-	else 
-		err_Arbiter_no_Grant <= '0';
-	end if;
-end process;
-
---process(state, Grant_N, Grant_E, Grant_W, Grant_L) begin
---	if (state /= IDLE and state /= North and state /= East and state /= West and state /= South and state /= Local and 
---		(Grant_N = '1' or Grant_E = '1' or Grant_W = '1' or Grant_L = '1') ) then
---		err_Arbiter_invalid_state <= '1';
---	else 
---		err_Arbiter_invalid_state <= '0';
---	end if;
---end process;
-
---process(state, Xbar_sel) begin
---	if (state /= IDLE and state /= North and state /= East and state /= West and state /= South and state /= Local and 
---		(Xbar_sel /= "0000") ) then
---		err_Arbiter_invalid_state1 <= '1';
---	else 
---		err_Arbiter_invalid_state1 <= '0';
---	end if;
---end process;
-
---process(state, next_state_out) begin
---	if (state /= IDLE and state /= North and state /= East and state /= West and state /= Local and next_state_out /= IDLE) then
---		err_Arbiter_invalid_state2 <= '1';
---	else 
---		err_Arbiter_invalid_state2 <= '0';
---	end if;
---end process;
-
---process(state, RTS_FF, DCTS, state_in) begin
---	if (state /= IDLE and state /= North and state /= East and state /= West and state /= Local and (RTS_FF = '0' or DCTS = '1') and state_in /= IDLE) then
---		err_Arbiter_invalid_state3 <= '1';
---	else 
---		err_Arbiter_invalid_state3 <= '0';
---	end if;
---end process;
 
 end behavior;

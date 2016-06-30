@@ -20,7 +20,6 @@ entity Arbiter_with_checkers_top is
 
             -- Checker outputs
             err_Arbiter_Xbar_sel_onehot: out std_logic;
-            err_Arbiter_no_req_Grant: out std_logic;
             err_Arbiter_DCTS_RTS: out std_logic; 
             err_Arbiter_DCTS_RTS1: out std_logic; 
             err_Arbiter_DCTS_RTS2: out std_logic; 
@@ -68,12 +67,7 @@ entity Arbiter_with_checkers_top is
             err_Arbiter_switchgrantW1: out std_logic;
             err_Arbiter_switchgrantS1: out std_logic;
             err_Arbiter_switchgrantL1: out std_logic;
-            err_Arbiter_state_not_update: out std_logic;
-            err_Arbiter_no_Grant: out std_logic
-            --err_Arbiter_invalid_state: out std_logic;
-            --err_Arbiter_invalid_state1: out std_logic
-            --err_Arbiter_invalid_state2: out std_logic;
-            --err_Arbiter_invalid_state3: out std_logic
+            err_Arbiter_state_not_update: out std_logic
           );
 end Arbiter_with_checkers_top;
 
@@ -108,7 +102,6 @@ component Arbiter_checkers is
 
             -- Checker outputs
             err_Arbiter_Xbar_sel_onehot: out std_logic;
-            err_Arbiter_no_req_Grant: out std_logic;
             err_Arbiter_DCTS_RTS: out std_logic; 
             err_Arbiter_DCTS_RTS1: out std_logic; 
             err_Arbiter_DCTS_RTS2: out std_logic; 
@@ -156,12 +149,7 @@ component Arbiter_checkers is
             err_Arbiter_switchgrantW1: out std_logic;
             err_Arbiter_switchgrantS1: out std_logic;
             err_Arbiter_switchgrantL1: out std_logic;
-            err_Arbiter_state_not_update: out std_logic;
-            err_Arbiter_no_Grant: out std_logic
-            --err_Arbiter_invalid_state: out std_logic;
-            --err_Arbiter_invalid_state1: out std_logic
-            --err_Arbiter_invalid_state2: out std_logic;
-            --err_Arbiter_invalid_state3: out std_logic
+            err_Arbiter_state_not_update: out std_logic
             );
 end component;
 
@@ -226,61 +214,55 @@ CHECKERS: Arbiter_checkers port map (
                                       next_state_out => next_state_out_sig,
                                       RTS_FF_in => RTS_FF_in_sig, 
 
-                                      err_Arbiter_Xbar_sel_onehot => err_Arbiter_Xbar_sel_onehot, 
-                                      err_Arbiter_no_req_Grant => err_Arbiter_no_req_Grant, 
-                                      err_Arbiter_DCTS_RTS => err_Arbiter_DCTS_RTS, 
-                                      err_Arbiter_DCTS_RTS1 => err_Arbiter_DCTS_RTS1,
-                                      err_Arbiter_DCTS_RTS2 => err_Arbiter_DCTS_RTS2,
-                                      err_Arbiter_DCTS_RTS3 => err_Arbiter_DCTS_RTS3,
-                                      err_Arbiter_state_and_grants_onehot => err_Arbiter_state_and_grants_onehot, 
-                                      err_Arbiter_state_and_grants_onehot1 => err_Arbiter_state_and_grants_onehot1, 
-                                      err_Arbiter_no_req_state_change => err_Arbiter_no_req_state_change, 
-                                      err_Arbiter_valid_state => err_Arbiter_valid_state, 
-                                      err_Arbiter_switchgrantN => err_Arbiter_switchgrantN, 
-                                      err_Arbiter_switchgrantE => err_Arbiter_switchgrantE,
-                                      err_Arbiter_switchgrantW => err_Arbiter_switchgrantW, 
-                                      err_Arbiter_switchgrantS => err_Arbiter_switchgrantS, 
-                                      err_Arbiter_switchgrantL => err_Arbiter_switchgrantL, 
-                                      err_Arbiter_state_update => err_Arbiter_state_update, 
-                                      err_Arbiter_state_RTS_FF_in => err_Arbiter_state_RTS_FF_in, 
-                                      err_Arbiter_switchgrantN_not_active =>  err_Arbiter_switchgrantN_not_active,
-                                      err_Arbiter_switchgrantN_not_active1 => err_Arbiter_switchgrantN_not_active1,
-                                      err_Arbiter_switchgrantE_not_active =>  err_Arbiter_switchgrantE_not_active, 
-                                      err_Arbiter_switchgrantE_not_active1 => err_Arbiter_switchgrantE_not_active1, 
-                                      err_Arbiter_switchgrantW_not_active =>  err_Arbiter_switchgrantW_not_active, 
-                                      err_Arbiter_switchgrantW_not_active1 => err_Arbiter_switchgrantW_not_active1, 
-                                      err_Arbiter_switchgrantS_not_active =>  err_Arbiter_switchgrantS_not_active, 
-                                      err_Arbiter_switchgrantS_not_active1 => err_Arbiter_switchgrantS_not_active1, 
-                                      err_Arbiter_switchgrantL_not_active =>  err_Arbiter_switchgrantL_not_active, 
-                                      err_Arbiter_switchgrantL_not_active1 => err_Arbiter_switchgrantL_not_active1, 
-                                      err_Arbiter_Xbar_sel_invalid_IDLE => err_Arbiter_Xbar_sel_invalid_IDLE,
-                                      err_Arbiter_Xbar_sel_invalid_North => err_Arbiter_Xbar_sel_invalid_North, 
-                                      err_Arbiter_Xbar_sel_invalid_North1 => err_Arbiter_Xbar_sel_invalid_North1,
-                                      err_Arbiter_Xbar_sel_invalid_East => err_Arbiter_Xbar_sel_invalid_East,
-                                      err_Arbiter_Xbar_sel_invalid_East1 => err_Arbiter_Xbar_sel_invalid_East1,                                       
-                                      err_Arbiter_Xbar_sel_invalid_West => err_Arbiter_Xbar_sel_invalid_West, 
-                                      err_Arbiter_Xbar_sel_invalid_West1 => err_Arbiter_Xbar_sel_invalid_West1,
-                                      err_Arbiter_Xbar_sel_invalid_South => err_Arbiter_Xbar_sel_invalid_South, 
-                                      err_Arbiter_Xbar_sel_invalid_South1 => err_Arbiter_Xbar_sel_invalid_South1, 
-                                      err_Arbiter_Xbar_sel_invalid_Local => err_Arbiter_Xbar_sel_invalid_Local, 
-                                      err_Arbiter_Xbar_sel_invalid_Local1 => err_Arbiter_Xbar_sel_invalid_Local1, 
-                                      err_Arbiter_priorityIDLE3 => err_Arbiter_priorityIDLE3, 
-                                      err_Arbiter_priorityL3 => err_Arbiter_priorityL3, 
-                                      err_Arbiter_priorityN3 => err_Arbiter_priorityN3, 
-                                      err_Arbiter_priorityE3 => err_Arbiter_priorityE3, 
-                                      err_Arbiter_priorityW3 => err_Arbiter_priorityW3, 
-                                      err_Arbiter_priorityS3 => err_Arbiter_priorityS3, 
-                                      err_Arbiter_switchgrantN1 => err_Arbiter_switchgrantN1,
-                                      err_Arbiter_switchgrantE1 => err_Arbiter_switchgrantE1,
-                                      err_Arbiter_switchgrantW1 => err_Arbiter_switchgrantW1,
-                                      err_Arbiter_switchgrantS1 => err_Arbiter_switchgrantS1,
-                                      err_Arbiter_switchgrantL1 => err_Arbiter_switchgrantL1,
-                                      err_Arbiter_state_not_update => err_Arbiter_state_not_update,
-                                      err_Arbiter_no_Grant => err_Arbiter_no_Grant
-                                      --err_Arbiter_invalid_state => err_Arbiter_invalid_state, 
-                                      --err_Arbiter_invalid_state1 => err_Arbiter_invalid_state1
-                                      --err_Arbiter_invalid_state2 => err_Arbiter_invalid_state2, 
-                                      --err_Arbiter_invalid_state3 => err_Arbiter_invalid_state3
+                                      err_Arbiter_Xbar_sel_onehot =>           err_Arbiter_Xbar_sel_onehot,
+                                      err_Arbiter_DCTS_RTS =>                  err_Arbiter_DCTS_RTS,
+                                      err_Arbiter_DCTS_RTS1 =>                 err_Arbiter_DCTS_RTS1,
+                                      err_Arbiter_DCTS_RTS2 =>                 err_Arbiter_DCTS_RTS2,
+                                      err_Arbiter_DCTS_RTS3 =>                 err_Arbiter_DCTS_RTS3,
+                                      err_Arbiter_state_and_grants_onehot =>   err_Arbiter_state_and_grants_onehot,
+                                      err_Arbiter_state_and_grants_onehot1 =>  err_Arbiter_state_and_grants_onehot1,
+                                      err_Arbiter_no_req_state_change =>       err_Arbiter_no_req_state_change,
+                                      err_Arbiter_valid_state =>               err_Arbiter_valid_state,
+                                      err_Arbiter_switchgrantN =>              err_Arbiter_switchgrantN,
+                                      err_Arbiter_switchgrantE =>              err_Arbiter_switchgrantE,
+                                      err_Arbiter_switchgrantW =>              err_Arbiter_switchgrantW,
+                                      err_Arbiter_switchgrantS =>              err_Arbiter_switchgrantS,
+                                      err_Arbiter_switchgrantL =>              err_Arbiter_switchgrantL,
+                                      err_Arbiter_state_update =>              err_Arbiter_state_update,
+                                      err_Arbiter_state_RTS_FF_in =>           err_Arbiter_state_RTS_FF_in,
+                                      err_Arbiter_switchgrantN_not_active =>   err_Arbiter_switchgrantN_not_active,
+                                      err_Arbiter_switchgrantE_not_active =>   err_Arbiter_switchgrantE_not_active,
+                                      err_Arbiter_switchgrantW_not_active =>   err_Arbiter_switchgrantW_not_active,
+                                      err_Arbiter_switchgrantS_not_active =>   err_Arbiter_switchgrantS_not_active,
+                                      err_Arbiter_switchgrantL_not_active =>   err_Arbiter_switchgrantL_not_active,
+                                      err_Arbiter_switchgrantN_not_active1 =>  err_Arbiter_switchgrantN_not_active1,
+                                      err_Arbiter_switchgrantE_not_active1 =>  err_Arbiter_switchgrantE_not_active1,
+                                      err_Arbiter_switchgrantW_not_active1 =>  err_Arbiter_switchgrantW_not_active1,
+                                      err_Arbiter_switchgrantS_not_active1 =>  err_Arbiter_switchgrantS_not_active1,
+                                      err_Arbiter_switchgrantL_not_active1 =>  err_Arbiter_switchgrantL_not_active1,
+                                      err_Arbiter_Xbar_sel_invalid_IDLE =>     err_Arbiter_Xbar_sel_invalid_IDLE,
+                                      err_Arbiter_Xbar_sel_invalid_North =>    err_Arbiter_Xbar_sel_invalid_North,
+                                      err_Arbiter_Xbar_sel_invalid_East =>     err_Arbiter_Xbar_sel_invalid_East,
+                                      err_Arbiter_Xbar_sel_invalid_West =>     err_Arbiter_Xbar_sel_invalid_West,
+                                      err_Arbiter_Xbar_sel_invalid_South =>    err_Arbiter_Xbar_sel_invalid_South,
+                                      err_Arbiter_Xbar_sel_invalid_Local =>    err_Arbiter_Xbar_sel_invalid_Local,
+                                      err_Arbiter_Xbar_sel_invalid_North1 =>   err_Arbiter_Xbar_sel_invalid_North1,
+                                      err_Arbiter_Xbar_sel_invalid_East1 =>    err_Arbiter_Xbar_sel_invalid_East1,
+                                      err_Arbiter_Xbar_sel_invalid_West1 =>    err_Arbiter_Xbar_sel_invalid_West1,
+                                      err_Arbiter_Xbar_sel_invalid_South1 =>   err_Arbiter_Xbar_sel_invalid_South1,
+                                      err_Arbiter_Xbar_sel_invalid_Local1 =>   err_Arbiter_Xbar_sel_invalid_Local1,
+                                      err_Arbiter_priorityIDLE3 =>             err_Arbiter_priorityIDLE3,
+                                      err_Arbiter_priorityL3 =>                err_Arbiter_priorityL3,
+                                      err_Arbiter_priorityN3 =>                err_Arbiter_priorityN3,
+                                      err_Arbiter_priorityE3 =>                err_Arbiter_priorityE3,
+                                      err_Arbiter_priorityW3 =>                err_Arbiter_priorityW3,
+                                      err_Arbiter_priorityS3 =>                err_Arbiter_priorityS3,
+                                      err_Arbiter_switchgrantN1 =>             err_Arbiter_switchgrantN1,
+                                      err_Arbiter_switchgrantE1 =>             err_Arbiter_switchgrantE1,
+                                      err_Arbiter_switchgrantW1 =>             err_Arbiter_switchgrantW1,
+                                      err_Arbiter_switchgrantS1 =>             err_Arbiter_switchgrantS1,
+                                      err_Arbiter_switchgrantL1 =>             err_Arbiter_switchgrantL1,
+                                      err_Arbiter_state_not_update =>          err_Arbiter_state_not_update
                                      );
 
 end behavior;
