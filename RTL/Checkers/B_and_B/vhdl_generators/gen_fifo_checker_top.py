@@ -70,8 +70,6 @@ def gen_fifo_checker_top(checker_id):
         string_to_write += "err_FIFO_control_part_CTS_in_CTS_out,"
     if '16' in checker_id:
         string_to_write += "err_FIFO_read_en_empty,"
-    if '17' in checker_id:
-        string_to_write += "err_FIFO_read_en_empty1,"
 
     string_to_write = string_to_write[:len(string_to_write)-1]
     string_to_write += " : out std_logic\n"
@@ -159,8 +157,6 @@ def gen_fifo_checker_top(checker_id):
         string_to_write += "err_FIFO_control_part_CTS_in_CTS_out,"
     if '16' in checker_id:
         string_to_write += "err_FIFO_read_en_empty,"
-    if '17' in checker_id:
-        string_to_write += "err_FIFO_read_en_empty1,"
 
     string_to_write = string_to_write[:len(string_to_write)-1]
     string_to_write += " : out std_logic\n"
@@ -240,8 +236,6 @@ def gen_fifo_checker_top(checker_id):
         string_to_write += "err_FIFO_control_part_CTS_in_CTS_out => err_FIFO_control_part_CTS_in_CTS_out,"
     if '16' in checker_id:
         string_to_write += "err_FIFO_read_en_empty => err_FIFO_read_en_empty,"
-    if '17' in checker_id:
-        string_to_write += "err_FIFO_read_en_empty1 => err_FIFO_read_en_empty1,"
 
     string_to_write = string_to_write[:len(string_to_write)-1]
     fifo_checker_top.write(string_to_write)

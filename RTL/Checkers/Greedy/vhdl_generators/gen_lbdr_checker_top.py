@@ -40,20 +40,18 @@ def gen_lbdr_checker_top(checker_id):
     if '4' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type,"
     if '5' in checker_id:
-        string_to_write += "err_LBDR_valid_flit_type1,"
-    if '6' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type2,"
-    if '7' in checker_id:
+    if '6' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type3,"
-    if '8' in checker_id:
+    if '7' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type4,"
-    if '9' in checker_id:
+    if '8' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type5,"
-    if '10' in checker_id:
+    if '9' in checker_id:
         string_to_write += "err_LBDR_Req_tail_allzero,"
-    if '11' in checker_id:
+    if '10' in checker_id:
         string_to_write += "err_LBDR_Req_Local,"
-    if '12' in checker_id:
+    if '11' in checker_id:
         string_to_write += "err_LBDR_Req_Local1,"
 
     string_to_write = string_to_write[:len(string_to_write)-1]
@@ -105,20 +103,18 @@ def gen_lbdr_checker_top(checker_id):
     if '4' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type,"
     if '5' in checker_id:
-        string_to_write += "err_LBDR_valid_flit_type1,"
-    if '6' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type2,"
-    if '7' in checker_id:
+    if '6' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type3,"
-    if '8' in checker_id:
+    if '7' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type4,"
-    if '9' in checker_id:
+    if '8' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type5,"
-    if '10' in checker_id:
+    if '9' in checker_id:
         string_to_write += "err_LBDR_Req_tail_allzero,"
-    if '11' in checker_id:
+    if '10' in checker_id:
         string_to_write += "err_LBDR_Req_Local,"
-    if '12' in checker_id:
+    if '11' in checker_id:
         string_to_write += "err_LBDR_Req_Local1,"
 
     string_to_write = string_to_write[:len(string_to_write)-1]
@@ -157,7 +153,7 @@ def gen_lbdr_checker_top(checker_id):
     lbdr_checker_top.write("                                  Req_W_FF=>Req_W_FF, \n")
     lbdr_checker_top.write("                                  Req_S_FF=>Req_S_FF,\n")
     lbdr_checker_top.write("                                  Req_L_FF=>Req_L_FF,\n")
-    lbdr_checker_top.write("                                                  Req_N_in=>Req_N_in_sig, \n")
+    lbdr_checker_top.write("                                  Req_N_in=>Req_N_in_sig, \n")
     lbdr_checker_top.write("                                  Req_E_in=>Req_E_in_sig, \n")
     lbdr_checker_top.write("                                  Req_W_in=>Req_W_in_sig, \n")
     lbdr_checker_top.write("                                  Req_S_in=>Req_S_in_sig, \n")
@@ -175,20 +171,18 @@ def gen_lbdr_checker_top(checker_id):
     if '4' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type => err_LBDR_valid_flit_type,"
     if '5' in checker_id:
-        string_to_write += "err_LBDR_valid_flit_type1 => err_LBDR_valid_flit_type1,"
-    if '6' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type2 => err_LBDR_valid_flit_type2,"
-    if '7' in checker_id:
+    if '6' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type3 => err_LBDR_valid_flit_type3,"
-    if '8' in checker_id:
+    if '7' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type4 => err_LBDR_valid_flit_type4,"
-    if '9' in checker_id:
+    if '8' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type5 => err_LBDR_valid_flit_type5,"
-    if '10' in checker_id:
+    if '9' in checker_id:
         string_to_write += "err_LBDR_Req_tail_allzero => err_LBDR_Req_tail_allzero,"
-    if '11' in checker_id:
+    if '10' in checker_id:
         string_to_write += "err_LBDR_Req_Local => err_LBDR_Req_Local,"
-    if '12' in checker_id:
+    if '11' in checker_id:
         string_to_write += "err_LBDR_Req_Local1 => err_LBDR_Req_Local1,"
 
     string_to_write = string_to_write[:len(string_to_write)-1]+");\n"

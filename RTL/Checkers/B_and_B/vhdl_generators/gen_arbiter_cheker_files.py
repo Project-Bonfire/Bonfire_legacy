@@ -36,105 +36,101 @@ def gen_arbiter_checkers(checker_id):
     if '1' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_onehot,\n"
     if '2' in checker_id:
-        string_to_write += "err_Arbiter_no_req_Grant,\n"
-    if '3' in checker_id:
         string_to_write += "err_Arbiter_DCTS_RTS,\n"
-    if '4' in checker_id:
+    if '3' in checker_id:
         string_to_write += "err_Arbiter_DCTS_RTS1,\n"
-    if '5' in checker_id:
+    if '4' in checker_id:
         string_to_write += "err_Arbiter_DCTS_RTS2,\n"
-    if '6' in checker_id:
+    if '5' in checker_id:
         string_to_write += "err_Arbiter_DCTS_RTS3,\n"
-    if '7' in checker_id:
+    if '6' in checker_id:
         string_to_write += "err_Arbiter_state_and_grants_onehot,\n"
-    if '8' in checker_id:
+    if '7' in checker_id:
         string_to_write += "err_Arbiter_state_and_grants_onehot1,\n"
-    if '9' in checker_id:
+    if '8' in checker_id:
         string_to_write += "err_Arbiter_no_req_state_change,\n"
-    if '10' in checker_id:
+    if '9' in checker_id:
         string_to_write += "err_Arbiter_valid_state,\n"
-    if '11' in checker_id:
+    if '10' in checker_id:
         string_to_write += "err_Arbiter_switchgrantN,\n"
-    if '12' in checker_id:
+    if '11' in checker_id:
         string_to_write += "err_Arbiter_switchgrantE,\n"
-    if '13' in checker_id:
+    if '12' in checker_id:
         string_to_write += "err_Arbiter_switchgrantW,\n"
-    if '14' in checker_id:
+    if '13' in checker_id:
         string_to_write += "err_Arbiter_switchgrantS,\n"
-    if '15' in checker_id:
+    if '14' in checker_id:
         string_to_write += "err_Arbiter_switchgrantL,\n"
-    if '16' in checker_id:
+    if '15' in checker_id:
         string_to_write += "err_Arbiter_state_update,\n"
-    if '17' in checker_id:
+    if '16' in checker_id:
         string_to_write += "err_Arbiter_state_RTS_FF_in,\n"
-    if '18' in checker_id:
+    if '17' in checker_id:
         string_to_write += "err_Arbiter_switchgrantN_not_active,\n"
-    if '19' in checker_id:
+    if '18' in checker_id:
         string_to_write += "err_Arbiter_switchgrantE_not_active,\n"
-    if '20' in checker_id:
+    if '19' in checker_id:
         string_to_write += "err_Arbiter_switchgrantW_not_active,\n"
-    if '21' in checker_id:
+    if '20' in checker_id:
         string_to_write += "err_Arbiter_switchgrantS_not_active,\n"
-    if '22' in checker_id:
+    if '21' in checker_id:
         string_to_write += "err_Arbiter_switchgrantL_not_active,\n"
-    if '23' in checker_id:
+    if '22' in checker_id:
         string_to_write += "err_Arbiter_switchgrantN_not_active1,\n"
-    if '24' in checker_id:
+    if '23' in checker_id:
         string_to_write += "err_Arbiter_switchgrantE_not_active1,\n"
-    if '25' in checker_id:
+    if '24' in checker_id:
         string_to_write += "err_Arbiter_switchgrantW_not_active1,\n"
-    if '26' in checker_id:
+    if '25' in checker_id:
         string_to_write += "err_Arbiter_switchgrantS_not_active1,\n"
-    if '27' in checker_id:
+    if '26' in checker_id:
         string_to_write += "err_Arbiter_switchgrantL_not_active1,\n"
-    if '28' in checker_id:
+    if '27' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_invalid_IDLE,\n"
-    if '29' in checker_id:
+    if '28' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_invalid_North,\n"
-    if '30' in checker_id:
+    if '29' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_invalid_East,\n"
-    if '31' in checker_id:
+    if '30' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_invalid_West,\n"
-    if '32' in checker_id:
+    if '31' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_invalid_South,\n"
-    if '33' in checker_id:
+    if '32' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_invalid_Local,\n"
-    if '34' in checker_id:
+    if '33' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_invalid_North1,\n"
-    if '35' in checker_id:
+    if '34' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_invalid_East1,\n"
-    if '36' in checker_id:
+    if '35' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_invalid_West1,\n"
-    if '37' in checker_id:
+    if '36' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_invalid_South1,\n"
-    if '38' in checker_id:
+    if '37' in checker_id:
         string_to_write += "err_Arbiter_Xbar_sel_invalid_Local1,\n"
-    if '39' in checker_id:
+    if '38' in checker_id:
         string_to_write += "err_Arbiter_priorityIDLE3,\n"
-    if '40' in checker_id:
+    if '39' in checker_id:
         string_to_write += "err_Arbiter_priorityL3,\n"
-    if '41' in checker_id:
+    if '40' in checker_id:
         string_to_write += "err_Arbiter_priorityN3,\n"
-    if '42' in checker_id:
+    if '41' in checker_id:
         string_to_write += "err_Arbiter_priorityE3,\n"
-    if '43' in checker_id:
+    if '42' in checker_id:
         string_to_write += "err_Arbiter_priorityW3,\n"
-    if '44' in checker_id:
+    if '43' in checker_id:
         string_to_write += "err_Arbiter_priorityS3,\n"
-    if '45' in checker_id:
+    if '44' in checker_id:
         string_to_write += "err_Arbiter_switchgrantN1,\n"
-    if '46' in checker_id:
+    if '45' in checker_id:
         string_to_write += "err_Arbiter_switchgrantE1,\n"
-    if '47' in checker_id:
+    if '46' in checker_id:
         string_to_write += "err_Arbiter_switchgrantW1,\n"
-    if '48' in checker_id:
+    if '47' in checker_id:
         string_to_write += "err_Arbiter_switchgrantS1,\n"
-    if '49' in checker_id:
+    if '48' in checker_id:
         string_to_write += "err_Arbiter_switchgrantL1,\n"
-    if '50' in checker_id:
+    if '49' in checker_id:
         string_to_write += "err_Arbiter_state_not_update,\n"
-    if '51' in checker_id:
-        string_to_write += "err_Arbiter_no_Grant,\n"
 
     string_to_write = string_to_write[:len(string_to_write) - 2]
     string_to_write += " : out std_logic\n"
@@ -180,22 +176,6 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("\n")
 
     if '2' in checker_id:
-        arbiter_checker_vhd.write("-- If there is no request for arbitration and the next router/NI is also not ready "
-                                  "to receive any flits, the arbiter must not active any Grant signals in its "
-                                  "output!\n")
-        arbiter_checker_vhd.write("process(Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF_in, Grant_N, Grant_E, "
-                                  "Grant_W, Grant_S, Grant_L) begin\n")
-        arbiter_checker_vhd.write("	if ( (Req_N = '0' and Req_E = '0' and Req_W = '0' and Req_S = '0' and Req_L = '0') "
-                                  "and (Grant_N = '1' or Grant_E = '1' or Grant_W = '1' or Grant_S = '1' or "
-                                  "Grant_L = '1') ) then\n")
-        arbiter_checker_vhd.write("		err_Arbiter_no_req_Grant <= '1';\n")
-        arbiter_checker_vhd.write("	else \n")
-        arbiter_checker_vhd.write("		err_Arbiter_no_req_Grant <= '0';\n")
-        arbiter_checker_vhd.write("	end if;	\n")
-        arbiter_checker_vhd.write("end process;\n")
-        arbiter_checker_vhd.write("\n")
-
-    if '3' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, RTS_FF_in) begin\n")
         arbiter_checker_vhd.write("	if ( (state = North or state = East or state = West or state = South or "
                                   "state = Local) and  RTS_FF = '1' and DCTS = '1' and RTS_FF_in = '1') then \n")
@@ -206,7 +186,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '4' in checker_id:
+    if '3' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, RTS_FF_in) begin\n")
         arbiter_checker_vhd.write("	if ( (state = North or state = East or state = West or state = South or "
                                   "state = Local) and  RTS_FF = '0' and DCTS = '0' and RTS_FF_in = '0') then \n")
@@ -217,7 +197,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '5' in checker_id:
+    if '4' in checker_id:
         arbiter_checker_vhd.write("process(RTS_FF, DCTS, state, RTS_FF_in) begin\n")
         arbiter_checker_vhd.write("	if ( RTS_FF = '1' and DCTS = '0' and state /= IDLE and RTS_FF_in = '0') then\n")
         arbiter_checker_vhd.write("		err_Arbiter_DCTS_RTS2 <= '1';		\n")
@@ -227,7 +207,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '6' in checker_id:
+    if '5' in checker_id:
         arbiter_checker_vhd.write("process(RTS_FF, DCTS, state, RTS_FF_in) begin\n")
         arbiter_checker_vhd.write("	if ( RTS_FF = '0' and DCTS = '1' and state /= IDLE and RTS_FF_in = '0') then\n")
         arbiter_checker_vhd.write("		err_Arbiter_DCTS_RTS3 <= '1';		\n")
@@ -237,7 +217,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '7' in checker_id:
+    if '6' in checker_id:
         arbiter_checker_vhd.write("-- Arbiter Grants and state variable must be one-hot!\n")
         arbiter_checker_vhd.write("process (DCTS, RTS_FF, Req_N, Req_E, Req_W, Req_S, Req_L, state_in, Grant_N, "
                                   "Grant_E, Grant_W, Grant_S, Grant_L) begin\n")
@@ -252,7 +232,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '8' in checker_id:
+    if '7' in checker_id:
         arbiter_checker_vhd.write("-- Arbiter Grants and state variable must be one-hot!\n")
         arbiter_checker_vhd.write("process (Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin\n")
         arbiter_checker_vhd.write("if ( (Req_N = '1' or Req_E = '1' or Req_W = '1' or Req_S = '1' or Req_L = '1') "
@@ -265,7 +245,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '9' in checker_id:
+    if '8' in checker_id:
         arbiter_checker_vhd.write("-- If there is no request for arbitration, the arbiter's next state must be IDLE!\n")
         arbiter_checker_vhd.write("process(Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin\n")
         arbiter_checker_vhd.write("	if ( (Req_N = '0' and Req_E = '0' and Req_W = '0' and Req_S = '0' and Req_L = '0') "
@@ -277,7 +257,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '10' in checker_id:
+    if '9' in checker_id:
         arbiter_checker_vhd.write("process (state_in) begin \n")
         arbiter_checker_vhd.write("if (state_in /= IDLE and state_in /= North and state_in /= East and "
                                   "state_in /= West and state_in /= South and state_in /= Local ) then \n")
@@ -288,7 +268,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '11' in checker_id:
+    if '10' in checker_id:
         arbiter_checker_vhd.write("process(RTS_FF, DCTS, Req_N, Req_E, Req_W, Req_S, Req_L, state_in) begin \n")
         arbiter_checker_vhd.write("	if ( (Req_N = '1' and Req_E = '0' and Req_W = '0' and Req_S = '0' and Req_L = '0') "
                                   "and RTS_FF = '1' and DCTS = '1' and state_in /= North) then \n")
@@ -299,7 +279,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '12' in checker_id:
+    if '11' in checker_id:
         arbiter_checker_vhd.write("process(RTS_FF, DCTS, Req_N, Req_E, Req_W, Req_S, Req_L, state_in) begin \n")
         arbiter_checker_vhd.write("	if ( (Req_N = '0' and Req_E = '1' and Req_W = '0' and Req_S = '0' and Req_L = '0') "
                                   "and RTS_FF = '1' and DCTS = '1' and state_in /= East) then \n")
@@ -310,7 +290,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '13' in checker_id:
+    if '12' in checker_id:
         arbiter_checker_vhd.write("process(RTS_FF, DCTS, Req_N, Req_E, Req_W, Req_S, Req_L, state_in) begin \n")
         arbiter_checker_vhd.write("	if ( (Req_N = '0' and Req_E = '0' and Req_W = '1' and Req_S = '0' and Req_L = '0') "
                                   "and RTS_FF = '1' and DCTS = '1' and state_in /= West) then \n")
@@ -321,7 +301,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '14' in checker_id:
+    if '13' in checker_id:
         arbiter_checker_vhd.write("process(RTS_FF, DCTS, Req_N, Req_E, Req_W, Req_S, Req_L, state_in) begin \n")
         arbiter_checker_vhd.write("	if ( (Req_N = '0' and Req_E = '0' and Req_W = '0' and Req_S = '1' and Req_L = '0') "
                                   "and RTS_FF = '1' and DCTS = '1' and state_in /= South) then \n")
@@ -332,7 +312,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '15' in checker_id:
+    if '14' in checker_id:
         arbiter_checker_vhd.write("process(RTS_FF, DCTS, Req_N, Req_E, Req_W, Req_S, Req_L, state_in) begin \n")
         arbiter_checker_vhd.write("	if ( (Req_N = '0' and Req_E = '0' and Req_W = '0' and Req_S = '0' and Req_L = '1')"
                                   " and RTS_FF = '1' and DCTS = '1' and state_in /= Local) then \n")
@@ -343,7 +323,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write("\n")
 
-    if '16' in checker_id:
+    if '15' in checker_id:
         arbiter_checker_vhd.write("-- If there is a request from Arbiter to next router/NI, but the FIFO of the next "
                                   "router is full (not ready), previous state must be stored in state_in! \n")
         arbiter_checker_vhd.write("process (RTS_FF, DCTS, state, state_in) begin \n")
@@ -355,7 +335,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process;\n")
         arbiter_checker_vhd.write(" \n")
 
-    if '17' in checker_id:
+    if '16' in checker_id:
         arbiter_checker_vhd.write("process (state, RTS_FF_in) begin \n")
         arbiter_checker_vhd.write("    if (state = IDLE and RTS_FF_in = '1') then  \n")
         arbiter_checker_vhd.write("        err_Arbiter_state_RTS_FF_in <= '1'; \n")
@@ -365,7 +345,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '18' in checker_id:
+    if '17' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, Grant_N, RTS_FF_in) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( (state = North) and RTS_FF = '1' and DCTS = '1' and (Grant_N = '0' or "
@@ -377,7 +357,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '19' in checker_id:
+    if '18' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, Grant_E, RTS_FF_in) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( (state = East) and RTS_FF = '1' and DCTS = '1' and (Grant_E = '0' or "
@@ -389,7 +369,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '20' in checker_id:
+    if '19' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, Grant_W, RTS_FF_in) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( (state = West) and RTS_FF = '1' and DCTS = '1' and (Grant_W = '0' or RTS_FF_in = '1') ) then \n")
@@ -400,7 +380,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '21' in checker_id:
+    if '20' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, Grant_S, RTS_FF_in) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( state = South and RTS_FF = '1' and DCTS = '1' and (Grant_S = '0' or RTS_FF_in = '1') ) then \n")
@@ -411,7 +391,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '22' in checker_id:
+    if '21' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, Grant_L, RTS_FF_in) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( state = Local and RTS_FF = '1' and DCTS = '1' and (Grant_L = '0' or RTS_FF_in = '1') ) then \n")
@@ -422,7 +402,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '23' in checker_id:
+    if '22' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, Grant_N) begin \n")
         arbiter_checker_vhd.write("	if ((state = North) and (RTS_FF = '0' or DCTS = '0') and Grant_N = '1') then \n")
         arbiter_checker_vhd.write("		err_Arbiter_switchgrantN_not_active1 <= '1'; \n")
@@ -432,7 +412,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '24' in checker_id:
+    if '23' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, Grant_E) begin \n")
         arbiter_checker_vhd.write("	if ((state = East) and (RTS_FF = '0' or DCTS = '0') and Grant_E = '1') then \n")
         arbiter_checker_vhd.write("		err_Arbiter_switchgrantE_not_active1 <= '1'; \n")
@@ -442,7 +422,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '25' in checker_id:
+    if '24' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, Grant_W) begin \n")
         arbiter_checker_vhd.write("	if ((state = West) and (RTS_FF = '0' or DCTS = '0') and Grant_W = '1') then \n")
         arbiter_checker_vhd.write("		err_Arbiter_switchgrantW_not_active1 <= '1'; \n")
@@ -452,7 +432,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '26' in checker_id:
+    if '25' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, Grant_S) begin \n")
         arbiter_checker_vhd.write("	if ((state = South) and (RTS_FF = '0' or DCTS = '0') and Grant_S = '1') then \n")
         arbiter_checker_vhd.write("		err_Arbiter_switchgrantS_not_active1 <= '1'; \n")
@@ -462,7 +442,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '27' in checker_id:
+    if '26' in checker_id:
         arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, Grant_L) begin \n")
         arbiter_checker_vhd.write("	if ((state = Local) and (RTS_FF = '0' or DCTS = '0') and Grant_L = '1') then \n")
         arbiter_checker_vhd.write("		err_Arbiter_switchgrantL_not_active1 <= '1'; \n")
@@ -472,7 +452,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '28' in checker_id:
+    if '27' in checker_id:
         arbiter_checker_vhd.write("process(state, Xbar_sel) begin \n")
         arbiter_checker_vhd.write("	if (state = IDLE and Xbar_sel /= \"00000\") then \n")
         arbiter_checker_vhd.write("		err_Arbiter_Xbar_sel_invalid_IDLE <= '1';		 \n")
@@ -482,7 +462,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '29' in checker_id:
+    if '28' in checker_id:
         arbiter_checker_vhd.write("process(state, Xbar_sel) begin \n")
         arbiter_checker_vhd.write("	if (state = North and Xbar_sel /= \"00001\") then \n")
         arbiter_checker_vhd.write("		err_Arbiter_Xbar_sel_invalid_North <= '1';		 \n")
@@ -492,7 +472,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '30' in checker_id:
+    if '29' in checker_id:
         arbiter_checker_vhd.write("process(state, Xbar_sel) begin \n")
         arbiter_checker_vhd.write("	if (state = East and Xbar_sel /= \"00010\") then \n")
         arbiter_checker_vhd.write("		err_Arbiter_Xbar_sel_invalid_East <= '1';		 \n")
@@ -502,7 +482,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '31' in checker_id:
+    if '30' in checker_id:
         arbiter_checker_vhd.write("process(state, Xbar_sel) begin \n")
         arbiter_checker_vhd.write("	if (state = West and Xbar_sel /= \"00100\") then \n")
         arbiter_checker_vhd.write("		err_Arbiter_Xbar_sel_invalid_West <= '1';		 \n")
@@ -512,7 +492,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '32' in checker_id:
+    if '31' in checker_id:
         arbiter_checker_vhd.write("process(state, Xbar_sel) begin \n")
         arbiter_checker_vhd.write("	if (state = South and Xbar_sel /= \"01000\") then \n")
         arbiter_checker_vhd.write("		err_Arbiter_Xbar_sel_invalid_South <= '1';		 \n")
@@ -522,7 +502,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '33' in checker_id:
+    if '32' in checker_id:
         arbiter_checker_vhd.write("process(state, Xbar_sel) begin \n")
         arbiter_checker_vhd.write("	if (state = Local and Xbar_sel /= \"10000\") then \n")
         arbiter_checker_vhd.write("		err_Arbiter_Xbar_sel_invalid_Local <= '1';		 \n")
@@ -532,7 +512,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '34' in checker_id:
+    if '33' in checker_id:
         arbiter_checker_vhd.write("process(state, DCTS, RTS_FF, Grant_N, Xbar_sel) begin \n")
         arbiter_checker_vhd.write(
                 "	if (state /= North and RTS_FF = '1' and DCTS = '1' and (Grant_N = '1' or "
@@ -544,7 +524,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '35' in checker_id:
+    if '34' in checker_id:
         arbiter_checker_vhd.write("process(state, DCTS, RTS_FF, Grant_E, Xbar_sel) begin \n")
         arbiter_checker_vhd.write(
                 "	if (state /= East and RTS_FF = '1' and DCTS = '1' and (Grant_E = '1' or "
@@ -556,7 +536,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '36' in checker_id:
+    if '35' in checker_id:
         arbiter_checker_vhd.write("process(state, DCTS, RTS_FF, Grant_W, Xbar_sel) begin \n")
         arbiter_checker_vhd.write(
                 "	if (state /= West and RTS_FF = '1' and DCTS = '1' and (Grant_W = '1' or "
@@ -568,7 +548,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '37' in checker_id:
+    if '36' in checker_id:
         arbiter_checker_vhd.write("process(state, DCTS, RTS_FF, Grant_S, Xbar_sel) begin \n")
         arbiter_checker_vhd.write(
                 "	if (state /= South and RTS_FF = '1' and DCTS = '1' and (Grant_S = '1' or Xbar_sel = \"01000\") ) "
@@ -580,7 +560,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '38' in checker_id:
+    if '37' in checker_id:
         arbiter_checker_vhd.write("process(state, DCTS, RTS_FF, Grant_L, Xbar_sel) begin \n")
         arbiter_checker_vhd.write(
                 "	if (state /= Local and RTS_FF = '1' and DCTS = '1' and (Grant_L = '1' or Xbar_sel = \"10000\") ) "
@@ -592,7 +572,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '39' in checker_id:
+    if '38' in checker_id:
         arbiter_checker_vhd.write("process(state, Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( state = IDLE and (Req_L = '0' and Req_N = '0' and Req_E = '0' and Req_W = '0' and Req_S = '1') "
@@ -604,7 +584,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '40' in checker_id:
+    if '39' in checker_id:
         arbiter_checker_vhd.write("process(state, Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( state = Local and (Req_L = '0' and Req_N = '0' and Req_E = '0' and Req_W = '0' and Req_S = '1') "
@@ -616,7 +596,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '41' in checker_id:
+    if '40' in checker_id:
         arbiter_checker_vhd.write("process(state, Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( state = North and (Req_L = '1' and Req_N = '0' and Req_E = '0' and Req_W = '0' and Req_S = '0') "
@@ -628,7 +608,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '42' in checker_id:
+    if '41' in checker_id:
         arbiter_checker_vhd.write("process(state, Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( state = East and (Req_L = '0' and Req_N = '1' and Req_E = '0' and Req_W = '0' and Req_S = '0') "
@@ -640,7 +620,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '43' in checker_id:
+    if '42' in checker_id:
         arbiter_checker_vhd.write("process(state, Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( state = West and (Req_L = '0' and Req_N = '0' and Req_E = '1' and Req_W = '0' and Req_S = '0') "
@@ -652,7 +632,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '44' in checker_id:
+    if '43' in checker_id:
         arbiter_checker_vhd.write("process(state, Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( state = South and (Req_L = '0' and Req_N = '0' and Req_E = '0' and Req_W = '1' and Req_S = '0') "
@@ -664,7 +644,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '45' in checker_id:
+    if '44' in checker_id:
         arbiter_checker_vhd.write("process(Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( (Req_N = '1' and Req_E = '0' and Req_W = '0' and Req_S = '0' and Req_L = '0') and "
@@ -676,7 +656,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '46' in checker_id:
+    if '45' in checker_id:
         arbiter_checker_vhd.write("process(Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( (Req_N = '0' and Req_E = '1' and Req_W = '0' and Req_S = '0' and Req_L = '0') and "
@@ -688,7 +668,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '47' in checker_id:
+    if '46' in checker_id:
         arbiter_checker_vhd.write("process(Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( (Req_N = '0' and Req_E = '0' and Req_W = '1' and Req_S = '0' and Req_L = '0') "
@@ -700,7 +680,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '48' in checker_id:
+    if '47' in checker_id:
         arbiter_checker_vhd.write("process(Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( (Req_N = '0' and Req_E = '0' and Req_W = '0' and Req_S = '1' and Req_L = '0') "
@@ -712,7 +692,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '49' in checker_id:
+    if '48' in checker_id:
         arbiter_checker_vhd.write("process(Req_N, Req_E, Req_W, Req_S, Req_L, next_state_out) begin \n")
         arbiter_checker_vhd.write(
                 "	if ( (Req_N = '0' and Req_E = '0' and Req_W = '0' and Req_S = '0' and Req_L = '1') and "
@@ -724,7 +704,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
 
-    if '50' in checker_id:
+    if '49' in checker_id:
         arbiter_checker_vhd.write("process (RTS_FF, DCTS, next_state_out, state_in) begin \n")
         arbiter_checker_vhd.write("    if ((RTS_FF = '0' or DCTS = '1') and state_in /= next_state_out) then  \n")
         arbiter_checker_vhd.write("        err_Arbiter_state_not_update <= '1'; \n")
@@ -733,17 +713,6 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("   	end if; \n")
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
-
-    if '51' in checker_id:
-        arbiter_checker_vhd.write("process(state, RTS_FF, DCTS, Grant_N, Grant_E, Grant_W, Grant_S, Grant_L) begin \n")
-        arbiter_checker_vhd.write(
-                "	if (state /= IDLE and RTS_FF = '1' and DCTS = '1' and Grant_N = '0' and Grant_E = '0' and "
-                "Grant_W = '0' and Grant_S = '0' and Grant_L = '0') then \n")
-        arbiter_checker_vhd.write("		err_Arbiter_no_Grant <= '1'; \n")
-        arbiter_checker_vhd.write("	else  \n")
-        arbiter_checker_vhd.write("		err_Arbiter_no_Grant <= '0'; \n")
-        arbiter_checker_vhd.write("	end if; \n")
-        arbiter_checker_vhd.write("end process; \n")
 
     arbiter_checker_vhd.write("\n")
     arbiter_checker_vhd.write("\n")

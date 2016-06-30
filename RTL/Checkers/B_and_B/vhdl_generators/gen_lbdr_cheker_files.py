@@ -38,20 +38,18 @@ def gen_lbdr_checkers(checker_id):
     if '4' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type,"
     if '5' in checker_id:
-        string_to_write += "err_LBDR_valid_flit_type1,"
-    if '6' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type2,"
-    if '7' in checker_id:
+    if '6' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type3,"
-    if '8' in checker_id:
+    if '7' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type4,"
-    if '9' in checker_id:
+    if '8' in checker_id:
         string_to_write += "err_LBDR_valid_flit_type5,"
-    if '10' in checker_id:
+    if '9' in checker_id:
         string_to_write += "err_LBDR_Req_tail_allzero,"
-    if '11' in checker_id:
+    if '10' in checker_id:
         string_to_write += "err_LBDR_Req_Local,"
-    if '12' in checker_id:
+    if '11' in checker_id:
         string_to_write += "err_LBDR_Req_Local1,"
 
     string_to_write = string_to_write[:len(string_to_write)-1]
@@ -101,17 +99,6 @@ def gen_lbdr_checkers(checker_id):
         lbdr_checker_vhd.write("else\n")
         lbdr_checker_vhd.write("    err_LBDR_Req_onehot1 <= '0';\n")
         lbdr_checker_vhd.write("end if;\n")
-        lbdr_checker_vhd.write("end process;\n")
-        lbdr_checker_vhd.write("\n")
-
-    if '10' in checker_id:
-        lbdr_checker_vhd.write("-- For tail flit, all output requests of LBDR must be zero!\n")
-        lbdr_checker_vhd.write("process(flit_type, Requests)begin\n")
-        lbdr_checker_vhd.write("    if (flit_type = \"100\" and Requests /= \"00000\" ) then\n")
-        lbdr_checker_vhd.write("        err_LBDR_Req_tail_allzero <= '1';\n")
-        lbdr_checker_vhd.write("    else \n")
-        lbdr_checker_vhd.write("        err_LBDR_Req_tail_allzero <= '0';\n")
-        lbdr_checker_vhd.write("    end if;\n")
         lbdr_checker_vhd.write("end process;\n")
         lbdr_checker_vhd.write("\n")
 
@@ -177,7 +164,82 @@ def gen_lbdr_checkers(checker_id):
         lbdr_checker_vhd.write("end process;\n")
         lbdr_checker_vhd.write("\n")
 
-    if '11' in checker_id:
+    if '4' in checker_id:
+        lbdr_checker_vhd.write("process (empty, flit_type, Requests)\n")
+        lbdr_checker_vhd.write("begin\n")
+        lbdr_checker_vhd.write("    if ( (Requests = \"00001\" or Requests = \"00010\" or Requests = \"00100\" or "
+                               "Requests = \"01000\" or Requests = \"10000\") and flit_type /= \"001\" and "
+                               "flit_type /= \"010\") then\n")
+        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type <= '1';\n")
+        lbdr_checker_vhd.write("    else \n")
+        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type <= '0';\n")
+        lbdr_checker_vhd.write("    end if;\n")
+        lbdr_checker_vhd.write("end process;\n")
+        lbdr_checker_vhd.write("\n")
+
+    if '5' in checker_id:
+        lbdr_checker_vhd.write("process (empty, Requests)\n")
+        lbdr_checker_vhd.write("begin\n")
+        lbdr_checker_vhd.write("    if (empty = '1' and Requests /= \"00000\" and Requests /= \"00001\" and "
+                               "Requests /= \"00010\" and Requests /= \"00100\" and Requests /= \"01000\" and "
+                               "Requests /= \"10000\") then\n")
+        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type2 <= '1';\n")
+        lbdr_checker_vhd.write("    else \n")
+        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type2 <= '0';\n")
+        lbdr_checker_vhd.write("    end if;\n")
+        lbdr_checker_vhd.write("end process;\n")
+        lbdr_checker_vhd.write("\n")
+
+    if '6' in checker_id:
+        lbdr_checker_vhd.write("process (empty, flit_type, Requests)\n")
+        lbdr_checker_vhd.write("begin\n")
+        lbdr_checker_vhd.write("    if ( empty = '0' and flit_type = \"001\" and Requests /= \"00001\" and "
+                               "Requests /= \"00010\" and Requests /= \"00100\" and Requests /= \"01000\" and "
+                               "Requests /= \"10000\" ) then\n")
+        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type3 <= '1';\n")
+        lbdr_checker_vhd.write("    else \n")
+        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type3 <= '0';\n")
+        lbdr_checker_vhd.write("    end if;\n")
+        lbdr_checker_vhd.write("end process;\n")
+        lbdr_checker_vhd.write("\n")
+
+    if '7' in checker_id:
+        lbdr_checker_vhd.write("process (empty, flit_type, Requests)\n")
+        lbdr_checker_vhd.write("begin\n")
+        lbdr_checker_vhd.write("    if ( (empty = '1' or flit_type /= \"001\") and Requests /= \"00000\" and "
+                               "Requests /= \"00001\" and Requests /= \"00010\" and Requests /= \"00100\" and "
+                               "Requests /= \"01000\" and Requests /= \"10000\" ) then\n")
+        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type4 <= '1';\n")
+        lbdr_checker_vhd.write("    else \n")
+        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type4 <= '0';\n")
+        lbdr_checker_vhd.write("    end if;\n")
+        lbdr_checker_vhd.write("end process;\n")
+        lbdr_checker_vhd.write("\n")
+
+    if '8' in checker_id:
+        lbdr_checker_vhd.write("process (empty, flit_type, Requests)\n")
+        lbdr_checker_vhd.write("begin\n")
+        lbdr_checker_vhd.write(
+            "    if ( ( (empty = '1' and flit_type /= \"001\") or flit_type = \"010\") and "
+            "Requests /= Requests_FF) then\n")
+        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type5 <= '1';\n")
+        lbdr_checker_vhd.write("    else \n")
+        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type5 <= '0';\n")
+        lbdr_checker_vhd.write("    end if;\n")
+        lbdr_checker_vhd.write("end process;\n")
+
+    if '9' in checker_id:
+        lbdr_checker_vhd.write("-- For tail flit, all output requests of LBDR must be zero!\n")
+        lbdr_checker_vhd.write("process(flit_type, Requests)begin\n")
+        lbdr_checker_vhd.write("    if (flit_type = \"100\" and Requests /= \"00000\" ) then\n")
+        lbdr_checker_vhd.write("        err_LBDR_Req_tail_allzero <= '1';\n")
+        lbdr_checker_vhd.write("    else \n")
+        lbdr_checker_vhd.write("        err_LBDR_Req_tail_allzero <= '0';\n")
+        lbdr_checker_vhd.write("    end if;\n")
+        lbdr_checker_vhd.write("end process;\n")
+        lbdr_checker_vhd.write("\n")
+
+    if '10' in checker_id:
         lbdr_checker_vhd.write(
             "-- If the header flit has reached its destination node, the L output request of "
             "LBDR must go active and others must be zero!\n")
@@ -193,7 +255,7 @@ def gen_lbdr_checkers(checker_id):
         lbdr_checker_vhd.write("end process;\n")
         lbdr_checker_vhd.write("\n")
 
-    if '12' in checker_id:
+    if '11' in checker_id:
         lbdr_checker_vhd.write("process (empty, flit_type, Req_L_FF, dst_addr, cur_addr, Req_L_in)\n")
         lbdr_checker_vhd.write("begin\n")
         lbdr_checker_vhd.write("    if ( ( (empty = '0' and flit_type = \"001\") or (flit_type /= \"001\" and "
@@ -201,83 +263,11 @@ def gen_lbdr_checkers(checker_id):
                                "(Req_L_in = '1') ) then\n")
         lbdr_checker_vhd.write("        err_LBDR_Req_Local1 <= '1';\n")
         lbdr_checker_vhd.write("    else\n")
-        lbdr_checker_vhd.write("        err_LBDR_Req_Local1 <= '0';      \n")
+        lbdr_checker_vhd.write("        err_LBDR_Req_Local1 <= '0'; \n")
         lbdr_checker_vhd.write("    end if;\n")
         lbdr_checker_vhd.write("end process;\n")
         lbdr_checker_vhd.write("\n")
 
-    if '4' in checker_id:
-        lbdr_checker_vhd.write("process (empty, flit_type, Requests)\n")
-        lbdr_checker_vhd.write("begin\n")
-        lbdr_checker_vhd.write("    if ( (Requests = \"00001\" or Requests = \"00010\" or Requests = \"00100\" or "
-                               "Requests = \"01000\" or Requests = \"10000\") and flit_type /= \"001\" and "
-                               "flit_type /= \"010\") then\n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type <= '1';\n")
-        lbdr_checker_vhd.write("    else \n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type <= '0';\n")
-        lbdr_checker_vhd.write("    end if;\n")
-        lbdr_checker_vhd.write("end process;\n")
-        lbdr_checker_vhd.write("\n")
-    if '5' in checker_id:
-        lbdr_checker_vhd.write("process (flit_type, Requests)\n")
-        lbdr_checker_vhd.write("begin\n")
-        lbdr_checker_vhd.write("    if ( Requests = \"00000\" and flit_type /= \"100\") then\n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type1 <= '1';\n")
-        lbdr_checker_vhd.write("    else \n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type1 <= '0';\n")
-        lbdr_checker_vhd.write("    end if;\n")
-        lbdr_checker_vhd.write("end process;\n")
-        lbdr_checker_vhd.write("\n")
-    if '6' in checker_id:
-        lbdr_checker_vhd.write("process (empty, Requests)\n")
-        lbdr_checker_vhd.write("begin\n")
-        lbdr_checker_vhd.write("    if (empty = '1' and Requests /= \"00000\" and Requests /= \"00001\" and "
-                               "Requests /= \"00010\" and Requests /= \"00100\" and Requests /= \"01000\" and "
-                               "Requests /= \"10000\") then\n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type2 <= '1';\n")
-        lbdr_checker_vhd.write("    else \n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type2 <= '0';\n")
-        lbdr_checker_vhd.write("    end if;\n")
-        lbdr_checker_vhd.write("end process;\n")
-        lbdr_checker_vhd.write("\n")
-
-    if '7' in checker_id:
-        lbdr_checker_vhd.write("process (empty, flit_type, Requests)\n")
-        lbdr_checker_vhd.write("begin\n")
-        lbdr_checker_vhd.write("    if ( empty = '0' and flit_type = \"001\" and Requests /= \"00001\" and "
-                               "Requests /= \"00010\" and Requests /= \"00100\" and Requests /= \"01000\" and "
-                               "Requests /= \"10000\" ) then\n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type3 <= '1';\n")
-        lbdr_checker_vhd.write("    else \n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type3 <= '0';\n")
-        lbdr_checker_vhd.write("    end if;\n")
-        lbdr_checker_vhd.write("end process;\n")
-        lbdr_checker_vhd.write("\n")
-
-    if '8' in checker_id:
-        lbdr_checker_vhd.write("process (empty, flit_type, Requests)\n")
-        lbdr_checker_vhd.write("begin\n")
-        lbdr_checker_vhd.write("    if ( (empty = '1' or flit_type /= \"001\") and Requests /= \"00000\" and "
-                               "Requests /= \"00001\" and Requests /= \"00010\" and Requests /= \"00100\" and "
-                               "Requests /= \"01000\" and Requests /= \"10000\" ) then\n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type4 <= '1';\n")
-        lbdr_checker_vhd.write("    else \n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type4 <= '0';\n")
-        lbdr_checker_vhd.write("    end if;\n")
-        lbdr_checker_vhd.write("end process;\n")
-        lbdr_checker_vhd.write("\n")
-
-    if '9' in checker_id:
-        lbdr_checker_vhd.write("process (empty, flit_type, Requests)\n")
-        lbdr_checker_vhd.write("begin\n")
-        lbdr_checker_vhd.write(
-            "    if ( ( (empty = '1' and flit_type /= \"001\") or flit_type = \"010\") and "
-            "Requests /= Requests_FF) then\n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type5 <= '1';\n")
-        lbdr_checker_vhd.write("    else \n")
-        lbdr_checker_vhd.write("        err_LBDR_valid_flit_type5 <= '0';\n")
-        lbdr_checker_vhd.write("    end if;\n")
-        lbdr_checker_vhd.write("end process;\n")
 
     lbdr_checker_vhd.write("\n")
     lbdr_checker_vhd.write("\n")

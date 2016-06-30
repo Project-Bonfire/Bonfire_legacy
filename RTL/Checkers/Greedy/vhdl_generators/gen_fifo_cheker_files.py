@@ -67,8 +67,6 @@ def gen_fifo_checkers(checker_id):
         string_to_write += "err_FIFO_control_part_CTS_in_CTS_out,"
     if '16' in checker_id:
         string_to_write += "err_FIFO_read_en_empty,"
-    if '17' in checker_id:
-        string_to_write += "err_FIFO_read_en_empty1,"
 
     string_to_write = string_to_write[:len(string_to_write)-1]
     string_to_write += " : out std_logic\n"
@@ -82,21 +80,11 @@ def gen_fifo_checkers(checker_id):
     fifo_checker_vhd.write("signal read_en_signals: std_logic_vector(4 downto 0);\n")
     fifo_checker_vhd.write("\n")
     fifo_checker_vhd.write("begin \n")
+    fifo_checker_vhd.write("\n")    
+    fifo_checker_vhd.write("read_en_signals <= read_en_N & read_en_E & read_en_W & read_en_S & read_en_L;\n")
     fifo_checker_vhd.write("\n")
     fifo_checker_vhd.write("-- Checkers\n")
     fifo_checker_vhd.write("\n")
-
-    if '11' in checker_id:
-        fifo_checker_vhd.write("-- When FIFO has received a request (and in any case) the "
-                               "internal state of the FSM of the FIFO must be one-hot!\n")
-        fifo_checker_vhd.write("process( HS_state_in) begin\n")
-        fifo_checker_vhd.write("    if (HS_state_in /= \"01\" and HS_state_in /= \"10\") then\n")
-        fifo_checker_vhd.write("        err_FIFO_HS_state_onehot <= '1';\n")
-        fifo_checker_vhd.write("    else\n")
-        fifo_checker_vhd.write("        err_FIFO_HS_state_onehot <= '0';\n")
-        fifo_checker_vhd.write("    end if;\n")
-        fifo_checker_vhd.write("end process;\n")
-        fifo_checker_vhd.write("\n")
 
     if '1' in checker_id:
         fifo_checker_vhd.write("-- When FIFO has not received a request, It can not send Clear to Send "
@@ -110,54 +98,15 @@ def gen_fifo_checkers(checker_id):
         fifo_checker_vhd.write("end process;\n")
         fifo_checker_vhd.write("\n")
 
-    if '15' in checker_id:
-        fifo_checker_vhd.write("-- If there is a request to FIFO for writing and CTS_out is zero and the FIFO "
-                               "is not full, CTS_in must also be zero!\n")
-        fifo_checker_vhd.write("process(CTS_out, DRTS, full_out, CTS_in) begin\n")
-        fifo_checker_vhd.write("    if (CTS_out = '0' and DRTS = '1' and full_out ='0' and CTS_in = '0') then\n")
-        fifo_checker_vhd.write("        err_FIFO_control_part_CTS_in_CTS_out <= '1';\n")
-        fifo_checker_vhd.write("    else\n")
-        fifo_checker_vhd.write("        err_FIFO_control_part_CTS_in_CTS_out <= '0';\n")
-        fifo_checker_vhd.write("    end if;\n")
-        fifo_checker_vhd.write("end process;\n")
-        fifo_checker_vhd.write("\n")
-
-    fifo_checker_vhd.write("read_en_signals <= read_en_N & read_en_E & read_en_W & read_en_S & read_en_L;\n")
-    fifo_checker_vhd.write("\n")
-
-    if '12' in checker_id:
-        fifo_checker_vhd.write("-- Read_en from Arbiters can either be all zeros or must be one-hot!\n")
-        fifo_checker_vhd.write("process(read_en_out, empty_out, read_en_signals) begin\n")
-        fifo_checker_vhd.write("    if ( (read_en_out = '1' and empty_out = '0' and "
-                               "read_en_signals /= \"10000\" and read_en_signals /= \"01000\" and "
-                               "read_en_signals /= \"00100\" and read_en_signals /= \"00010\" and "
-                               "read_en_signals /= \"00001\") or (read_en_out = '0' and empty_out = '0' and "
-                               "read_en_signals /=\"00000\" ) ) then\n")
-        fifo_checker_vhd.write("        err_FIFO_read_en_onehot <= '1';\n")
+    if '2' in checker_id:
+        fifo_checker_vhd.write("-- If there is a request for writing to the FIFO and the FIFO is "
+                               "not full, write pointer must be updated!\n")
+        fifo_checker_vhd.write("process(write_en_out, full_out, write_pointer, write_pointer_in) begin\n")
+        fifo_checker_vhd.write("    if ( (write_en_out = '1') and (full_out = '0') and "
+                               "(write_pointer_in = write_pointer)) then\n")
+        fifo_checker_vhd.write("        err_FIFO_write_pointer_update <= '1';\n")
         fifo_checker_vhd.write("    else \n")
-        fifo_checker_vhd.write("        err_FIFO_read_en_onehot <= '0';\n")
-        fifo_checker_vhd.write("    end if;\n")
-        fifo_checker_vhd.write("end process;\n")
-        fifo_checker_vhd.write("\n")
-
-    if '16' in checker_id:
-        fifo_checker_vhd.write("process(read_en_signals, empty_out, read_en_out) begin\n")
-        fifo_checker_vhd.write("    if ( (read_en_signals = \"00000\" or empty_out = '1') and "
-                               "read_en_out = '1' ) then\n")
-        fifo_checker_vhd.write("        err_FIFO_read_en_empty <= '1';\n")
-        fifo_checker_vhd.write("    else \n")
-        fifo_checker_vhd.write("        err_FIFO_read_en_empty <= '0';\n")
-        fifo_checker_vhd.write("    end if;\n")
-        fifo_checker_vhd.write("end process;\n")
-        fifo_checker_vhd.write("\n")
-
-    if '17' in checker_id:
-        fifo_checker_vhd.write("process(read_en_N, read_en_W, read_en_S, read_en_L, empty_out) begin\n")
-        fifo_checker_vhd.write("    if ( (read_en_N = '1' or read_en_E = '1' or read_en_W = '1' or "
-                               "read_en_S = '1' or read_en_L = '1') and empty_out = '0' and read_en_out = '0' ) then\n")
-        fifo_checker_vhd.write("        err_FIFO_read_en_empty1 <= '1';\n")
-        fifo_checker_vhd.write("    else \n")
-        fifo_checker_vhd.write("        err_FIFO_read_en_empty1 <= '0';\n")
+        fifo_checker_vhd.write("        err_FIFO_write_pointer_update <= '0';\n")
         fifo_checker_vhd.write("    end if;\n")
         fifo_checker_vhd.write("end process;\n")
         fifo_checker_vhd.write("\n")
@@ -175,18 +124,6 @@ def gen_fifo_checkers(checker_id):
         fifo_checker_vhd.write("end process;\n")
         fifo_checker_vhd.write("\n")
 
-    if '2' in checker_id:
-        fifo_checker_vhd.write("-- If there is a request for writing to the FIFO and the FIFO is "
-                               "not full, write pointer must be updated!\n")
-        fifo_checker_vhd.write("process(write_en_out, full_out, write_pointer, write_pointer_in) begin\n")
-        fifo_checker_vhd.write("    if ( (write_en_out = '1') and (full_out = '0') and "
-                               "(write_pointer_in = write_pointer)) then\n")
-        fifo_checker_vhd.write("        err_FIFO_write_pointer_update <= '1';\n")
-        fifo_checker_vhd.write("    else \n")
-        fifo_checker_vhd.write("        err_FIFO_write_pointer_update <= '0';\n")
-        fifo_checker_vhd.write("    end if;\n")
-        fifo_checker_vhd.write("end process;\n")
-        fifo_checker_vhd.write("\n")
 
     if '4' in checker_id:
         fifo_checker_vhd.write("-- If there is no request for writing to the FIFO or the FIFO is full, "
@@ -249,28 +186,6 @@ def gen_fifo_checkers(checker_id):
         fifo_checker_vhd.write("end process;\n")
         fifo_checker_vhd.write("\n")
 
-    if '13' in checker_id:
-        fifo_checker_vhd.write("-- Reading from an empty FIFO is not possible!\n")
-        fifo_checker_vhd.write("process(read_en_out, empty_out) begin\n")
-        fifo_checker_vhd.write("    if (read_en_out = '1' and empty_out = '1') then\n")
-        fifo_checker_vhd.write("        err_FIFO_read_from_empty_FIFO <= '1';\n")
-        fifo_checker_vhd.write("    else\n")
-        fifo_checker_vhd.write("        err_FIFO_read_from_empty_FIFO <= '0';\n")
-        fifo_checker_vhd.write("    end if;\n")
-        fifo_checker_vhd.write("end process;\n")
-        fifo_checker_vhd.write("\n")
-
-    if '14' in checker_id:
-        fifo_checker_vhd.write("-- Writing to a full FIFO is not possible!\n")
-        fifo_checker_vhd.write("process(write_en_out, full_out) begin\n")
-        fifo_checker_vhd.write("    if (write_en_out = '1' and full_out = '1') then\n")
-        fifo_checker_vhd.write("        err_FIFO_write_to_full_FIFO <= '1';\n")
-        fifo_checker_vhd.write("    else\n")
-        fifo_checker_vhd.write("        err_FIFO_write_to_full_FIFO <= '0';\n")
-        fifo_checker_vhd.write("    end if;\n")
-        fifo_checker_vhd.write("end process;\n")
-        fifo_checker_vhd.write("\n")
-
     if '9' in checker_id:
         fifo_checker_vhd.write("process(read_pointer, read_pointer_in) begin\n")
         fifo_checker_vhd.write("    if ((read_pointer /= \"00001\" and read_pointer /= \"00010\" and "
@@ -296,6 +211,78 @@ def gen_fifo_checkers(checker_id):
         fifo_checker_vhd.write("        err_FIFO_write_pointer_onehot <= '1';\n")
         fifo_checker_vhd.write("    else\n")
         fifo_checker_vhd.write("        err_FIFO_write_pointer_onehot <= '0';\n")
+        fifo_checker_vhd.write("    end if;\n")
+        fifo_checker_vhd.write("end process;\n")
+        fifo_checker_vhd.write("\n")
+
+    if '11' in checker_id:
+        fifo_checker_vhd.write("-- When FIFO has received a request (and in any case) the "
+                               "internal state of the FSM of the FIFO must be one-hot!\n")
+        fifo_checker_vhd.write("process( HS_state_in) begin\n")
+        fifo_checker_vhd.write("    if (HS_state_in /= \"01\" and HS_state_in /= \"10\") then\n")
+        fifo_checker_vhd.write("        err_FIFO_HS_state_onehot <= '1';\n")
+        fifo_checker_vhd.write("    else\n")
+        fifo_checker_vhd.write("        err_FIFO_HS_state_onehot <= '0';\n")
+        fifo_checker_vhd.write("    end if;\n")
+        fifo_checker_vhd.write("end process;\n")
+        fifo_checker_vhd.write("\n")
+
+    if '12' in checker_id:
+        fifo_checker_vhd.write("-- Read_en from Arbiters can either be all zeros or must be one-hot!\n")
+        fifo_checker_vhd.write("process(read_en_out, empty_out, read_en_signals) begin\n")
+        fifo_checker_vhd.write("    if ( (read_en_out = '1' and empty_out = '0' and "
+                               "read_en_signals /= \"10000\" and read_en_signals /= \"01000\" and "
+                               "read_en_signals /= \"00100\" and read_en_signals /= \"00010\" and "
+                               "read_en_signals /= \"00001\") or (read_en_out = '0' and empty_out = '0' and "
+                               "read_en_signals /=\"00000\" ) ) then\n")
+        fifo_checker_vhd.write("        err_FIFO_read_en_onehot <= '1';\n")
+        fifo_checker_vhd.write("    else \n")
+        fifo_checker_vhd.write("        err_FIFO_read_en_onehot <= '0';\n")
+        fifo_checker_vhd.write("    end if;\n")
+        fifo_checker_vhd.write("end process;\n")
+        fifo_checker_vhd.write("\n")
+
+    if '13' in checker_id:
+        fifo_checker_vhd.write("-- Reading from an empty FIFO is not possible!\n")
+        fifo_checker_vhd.write("process(read_en_out, empty_out) begin\n")
+        fifo_checker_vhd.write("    if (read_en_out = '1' and empty_out = '1') then\n")
+        fifo_checker_vhd.write("        err_FIFO_read_from_empty_FIFO <= '1';\n")
+        fifo_checker_vhd.write("    else\n")
+        fifo_checker_vhd.write("        err_FIFO_read_from_empty_FIFO <= '0';\n")
+        fifo_checker_vhd.write("    end if;\n")
+        fifo_checker_vhd.write("end process;\n")
+        fifo_checker_vhd.write("\n")
+
+    if '14' in checker_id:
+        fifo_checker_vhd.write("-- Writing to a full FIFO is not possible!\n")
+        fifo_checker_vhd.write("process(write_en_out, full_out) begin\n")
+        fifo_checker_vhd.write("    if (write_en_out = '1' and full_out = '1') then\n")
+        fifo_checker_vhd.write("        err_FIFO_write_to_full_FIFO <= '1';\n")
+        fifo_checker_vhd.write("    else\n")
+        fifo_checker_vhd.write("        err_FIFO_write_to_full_FIFO <= '0';\n")
+        fifo_checker_vhd.write("    end if;\n")
+        fifo_checker_vhd.write("end process;\n")
+        fifo_checker_vhd.write("\n")
+
+    if '15' in checker_id:
+        fifo_checker_vhd.write("-- If there is a request to FIFO for writing and CTS_out is zero and the FIFO "
+                               "is not full, CTS_in must also be zero!\n")
+        fifo_checker_vhd.write("process(CTS_out, DRTS, full_out, CTS_in) begin\n")
+        fifo_checker_vhd.write("    if (CTS_out = '0' and DRTS = '1' and full_out ='0' and CTS_in = '0') then\n")
+        fifo_checker_vhd.write("        err_FIFO_control_part_CTS_in_CTS_out <= '1';\n")
+        fifo_checker_vhd.write("    else\n")
+        fifo_checker_vhd.write("        err_FIFO_control_part_CTS_in_CTS_out <= '0';\n")
+        fifo_checker_vhd.write("    end if;\n")
+        fifo_checker_vhd.write("end process;\n")
+        fifo_checker_vhd.write("\n")
+
+    if '16' in checker_id:
+        fifo_checker_vhd.write("process(read_en_signals, empty_out, read_en_out) begin\n")
+        fifo_checker_vhd.write("    if ( (read_en_signals = \"00000\" or empty_out = '1') and "
+                               "read_en_out = '1' ) then\n")
+        fifo_checker_vhd.write("        err_FIFO_read_en_empty <= '1';\n")
+        fifo_checker_vhd.write("    else \n")
+        fifo_checker_vhd.write("        err_FIFO_read_en_empty <= '0';\n")
         fifo_checker_vhd.write("    end if;\n")
         fifo_checker_vhd.write("end process;\n")
         fifo_checker_vhd.write("\n")
