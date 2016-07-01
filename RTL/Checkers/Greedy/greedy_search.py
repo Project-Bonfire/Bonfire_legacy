@@ -13,6 +13,7 @@ from essential_checker_extraction import find_essential_checker
 from extract_dominant_true_detection import find_dominant_true_detect_checker
 import sys
 import logger
+from find_problematic_checkers import find_problematic_checkers
 from for_testing import gen_dummy_dict, initialize_LBDR
 
 if '--help' in sys.argv[1:]:
@@ -31,6 +32,11 @@ build_list_of_candidates()
 sys.stdout = logger.Logger()
 
 report_config()
+
+if package_file.find_problematic_checkers:
+    if not find_problematic_checkers():
+        sys.exit()
+
 
 print "\033[32m* NOTE::\033[0m starting greedy optimization!"
 

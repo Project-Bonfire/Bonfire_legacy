@@ -14,6 +14,7 @@ debug = True
 # cost function can be "cov" or "val_density"
 cost_function_type = "val_density"
 extract_essential_checkers = True
+find_problematic_checkers = True
 
 # --------------------------------------------
 #                Anything bellow
