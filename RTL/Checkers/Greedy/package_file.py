@@ -1,7 +1,7 @@
 # copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 
 
-number_of_checkers = 12
+number_of_checkers = 11
 # size max is the maximum allowed area for the sum of checkers!
 size_max = 154
 
