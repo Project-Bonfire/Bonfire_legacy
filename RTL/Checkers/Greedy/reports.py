@@ -67,6 +67,7 @@ def report_config():
     print "size max:", package_file.size_max
     print "selection function:", package_file.cost_function_type
     print "essential checker extraction:", package_file.extract_essential_checkers
+    print "find problematic checkers:", package_file.find_problematic_checkers
     if package_file.test_mode:
         print "test mode: \033[91m ON\033[0m"
     else:
