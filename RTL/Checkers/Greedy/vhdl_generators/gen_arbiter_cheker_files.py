@@ -179,7 +179,7 @@ def gen_arbiter_checkers(checker_id):
     if '1' in checker_id:
         arbiter_checker_vhd.write("process (Xbar_sel, state) \n")
         arbiter_checker_vhd.write("begin \n")
-        arbiter_checker_vhd.write("    if (state = IDLE and Xbar_sel /= "00000") then \n")
+        arbiter_checker_vhd.write("    if (state = IDLE and Xbar_sel /= \"00000\") then \n")
         arbiter_checker_vhd.write("        err_state_IDLE_xbar <= '1'; \n")
         arbiter_checker_vhd.write("    else  \n")
         arbiter_checker_vhd.write("        err_state_IDLE_xbar <= '0';      \n")
@@ -191,7 +191,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("process (state, Xbar_sel) \n")
         arbiter_checker_vhd.write("begin \n")
         arbiter_checker_vhd.write("    if ( state /= IDLE and  \n")
-        arbiter_checker_vhd.write("         Xbar_sel /= "00001" and Xbar_sel /= "00010" and Xbar_sel /= "00100" and Xbar_sel /= "01000" and Xbar_sel /= "10000") then  \n")
+        arbiter_checker_vhd.write("         Xbar_sel /= \"00001\" and Xbar_sel /= \"00010\" and Xbar_sel /= \"00100\" and Xbar_sel /= \"01000\" and Xbar_sel /= \"10000\") then  \n")
         arbiter_checker_vhd.write("        err_state_not_IDLE_xbar <= '1'; \n")
         arbiter_checker_vhd.write("    else  \n")
         arbiter_checker_vhd.write("        err_state_not_IDLE_xbar <= '0';      \n")
@@ -279,7 +279,7 @@ def gen_arbiter_checkers(checker_id):
     if '10' in checker_id:
         arbiter_checker_vhd.write("process (RTS_FF, Grants) \n")
         arbiter_checker_vhd.write("begin \n")
-        arbiter_checker_vhd.write("    if (RTS_FF = '0' and Grants /= "00000") then \n")
+        arbiter_checker_vhd.write("    if (RTS_FF = '0' and Grants /= \"00000\") then \n")
         arbiter_checker_vhd.write("        err_not_DCTS_Grants <= '1'; \n")
         arbiter_checker_vhd.write("    else \n")
         arbiter_checker_vhd.write("        err_not_DCTS_Grants <= '0'; \n")
@@ -290,7 +290,7 @@ def gen_arbiter_checkers(checker_id):
     if '11' in checker_id:
         arbiter_checker_vhd.write("process (DCTS, RTS_FF, Grants) \n")
         arbiter_checker_vhd.write("begin \n")
-        arbiter_checker_vhd.write("    if (RTS_FF = '1' and DCTS = '0' and Grants /= "00000") then \n")
+        arbiter_checker_vhd.write("    if (RTS_FF = '1' and DCTS = '0' and Grants /= \"00000\") then \n")
         arbiter_checker_vhd.write("        err_DCTS_not_RTS_FF_Grants <= '1'; \n")
         arbiter_checker_vhd.write("    else \n")
         arbiter_checker_vhd.write("        err_DCTS_not_RTS_FF_Grants <= '0'; \n")
@@ -301,7 +301,7 @@ def gen_arbiter_checkers(checker_id):
     if '12' in checker_id:
         arbiter_checker_vhd.write("process (DCTS, RTS_FF, state, Grants) \n")
         arbiter_checker_vhd.write("begin \n")
-        arbiter_checker_vhd.write("    if (DCTS = '1' and RTS_FF = '1' and state = IDLE and Grants /= "00000") then \n")
+        arbiter_checker_vhd.write("    if (DCTS = '1' and RTS_FF = '1' and state = IDLE and Grants /= \"00000\") then \n")
         arbiter_checker_vhd.write("        err_DCTS_RTS_FF_IDLE_Grants <= '1'; \n")
         arbiter_checker_vhd.write("    else \n")
         arbiter_checker_vhd.write("        err_DCTS_RTS_FF_IDLE_Grants <= '0'; \n")
@@ -313,7 +313,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("process (DCTS, RTS_FF, state, Grants) \n")
         arbiter_checker_vhd.write("begin \n")
         arbiter_checker_vhd.write("    if (DCTS = '1' and RTS_FF = '1' and state /= IDLE and  \n")
-        arbiter_checker_vhd.write("        Grants /= "00001" and Grants /= "00010" and Grants /= "00100" and Grants /= "01000" and Grants /= "10000") then \n")
+        arbiter_checker_vhd.write("        Grants /= \"00001\" and Grants /= \"00010\" and Grants /= \"00100\" and Grants /= \"01000\" and Grants /= \"10000\") then \n")
         arbiter_checker_vhd.write(" \n")
         arbiter_checker_vhd.write("        err_DCTS_RTS_FF_not_IDLE_Grants_onehot <= '1'; \n")
         arbiter_checker_vhd.write("    else \n")
@@ -325,7 +325,7 @@ def gen_arbiter_checkers(checker_id):
     if '14' in checker_id:
         arbiter_checker_vhd.write("process (state, Requests, next_state_out) \n")
         arbiter_checker_vhd.write("begin  \n")
-        arbiter_checker_vhd.write("    if ( (state = North or state = East or state = West or state = South or state = Local or state = IDLE) and Requests = "00000" and next_state_out /= IDLE ) then  \n")
+        arbiter_checker_vhd.write("    if ( (state = North or state = East or state = West or state = South or state = Local or state = IDLE) and Requests = \"00000\" and next_state_out /= IDLE ) then  \n")
         arbiter_checker_vhd.write("        err_Requests_next_state_IDLE <= '1'; \n")
         arbiter_checker_vhd.write("    else \n")
         arbiter_checker_vhd.write("        err_Requests_next_state_IDLE <= '0'; \n")
@@ -755,7 +755,7 @@ def gen_arbiter_checkers(checker_id):
     if '52' in checker_id:
         arbiter_checker_vhd.write("process (state, Xbar_sel) \n")
         arbiter_checker_vhd.write("begin \n")
-        arbiter_checker_vhd.write("    if (state = North and Xbar_sel /= "00001" ) then \n")
+        arbiter_checker_vhd.write("    if (state = North and Xbar_sel /= \"00001\" ) then \n")
         arbiter_checker_vhd.write("        err_state_north_xbar_sel <= '1'; \n")
         arbiter_checker_vhd.write("    else \n")
         arbiter_checker_vhd.write("        err_state_north_xbar_sel <= '0'; \n")
@@ -766,7 +766,7 @@ def gen_arbiter_checkers(checker_id):
     if '53' in checker_id:
         arbiter_checker_vhd.write("process (state, Xbar_sel) \n")
         arbiter_checker_vhd.write("begin \n")
-        arbiter_checker_vhd.write("    if (state = East and Xbar_sel /= "00010" ) then \n")
+        arbiter_checker_vhd.write("    if (state = East and Xbar_sel /= \"00010\" ) then \n")
         arbiter_checker_vhd.write("        err_state_east_xbar_sel <= '1'; \n")
         arbiter_checker_vhd.write("    else \n")
         arbiter_checker_vhd.write("        err_state_east_xbar_sel <= '0'; \n")
@@ -777,7 +777,7 @@ def gen_arbiter_checkers(checker_id):
     if '54' in checker_id:
         arbiter_checker_vhd.write("process (state, Xbar_sel) \n")
         arbiter_checker_vhd.write("begin \n")
-        arbiter_checker_vhd.write("    if (state = West and Xbar_sel /= "00100" ) then \n")
+        arbiter_checker_vhd.write("    if (state = West and Xbar_sel /= \"00100\" ) then \n")
         arbiter_checker_vhd.write("        err_state_west_xbar_sel <= '1'; \n")
         arbiter_checker_vhd.write("    else \n")
         arbiter_checker_vhd.write("        err_state_west_xbar_sel <= '0'; \n")
@@ -788,7 +788,7 @@ def gen_arbiter_checkers(checker_id):
     if '55' in checker_id:
         arbiter_checker_vhd.write("process (state, Xbar_sel) \n")
         arbiter_checker_vhd.write("begin \n")
-        arbiter_checker_vhd.write("    if (state = South and Xbar_sel /= "01000" ) then \n")
+        arbiter_checker_vhd.write("    if (state = South and Xbar_sel /= \"01000\" ) then \n")
         arbiter_checker_vhd.write("        err_state_south_xbar_sel <= '1'; \n")
         arbiter_checker_vhd.write("    else \n")
         arbiter_checker_vhd.write("        err_state_south_xbar_sel <= '0'; \n")
@@ -799,7 +799,7 @@ def gen_arbiter_checkers(checker_id):
     if '56' in checker_id:
         arbiter_checker_vhd.write("process (state, Xbar_sel) \n")
         arbiter_checker_vhd.write("begin \n")
-        arbiter_checker_vhd.write("    if (state /= IDLE and state /= North and state /= East and state /= West and state /= South and Xbar_sel /= "10000" ) then \n")
+        arbiter_checker_vhd.write("    if (state /= IDLE and state /= North and state /= East and state /= West and state /= South and Xbar_sel /= \"10000\" ) then \n")
         arbiter_checker_vhd.write("        err_state_local_xbar_sel <= '1'; \n")
         arbiter_checker_vhd.write("    else \n")
         arbiter_checker_vhd.write("        err_state_local_xbar_sel <= '0'; \n")
