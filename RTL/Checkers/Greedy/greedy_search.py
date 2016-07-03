@@ -34,8 +34,10 @@ sys.stdout = logger.Logger()
 report_config()
 
 if package_file.find_problematic_checkers:
-    if not find_problematic_checkers():
-        sys.exit()
+
+    find_problematic_checkers()
+    print "Finished checking problematic checkers..."
+    sys.exit()
 
 
 print "\033[32m* NOTE::\033[0m starting greedy optimization!"

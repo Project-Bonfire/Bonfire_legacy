@@ -4,6 +4,8 @@ from area_coverage_calc import calculate_area, calculate_coverage
 from file_generator import generate_specific_file
 
 def find_problematic_checkers():
+    print "----------------------------------"
+    print "Starting checks for problematic checkers..."
     problematic_checker_detected = False
     checked_checkers = []
     counter = 0
