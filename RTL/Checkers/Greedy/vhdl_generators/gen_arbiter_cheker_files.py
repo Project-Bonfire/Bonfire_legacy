@@ -164,6 +164,8 @@ def gen_arbiter_checkers(checker_id):
     arbiter_checker_vhd.write("CONSTANT East: std_logic_vector (5 downto 0) := \"001000\";\n")
     arbiter_checker_vhd.write("CONSTANT West: std_logic_vector (5 downto 0) := \"010000\";\n")
     arbiter_checker_vhd.write("CONSTANT South: std_logic_vector (5 downto 0) := \"100000\";\n")
+    arbiter_checker_vhd.write("SIGNAL   Requests: std_logic_vector (4 downto 0);\n")
+    arbiter_checker_vhd.write("SIGNAL   Grants: std_logic_vector (4 downto 0);\n")
 
     arbiter_checker_vhd.write("\n")
 
