@@ -38,103 +38,117 @@ def gen_arbiter_checker_top(checker_id):
     string_to_write = ""
 
     if '1' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_onehot,\n"
+        string_to_write += "err_state_IDLE_xbar,\n"
     if '2' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS,\n"
+        string_to_write += "err_state_not_IDLE_xbar,\n"
     if '3' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS1,\n"
+        string_to_write += "err_state_IDLE_RTS_FF_in,\n"
     if '4' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS2,\n"
+        string_to_write += "err_state_not_IDLE_RTS_FF_RTS_FF_in,\n"
     if '5' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS3,\n"
+        string_to_write += "err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in,\n"
     if '6' in checker_id:
-        string_to_write += "err_Arbiter_state_and_grants_onehot,\n"
+        string_to_write += "err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in,\n"
     if '7' in checker_id:
-        string_to_write += "err_Arbiter_state_and_grants_onehot1,\n"
+        string_to_write += "err_RTS_FF_not_DCTS_state_state_in,\n"
     if '8' in checker_id:
-        string_to_write += "err_Arbiter_no_req_state_change,\n"
+        string_to_write += "err_not_RTS_FF_state_in_next_state,\n"
     if '9' in checker_id:
-        string_to_write += "err_Arbiter_valid_state,\n"
+        string_to_write += "err_RTS_FF_DCTS_state_in_next_state,\n"
     if '10' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN,\n"
+        string_to_write += "err_not_DCTS_Grants,\n"
     if '11' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE,\n"
+        string_to_write += "err_DCTS_not_RTS_FF_Grants,\n"
     if '12' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW,\n"
+        string_to_write += "err_DCTS_RTS_FF_IDLE_Grants,\n"
     if '13' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS,\n"
+        string_to_write += "err_DCTS_RTS_FF_not_IDLE_Grants_onehot,\n"
     if '14' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL,\n"
+        string_to_write += "err_Requests_next_state_IDLE,\n"
     if '15' in checker_id:
-        string_to_write += "err_Arbiter_state_update,\n"
+        string_to_write += "err_IDLE_Req_L,\n"
     if '16' in checker_id:
-        string_to_write += "err_Arbiter_state_RTS_FF_in,\n"
+        string_to_write += "err_Local_Req_L,\n"
     if '17' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN_not_active,\n"
+        string_to_write += "err_North_Req_N,\n"
     if '18' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE_not_active,\n"
+        string_to_write += "err_East_Req_E,\n"
     if '19' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW_not_active,\n"
+        string_to_write += "err_West_Req_W,\n"
     if '20' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS_not_active,\n"
+        string_to_write += "err_South_Req_S,\n"
     if '21' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL_not_active,\n"
+        string_to_write += "err_IDLE_Req_N,\n"
     if '22' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN_not_active1,\n"
+        string_to_write += "err_Local_Req_N,\n"
     if '23' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE_not_active1,\n"
+        string_to_write += "err_North_Req_E,\n"
     if '24' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW_not_active1,\n"
+        string_to_write += "err_East_Req_W,\n"
     if '25' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS_not_active1,\n"
+        string_to_write += "err_West_Req_S,\n"
     if '26' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL_not_active1,\n"
+        string_to_write += "err_South_Req_L,\n"
     if '27' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_IDLE,\n"
+        string_to_write += "err_IDLE_Req_E,\n"
     if '28' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_North,\n"
+        string_to_write += "err_Local_Req_E,\n"
     if '29' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_East,\n"
+        string_to_write += "err_North_Req_W,\n"
     if '30' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_West,\n"
+        string_to_write += "err_East_Req_S,\n"
     if '31' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_South,\n"
+        string_to_write += "err_West_Req_L,\n"
     if '32' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_Local,\n"
+        string_to_write += "err_South_Req_N,\n"
     if '33' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_North1,\n"
+        string_to_write += "err_IDLE_Req_W,\n"
     if '34' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_East1,\n"
+        string_to_write += "err_Local_Req_W,\n"
     if '35' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_West1,\n"
+        string_to_write += "err_North_Req_S,\n"
     if '36' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_South1,\n"
+        string_to_write += "err_East_Req_L,\n"
     if '37' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_Local1,\n"
+        string_to_write += "err_West_Req_N,\n"
     if '38' in checker_id:
-        string_to_write += "err_Arbiter_priorityIDLE3,\n"
+        string_to_write += "err_South_Req_E,\n"
     if '39' in checker_id:
-        string_to_write += "err_Arbiter_priorityL3,\n"
+        string_to_write += "err_IDLE_Req_S,\n"
     if '40' in checker_id:
-        string_to_write += "err_Arbiter_priorityN3,\n"
+        string_to_write += "err_Local_Req_S,\n"
     if '41' in checker_id:
-        string_to_write += "err_Arbiter_priorityE3,\n"
+        string_to_write += "err_North_Req_L,\n"
     if '42' in checker_id:
-        string_to_write += "err_Arbiter_priorityW3,\n"
+        string_to_write += "err_East_Req_N,\n"
     if '43' in checker_id:
-        string_to_write += "err_Arbiter_priorityS3,\n"
+        string_to_write += "err_West_Req_E,\n"
     if '44' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN1,\n"
+        string_to_write += "err_South_Req_W,\n"
     if '45' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE1,\n"
+        string_to_write += "err_next_state_onehot,\n"
     if '46' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW1,\n"
+        string_to_write += "err_state_in_onehot,\n"
     if '47' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS1,\n"
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_L,\n"
     if '48' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL1,\n"
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_N,\n"
     if '49' in checker_id:
-        string_to_write += "err_Arbiter_state_not_update,\n"
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_E,\n"
+    if '50' in checker_id:
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_W,\n"
+    if '51' in checker_id:
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_S,\n"
+    if '52' in checker_id:
+        string_to_write += "err_state_north_xbar_sel,\n"
+    if '53' in checker_id:
+        string_to_write += "err_state_east_xbar_sel,\n"
+    if '54' in checker_id:
+        string_to_write += "err_state_west_xbar_sel,\n"
+    if '55' in checker_id:
+        string_to_write += "err_state_south_xbar_sel,\n"
+    if '56' in checker_id:
+        string_to_write += "err_state_local_xbar_sel,\n"
 
     string_to_write = string_to_write[:len(string_to_write)-2]
     string_to_write += " : out std_logic\n"
@@ -185,103 +199,117 @@ def gen_arbiter_checker_top(checker_id):
     string_to_write = ""
 
     if '1' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_onehot,\n"
+        string_to_write += "err_state_IDLE_xbar,\n"
     if '2' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS,\n"
+        string_to_write += "err_state_not_IDLE_xbar,\n"
     if '3' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS1,\n"
+        string_to_write += "err_state_IDLE_RTS_FF_in,\n"
     if '4' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS2,\n"
+        string_to_write += "err_state_not_IDLE_RTS_FF_RTS_FF_in,\n"
     if '5' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS3,\n"
+        string_to_write += "err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in,\n"
     if '6' in checker_id:
-        string_to_write += "err_Arbiter_state_and_grants_onehot,\n"
+        string_to_write += "err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in,\n"
     if '7' in checker_id:
-        string_to_write += "err_Arbiter_state_and_grants_onehot1,\n"
+        string_to_write += "err_RTS_FF_not_DCTS_state_state_in,\n"
     if '8' in checker_id:
-        string_to_write += "err_Arbiter_no_req_state_change,\n"
+        string_to_write += "err_not_RTS_FF_state_in_next_state,\n"
     if '9' in checker_id:
-        string_to_write += "err_Arbiter_valid_state,\n"
+        string_to_write += "err_RTS_FF_DCTS_state_in_next_state,\n"
     if '10' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN,\n"
+        string_to_write += "err_not_DCTS_Grants,\n"
     if '11' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE,\n"
+        string_to_write += "err_DCTS_not_RTS_FF_Grants,\n"
     if '12' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW,\n"
+        string_to_write += "err_DCTS_RTS_FF_IDLE_Grants,\n"
     if '13' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS,\n"
+        string_to_write += "err_DCTS_RTS_FF_not_IDLE_Grants_onehot,\n"
     if '14' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL,\n"
+        string_to_write += "err_Requests_next_state_IDLE,\n"
     if '15' in checker_id:
-        string_to_write += "err_Arbiter_state_update,\n"
+        string_to_write += "err_IDLE_Req_L,\n"
     if '16' in checker_id:
-        string_to_write += "err_Arbiter_state_RTS_FF_in,\n"
+        string_to_write += "err_Local_Req_L,\n"
     if '17' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN_not_active,\n"
+        string_to_write += "err_North_Req_N,\n"
     if '18' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE_not_active,\n"
+        string_to_write += "err_East_Req_E,\n"
     if '19' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW_not_active,\n"
+        string_to_write += "err_West_Req_W,\n"
     if '20' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS_not_active,\n"
+        string_to_write += "err_South_Req_S,\n"
     if '21' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL_not_active,\n"
+        string_to_write += "err_IDLE_Req_N,\n"
     if '22' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN_not_active1,\n"
+        string_to_write += "err_Local_Req_N,\n"
     if '23' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE_not_active1,\n"
+        string_to_write += "err_North_Req_E,\n"
     if '24' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW_not_active1,\n"
+        string_to_write += "err_East_Req_W,\n"
     if '25' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS_not_active1,\n"
+        string_to_write += "err_West_Req_S,\n"
     if '26' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL_not_active1,\n"
+        string_to_write += "err_South_Req_L,\n"
     if '27' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_IDLE,\n"
+        string_to_write += "err_IDLE_Req_E,\n"
     if '28' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_North,\n"
+        string_to_write += "err_Local_Req_E,\n"
     if '29' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_East,\n"
+        string_to_write += "err_North_Req_W,\n"
     if '30' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_West,\n"
+        string_to_write += "err_East_Req_S,\n"
     if '31' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_South,\n"
+        string_to_write += "err_West_Req_L,\n"
     if '32' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_Local,\n"
+        string_to_write += "err_South_Req_N,\n"
     if '33' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_North1,\n"
+        string_to_write += "err_IDLE_Req_W,\n"
     if '34' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_East1,\n"
+        string_to_write += "err_Local_Req_W,\n"
     if '35' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_West1,\n"
+        string_to_write += "err_North_Req_S,\n"
     if '36' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_South1,\n"
+        string_to_write += "err_East_Req_L,\n"
     if '37' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_Local1,\n"
+        string_to_write += "err_West_Req_N,\n"
     if '38' in checker_id:
-        string_to_write += "err_Arbiter_priorityIDLE3,\n"
+        string_to_write += "err_South_Req_E,\n"
     if '39' in checker_id:
-        string_to_write += "err_Arbiter_priorityL3,\n"
+        string_to_write += "err_IDLE_Req_S,\n"
     if '40' in checker_id:
-        string_to_write += "err_Arbiter_priorityN3,\n"
+        string_to_write += "err_Local_Req_S,\n"
     if '41' in checker_id:
-        string_to_write += "err_Arbiter_priorityE3,\n"
+        string_to_write += "err_North_Req_L,\n"
     if '42' in checker_id:
-        string_to_write += "err_Arbiter_priorityW3,\n"
+        string_to_write += "err_East_Req_N,\n"
     if '43' in checker_id:
-        string_to_write += "err_Arbiter_priorityS3,\n"
+        string_to_write += "err_West_Req_E,\n"
     if '44' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN1,\n"
+        string_to_write += "err_South_Req_W,\n"
     if '45' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE1,\n"
+        string_to_write += "err_next_state_onehot,\n"
     if '46' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW1,\n"
+        string_to_write += "err_state_in_onehot,\n"
     if '47' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS1,\n"
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_L,\n"
     if '48' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL1,\n"
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_N,\n"
     if '49' in checker_id:
-        string_to_write += "err_Arbiter_state_not_update,\n"
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_E,\n"
+    if '50' in checker_id:
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_W,\n"
+    if '51' in checker_id:
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_S,\n"
+    if '52' in checker_id:
+        string_to_write += "err_state_north_xbar_sel,\n"
+    if '53' in checker_id:
+        string_to_write += "err_state_east_xbar_sel,\n"
+    if '54' in checker_id:
+        string_to_write += "err_state_west_xbar_sel,\n"
+    if '55' in checker_id:
+        string_to_write += "err_state_south_xbar_sel,\n"
+    if '56' in checker_id:
+        string_to_write += "err_state_local_xbar_sel,\n"
 
     string_to_write = string_to_write[:len(string_to_write) - 2]
     string_to_write += " : out std_logic \n"
@@ -309,6 +337,7 @@ def gen_arbiter_checker_top(checker_id):
     arbiter_checker_top.write("RTS_FF_in <= RTS_FF_in_sig; \n")
     arbiter_checker_top.write("next_state_out <= next_state_out_sig; \n")
     arbiter_checker_top.write(" \n")
+    
     arbiter_checker_top.write("-- Arbiter instantiation \n")
     arbiter_checker_top.write("ARBITER: Arbiter_pseudo port map   ( \n")
     arbiter_checker_top.write("                                    Req_N=>Req_N,  \n")
@@ -347,8 +376,8 @@ def gen_arbiter_checker_top(checker_id):
     arbiter_checker_top.write("                                      Grant_W => Grant_W_sig,  \n")
     arbiter_checker_top.write("                                      Grant_S => Grant_S_sig,  \n")
     arbiter_checker_top.write("                                      Grant_L => Grant_L_sig,  \n")
-    arbiter_checker_top.write("								                      Xbar_sel=>Xbar_sel_sig, \n")
-    arbiter_checker_top.write("								                      state_in => state_in_sig, \n")
+    arbiter_checker_top.write("								         Xbar_sel=>Xbar_sel_sig, \n")
+    arbiter_checker_top.write("								         state_in => state_in_sig, \n")
     arbiter_checker_top.write("                                      next_state_out => next_state_out_sig, \n")
     arbiter_checker_top.write("                                      RTS_FF_in => RTS_FF_in_sig,  \n")
     arbiter_checker_top.write(" \n")
@@ -356,103 +385,117 @@ def gen_arbiter_checker_top(checker_id):
     string_to_write = ""
 
     if '1' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_onehot => err_Arbiter_Xbar_sel_onehot,\n"
+        string_to_write += "err_state_IDLE_xbar => err_state_IDLE_xbar,\n"
     if '2' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS => err_Arbiter_DCTS_RTS,\n"
+        string_to_write += "err_state_not_IDLE_xbar => err_state_not_IDLE_xbar,\n"
     if '3' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS1 => err_Arbiter_DCTS_RTS1,\n"
+        string_to_write += "err_state_IDLE_RTS_FF_in => err_state_IDLE_RTS_FF_in,\n"
     if '4' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS2 => err_Arbiter_DCTS_RTS2,\n"
+        string_to_write += "err_state_not_IDLE_RTS_FF_RTS_FF_in => err_state_not_IDLE_RTS_FF_RTS_FF_in,\n"
     if '5' in checker_id:
-        string_to_write += "err_Arbiter_DCTS_RTS3 => err_Arbiter_DCTS_RTS3,\n"
+        string_to_write += "err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in => err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in,\n"
     if '6' in checker_id:
-        string_to_write += "err_Arbiter_state_and_grants_onehot => err_Arbiter_state_and_grants_onehot,\n"
+        string_to_write += "err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in => err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in,\n"
     if '7' in checker_id:
-        string_to_write += "err_Arbiter_state_and_grants_onehot1 => err_Arbiter_state_and_grants_onehot1,\n"
+        string_to_write += "err_RTS_FF_not_DCTS_state_state_in => err_RTS_FF_not_DCTS_state_state_in,\n"
     if '8' in checker_id:
-        string_to_write += "err_Arbiter_no_req_state_change => err_Arbiter_no_req_state_change,\n"
+        string_to_write += "err_not_RTS_FF_state_in_next_state => err_not_RTS_FF_state_in_next_state,\n"
     if '9' in checker_id:
-        string_to_write += "err_Arbiter_valid_state => err_Arbiter_valid_state,\n"
+        string_to_write += "err_RTS_FF_DCTS_state_in_next_state => err_RTS_FF_DCTS_state_in_next_state,\n"
     if '10' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN => err_Arbiter_switchgrantN,\n"
+        string_to_write += "err_not_DCTS_Grants => err_not_DCTS_Grants,\n"
     if '11' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE => err_Arbiter_switchgrantE,\n"
+        string_to_write += "err_DCTS_not_RTS_FF_Grants => err_DCTS_not_RTS_FF_Grants,\n"
     if '12' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW => err_Arbiter_switchgrantW,\n"
+        string_to_write += "err_DCTS_RTS_FF_IDLE_Grants => err_DCTS_RTS_FF_IDLE_Grants,\n"
     if '13' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS => err_Arbiter_switchgrantS,\n"
+        string_to_write += "err_DCTS_RTS_FF_not_IDLE_Grants_onehot => err_DCTS_RTS_FF_not_IDLE_Grants_onehot,\n"
     if '14' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL => err_Arbiter_switchgrantL,\n"
+        string_to_write += "err_Requests_next_state_IDLE => err_Requests_next_state_IDLE,\n"
     if '15' in checker_id:
-        string_to_write += "err_Arbiter_state_update => err_Arbiter_state_update,\n"
+        string_to_write += "err_IDLE_Req_L => err_IDLE_Req_L,\n"
     if '16' in checker_id:
-        string_to_write += "err_Arbiter_state_RTS_FF_in => err_Arbiter_state_RTS_FF_in,\n"
+        string_to_write += "err_Local_Req_L => err_Local_Req_L,\n"
     if '17' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN_not_active => err_Arbiter_switchgrantN_not_active,\n"
+        string_to_write += "err_North_Req_N => err_North_Req_N,\n"
     if '18' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE_not_active => err_Arbiter_switchgrantE_not_active,\n"
+        string_to_write += "err_East_Req_E => err_East_Req_E,\n"
     if '19' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW_not_active => err_Arbiter_switchgrantW_not_active,\n"
+        string_to_write += "err_West_Req_W => err_West_Req_W,\n"
     if '20' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS_not_active => err_Arbiter_switchgrantS_not_active,\n"
+        string_to_write += "err_South_Req_S => err_South_Req_S,\n"
     if '21' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL_not_active => err_Arbiter_switchgrantL_not_active,\n"
+        string_to_write += "err_IDLE_Req_N => err_IDLE_Req_N,\n"
     if '22' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN_not_active1 => err_Arbiter_switchgrantN_not_active1,\n"
+        string_to_write += "err_Local_Req_N => err_Local_Req_N,\n"
     if '23' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE_not_active1 => err_Arbiter_switchgrantE_not_active1,\n"
+        string_to_write += "err_North_Req_E => err_North_Req_E,\n"
     if '24' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW_not_active1 => err_Arbiter_switchgrantW_not_active1,\n"
+        string_to_write += "err_East_Req_W => err_East_Req_W,\n"
     if '25' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS_not_active1 => err_Arbiter_switchgrantS_not_active1,\n"
+        string_to_write += "err_West_Req_S => err_West_Req_S,\n"
     if '26' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL_not_active1 => err_Arbiter_switchgrantL_not_active1,\n"
+        string_to_write += "err_South_Req_L => err_South_Req_L,\n"
     if '27' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_IDLE => err_Arbiter_Xbar_sel_invalid_IDLE,\n"
+        string_to_write += "err_IDLE_Req_E => err_IDLE_Req_E,\n"
     if '28' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_North => err_Arbiter_Xbar_sel_invalid_North,\n"
+        string_to_write += "err_Local_Req_E => err_Local_Req_E,\n"
     if '29' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_East => err_Arbiter_Xbar_sel_invalid_East,\n"
+        string_to_write += "err_North_Req_W => err_North_Req_W,\n"
     if '30' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_West => err_Arbiter_Xbar_sel_invalid_West,\n"
+        string_to_write += "err_East_Req_S => err_East_Req_S,\n"
     if '31' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_South => err_Arbiter_Xbar_sel_invalid_South,\n"
+        string_to_write += "err_West_Req_L => err_West_Req_L,\n"
     if '32' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_Local => err_Arbiter_Xbar_sel_invalid_Local,\n"
+        string_to_write += "err_South_Req_N => err_South_Req_N,\n"
     if '33' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_North1 => err_Arbiter_Xbar_sel_invalid_North1,\n"
+        string_to_write += "err_IDLE_Req_W => err_IDLE_Req_W,\n"
     if '34' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_East1 => err_Arbiter_Xbar_sel_invalid_East1,\n"
+        string_to_write += "err_Local_Req_W => err_Local_Req_W,\n"
     if '35' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_West1 => err_Arbiter_Xbar_sel_invalid_West1,\n"
+        string_to_write += "err_North_Req_S => err_North_Req_S,\n"
     if '36' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_South1 => err_Arbiter_Xbar_sel_invalid_South1,\n"
+        string_to_write += "err_East_Req_L => err_East_Req_L,\n"
     if '37' in checker_id:
-        string_to_write += "err_Arbiter_Xbar_sel_invalid_Local1 =>err_Arbiter_Xbar_sel_invalid_Local1,\n"
+        string_to_write += "err_West_Req_N => err_West_Req_N,\n"
     if '38' in checker_id:
-        string_to_write += "err_Arbiter_priorityIDLE3 => err_Arbiter_priorityIDLE3,\n"
+        string_to_write += "err_South_Req_E => err_South_Req_E,\n"
     if '39' in checker_id:
-        string_to_write += "err_Arbiter_priorityL3 => err_Arbiter_priorityL3,\n"
+        string_to_write += "err_IDLE_Req_S => err_IDLE_Req_S,\n"
     if '40' in checker_id:
-        string_to_write += "err_Arbiter_priorityN3 => err_Arbiter_priorityN3,\n"
+        string_to_write += "err_Local_Req_S => err_Local_Req_S,\n"
     if '41' in checker_id:
-        string_to_write += "err_Arbiter_priorityE3 => err_Arbiter_priorityE3,\n"
+        string_to_write += "err_North_Req_L => err_North_Req_L,\n"
     if '42' in checker_id:
-        string_to_write += "err_Arbiter_priorityW3 => err_Arbiter_priorityW3,\n"
+        string_to_write += "err_East_Req_N => err_East_Req_N,\n"
     if '43' in checker_id:
-        string_to_write += "err_Arbiter_priorityS3 => err_Arbiter_priorityS3,\n"
+        string_to_write += "err_West_Req_E => err_West_Req_E,\n"
     if '44' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantN1 => err_Arbiter_switchgrantN1,\n"
+        string_to_write += "err_South_Req_W => err_South_Req_W,\n"
     if '45' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantE1 => err_Arbiter_switchgrantE1,\n"
+        string_to_write += "err_next_state_onehot => err_next_state_onehot,\n"
     if '46' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantW1 => err_Arbiter_switchgrantW1,\n"
+        string_to_write += "err_state_in_onehot => err_state_in_onehot,\n"
     if '47' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantS1 => err_Arbiter_switchgrantS1,\n"
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_L => err_state_in_onehot,\n"
     if '48' in checker_id:
-        string_to_write += "err_Arbiter_switchgrantL1 => err_Arbiter_switchgrantL1,\n"
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_N => err_DCTS_RTS_FF_state_Grant_N,\n"
     if '49' in checker_id:
-        string_to_write += "err_Arbiter_state_not_update => err_Arbiter_state_not_update,\n"
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_E => err_DCTS_RTS_FF_state_Grant_E,\n"
+    if '50' in checker_id:
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_W => err_DCTS_RTS_FF_state_Grant_W,\n"
+    if '51' in checker_id:
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_S => err_DCTS_RTS_FF_state_Grant_S,\n"
+    if '52' in checker_id:
+        string_to_write += "err_state_north_xbar_sel => err_state_north_xbar_sel,\n"
+    if '53' in checker_id:
+        string_to_write += "err_state_east_xbar_sel => err_state_east_xbar_sel,\n"
+    if '54' in checker_id:
+        string_to_write += "err_state_west_xbar_sel => err_state_west_xbar_sel,\n"
+    if '55' in checker_id:
+        string_to_write += "err_state_south_xbar_sel => err_state_south_xbar_sel,\n"
+    if '56' in checker_id:
+        string_to_write += "err_state_local_xbar_sel => err_state_local_xbar_sel,\n"
 
     string_to_write = string_to_write[:len(string_to_write)-2]+");\n"
 
