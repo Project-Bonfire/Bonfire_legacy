@@ -89,7 +89,7 @@ def gen_fifo_checker_top(checker_id):
     fifo_checker_top.write("            read_pointer_in: out std_logic_vector(3 downto 0); \n")
     fifo_checker_top.write("            write_pointer_in: out std_logic_vector(3 downto 0);\n")
     fifo_checker_top.write("            read_en_out: out std_logic;\n")
-    fifo_checker_top.write("            write_en_out: out std_logic; \n")
+    fifo_checker_top.write("            write_en_out: out std_logic\n")
     fifo_checker_top.write("    );\n")
     fifo_checker_top.write("end component;\n")
     fifo_checker_top.write("\n")
