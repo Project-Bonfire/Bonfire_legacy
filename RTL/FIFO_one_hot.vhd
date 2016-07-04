@@ -34,9 +34,7 @@ architecture behavior of FIFO is
    signal FIFO_MEM_2, FIFO_MEM_2_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_MEM_4, FIFO_MEM_4_in : std_logic_vector(DATA_WIDTH-1 downto 0);
-   
-   TYPE STATE_TYPE IS (IDLE, READ_DATA);
-   SIGNAL HS_state_out,HS_state_in   : STATE_TYPE;
+
 
 begin
  --------------------------------------------------------------------------------------------
@@ -75,8 +73,7 @@ begin
 
    process (clk, reset)begin
         if reset = '0' then
-            HS_state_out <= IDLE;
-            read_pointer <= "0001";
+             read_pointer <= "0001";
             write_pointer <= "0001";
             CTS_out<='0';
 
@@ -86,8 +83,7 @@ begin
             FIFO_MEM_4 <= (others=>'0');
 
         elsif clk'event and clk = '1' then
-            HS_state_out <= HS_state_in;
-            write_pointer <= write_pointer_in;
+             write_pointer <= write_pointer_in;
             if write_en = '1' then
                 --write into the memory
                   FIFO_MEM_1 <= FIFO_MEM_1_in;
@@ -143,30 +139,14 @@ begin
         end if;
    end process;
 
-   process(HS_state_out, full, DRTS, CTS_out) begin
-        case(HS_state_out) is
-            when IDLE =>
-                if CTS_out = '0' and DRTS = '1' and full ='0' then
-                    HS_state_in <= READ_DATA;
-                    CTS_in <= '1';
-                    write_en <= '1';
-                else
-                    HS_state_in <= IDLE;
-                    CTS_in <= '0';
-                    write_en <= '0';
-                end if;
-            when others => -- READ_DATA
-                if CTS_out = '0' and DRTS = '1' and full ='0' then
-                    HS_state_in <= READ_DATA;
-                    CTS_in <= '1';
-                    write_en <= '1';
-                else
-                    HS_state_in <= IDLE;
-                    CTS_in <= '0';
-                    write_en <= '0';
-                end if;
-        end case ;
-        
+   process(full, DRTS, CTS_out) begin
+      if CTS_out = '0' and DRTS = '1' and full ='0' then
+           CTS_in <= '1';
+          write_en <= '1';
+      else
+          CTS_in <= '0';
+          write_en <= '0';
+      end if;        
    end process;
                         
     process(write_pointer, read_pointer) begin
