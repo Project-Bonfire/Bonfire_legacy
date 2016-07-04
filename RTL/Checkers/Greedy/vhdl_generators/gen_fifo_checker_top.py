@@ -24,7 +24,6 @@ def gen_fifo_checker_top(checker_id):
     fifo_checker_top.write("            read_pointer: in std_logic_vector(3 downto 0);\n")
     fifo_checker_top.write("            write_pointer: in std_logic_vector(3 downto 0);\n")
     fifo_checker_top.write("            CTS_out: in std_logic;\n")
-    fifo_checker_top.write("            HS_state_out: in std_logic_vector(1 downto 0);\n")
     fifo_checker_top.write("\n")
     fifo_checker_top.write("            CTS_in: out std_logic; \n")
     fifo_checker_top.write("            empty_out: out std_logic; \n")
@@ -33,45 +32,38 @@ def gen_fifo_checker_top(checker_id):
     fifo_checker_top.write("            write_pointer_in: out std_logic_vector(3 downto 0);\n")
     fifo_checker_top.write("            read_en_out: out std_logic;\n")
     fifo_checker_top.write("            write_en_out: out std_logic; \n")
-    fifo_checker_top.write("            HS_state_in: out std_logic_vector(1 downto 0);\n")
     fifo_checker_top.write("\n")
     fifo_checker_top.write("            -- Checker outputs\n")
 
     string_to_write = ""
     if '1' in checker_id:
-        string_to_write += "err_FIFO_control_part_DRTS_CTS,"
+        string_to_write += "err_write_en_write_pointer,\n"
     if '2' in checker_id:
-        string_to_write += "err_FIFO_write_pointer_update,"
+        string_to_write += "err_not_write_en_write_pointer,\n"
     if '3' in checker_id:
-        string_to_write += "err_FIFO_read_pointer_not_update,"
+        string_to_write += "err_read_pointer_write_pointer_not_empty,\n"
     if '4' in checker_id:
-        string_to_write += "err_FIFO_write_pointer_not_update,"
+        string_to_write += "err_read_pointer_write_pointer_empty,\n"
     if '5' in checker_id:
-        string_to_write += "err_FIFO_full_empty,"
+        string_to_write += "err_read_pointer_write_pointer_not_full,\n"
     if '6' in checker_id:
-        string_to_write += "err_FIFO_empty,"
+        string_to_write += "err_read_pointer_write_pointer_full,\n"
     if '7' in checker_id:
-        string_to_write += "err_FIFO_empty1,"
+        string_to_write += "err_read_pointer_increment,\n"
     if '8' in checker_id:
-        string_to_write += "err_FIFO_full,"
+        string_to_write += "err_read_pointer_not_increment,\n"
     if '9' in checker_id:
-        string_to_write += "err_FIFO_read_pointer_onehot,"
+        string_to_write += "err_CTS_in,\n"
     if '10' in checker_id:
-        string_to_write += "err_FIFO_write_pointer_onehot,"
+        string_to_write += "err_write_en,\n"
     if '11' in checker_id:
-        string_to_write += "err_FIFO_HS_state_onehot,"
+        string_to_write += "err_not_CTS_in,\n"
     if '12' in checker_id:
-        string_to_write += "err_FIFO_read_en_onehot,"
+        string_to_write += "err_not_write_en,\n"
     if '13' in checker_id:
-        string_to_write += "err_FIFO_read_from_empty_FIFO,"
-    if '14' in checker_id:
-        string_to_write += "err_FIFO_write_to_full_FIFO,"
-    if '15' in checker_id:
-        string_to_write += "err_FIFO_control_part_CTS_in_CTS_out,"
-    if '16' in checker_id:
-        string_to_write += "err_FIFO_read_en_empty,"
+        string_to_write += "err_read_en_mismatch,\n"
 
-    string_to_write = string_to_write[:len(string_to_write)-1]
+    string_to_write = string_to_write[:len(string_to_write)-2]
     string_to_write += " : out std_logic\n"
     fifo_checker_top.write(string_to_write)
 
@@ -90,7 +82,6 @@ def gen_fifo_checker_top(checker_id):
     fifo_checker_top.write("            read_pointer: in std_logic_vector(3 downto 0);\n")
     fifo_checker_top.write("            write_pointer: in std_logic_vector(3 downto 0);\n")
     fifo_checker_top.write("            CTS_out: in std_logic;\n")
-    fifo_checker_top.write("            HS_state_out: in std_logic_vector(1 downto 0);\n")
     fifo_checker_top.write("\n")
     fifo_checker_top.write("            CTS_in: out std_logic; \n")
     fifo_checker_top.write("            empty_out: out std_logic; \n")
@@ -99,7 +90,6 @@ def gen_fifo_checker_top(checker_id):
     fifo_checker_top.write("            write_pointer_in: out std_logic_vector(3 downto 0);\n")
     fifo_checker_top.write("            read_en_out: out std_logic;\n")
     fifo_checker_top.write("            write_en_out: out std_logic; \n")
-    fifo_checker_top.write("            HS_state_in: out std_logic_vector(1 downto 0)\n")
     fifo_checker_top.write("    );\n")
     fifo_checker_top.write("end component;\n")
     fifo_checker_top.write("\n")
@@ -120,45 +110,38 @@ def gen_fifo_checker_top(checker_id):
     fifo_checker_top.write("            full_out: in std_logic;\n")
     fifo_checker_top.write("            read_en_out: in std_logic;\n")
     fifo_checker_top.write("            write_en_out: in std_logic; \n")
-    fifo_checker_top.write("            HS_state_in: in std_logic_vector(1 downto 0);         \n")
     fifo_checker_top.write("\n")
     fifo_checker_top.write("            -- Checker outputs\n")
 
     string_to_write = ""
     if '1' in checker_id:
-        string_to_write += "err_FIFO_control_part_DRTS_CTS,"
+        string_to_write += "err_write_en_write_pointer,\n"
     if '2' in checker_id:
-        string_to_write += "err_FIFO_write_pointer_update,"
+        string_to_write += "err_not_write_en_write_pointer,\n"
     if '3' in checker_id:
-        string_to_write += "err_FIFO_read_pointer_not_update,"
+        string_to_write += "err_read_pointer_write_pointer_not_empty,\n"
     if '4' in checker_id:
-        string_to_write += "err_FIFO_write_pointer_not_update,"
+        string_to_write += "err_read_pointer_write_pointer_empty,\n"
     if '5' in checker_id:
-        string_to_write += "err_FIFO_full_empty,"
+        string_to_write += "err_read_pointer_write_pointer_not_full,\n"
     if '6' in checker_id:
-        string_to_write += "err_FIFO_empty,"
+        string_to_write += "err_read_pointer_write_pointer_full,\n"
     if '7' in checker_id:
-        string_to_write += "err_FIFO_empty1,"
+        string_to_write += "err_read_pointer_increment,\n"
     if '8' in checker_id:
-        string_to_write += "err_FIFO_full,"
+        string_to_write += "err_read_pointer_not_increment,\n"
     if '9' in checker_id:
-        string_to_write += "err_FIFO_read_pointer_onehot,"
+        string_to_write += "err_CTS_in,\n"
     if '10' in checker_id:
-        string_to_write += "err_FIFO_write_pointer_onehot,"
+        string_to_write += "err_write_en,\n"
     if '11' in checker_id:
-        string_to_write += "err_FIFO_HS_state_onehot,"
+        string_to_write += "err_not_CTS_in,\n"
     if '12' in checker_id:
-        string_to_write += "err_FIFO_read_en_onehot,"
+        string_to_write += "err_not_write_en,\n"
     if '13' in checker_id:
-        string_to_write += "err_FIFO_read_from_empty_FIFO,"
-    if '14' in checker_id:
-        string_to_write += "err_FIFO_write_to_full_FIFO,"
-    if '15' in checker_id:
-        string_to_write += "err_FIFO_control_part_CTS_in_CTS_out,"
-    if '16' in checker_id:
-        string_to_write += "err_FIFO_read_en_empty,"
+        string_to_write += "err_read_en_mismatch,\n"
 
-    string_to_write = string_to_write[:len(string_to_write)-1]
+    string_to_write = string_to_write[:len(string_to_write)-2]
     string_to_write += " : out std_logic\n"
     fifo_checker_top.write(string_to_write)
 
@@ -167,7 +150,6 @@ def gen_fifo_checker_top(checker_id):
     fifo_checker_top.write("\n")
     fifo_checker_top.write("signal CTS_in_sig, empty_out_sig, full_out_sig, read_en_out_sig, write_en_out_sig: std_logic;\n")
     fifo_checker_top.write("signal read_pointer_in_sig, write_pointer_in_sig: std_logic_vector(3 downto 0);\n")
-    fifo_checker_top.write("signal HS_state_in_sig : std_logic_vector(1 downto 0);\n")
     fifo_checker_top.write("\n")
     fifo_checker_top.write("begin \n")
     fifo_checker_top.write("\n")
@@ -178,21 +160,18 @@ def gen_fifo_checker_top(checker_id):
     fifo_checker_top.write("full_out <= full_out_sig;\n")
     fifo_checker_top.write("read_en_out <= read_en_out_sig;\n")
     fifo_checker_top.write("write_en_out <= write_en_out_sig;\n")
-    fifo_checker_top.write("HS_state_in <= HS_state_in_sig;\n")
     fifo_checker_top.write("\n")
     fifo_checker_top.write("-- FEIFO Control Part instantiation\n")
     fifo_checker_top.write("FIFO_CONTROL_PART: FIFO_control_part_pseudo port map (DRTS => DRTS, \n")
     fifo_checker_top.write("                                                      read_en_N => read_en_N, read_en_E => read_en_E, read_en_W => read_en_W, read_en_S => read_en_S, read_en_L => read_en_L,\n")
     fifo_checker_top.write("                                                      CTS_out => CTS_out,\n")
     fifo_checker_top.write("                                                      read_pointer => read_pointer, write_pointer => write_pointer, \n")
-    fifo_checker_top.write("                                                      HS_state_out => HS_state_out,\n")
-    fifo_checker_top.write("\n")
+    fifo_checker_top.write(" \n")
     fifo_checker_top.write("                                                      CTS_in => CTS_in_sig, read_pointer_in => read_pointer_in_sig, write_pointer_in => write_pointer_in_sig,\n")
     fifo_checker_top.write("                                                      empty_out => empty_out_sig, full_out => full_out_sig, \n")
-    fifo_checker_top.write("                                                      read_en_out => read_en_out_sig, write_en_out => write_en_out_sig, \n")
-    fifo_checker_top.write("                                                      HS_state_in => HS_state_in_sig\n")
-    fifo_checker_top.write("						                                          );\n")
-    fifo_checker_top.write("                                  \n")
+    fifo_checker_top.write("                                                      read_en_out => read_en_out_sig, write_en_out => write_en_out_sig \n")
+    fifo_checker_top.write("                                                     );\n")
+    fifo_checker_top.write(" \n")
     fifo_checker_top.write("-- Checkers instantiation\n")
     fifo_checker_top.write("CHECKERS: FIFO_control_part_checkers port map (DRTS => DRTS,\n")
     fifo_checker_top.write("                                               CTS_in => CTS_in_sig, CTS_out => CTS_out,\n")
@@ -200,44 +179,37 @@ def gen_fifo_checker_top(checker_id):
     fifo_checker_top.write("                                               read_pointer => read_pointer, read_pointer_in => read_pointer_in_sig, write_pointer => write_pointer, write_pointer_in => write_pointer_in_sig,\n")
     fifo_checker_top.write("                                               empty_out => empty_out_sig, full_out => full_out_sig, \n")
     fifo_checker_top.write("                                               read_en_out => read_en_out_sig, write_en_out => write_en_out_sig,\n")
-    fifo_checker_top.write("                                               HS_state_in => HS_state_in_sig,\n")
-    fifo_checker_top.write("\n")
+    fifo_checker_top.write(" \n")
 
     string_to_write = ""
     if '1' in checker_id:
-        string_to_write += "err_FIFO_control_part_DRTS_CTS => err_FIFO_control_part_DRTS_CTS,"
+        string_to_write += "err_write_en_write_pointer => err_write_en_write_pointer,\n"
     if '2' in checker_id:
-        string_to_write += "err_FIFO_write_pointer_update => err_FIFO_write_pointer_update,"
+        string_to_write += "err_not_write_en_write_pointer => err_not_write_en_write_pointer,\n"
     if '3' in checker_id:
-        string_to_write += "err_FIFO_read_pointer_not_update => err_FIFO_read_pointer_not_update,"
+        string_to_write += "err_read_pointer_write_pointer_not_empty => err_read_pointer_write_pointer_not_empty,\n"
     if '4' in checker_id:
-        string_to_write += "err_FIFO_write_pointer_not_update => err_FIFO_write_pointer_not_update,"
+        string_to_write += "err_read_pointer_write_pointer_empty => err_read_pointer_write_pointer_empty,\n"
     if '5' in checker_id:
-        string_to_write += "err_FIFO_full_empty => err_FIFO_full_empty,"
+        string_to_write += "err_read_pointer_write_pointer_not_full => err_read_pointer_write_pointer_not_full,\n"
     if '6' in checker_id:
-        string_to_write += "err_FIFO_empty => err_FIFO_empty,"
+        string_to_write += "err_read_pointer_write_pointer_full => err_read_pointer_write_pointer_full,\n"
     if '7' in checker_id:
-        string_to_write += "err_FIFO_empty1 => err_FIFO_empty1,"
+        string_to_write += "err_read_pointer_increment => err_read_pointer_increment,\n"
     if '8' in checker_id:
-        string_to_write += "err_FIFO_full => err_FIFO_full,"
+        string_to_write += "err_read_pointer_not_increment => err_read_pointer_not_increment,\n"
     if '9' in checker_id:
-        string_to_write += "err_FIFO_read_pointer_onehot => err_FIFO_read_pointer_onehot,"
+        string_to_write += "err_CTS_in => err_CTS_in,\n"
     if '10' in checker_id:
-        string_to_write += "err_FIFO_write_pointer_onehot => err_FIFO_write_pointer_onehot,"
+        string_to_write += "err_write_en => err_write_en,\n"
     if '11' in checker_id:
-        string_to_write += "err_FIFO_HS_state_onehot => err_FIFO_HS_state_onehot,"
+        string_to_write += "err_not_CTS_in => err_not_CTS_in,\n"
     if '12' in checker_id:
-        string_to_write += "err_FIFO_read_en_onehot => err_FIFO_read_en_onehot,"
+        string_to_write += "err_not_write_en => err_not_write_en,\n"
     if '13' in checker_id:
-        string_to_write += "err_FIFO_read_from_empty_FIFO => err_FIFO_read_from_empty_FIFO,"
-    if '14' in checker_id:
-        string_to_write += "err_FIFO_write_to_full_FIFO => err_FIFO_write_to_full_FIFO,"
-    if '15' in checker_id:
-        string_to_write += "err_FIFO_control_part_CTS_in_CTS_out => err_FIFO_control_part_CTS_in_CTS_out,"
-    if '16' in checker_id:
-        string_to_write += "err_FIFO_read_en_empty => err_FIFO_read_en_empty,"
+        string_to_write += "err_read_en_mismatch => err_read_en_mismatch,\n"
 
-    string_to_write = string_to_write[:len(string_to_write)-1]
+    string_to_write = string_to_write[:len(string_to_write)-2]
     fifo_checker_top.write(string_to_write)
 
     fifo_checker_top.write("                       );\n")

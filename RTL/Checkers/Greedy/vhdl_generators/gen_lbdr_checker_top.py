@@ -33,43 +33,43 @@ def gen_lbdr_checker_top(checker_id):
 
     string_to_write = ""
     if '1' in checker_id:
-        string_to_write += "err_header_not_empty_Requests_in_onehot,"
+        string_to_write += "err_header_not_empty_Requests_in_onehot,\n"
     if '2' in checker_id:
-        string_to_write += "err_header_empty_Requests_FF_Requests_in,"
+        string_to_write += "err_header_empty_Requests_FF_Requests_in,\n"
     if '3' in checker_id:
-        string_to_write += "err_tail_Requests_in_all_zero,"
+        string_to_write += "err_tail_Requests_in_all_zero,\n"
     if '4' in checker_id:
-        string_to_write += "err_header_tail_Requests_FF_Requests_in,"
+        string_to_write += "err_header_tail_Requests_FF_Requests_in,\n"
     if '5' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_N1,"
+        string_to_write += "err_dst_addr_cur_addr_N1,\n"
     if '6' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_N1,"
+        string_to_write += "err_dst_addr_cur_addr_not_N1,\n"
     if '7' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_E1,"
+        string_to_write += "err_dst_addr_cur_addr_E1,\n"
     if '8' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_E1,"
+        string_to_write += "err_dst_addr_cur_addr_not_E1,\n"
     if '9' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_W1,"
+        string_to_write += "err_dst_addr_cur_addr_W1,\n"
     if '10' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_W1,"
+        string_to_write += "err_dst_addr_cur_addr_not_W1,\n"
     if '11' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_S1,"
+        string_to_write += "err_dst_addr_cur_addr_S1,\n"
     if '12' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_S1,"
+        string_to_write += "err_dst_addr_cur_addr_not_S1,\n"
     if '13' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_Req_L_in,"
+        string_to_write += "err_dst_addr_cur_addr_not_Req_L_in,\n"
     if '14' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_Req_L_in,"
+        string_to_write += "err_dst_addr_cur_addr_Req_L_in,\n"
     if '15' in checker_id:
-        string_to_write += "err_header_not_empty_Req_N_in,"
+        string_to_write += "err_header_not_empty_Req_N_in,\n"
     if '16' in checker_id:
-        string_to_write += "err_header_not_empty_Req_E_in,"
+        string_to_write += "err_header_not_empty_Req_E_in,\n"
     if '17' in checker_id:
-        string_to_write += "err_header_not_empty_Req_W_in,"
+        string_to_write += "err_header_not_empty_Req_W_in,\n"
     if '18' in checker_id:
-        string_to_write += "err_header_not_empty_Req_S_in,"
+        string_to_write += "err_header_not_empty_Req_S_in,\n"
 
-    string_to_write = string_to_write[:len(string_to_write)-1]
+    string_to_write = string_to_write[:len(string_to_write)-2]
     string_to_write += " : out std_logic\n"
 
     lbdr_checker_top.write(string_to_write)
@@ -112,43 +112,43 @@ def gen_lbdr_checker_top(checker_id):
 
     string_to_write = ""
     if '1' in checker_id:
-        string_to_write += "err_header_not_empty_Requests_in_onehot,"
+        string_to_write += "err_header_not_empty_Requests_in_onehot,\n"
     if '2' in checker_id:
-        string_to_write += "err_header_empty_Requests_FF_Requests_in,"
+        string_to_write += "err_header_empty_Requests_FF_Requests_in,\n"
     if '3' in checker_id:
-        string_to_write += "err_tail_Requests_in_all_zero,"
+        string_to_write += "err_tail_Requests_in_all_zero,\n"
     if '4' in checker_id:
-        string_to_write += "err_header_tail_Requests_FF_Requests_in,"
+        string_to_write += "err_header_tail_Requests_FF_Requests_in,\n"
     if '5' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_N1,"
+        string_to_write += "err_dst_addr_cur_addr_N1,\n"
     if '6' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_N1,"
+        string_to_write += "err_dst_addr_cur_addr_not_N1,\n"
     if '7' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_E1,"
+        string_to_write += "err_dst_addr_cur_addr_E1,\n"
     if '8' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_E1,"
+        string_to_write += "err_dst_addr_cur_addr_not_E1,\n"
     if '9' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_W1,"
+        string_to_write += "err_dst_addr_cur_addr_W1,\n"
     if '10' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_W1,"
+        string_to_write += "err_dst_addr_cur_addr_not_W1,\n"
     if '11' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_S1,"
+        string_to_write += "err_dst_addr_cur_addr_S1,\n"
     if '12' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_S1,"
+        string_to_write += "err_dst_addr_cur_addr_not_S1,\n"
     if '13' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_Req_L_in,"
+        string_to_write += "err_dst_addr_cur_addr_not_Req_L_in,\n"
     if '14' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_Req_L_in,"
+        string_to_write += "err_dst_addr_cur_addr_Req_L_in,\n"
     if '15' in checker_id:
-        string_to_write += "err_header_not_empty_Req_N_in,"
+        string_to_write += "err_header_not_empty_Req_N_in,\n"
     if '16' in checker_id:
-        string_to_write += "err_header_not_empty_Req_E_in,"
+        string_to_write += "err_header_not_empty_Req_E_in,\n"
     if '17' in checker_id:
-        string_to_write += "err_header_not_empty_Req_W_in,"
+        string_to_write += "err_header_not_empty_Req_W_in,\n"
     if '18' in checker_id:
-        string_to_write += "err_header_not_empty_Req_S_in,"
+        string_to_write += "err_header_not_empty_Req_S_in,\n"
 
-    string_to_write = string_to_write[:len(string_to_write)-1]
+    string_to_write = string_to_write[:len(string_to_write)-2]
     string_to_write += " : out std_logic\n"
 
     lbdr_checker_top.write(string_to_write)
@@ -252,7 +252,7 @@ def gen_lbdr_checker_top(checker_id):
     if '18' in checker_id:
         string_to_write += "err_header_not_empty_Req_S_in => err_header_not_empty_Req_S_in, \n"
 
-    string_to_write = string_to_write[:len(string_to_write)-1]+");\n"
+    string_to_write = string_to_write[:len(string_to_write)-3]+");\n"
 
     lbdr_checker_top.write(string_to_write)
     lbdr_checker_top.write("\n")
