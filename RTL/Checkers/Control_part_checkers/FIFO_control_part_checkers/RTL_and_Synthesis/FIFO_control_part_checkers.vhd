@@ -22,8 +22,7 @@ entity FIFO_control_part_checkers is
             full_out: in std_logic;
             read_en_out: in std_logic;
             write_en_out: in std_logic; 
-            HS_state_in: in std_logic_vector(1 downto 0);         
-
+ 
             -- Checker outputs
             -- FIFO Control Part with dominant checkers and the ones that give in total 100% CEI and FC
             err_FIFO_control_part_DRTS_CTS: out std_logic; 
@@ -36,8 +35,7 @@ entity FIFO_control_part_checkers is
             err_FIFO_full: out std_logic;
             err_FIFO_read_pointer_onehot: out std_logic; 
             err_FIFO_write_pointer_onehot: out std_logic;
-            err_FIFO_HS_state_onehot: out std_logic;
-            err_FIFO_read_en_onehot: out std_logic; 
+             err_FIFO_read_en_onehot: out std_logic; 
             err_FIFO_read_from_empty_FIFO: out std_logic; 
             err_FIFO_write_to_full_FIFO: out std_logic;
             err_FIFO_control_part_CTS_in_CTS_out: out std_logic;
@@ -54,14 +52,6 @@ begin
 
 -- Checkers
 
--- When FIFO has received a request (and in any case) the internal state of the FSM of the FIFO must be one-hot!
-process( HS_state_in) begin
-	if (HS_state_in /= "01" and HS_state_in /= "10") then
-		err_FIFO_HS_state_onehot <= '1';
-	else
-		err_FIFO_HS_state_onehot <= '0';
-	end if;
-end process;
 
 -- When FIFO has not received a request, It can not send Clear to Send (When DRTS=0, CTS must be 0)!
 process(DRTS, CTS_out, full_out, CTS_in) begin

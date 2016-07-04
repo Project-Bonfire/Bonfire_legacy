@@ -15,8 +15,7 @@ entity FIFO_control_part_with_checkers_top is
             read_pointer: in std_logic_vector(3 downto 0);
             write_pointer: in std_logic_vector(3 downto 0);
             CTS_out: in std_logic;
-            HS_state_out: in std_logic_vector(1 downto 0);
-
+ 
             CTS_in: out std_logic; 
             empty_out: out std_logic; 
             full_out: out std_logic;
@@ -24,8 +23,7 @@ entity FIFO_control_part_with_checkers_top is
             write_pointer_in: out std_logic_vector(3 downto 0);
             read_en_out: out std_logic;
             write_en_out: out std_logic; 
-            HS_state_in: out std_logic_vector(1 downto 0);
-
+ 
             -- Checker outputs
             err_FIFO_control_part_DRTS_CTS: out std_logic; 
             err_FIFO_write_pointer_update: out std_logic;
@@ -37,8 +35,7 @@ entity FIFO_control_part_with_checkers_top is
             err_FIFO_full: out std_logic;
             err_FIFO_read_pointer_onehot: out std_logic; 
             err_FIFO_write_pointer_onehot: out std_logic;
-            err_FIFO_HS_state_onehot: out std_logic;
-            err_FIFO_read_en_onehot: out std_logic; 
+             err_FIFO_read_en_onehot: out std_logic; 
             err_FIFO_read_from_empty_FIFO: out std_logic; 
             err_FIFO_write_to_full_FIFO: out std_logic;
             err_FIFO_control_part_CTS_in_CTS_out: out std_logic;
@@ -58,17 +55,15 @@ component FIFO_control_part_pseudo is
             read_pointer: in std_logic_vector(3 downto 0);
             write_pointer: in std_logic_vector(3 downto 0);
             CTS_out: in std_logic;
-            HS_state_out: in std_logic_vector(1 downto 0);
-
+ 
             CTS_in: out std_logic; 
             empty_out: out std_logic; 
             full_out: out std_logic;
             read_pointer_in: out std_logic_vector(3 downto 0); 
             write_pointer_in: out std_logic_vector(3 downto 0);
             read_en_out: out std_logic;
-            write_en_out: out std_logic; 
-            HS_state_in: out std_logic_vector(1 downto 0)
-    );
+            write_en_out: out std_logic
+     );
 end component;
 
 component FIFO_control_part_checkers is
@@ -88,8 +83,7 @@ component FIFO_control_part_checkers is
             full_out: in std_logic;
             read_en_out: in std_logic;
             write_en_out: in std_logic; 
-            HS_state_in: in std_logic_vector(1 downto 0);         
-
+ 
             -- Checker outputs
             err_FIFO_control_part_DRTS_CTS: out std_logic; 
             err_FIFO_write_pointer_update: out std_logic;
@@ -101,8 +95,7 @@ component FIFO_control_part_checkers is
             err_FIFO_full: out std_logic;
             err_FIFO_read_pointer_onehot: out std_logic; 
             err_FIFO_write_pointer_onehot: out std_logic;
-            err_FIFO_HS_state_onehot: out std_logic;
-            err_FIFO_read_en_onehot: out std_logic; 
+             err_FIFO_read_en_onehot: out std_logic; 
             err_FIFO_read_from_empty_FIFO: out std_logic; 
             err_FIFO_write_to_full_FIFO: out std_logic;
             err_FIFO_control_part_CTS_in_CTS_out: out std_logic;
@@ -112,8 +105,7 @@ end component;
 
 signal CTS_in_sig, empty_out_sig, full_out_sig, read_en_out_sig, write_en_out_sig: std_logic;
 signal read_pointer_in_sig, write_pointer_in_sig: std_logic_vector(3 downto 0);
-signal HS_state_in_sig : std_logic_vector(1 downto 0);
-
+ 
 begin 
 
 CTS_in <= CTS_in_sig;
@@ -123,20 +115,17 @@ empty_out <= empty_out_sig;
 full_out <= full_out_sig;
 read_en_out <= read_en_out_sig;
 write_en_out <= write_en_out_sig;
-HS_state_in <= HS_state_in_sig;
-
+ 
 -- FEIFO Control Part instantiation
 FIFO_CONTROL_PART: FIFO_control_part_pseudo port map (DRTS => DRTS, 
                                                       read_en_N => read_en_N, read_en_E => read_en_E, read_en_W => read_en_W, read_en_S => read_en_S, read_en_L => read_en_L,
                                                       CTS_out => CTS_out,
                                                       read_pointer => read_pointer, write_pointer => write_pointer, 
-                                                      HS_state_out => HS_state_out,
-
+ 
                                                       CTS_in => CTS_in_sig, read_pointer_in => read_pointer_in_sig, write_pointer_in => write_pointer_in_sig,
                                                       empty_out => empty_out_sig, full_out => full_out_sig, 
-                                                      read_en_out => read_en_out_sig, write_en_out => write_en_out_sig, 
-                                                      HS_state_in => HS_state_in_sig
-						                                          );
+                                                      read_en_out => read_en_out_sig, write_en_out => write_en_out_sig 
+ 						                                          );
                                   
 -- Checkers instantiation
 CHECKERS: FIFO_control_part_checkers port map (DRTS => DRTS,
@@ -145,8 +134,7 @@ CHECKERS: FIFO_control_part_checkers port map (DRTS => DRTS,
                                                read_pointer => read_pointer, read_pointer_in => read_pointer_in_sig, write_pointer => write_pointer, write_pointer_in => write_pointer_in_sig,
                                                empty_out => empty_out_sig, full_out => full_out_sig, 
                                                read_en_out => read_en_out_sig, write_en_out => write_en_out_sig,
-                                               HS_state_in => HS_state_in_sig,
-
+ 
                                                err_FIFO_control_part_DRTS_CTS => err_FIFO_control_part_DRTS_CTS, 
                                                err_FIFO_read_pointer_not_update => err_FIFO_read_pointer_not_update,
                                                err_FIFO_write_pointer_update => err_FIFO_write_pointer_update,
@@ -157,7 +145,6 @@ CHECKERS: FIFO_control_part_checkers port map (DRTS => DRTS,
                                                err_FIFO_full => err_FIFO_full, 
                                                err_FIFO_read_pointer_onehot => err_FIFO_read_pointer_onehot,
                                                err_FIFO_write_pointer_onehot => err_FIFO_write_pointer_onehot, 
-                                               err_FIFO_HS_state_onehot => err_FIFO_HS_state_onehot, 
                                                err_FIFO_read_en_onehot => err_FIFO_read_en_onehot, 
                                                err_FIFO_read_from_empty_FIFO => err_FIFO_read_from_empty_FIFO, 
                                                err_FIFO_write_to_full_FIFO => err_FIFO_write_to_full_FIFO, 

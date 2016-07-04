@@ -15,25 +15,22 @@ entity FIFO_control_part_pseudo is
             read_pointer: in std_logic_vector(3 downto 0);
             write_pointer: in std_logic_vector(3 downto 0);
             CTS_out: in std_logic;
-            HS_state_out: in std_logic_vector(1 downto 0);
-
+ 
             CTS_in: out std_logic; 
             empty_out: out std_logic; 
             full_out: out std_logic;
             read_pointer_in: out std_logic_vector(3 downto 0); 
             write_pointer_in: out std_logic_vector(3 downto 0);
             read_en_out: out std_logic;
-            write_en_out: out std_logic; 
-            HS_state_in: out std_logic_vector(1 downto 0)
-    );
+            write_en_out: out std_logic
+     );
 end FIFO_control_part_pseudo;
 
 architecture behavior of FIFO_control_part_pseudo is
    signal full, empty: std_logic;
    signal read_en, write_en: std_logic;
    
-   CONSTANT IDLE: std_logic_vector (1 downto 0) := "01";
-   CONSTANT READ_DATA: std_logic_vector (1 downto 0) := "10";
+ 
 
 begin
  --------------------------------------------------------------------------------------------
@@ -94,34 +91,14 @@ begin
         end if;
    end process;
 
-   process(HS_state_out, full, DRTS, CTS_out) begin
-        case(HS_state_out) is
-            when IDLE =>
-                if CTS_out = '0' and DRTS = '1' and full ='0' then
-                    HS_state_in <= READ_DATA;
-                    CTS_in <= '1';
-                    write_en <= '1';
-                else
-                    HS_state_in <= IDLE;
-                    CTS_in <= '0';
-                    write_en <= '0';
-                end if;
-            when READ_DATA => -- READ_DATA
-                if CTS_out = '0' and DRTS = '1' and full ='0' then
-                    HS_state_in <= READ_DATA;
-                    CTS_in <= '1';
-                    write_en <= '1';
-                else
-                    HS_state_in <= IDLE;
-                    CTS_in <= '0';
-                    write_en <= '0';
-                end if;
-            when others => -- Invalid
-                HS_state_in <= IDLE;
-                CTS_in <= '0';
-                write_en <= '0';                
-        end case ;
-        
+   process(full, DRTS, CTS_out) begin
+        if CTS_out = '0' and DRTS = '1' and full ='0' then
+             CTS_in <= '1';
+            write_en <= '1';
+        else
+             CTS_in <= '0';
+            write_en <= '0';
+        end if;        
    end process;
                         
     process(write_pointer, read_pointer) begin
