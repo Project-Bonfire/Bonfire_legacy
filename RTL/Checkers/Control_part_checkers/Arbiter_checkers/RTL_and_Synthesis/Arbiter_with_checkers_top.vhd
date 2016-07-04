@@ -19,55 +19,68 @@ entity Arbiter_with_checkers_top is
             next_state_out: out std_logic_vector (5 downto 0); -- 6 states for Arbiter's FSM
 
             -- Checker outputs
-            err_Arbiter_Xbar_sel_onehot: out std_logic;
-            err_Arbiter_DCTS_RTS: out std_logic; 
-            err_Arbiter_DCTS_RTS1: out std_logic; 
-            err_Arbiter_DCTS_RTS2: out std_logic; 
-            err_Arbiter_DCTS_RTS3: out std_logic; 
-            err_Arbiter_state_and_grants_onehot: out std_logic; 
-            err_Arbiter_state_and_grants_onehot1: out std_logic; 
-            err_Arbiter_no_req_state_change: out std_logic; 
-            err_Arbiter_valid_state: out std_logic;
-            err_Arbiter_switchgrantN: out std_logic;
-            err_Arbiter_switchgrantE: out std_logic;
-            err_Arbiter_switchgrantW: out std_logic;
-            err_Arbiter_switchgrantS: out std_logic;
-            err_Arbiter_switchgrantL: out std_logic;
-            err_Arbiter_state_update: out std_logic;
-            err_Arbiter_state_RTS_FF_in: out std_logic; 
-            err_Arbiter_switchgrantN_not_active: out std_logic;
-            err_Arbiter_switchgrantE_not_active: out std_logic;
-            err_Arbiter_switchgrantW_not_active: out std_logic;
-            err_Arbiter_switchgrantS_not_active: out std_logic;
-            err_Arbiter_switchgrantL_not_active: out std_logic;
-            err_Arbiter_switchgrantN_not_active1: out std_logic;
-            err_Arbiter_switchgrantE_not_active1: out std_logic;
-            err_Arbiter_switchgrantW_not_active1: out std_logic;
-            err_Arbiter_switchgrantS_not_active1: out std_logic;
-            err_Arbiter_switchgrantL_not_active1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_IDLE: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_North: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_East: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_West: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_South: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_Local: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_North1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_East1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_West1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_South1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_Local1: out std_logic;
-            err_Arbiter_priorityIDLE3: out std_logic;
-            err_Arbiter_priorityL3: out std_logic;
-            err_Arbiter_priorityN3: out std_logic;
-            err_Arbiter_priorityE3: out std_logic;
-            err_Arbiter_priorityW3: out std_logic;
-            err_Arbiter_priorityS3: out std_logic;
-            err_Arbiter_switchgrantN1: out std_logic;
-            err_Arbiter_switchgrantE1: out std_logic;
-            err_Arbiter_switchgrantW1: out std_logic;
-            err_Arbiter_switchgrantS1: out std_logic;
-            err_Arbiter_switchgrantL1: out std_logic;
-            err_Arbiter_state_not_update: out std_logic
+            err_state_IDLE_xbar,
+            err_state_not_IDLE_xbar,
+            err_state_IDLE_RTS_FF_in, 
+            err_state_not_IDLE_RTS_FF_RTS_FF_in,
+            err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, 
+            err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
+            err_RTS_FF_not_DCTS_state_state_in, 
+            err_not_RTS_FF_state_in_next_state, 
+            err_RTS_FF_DCTS_state_in_next_state, 
+            err_not_DCTS_Grants, 
+            err_DCTS_not_RTS_FF_Grants, 
+            err_DCTS_RTS_FF_IDLE_Grants, 
+            err_DCTS_RTS_FF_not_IDLE_Grants_onehot, 
+            err_Requests_next_state_IDLE, 
+
+            err_IDLE_Req_L, 
+            err_Local_Req_L,
+            err_North_Req_N, 
+            err_East_Req_E, 
+            err_West_Req_W, 
+            err_South_Req_S, 
+
+            err_IDLE_Req_N, 
+            err_Local_Req_N,      
+            err_North_Req_E, 
+            err_East_Req_W, 
+            err_West_Req_S, 
+            err_South_Req_L, 
+
+            err_IDLE_Req_E,
+            err_Local_Req_E,      
+            err_North_Req_W,
+            err_East_Req_S,
+            err_West_Req_L,
+            err_South_Req_N,
+
+            err_IDLE_Req_W,
+            err_Local_Req_W,
+            err_North_Req_S,
+            err_East_Req_L,
+            err_West_Req_N,
+            err_South_Req_E,
+
+            err_IDLE_Req_S,
+            err_Local_Req_S,      
+            err_North_Req_L,
+            err_East_Req_N,
+            err_West_Req_E,
+            err_South_Req_W,
+
+            err_next_state_onehot, 
+            err_state_in_onehot, 
+            err_DCTS_RTS_FF_state_Grant_L,
+            err_DCTS_RTS_FF_state_Grant_N,
+            err_DCTS_RTS_FF_state_Grant_E,
+            err_DCTS_RTS_FF_state_Grant_W,
+            err_DCTS_RTS_FF_state_Grant_S, 
+            err_state_north_xbar_sel, 
+            err_state_east_xbar_sel, 
+            err_state_west_xbar_sel, 
+            err_state_south_xbar_sel, 
+            err_state_local_xbar_sel : out std_logic
           );
 end Arbiter_with_checkers_top;
 
@@ -101,55 +114,68 @@ component Arbiter_checkers is
             RTS_FF_in: in std_logic;
 
             -- Checker outputs
-            err_Arbiter_Xbar_sel_onehot: out std_logic;
-            err_Arbiter_DCTS_RTS: out std_logic; 
-            err_Arbiter_DCTS_RTS1: out std_logic; 
-            err_Arbiter_DCTS_RTS2: out std_logic; 
-            err_Arbiter_DCTS_RTS3: out std_logic; 
-            err_Arbiter_state_and_grants_onehot: out std_logic; 
-            err_Arbiter_state_and_grants_onehot1: out std_logic; 
-            err_Arbiter_no_req_state_change: out std_logic; 
-            err_Arbiter_valid_state: out std_logic;
-            err_Arbiter_switchgrantN: out std_logic;
-            err_Arbiter_switchgrantE: out std_logic;
-            err_Arbiter_switchgrantW: out std_logic;
-            err_Arbiter_switchgrantS: out std_logic;
-            err_Arbiter_switchgrantL: out std_logic;
-            err_Arbiter_state_update: out std_logic;
-            err_Arbiter_state_RTS_FF_in: out std_logic; 
-            err_Arbiter_switchgrantN_not_active: out std_logic;
-            err_Arbiter_switchgrantE_not_active: out std_logic;
-            err_Arbiter_switchgrantW_not_active: out std_logic;
-            err_Arbiter_switchgrantS_not_active: out std_logic;
-            err_Arbiter_switchgrantL_not_active: out std_logic;
-            err_Arbiter_switchgrantN_not_active1: out std_logic;
-            err_Arbiter_switchgrantE_not_active1: out std_logic;
-            err_Arbiter_switchgrantW_not_active1: out std_logic;
-            err_Arbiter_switchgrantS_not_active1: out std_logic;
-            err_Arbiter_switchgrantL_not_active1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_IDLE: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_North: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_East: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_West: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_South: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_Local: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_North1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_East1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_West1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_South1: out std_logic;
-            err_Arbiter_Xbar_sel_invalid_Local1: out std_logic;
-            err_Arbiter_priorityIDLE3: out std_logic;
-            err_Arbiter_priorityL3: out std_logic;
-            err_Arbiter_priorityN3: out std_logic;
-            err_Arbiter_priorityE3: out std_logic;
-            err_Arbiter_priorityW3: out std_logic;
-            err_Arbiter_priorityS3: out std_logic;
-            err_Arbiter_switchgrantN1: out std_logic;
-            err_Arbiter_switchgrantE1: out std_logic;
-            err_Arbiter_switchgrantW1: out std_logic;
-            err_Arbiter_switchgrantS1: out std_logic;
-            err_Arbiter_switchgrantL1: out std_logic;
-            err_Arbiter_state_not_update: out std_logic
+            err_state_IDLE_xbar,
+            err_state_not_IDLE_xbar,
+            err_state_IDLE_RTS_FF_in, 
+            err_state_not_IDLE_RTS_FF_RTS_FF_in,
+            err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, 
+            err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
+            err_RTS_FF_not_DCTS_state_state_in, 
+            err_not_RTS_FF_state_in_next_state, 
+            err_RTS_FF_DCTS_state_in_next_state, 
+            err_not_DCTS_Grants, 
+            err_DCTS_not_RTS_FF_Grants, 
+            err_DCTS_RTS_FF_IDLE_Grants, 
+            err_DCTS_RTS_FF_not_IDLE_Grants_onehot, 
+            err_Requests_next_state_IDLE, 
+
+            err_IDLE_Req_L, 
+            err_Local_Req_L,
+            err_North_Req_N, 
+            err_East_Req_E, 
+            err_West_Req_W, 
+            err_South_Req_S, 
+
+            err_IDLE_Req_N, 
+            err_Local_Req_N,      
+            err_North_Req_E, 
+            err_East_Req_W, 
+            err_West_Req_S, 
+            err_South_Req_L, 
+
+            err_IDLE_Req_E,
+            err_Local_Req_E,      
+            err_North_Req_W,
+            err_East_Req_S,
+            err_West_Req_L,
+            err_South_Req_N,
+
+            err_IDLE_Req_W,
+            err_Local_Req_W,
+            err_North_Req_S,
+            err_East_Req_L,
+            err_West_Req_N,
+            err_South_Req_E,
+
+            err_IDLE_Req_S,
+            err_Local_Req_S,      
+            err_North_Req_L,
+            err_East_Req_N,
+            err_West_Req_E,
+            err_South_Req_W,
+
+            err_next_state_onehot, 
+            err_state_in_onehot, 
+            err_DCTS_RTS_FF_state_Grant_L,
+            err_DCTS_RTS_FF_state_Grant_N,
+            err_DCTS_RTS_FF_state_Grant_E,
+            err_DCTS_RTS_FF_state_Grant_W,
+            err_DCTS_RTS_FF_state_Grant_S, 
+            err_state_north_xbar_sel, 
+            err_state_east_xbar_sel, 
+            err_state_west_xbar_sel, 
+            err_state_south_xbar_sel, 
+            err_state_local_xbar_sel : out std_logic
             );
 end component;
 
@@ -198,7 +224,7 @@ CHECKERS: Arbiter_checkers port map (
                                       Req_N => Req_N, 
                                       Req_E => Req_E, 
                                       Req_W => Req_W, 
-                                      Req_S=>Req_S, 
+                                      Req_S => Req_S, 
                                       Req_L => Req_L,
                                       DCTS => DCTS, 
                                       RTS_FF => RTS_FF,
@@ -214,55 +240,68 @@ CHECKERS: Arbiter_checkers port map (
                                       next_state_out => next_state_out_sig,
                                       RTS_FF_in => RTS_FF_in_sig, 
 
-                                      err_Arbiter_Xbar_sel_onehot =>           err_Arbiter_Xbar_sel_onehot,
-                                      err_Arbiter_DCTS_RTS =>                  err_Arbiter_DCTS_RTS,
-                                      err_Arbiter_DCTS_RTS1 =>                 err_Arbiter_DCTS_RTS1,
-                                      err_Arbiter_DCTS_RTS2 =>                 err_Arbiter_DCTS_RTS2,
-                                      err_Arbiter_DCTS_RTS3 =>                 err_Arbiter_DCTS_RTS3,
-                                      err_Arbiter_state_and_grants_onehot =>   err_Arbiter_state_and_grants_onehot,
-                                      err_Arbiter_state_and_grants_onehot1 =>  err_Arbiter_state_and_grants_onehot1,
-                                      err_Arbiter_no_req_state_change =>       err_Arbiter_no_req_state_change,
-                                      err_Arbiter_valid_state =>               err_Arbiter_valid_state,
-                                      err_Arbiter_switchgrantN =>              err_Arbiter_switchgrantN,
-                                      err_Arbiter_switchgrantE =>              err_Arbiter_switchgrantE,
-                                      err_Arbiter_switchgrantW =>              err_Arbiter_switchgrantW,
-                                      err_Arbiter_switchgrantS =>              err_Arbiter_switchgrantS,
-                                      err_Arbiter_switchgrantL =>              err_Arbiter_switchgrantL,
-                                      err_Arbiter_state_update =>              err_Arbiter_state_update,
-                                      err_Arbiter_state_RTS_FF_in =>           err_Arbiter_state_RTS_FF_in,
-                                      err_Arbiter_switchgrantN_not_active =>   err_Arbiter_switchgrantN_not_active,
-                                      err_Arbiter_switchgrantE_not_active =>   err_Arbiter_switchgrantE_not_active,
-                                      err_Arbiter_switchgrantW_not_active =>   err_Arbiter_switchgrantW_not_active,
-                                      err_Arbiter_switchgrantS_not_active =>   err_Arbiter_switchgrantS_not_active,
-                                      err_Arbiter_switchgrantL_not_active =>   err_Arbiter_switchgrantL_not_active,
-                                      err_Arbiter_switchgrantN_not_active1 =>  err_Arbiter_switchgrantN_not_active1,
-                                      err_Arbiter_switchgrantE_not_active1 =>  err_Arbiter_switchgrantE_not_active1,
-                                      err_Arbiter_switchgrantW_not_active1 =>  err_Arbiter_switchgrantW_not_active1,
-                                      err_Arbiter_switchgrantS_not_active1 =>  err_Arbiter_switchgrantS_not_active1,
-                                      err_Arbiter_switchgrantL_not_active1 =>  err_Arbiter_switchgrantL_not_active1,
-                                      err_Arbiter_Xbar_sel_invalid_IDLE =>     err_Arbiter_Xbar_sel_invalid_IDLE,
-                                      err_Arbiter_Xbar_sel_invalid_North =>    err_Arbiter_Xbar_sel_invalid_North,
-                                      err_Arbiter_Xbar_sel_invalid_East =>     err_Arbiter_Xbar_sel_invalid_East,
-                                      err_Arbiter_Xbar_sel_invalid_West =>     err_Arbiter_Xbar_sel_invalid_West,
-                                      err_Arbiter_Xbar_sel_invalid_South =>    err_Arbiter_Xbar_sel_invalid_South,
-                                      err_Arbiter_Xbar_sel_invalid_Local =>    err_Arbiter_Xbar_sel_invalid_Local,
-                                      err_Arbiter_Xbar_sel_invalid_North1 =>   err_Arbiter_Xbar_sel_invalid_North1,
-                                      err_Arbiter_Xbar_sel_invalid_East1 =>    err_Arbiter_Xbar_sel_invalid_East1,
-                                      err_Arbiter_Xbar_sel_invalid_West1 =>    err_Arbiter_Xbar_sel_invalid_West1,
-                                      err_Arbiter_Xbar_sel_invalid_South1 =>   err_Arbiter_Xbar_sel_invalid_South1,
-                                      err_Arbiter_Xbar_sel_invalid_Local1 =>   err_Arbiter_Xbar_sel_invalid_Local1,
-                                      err_Arbiter_priorityIDLE3 =>             err_Arbiter_priorityIDLE3,
-                                      err_Arbiter_priorityL3 =>                err_Arbiter_priorityL3,
-                                      err_Arbiter_priorityN3 =>                err_Arbiter_priorityN3,
-                                      err_Arbiter_priorityE3 =>                err_Arbiter_priorityE3,
-                                      err_Arbiter_priorityW3 =>                err_Arbiter_priorityW3,
-                                      err_Arbiter_priorityS3 =>                err_Arbiter_priorityS3,
-                                      err_Arbiter_switchgrantN1 =>             err_Arbiter_switchgrantN1,
-                                      err_Arbiter_switchgrantE1 =>             err_Arbiter_switchgrantE1,
-                                      err_Arbiter_switchgrantW1 =>             err_Arbiter_switchgrantW1,
-                                      err_Arbiter_switchgrantS1 =>             err_Arbiter_switchgrantS1,
-                                      err_Arbiter_switchgrantL1 =>             err_Arbiter_switchgrantL1,
-                                      err_Arbiter_state_not_update =>          err_Arbiter_state_not_update
+                                      err_state_IDLE_xbar => err_state_IDLE_xbar,
+                                      err_state_not_IDLE_xbar => err_state_not_IDLE_xbar,
+                                      err_state_IDLE_RTS_FF_in => err_state_IDLE_RTS_FF_in,
+                                      err_state_not_IDLE_RTS_FF_RTS_FF_in => err_state_not_IDLE_RTS_FF_RTS_FF_in,
+                                      err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in => err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in,
+                                      err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in => err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in,
+                                      err_RTS_FF_not_DCTS_state_state_in => err_RTS_FF_not_DCTS_state_state_in,
+                                      err_not_RTS_FF_state_in_next_state => err_not_RTS_FF_state_in_next_state,
+                                      err_RTS_FF_DCTS_state_in_next_state => err_RTS_FF_DCTS_state_in_next_state,
+                                      err_not_DCTS_Grants => err_not_DCTS_Grants,
+                                      err_DCTS_not_RTS_FF_Grants => err_DCTS_not_RTS_FF_Grants,
+                                      err_DCTS_RTS_FF_IDLE_Grants => err_DCTS_RTS_FF_IDLE_Grants,
+                                      err_DCTS_RTS_FF_not_IDLE_Grants_onehot => err_DCTS_RTS_FF_not_IDLE_Grants_onehot,
+                                      err_Requests_next_state_IDLE => err_Requests_next_state_IDLE,
+
+                                      err_IDLE_Req_L => err_IDLE_Req_L,
+                                      err_Local_Req_L => err_Local_Req_L,
+                                      err_North_Req_N => err_North_Req_N,
+                                      err_East_Req_E => err_East_Req_E,
+                                      err_West_Req_W => err_West_Req_W,
+                                      err_South_Req_S => err_South_Req_S,
+
+                                      err_IDLE_Req_N => err_IDLE_Req_N,
+                                      err_Local_Req_N => err_Local_Req_N,
+                                      err_North_Req_E => err_North_Req_E,
+                                      err_East_Req_W => err_East_Req_W,
+                                      err_West_Req_S => err_West_Req_S,
+                                      err_South_Req_L => err_South_Req_L, 
+
+                                      err_IDLE_Req_E => err_IDLE_Req_E, 
+                                      err_Local_Req_E => err_Local_Req_E,
+                                      err_North_Req_W => err_North_Req_W, 
+                                      err_East_Req_S => err_East_Req_S, 
+                                      err_West_Req_L => err_West_Req_L, 
+                                      err_South_Req_N => err_South_Req_N, 
+
+                                      err_IDLE_Req_W => err_IDLE_Req_W,
+                                      err_Local_Req_W => err_Local_Req_W,
+                                      err_North_Req_S => err_North_Req_S,
+                                      err_East_Req_L => err_East_Req_L,
+                                      err_West_Req_N => err_West_Req_N,
+                                      err_South_Req_E => err_South_Req_E,
+
+                                      err_IDLE_Req_S => err_IDLE_Req_S,
+                                      err_Local_Req_S => err_Local_Req_S,
+                                      err_North_Req_L => err_North_Req_L,
+                                      err_East_Req_N => err_East_Req_N,
+                                      err_West_Req_E => err_West_Req_E,
+                                      err_South_Req_W => err_South_Req_W,
+
+                                      err_next_state_onehot => err_next_state_onehot, 
+                                      err_state_in_onehot => err_state_in_onehot, 
+                                      err_DCTS_RTS_FF_state_Grant_L => err_DCTS_RTS_FF_state_Grant_L,
+                                      err_DCTS_RTS_FF_state_Grant_N => err_DCTS_RTS_FF_state_Grant_N,
+                                      err_DCTS_RTS_FF_state_Grant_E => err_DCTS_RTS_FF_state_Grant_E,
+                                      err_DCTS_RTS_FF_state_Grant_W => err_DCTS_RTS_FF_state_Grant_W,
+                                      err_DCTS_RTS_FF_state_Grant_S => err_DCTS_RTS_FF_state_Grant_S, 
+                                      err_state_north_xbar_sel => err_state_north_xbar_sel,
+                                      err_state_east_xbar_sel  => err_state_east_xbar_sel,
+                                      err_state_west_xbar_sel  => err_state_west_xbar_sel,
+                                      err_state_south_xbar_sel => err_state_south_xbar_sel,
+                                      err_state_local_xbar_sel => err_state_local_xbar_sel
                                      );
 
 end behavior;

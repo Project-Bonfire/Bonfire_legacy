@@ -18,20 +18,28 @@ entity LBDR_with_checkers_top is
             Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: in std_logic;
             
             -- LBDR outputs
+            N1_out, E1_out, W1_out, S1_out: out std_logic;            
             Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: out std_logic;
 
             -- Checker outputs
-            err_LBDR_Req_onehot :out std_logic; 
-            err_LBDR_Req_onehot1 :out std_logic;
-            err_LBDR_dst_addr_checker :out std_logic;
-            err_LBDR_valid_flit_type :out std_logic;
-            err_LBDR_valid_flit_type2 :out std_logic;
-            err_LBDR_valid_flit_type3 :out std_logic;
-            err_LBDR_valid_flit_type4 :out std_logic;
-            err_LBDR_valid_flit_type5 :out std_logic; 
-            err_LBDR_Req_tail_allzero :out std_logic;
-            err_LBDR_Req_Local :out std_logic;
-            err_LBDR_Req_Local1 :out std_logic
+            err_header_not_empty_Requests_in_onehot, 
+            err_header_empty_Requests_FF_Requests_in, 
+            err_tail_Requests_in_all_zero, 
+            err_header_tail_Requests_FF_Requests_in, 
+            err_dst_addr_cur_addr_N1,
+            err_dst_addr_cur_addr_not_N1,
+            err_dst_addr_cur_addr_E1,
+            err_dst_addr_cur_addr_not_E1,
+            err_dst_addr_cur_addr_W1,
+            err_dst_addr_cur_addr_not_W1,
+            err_dst_addr_cur_addr_S1,
+            err_dst_addr_cur_addr_not_S1, 
+            err_dst_addr_cur_addr_not_Req_L_in, 
+            err_dst_addr_cur_addr_Req_L_in, 
+            err_header_not_empty_Req_N_in,
+            err_header_not_empty_Req_E_in,
+            err_header_not_empty_Req_W_in,
+            err_header_not_empty_Req_S_in : out std_logic
             );
 end LBDR_with_checkers_top;
 
@@ -49,6 +57,7 @@ component LBDR_pseudo is
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
             Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: in std_logic;
 
+            N1_out, E1_out, W1_out, S1_out: out std_logic;            
             Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: out std_logic
             );
 end component;
@@ -62,24 +71,33 @@ component LBDR_checkers is
             flit_type: in std_logic_vector(2 downto 0);
             Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: in std_logic;
             Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: in std_logic;
+            N1_out, E1_out, W1_out, S1_out: in std_logic;            
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
 
             -- Checker outputs
-            err_LBDR_Req_onehot :out std_logic; 
-            err_LBDR_Req_onehot1 :out std_logic;
-            err_LBDR_dst_addr_checker :out std_logic;
-            err_LBDR_valid_flit_type :out std_logic;
-            err_LBDR_valid_flit_type2 :out std_logic;
-            err_LBDR_valid_flit_type3 :out std_logic;
-            err_LBDR_valid_flit_type4 :out std_logic;
-            err_LBDR_valid_flit_type5 :out std_logic; 
-            err_LBDR_Req_tail_allzero :out std_logic;
-            err_LBDR_Req_Local :out std_logic;
-            err_LBDR_Req_Local1 :out std_logic
+            err_header_not_empty_Requests_in_onehot, 
+            err_header_empty_Requests_FF_Requests_in, 
+            err_tail_Requests_in_all_zero, 
+            err_header_tail_Requests_FF_Requests_in, 
+            err_dst_addr_cur_addr_N1,
+            err_dst_addr_cur_addr_not_N1,
+            err_dst_addr_cur_addr_E1,
+            err_dst_addr_cur_addr_not_E1,
+            err_dst_addr_cur_addr_W1,
+            err_dst_addr_cur_addr_not_W1,
+            err_dst_addr_cur_addr_S1,
+            err_dst_addr_cur_addr_not_S1, 
+            err_dst_addr_cur_addr_not_Req_L_in, 
+            err_dst_addr_cur_addr_Req_L_in, 
+            err_header_not_empty_Req_N_in,
+            err_header_not_empty_Req_E_in,
+            err_header_not_empty_Req_W_in,
+            err_header_not_empty_Req_S_in : out std_logic
             );
 end component;
 
 signal Req_N_in_sig, Req_E_in_sig, Req_W_in_sig, Req_S_in_sig, Req_L_in_sig: std_logic;
+signal N1_out_sig, E1_out_sig, W1_out_sig, S1_out_sig: std_logic;
 
 begin 
 
@@ -89,39 +107,71 @@ Req_W_in <= Req_W_in_sig;
 Req_S_in <= Req_S_in_sig;
 Req_L_in <= Req_L_in_sig;
 
+N1_out <= N1_out_sig;
+E1_out <= E1_out_sig;
+W1_out <= W1_out_sig;
+S1_out <= S1_out_sig;
 
 -- LBDR instantiation
 LBDR: LBDR_pseudo generic map (cur_addr_rst => 5, Rxy_rst => 60, Cx_rst => 15, NoC_size => 4)
- 				     port map (empty=>empty, flit_type=>flit_type, dst_addr=>dst_addr, 
-							   Req_N_FF=>Req_N_FF, Req_E_FF=>Req_E_FF, Req_W_FF=>Req_W_FF, Req_S_FF=>Req_S_FF, Req_L_FF=>Req_L_FF,
- 							   Req_N_in=>Req_N_in_sig, Req_E_in=>Req_E_in_sig, Req_W_in=>Req_W_in_sig, Req_S_in=>Req_S_in_sig, Req_L_in=>Req_L_in_sig);
+ 				     port map (
+                       empty=>empty, 
+                       flit_type=>flit_type, 
+                       dst_addr=>dst_addr, 
+      							   Req_N_FF=>Req_N_FF, 
+                       Req_E_FF=>Req_E_FF, 
+                       Req_W_FF=>Req_W_FF, 
+                       Req_S_FF=>Req_S_FF, 
+                       Req_L_FF=>Req_L_FF,
+
+                       N1_out => N1_out_sig, 
+                       E1_out => E1_out_sig, 
+                       W1_out => W1_out_sig, 
+                       S1_out => S1_out_sig,
+       							   Req_N_in=>Req_N_in_sig, 
+                       Req_E_in=>Req_E_in_sig, 
+                       Req_W_in=>Req_W_in_sig, 
+                       Req_S_in=>Req_S_in_sig, 
+                       Req_L_in=>Req_L_in_sig
+                      );
 
 -- Checkers instantiation
 CHECKERS: LBDR_checkers  generic map (cur_addr_rst => 5, NoC_size => 4)
                          port map (empty=>empty, flit_type=>flit_type,
-                                  Req_N_FF=>Req_N_FF, 
-                                  Req_E_FF=>Req_E_FF, 
-                                  Req_W_FF=>Req_W_FF, 
-                                  Req_S_FF=>Req_S_FF,
-                                  Req_L_FF=>Req_L_FF,
-								                  Req_N_in=>Req_N_in_sig, 
-                                  Req_E_in=>Req_E_in_sig, 
-                                  Req_W_in=>Req_W_in_sig, 
-                                  Req_S_in=>Req_S_in_sig, 
-                                  Req_L_in=>Req_L_in_sig, 
-                                  dst_addr => dst_addr,
+                                   Req_N_FF=>Req_N_FF, 
+                                   Req_E_FF=>Req_E_FF, 
+                                   Req_W_FF=>Req_W_FF, 
+                                   Req_S_FF=>Req_S_FF,
+                                   Req_L_FF=>Req_L_FF,
+								                   Req_N_in=>Req_N_in_sig, 
+                                   Req_E_in=>Req_E_in_sig, 
+                                   Req_W_in=>Req_W_in_sig, 
+                                   Req_S_in=>Req_S_in_sig, 
+                                   Req_L_in=>Req_L_in_sig, 
+                                   N1_out => N1_out_sig, 
+                                   E1_out => E1_out_sig, 
+                                   W1_out => W1_out_sig, 
+                                   S1_out => S1_out_sig,
+                                   dst_addr => dst_addr,
 
-								                  err_LBDR_Req_onehot => err_LBDR_Req_onehot, 
-                                  err_LBDR_Req_onehot1 => err_LBDR_Req_onehot1, 
-                                  err_LBDR_dst_addr_checker => err_LBDR_dst_addr_checker, 
-                                  err_LBDR_Req_tail_allzero => err_LBDR_Req_tail_allzero, 
-                                  err_LBDR_Req_Local => err_LBDR_Req_Local, 
-                                  err_LBDR_Req_Local1 => err_LBDR_Req_Local1, 
-                                  err_LBDR_valid_flit_type => err_LBDR_valid_flit_type, 
-                                  err_LBDR_valid_flit_type2 => err_LBDR_valid_flit_type2, 
-                                  err_LBDR_valid_flit_type3 => err_LBDR_valid_flit_type3,
-                                  err_LBDR_valid_flit_type4 => err_LBDR_valid_flit_type4,
-                                  err_LBDR_valid_flit_type5 => err_LBDR_valid_flit_type5
+                                   err_header_not_empty_Requests_in_onehot => err_header_not_empty_Requests_in_onehot, 
+                                   err_header_empty_Requests_FF_Requests_in => err_header_empty_Requests_FF_Requests_in, 
+                                   err_tail_Requests_in_all_zero => err_tail_Requests_in_all_zero, 
+                                   err_header_tail_Requests_FF_Requests_in => err_header_tail_Requests_FF_Requests_in, 
+                                   err_dst_addr_cur_addr_N1 => err_dst_addr_cur_addr_N1,
+                                   err_dst_addr_cur_addr_not_N1 => err_dst_addr_cur_addr_not_N1,
+                                   err_dst_addr_cur_addr_E1 => err_dst_addr_cur_addr_E1,
+                                   err_dst_addr_cur_addr_not_E1 => err_dst_addr_cur_addr_not_E1,
+                                   err_dst_addr_cur_addr_W1 => err_dst_addr_cur_addr_W1,
+                                   err_dst_addr_cur_addr_not_W1 => err_dst_addr_cur_addr_not_W1,
+                                   err_dst_addr_cur_addr_S1 => err_dst_addr_cur_addr_S1,
+                                   err_dst_addr_cur_addr_not_S1 => err_dst_addr_cur_addr_not_S1, 
+                                   err_dst_addr_cur_addr_not_Req_L_in => err_dst_addr_cur_addr_not_Req_L_in, 
+                                   err_dst_addr_cur_addr_Req_L_in => err_dst_addr_cur_addr_Req_L_in, 
+                                   err_header_not_empty_Req_N_in => err_header_not_empty_Req_N_in,
+                                   err_header_not_empty_Req_E_in => err_header_not_empty_Req_E_in,
+                                   err_header_not_empty_Req_W_in => err_header_not_empty_Req_W_in,
+                                   err_header_not_empty_Req_S_in => err_header_not_empty_Req_S_in
                                   );
 
 end behavior;

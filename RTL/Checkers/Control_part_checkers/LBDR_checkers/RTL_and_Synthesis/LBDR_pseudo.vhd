@@ -19,6 +19,7 @@ entity LBDR_pseudo is
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
             Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: in std_logic;
 
+            N1_out, E1_out, W1_out, S1_out: out std_logic;
             Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: out std_logic
             );
 end LBDR_pseudo;
@@ -40,6 +41,12 @@ begin
   W1 <= '1' when  dst_addr((NoC_size/2)-1 downto 0) < cur_addr((NoC_size/2)-1 downto 0) else '0';
   S1 <= '1' when  cur_addr(NoC_size-1 downto NoC_size/2) < dst_addr(NoC_size-1 downto NoC_size/2) else '0'; 
 
+  -- Taking X1 signals to the output interface for checking with checkers
+  N1_out <= N1;
+  E1_out <= E1;
+  W1_out <= W1;
+  S1_out <= S1;
+
 -- The combionational part
 
 process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF) begin
@@ -49,7 +56,7 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
         Req_E_in <= ((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1);
         Req_W_in <= ((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2);
         Req_S_in <= ((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3);
-        Req_L_in <= not N1 and  not E1 and not W1 and not S1;
+        Req_L_in <= not N1 and not E1 and not W1 and not S1;
 
   elsif flit_type = "100" then
         Req_N_in <= '0';
