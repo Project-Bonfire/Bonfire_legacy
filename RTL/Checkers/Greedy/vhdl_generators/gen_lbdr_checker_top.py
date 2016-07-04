@@ -172,17 +172,28 @@ def gen_lbdr_checker_top(checker_id):
     lbdr_checker_top.write("S1_out <= S1_out_sig;\n")
     lbdr_checker_top.write("\n")
     lbdr_checker_top.write("-- LBDR instantiation\n")
-    lbdr_checker_top.write("LBDR: LBDR_pseudo generic map (cur_addr_rst => 5, Rxy_rst => 60, "
-                           "Cx_rst => 15, NoC_size => 4)\n")
-    lbdr_checker_top.write("                     port map (empty=>empty, flit_type=>flit_type, dst_addr=>dst_addr, \n")
-    lbdr_checker_top.write("                               Req_N_FF=>Req_N_FF, Req_E_FF=>Req_E_FF, Req_W_FF=>Req_W_FF, "
-                           "Req_S_FF=>Req_S_FF, Req_L_FF=>Req_L_FF,\n")
-    lbdr_checker_top.write("                               N1_out => N1_out_sig, E1_out => E1_out_sig, "
-                           "W1_out => W1_out_sig, S1_out => S1_out_sig,\n")
-    lbdr_checker_top.write("                               Req_N_in=>Req_N_in_sig, Req_E_in=>Req_E_in_sig, "
-                           "Req_W_in=>Req_W_in_sig, Req_S_in=>Req_S_in_sig, Req_L_in=>Req_L_in_sig);\n")
+    lbdr_checker_top.write("LBDR: LBDR_pseudo generic map (cur_addr_rst => 5, Rxy_rst => 60, Cx_rst => 15, NoC_size => 4)\n")
+    lbdr_checker_top.write("                     port map (\n")
+    lbdr_checker_top.write("                       empty=>empty, \n")
+    lbdr_checker_top.write("                       flit_type=>flit_type, \n")
+    lbdr_checker_top.write("                       dst_addr=>dst_addr, \n")
+    lbdr_checker_top.write("                       Req_N_FF=>Req_N_FF, \n")
+    lbdr_checker_top.write("                       Req_E_FF=>Req_E_FF, \n")
+    lbdr_checker_top.write("                       Req_W_FF=>Req_W_FF, \n")
+    lbdr_checker_top.write("                       Req_S_FF=>Req_S_FF, \n")
+    lbdr_checker_top.write("                       Req_L_FF=>Req_L_FF,\n")
     lbdr_checker_top.write("\n")
-
+    lbdr_checker_top.write("                       N1_out => N1_out_sig, \n")
+    lbdr_checker_top.write("                       E1_out => E1_out_sig, \n")
+    lbdr_checker_top.write("                       W1_out => W1_out_sig, \n")
+    lbdr_checker_top.write("                       S1_out => S1_out_sig,\n")
+    lbdr_checker_top.write("                       Req_N_in=>Req_N_in_sig, \n")
+    lbdr_checker_top.write("                       Req_E_in=>Req_E_in_sig, \n")
+    lbdr_checker_top.write("                       Req_W_in=>Req_W_in_sig, \n")
+    lbdr_checker_top.write("                       Req_S_in=>Req_S_in_sig, \n")
+    lbdr_checker_top.write("                       Req_L_in=>Req_L_in_sig\n")
+    lbdr_checker_top.write("                      );\n")
+    lbdr_checker_top.write("\n")
     lbdr_checker_top.write("-- Checkers instantiation\n")
     lbdr_checker_top.write("CHECKERS: LBDR_checkers  generic map (cur_addr_rst => 5, NoC_size => 4)\n")
     lbdr_checker_top.write("                         port map (empty=>empty, flit_type=>flit_type,\n")
@@ -205,41 +216,41 @@ def gen_lbdr_checker_top(checker_id):
 
     string_to_write = ""
     if '1' in checker_id:
-        string_to_write += "err_header_not_empty_Requests_in_onehot => err_header_not_empty_Requests_in_onehot,"
+        string_to_write += "err_header_not_empty_Requests_in_onehot => err_header_not_empty_Requests_in_onehot, \n"
     if '2' in checker_id:
-        string_to_write += "err_header_empty_Requests_FF_Requests_in => err_header_empty_Requests_FF_Requests_in,"
+        string_to_write += "err_header_empty_Requests_FF_Requests_in => err_header_empty_Requests_FF_Requests_in, \n"
     if '3' in checker_id:
-        string_to_write += "err_tail_Requests_in_all_zero => err_tail_Requests_in_all_zero,"
+        string_to_write += "err_tail_Requests_in_all_zero => err_tail_Requests_in_all_zero, \n"
     if '4' in checker_id:
-        string_to_write += "err_header_tail_Requests_FF_Requests_in => err_header_tail_Requests_FF_Requests_in,"
+        string_to_write += "err_header_tail_Requests_FF_Requests_in => err_header_tail_Requests_FF_Requests_in, \n"
     if '5' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_N1 => err_dst_addr_cur_addr_N1,"
+        string_to_write += "err_dst_addr_cur_addr_N1 => err_dst_addr_cur_addr_N1, \n"
     if '6' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_N1 => err_dst_addr_cur_addr_not_N1,"
+        string_to_write += "err_dst_addr_cur_addr_not_N1 => err_dst_addr_cur_addr_not_N1, \n"
     if '7' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_E1 => err_dst_addr_cur_addr_E1,"
+        string_to_write += "err_dst_addr_cur_addr_E1 => err_dst_addr_cur_addr_E1, \n"
     if '8' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_E1 => err_dst_addr_cur_addr_not_E1,"
+        string_to_write += "err_dst_addr_cur_addr_not_E1 => err_dst_addr_cur_addr_not_E1, \n"
     if '9' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_W1 => err_dst_addr_cur_addr_W1,"
+        string_to_write += "err_dst_addr_cur_addr_W1 => err_dst_addr_cur_addr_W1, \n"
     if '10' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_W1 => err_dst_addr_cur_addr_not_W1,"
+        string_to_write += "err_dst_addr_cur_addr_not_W1 => err_dst_addr_cur_addr_not_W1, \n"
     if '11' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_S1 => err_dst_addr_cur_addr_S1,"
+        string_to_write += "err_dst_addr_cur_addr_S1 => err_dst_addr_cur_addr_S1, \n"
     if '12' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_S1 => err_dst_addr_cur_addr_not_S1,"
+        string_to_write += "err_dst_addr_cur_addr_not_S1 => err_dst_addr_cur_addr_not_S1, \n"
     if '13' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_not_Req_L_in => err_dst_addr_cur_addr_not_Req_L_in,"
+        string_to_write += "err_dst_addr_cur_addr_not_Req_L_in => err_dst_addr_cur_addr_not_Req_L_in, \n"
     if '14' in checker_id:
-        string_to_write += "err_dst_addr_cur_addr_Req_L_in => err_dst_addr_cur_addr_Req_L_in,"
+        string_to_write += "err_dst_addr_cur_addr_Req_L_in => err_dst_addr_cur_addr_Req_L_in, \n"
     if '15' in checker_id:
-        string_to_write += "err_header_not_empty_Req_N_in => err_header_not_empty_Req_N_in,"
+        string_to_write += "err_header_not_empty_Req_N_in => err_header_not_empty_Req_N_in, \n"
     if '16' in checker_id:
-        string_to_write += "err_header_not_empty_Req_E_in => err_header_not_empty_Req_E_in,"
+        string_to_write += "err_header_not_empty_Req_E_in => err_header_not_empty_Req_E_in, \n"
     if '17' in checker_id:
-        string_to_write += "err_header_not_empty_Req_W_in => err_header_not_empty_Req_W_in,"
+        string_to_write += "err_header_not_empty_Req_W_in => err_header_not_empty_Req_W_in, \n"
     if '18' in checker_id:
-        string_to_write += "err_header_not_empty_Req_S_in => err_header_not_empty_Req_S_in,"
+        string_to_write += "err_header_not_empty_Req_S_in => err_header_not_empty_Req_S_in, \n"
 
     string_to_write = string_to_write[:len(string_to_write)-1]+");\n"
 
