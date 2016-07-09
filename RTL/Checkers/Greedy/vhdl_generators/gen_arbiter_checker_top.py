@@ -477,7 +477,7 @@ def gen_arbiter_checker_top(checker_id):
     if '46' in checker_id:
         string_to_write += "err_state_in_onehot => err_state_in_onehot,\n"
     if '47' in checker_id:
-        string_to_write += "err_DCTS_RTS_FF_state_Grant_L => err_state_in_onehot,\n"
+        string_to_write += "err_DCTS_RTS_FF_state_Grant_L => err_DCTS_RTS_FF_state_Grant_L,\n"
     if '48' in checker_id:
         string_to_write += "err_DCTS_RTS_FF_state_Grant_N => err_DCTS_RTS_FF_state_Grant_N,\n"
     if '49' in checker_id:
