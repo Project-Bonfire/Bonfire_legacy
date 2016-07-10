@@ -1,4 +1,4 @@
-__author__ = 'siavoosh'
+# copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 
 import sys
 from file_generator import make_folders
@@ -12,13 +12,13 @@ from greedy_search import greedy_search
 
 if '--help' in sys.argv[1:]:
     print "           ===================================================             "
-    print "                   \033[32m _         __   _      __  _       \033[0m"
+    print "                   \033[32m _        .__   _     .__  _       \033[0m"
     print "                  \033[32m//  |   |  |    /  | / |   | )\033[0m              "
     print "           ======\033[32m||   |\033[91m===\033[32m|  |\033[91m==\033[32m |   |/  |\033[91m==\033[32m " \
           "|\\ \033[0m  ==========="
-    print "                  \033[32m\\\\_ |   |  |__  \\_ |\\_ |__ | \\ \033[91m  Opt.\033[0m"
+    print "                  \033[32m\\\\_ |   |  |__  \\_ |\\_ |__ | \\ \033[91m  Opt. tool\033[0m "
     print "           ===================================================             "
-    print "welcome to one of the the darkest corner of this project. This tool is designed to " \
+    print "welcome to one of the the darkest corners of this project. This tool is designed to " \
           "apply optimization \nmethods on checkers. This tool contains three main parts:\n" \
           "\t- Greedy heuristics: sorts the checkers based on your criteria and tries to pick them one by one \n" \
           "\t- Branch and bound: its classic branch and bound, dont try it on units with more than 15 checkers \n" \
@@ -63,7 +63,6 @@ build_list_of_candidates()
 
 # Just for getting a copy of the current console
 sys.stdout = logger.Logger()
-
 
 if package_file.find_problematic_checkers:
     find_problematic_checkers()

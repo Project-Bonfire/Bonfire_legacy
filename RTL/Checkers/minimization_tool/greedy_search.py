@@ -41,6 +41,12 @@ def greedy_search():
     if package_file.extract_essential_checkers:
         find_dominant_true_detect_checker()
         current_list, checkers_for_optimization = copy.deepcopy(find_essential_checker())
+    elif package_file.use_essential_checkers:
+        current_list = copy.deepcopy(package_file.essential_checkers)
+        checkers_for_optimization = []
+        for checker in package_file.list_of_checkers:
+            if checker not in current_list:
+                checkers_for_optimization.append(checker)
     else:
         current_list = []
         checkers_for_optimization = copy.deepcopy(package_file.list_of_checkers)

@@ -2,9 +2,7 @@
 import package_file
 from area_coverage_calc import calculate_area, calculate_coverage
 from file_generator import generate_specific_file
-import os
-import sys
-import logger
+
 
 def find_problematic_checkers():
     print "----------------------------------"
@@ -14,7 +12,7 @@ def find_problematic_checkers():
     counter = 0
     for item_1 in range(1, package_file.number_of_checkers+1):
         print "starting calculation for item", item_1
-        initial_list=[str(item_1)]
+        initial_list = [str(item_1)]
         generate_specific_file(initial_list)
         calculate_area(initial_list)
         initial_coverage = calculate_coverage(initial_list)
@@ -32,7 +30,6 @@ def find_problematic_checkers():
 
                         if new_coverage == initial_coverage:
                             print "\033[91m* NOTE::\033[0m PROBLEMATIC SET OF CHECKERS DETECTED:", \
-                                item_2," IS DOMINATED BY", item_1
+                                item_2, " IS DOMINATED BY", item_1
                             problematic_checker_detected = True
     return problematic_checker_detected
-
