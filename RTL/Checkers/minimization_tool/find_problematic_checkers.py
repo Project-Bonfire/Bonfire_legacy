@@ -2,9 +2,13 @@
 import package_file
 from area_coverage_calc import calculate_area, calculate_coverage
 from file_generator import generate_specific_file
+import copy
+from for_testing import gen_dummy_dict
 
 
 def find_problematic_checkers():
+    if package_file.test_mode:
+        package_file.area_coverage_results = copy.deepcopy(gen_dummy_dict())
     print "----------------------------------"
     print "Starting checks for problematic checkers..."
     problematic_checker_detected = False
