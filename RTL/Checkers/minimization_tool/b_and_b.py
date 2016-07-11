@@ -10,48 +10,25 @@
 
 
 import copy
-import sys
-
-from build_list_of_candidates import build_list_of_candidates
 from cost_function import calculate_cost
 from check_feasibility import check_feasibility
 from area_coverage_calc import calculate_area
 from area_coverage_calc import calculate_coverage
 import package_file
 from misc import name_string_generator
-from file_generator import make_folders, generate_specific_file
+from file_generator import generate_specific_file
 from for_testing import gen_dummy_dict
-import logger
 
 
-if '--help' in sys.argv[1:]:
-    print " ____  _    ____ "
-    print "/  __\/.\  /  __\\"
-    print "| | //\ _\_| | //"
-    print "| |_\\\\/|/ /| |_\\\\"
-    print "\____/\__/\\\\____/"
-    print "\n"
-    print "Welcome to checker's Branch and Bound (B&B), To use this tool, " \
-          "\tyou need to do the following:"
-    print "\t1. add a script that generates VHDL files for your checkers and top module "
-    print "\t2. copy the module's pseudo combinational VHDL file in the folder"
-    print "\t3. change the package_file parameters according to your design"
-    print "\t\t- set the number_of_checkers to the number of checkers you have implemented"
-    print "\t\t- set size_max to maximum size you can afford for the checkers+pseudo combinational"
-    print "\t\t- set unit_under_test and module_file_name, follow instructions inside the file"
-    print "\t\t- if you need more info, set debug to True"
-    # todo: we have to fix this number 4:
-    print "\t4. manually change the module name in synthesis_script.sh (its going to be fixed at some point)"
-    print "\t5. copy analyze tool into the B&B folder"
-    print "\t6. set up your synthesis tool environment. and run B_and_B.py"
-    print "\t7. be patient, it will take a while..."
-    print "\t8. if you got an error, find Siavoosh!"
-    print "\ngood luck, you're gonna need it!\n"
-    sys.exit()
+# the area of the best solution
+best_cost = 0
+# best solution keeps a list of all the selected checkers which are used in the best solution
+best_solution = None
+best_area = package_file.size_max
 
 
 def branch(candidates_list, selected_list, excluded_list):
-    global best_cost, best_solution, progress_counter, best_area
+    global best_cost, best_solution, best_area
 
     # we don't want to change the original values
     current_excluded_list = copy.deepcopy(excluded_list)
@@ -66,24 +43,22 @@ def branch(candidates_list, selected_list, excluded_list):
 
     current_candidate_list.pop(item)
 
-    # if we pick the item
     print "trying picking the item", item
-    if not check_feasibility(current_selected_list, item):
-        number_of_remaining_cases = package_file.number_of_checkers-(len(current_selected_list) + 1)
-        if number_of_remaining_cases > 0:
-            progress_counter += 2**(number_of_remaining_cases+1) - 2
-        else:
-            progress_counter += 1
-        report_progress(progress_counter)
+    # the reason we check if the item is already there or not is the fact that we can have essential
+    # checkers being fed into the tool and it messes up the entire thing if we don't take care of it...
+    if item in selected_list:
+        print "item already in the selected list! skipping..."
+    # if we pick the item
+    elif not check_feasibility(current_selected_list, item):
+        # this is where it becomes infeasible!
+        pass
     else:
+        # so we have a new item that is actually feasible to pick
         current_selected_list.append(item)
         if item in current_excluded_list:
             print "we should not get here!"
             current_excluded_list.remove(item)
         cost = calculate_cost(current_selected_list)
-
-        progress_counter += 1
-        report_progress(progress_counter)
 
         if cost > best_cost:
             item_number = name_string_generator(current_selected_list)
@@ -102,15 +77,11 @@ def branch(candidates_list, selected_list, excluded_list):
                 best_area = package_file.list_of_candidates[item_number][1]
                 best_solution = copy.deepcopy(current_selected_list)
 
-
-
         if len(current_candidate_list) > 0:
             optimistic_value = bound(current_excluded_list)
             # print "here",current_candidate_list, current_selected_list, current_excluded_list
             if optimistic_value < best_cost:
                 print "\033[91m* NOTE::\033[0m bounded!"
-                progress_counter += 2**(len(current_candidate_list)+1) - 2
-                report_progress(progress_counter)
 
                 return
             branch(current_candidate_list, current_selected_list, current_excluded_list)
@@ -122,16 +93,13 @@ def branch(candidates_list, selected_list, excluded_list):
     print "Item to be branched:", item
     print "not picking the item", item
 
-    progress_counter += 1
-    report_progress(progress_counter)
-
     if item in current_selected_list:
         current_selected_list.remove(item)
     cost = calculate_cost(current_selected_list)
     if cost > best_cost:
         item_number = name_string_generator(current_selected_list)
         print "\033[32m* NOTE::\033[0m found better solution with cost:", cost, "and area:", \
-                package_file.list_of_candidates[item_number][1]
+              package_file.list_of_candidates[item_number][1]
         best_cost = cost
         best_area = package_file.list_of_candidates[item_number][1]
         best_solution = copy.deepcopy(current_selected_list)
@@ -150,8 +118,6 @@ def branch(candidates_list, selected_list, excluded_list):
         optimistic_value = bound(current_excluded_list)
         if optimistic_value < best_cost:
             print "\033[91m* NOTE::\033[0m bounded!"
-            progress_counter += 2**(len(current_candidate_list)+1) - 2
-            report_progress(progress_counter)
 
             return
         branch(current_candidate_list, current_selected_list, current_excluded_list)
@@ -183,47 +149,27 @@ def bound(excluded_items):
     return optimistic_value
 
 
-def report_progress(progress_counter_value):
-    # print "progress", float(progress_counter_value)/(2**(package_file.number_of_checkers+1)-2)*100, "%"
-    return None
+def b_and_b():
+    global best_cost, best_solution, best_area
 
+    if package_file.test_mode:
+        package_file.area_coverage_results = copy.deepcopy(gen_dummy_dict())
 
-progress_counter = 0
-for i in range(1, package_file.number_of_checkers+1):
-    package_file.list_of_checkers.append(str(i))
+    print "\033[32m* NOTE::\033[0m starting branch and bound optimization!"
 
-if package_file.test_mode:
-    package_file.area_coverage_results = copy.deepcopy(gen_dummy_dict())
+    if not package_file.use_essential_checkers:
+        package_file.essential_checkers = []
+    else:
+        generate_specific_file(package_file.essential_checkers)
+        calculate_area(package_file.essential_checkers)
+        calculate_coverage(package_file.essential_checkers)
 
-make_folders()
-# we need to prepare a dictionary of all the single checker's info
-# The dictionary format is the following     checker number:  [coverage,  area]
-build_list_of_candidates()
+    print "starting process with the following checkers:", package_file.list_of_candidates.keys()
+    print "picking the following checkers as essential:", package_file.essential_checkers
 
-# Just for getting a copy of the current console
-sys.stdout = logger.Logger()
-
-# best solution keeps a list of all the selected checkers which are used in the best solution
-best_solution = None
-# the area of the best solution
-best_cost = 0
-best_area = package_file.size_max
-
-print "\033[32m* NOTE::\033[0m starting branch and bound optimization!"
-
-if not package_file.use_essential_checkers:
-    package_file.essential_checkers = []
-else:
-    generate_specific_file(package_file.essential_checkers)
-    calculate_area(package_file.essential_checkers)
-    calculate_coverage(package_file.essential_checkers)
-
-print "starting process with the following non essential checkers:", package_file.list_of_candidates.keys()
-print "starting process with the following checkers:", package_file.essential_checkers
-
-branch(package_file.list_of_candidates, package_file.essential_checkers, [])
-print "------------------------------"
-print "\033[32m* NOTE::\033[0m best solution:", best_solution
-print "\033[32m* NOTE::\033[0m coverage:", best_cost
-print "\033[32m* NOTE::\033[0m area:", best_area
-# print package_file.list_of_candidates
+    branch(package_file.list_of_candidates, package_file.essential_checkers, [])
+    print "------------------------------"
+    print "\033[32m* NOTE::\033[0m best solution:", best_solution
+    print "\033[32m* NOTE::\033[0m coverage:", best_cost
+    print "\033[32m* NOTE::\033[0m area:", best_area
+    # print package_file.list_of_candidates

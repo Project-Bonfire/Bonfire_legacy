@@ -1,13 +1,20 @@
-__author__ = 'siavoosh'
+# copyright 2016 Siavoosh Payandeh Azad and Behrad Niazmand
+
 import random
 import itertools
 import package_file
 
+
 def gen_dummy_dict():
+    """
+    this function returns a dictionary with name of all the cases of checkers that can happen in your design as
+    keys and list containing two random numbers as area and coverage(CEI). this is used for testing.
+    :return: test area/coverage dictionary
+    """
     new_dict = {}
-    list_of_items =[]
+    list_of_items = []
     for i in range(1, package_file.number_of_checkers+1):
-      list_of_items.append(i)
+        list_of_items.append(i)
 
     for i in range(1, len(list_of_items)+1):
         all_items = list(itertools.combinations(list_of_items, i))
@@ -27,6 +34,11 @@ def gen_dummy_dict():
 
 
 def initialize_LBDR():
+    """
+    This function generates some numbers for the tool to be used as example. these are from an outdated version
+    and have no value what so ever, but useful for testing.
+    :return: sorted list of coverage results
+    """
     sorted_coverage = [('9', [0.88065714285714292, 70.0]), ('8', [0.68822807017543863, 57.0]),
                        ('5', [0.57208888888888887, 45.0]), ('3', [0.48573584905660377, 53.0]),
                        ('4', [0.44386206896551722, 58.0]), ('2', [0.40863492063492063, 63.0]),

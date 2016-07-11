@@ -62,9 +62,10 @@ def report_detection_tables():
 def report_config():
     print "      Config File Report"
     print "------------------------------"
+    print "Optimization method:", package_file.optimization_method
     print "Unit Under Test:", package_file.unit_under_test
     print "number of checkers:", package_file.number_of_checkers
-    print "size max:", package_file.size_max
+    print "area constraint:", package_file.size_max
     print "selection function:", package_file.cost_function_type
     print "essential checker extraction:", package_file.extract_essential_checkers
     print "find problematic checkers:", package_file.find_problematic_checkers

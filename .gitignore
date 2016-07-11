@@ -1,15 +1,11 @@
 .DS_Store
 scripts/*.vhd
 *.pyc
-RTL/Checkers/B_and_B/checker_vhdl/*.vhd
-RTL/Checkers/B_and_B/synthesis_scripts/*.script
-RTL/Checkers/B_and_B/temp/*
-RTL/Checkers/B_and_B/logs/*
+RTL/Checkers/minimization_tool/checker_vhdl/*.vhd
+RTL/Checkers/minimization_tool/synthesis_scripts/*.script
+RTL/Checkers/minimization_tool/temp/*
+RTL/Checkers/minimization_tool/logs/*
 
-RTL/Checkers/Greedy/checker_vhdl/*.vhd
-RTL/Checkers/Greedy/synthesis_scripts/*.script
-RTL/Checkers/Greedy/temp/*
-RTL/Checkers/Greedy/logs/*
 
 *.bak
 

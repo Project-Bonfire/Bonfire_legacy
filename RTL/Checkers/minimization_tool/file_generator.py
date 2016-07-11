@@ -3,7 +3,7 @@
 import os
 
 import package_file
-from vhdl_generators import gen_elbdr_cheker_files, gen_elbdr_checker_top, gen_lbdr_cheker_files, gen_lbdr_checker_top
+from vhdl_generators import gen_lbdr_cheker_files, gen_lbdr_checker_top
 from vhdl_generators import gen_fifo_checker_top, gen_fifo_cheker_files
 from vhdl_generators import gen_arbiter_checker_top, gen_arbiter_cheker_files
 import gen_unit_synth_script
@@ -41,11 +41,8 @@ def generate_specific_file(current_selected_list):
     else:
         gen_unit_synth_script.gen_unit_checker_script(current_selected_list)
 
-    if package_file.unit_under_test == "ELBDR":
-        gen_elbdr_cheker_files.gen_elbdr_checkers(current_selected_list)
-        gen_elbdr_checker_top.gen_elbdr_checker_top(current_selected_list)
 
-    elif package_file.unit_under_test == "LBDR":
+    if package_file.unit_under_test == "LBDR":
         gen_lbdr_cheker_files.gen_lbdr_checkers(current_selected_list)
         gen_lbdr_checker_top.gen_lbdr_checker_top(current_selected_list)
 
