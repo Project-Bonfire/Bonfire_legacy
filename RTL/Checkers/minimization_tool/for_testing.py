@@ -6,6 +6,11 @@ import package_file
 
 
 def gen_dummy_dict():
+    """
+    this function returns a dictionary with name of all the cases of checkers that can happen in your design as
+    keys and list containing two random numbers as area and coverage(CEI). this is used for testing.
+    :return: test area/coverage dictionary
+    """
     new_dict = {}
     list_of_items = []
     for i in range(1, package_file.number_of_checkers+1):
