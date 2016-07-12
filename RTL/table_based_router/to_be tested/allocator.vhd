@@ -7,7 +7,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.NUMERIC_STD.all;
 use IEEE.MATH_REAL.ALL;
 
-entity allocator is       -- table based routing module
+entity allocator is      
      
     port (  reset: in  std_logic;
             clk: in  std_logic;
