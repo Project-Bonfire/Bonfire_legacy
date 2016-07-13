@@ -47,7 +47,7 @@ if reset = '0' then
   routing_table <= (others =>(others=>'0'));
 elsif clk'event and clk = '1' then 
   if load_table_en = '1' then 
-    routing_table(conv_integer(wr_table_add)) <= r_table_data;
+    routing_table(conv_integer(wr_table_add)) <= wr_table_data;
   end if;
 end if;
 end process;
