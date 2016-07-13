@@ -2,8 +2,7 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
 
 entity arbiter_in is
     port (   
@@ -18,13 +17,14 @@ begin
 
 -- anything below here is pure combinational
 
-process(req_X_N, req_X_E, req_X_W, req_X_S, req_X_L)begin
+process(req_X_N, req_X_E, req_X_W, req_X_S, req_X_L)
+begin
     X_N <= '0';
     X_E <= '0';
     X_W <= '0';
     X_S <= '0';
     X_L <= '0';
-    if req_X_N ='1' and  then
+    if req_X_N ='1'  then
         X_N <= '1';
     elsif req_X_E = '1' then
         X_E <= '1';
