@@ -52,5 +52,5 @@ list_of_true_misses_sa1 = {}
 #                Anything bellow
 #       This is for testing... do not bother!
 # --------------------------------------------
-test_mode = True
+test_mode = False
 area_coverage_results = {}
