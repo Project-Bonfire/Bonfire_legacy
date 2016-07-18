@@ -23,23 +23,19 @@ entity FIFO is
             Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0); 
 
             -- Checker outputs
-            -- FIFO Control Part with dominant checkers and the ones that give in total 100% CEI and FC
-            err_FIFO_control_part_DRTS_CTS: out std_logic; 
-            err_FIFO_write_pointer_update: out std_logic;
-            err_FIFO_read_pointer_not_update: out std_logic; 
-            err_FIFO_write_pointer_not_update: out std_logic;
-            err_FIFO_full_empty: out std_logic;
-            err_FIFO_empty: out std_logic; 
-            err_FIFO_empty1: out std_logic;
-            err_FIFO_full: out std_logic;
-            err_FIFO_read_pointer_onehot: out std_logic; 
-            err_FIFO_write_pointer_onehot: out std_logic;
-            err_FIFO_HS_state_onehot: out std_logic;
-            err_FIFO_read_en_onehot: out std_logic; 
-            err_FIFO_read_from_empty_FIFO: out std_logic; 
-            err_FIFO_write_to_full_FIFO: out std_logic;
-            err_FIFO_control_part_CTS_in_CTS_out: out std_logic;
-            err_FIFO_read_en_empty: out std_logic
+            err_write_en_write_pointer, 
+            err_not_write_en_write_pointer, 
+            err_read_pointer_write_pointer_not_empty, 
+            err_read_pointer_write_pointer_empty, 
+            err_read_pointer_write_pointer_not_full, 
+            err_read_pointer_write_pointer_full, 
+            err_read_pointer_increment, 
+            err_read_pointer_not_increment, 
+            --err_CTS_in, 
+            err_write_en, 
+            err_not_CTS_in, 
+            --err_not_write_en, 
+            err_read_en_mismatch : out std_logic
     );
 end FIFO;
 
@@ -54,19 +50,12 @@ architecture behavior of FIFO is
    signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_MEM_4, FIFO_MEM_4_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    
--- TYPE STATE_TYPE IS (IDLE, READ_DATA);
-   SUBTYPE STATE_TYPE IS STD_LOGIC_VECTOR (1 DOWNTO 0);
-   CONSTANT IDLE: STATE_TYPE:="01"; 
-   CONSTANT READ_DATA: STATE_TYPE:="10";
-
-   SIGNAL HS_state_out, HS_state_in : STATE_TYPE;
-
 component FIFO_control_part_checkers is
     port (  DRTS: in std_logic;
             CTS_out: in std_logic;
             CTS_in: in std_logic;
             read_en_N : in std_logic;
-            read_en_E : in std_logic;                        
+            read_en_E : in std_logic;            
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
@@ -78,26 +67,21 @@ component FIFO_control_part_checkers is
             full_out: in std_logic;
             read_en_out: in std_logic;
             write_en_out: in std_logic; 
-            HS_state_in: in std_logic_vector(1 downto 0);         
-
+ 
             -- Checker outputs
-            -- FIFO Control Part with dominant checkers and the ones that give in total 100% CEI and FC
-            err_FIFO_control_part_DRTS_CTS: out std_logic; 
-            err_FIFO_write_pointer_update: out std_logic;
-            err_FIFO_read_pointer_not_update: out std_logic; 
-            err_FIFO_write_pointer_not_update: out std_logic;
-            err_FIFO_full_empty: out std_logic;
-            err_FIFO_empty: out std_logic; 
-            err_FIFO_empty1: out std_logic;
-            err_FIFO_full: out std_logic;
-            err_FIFO_read_pointer_onehot: out std_logic; 
-            err_FIFO_write_pointer_onehot: out std_logic;
-            err_FIFO_HS_state_onehot: out std_logic;
-            err_FIFO_read_en_onehot: out std_logic; 
-            err_FIFO_read_from_empty_FIFO: out std_logic; 
-            err_FIFO_write_to_full_FIFO: out std_logic;
-            err_FIFO_control_part_CTS_in_CTS_out: out std_logic;
-            err_FIFO_read_en_empty: out std_logic
+            err_write_en_write_pointer, 
+            err_not_write_en_write_pointer, 
+            err_read_pointer_write_pointer_not_empty, 
+            err_read_pointer_write_pointer_empty, 
+            err_read_pointer_write_pointer_not_full, 
+            err_read_pointer_write_pointer_full, 
+            err_read_pointer_increment, 
+            err_read_pointer_not_increment, 
+            --err_CTS_in, 
+            err_write_en, 
+            err_not_CTS_in, 
+            --err_not_write_en, 
+            err_read_en_mismatch : out std_logic
             );
 end component;
 
@@ -137,36 +121,29 @@ begin
 -- FIFO Control Part checkers instantiation
 FIFOCONTROLPARTCHECKERS: FIFO_control_part_checkers port map (
                                                               DRTS => DRTS,
-                                                              CTS_in => CTS_in, CTS_out => CTS_out,
+                                                              CTS_out => CTS_out, CTS_in => CTS_in,
                                                               read_en_N => read_en_N, read_en_E => read_en_E, read_en_W => read_en_W, read_en_S => read_en_S, read_en_L => read_en_L,
-                                                              read_pointer => read_pointer, read_pointer_in => read_pointer_in, write_pointer => write_pointer, write_pointer_in => write_pointer_in,
+                                                              read_pointer => read_pointer, read_pointer_in => read_pointer_in, 
+                                                              write_pointer => write_pointer, write_pointer_in => write_pointer_in,
                                                               empty_out => empty, full_out => full, 
                                                               read_en_out => read_en, write_en_out => write_en,
-                                                              HS_state_in => HS_state_in,
-                
-                                                              err_FIFO_control_part_DRTS_CTS => err_FIFO_control_part_DRTS_CTS, 
-                                                              err_FIFO_write_pointer_update => err_FIFO_write_pointer_update,
-                                                              err_FIFO_read_pointer_not_update => err_FIFO_read_pointer_not_update,
-                                                              err_FIFO_write_pointer_not_update => err_FIFO_write_pointer_not_update,
-                                                              err_FIFO_full_empty => err_FIFO_full_empty, 
-                                                              err_FIFO_empty => err_FIFO_empty, 
-                                                              err_FIFO_empty1 => err_FIFO_empty1, 
-                                                              err_FIFO_full => err_FIFO_full, 
-                                                              err_FIFO_read_pointer_onehot => err_FIFO_read_pointer_onehot,
-                                                              err_FIFO_write_pointer_onehot => err_FIFO_write_pointer_onehot, 
-                                                              err_FIFO_HS_state_onehot => err_FIFO_HS_state_onehot, 
-                                                              err_FIFO_read_en_onehot => err_FIFO_read_en_onehot, 
-                                                              err_FIFO_read_from_empty_FIFO => err_FIFO_read_from_empty_FIFO, 
-                                                              err_FIFO_write_to_full_FIFO => err_FIFO_write_to_full_FIFO, 
-                                                              err_FIFO_control_part_CTS_in_CTS_out => err_FIFO_control_part_CTS_in_CTS_out,
-                                                              err_FIFO_read_en_empty => err_FIFO_read_en_empty
-                                                             );
 
+                                                              err_write_en_write_pointer => err_write_en_write_pointer,
+                                                              err_not_write_en_write_pointer => err_not_write_en_write_pointer,
+                                                              err_read_pointer_write_pointer_not_empty => err_read_pointer_write_pointer_not_empty,
+                                                              err_read_pointer_write_pointer_empty => err_read_pointer_write_pointer_empty,
+                                                              err_read_pointer_write_pointer_not_full => err_read_pointer_write_pointer_not_full,
+                                                              err_read_pointer_write_pointer_full => err_read_pointer_write_pointer_full,
+                                                              err_read_pointer_increment => err_read_pointer_increment,
+                                                              err_read_pointer_not_increment => err_read_pointer_not_increment,
+                                                              err_write_en => err_write_en,
+                                                              err_not_CTS_in => err_not_CTS_in,
+                                                              err_read_en_mismatch => err_read_en_mismatch
+                                                             );
 
    process (clk, reset)begin
         if reset = '0' then
-            HS_state_out <= IDLE;
-            read_pointer <= "0001";
+             read_pointer <= "0001";
             write_pointer <= "0001";
             CTS_out<='0';
 
@@ -176,8 +153,7 @@ FIFOCONTROLPARTCHECKERS: FIFO_control_part_checkers port map (
             FIFO_MEM_4 <= (others=>'0');
 
         elsif clk'event and clk = '1' then
-            HS_state_out <= HS_state_in;
-            write_pointer <= write_pointer_in;
+             write_pointer <= write_pointer_in;
             if write_en = '1' then
                 --write into the memory
                   FIFO_MEM_1 <= FIFO_MEM_1_in;
@@ -233,30 +209,14 @@ FIFOCONTROLPARTCHECKERS: FIFO_control_part_checkers port map (
         end if;
    end process;
 
-   process(HS_state_out, full, DRTS, CTS_out) begin
-        case(HS_state_out) is
-            when IDLE =>
-                if CTS_out = '0' and DRTS = '1' and full ='0' then
-                    HS_state_in <= READ_DATA;
-                    CTS_in <= '1';
-                    write_en <= '1';
-                else
-                    HS_state_in <= IDLE;
-                    CTS_in <= '0';
-                    write_en <= '0';
-                end if;
-            when others => -- READ_DATA
-                if CTS_out = '0' and DRTS = '1' and full ='0' then
-                    HS_state_in <= READ_DATA;
-                    CTS_in <= '1';
-                    write_en <= '1';
-                else
-                    HS_state_in <= IDLE;
-                    CTS_in <= '0';
-                    write_en <= '0';
-                end if;
-        end case ;
-        
+   process(full, DRTS, CTS_out) begin
+      if CTS_out = '0' and DRTS = '1' and full ='0' then
+          CTS_in <= '1';
+          write_en <= '1';
+      else
+          CTS_in <= '0';
+          write_en <= '0';
+      end if;        
    end process;
                         
     process(write_pointer, read_pointer) begin
@@ -266,7 +226,7 @@ FIFOCONTROLPARTCHECKERS: FIFO_control_part_checkers port map (
                 empty <= '0';
             end if;
 --      if write_pointer = read_pointer>>1 then
-	if write_pointer = read_pointer(0)&read_pointer(3 downto 1) then
+  if write_pointer = read_pointer(0)&read_pointer(3 downto 1) then
                 full <= '1';
             else
                 full <= '0'; 
