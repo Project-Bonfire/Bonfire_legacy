@@ -129,7 +129,7 @@ for i in range(0, network_dime*network_dime):
     noc_file.write("\tsignal valid_out_N_"+str(i)+", valid_out_E_"+str(i)+", valid_out_W_"+str(i)+", valid_out_S_"+str(i) + ": std_logic;\n")
 noc_file.write("\n")
 for i in range(0, network_dime*network_dime):
-    noc_file.write("\tsignal valid_in_N_"+str(i)+", valid_in_N_"+str(i)+", valid_in_N_"+str(i)+", valid_in_N_"+str(i) + ": std_logic;\n")
+    noc_file.write("\tsignal valid_in_N_"+str(i)+", valid_in_E_"+str(i)+", valid_in_W_"+str(i)+", valid_in_S_"+str(i) + ": std_logic;\n")
 noc_file.write("\n")
 for i in range(0, network_dime*network_dime):
     noc_file.write("\tsignal TX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+
@@ -184,17 +184,16 @@ noc_file.write("\n")
 noc_file.write("-- instantiating the routers\n")
 for i in range(0, network_dime*network_dime):
     
-    noc_file.write("R_"+str(i)+": router generic map (DATA_WIDTH  => DATA_WIDTH, ")
+    noc_file.write("R_"+str(i)+": router_credit_based generic map (DATA_WIDTH  => DATA_WIDTH, ")
 
     noc_file.write("current_address=>"+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+", " +
                    "Cx_rst => "+str(cx_rst_calculator(i))+", NoC_size=>"+str(network_dime)+")\n")
     noc_file.write("PORT MAP (reset, clk, \n")
-    
-    noc_file.write("\tDCTS_N_"+str(i)+", DCTS_E_"+str(i)+", DCTS_W_"+str(i)+", DCTS_S_"+str(i)+", DCTS_L_"+str(i)+",\n")
-    noc_file.write("\tDRTS_N_"+str(i)+", DRTS_E_"+str(i)+", DRTS_W_"+str(i)+", DRTS_S_"+str(i)+", DRTS_L_"+str(i)+",\n")
     noc_file.write("\tRX_N_"+str(i)+", RX_E_"+str(i)+", RX_W_"+str(i)+", RX_S_"+str(i)+", RX_L_"+str(i)+",\n")
-    noc_file.write("\tRTS_N_"+str(i)+", RTS_E_"+str(i)+", RTS_W_"+str(i)+", RTS_S_"+str(i)+", RTS_L_"+str(i)+",\n")
-    noc_file.write("\tCTS_N_"+str(i)+", CTS_E_"+str(i)+", CTS_w_"+str(i)+", CTS_S_"+str(i)+", CTS_L_"+str(i)+",\n")
+    noc_file.write("\tcredit_in_N_"+str(i)+", credit_in_E_"+str(i)+", credit_in_W_"+str(i)+", credit_in_S_"+str(i)+", credit_in_L_"+str(i)+",\n")
+    noc_file.write("\tvalid_in_N_"+str(i)+", valid_in_E_"+str(i)+", valid_in_W_"+str(i)+", valid_in_S_"+str(i)+", valid_in_L_"+str(i)+",\n")
+    noc_file.write("\tvalid_out_N_"+str(i)+", valid_out_E_"+str(i)+", valid_out_W_"+str(i)+", valid_out_S_"+str(i)+", valid_out_L_"+str(i)+",\n")
+    noc_file.write("\tcredit_out_N_"+str(i)+", credit_out_E_"+str(i)+", credit_out_W_"+str(i)+", credit_out_S_"+str(i)+", credit_out_L_"+str(i)+",\n")
     noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_"+str(i))
     noc_file.write("); \n\n")
 
