@@ -61,7 +61,7 @@ architecture behavior of router_credit_based is
             req_W_N, req_W_E, req_W_W, req_W_S, req_W_L: in std_logic;
             req_S_N, req_S_E, req_S_W, req_S_S, req_S_L: in std_logic;
             req_L_N, req_L_E, req_L_W, req_L_S, req_L_L: in std_logic;
-
+            empty_N, empty_E, empty_W, empty_S, empty_L: in std_logic;
             -- grant_X_Y means the grant for X output port towards Y input port
             -- this means for any X in [N, E, W, S, L] then set grant_X_Y is one hot!
             valid_N, valid_E, valid_W, valid_S, valid_L : out std_logic;
@@ -86,6 +86,7 @@ end COMPONENT;
             empty: in  std_logic;
             flit_type: in std_logic_vector(2 downto 0);
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
+	    grant_N, grant_E, grant_W, grant_S, grant_L: in std_logic;
             Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic
             );
 	end COMPONENT;
@@ -163,22 +164,27 @@ FIFO_L: FIFO_credit_based
 -- all the LBDRs
 LBDR_N: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
        PORT MAP (reset => reset, clk => clk, empty => empty_N, flit_type => FIFO_D_out_N(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_N(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
+		     grant_N => '0', grant_E =>Grant_EN, grant_W => Grant_WN, grant_S=>Grant_SN, grant_L =>Grant_LN,
              Req_N=> Req_NN, Req_E=>Req_NE, Req_W=>Req_NW, Req_S=>Req_NS, Req_L=>Req_NL);
 
 LBDR_E: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_E, flit_type => FIFO_D_out_E(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_E(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
+             grant_N => Grant_NE, grant_E =>'0', grant_W => Grant_WE, grant_S=>Grant_SE, grant_L =>Grant_LE,
              Req_N=> Req_EN, Req_E=>Req_EE, Req_W=>Req_EW, Req_S=>Req_ES, Req_L=>Req_EL);
 
 LBDR_W: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_W,  flit_type => FIFO_D_out_W(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_W(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
+             grant_N => Grant_NW, grant_E =>Grant_EW, grant_W =>'0' ,grant_S=>Grant_SW, grant_L =>Grant_LW,
              Req_N=> Req_WN, Req_E=>Req_WE, Req_W=>Req_WW, Req_S=>Req_WS, Req_L=>Req_WL);
 
 LBDR_S: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_S, flit_type => FIFO_D_out_S(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_S(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
+             grant_N => Grant_NS, grant_E =>Grant_ES, grant_W =>Grant_WS ,grant_S=>'0', grant_L =>Grant_LS,
              Req_N=> Req_SN, Req_E=>Req_SE, Req_W=>Req_SW, Req_S=>Req_SS, Req_L=>Req_SL);
 
 LBDR_L: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_L, flit_type => FIFO_D_out_L(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_L(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
+             grant_N => Grant_NL, grant_E =>Grant_EL, grant_W => Grant_WL,grant_S=>Grant_SL, grant_L =>'0',
              Req_N=> Req_LN, Req_E=>Req_LE, Req_W=>Req_LW, Req_S=>Req_LS, Req_L=>Req_LL);
 
 ------------------------------------------------------------------------------------------------------------------------------
@@ -197,7 +203,7 @@ allocator_unit: allocator port map ( reset => reset, clk => clk,
             req_W_N => Req_WN, req_W_E => Req_WE, req_W_W => '0', req_W_S => Req_WS, req_W_L => Req_WL,
             req_S_N => Req_SN, req_S_E => Req_SE, req_S_W => Req_SW, req_S_S => '0', req_S_L => Req_SL,
             req_L_N => Req_LN, req_L_E => Req_LE, req_L_W => Req_LW, req_L_S => Req_LS, req_L_L => '0',
-
+            empty_N => empty_N, empty_E => empty_E, empty_w => empty_W, empty_S => empty_S, empty_L => empty_L, 
             valid_N => valid_out_N, valid_E => valid_out_E, valid_W => valid_out_W, valid_S => valid_out_S, valid_L => valid_out_L,
             -- grant_X_Y means the grant for X output port towards Y input port
             -- this means for any X in [N, E, W, S, L] then set grant_X_Y is one hot!
@@ -213,11 +219,11 @@ allocator_unit: allocator port map ( reset => reset, clk => clk,
 ------------------------------------------------------------------------------------------------------------------------------
 -- all the Xbar select_signals
 
-Xbar_sel_N <= '0' or Grant_NE or Grant_NW or Grant_NS or Grant_NL;
-Xbar_sel_E <= Grant_EN or '0' or Grant_EW or Grant_ES or Grant_EL;
-Xbar_sel_W <= Grant_WN or Grant_WE or '0' or Grant_WS or Grant_WL;
-Xbar_sel_S <= Grant_SN or Grant_SE or Grant_SW or '0' or Grant_SL;
-Xbar_sel_L <= Grant_LN or Grant_LE or Grant_LW or Grant_LS or '0';
+Xbar_sel_N <= '0' & Grant_NE & Grant_NW & Grant_NS & Grant_NL;
+Xbar_sel_E <= Grant_EN & '0' & Grant_EW & Grant_ES & Grant_EL;
+Xbar_sel_W <= Grant_WN & Grant_WE & '0' & Grant_WS & Grant_WL;
+Xbar_sel_S <= Grant_SN & Grant_SE & Grant_SW & '0' & Grant_SL;
+Xbar_sel_L <= Grant_LN & Grant_LE & Grant_LW & Grant_LS & '0';
 
 
 ------------------------------------------------------------------------------------------------------------------------------

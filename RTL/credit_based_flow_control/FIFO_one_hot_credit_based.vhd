@@ -62,12 +62,15 @@ begin
             write_pointer <= write_pointer_in;
             credit_out <= '0';
             if write_en = '1' then
-                  credit_out <= '1';
+                  
                 --write into the memory
                   FIFO_MEM_1 <= FIFO_MEM_1_in;
                   FIFO_MEM_2 <= FIFO_MEM_2_in;
                   FIFO_MEM_3 <= FIFO_MEM_3_in;
                   FIFO_MEM_4 <= FIFO_MEM_4_in;                   
+            end if;
+            if read_en = '1' then 
+              credit_out <= '1';
             end if;
             read_pointer <=  read_pointer_in;
         end if;
