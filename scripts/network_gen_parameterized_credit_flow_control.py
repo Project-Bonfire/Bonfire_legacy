@@ -166,11 +166,11 @@ for i in range(0, network_dime*network_dime):
 if add_parity:
   noc_file.write("\n")
   for i in range(0, network_dime*network_dime):
-    noc_file.write("\tsignal faulty_packet_N"+str(i)+", faulty_packet_E"+str(i)+", faulty_packet_W"+str(i)+", faulty_packet_S"+str(i)+ "faulty_packet_L"+str(i)+
+    noc_file.write("\tsignal faulty_packet_N"+str(i)+", faulty_packet_E"+str(i)+", faulty_packet_W"+str(i)+", faulty_packet_S"+str(i)+ ", faulty_packet_L"+str(i)+
                    " : std_logic;\n")
 
   for i in range(0, network_dime*network_dime):
-    noc_file.write("\tsignal healthy_packet_N"+str(i)+", healthy_packet_E"+str(i)+", healthy_packet_W"+str(i)+", healthy_packet_S"+str(i)+ "healthy_packet_L"+str(i)+
+    noc_file.write("\tsignal healthy_packet_N"+str(i)+", healthy_packet_E"+str(i)+", healthy_packet_W"+str(i)+", healthy_packet_S"+str(i)+ ", healthy_packet_L"+str(i)+
                    " : std_logic;\n")
 
 noc_file.write("\n")
@@ -236,9 +236,9 @@ for i in range(0, network_dime*network_dime):
     noc_file.write("\tvalid_out_N_"+str(i)+", valid_out_E_"+str(i)+", valid_out_W_"+str(i)+", valid_out_S_"+str(i)+", valid_out_L_"+str(i)+",\n")
     noc_file.write("\tcredit_out_N_"+str(i)+", credit_out_E_"+str(i)+", credit_out_W_"+str(i)+", credit_out_S_"+str(i)+", credit_out_L_"+str(i)+",\n")
     if add_parity:
-      noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_,"+str(i))
-      noc_file.write("\tfaulty_packet_N"+str(i)+", faulty_packet_E"+str(i)+", faulty_packet_W"+str(i)+", faulty_packet_S"+str(i)+", faulty_packet_L"+str(i))
-      noc_file.write("\thealthy_packet_N"+str(i)+", healthy_packet_E"+str(i)+", healthy_packet_W"+str(i)+", healthy_packet_S"+str(i)+", healthy_packet_L"+str(i))
+      noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_"+str(i)+",\n")
+      noc_file.write("\tfaulty_packet_N"+str(i)+", faulty_packet_E"+str(i)+", faulty_packet_W"+str(i)+", faulty_packet_S"+str(i)+", faulty_packet_L"+str(i)+",\n")
+      noc_file.write("\thealthy_packet_N"+str(i)+", healthy_packet_E"+str(i)+", healthy_packet_W"+str(i)+", healthy_packet_S"+str(i)+", healthy_packet_L"+str(i)+"\n")
     else:
       noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_,"+str(i))
     noc_file.write("); \n\n")
