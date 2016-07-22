@@ -6,6 +6,7 @@ from math import ceil, log
 
 if '--help' in sys.argv[1:]:
   print "\t-D [network size]: it makes a network of [size]X[size]. Size can be only multiples of two. default value is 4."
+  print "\t-P: adds parity to the network"
   print "\t-o: specifies the name and path of the output file. default path is current folder!"
   print "\t**Example: python network_gen_parameterized.py -D 2 -o ../output.vhd"
   print "\t           generates a 2X2 network that has network interface and parity checker and fault injectors into ../output.vhd"
@@ -18,6 +19,12 @@ else:
   network_dime = 4
 
 file_name= 'network'
+
+if '-P'  in sys.argv[1:]:
+  add_parity = True
+else:
+  add_parity = False
+
 
 if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
@@ -92,25 +99,46 @@ noc_file.write("\n\n")
 noc_file.write("architecture behavior of network_"+str(network_dime)+"x"+str(network_dime)+" is\n\n")
 noc_file.write("-- Declaring router component\n")
 
-
-noc_file.write("component router_credit_based is\n")
-noc_file.write("  generic (\n")
-noc_file.write("        DATA_WIDTH: integer := 32; \n")
-noc_file.write("        current_address : integer := 0;\n")
-noc_file.write("        Rxy_rst : integer := 60;\n")
-noc_file.write("        Cx_rst : integer := 10;\n")
-noc_file.write("        NoC_size: integer := 4\n")
-noc_file.write("    );\n")
-noc_file.write("    port (\n")
-noc_file.write("    reset, clk: in std_logic; \n\n")
-noc_file.write("    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); \n")
-noc_file.write("    credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic;\n")
-noc_file.write("    valid_in_N, valid_in_E, valid_in_W, valid_in_S, valid_in_L : in std_logic;\n\n")
-noc_file.write("    valid_out_N, valid_out_E, valid_out_W, valid_out_S, valid_out_L : out std_logic;\n")
-noc_file.write("    credit_out_N, credit_out_E, credit_out_W, credit_out_S, credit_out_L: out std_logic;\n\n")
-noc_file.write("    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
-noc_file.write("    ); \n")
-noc_file.write("end component; \n")
+if add_parity:
+  noc_file.write("component router_credit_based_parity is\n")
+  noc_file.write("  generic (\n")
+  noc_file.write("        DATA_WIDTH: integer := 32; \n")
+  noc_file.write("        current_address : integer := 0;\n")
+  noc_file.write("        Rxy_rst : integer := 60;\n")
+  noc_file.write("        Cx_rst : integer := 10;\n")
+  noc_file.write("        NoC_size: integer := 4\n")
+  noc_file.write("    );\n")
+  noc_file.write("    port (\n")
+  noc_file.write("    reset, clk: in std_logic; \n\n")
+  noc_file.write("    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); \n")
+  noc_file.write("    credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic;\n")
+  noc_file.write("    valid_in_N, valid_in_E, valid_in_W, valid_in_S, valid_in_L : in std_logic;\n\n")
+  noc_file.write("    valid_out_N, valid_out_E, valid_out_W, valid_out_S, valid_out_L : out std_logic;\n")
+  noc_file.write("    credit_out_N, credit_out_E, credit_out_W, credit_out_S, credit_out_L: out std_logic;\n\n")
+  noc_file.write("    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);\n")
+  noc_file.write("    faulty_packet_N, faulty_packet_E, faulty_packet_W, faulty_packet_S, faulty_packet_L:out std_logic;\n")
+  noc_file.write("    healthy_packet_N, healthy_packet_E, healthy_packet_W, healthy_packet_S, healthy_packet_L:out std_logic\n")
+  noc_file.write("    ); \n")
+  noc_file.write("end component; \n")
+else:
+  noc_file.write("component router_credit_based is\n")
+  noc_file.write("  generic (\n")
+  noc_file.write("        DATA_WIDTH: integer := 32; \n")
+  noc_file.write("        current_address : integer := 0;\n")
+  noc_file.write("        Rxy_rst : integer := 60;\n")
+  noc_file.write("        Cx_rst : integer := 10;\n")
+  noc_file.write("        NoC_size: integer := 4\n")
+  noc_file.write("    );\n")
+  noc_file.write("    port (\n")
+  noc_file.write("    reset, clk: in std_logic; \n\n")
+  noc_file.write("    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); \n")
+  noc_file.write("    credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic;\n")
+  noc_file.write("    valid_in_N, valid_in_E, valid_in_W, valid_in_S, valid_in_L : in std_logic;\n\n")
+  noc_file.write("    valid_out_N, valid_out_E, valid_out_W, valid_out_S, valid_out_L : out std_logic;\n")
+  noc_file.write("    credit_out_N, credit_out_E, credit_out_W, credit_out_S, credit_out_L: out std_logic;\n\n")
+  noc_file.write("    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
+  noc_file.write("    ); \n")
+  noc_file.write("end component; \n")
 
 
 noc_file.write("-- generating bulk signals. not all of them are used in the design...\n")
@@ -134,6 +162,17 @@ noc_file.write("\n")
 for i in range(0, network_dime*network_dime):
     noc_file.write("\tsignal TX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+
                    " : std_logic_vector (DATA_WIDTH-1 downto 0);\n")
+
+if add_parity:
+  noc_file.write("\n")
+  for i in range(0, network_dime*network_dime):
+    noc_file.write("\tsignal faulty_packet_N"+str(i)+", faulty_packet_E"+str(i)+", faulty_packet_W"+str(i)+", faulty_packet_S"+str(i)+ "faulty_packet_L"+str(i)+
+                   " : std_logic;\n")
+
+  for i in range(0, network_dime*network_dime):
+    noc_file.write("\tsignal healthy_packet_N"+str(i)+", healthy_packet_E"+str(i)+", healthy_packet_W"+str(i)+", healthy_packet_S"+str(i)+ "healthy_packet_L"+str(i)+
+                   " : std_logic;\n")
+
 noc_file.write("\n")
 
 noc_file.write("begin\n\n")
@@ -183,8 +222,10 @@ for j in range(0, network_dime):
 noc_file.write("\n")
 noc_file.write("-- instantiating the routers\n")
 for i in range(0, network_dime*network_dime):
-    
-    noc_file.write("R_"+str(i)+": router_credit_based generic map (DATA_WIDTH  => DATA_WIDTH, ")
+    if add_parity: 
+      noc_file.write("R_"+str(i)+": router_credit_based_parity generic map (DATA_WIDTH  => DATA_WIDTH, ")
+    else:
+      noc_file.write("R_"+str(i)+": router_credit_based generic map (DATA_WIDTH  => DATA_WIDTH, ")
 
     noc_file.write("current_address=>"+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+", " +
                    "Cx_rst => "+str(cx_rst_calculator(i))+", NoC_size=>"+str(network_dime)+")\n")
@@ -194,7 +235,12 @@ for i in range(0, network_dime*network_dime):
     noc_file.write("\tvalid_in_N_"+str(i)+", valid_in_E_"+str(i)+", valid_in_W_"+str(i)+", valid_in_S_"+str(i)+", valid_in_L_"+str(i)+",\n")
     noc_file.write("\tvalid_out_N_"+str(i)+", valid_out_E_"+str(i)+", valid_out_W_"+str(i)+", valid_out_S_"+str(i)+", valid_out_L_"+str(i)+",\n")
     noc_file.write("\tcredit_out_N_"+str(i)+", credit_out_E_"+str(i)+", credit_out_W_"+str(i)+", credit_out_S_"+str(i)+", credit_out_L_"+str(i)+",\n")
-    noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_"+str(i))
+    if add_parity:
+      noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_,"+str(i))
+      noc_file.write("\tfaulty_packet_N"+str(i)+", faulty_packet_E"+str(i)+", faulty_packet_W"+str(i)+", faulty_packet_S"+str(i)+", faulty_packet_L"+str(i))
+      noc_file.write("\thealthy_packet_N"+str(i)+", healthy_packet_E"+str(i)+", healthy_packet_W"+str(i)+", healthy_packet_S"+str(i)+", healthy_packet_L"+str(i))
+    else:
+      noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_,"+str(i))
     noc_file.write("); \n\n")
 
 noc_file.write("\n")
