@@ -32,9 +32,9 @@ entity router_channel is
         read_pointer_out, write_pointer_out: out std_logic_vector(3 downto 0);
         write_en_out :out std_logic;
         Xbar_sel: out std_logic_vector(4 downto 0);
-        error_signal: out std_logic;
+        error_signal_sync: out std_logic;     -- this is the or of all outputs of the shift register
+        error_signal_async: out std_logic;    -- this is the or of all outputs of the checkers 
         shift_serial_data: out std_logic
-
     ); 
 end router_channel; 
 
@@ -77,73 +77,48 @@ architecture behavior of router_channel is
 
     COMPONENT Arbiter   
  	 
-    port (  reset: in  std_logic;
-            clk: in  std_logic;
-            Req_N, Req_E, Req_W, Req_S, Req_L:in std_logic; -- From LBDR modules
-            DCTS: in std_logic; -- Getting the CTS signal from the input FIFO of the next router/NI (for hand-shaking)
+    port (reset: in  std_logic;
+          clk: in  std_logic;
+          Req_N, Req_E, Req_W, Req_S, Req_L:in std_logic; -- From LBDR modules
+          DCTS: in std_logic; -- Getting the CTS signal from the input FIFO of the next router/NI (for hand-shaking)
 
-            Grant_N, Grant_E, Grant_W, Grant_S, Grant_L:out std_logic; -- Grants given to LBDR requests (encoded as one-hot)
-            Xbar_sel : out std_logic_vector(4 downto 0); -- select lines for XBAR
-            RTS: out std_logic; -- Valid output which is sent to the next router/NI to specify that the data on the output port is valid
+          Grant_N, Grant_E, Grant_W, Grant_S, Grant_L:out std_logic; -- Grants given to LBDR requests (encoded as one-hot)
+          Xbar_sel : out std_logic_vector(4 downto 0); -- select lines for XBAR
+          RTS: out std_logic; -- Valid output which is sent to the next router/NI to specify that the data on the output port is valid
 
-            -- Checker outputs
-            err_state_IDLE_xbar,
-            err_state_not_IDLE_xbar,
-            err_state_IDLE_RTS_FF_in, 
-            err_state_not_IDLE_RTS_FF_RTS_FF_in,
-            err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, 
-            err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
-            err_RTS_FF_not_DCTS_state_state_in, 
-            err_not_RTS_FF_state_in_next_state, 
-            err_RTS_FF_DCTS_state_in_next_state, 
-            err_not_DCTS_Grants, 
-            err_DCTS_not_RTS_FF_Grants, 
-            err_DCTS_RTS_FF_IDLE_Grants, 
-            err_DCTS_RTS_FF_not_IDLE_Grants_onehot, 
-            err_Requests_next_state_IDLE, 
-            err_IDLE_Req_L, 
-            err_Local_Req_L,
-            err_North_Req_N, 
-            --err_East_Req_E, 
-            --err_West_Req_W, 
-            --err_South_Req_S, 
-            err_IDLE_Req_N, 
-            err_Local_Req_N,      
-            --err_North_Req_E, 
-            --err_East_Req_W, 
-            --err_West_Req_S, 
-            err_South_Req_L, 
-            --err_IDLE_Req_E,
-            --err_Local_Req_E,      
-            --err_North_Req_W,
-            --err_East_Req_S,
-            err_West_Req_L,
-            err_South_Req_N,
-            --err_IDLE_Req_W,
-            --err_Local_Req_W,
-            --err_North_Req_S,
-            err_East_Req_L,
-            err_West_Req_N,
-            --err_South_Req_E,
-            --err_IDLE_Req_S,
-            --err_Local_Req_S,      
-            --err_North_Req_L,
-            err_East_Req_N,
-            --err_West_Req_E,
-            --err_South_Req_W,
-            err_next_state_onehot, 
-            err_state_in_onehot, 
-            --err_DCTS_RTS_FF_state_Grant_L,
-            --err_DCTS_RTS_FF_state_Grant_N,
-            --err_DCTS_RTS_FF_state_Grant_E,
-            --err_DCTS_RTS_FF_state_Grant_W,
-            --err_DCTS_RTS_FF_state_Grant_S, 
-            err_state_north_xbar_sel, 
-            err_state_east_xbar_sel, 
-            err_state_west_xbar_sel, 
-            err_state_south_xbar_sel : out std_logic 
-            --err_state_local_xbar_sel : out std_logic
-            );
+          -- Checker outputs
+          err_state_IDLE_xbar,
+          err_state_not_IDLE_xbar,
+          err_state_IDLE_RTS_FF_in, 
+          err_state_not_IDLE_RTS_FF_RTS_FF_in,
+          err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, 
+          err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
+          err_RTS_FF_not_DCTS_state_state_in, 
+          err_not_RTS_FF_state_in_next_state, 
+          err_RTS_FF_DCTS_state_in_next_state, 
+          err_not_DCTS_Grants, 
+          err_DCTS_not_RTS_FF_Grants, 
+          err_DCTS_RTS_FF_IDLE_Grants, 
+          err_DCTS_RTS_FF_not_IDLE_Grants_onehot, 
+          err_Requests_next_state_IDLE, 
+          err_IDLE_Req_L, 
+          err_Local_Req_L,
+          err_North_Req_N, 
+          err_IDLE_Req_N, 
+          err_Local_Req_N,      
+          err_South_Req_L, 
+          err_West_Req_L,
+          err_South_Req_N,
+          err_East_Req_L,
+          err_West_Req_N,
+          err_East_Req_N,
+          err_next_state_onehot, 
+          err_state_in_onehot, 
+          err_state_north_xbar_sel, 
+          err_state_east_xbar_sel, 
+          err_state_west_xbar_sel, 
+          err_state_south_xbar_sel : out std_logic 
+          );
 	end COMPONENT;
 
 	COMPONENT LBDR is
@@ -153,33 +128,33 @@ architecture behavior of router_channel is
         Cx_rst: integer := 15;
         NoC_size: integer := 4
     );
-    port (  reset: in  std_logic;
-            clk: in  std_logic;
-            empty: in  std_logic;
-            flit_type: in std_logic_vector(2 downto 0);
-            dst_addr: in std_logic_vector(NoC_size-1 downto 0);
-            Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic;
+    port (reset: in  std_logic;
+          clk: in  std_logic;
+          empty: in  std_logic;
+          flit_type: in std_logic_vector(2 downto 0);
+          dst_addr: in std_logic_vector(NoC_size-1 downto 0);
+          Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic;
 
-            -- Checker outputs
-            --err_header_not_empty_Requests_in_onehot, 
-            err_header_empty_Requests_FF_Requests_in, 
-            err_tail_Requests_in_all_zero, 
-            err_header_tail_Requests_FF_Requests_in, 
-            err_dst_addr_cur_addr_N1,
-            err_dst_addr_cur_addr_not_N1,
-            err_dst_addr_cur_addr_E1,
-            err_dst_addr_cur_addr_not_E1,
-            err_dst_addr_cur_addr_W1,
-            err_dst_addr_cur_addr_not_W1,
-            err_dst_addr_cur_addr_S1,
-            err_dst_addr_cur_addr_not_S1, 
-            err_dst_addr_cur_addr_not_Req_L_in, 
-            err_dst_addr_cur_addr_Req_L_in, 
-            err_header_not_empty_Req_N_in,
-            err_header_not_empty_Req_E_in,
-            err_header_not_empty_Req_W_in,
-            err_header_not_empty_Req_S_in : out std_logic
-           );
+          -- Checker outputs
+          --err_header_not_empty_Requests_in_onehot, 
+          err_header_empty_Requests_FF_Requests_in, 
+          err_tail_Requests_in_all_zero, 
+          err_header_tail_Requests_FF_Requests_in, 
+          err_dst_addr_cur_addr_N1,
+          err_dst_addr_cur_addr_not_N1,
+          err_dst_addr_cur_addr_E1,
+          err_dst_addr_cur_addr_not_E1,
+          err_dst_addr_cur_addr_W1,
+          err_dst_addr_cur_addr_not_W1,
+          err_dst_addr_cur_addr_S1,
+          err_dst_addr_cur_addr_not_S1, 
+          err_dst_addr_cur_addr_not_Req_L_in, 
+          err_dst_addr_cur_addr_Req_L_in, 
+          err_header_not_empty_Req_N_in,
+          err_header_not_empty_Req_E_in,
+          err_header_not_empty_Req_W_in,
+          err_header_not_empty_Req_S_in : out std_logic
+          );
 	end COMPONENT;
 
 	COMPONENT shift_register is
@@ -207,105 +182,105 @@ architecture behavior of router_channel is
  
   -- Signals related to Checkers
   -- LBDR Checkers signals
-  signal N_err_header_empty_Requests_FF_Requests_in, N_err_tail_Requests_in_all_zero, 
-         N_err_header_tail_Requests_FF_Requests_in, N_err_dst_addr_cur_addr_N1,
-         N_err_dst_addr_cur_addr_not_N1, N_err_dst_addr_cur_addr_E1,
-         N_err_dst_addr_cur_addr_not_E1, N_err_dst_addr_cur_addr_W1,
-         N_err_dst_addr_cur_addr_not_W1, N_err_dst_addr_cur_addr_S1,
-         N_err_dst_addr_cur_addr_not_S1, N_err_dst_addr_cur_addr_not_Req_L_in, 
-         N_err_dst_addr_cur_addr_Req_L_in, N_err_header_not_empty_Req_N_in,
-         N_err_header_not_empty_Req_E_in, N_err_header_not_empty_Req_W_in,
-         N_err_header_not_empty_Req_S_in : std_logic;
+  signal err_header_empty_Requests_FF_Requests_in, err_tail_Requests_in_all_zero, 
+         err_header_tail_Requests_FF_Requests_in, err_dst_addr_cur_addr_N1,
+         err_dst_addr_cur_addr_not_N1, err_dst_addr_cur_addr_E1,
+         err_dst_addr_cur_addr_not_E1, err_dst_addr_cur_addr_W1,
+         err_dst_addr_cur_addr_not_W1, err_dst_addr_cur_addr_S1,
+         err_dst_addr_cur_addr_not_S1, err_dst_addr_cur_addr_not_Req_L_in, 
+         err_dst_addr_cur_addr_Req_L_in, err_header_not_empty_Req_N_in,
+         err_header_not_empty_Req_E_in, err_header_not_empty_Req_W_in,
+         err_header_not_empty_Req_S_in : std_logic;
 
   -- Arbiter Checkers signals
-  signal N_err_state_IDLE_xbar, N_err_state_not_IDLE_xbar,
-         N_err_state_IDLE_RTS_FF_in, N_err_state_not_IDLE_RTS_FF_RTS_FF_in,
-         N_err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, N_err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
-         N_err_RTS_FF_not_DCTS_state_state_in, N_err_not_RTS_FF_state_in_next_state, 
-         N_err_RTS_FF_DCTS_state_in_next_state, N_err_not_DCTS_Grants, 
-         N_err_DCTS_not_RTS_FF_Grants, N_err_DCTS_RTS_FF_IDLE_Grants, 
-         N_err_DCTS_RTS_FF_not_IDLE_Grants_onehot, N_err_Requests_next_state_IDLE, 
-         N_err_IDLE_Req_L, N_err_Local_Req_L, N_err_North_Req_N, N_err_IDLE_Req_N, N_err_Local_Req_N,      
-         N_err_South_Req_L, N_err_West_Req_L, N_err_South_Req_N, N_err_East_Req_L,
-         N_err_West_Req_N, N_err_East_Req_N, N_err_next_state_onehot, N_err_state_in_onehot, 
-         N_err_state_north_xbar_sel, N_err_state_east_xbar_sel, 
-         N_err_state_west_xbar_sel, N_err_state_south_xbar_sel : std_logic; 
+  signal err_state_IDLE_xbar, err_state_not_IDLE_xbar,
+         err_state_IDLE_RTS_FF_in, err_state_not_IDLE_RTS_FF_RTS_FF_in,
+         err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
+         err_RTS_FF_not_DCTS_state_state_in, err_not_RTS_FF_state_in_next_state, 
+         err_RTS_FF_DCTS_state_in_next_state, err_not_DCTS_Grants, 
+         err_DCTS_not_RTS_FF_Grants, err_DCTS_RTS_FF_IDLE_Grants, 
+         err_DCTS_RTS_FF_not_IDLE_Grants_onehot, err_Requests_next_state_IDLE, 
+         err_IDLE_Req_L, err_Local_Req_L, err_North_Req_N, err_IDLE_Req_N, err_Local_Req_N,      
+         err_South_Req_L, err_West_Req_L, err_South_Req_N, err_East_Req_L,
+         err_West_Req_N, err_East_Req_N, err_next_state_onehot, err_state_in_onehot, 
+         err_state_north_xbar_sel, err_state_east_xbar_sel, 
+         err_state_west_xbar_sel, err_state_south_xbar_sel : std_logic; 
  
   -- FIFO Control Part Checkers signals
-  signal N_err_write_en_write_pointer, N_err_not_write_en_write_pointer, 
-         N_err_read_pointer_write_pointer_not_empty, N_err_read_pointer_write_pointer_empty, 
-         N_err_read_pointer_write_pointer_not_full, N_err_read_pointer_write_pointer_full, 
-         N_err_read_pointer_increment, N_err_read_pointer_not_increment, 
-         N_err_write_en, N_err_not_CTS_in, N_err_read_en_mismatch : std_logic;
+  signal err_write_en_write_pointer, err_not_write_en_write_pointer, 
+         err_read_pointer_write_pointer_not_empty, err_read_pointer_write_pointer_empty, 
+         err_read_pointer_write_pointer_not_full, err_read_pointer_write_pointer_full, 
+         err_read_pointer_increment, err_read_pointer_not_increment, 
+         err_write_en, err_not_CTS_in, err_read_en_mismatch : std_logic;
 
 
 begin
 
 
   -- OR of checker outputs
-  error_signal <= OR_REDUCE(shift_parallel_data);
-
+  error_signal_sync <= OR_REDUCE(shift_parallel_data);
+  error_signal_async <= OR_REDUCE(combined_error_signals);
   -- making the shift register input signal
   -- please keep this like this, i use this for counting the number of the signals.
-  combined_error_signals <= N_err_header_empty_Requests_FF_Requests_in &
-                            N_err_tail_Requests_in_all_zero &
-                            N_err_header_tail_Requests_FF_Requests_in &
-                            N_err_dst_addr_cur_addr_N1 &
-                            N_err_dst_addr_cur_addr_not_N1 &
-                            N_err_dst_addr_cur_addr_E1 &
-                            N_err_dst_addr_cur_addr_not_E1 &
-                            N_err_dst_addr_cur_addr_W1 &
-                            N_err_dst_addr_cur_addr_not_W1 &
-                            N_err_dst_addr_cur_addr_S1 &
-                            N_err_dst_addr_cur_addr_not_S1 &
-                            N_err_dst_addr_cur_addr_not_Req_L_in &
-                            N_err_dst_addr_cur_addr_Req_L_in &
-                            N_err_header_not_empty_Req_N_in &
-                            N_err_header_not_empty_Req_E_in &
-                            N_err_header_not_empty_Req_W_in &
-                            N_err_header_not_empty_Req_S_in &
-                            N_err_state_IDLE_xbar &
-                            N_err_state_not_IDLE_xbar &
-                            N_err_state_IDLE_RTS_FF_in &
-                            N_err_state_not_IDLE_RTS_FF_RTS_FF_in &
-                            N_err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in &
-                            N_err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in & 
-                            N_err_RTS_FF_not_DCTS_state_state_in &
-                            N_err_not_RTS_FF_state_in_next_state &
-                            N_err_RTS_FF_DCTS_state_in_next_state &
-                            N_err_not_DCTS_Grants &
-                            N_err_DCTS_not_RTS_FF_Grants &
-                            N_err_DCTS_RTS_FF_IDLE_Grants &
-                            N_err_DCTS_RTS_FF_not_IDLE_Grants_onehot &
-                            N_err_Requests_next_state_IDLE &
-                            N_err_IDLE_Req_L &
-                            N_err_Local_Req_L &
-                            N_err_North_Req_N &
-                            N_err_IDLE_Req_N &
-                            N_err_Local_Req_N &
-                            N_err_South_Req_L &
-                            N_err_West_Req_L &
-                            N_err_South_Req_N &
-                            N_err_East_Req_L &
-                            N_err_West_Req_N &
-                            N_err_East_Req_N &
-                            N_err_next_state_onehot &
-                            N_err_state_in_onehot &
-                            N_err_state_north_xbar_sel &
-                            N_err_state_east_xbar_sel &
-                            N_err_state_west_xbar_sel &
-                            N_err_state_south_xbar_sel &
-                            N_err_write_en_write_pointer & 
-                            N_err_not_write_en_write_pointer &
-                            N_err_read_pointer_write_pointer_not_empty &
-                            N_err_read_pointer_write_pointer_empty &
-                            N_err_read_pointer_write_pointer_not_full &
-                            N_err_read_pointer_write_pointer_full &
-                            N_err_read_pointer_increment &
-                            N_err_read_pointer_not_increment &
-                            N_err_write_en &
-                            N_err_not_CTS_in &
-                            N_err_read_en_mismatch;
+  combined_error_signals <= err_header_empty_Requests_FF_Requests_in &
+                            err_tail_Requests_in_all_zero &
+                            err_header_tail_Requests_FF_Requests_in &
+                            err_dst_addr_cur_addr_N1 &
+                            err_dst_addr_cur_addr_not_N1 &
+                            err_dst_addr_cur_addr_E1 &
+                            err_dst_addr_cur_addr_not_E1 &
+                            err_dst_addr_cur_addr_W1 &
+                            err_dst_addr_cur_addr_not_W1 &
+                            err_dst_addr_cur_addr_S1 &
+                            err_dst_addr_cur_addr_not_S1 &
+                            err_dst_addr_cur_addr_not_Req_L_in &
+                            err_dst_addr_cur_addr_Req_L_in &
+                            err_header_not_empty_Req_N_in &
+                            err_header_not_empty_Req_E_in &
+                            err_header_not_empty_Req_W_in &
+                            err_header_not_empty_Req_S_in &
+                            err_state_IDLE_xbar &
+                            err_state_not_IDLE_xbar &
+                            err_state_IDLE_RTS_FF_in &
+                            err_state_not_IDLE_RTS_FF_RTS_FF_in &
+                            err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in &
+                            err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in & 
+                            err_RTS_FF_not_DCTS_state_state_in &
+                            err_not_RTS_FF_state_in_next_state &
+                            err_RTS_FF_DCTS_state_in_next_state &
+                            err_not_DCTS_Grants &
+                            err_DCTS_not_RTS_FF_Grants &
+                            err_DCTS_RTS_FF_IDLE_Grants &
+                            err_DCTS_RTS_FF_not_IDLE_Grants_onehot &
+                            err_Requests_next_state_IDLE &
+                            err_IDLE_Req_L &
+                            err_Local_Req_L &
+                            err_North_Req_N &
+                            err_IDLE_Req_N &
+                            err_Local_Req_N &
+                            err_South_Req_L &
+                            err_West_Req_L &
+                            err_South_Req_N &
+                            err_East_Req_L &
+                            err_West_Req_N &
+                            err_East_Req_N &
+                            err_next_state_onehot &
+                            err_state_in_onehot &
+                            err_state_north_xbar_sel &
+                            err_state_east_xbar_sel &
+                            err_state_west_xbar_sel &
+                            err_state_south_xbar_sel &
+                            err_write_en_write_pointer & 
+                            err_not_write_en_write_pointer &
+                            err_read_pointer_write_pointer_not_empty &
+                            err_read_pointer_write_pointer_empty &
+                            err_read_pointer_write_pointer_not_full &
+                            err_read_pointer_write_pointer_full &
+                            err_read_pointer_increment &
+                            err_read_pointer_not_increment &
+                            err_write_en &
+                            err_not_CTS_in &
+                            err_read_en_mismatch;
 ---------------------------------------------------------------------------------------------------------------------------
 
  FIFO_unit: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
@@ -316,17 +291,17 @@ begin
             read_pointer_out => read_pointer_out, write_pointer_out => write_pointer_out,
             write_en_out => write_en_out, 
 
-        err_write_en_write_pointer => N_err_write_en_write_pointer,
-        err_not_write_en_write_pointer => N_err_not_write_en_write_pointer,
-        err_read_pointer_write_pointer_not_empty => N_err_read_pointer_write_pointer_not_empty,
-        err_read_pointer_write_pointer_empty => N_err_read_pointer_write_pointer_empty,
-        err_read_pointer_write_pointer_not_full => N_err_read_pointer_write_pointer_not_full,
-        err_read_pointer_write_pointer_full => N_err_read_pointer_write_pointer_full,
-        err_read_pointer_increment => N_err_read_pointer_increment,
-        err_read_pointer_not_increment => N_err_read_pointer_not_increment,
-        err_write_en => N_err_write_en,
-        err_not_CTS_in => N_err_not_CTS_in,
-        err_read_en_mismatch => N_err_read_en_mismatch
+        err_write_en_write_pointer => err_write_en_write_pointer,
+        err_not_write_en_write_pointer => err_not_write_en_write_pointer,
+        err_read_pointer_write_pointer_not_empty => err_read_pointer_write_pointer_not_empty,
+        err_read_pointer_write_pointer_empty => err_read_pointer_write_pointer_empty,
+        err_read_pointer_write_pointer_not_full => err_read_pointer_write_pointer_not_full,
+        err_read_pointer_write_pointer_full => err_read_pointer_write_pointer_full,
+        err_read_pointer_increment => err_read_pointer_increment,
+        err_read_pointer_not_increment => err_read_pointer_not_increment,
+        err_write_en => err_write_en,
+        err_not_CTS_in => err_not_CTS_in,
+        err_read_en_mismatch => err_read_en_mismatch
         );      
 
   
@@ -336,23 +311,23 @@ LBDR_unit: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst
 	   PORT MAP (reset => reset, clk => clk, empty => empty, flit_type => flit_type, dst_addr=> destination_address,
    		 	 Req_N=> Req_N_out, Req_E=>Req_E_out, Req_W=>Req_W_out, Req_S=>Req_S_out, Req_L=>Req_L_out, 
 
-         err_header_empty_Requests_FF_Requests_in => N_err_header_empty_Requests_FF_Requests_in,
-         err_tail_Requests_in_all_zero => N_err_tail_Requests_in_all_zero,
-         err_header_tail_Requests_FF_Requests_in => N_err_header_tail_Requests_FF_Requests_in,
-         err_dst_addr_cur_addr_N1 => N_err_dst_addr_cur_addr_N1,
-         err_dst_addr_cur_addr_not_N1 => N_err_dst_addr_cur_addr_not_N1,
-         err_dst_addr_cur_addr_E1 => N_err_dst_addr_cur_addr_E1,
-         err_dst_addr_cur_addr_not_E1 => N_err_dst_addr_cur_addr_not_E1,
-         err_dst_addr_cur_addr_W1 => N_err_dst_addr_cur_addr_W1,
-         err_dst_addr_cur_addr_not_W1 => N_err_dst_addr_cur_addr_not_W1,
-         err_dst_addr_cur_addr_S1 => N_err_dst_addr_cur_addr_S1,
-         err_dst_addr_cur_addr_not_S1 => N_err_dst_addr_cur_addr_not_S1,
-         err_dst_addr_cur_addr_not_Req_L_in => N_err_dst_addr_cur_addr_not_Req_L_in,
-         err_dst_addr_cur_addr_Req_L_in => N_err_dst_addr_cur_addr_Req_L_in,
-         err_header_not_empty_Req_N_in => N_err_header_not_empty_Req_N_in,
-         err_header_not_empty_Req_E_in => N_err_header_not_empty_Req_E_in,
-         err_header_not_empty_Req_W_in => N_err_header_not_empty_Req_W_in,
-         err_header_not_empty_Req_S_in => N_err_header_not_empty_Req_S_in
+         err_header_empty_Requests_FF_Requests_in => err_header_empty_Requests_FF_Requests_in,
+         err_tail_Requests_in_all_zero => err_tail_Requests_in_all_zero,
+         err_header_tail_Requests_FF_Requests_in => err_header_tail_Requests_FF_Requests_in,
+         err_dst_addr_cur_addr_N1 => err_dst_addr_cur_addr_N1,
+         err_dst_addr_cur_addr_not_N1 => err_dst_addr_cur_addr_not_N1,
+         err_dst_addr_cur_addr_E1 => err_dst_addr_cur_addr_E1,
+         err_dst_addr_cur_addr_not_E1 => err_dst_addr_cur_addr_not_E1,
+         err_dst_addr_cur_addr_W1 => err_dst_addr_cur_addr_W1,
+         err_dst_addr_cur_addr_not_W1 => err_dst_addr_cur_addr_not_W1,
+         err_dst_addr_cur_addr_S1 => err_dst_addr_cur_addr_S1,
+         err_dst_addr_cur_addr_not_S1 => err_dst_addr_cur_addr_not_S1,
+         err_dst_addr_cur_addr_not_Req_L_in => err_dst_addr_cur_addr_not_Req_L_in,
+         err_dst_addr_cur_addr_Req_L_in => err_dst_addr_cur_addr_Req_L_in,
+         err_header_not_empty_Req_N_in => err_header_not_empty_Req_N_in,
+         err_header_not_empty_Req_E_in => err_header_not_empty_Req_E_in,
+         err_header_not_empty_Req_W_in => err_header_not_empty_Req_W_in,
+         err_header_not_empty_Req_S_in => err_header_not_empty_Req_S_in
          );
 
  
@@ -366,37 +341,37 @@ Arbiter_unit: Arbiter
           Xbar_sel => Xbar_sel, 
           RTS =>  RTS, 
 
-          err_state_IDLE_xbar => N_err_state_IDLE_xbar ,
-          err_state_not_IDLE_xbar => N_err_state_not_IDLE_xbar ,
-          err_state_IDLE_RTS_FF_in => N_err_state_IDLE_RTS_FF_in ,
-          err_state_not_IDLE_RTS_FF_RTS_FF_in => N_err_state_not_IDLE_RTS_FF_RTS_FF_in ,
-          err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in => N_err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in ,
-          err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in => N_err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in ,
-          err_RTS_FF_not_DCTS_state_state_in => N_err_RTS_FF_not_DCTS_state_state_in ,
-          err_not_RTS_FF_state_in_next_state => N_err_not_RTS_FF_state_in_next_state ,
-          err_RTS_FF_DCTS_state_in_next_state => N_err_RTS_FF_DCTS_state_in_next_state ,
-          err_not_DCTS_Grants => N_err_not_DCTS_Grants ,
-          err_DCTS_not_RTS_FF_Grants => N_err_DCTS_not_RTS_FF_Grants ,
-          err_DCTS_RTS_FF_IDLE_Grants => N_err_DCTS_RTS_FF_IDLE_Grants ,
-          err_DCTS_RTS_FF_not_IDLE_Grants_onehot => N_err_DCTS_RTS_FF_not_IDLE_Grants_onehot ,
-          err_Requests_next_state_IDLE => N_err_Requests_next_state_IDLE ,
-          err_IDLE_Req_L => N_err_IDLE_Req_L ,
-          err_Local_Req_L => N_err_Local_Req_L ,
-          err_North_Req_N => N_err_North_Req_N ,
-          err_IDLE_Req_N => N_err_IDLE_Req_N ,
-          err_Local_Req_N => N_err_Local_Req_N ,
-          err_South_Req_L => N_err_South_Req_L ,
-          err_West_Req_L => N_err_West_Req_L ,
-          err_South_Req_N => N_err_South_Req_N ,
-          err_East_Req_L => N_err_East_Req_L ,
-          err_West_Req_N => N_err_West_Req_N ,
-          err_East_Req_N => N_err_East_Req_N ,
-          err_next_state_onehot => N_err_next_state_onehot ,
-          err_state_in_onehot => N_err_state_in_onehot ,
-          err_state_north_xbar_sel => N_err_state_north_xbar_sel ,
-          err_state_east_xbar_sel => N_err_state_east_xbar_sel ,
-          err_state_west_xbar_sel => N_err_state_west_xbar_sel ,
-          err_state_south_xbar_sel => N_err_state_south_xbar_sel
+          err_state_IDLE_xbar => err_state_IDLE_xbar ,
+          err_state_not_IDLE_xbar => err_state_not_IDLE_xbar ,
+          err_state_IDLE_RTS_FF_in => err_state_IDLE_RTS_FF_in ,
+          err_state_not_IDLE_RTS_FF_RTS_FF_in => err_state_not_IDLE_RTS_FF_RTS_FF_in ,
+          err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in => err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in ,
+          err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in => err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in ,
+          err_RTS_FF_not_DCTS_state_state_in => err_RTS_FF_not_DCTS_state_state_in ,
+          err_not_RTS_FF_state_in_next_state => err_not_RTS_FF_state_in_next_state ,
+          err_RTS_FF_DCTS_state_in_next_state => err_RTS_FF_DCTS_state_in_next_state ,
+          err_not_DCTS_Grants => err_not_DCTS_Grants ,
+          err_DCTS_not_RTS_FF_Grants => err_DCTS_not_RTS_FF_Grants ,
+          err_DCTS_RTS_FF_IDLE_Grants => err_DCTS_RTS_FF_IDLE_Grants ,
+          err_DCTS_RTS_FF_not_IDLE_Grants_onehot => err_DCTS_RTS_FF_not_IDLE_Grants_onehot ,
+          err_Requests_next_state_IDLE => err_Requests_next_state_IDLE ,
+          err_IDLE_Req_L => err_IDLE_Req_L ,
+          err_Local_Req_L => err_Local_Req_L ,
+          err_North_Req_N => err_North_Req_N ,
+          err_IDLE_Req_N => err_IDLE_Req_N ,
+          err_Local_Req_N => err_Local_Req_N ,
+          err_South_Req_L => err_South_Req_L ,
+          err_West_Req_L => err_West_Req_L ,
+          err_South_Req_N => err_South_Req_N ,
+          err_East_Req_L => err_East_Req_L ,
+          err_West_Req_N => err_West_Req_N ,
+          err_East_Req_N => err_East_Req_N ,
+          err_next_state_onehot => err_next_state_onehot ,
+          err_state_in_onehot => err_state_in_onehot ,
+          err_state_north_xbar_sel => err_state_north_xbar_sel ,
+          err_state_east_xbar_sel => err_state_east_xbar_sel ,
+          err_state_west_xbar_sel => err_state_west_xbar_sel ,
+          err_state_south_xbar_sel => err_state_south_xbar_sel
         );     
 
  checker_shifter: shift_register generic map (REG_WIDTH => 59)
