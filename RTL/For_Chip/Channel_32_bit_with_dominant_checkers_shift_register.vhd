@@ -4,6 +4,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use ieee.std_logic_misc.all;
 
 entity router_channel is
 	generic (
@@ -201,11 +202,9 @@ architecture behavior of router_channel is
  	 
   signal empty: std_logic; 
    
-  signal combined_error_signals: std_logic_vector(57 downto 0);
-  signal shift_parallel_data: std_logic_vector(57 downto 0);
-  signal shift_serial_data: std_logic;
-  signal error_signal: std_logic;
-
+  signal combined_error_signals: std_logic_vector(58 downto 0);
+  signal shift_parallel_data: std_logic_vector(58 downto 0);
+ 
   -- Signals related to Checkers
   -- LBDR Checkers signals
   signal N_err_header_empty_Requests_FF_Requests_in, N_err_tail_Requests_in_all_zero, 
@@ -236,7 +235,7 @@ architecture behavior of router_channel is
   signal N_err_write_en_write_pointer, N_err_not_write_en_write_pointer, 
          N_err_read_pointer_write_pointer_not_empty, N_err_read_pointer_write_pointer_empty, 
          N_err_read_pointer_write_pointer_not_full, N_err_read_pointer_write_pointer_full, 
-         N_err_read_pointer_increment, _err_read_pointer_not_increment, 
+         N_err_read_pointer_increment, N_err_read_pointer_not_increment, 
          N_err_write_en, N_err_not_CTS_in, N_err_read_en_mismatch : std_logic;
 
 
@@ -295,7 +294,7 @@ begin
                             N_err_state_north_xbar_sel &
                             N_err_state_east_xbar_sel &
                             N_err_state_west_xbar_sel &
-                            N_err_state_south_xbar_se &
+                            N_err_state_south_xbar_sel &
                             N_err_write_en_write_pointer & 
                             N_err_not_write_en_write_pointer &
                             N_err_read_pointer_write_pointer_not_empty &
@@ -400,8 +399,8 @@ Arbiter_unit: Arbiter
           err_state_south_xbar_sel => N_err_state_south_xbar_sel
         );     
 
- checker_shifter: shift_register generic map (REG_WIDTH => 58)
-    port (
+ checker_shifter: shift_register generic map (REG_WIDTH => 59)
+    port map (
         clk => clk, reset => reset,
         shift => shift,
         data_in => combined_error_signals, 

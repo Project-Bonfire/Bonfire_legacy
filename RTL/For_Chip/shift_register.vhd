@@ -11,7 +11,7 @@ entity shift_register is
         clk, reset : in std_logic;
         shift: in std_logic;
         data_in: in std_logic_vector(REG_WIDTH-1 downto 0);
-        data_out_parallel: in std_logic_vector(REG_WIDTH-1 downto 0);
+        data_out_parallel: out std_logic_vector(REG_WIDTH-1 downto 0);
         data_out_serial: out std_logic
     );
 end;
