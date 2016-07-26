@@ -28,6 +28,7 @@ entity router_channel is
         shift : in std_logic;
         -- fault injector signals
         fault_shift: in std_logic;
+        fault_clk: in std_logic;
         fault_data_in_serial: in std_logic;
         fault_data_out_serial: out std_logic;
 
@@ -36,6 +37,7 @@ entity router_channel is
         read_pointer_out, write_pointer_out: out std_logic_vector(3 downto 0);
         write_en_out :out std_logic;
         Xbar_sel: out std_logic_vector(4 downto 0);
+        -- the checker output shift register
         error_signal_sync: out std_logic;     -- this is the or of all outputs of the shift register
         error_signal_async: out std_logic;    -- this is the or of all outputs of the checkers 
         shift_serial_data: out std_logic
@@ -63,6 +65,7 @@ architecture behavior of router_channel is
             write_en_out :out std_logic;
             -- fault injector signals
             shift: in std_logic;
+            fault_clk: in std_logic;
             data_in_serial: in std_logic;
             data_out_serial: out std_logic;
             -- Checker outputs
@@ -95,6 +98,7 @@ architecture behavior of router_channel is
           RTS: out std_logic; -- Valid output which is sent to the next router/NI to specify that the data on the output port is valid
           -- fault injector signals
             shift: in std_logic;
+            fault_clk: in std_logic;
             data_in_serial: in std_logic;
             data_out_serial: out std_logic;
           -- Checker outputs
@@ -147,6 +151,7 @@ architecture behavior of router_channel is
           Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic;
           -- fault injector signals
             shift: in std_logic;
+            fault_clk: in std_logic;
             data_in_serial: in std_logic;
             data_out_serial: out std_logic;
           -- Checker outputs
@@ -306,7 +311,7 @@ begin
             read_pointer_out => read_pointer_out, write_pointer_out => write_pointer_out,
             write_en_out => write_en_out, 
 
-            shift=>fault_shift, data_in_serial=> fault_data_in_serial, data_out_serial=>fault_DO_serial_FIFO_2_LBDR,
+            shift=>fault_shift, fault_clk=>fault_clk, data_in_serial=> fault_data_in_serial, data_out_serial=>fault_DO_serial_FIFO_2_LBDR,
             
         err_write_en_write_pointer => err_write_en_write_pointer,
         err_not_write_en_write_pointer => err_not_write_en_write_pointer,
@@ -328,7 +333,7 @@ LBDR_unit: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst
 	   PORT MAP (reset => reset, clk => clk, empty => empty, flit_type => flit_type, dst_addr=> destination_address,
    		 	 Req_N=> Req_N_out, Req_E=>Req_E_out, Req_W=>Req_W_out, Req_S=>Req_S_out, Req_L=>Req_L_out, 
 
-         shift=>shift, data_in_serial=> fault_DO_serial_FIFO_2_LBDR, data_out_serial=>fault_DO_serial_LBDR_2_Arbiter,
+         shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_FIFO_2_LBDR, data_out_serial=>fault_DO_serial_LBDR_2_Arbiter,
 
          err_header_empty_Requests_FF_Requests_in => err_header_empty_Requests_FF_Requests_in,
          err_tail_Requests_in_all_zero => err_tail_Requests_in_all_zero,
@@ -360,7 +365,7 @@ Arbiter_unit: Arbiter
           Xbar_sel => Xbar_sel, 
           RTS =>  RTS, 
 
-          shift=>shift, data_in_serial=> fault_DO_serial_LBDR_2_Arbiter, data_out_serial=> fault_data_out_serial,
+          shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_LBDR_2_Arbiter, data_out_serial=> fault_data_out_serial,
 
           err_state_IDLE_xbar => err_state_IDLE_xbar ,
           err_state_not_IDLE_xbar => err_state_not_IDLE_xbar ,

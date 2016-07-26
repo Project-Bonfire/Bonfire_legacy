@@ -25,6 +25,7 @@ entity FIFO is
             write_en_out :out std_logic;
             -- fault injector signals
             shift: in std_logic;
+            fault_clk: in std_logic;
             data_in_serial: in std_logic;
             data_out_serial: out std_logic;
             -- Checker outputs
@@ -120,7 +121,7 @@ FI: fault_injector generic map(DATA_WIDTH => ??)
             );
 
 SR: shift_register_serial_in generic map(REG_WIDTH => )
-          port map( clk=> clk, reset=>reset, shift=> shift,data_in_serial=> data_in_serial, 
+          port map( clk=> fault_clk, reset=>reset, shift=> shift,data_in_serial=> data_in_serial, 
                 data_out_parallel=> FI_add_sta, data_out_serial=> data_out_serial
               );
 
