@@ -25,7 +25,7 @@ entity router_channel is
         destination_address : in std_logic_vector(NoC_size-1 downto 0);
         Grant_N_in , Grant_E_in , Grant_W_in , Grant_S_in , Grant_L_in : in  std_logic;
         Req_N_in ,  Req_E_in , Req_W_in , Req_S_in , Req_L_in :in  std_logic;
-        shift : in std_logic;
+        
         -- fault injector signals
         fault_shift: in std_logic;
         fault_clk: in std_logic;
@@ -37,7 +37,10 @@ entity router_channel is
         read_pointer_out, write_pointer_out: out std_logic_vector(3 downto 0);
         write_en_out :out std_logic;
         Xbar_sel: out std_logic_vector(4 downto 0);
+        
         -- the checker output shift register
+        shift : in std_logic;
+        checker_clk: in std_logic;
         error_signal_sync: out std_logic;     -- this is the or of all outputs of the shift register
         error_signal_async: out std_logic;    -- this is the or of all outputs of the checkers 
         shift_serial_data: out std_logic
@@ -402,7 +405,7 @@ Arbiter_unit: Arbiter
 
  checker_shifter: shift_register generic map (REG_WIDTH => 59)
     port map (
-        clk => clk, reset => reset,
+        clk => checker_clk, reset => reset,
         shift => shift,
         data_in => combined_error_signals, 
         data_out_parallel => shift_parallel_data,
