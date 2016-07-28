@@ -9,6 +9,7 @@ if '--help' in sys.argv[1:]:
   print "\t-DW [data_width]: sets the data width of the network!"
   print "\t-P: adds parity to the network"
   print "\t-FI: adds fault injector units to all the links (except the local) in the network"
+  print "\t-SHMU: adds SHMU to the network"
   print "\t-o: specifies the name and path of the output file. default path is current folder!"
   print "\t**Example: python network_gen_parameterized.py -D 2 -o ../output.vhd"
   print "\t           generates a 2X2 network that has network interface and parity checker and fault injectors into ../output.vhd"
@@ -40,11 +41,18 @@ else:
   fi_addres_width = None
   add_FI = False
 
+if add_parity and '-SHMU'  in sys.argv[1:] :
+  add_SHMU = True
+else:
+  add_SHMU = False
+
 file_name= 'network'
 if add_parity:
   file_name += '_parity'
 if add_FI:
   file_name += '_FI'
+if add_SHMU:
+  file_name += '_SHMU'
 
 if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
@@ -184,6 +192,8 @@ else:
   noc_file.write("    ); \n")
   noc_file.write("end component; \n")
 
+noc_file.write("\n\n")
+
 if add_FI:
   noc_file.write("component fault_injector is \n")
   noc_file.write("  generic(DATA_WIDTH : integer := 32);\n")
@@ -196,6 +206,24 @@ if add_FI:
   noc_file.write("    );\n")
   noc_file.write("end component;\n")
 
+noc_file.write("\n\n")
+
+if add_SHMU:
+	noc_file.write("component SHMU is\n")
+	noc_file.write("generic (\n")
+	noc_file.write("    router_fault_info_width: integer := 5;\n")
+	noc_file.write("    network_size: integer := 2\n")
+	noc_file.write(" );\n")
+	noc_file.write("port (  reset: in  std_logic;\n")
+	noc_file.write("        clk: in  std_logic;\n")
+	string_to_print = ""
+	for i in range(0, network_dime*network_dime): 	
+		string_to_print += "        faulty_packet_N_"+str(i)+", healthy_packet_N_"+str(i)+", faulty_packet_E_"+str(i)+", healthy_packet_E_"+str(i)+", faulty_packet_W_"+str(i)+", healthy_packet_W_"+str(i)+", faulty_packet_S_"+str(i)+", healthy_packet_S_"+str(i)+", faulty_packet_L_"+str(i)+", healthy_packet_L_"+str(i)+": in std_logic;\n"
+	noc_file.write(string_to_print[0: len(string_to_print)-2])
+	noc_file.write("        );\n")
+	noc_file.write("end component;\n")
+
+noc_file.write("\n\n")
 noc_file.write("-- generating bulk signals. not all of them are used in the design...\n")
 
 for i in range(0, network_dime*network_dime):
@@ -227,6 +255,8 @@ if add_parity:
   for i in range(0, network_dime*network_dime):
     noc_file.write("\tsignal healthy_packet_N"+str(i)+", healthy_packet_E"+str(i)+", healthy_packet_W"+str(i)+", healthy_packet_S"+str(i)+ ", healthy_packet_L"+str(i)+
                    " : std_logic;\n")
+
+
 
 noc_file.write("\n")
 
@@ -300,8 +330,24 @@ for i in range(0, network_dime*network_dime):
 
 noc_file.write("\n")
 
+noc_file.write("-- instantiating the SHMU\n")
+
+noc_file.write("monitoring_unit: SHMU \n")
+noc_file.write("    generic map( router_fault_info_width => 5 ,network_size => "+str(network_dime)+" )\n")
+noc_file.write("    port map(  reset =>reset, clk => clk,\n")
+string_to_print = ""
+for i in range(0, network_dime*network_dime): 	
+	string_to_print += "        faulty_packet_N_"+str(i)+" => faulty_packet_N"+str(i)+", healthy_packet_N_"+str(i)+" => healthy_packet_N"+str(i)+",\n"
+	string_to_print += "        faulty_packet_E_"+str(i)+" => faulty_packet_E"+str(i)+", healthy_packet_E_"+str(i)+" => healthy_packet_E"+str(i)+",\n"
+	string_to_print += "        faulty_packet_W_"+str(i)+" => faulty_packet_W"+str(i)+", healthy_packet_W_"+str(i)+" => healthy_packet_W"+str(i)+",\n"
+	string_to_print += "        faulty_packet_S_"+str(i)+" => faulty_packet_S"+str(i)+", healthy_packet_S_"+str(i)+" => healthy_packet_S"+str(i)+",\n"
+	string_to_print += "        faulty_packet_L_"+str(i)+" => faulty_packet_L"+str(i)+", healthy_packet_L_"+str(i)+" => healthy_packet_L"+str(i)+",\n"
+noc_file.write(string_to_print[0: len(string_to_print)-2])
+noc_file.write(");\n")
+ 
+
 if add_FI:
-    noc_file.write("-- instantiating the Fault fault_injector\n")
+    noc_file.write("-- instantiating the Fault injectors\n")
     noc_file.write("-- vertical FIs\n")
     for i in range(0, network_dime*network_dime):
       node_x = i % network_dime
