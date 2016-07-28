@@ -60,10 +60,6 @@ architecture behavior of LBDR is
   signal flit_type_sig, flit_type_faulty: std_logic_vector (2 downto 0);
   signal dst_addr_sig, dst_addr_faulty: std_logic_vector (NoC_size-1 downto 0);
 
-empty_sig <= empty;
-flit_type_sig <= flit_type;
-dst_addr_sig <= dst_addr;
-
 component LBDR_checkers is
   generic (
         cur_addr_rst: integer := 5;
@@ -132,6 +128,10 @@ begin
 FI: fault_injector generic map(DATA_WIDTH => 8) 
            port map (data_in=> FI_add_sta(12 downto 5) , address=> FI_add_sta(4 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out => faulty_inputs
             );
+
+empty_sig <= empty;
+flit_type_sig <= flit_type;
+dst_addr_sig <= dst_addr;
 
 -- Extracting faulty values for input signals
 empty_faulty <= faulty_inputs(7);
