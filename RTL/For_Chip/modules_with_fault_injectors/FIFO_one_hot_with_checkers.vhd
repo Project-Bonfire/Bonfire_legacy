@@ -151,7 +151,7 @@ FIFOCONTROLPARTCHECKERS: FIFO_control_part_checkers port map (
 
    process (clk, reset)begin
         if reset = '0' then
-             read_pointer <= "0001";
+            read_pointer <= "0001";
             write_pointer <= "0001";
             CTS_out<='0';
  
