@@ -25,14 +25,14 @@ entity FIFO_LV is
 end FIFO_LV;
 
 architecture behavior of FIFO_LV is
-   signal read_pointer, read_pointer_in,  write_pointer, write_pointer_in: std_logic_vector(3 downto 0);
+   signal read_pointer, read_pointer_in,  write_pointer, write_pointer_in: std_logic_vector(1 downto 0);
    signal full, empty: std_logic;
    signal read_en, write_en: std_logic;
 
    signal FIFO_MEM_1, FIFO_MEM_1_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_MEM_2, FIFO_MEM_2_in : std_logic_vector(DATA_WIDTH-1 downto 0);
-   signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(DATA_WIDTH-1 downto 0);
-   signal FIFO_MEM_4, FIFO_MEM_4_in : std_logic_vector(DATA_WIDTH-1 downto 0);
+   --signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(DATA_WIDTH-1 downto 0);
+   --signal FIFO_MEM_4, FIFO_MEM_4_in : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 
 begin
@@ -51,12 +51,12 @@ begin
 
    process (clk, reset)begin
         if reset = '0' then
-            read_pointer <= "0001";
-            write_pointer <= "0001";
+            read_pointer <= "01";
+            write_pointer <= "01";
             FIFO_MEM_1 <= (others=>'0');
             FIFO_MEM_2 <= (others=>'0');
-            FIFO_MEM_3 <= (others=>'0');
-            FIFO_MEM_4 <= (others=>'0');
+            --FIFO_MEM_3 <= (others=>'0');
+            --FIFO_MEM_4 <= (others=>'0');
             credit_out <= '0';
         elsif clk'event and clk = '1' then
             write_pointer <= write_pointer_in;
@@ -66,8 +66,8 @@ begin
                 --write into the memory
                   FIFO_MEM_1 <= FIFO_MEM_1_in;
                   FIFO_MEM_2 <= FIFO_MEM_2_in;
-                  FIFO_MEM_3 <= FIFO_MEM_3_in;
-                  FIFO_MEM_4 <= FIFO_MEM_4_in;                   
+                  --FIFO_MEM_3 <= FIFO_MEM_3_in;
+                  --FIFO_MEM_4 <= FIFO_MEM_4_in;                   
             end if;
             if read_en = '1' then 
               credit_out <= '1';
@@ -79,22 +79,24 @@ begin
  -- anything below here is pure combinational
  
    -- combinatorial part
-   process(RX, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4)begin
+   process(RX, write_pointer, FIFO_MEM_1, FIFO_MEM_2--, FIFO_MEM_3, FIFO_MEM_4
+	   )begin
       case( write_pointer ) is
-          when "0001" => FIFO_MEM_1_in <= RX;         FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-          when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= RX;         FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-          when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= RX;         FIFO_MEM_4_in <= FIFO_MEM_4; 
-          when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= RX;                  
-          when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+          when "01" => FIFO_MEM_1_in <= RX;         FIFO_MEM_2_in <= FIFO_MEM_2; --FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+          when "10" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= RX;         --FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+          --when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= RX;         FIFO_MEM_4_in <= FIFO_MEM_4; 
+          --when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= RX;                  
+          when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; -- FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
       end case ;
    end process;
 
-  process(read_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4)begin
+  process(read_pointer, FIFO_MEM_1, FIFO_MEM_2 --, FIFO_MEM_3, FIFO_MEM_4
+	 )begin
     case( read_pointer ) is
-        when "0001" => Data_out <= FIFO_MEM_1;
-        when "0010" => Data_out <= FIFO_MEM_2;
-        when "0100" => Data_out <= FIFO_MEM_3;
-        when "1000" => Data_out <= FIFO_MEM_4;
+        when "01" => Data_out <= FIFO_MEM_1;
+        when "10" => Data_out <= FIFO_MEM_2;
+        --when "0100" => Data_out <= FIFO_MEM_3;
+        --when "1000" => Data_out <= FIFO_MEM_4;
         when others => Data_out <= FIFO_MEM_1; 
     end case ;
   end process;
@@ -105,7 +107,7 @@ begin
 
   process(write_en, write_pointer)begin
     if write_en = '1'then
-       write_pointer_in <= write_pointer(2 downto 0)&write_pointer(3); 
+       write_pointer_in <= write_pointer(0)&write_pointer(1); 
     else
        write_pointer_in <= write_pointer; 
     end if;
@@ -113,7 +115,7 @@ begin
 
   process(read_en, empty, read_pointer)begin
        if (read_en = '1' and empty = '0') then
-           read_pointer_in <= read_pointer(2 downto 0)&read_pointer(3); 
+           read_pointer_in <= read_pointer(0)&read_pointer(1); 
        else 
            read_pointer_in <= read_pointer; 
        end if;
@@ -134,7 +136,7 @@ begin
               empty <= '0';
       end if;
       --      if write_pointer = read_pointer>>1 then
-      if write_pointer = read_pointer(0)&read_pointer(3 downto 1) then
+      if write_pointer = read_pointer(0)&read_pointer(1) then
               full <= '1';
       else
               full <= '0'; 

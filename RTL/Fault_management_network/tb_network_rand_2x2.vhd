@@ -89,16 +89,16 @@ PORT MAP (reset, clk,
 
 -- connecting the packet generators
 credit_counter_control(clk, credit_out_L_0, valid_in_L_0, credit_counter_out_0);
-gen_random_packet(100, 0, 40, 3, 8, 10000 ns, clk, credit_counter_out_0, valid_in_L_0, RX_L_0);
+gen_random_packet(0, 100, 0, 40, 3, 8, 10000 ns, clk, credit_counter_out_0, valid_in_L_0, RX_L_0);
 
 credit_counter_control(clk, credit_out_L_1, valid_in_L_1, credit_counter_out_1);
-gen_random_packet(100, 1, 5, 3, 8, 10000 ns, clk, credit_counter_out_1, valid_in_L_1, RX_L_1);
+gen_random_packet(0, 100, 1, 5, 3, 8, 10000 ns, clk, credit_counter_out_1, valid_in_L_1, RX_L_1);
 
 credit_counter_control(clk, credit_out_L_2, valid_in_L_2, credit_counter_out_2);
-gen_random_packet(100, 2, 6, 3, 8, 10000 ns, clk, credit_counter_out_2, valid_in_L_2, RX_L_2);
+gen_random_packet(0, 100, 2, 6, 3, 8, 10000 ns, clk, credit_counter_out_2, valid_in_L_2, RX_L_2);
 
 credit_counter_control(clk, credit_out_L_3, valid_in_L_3, credit_counter_out_3);
-gen_random_packet(100, 3, 38, 3, 8, 10000 ns, clk, credit_counter_out_3, valid_in_L_3, RX_L_3);
+gen_random_packet(0, 100, 3, 38, 3, 8, 10000 ns, clk, credit_counter_out_3, valid_in_L_3, RX_L_3);
 
 
 -- connecting the packet receivers

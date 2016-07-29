@@ -45,7 +45,7 @@ architecture behavior of network_2x2 is
 -- Declaring router component
 component router_LV is
   generic (
-        DATA_WIDTH: integer := 9; 
+        DATA_WIDTH: integer := 32; 
         current_address : integer := 0;
         Rxy_rst : integer := 60;
         Cx_rst : integer := 10;
