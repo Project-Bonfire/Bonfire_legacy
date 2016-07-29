@@ -138,8 +138,7 @@ FI: fault_injector generic map(DATA_WIDTH => 22)
            port map (data_in=> non_faulty_signals , address=> FI_add_sta(6 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out => faulty_signals
             );
 
-
--- Extracting faulty values for input signals
+-- Extracting faulty values for input and internal signals
 empty_faulty     <= faulty_signals(21);
 flit_type_faulty <= faulty_signals (20 downto 18);
 dst_addr_faulty  <= faulty_signals (17 downto 14);
@@ -233,11 +232,11 @@ end process;
  
 -- The combionational part
 
-Req_N <= Req_N_FF_faulty;
-Req_E <= Req_E_FF_faulty;
-Req_W <= Req_W_FF_faulty;
-Req_S <= Req_S_FF_faulty;
-Req_L <= Req_L_FF_faulty;
+Req_N <= Req_N_FF;
+Req_E <= Req_E_FF;
+Req_W <= Req_W_FF;
+Req_S <= Req_S_FF;
+Req_L <= Req_L_FF;
 
 process(N1_faulty, E1_faulty, W1_faulty, S1_faulty, Rxy, Cx, flit_type_faulty, empty_faulty, Req_N_FF_faulty, Req_E_FF_faulty, Req_W_FF_faulty, Req_S_FF_faulty, Req_L_FF_faulty) begin
  if flit_type_faulty = "001" and empty_faulty = '0' then
