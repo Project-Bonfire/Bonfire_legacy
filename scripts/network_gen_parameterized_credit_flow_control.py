@@ -325,25 +325,25 @@ for i in range(0, network_dime*network_dime):
       noc_file.write("\tfaulty_packet_N"+str(i)+", faulty_packet_E"+str(i)+", faulty_packet_W"+str(i)+", faulty_packet_S"+str(i)+", faulty_packet_L"+str(i)+",\n")
       noc_file.write("\thealthy_packet_N"+str(i)+", healthy_packet_E"+str(i)+", healthy_packet_W"+str(i)+", healthy_packet_S"+str(i)+", healthy_packet_L"+str(i)+"\n")
     else:
-      noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_,"+str(i))
+      noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_"+str(i))
     noc_file.write("); \n\n")
 
 noc_file.write("\n")
+if add_SHMU:
+  noc_file.write("-- instantiating the SHMU\n")
 
-noc_file.write("-- instantiating the SHMU\n")
-
-noc_file.write("monitoring_unit: SHMU \n")
-noc_file.write("    generic map( router_fault_info_width => 5 ,network_size => "+str(network_dime)+" )\n")
-noc_file.write("    port map(  reset =>reset, clk => clk,\n")
-string_to_print = ""
-for i in range(0, network_dime*network_dime): 	
-	string_to_print += "        faulty_packet_N_"+str(i)+" => faulty_packet_N"+str(i)+", healthy_packet_N_"+str(i)+" => healthy_packet_N"+str(i)+",\n"
-	string_to_print += "        faulty_packet_E_"+str(i)+" => faulty_packet_E"+str(i)+", healthy_packet_E_"+str(i)+" => healthy_packet_E"+str(i)+",\n"
-	string_to_print += "        faulty_packet_W_"+str(i)+" => faulty_packet_W"+str(i)+", healthy_packet_W_"+str(i)+" => healthy_packet_W"+str(i)+",\n"
-	string_to_print += "        faulty_packet_S_"+str(i)+" => faulty_packet_S"+str(i)+", healthy_packet_S_"+str(i)+" => healthy_packet_S"+str(i)+",\n"
-	string_to_print += "        faulty_packet_L_"+str(i)+" => faulty_packet_L"+str(i)+", healthy_packet_L_"+str(i)+" => healthy_packet_L"+str(i)+",\n"
-noc_file.write(string_to_print[0: len(string_to_print)-2])
-noc_file.write(");\n")
+  noc_file.write("monitoring_unit: SHMU \n")
+  noc_file.write("    generic map( router_fault_info_width => 5 ,network_size => "+str(network_dime)+" )\n")
+  noc_file.write("    port map(  reset =>reset, clk => clk,\n")
+  string_to_print = ""
+  for i in range(0, network_dime*network_dime): 	
+  	string_to_print += "        faulty_packet_N_"+str(i)+" => faulty_packet_N"+str(i)+", healthy_packet_N_"+str(i)+" => healthy_packet_N"+str(i)+",\n"
+  	string_to_print += "        faulty_packet_E_"+str(i)+" => faulty_packet_E"+str(i)+", healthy_packet_E_"+str(i)+" => healthy_packet_E"+str(i)+",\n"
+  	string_to_print += "        faulty_packet_W_"+str(i)+" => faulty_packet_W"+str(i)+", healthy_packet_W_"+str(i)+" => healthy_packet_W"+str(i)+",\n"
+  	string_to_print += "        faulty_packet_S_"+str(i)+" => faulty_packet_S"+str(i)+", healthy_packet_S_"+str(i)+" => healthy_packet_S"+str(i)+",\n"
+  	string_to_print += "        faulty_packet_L_"+str(i)+" => faulty_packet_L"+str(i)+", healthy_packet_L_"+str(i)+" => healthy_packet_L"+str(i)+",\n"
+  noc_file.write(string_to_print[0: len(string_to_print)-2])
+  noc_file.write(");\n")
  
 
 if add_FI:
