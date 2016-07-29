@@ -5,7 +5,7 @@ use ieee.std_logic_1164.all;
 --use IEEE.STD_LOGIC_ARITH.ALL;
 --use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity FIFO_credit_based is
+entity FIFO_LV is
     generic (
         DATA_WIDTH: integer := 9
     );
@@ -22,9 +22,9 @@ entity FIFO_credit_based is
             empty_out: out std_logic; 
             Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0)
     );
-end FIFO_credit_based;
+end FIFO_LV;
 
-architecture behavior of FIFO_credit_based is
+architecture behavior of FIFO_LV is
    signal read_pointer, read_pointer_in,  write_pointer, write_pointer_in: std_logic_vector(3 downto 0);
    signal full, empty: std_logic;
    signal read_en, write_en: std_logic;

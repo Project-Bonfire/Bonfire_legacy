@@ -13,7 +13,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 USE ieee.numeric_std.ALL; 
 
 entity network_2x2 is
- generic (DATA_WIDTH: integer := 32);
+ generic (DATA_WIDTH: integer := 9);
 port (reset: in  std_logic; 
 	clk: in  std_logic; 
 	--------------
@@ -43,9 +43,9 @@ end network_2x2;
 architecture behavior of network_2x2 is
 
 -- Declaring router component
-component router_credit_based is
+component router_LV is
   generic (
-        DATA_WIDTH: integer := 32; 
+        DATA_WIDTH: integer := 9; 
         current_address : integer := 0;
         Rxy_rst : integer := 60;
         Cx_rst : integer := 10;
@@ -117,7 +117,7 @@ begin
 --                         
 
 -- instantiating the routers
-R_0: router_credit_based generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>0, Rxy_rst => 60, Cx_rst => 10, NoC_size=>2)
+R_0: router_LV generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>0, Rxy_rst => 60, Cx_rst => 10, NoC_size=>2)
 PORT MAP (reset, clk, 
 	RX_N_0, RX_E_0, RX_W_0, RX_S_0, RX_L_0,
 	credit_in_N_0, credit_in_E_0, credit_in_W_0, credit_in_S_0, credit_in_L_0,
@@ -126,7 +126,7 @@ PORT MAP (reset, clk,
 	credit_out_N_0, credit_out_E_0, credit_out_W_0, credit_out_S_0, credit_out_L_0,
 	TX_N_0, TX_E_0, TX_W_0, TX_S_0, TX_L_0); 
 
-R_1: router_credit_based generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>1, Rxy_rst => 60, Cx_rst => 12, NoC_size=>2)
+R_1: router_LV generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>1, Rxy_rst => 60, Cx_rst => 12, NoC_size=>2)
 PORT MAP (reset, clk, 
 	RX_N_1, RX_E_1, RX_W_1, RX_S_1, RX_L_1,
 	credit_in_N_1, credit_in_E_1, credit_in_W_1, credit_in_S_1, credit_in_L_1,
@@ -135,7 +135,7 @@ PORT MAP (reset, clk,
 	credit_out_N_1, credit_out_E_1, credit_out_W_1, credit_out_S_1, credit_out_L_1,
 	TX_N_1, TX_E_1, TX_W_1, TX_S_1, TX_L_1); 
 
-R_2: router_credit_based generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>2, Rxy_rst => 60, Cx_rst => 3, NoC_size=>2)
+R_2: router_LV generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>2, Rxy_rst => 60, Cx_rst => 3, NoC_size=>2)
 PORT MAP (reset, clk, 
 	RX_N_2, RX_E_2, RX_W_2, RX_S_2, RX_L_2,
 	credit_in_N_2, credit_in_E_2, credit_in_W_2, credit_in_S_2, credit_in_L_2,
@@ -144,7 +144,7 @@ PORT MAP (reset, clk,
 	credit_out_N_2, credit_out_E_2, credit_out_W_2, credit_out_S_2, credit_out_L_2,
 	TX_N_2, TX_E_2, TX_W_2, TX_S_2, TX_L_2); 
 
-R_3: router_credit_based generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>3, Rxy_rst => 60, Cx_rst => 5, NoC_size=>2)
+R_3: router_LV generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>3, Rxy_rst => 60, Cx_rst => 5, NoC_size=>2)
 PORT MAP (reset, clk, 
 	RX_N_3, RX_E_3, RX_W_3, RX_S_3, RX_L_3,
 	credit_in_N_3, credit_in_E_3, credit_in_W_3, credit_in_S_3, credit_in_L_3,
