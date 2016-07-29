@@ -92,7 +92,7 @@ end COMPONENT;
 
  	COMPONENT XBAR is
     generic (
-        DATA_WIDTH: integer := 32
+        DATA_WIDTH: integer := 9
     );
     port (
         North_in: in std_logic_vector(DATA_WIDTH-1 downto 0);
