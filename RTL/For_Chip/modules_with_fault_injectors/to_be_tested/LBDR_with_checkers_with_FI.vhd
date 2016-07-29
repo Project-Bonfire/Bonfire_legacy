@@ -122,15 +122,22 @@ component shift_register_serial_in is
 end component;
 
 signal FI_add_sta: std_logic_vector(28 downto 0); -- 22 bits for inputs and internal signals
-                                                  -- 5 bits for fault injection location address (ceil of log2(22) = 3)
+                                                  -- 5 bits for fault injection location address (ceil of log2(22) = 5)
                                                   -- 2 bits for type of fault (SA0 or SA1)
+signal non_faulty_signals: std_logic_vector (21 downto 0);                                                
 signal faulty_signals: std_logic_vector(21 downto 0); -- 22 bits for inputs and internal signals (with one fault injected in one of them)
 
 begin 
 
+non_faulty_signals <= empty & flit_type & dst_addr & 
+                      Req_N_FF & Req_E_FF & Req_W_FF & Req_S_FF & Req_L_FF &
+                      Req_N_in & Req_E_in & Req_W_in & Req_S_in & Req_L_in &
+                      N1 & E1 & W1 & S1;
+
 FI: fault_injector generic map(DATA_WIDTH => 22) 
-           port map (data_in=> FI_add_sta(28 downto 7) , address=> FI_add_sta(6 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out => faulty_signals
+           port map (data_in=> non_faulty_signals , address=> FI_add_sta(6 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out => faulty_signals
             );
+
 
 -- Extracting faulty values for input signals
 empty_faulty     <= faulty_signals(21);
