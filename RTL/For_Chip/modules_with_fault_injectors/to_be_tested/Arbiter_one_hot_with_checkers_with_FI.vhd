@@ -4,8 +4,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
---use IEEE.math_real."ceil";
---use IEEE.math_real."log2";
 
 entity Arbiter is
     port (  reset: in  std_logic;
@@ -180,10 +178,11 @@ component Arbiter_checkers is
 end component;
 
 component fault_injector is 
-  generic(DATA_WIDTH : integer := 32);
+  generic(DATA_WIDTH : integer := 32; 
+    ADDRESS_WIDTH : integer := 5);
   port(
     data_in: in std_logic_vector (DATA_WIDTH-1 downto 0);
-    address: in std_logic_vector(5 downto 0);
+    address: in std_logic_vector(ADDRESS_WIDTH-1 downto 0);
     sta_0: in std_logic;
     sta_1: in std_logic;
     data_out: out std_logic_vector (DATA_WIDTH-1 downto 0)
@@ -218,7 +217,7 @@ non_faulty_signals <= Req_N & Req_E & Req_W & Req_S & Req_L &
                       Grant_N_sig & Grant_E_sig & Grant_W_sig & Grant_S_sig & Grant_L_sig & 
                       Xbar_sel_sig;
 
-FI: fault_injector generic map(DATA_WIDTH => 36) 
+FI: fault_injector generic map(DATA_WIDTH => 36, ADDRESS_WIDTH => 6) 
            port map (data_in=> non_faulty_signals , address=> FI_add_sta(7 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out=> faulty_signals
             );
 

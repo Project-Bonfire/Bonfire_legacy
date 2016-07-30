@@ -98,10 +98,11 @@ component LBDR_checkers is
 end component;
 
 component fault_injector is 
-  generic(DATA_WIDTH : integer := 22);
+  generic(DATA_WIDTH : integer := 32; 
+    ADDRESS_WIDTH : integer := 5);
   port(
     data_in: in std_logic_vector (DATA_WIDTH-1 downto 0);
-    address: in std_logic_vector(4 downto 0);
+    address: in std_logic_vector (ADDRESS_WIDTH-1 downto 0);
     sta_0: in std_logic;
     sta_1: in std_logic;
     data_out: out std_logic_vector (DATA_WIDTH-1 downto 0)
@@ -134,7 +135,7 @@ non_faulty_signals <= empty & flit_type & dst_addr &
                       Req_N_in & Req_E_in & Req_W_in & Req_S_in & Req_L_in &
                       N1 & E1 & W1 & S1;
 
-FI: fault_injector generic map(DATA_WIDTH => 22) 
+FI: fault_injector generic map(DATA_WIDTH => 22, ADDRESS_WIDTH => 5) 
            port map (data_in=> non_faulty_signals , address=> FI_add_sta(6 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out => faulty_signals
             );
 

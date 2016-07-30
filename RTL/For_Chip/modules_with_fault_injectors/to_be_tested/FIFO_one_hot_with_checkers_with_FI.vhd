@@ -4,8 +4,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
---use IEEE.math_real."ceil";
---use IEEE.math_real."log2";
 
 entity FIFO is
     generic (
@@ -93,10 +91,11 @@ end component;
 
 
 component fault_injector is 
-  generic(DATA_WIDTH : integer := 32);
+  generic(DATA_WIDTH : integer := 32; 
+    ADDRESS_WIDTH : integer := 5);
   port(
     data_in: in std_logic_vector (DATA_WIDTH-1 downto 0);
-    address: in std_logic_vector(4 downto 0);
+    address: in std_logic_vector(ADDRESS_WIDTH-1 downto 0);
     sta_0: in std_logic;
     sta_1: in std_logic;
     data_out: out std_logic_vector (DATA_WIDTH-1 downto 0)
@@ -128,7 +127,7 @@ non_faulty_signals <= DRTS & read_en_N & read_en_E & read_en_W & read_en_S & rea
                       CTS_out & CTS_in & read_pointer & read_pointer_in & write_pointer & write_pointer_in &
                       empty & full & read_en & write_en;
 
-FI: fault_injector generic map(DATA_WIDTH => 28) 
+FI: fault_injector generic map(DATA_WIDTH => 28, ADDRESS_WIDTH => 5) 
            port map (data_in=> non_faulty_signals , address=> FI_add_sta(6 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out=> faulty_signals
             );
 
