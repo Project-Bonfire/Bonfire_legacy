@@ -9,7 +9,8 @@ if '--help' in sys.argv[1:]:
   print "\t-DW [data_width]: sets the data width of the network!"
   print "\t-P: adds parity to the network"
   print "\t-FI: adds fault injector units to all the links (except the local) in the network"
-  print "\t-SHMU: adds SHMU to the network"
+  print "\t-FO: takes the fault/health packet signals (output of parity units) to interface"
+  print "\t-SHMU: adds SHMU to the network as a component and connects parity units outputs to them"
   print "\t-o: specifies the name and path of the output file. default path is current folder!"
   print "\t**Example: python network_gen_parameterized.py -D 2 -o ../output.vhd"
   print "\t           generates a 2X2 network that has network interface and parity checker and fault injectors into ../output.vhd"
@@ -45,6 +46,14 @@ if add_parity and '-SHMU'  in sys.argv[1:] :
   add_SHMU = True
 else:
   add_SHMU = False
+
+if '-FO'  in sys.argv[1:]:
+	add_FO = True
+else:
+	add_FO = False
+
+if add_parity and add_SHMU and not add_FO:
+  raise ValueError("look mate, you can not have SHMU and FO at the same time! just saying...")
 
 file_name= 'network'
 if add_parity:
@@ -104,6 +113,8 @@ noc_file.write("USE ieee.numeric_std.ALL; \n")
 
 noc_file.write("\n")
 
+
+string_to_print = ""
 noc_file.write("entity network_"+str(network_dime)+"x"+str(network_dime)+" is\n")
 
 noc_file.write(" generic (DATA_WIDTH: integer := 32);\n")
@@ -120,30 +131,31 @@ for i in range(network_dime*network_dime):
     noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0);\n")
 
 if add_FI:
-  noc_file.write("\t--fault injector signals\n")
+  string_to_print += "\t--fault injector signals\n"
+
   for i in range(0, network_dime*network_dime):
     node_x = i % network_dime
     node_y = i / network_dime
     if node_y != network_dime-1:
-
-      noc_file.write("\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i) +
-                     "_"+str(i+network_dime)+": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n")
-      noc_file.write("\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
-                         ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+": in std_logic;\n\n")
+      string_to_print += "\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i) + \
+                     "_"+str(i+network_dime)+": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n"
+      string_to_print += "\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +\
+                         ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+": in std_logic;\n\n"
   for i in range(0, network_dime*network_dime):
       node_x = i % network_dime
       node_y = i / network_dime
       if node_x != network_dime -1 :
-          noc_file.write("\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) +
-                         ": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n")
-          if node_y != network_dime -1 :
-              noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
-                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic;\n\n")
-          else:
-            noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
-                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic\n")
-
-noc_file.write("            ); \n")
+          string_to_print += "\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) +\
+                         ": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n"
+          string_to_print += "\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic;\n\n"
+if add_FO:
+  string_to_print += "\t--fault diagnosis signals\n"
+  for i in range(0, network_dime*network_dime):
+    string_to_print += "\tfaulty_packet_N"+str(i)+", faulty_packet_E"+str(i)+", faulty_packet_W"+str(i)+", faulty_packet_S"+str(i)+", faulty_packet_L"+str(i)+":out std_logic;\n"
+    string_to_print += "\thealthy_packet_N"+str(i)+", healthy_packet_E"+str(i)+", healthy_packet_W"+str(i)+", healthy_packet_S"+str(i)+", healthy_packet_L"+str(i)+":out std_logic;\n\n"
+noc_file.write(string_to_print[:len(string_to_print)-3])
+noc_file.write("\n            ); \n")
 noc_file.write("end network_"+str(network_dime)+"x"+str(network_dime)+"; \n")
 
 
