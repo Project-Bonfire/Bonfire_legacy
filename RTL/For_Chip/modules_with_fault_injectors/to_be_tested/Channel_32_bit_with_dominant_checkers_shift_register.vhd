@@ -179,22 +179,19 @@ architecture behavior of router_channel is
           );
 	end COMPONENT;
 
-component shift_register_serial_in is
+  COMPONENT shift_register is
     generic (
         REG_WIDTH: integer := 8
     );
     port (
         clk, reset : in std_logic;
         shift: in std_logic;
-        data_in_serial: in std_logic;
-        data_out_parallel: out std_logic_vector(REG_WIDTH-1 downto 0);
+        data_in: in std_logic_vector(REG_WIDTH-1 downto 0);
+        data_out_parallel: in std_logic_vector(REG_WIDTH-1 downto 0);
         data_out_serial: out std_logic
     );
-end component;
+  end COMPONENT;
 
- 	
-
- 
     -- Grant_XY : Grant signal generated from Arbiter for output X connected to FIFO of input Y
 
  	 
@@ -404,11 +401,11 @@ Arbiter_unit: Arbiter
           err_state_south_xbar_sel => err_state_south_xbar_sel
         );     
 
- checker_shifter: shift_register_serial_in generic map (REG_WIDTH => 59)
+ checker_shifter: shift_register generic map (REG_WIDTH => 59)
     port map (
-        clk => checker_clk, reset => reset,
+        clk => clk, reset => reset,
         shift => shift,
-        data_in_serial => combined_error_signals(58), 
+        data_in => combined_error_signals, 
         data_out_parallel => shift_parallel_data,
         data_out_serial => shift_serial_data
     );
