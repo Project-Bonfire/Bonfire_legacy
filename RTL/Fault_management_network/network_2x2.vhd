@@ -12,7 +12,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 USE ieee.numeric_std.ALL; 
 
-entity network_2x2 is
+entity network_LV_2x2 is
  generic (DATA_WIDTH: integer := 9);
 port (reset: in  std_logic; 
 	clk: in  std_logic; 
@@ -37,10 +37,10 @@ port (reset: in  std_logic;
 	credit_in_L_3, valid_in_L_3: in std_logic;
 	TX_L_3: out std_logic_vector (DATA_WIDTH-1 downto 0)
             ); 
-end network_2x2; 
+end network_LV_2x2; 
 
 
-architecture behavior of network_2x2 is
+architecture behavior of network_LV_2x2 is
 
 -- Declaring router component
 component router_LV is

@@ -23,7 +23,7 @@ end tb_network_2x2;
 architecture behavior of tb_network_2x2 is
 
 -- Declaring network component
-component network_2x2 is
+component network_LV_2x2 is
  generic (DATA_WIDTH: integer := 9);
 port (reset: in  std_logic; 
 	clk: in  std_logic; 
@@ -80,7 +80,7 @@ begin
 
 reset <= '1' after 1 ns;
 -- instantiating the network
-NoC: network_2x2 generic map (DATA_WIDTH  => 9)
+NoC: network_LV_2x2 generic map (DATA_WIDTH  => 9)
 PORT MAP (reset, clk, 
 	RX_L_0, credit_out_L_0, valid_out_L_0, credit_in_L_0, valid_in_L_0, TX_L_0,
 	RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1, TX_L_1,
