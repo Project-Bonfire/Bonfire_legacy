@@ -37,7 +37,8 @@ begin
     X_S <= '0';
     X_L <= '0';
     case state is 
-      when IDLE =>
+      when IDLE => -- In the arbiter for hand-shaking FC router, L had the  highest priority (L, N, E, W, S)
+      			   -- Here it seems N has the higest priority, is it fine ? 
       	if req_X_N ='1'  then
       		state_in <= North;
         	X_N <= '1';
