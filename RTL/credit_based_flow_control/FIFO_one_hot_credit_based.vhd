@@ -60,6 +60,7 @@ begin
             credit_out <= '0';
         elsif clk'event and clk = '1' then
             write_pointer <= write_pointer_in;
+            read_pointer  <= read_pointer_in;
             credit_out <= '0';
             if write_en = '1' then
                   
@@ -72,7 +73,6 @@ begin
             if read_en = '1' then 
               credit_out <= '1';
             end if;
-            read_pointer <=  read_pointer_in;
         end if;
     end process;
 

@@ -37,7 +37,7 @@ begin
 
  grants <= grant_N or grant_E or grant_W or grant_S or grant_L;
 
-  Cx       <=  std_logic_vector(to_unsigned(Cx_rst, Cx'length));
+  Cx       <= std_logic_vector(to_unsigned(Cx_rst, Cx'length));
   Rxy      <= std_logic_vector(to_unsigned(Rxy_rst, Rxy'length));
   cur_addr <= std_logic_vector(to_unsigned(cur_addr_rst, cur_addr'length));
 

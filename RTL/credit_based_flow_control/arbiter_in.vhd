@@ -3,7 +3,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-
+-- Is this like the old arbiter in the router with handshaking FC ??
 entity arbiter_in is
     port (  reset: in  std_logic;
             clk: in  std_logic;
@@ -16,7 +16,7 @@ architecture behavior of arbiter_in is
 
  
  TYPE STATE_TYPE IS (IDLE, North, East, West, South, Local);
-  SIGNAL state, state_in   : STATE_TYPE := IDLE;
+ SIGNAL state, state_in   : STATE_TYPE := IDLE;
 
 begin
 process (clk, reset)begin

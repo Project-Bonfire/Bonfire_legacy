@@ -135,11 +135,13 @@ FIFO_N: FIFO_credit_based
     port map ( reset => reset, clk => clk, RX => RX_N, valid_in => valid_in_N,  
             read_en_N => '0', read_en_E =>Grant_EN, read_en_W =>Grant_WN, read_en_S =>Grant_SN, read_en_L =>Grant_LN, 
             credit_out => credit_out_N, empty_out => empty_N, Data_out => FIFO_D_out_N);
+
 FIFO_E: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_E, valid_in => valid_in_E,  
             read_en_N => Grant_NE, read_en_E =>'0', read_en_W =>Grant_WE, read_en_S =>Grant_SE, read_en_L =>Grant_LE, 
             credit_out => credit_out_E, empty_out => empty_E, Data_out => FIFO_D_out_E);
+    
 FIFO_W: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_W, valid_in => valid_in_W,  

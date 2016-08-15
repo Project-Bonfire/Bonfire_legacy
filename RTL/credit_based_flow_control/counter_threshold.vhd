@@ -16,7 +16,7 @@ entity counter_threshold_classifier is
     port (  reset: in  std_logic;
             clk: in  std_logic;
             faulty_packet, Healthy_packet: in  std_logic;
-            Healthy, Intermittent, Faulty:out std_logic
+            Healthy, Intermittent, Faulty: out std_logic
             );
 end counter_threshold_classifier;
 
