@@ -51,19 +51,21 @@ begin
 
    process (clk, reset)begin
         if reset = '0' then
-            read_pointer <= "0001";
+            read_pointer  <= "0001";
             write_pointer <= "0001";
+
             FIFO_MEM_1 <= (others=>'0');
             FIFO_MEM_2 <= (others=>'0');
             FIFO_MEM_3 <= (others=>'0');
             FIFO_MEM_4 <= (others=>'0');
+
             credit_out <= '0';
+
         elsif clk'event and clk = '1' then
             write_pointer <= write_pointer_in;
-            read_pointer  <= read_pointer_in;
+            read_pointer  <=  read_pointer_in;
             credit_out <= '0';
-            if write_en = '1' then
-                  
+            if write_en = '1' then 
                 --write into the memory
                   FIFO_MEM_1 <= FIFO_MEM_1_in;
                   FIFO_MEM_2 <= FIFO_MEM_2_in;
