@@ -24,7 +24,7 @@ architecture behavior of tb_network_2x2 is
 
 -- Declaring network component
 component network_LV_2x2 is
- generic (DATA_WIDTH: integer := 9);
+ generic (DATA_WIDTH: integer := 13);
 port (reset: in  std_logic; 
 	clk: in  std_logic; 
 	--------------
@@ -51,16 +51,16 @@ port (reset: in  std_logic;
 end component; 
 
 -- generating bulk signals...
-	signal RX_L_0, TX_L_0:  std_logic_vector (8 downto 0);
+	signal RX_L_0, TX_L_0:  std_logic_vector (12 downto 0);
 	signal credit_counter_out_0:  std_logic_vector (1 downto 0);
 	signal credit_out_L_0, credit_in_L_0, valid_in_L_0, valid_out_L_0: std_logic;
-	signal RX_L_1, TX_L_1:  std_logic_vector (8 downto 0);
+	signal RX_L_1, TX_L_1:  std_logic_vector (12 downto 0);
 	signal credit_counter_out_1:  std_logic_vector (1 downto 0);
 	signal credit_out_L_1, credit_in_L_1, valid_in_L_1, valid_out_L_1: std_logic;
-	signal RX_L_2, TX_L_2:  std_logic_vector (8 downto 0);
+	signal RX_L_2, TX_L_2:  std_logic_vector (12 downto 0);
 	signal credit_counter_out_2:  std_logic_vector (1 downto 0);
 	signal credit_out_L_2, credit_in_L_2, valid_in_L_2, valid_out_L_2: std_logic;
-	signal RX_L_3, TX_L_3:  std_logic_vector (8 downto 0);
+	signal RX_L_3, TX_L_3:  std_logic_vector (12 downto 0);
 	signal credit_counter_out_3:  std_logic_vector (1 downto 0);
 	signal credit_out_L_3, credit_in_L_3, valid_in_L_3, valid_out_L_3: std_logic;
 	--------------
@@ -80,7 +80,7 @@ begin
 
 reset <= '1' after 1 ns;
 -- instantiating the network
-NoC: network_LV_2x2 generic map (DATA_WIDTH  => 9)
+NoC: network_LV_2x2 generic map (DATA_WIDTH  => 13)
 PORT MAP (reset, clk, 
 	RX_L_0, credit_out_L_0, valid_out_L_0, credit_in_L_0, valid_in_L_0, TX_L_0,
 	RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1, TX_L_1,
@@ -102,9 +102,9 @@ gen_random_packet(0, 100, 3, 38, 3, 8, 10000 ns, clk, credit_counter_out_3, vali
 
 
 -- connecting the packet receivers
-get_packet(9, 5, 0, clk, credit_in_L_0, valid_out_L_0, TX_L_0);
-get_packet(9, 5, 1, clk, credit_in_L_1, valid_out_L_1, TX_L_1);
-get_packet(9, 5, 2, clk, credit_in_L_2, valid_out_L_2, TX_L_2);
-get_packet(9, 5, 3, clk, credit_in_L_3, valid_out_L_3, TX_L_3);
+get_packet(13, 5, 0, clk, credit_in_L_0, valid_out_L_0, TX_L_0);
+get_packet(13, 5, 1, clk, credit_in_L_1, valid_out_L_1, TX_L_1);
+get_packet(13, 5, 2, clk, credit_in_L_2, valid_out_L_2, TX_L_2);
+get_packet(13, 5, 3, clk, credit_in_L_3, valid_out_L_3, TX_L_3);
 
 end;

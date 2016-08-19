@@ -30,7 +30,7 @@ package body TB_Package is
 
   function packet_gen( source, destination: integer; healthy_faulty: Boolean)
               return std_logic_vector is
-    	variable packet: std_logic_vector (8 downto 0);
+    	variable packet: std_logic_vector (12 downto 0);
       variable healthy: std_logic;
     	begin
       if healthy_faulty then  
@@ -38,7 +38,7 @@ package body TB_Package is
       else
           healthy := '1';
       end if;
-    	packet :=   std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(destination, 4)) & healthy;
+    	packet :=   std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(destination, 4)) & healthy & '1' & "001";
     return packet;
   end packet_gen;
 
@@ -80,14 +80,14 @@ package body TB_Package is
     variable credit_counter: std_logic_vector (1 downto 0);
     begin
 
-    Packet_length := integer((integer(rand*100.0)*frame_length)/300);
+    Packet_length := 1;
     valid_out <= '0';
-    port_in <= "XXXXXXXXX" ;
+    port_in <= "XXXXXXXXXXXXX" ;
     wait until clk'event and clk ='1';
     for i in 0 to initial_delay loop
       wait until clk'event and clk ='1';
     end loop;
-    port_in <= "UUUUUUUUU" ;
+    port_in <= "UUUUUUUUUUUUU" ;
     if SHMU_ID = source then
     	while true loop
     		wait until clk'event and clk ='0';
@@ -100,9 +100,10 @@ package body TB_Package is
 
 	      --generating the frame initial delay
 	      uniform(seed1, seed2, rand);
-	      frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - 3*Packet_length)))/100);
+
+	      frame_starting_delay := integer(((integer(rand*100.0)*((2*frame_length/3) - Packet_length)))/100);
 	      --generating the frame ending delay
-	      frame_ending_delay := frame_length - (3*Packet_length+frame_starting_delay);
+	      frame_ending_delay := frame_length - (Packet_length+frame_starting_delay);
 
 	      for k in 0 to frame_starting_delay-1 loop 
 	          wait until clk'event and clk ='0';
@@ -141,12 +142,12 @@ package body TB_Package is
 	     
 
 	      valid_out <= '0';
-	      port_in <= "ZZZZZZZZZ" ;
+	      port_in <= "ZZZZZZZZZZZZZ" ;
 
 	      for l in 0 to frame_ending_delay-1 loop 
 	         wait until clk'event and clk ='0';
 	      end loop;
-	      port_in <= "UUUUUUUUU" ;
+	      port_in <= "UUUUUUUUUUUUU" ;
 	      
 	      if now > finish_time then 
 	          wait; 
@@ -170,9 +171,9 @@ package body TB_Package is
          wait until clk'event and clk ='1';
         
          if valid_in = '1' then
-              if (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001") then
-                destination_node := to_integer(unsigned(port_in(4 downto 1)));
-                source_node := to_integer(unsigned(port_in(8 downto 5)));
+              if (port_in(2 downto 0) = "001") then
+                destination_node := to_integer(unsigned(port_in(8 downto 5)));
+                source_node := to_integer(unsigned(port_in(12 downto 9)));
              end if; 
               report "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) ;
                write(LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(source_node) & " to: " & integer'image(destination_node) );

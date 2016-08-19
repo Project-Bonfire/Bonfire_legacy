@@ -7,7 +7,7 @@ use ieee.std_logic_1164.all;
 
 entity router_LV is
 	generic (
-        DATA_WIDTH: integer := 9;
+        DATA_WIDTH: integer := 13;
         current_address : integer := 0;
         Rxy_rst : integer := 60;
         Cx_rst : integer := 10;
@@ -85,6 +85,8 @@ architecture behavior of router_LV is
             clk: in  std_logic;
             empty: in  std_logic; 
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
+            packet_info: in std_logic;
+            flit_type: in std_logic_vector(2 downto 0);
 	        grant_N, grant_E, grant_W, grant_S, grant_L: in std_logic;
             Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic
             );
@@ -129,9 +131,9 @@ begin
 
 -------------------------------------------------------------------------------------------
 --Packet format
---
---               ____________________________________________
---              |________4_________|__________4__________|_1_|
+--                                                packet info__      __________flit type
+--               ______________________________________________|____|__
+--              |________4_________|__________4__________|_1_|_1_|__3__|
 --                  source address        destination      |
 --                                          address        |____healthy/faulty
 --                                                                          
@@ -172,27 +174,27 @@ FIFO_L: FIFO_LV
 
 -- all the LBDRs
 LBDR_N: LBDR_LV generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
-       PORT MAP (reset => reset, clk => clk, empty => empty_N, dst_addr=> FIFO_D_out_N(NoC_size downto 1) ,
+       PORT MAP (reset => reset, clk => clk, empty => empty_N, dst_addr=> FIFO_D_out_N(5+NoC_size-1 downto 5) , packet_info => FIFO_D_out_N(3), flit_type=> FIFO_D_out_N(2 downto 0),
 		     grant_N => '0', grant_E =>Grant_EN, grant_W => Grant_WN, grant_S=>Grant_SN, grant_L =>Grant_LN,
              Req_N=> Req_NN, Req_E=>Req_NE, Req_W=>Req_NW, Req_S=>Req_NS, Req_L=>Req_NL);
 
 LBDR_E: LBDR_LV generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_E, dst_addr=> FIFO_D_out_E(NoC_size downto 1) ,
+   PORT MAP (reset =>  reset, clk => clk, empty => empty_E, dst_addr=> FIFO_D_out_E(5+NoC_size-1 downto 5) , packet_info => FIFO_D_out_E(3), flit_type=> FIFO_D_out_E(2 downto 0),
              grant_N => Grant_NE, grant_E =>'0', grant_W => Grant_WE, grant_S=>Grant_SE, grant_L =>Grant_LE,
              Req_N=> Req_EN, Req_E=>Req_EE, Req_W=>Req_EW, Req_S=>Req_ES, Req_L=>Req_EL);
 
 LBDR_W: LBDR_LV generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_W,  dst_addr=> FIFO_D_out_W(NoC_size downto 1) ,
+   PORT MAP (reset =>  reset, clk => clk, empty => empty_W,  dst_addr=> FIFO_D_out_W(5+NoC_size-1 downto 5) , packet_info => FIFO_D_out_W(3), flit_type=> FIFO_D_out_W(2 downto 0),
              grant_N => Grant_NW, grant_E =>Grant_EW, grant_W =>'0' ,grant_S=>Grant_SW, grant_L =>Grant_LW,
              Req_N=> Req_WN, Req_E=>Req_WE, Req_W=>Req_WW, Req_S=>Req_WS, Req_L=>Req_WL);
 
 LBDR_S: LBDR_LV generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_S, dst_addr=> FIFO_D_out_S(NoC_size downto 1) ,
+   PORT MAP (reset =>  reset, clk => clk, empty => empty_S, dst_addr=> FIFO_D_out_S(5+NoC_size-1 downto 5) , packet_info => FIFO_D_out_S(3), flit_type=> FIFO_D_out_S(2 downto 0),
              grant_N => Grant_NS, grant_E =>Grant_ES, grant_W =>Grant_WS ,grant_S=>'0', grant_L =>Grant_LS,
              Req_N=> Req_SN, Req_E=>Req_SE, Req_W=>Req_SW, Req_S=>Req_SS, Req_L=>Req_SL);
 
 LBDR_L: LBDR_LV generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_L, dst_addr=> FIFO_D_out_L(NoC_size downto 1) ,
+   PORT MAP (reset =>  reset, clk => clk, empty => empty_L, dst_addr=> FIFO_D_out_L(5+NoC_size-1 downto 5) , packet_info => FIFO_D_out_L(3), flit_type=> FIFO_D_out_L(2 downto 0),
              grant_N => Grant_NL, grant_E =>Grant_EL, grant_W => Grant_WL,grant_S=>Grant_SL, grant_L =>'0',
              Req_N=> Req_LN, Req_E=>Req_LE, Req_W=>Req_LW, Req_S=>Req_LS, Req_L=>Req_LL);
 

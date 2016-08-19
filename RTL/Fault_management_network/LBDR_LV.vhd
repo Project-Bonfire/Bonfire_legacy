@@ -18,6 +18,8 @@ entity LBDR_LV is
             clk: in  std_logic;
             empty: in  std_logic;
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
+            packet_info: in std_logic;
+            flit_type: in std_logic_vector(2 downto 0);
 	          grant_N, grant_E, grant_W, grant_S, grant_L: in std_logic;
             Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic
             );
@@ -79,7 +81,7 @@ process(N1, E1, W1, S1, Rxy, Cx, empty, Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, 
         Req_W_in <= ((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2);
         Req_S_in <= ((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3);
         Req_L_in <= not N1 and  not E1 and not W1 and not S1;
-  elsif empty = '0' and grants = '1' then
+  elsif ((empty = '0' and grants = '1') or (packet_info = '0' and flit_type = "100" and empty = '0' and grants = '1')) then
         Req_N_in <= '0';
         Req_E_in <= '0';
         Req_W_in <= '0';
