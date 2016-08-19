@@ -88,14 +88,7 @@ package body TB_Package is
       wait until clk'event and clk ='1';
     end loop;
     port_in <= "UUUUUUUUUUUUU" ;
-    if SHMU_ID = source then
-    	while true loop
-    		wait until clk'event and clk ='0';
-    		if now > finish_time then 
-	          wait; 
-	      	end if;
-    	end loop;
-    else
+     
 	    while true loop
 
 	      --generating the frame initial delay
@@ -153,7 +146,7 @@ package body TB_Package is
 	          wait; 
 	      end if;
 	    end loop;
-	end if;
+	 
   end gen_random_packet;
 
 
