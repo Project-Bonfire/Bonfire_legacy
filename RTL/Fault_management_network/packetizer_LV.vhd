@@ -41,6 +41,5 @@ begin
         credit_counter_in <= credit_counter_out + 1;
     end if;
 end process;
-
-
+ 
 end;
