@@ -202,7 +202,7 @@ arb_L_X: arbiter_in  PORT MAP (reset => reset, clk => clk,
 
 -- Y is N now
 arb_X_N: arbiter_out port map (reset => reset, clk => clk,
-                                X_N_Y => X_N_N, X_E_Y => X_E_N,  X_W_Y => X_W_N,  X_S_Y => X_S_N,  X_L_Y => X_L_N, 
+                               X_N_Y => X_N_N, X_E_Y => X_E_N,  X_W_Y => X_W_N,  X_S_Y => X_S_N,  X_L_Y => X_L_N, 
                                credit => credit_counter_N_out,
                                grant_Y_N => grant_N_N_sig, 
                                grant_Y_E => grant_N_E_sig, 
