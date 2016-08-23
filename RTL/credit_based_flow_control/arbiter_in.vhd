@@ -29,13 +29,15 @@ end process;
 
 -- anything below here is pure combinational
 
-process(req_X_N, req_X_E, req_X_W, req_X_S, req_X_L)
+process(state, req_X_N, req_X_E, req_X_W, req_X_S, req_X_L)
 begin
+
     X_N <= '0';
     X_E <= '0';
     X_W <= '0';
     X_S <= '0';
     X_L <= '0';
+    
     case state is 
       when IDLE => -- In the arbiter for hand-shaking FC router, L had the  highest priority (L, N, E, W, S)
       			   -- Here it seems N has the higest priority, is it fine ? 
