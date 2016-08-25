@@ -33,7 +33,7 @@ package body TB_Package is
 
   function Header_gen(Packet_length, source, destination, packet_id: integer)
               return std_logic_vector is
-    	variable Header_flit: std_logic_vector (12 downto 0);
+    	variable Header_flit: std_logic_vector (10 downto 0);
       variable faulty_healhty: integer;
        variable seed1 :positive ;
       variable seed2 :positive ;
@@ -42,9 +42,9 @@ package body TB_Package is
       uniform(seed1, seed2, rand);
       faulty_healhty := integer(rand*100.0);
       if faulty_healhty > 50 then
-          Header_flit := std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(destination, 4)) & '0' & '1' & Header_type;
+          Header_flit := std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(destination, 4)) &  Header_type;
       else
-          Header_flit := std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(destination, 4)) & '1' & '1' & Header_type;
+          Header_flit := std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(destination, 4)) &  Header_type;
       end if;
     	
     return Header_flit;
@@ -53,18 +53,18 @@ package body TB_Package is
 
   function Body_gen(Packet_length, Data: integer)
                 return std_logic_vector is
-    variable Body_flit: std_logic_vector (12 downto 0);
+    variable Body_flit: std_logic_vector (10 downto 0);
     begin
-    Body_flit :=  std_logic_vector(to_unsigned(Data, 10)) & Body_type;
+    Body_flit :=  std_logic_vector(to_unsigned(Data, 8)) & Body_type;
     return Body_flit;
   end Body_gen;
 
 
   function Tail_gen(Packet_length, Data: integer)
                 return std_logic_vector is
-    variable Tail_flit: std_logic_vector (12 downto 0);
+    variable Tail_flit: std_logic_vector (10 downto 0);
     begin
-    Tail_flit := std_logic_vector(to_unsigned(Data, 10)) & Tail_type;
+    Tail_flit := std_logic_vector(to_unsigned(Data, 8)) & Tail_type;
     return Tail_flit;
   end Tail_gen;
 
@@ -105,12 +105,12 @@ package body TB_Package is
 
     Packet_length := integer((integer(rand*100.0)*frame_length)/300);
     valid_out <= '0';
-    port_in <= "XXXXXXXXXXXXX" ;
+    port_in <= "XXXXXXXXXXX" ;
     wait until clk'event and clk ='1';
     for i in 0 to initial_delay loop
       wait until clk'event and clk ='1';
     end loop;
-    port_in <= "UUUUUUUUUUUUU" ;
+    port_in <= "UUUUUUUUUUU" ;
 
     while true loop
 
@@ -197,12 +197,12 @@ package body TB_Package is
       wait until clk'event and clk ='0';
 
       valid_out <= '0';
-      port_in <= "ZZZZZZZZZZZZZ" ;
+      port_in <= "ZZZZZZZZZZZ" ;
 
       for l in 0 to frame_ending_delay-1 loop 
          wait until clk'event and clk ='0';
       end loop;
-      port_in <= "UUUUUUUUUUUUU" ;
+      port_in <= "UUUUUUUUUUU" ;
       
       if now > finish_time then 
           wait; 
@@ -225,8 +225,8 @@ package body TB_Package is
         
          if valid_in = '1' then
               if (port_in(2 downto 0) = "001") then
-                destination_node := to_integer(unsigned(port_in(8 downto 5)));
-                source_node := to_integer(unsigned(port_in(12 downto 9)));
+                destination_node := to_integer(unsigned(port_in(6 downto 3)));
+                source_node := to_integer(unsigned(port_in(10 downto 7)));
              end if; 
              if (port_in(2 downto 0) = "100") then
               report "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) ;

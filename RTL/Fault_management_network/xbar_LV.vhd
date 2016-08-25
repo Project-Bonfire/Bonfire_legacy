@@ -5,7 +5,7 @@ use ieee.std_logic_1164.all;
 
 entity XBAR_LV is
     generic (
-        DATA_WIDTH: integer := 13
+        DATA_WIDTH: integer := 11
     );
     port (
         North_in: in std_logic_vector(DATA_WIDTH-1 downto 0);

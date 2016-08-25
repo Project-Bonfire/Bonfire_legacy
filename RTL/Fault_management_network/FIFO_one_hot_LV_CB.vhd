@@ -7,7 +7,7 @@ use ieee.std_logic_1164.all;
 
 entity FIFO_LV is
     generic (
-        DATA_WIDTH: integer := 13
+        DATA_WIDTH: integer := 11
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;

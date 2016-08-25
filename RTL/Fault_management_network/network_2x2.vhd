@@ -13,7 +13,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 USE ieee.numeric_std.ALL; 
 
 entity network_LV_2x2 is
- generic (DATA_WIDTH: integer := 13);
+ generic (DATA_WIDTH: integer := 11);
 port (reset: in  std_logic; 
 	clk: in  std_logic; 
 	--------------
