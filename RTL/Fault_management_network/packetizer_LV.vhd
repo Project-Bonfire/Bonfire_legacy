@@ -15,9 +15,9 @@ entity PACKETIZER_LV is
         faulty_packet_N, faulty_packet_E, faulty_packet_W, faulty_packet_S, faulty_packet_L: in  std_logic;
         healthy_packet_N, healthy_packet_E, healthy_packet_W, healthy_packet_S, healthy_packet_L: in  std_logic;
 
-        credit_in_L: in std_logic;
-        valid_out_L : out std_logic;
-        TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0)
+        credit_in_LV: in std_logic;
+        valid_out_LV : out std_logic;
+        TX_LV: out std_logic_vector (DATA_WIDTH-1 downto 0)
     );
 end;
 
@@ -84,7 +84,7 @@ end process;
 process (credit_in_L, credit_counter_out)begin
 begin
     credit_counter_in <= credit_counter_out;
-    if credit_in_L = '1' and credit_counter_out < 1 then 
+    if credit_in_LV = '1' and credit_counter_out < 1 then 
         credit_counter_in <= credit_counter_out + 1;
     end if;
 end process;
@@ -92,8 +92,8 @@ end process;
 
 process(send_packet, state, read_pointer)
     begin
-        valid_out_L <= '0';
-        TX_L <= (others => '0');
+        valid_out_LV <= '0';
+        TX_LV <= (others => '0');
     
         case(state) is
         
@@ -105,27 +105,27 @@ process(send_packet, state, read_pointer)
                 end if;
                 read_pointer_in <=  read_pointer;
             when HEADER_FLIT =>
-                if credit_in_L /= "00" then
-                    valid_out_L <= '1';
-                    TX_L <= std_logic_vector(to_unsigned(current_address, 4))  & std_logic_vector(to_unsigned(SHMU_address, 4)) &  "001";
+                if credit_in_LV /= "00" then
+                    valid_out_LV <= '1';
+                    TX_LV <= std_logic_vector(to_unsigned(current_address, 4))  & std_logic_vector(to_unsigned(SHMU_address, 4)) &  "001";
                     state_in <= BODY_FLIT;
                 else
                     state_in <= HEADER_FLIT;
                 end if;
                 read_pointer_in <=  read_pointer(0) & read_pointer(2 downto 1);    
             when BODY_FLIT =>
-                if credit_in_L /= "00" then
-                    valid_out_L <= '1';
-                    TX_L <= "000" & FIFO_Data_out(3 downto 0) &  "010";
+                if credit_in_LV /= "00" then
+                    valid_out_LV <= '1';
+                    TX_LV <= "000" & FIFO_Data_out(3 downto 0) &  "010";
                     state_in <= TAIL_FLIT;
                 else
                     state_in <= BODY_FLIT;
                 end if;
 
             when TAIL_FLIT =>
-                if credit_in_L /= "00" then
-                    valid_out_L <= '1';
-                    TX_L <= "000" & FIFO_Data_out(7 downto 4) &  "100";
+                if credit_in_LV /= "00" then
+                    valid_out_LV <= '1';
+                    TX_LV <= "000" & FIFO_Data_out(7 downto 4) &  "100";
                     state_in <= IDLE;
                 else
                     state_in <= TAIL_FLIT;
