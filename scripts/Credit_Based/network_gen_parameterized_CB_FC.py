@@ -6,7 +6,7 @@ from Credit_Based.CB_FC_Package import CreditBasedPackage
 from CB_compoments import declare_components
 from Signal_declaration import declare_signals
 from ACII_art import generate_ascii_art
-from Instantiate_components import instantiate_shmu, instantiate_router
+from Instantiate_components import instantiate_shmu, instantiate_routers
 from network_entity import generate_entity
 
 
@@ -51,7 +51,7 @@ generate_ascii_art(noc_file, CB_Package.network_dime)
 
 noc_file.write("begin\n\n\n")
 
-instantiate_router(noc_file, CB_Package.network_dime, CB_Package.add_parity)
+instantiate_routers(noc_file, CB_Package.network_dime, CB_Package.add_parity)
 
 if CB_Package.add_SHMU:
     instantiate_shmu(noc_file, CB_Package.network_dime)
