@@ -5,7 +5,7 @@ use ieee.std_logic_1164.all;
 --use IEEE.STD_LOGIC_ARITH.ALL;
 --use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity router_credit_based_parity is
+entity router_credit_based_parity_lv is
 	generic (
         DATA_WIDTH: integer := 32;
         current_address : integer := 0;
@@ -30,9 +30,9 @@ entity router_credit_based_parity is
     valid_out_LV : out std_logic;
     TX_LV: out std_logic_vector (DATA_WIDTH-1 downto 0)
  ); 
-end router_credit_based_parity; 
+end router_credit_based_parity_lv; 
 
-architecture behavior of router_credit_based_parity is
+architecture behavior of router_credit_based_parity_lv is
 
   COMPONENT PACKETIZER_LV is
     generic (

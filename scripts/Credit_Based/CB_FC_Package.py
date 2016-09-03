@@ -31,13 +31,13 @@ class CreditBasedPackage():
                   "injectors into ../output.vhd"
             return 1
         if '-D' in arguments_list:
-            network_dime = int(arguments_list[arguments_list.index('-D')+1])
-            if network_dime % 2 != 0:
+            self.network_dime = int(arguments_list[arguments_list.index('-D')+1])
+            if self.network_dime % 2 != 0:
                 raise ValueError("wrong network size. please choose powers of 2. for example 4!")
 
         if '-DW' in arguments_list:
-            data_width = int(arguments_list[arguments_list.index('-DW')+1])
-            if data_width % 2 != 0:
+            self.data_width = int(arguments_list[arguments_list.index('-DW')+1])
+            if self.data_width % 2 != 0:
                 raise ValueError("wrong data width. please choose powers of 2. for example 32!")
 
         if '-P' in arguments_list:

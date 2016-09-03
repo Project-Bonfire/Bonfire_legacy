@@ -72,7 +72,7 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, network_d
         noc_file.write("    ); ")
         noc_file.write("end router_LV;")
 
-    noc_file.write("\n\n")
+        noc_file.write("\n\n")
 
     if add_FI:
         noc_file.write("component fault_injector is \n")
@@ -86,7 +86,7 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, network_d
         noc_file.write("    );\n")
         noc_file.write("end component;\n")
 
-    noc_file.write("\n\n")
+        noc_file.write("\n\n")
 
     if add_SHMU:
         noc_file.write("component SHMU is\n")

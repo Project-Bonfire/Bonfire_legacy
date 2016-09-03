@@ -2,7 +2,7 @@
 
 import sys
 
-from Credit_Based.CB_FC_Package import CreditBasedPackage
+from CB_FC_Package import CreditBasedPackage
 from CB_compoments import declare_components
 from Signal_declaration import declare_signals
 from ACII_art import generate_ascii_art
@@ -41,7 +41,7 @@ noc_file.write("architecture behavior of network_"+str(CB_Package.network_dime)+
                str(CB_Package.network_dime)+" is\n\n")
 
 # declaring components, signals and making ascii art!!!
-declare_components(noc_file, CB_Package.add_parity, CB_Package.add_FI, CB_Package.add_SHMU,
+declare_components(noc_file, CB_Package.add_parity, CB_Package.add_FI, CB_Package.add_SHMU, CB_Package.add_LV,
                    CB_Package.network_dime, CB_Package.fi_addres_width)
 
 declare_signals(noc_file, CB_Package.network_dime, CB_Package.add_parity)
@@ -51,7 +51,7 @@ generate_ascii_art(noc_file, CB_Package.network_dime)
 
 noc_file.write("begin\n\n\n")
 
-instantiate_routers(noc_file, CB_Package.network_dime, CB_Package.add_parity)
+instantiate_routers(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV)
 
 if CB_Package.add_SHMU:
     instantiate_shmu(noc_file, CB_Package.network_dime)
