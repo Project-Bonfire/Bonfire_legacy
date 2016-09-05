@@ -1,7 +1,7 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
 
-def generate_entity(noc_file, network_dime, add_FI, fi_addres_width, add_FO):
+def generate_entity(noc_file, network_dime, add_FI, fi_addres_width, add_lv, add_FO):
     string_to_print = ""
     noc_file.write("entity network_"+str(network_dime)+"x"+str(network_dime)+" is\n")
 
@@ -46,6 +46,14 @@ def generate_entity(noc_file, network_dime, add_FI, fi_addres_width, add_FO):
                                ", faulty_packet_S"+str(i)+", faulty_packet_L"+str(i)+":out std_logic;\n"
             string_to_print += "\thealthy_packet_N"+str(i)+", healthy_packet_E"+str(i)+", healthy_packet_W"+str(i) +\
                                ", healthy_packet_S"+str(i)+", healthy_packet_L"+str(i)+":out std_logic;\n\n"
+
+    if add_lv:
+      for i in range(0, network_dime**2):
+        string_to_print +="\t--------------\n"
+        string_to_print +="    credit_in_LV_"+str(i) +": in std_logic;\n"
+        string_to_print +="    valid_out_LV_"+str(i) +" : out std_logic;\n"
+        string_to_print +="    TX_LV_"+str(i) +": out std_logic_vector (DATA_WIDTH-1 downto 0);\n\n"
+
     noc_file.write(string_to_print[:len(string_to_print)-3])
     noc_file.write("\n            ); \n")
     noc_file.write("end network_"+str(network_dime)+"x"+str(network_dime)+"; \n")

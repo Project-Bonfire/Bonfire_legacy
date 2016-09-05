@@ -21,12 +21,12 @@ entity router_credit_based_parity_lv is
     valid_in_N, valid_in_E, valid_in_W, valid_in_S, valid_in_L : in std_logic;
     valid_out_N, valid_out_E, valid_out_W, valid_out_S, valid_out_L : out std_logic;
     credit_out_N, credit_out_E, credit_out_W, credit_out_S, credit_out_L: out std_logic;
-    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0)
+    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);
     ------------------------- lV network port
     -- the router just sends the packets out. no need for any incomming packets support. 
     -- the output of the LV network will be connected to the PEs
 
-    credit_in_LV: in std_logic;
+    credit_in_LV : in std_logic;
     valid_out_LV : out std_logic;
     TX_LV: out std_logic_vector (DATA_WIDTH-1 downto 0)
  ); 
@@ -171,7 +171,8 @@ packetizer: PACKETIZER_LV generic map(DATA_WIDTH => 13, current_address => curre
          
         faulty_packet_N => faulty_packet_N, faulty_packet_E => faulty_packet_E, faulty_packet_W => faulty_packet_W, 
         faulty_packet_S => faulty_packet_S, faulty_packet_L => faulty_packet_L,
-        healthy_packet_N, healthy_packet_E, healthy_packet_W, healthy_packet_S, healthy_packet_L: in  std_logic;
+        healthy_packet_N => healthy_packet_N, healthy_packet_E => healthy_packet_E, healthy_packet_W => healthy_packet_W, 
+	healthy_packet_S => healthy_packet_S, healthy_packet_L => healthy_packet_L,
 
         credit_in_LV => credit_in_LV, 
         valid_out_LV => valid_out_LV,

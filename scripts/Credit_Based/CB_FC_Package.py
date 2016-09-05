@@ -16,6 +16,7 @@ class CreditBasedPackage():
         self.add_FI = False
 
     def sort_out_parameters(self, arguments_list):
+ 
         if '--help' in arguments_list:
             print "\t-D [network size]: it makes a network of [size]X[size]. Size can be only multiples of two. " \
                   "default value is 4."
@@ -50,7 +51,7 @@ class CreditBasedPackage():
         if self.add_parity and '-SHMU' in arguments_list:
             self.add_SHMU = True
 
-        if "LV" in arguments_list:
+        if "-LV" in arguments_list:
             self.add_LV = True
 
         if '-FO' in arguments_list:

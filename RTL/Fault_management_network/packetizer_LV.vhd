@@ -2,10 +2,13 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.NUMERIC_STD.all;
 
 entity PACKETIZER_LV is
     generic (
-        DATA_WIDTH: integer := 13;
+        DATA_WIDTH: integer := 11;
         current_address : integer := 0;
         SHMU_address : integer := 0
     );
@@ -22,7 +25,7 @@ entity PACKETIZER_LV is
 end;
 
 architecture behavior of PACKETIZER_LV is
-begin
+
  
  
  signal read_pointer, read_pointer_in,  write_pointer, write_pointer_in: std_logic_vector(2 downto 0);
@@ -32,19 +35,21 @@ begin
  type STATE_TYPE IS (IDLE, HEADER_FLIT, BODY_FLIT, TAIL_FLIT);
  signal state, state_in   : STATE_TYPE := IDLE;
 
- signal FIFO_MEM_1, FIFO_MEM_1_in : std_logic_vector(7 downto 0);
- signal FIFO_MEM_2, FIFO_MEM_2_in : std_logic_vector(7 downto 0);
- signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(7 downto 0);
+ signal FIFO_MEM_1, FIFO_MEM_1_in : std_logic_vector(9 downto 0);
+ signal FIFO_MEM_2, FIFO_MEM_2_in : std_logic_vector(9 downto 0);
+ signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(9 downto 0);
 
- signal FIFO_Data_out: std_logic_vector(7 downto 0);
+ signal FIFO_Data_out: std_logic_vector(9 downto 0);
 
  signal all_input_signals: std_logic;
+
+begin
 
 process (clk, reset)begin
         if reset = '0' then
              
         elsif clk'event and clk = '1' then
-            if all_input_signals then
+            if all_input_signals = '1' then
                 FIFO_MEM_1 <= FIFO_MEM_1_in;
                 FIFO_MEM_2 <= FIFO_MEM_2_in;
                 FIFO_MEM_3 <= FIFO_MEM_3_in;
@@ -66,13 +71,13 @@ end process;
 process(faulty_packet_N, faulty_packet_E, faulty_packet_W, faulty_packet_S, faulty_packet_L, healthy_packet_N, healthy_packet_E, healthy_packet_W, healthy_packet_S, healthy_packet_L, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3)begin
       case( write_pointer ) is
           when "001" => FIFO_MEM_1_in <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L & healthy_packet_N & healthy_packet_E & healthy_packet_W & healthy_packet_S & healthy_packet_L; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; 
-          when "010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L & healthy_packet_N & healthy_packet_E & healthy_packet_W & healthy_packet_S & healthy_packet_L;; FIFO_MEM_3_in <= FIFO_MEM_3; 
-          when "100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L & healthy_packet_N & healthy_packet_E & healthy_packet_W & healthy_packet_S & healthy_packet_L;; 
+          when "010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L & healthy_packet_N & healthy_packet_E & healthy_packet_W & healthy_packet_S & healthy_packet_L; FIFO_MEM_3_in <= FIFO_MEM_3; 
+          when "100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L & healthy_packet_N & healthy_packet_E & healthy_packet_W & healthy_packet_S & healthy_packet_L; 
           when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3;  
       end case ;
 end process;
 
-process(read_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_2) begin
+process(read_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3) begin
  case( read_pointer ) is
         when "001" => FIFO_Data_out <= FIFO_MEM_1;
         when "010" => FIFO_Data_out <= FIFO_MEM_2;
@@ -81,8 +86,7 @@ process(read_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_2) begin
 end case ;
 end process;
 
-process (credit_in_L, credit_counter_out)begin
-begin
+process (credit_in_LV, credit_counter_out)begin
     credit_counter_in <= credit_counter_out;
     if credit_in_LV = '1' and credit_counter_out < 1 then 
         credit_counter_in <= credit_counter_out + 1;
@@ -90,7 +94,7 @@ begin
 end process;
 
 
-process(send_packet, state, read_pointer)
+process(all_input_signals, state, read_pointer, credit_counter_out)
     begin
         valid_out_LV <= '0';
         TX_LV <= (others => '0');
@@ -98,14 +102,14 @@ process(send_packet, state, read_pointer)
         case(state) is
         
             when IDLE =>
-                if send_packet= '1' then
+                if all_input_signals= '1' then
                     state_in <= HEADER_FLIT;
                 else
                     state_in <= IDLE;
                 end if;
                 read_pointer_in <=  read_pointer;
             when HEADER_FLIT =>
-                if credit_in_LV /= "00" then
+                if credit_counter_out /= "00" then
                     valid_out_LV <= '1';
                     TX_LV <= std_logic_vector(to_unsigned(current_address, 4))  & std_logic_vector(to_unsigned(SHMU_address, 4)) &  "001";
                     state_in <= BODY_FLIT;
@@ -114,18 +118,18 @@ process(send_packet, state, read_pointer)
                 end if;
                 read_pointer_in <=  read_pointer(0) & read_pointer(2 downto 1);    
             when BODY_FLIT =>
-                if credit_in_LV /= "00" then
+                if credit_counter_out /= "00" then
                     valid_out_LV <= '1';
-                    TX_LV <= "000" & FIFO_Data_out(3 downto 0) &  "010";
+                    TX_LV <= FIFO_Data_out(6 downto 0) &  "010";
                     state_in <= TAIL_FLIT;
                 else
                     state_in <= BODY_FLIT;
                 end if;
 
             when TAIL_FLIT =>
-                if credit_in_LV /= "00" then
+                if credit_counter_out /= "00" then
                     valid_out_LV <= '1';
-                    TX_LV <= "000" & FIFO_Data_out(7 downto 4) &  "100";
+                    TX_LV <= "000" & FIFO_Data_out(9 downto 7) &  "100";
                     state_in <= IDLE;
                 else
                     state_in <= TAIL_FLIT;
