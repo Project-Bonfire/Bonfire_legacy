@@ -41,13 +41,19 @@ architecture behavior of PACKETIZER_LV is
 
  signal FIFO_Data_out: std_logic_vector(9 downto 0);
 
- signal all_input_signals: std_logic;
+ signal grant, all_input_signals: std_logic;
 
 begin
 
 process (clk, reset)begin
         if reset = '0' then
-             
+             FIFO_MEM_1 <= (others=>'0');
+             FIFO_MEM_2 <= (others=>'0');
+             FIFO_MEM_3 <= (others=>'0');
+             read_pointer <= "001";
+             write_pointer <= "001";
+             credit_counter_out<="01";
+             state<=IDLE;
         elsif clk'event and clk = '1' then
             if all_input_signals = '1' then
                 FIFO_MEM_1 <= FIFO_MEM_1_in;
@@ -55,10 +61,14 @@ process (clk, reset)begin
                 FIFO_MEM_3 <= FIFO_MEM_3_in;
             end if;
             read_pointer <=  read_pointer_in;
+            write_pointer <=  write_pointer_in;
+            credit_counter_out <=  credit_counter_in;
+            state <= state_in;
         end if;
 end process;
 
 all_input_signals <= faulty_packet_N or faulty_packet_E or faulty_packet_W or faulty_packet_S or faulty_packet_L or healthy_packet_N or healthy_packet_E or healthy_packet_W or healthy_packet_S or healthy_packet_L;
+--all_input_signals <= faulty_packet_N or faulty_packet_E or faulty_packet_W or faulty_packet_S or faulty_packet_L or healthy_packet_N;
 
 process(all_input_signals)begin
     if  all_input_signals = '1' then
@@ -86,19 +96,20 @@ process(read_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3) begin
 end case ;
 end process;
 
-process (credit_in_LV, credit_counter_out)begin
+process (credit_in_LV, credit_counter_out, grant)begin
     credit_counter_in <= credit_counter_out;
     if credit_in_LV = '1' and credit_counter_out < 1 then 
         credit_counter_in <= credit_counter_out + 1;
+    elsif grant = '1' then
+        credit_counter_in <= credit_counter_out - 1;
     end if;
 end process;
 
 
 process(all_input_signals, state, read_pointer, credit_counter_out)
     begin
-        valid_out_LV <= '0';
         TX_LV <= (others => '0');
-    
+        grant<= '0';
         case(state) is
         
             when IDLE =>
@@ -110,7 +121,7 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
                 read_pointer_in <=  read_pointer;
             when HEADER_FLIT =>
                 if credit_counter_out /= "00" then
-                    valid_out_LV <= '1';
+                    grant <= '1';
                     TX_LV <= std_logic_vector(to_unsigned(current_address, 4))  & std_logic_vector(to_unsigned(SHMU_address, 4)) &  "001";
                     state_in <= BODY_FLIT;
                 else
@@ -119,8 +130,8 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
                 read_pointer_in <=  read_pointer(0) & read_pointer(2 downto 1);    
             when BODY_FLIT =>
                 if credit_counter_out /= "00" then
-                    valid_out_LV <= '1';
-                    TX_LV <= FIFO_Data_out(6 downto 0) &  "010";
+                    grant <= '1';
+                    TX_LV <= FIFO_Data_out(7 downto 0) &  "010";
                     state_in <= TAIL_FLIT;
                 else
                     state_in <= BODY_FLIT;
@@ -128,8 +139,8 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
 
             when TAIL_FLIT =>
                 if credit_counter_out /= "00" then
-                    valid_out_LV <= '1';
-                    TX_LV <= "000" & FIFO_Data_out(9 downto 7) &  "100";
+                    grant <= '1';
+                    TX_LV <= "000000" & FIFO_Data_out(9 downto 8) &  "100";
                     state_in <= IDLE;
                 else
                     state_in <= TAIL_FLIT;
@@ -140,4 +151,5 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
 
 end procesS;
  
+valid_out_LV <= grant;
 end;

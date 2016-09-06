@@ -68,11 +68,11 @@ process(clk, reset)
 begin
 	if reset = '0' then 
 		-- we start with all full cradit
-	 	credit_counter_N_out <= (others=>'1');
-		credit_counter_E_out <= (others=>'1');
-		credit_counter_W_out <= (others=>'1');
-		credit_counter_S_out <= (others=>'1');
-		credit_counter_L_out <= (others=>'1');
+	 	credit_counter_N_out <= "01";
+		credit_counter_E_out <= "01";
+		credit_counter_W_out <= "01";
+		credit_counter_S_out <= "01";
+		credit_counter_L_out <= "01";
 	elsif clk'event and clk = '1' then 
 		credit_counter_N_out <= credit_counter_N_in;
 		credit_counter_E_out <= credit_counter_E_in;

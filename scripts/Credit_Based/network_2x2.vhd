@@ -17,7 +17,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 USE ieee.numeric_std.ALL; 
 
 entity network_2x2 is
- generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
+ generic (DATA_WIDTH: integer := 32);
 port (reset: in  std_logic; 
 	clk: in  std_logic; 
 	--------------
@@ -43,22 +43,22 @@ port (reset: in  std_logic;
 	--------------
     credit_in_LV_0: in std_logic;
     valid_out_LV_0 : out std_logic;
-    TX_LV_0: out std_logic_vector (DATA_WIDTH_LV-1 downto 0);
+    TX_LV_0: out std_logic_vector (DATA_WIDTH-1 downto 0);
 
 	--------------
     credit_in_LV_1: in std_logic;
     valid_out_LV_1 : out std_logic;
-    TX_LV_1: out std_logic_vector (DATA_WIDTH_LV-1 downto 0);
+    TX_LV_1: out std_logic_vector (DATA_WIDTH-1 downto 0);
 
 	--------------
     credit_in_LV_2: in std_logic;
     valid_out_LV_2 : out std_logic;
-    TX_LV_2: out std_logic_vector (DATA_WIDTH_LV-1 downto 0);
+    TX_LV_2: out std_logic_vector (DATA_WIDTH-1 downto 0);
 
 	--------------
     credit_in_LV_3: in std_logic;
     valid_out_LV_3 : out std_logic;
-    TX_LV_3: out std_logic_vector (DATA_WIDTH_LV-1 downto 0)
+    TX_LV_3: out std_logic_vector (DATA_WIDTH-1 downto 0)
             ); 
 end network_2x2; 
 
@@ -88,7 +88,7 @@ component router_credit_based_parity_lv is
 
     credit_in_LV: in std_logic;
     valid_out_LV : out std_logic;
-    TX_LV: out std_logic_vector (10 downto 0)
+    TX_LV: out std_logic_vector (DATA_WIDTH-1 downto 0)
  ); 
 end component;
 
@@ -151,10 +151,10 @@ end component;
 	signal TX_N_3, TX_E_3, TX_W_3, TX_S_3 : std_logic_vector (DATA_WIDTH-1 downto 0);
 
 
-	signal RX_LV_N0, RX_LV_E0, RX_LV_W0, RX_LV_S0, RX_LV_L0 : std_logic_vector (DATA_WIDTH_LV-1 downto 0);
-	signal RX_LV_N1, RX_LV_E1, RX_LV_W1, RX_LV_S1, RX_LV_L1 : std_logic_vector (DATA_WIDTH_LV-1 downto 0);
-	signal RX_LV_N2, RX_LV_E2, RX_LV_W2, RX_LV_S2, RX_LV_L2 : std_logic_vector (DATA_WIDTH_LV-1 downto 0);
-	signal RX_LV_N3, RX_LV_E3, RX_LV_W3, RX_LV_S3, RX_LV_L3 : std_logic_vector (DATA_WIDTH_LV-1 downto 0);
+	signal RX_LV_N0, RX_LV_E0, RX_LV_W0, RX_LV_S0, RX_LV_L0 : std_logic_vector (DATA_WIDTH-1 downto 0);
+	signal RX_LV_N1, RX_LV_E1, RX_LV_W1, RX_LV_S1, RX_LV_L1 : std_logic_vector (DATA_WIDTH-1 downto 0);
+	signal RX_LV_N2, RX_LV_E2, RX_LV_W2, RX_LV_S2, RX_LV_L2 : std_logic_vector (DATA_WIDTH-1 downto 0);
+	signal RX_LV_N3, RX_LV_E3, RX_LV_W3, RX_LV_S3, RX_LV_L3 : std_logic_vector (DATA_WIDTH-1 downto 0);
 
 	signal credit_in_LV_N0, credit_in_LV_E0, credit_in_LV_W0, credit_in_LV_S0, credit_in_LV_L0: std_logic;
 	signal credit_in_LV_N1, credit_in_LV_E1, credit_in_LV_W1, credit_in_LV_S1, credit_in_LV_L1: std_logic;
@@ -177,10 +177,10 @@ end component;
 	signal valid_out_LV_N3, valid_out_LV_E3, valid_out_LV_W3, valid_out_LV_S3, valid_out_LV_L3: std_logic;
 
 
-	signal TX_LV_N0, TX_LV_E0, TX_LV_W0, TX_LV_S0, TX_LV_L0 : std_logic_vector (DATA_WIDTH_LV-1 downto 0);
-	signal TX_LV_N1, TX_LV_E1, TX_LV_W1, TX_LV_S1, TX_LV_L1 : std_logic_vector (DATA_WIDTH_LV-1 downto 0);
-	signal TX_LV_N2, TX_LV_E2, TX_LV_W2, TX_LV_S2, TX_LV_L2 : std_logic_vector (DATA_WIDTH_LV-1 downto 0);
-	signal TX_LV_N3, TX_LV_E3, TX_LV_W3, TX_LV_S3, TX_LV_L3 : std_logic_vector (DATA_WIDTH_LV-1 downto 0);
+	signal TX_LV_N0, TX_LV_E0, TX_LV_W0, TX_LV_S0, TX_LV_L0 : std_logic_vector (DATA_WIDTH-1 downto 0);
+	signal TX_LV_N1, TX_LV_E1, TX_LV_W1, TX_LV_S1, TX_LV_L1 : std_logic_vector (DATA_WIDTH-1 downto 0);
+	signal TX_LV_N2, TX_LV_E2, TX_LV_W2, TX_LV_S2, TX_LV_L2 : std_logic_vector (DATA_WIDTH-1 downto 0);
+	signal TX_LV_N3, TX_LV_E3, TX_LV_W3, TX_LV_S3, TX_LV_L3 : std_logic_vector (DATA_WIDTH-1 downto 0);
 
 
 
@@ -271,37 +271,37 @@ R_3: router_credit_based_parity_lv
  ); 
 
 -- instantiating the LV routers
-R_lv_0: router_LV generic map (DATA_WIDTH => DATA_WIDTH_LV, 
+R_lv_0: router_LV generic map (DATA_WIDTH => 11, 
 current_address =>0, Rxy_rst => 60, Cx_rst =>10, 
  NoC_size =>2)    PORT MAP (reset, clk, RX_LV_N0, RX_LV_E0, RX_LV_W0, RX_LV_S0, RX_LV_L0,
-     credit_in_LV_N0, credit_in_LV_E0, credit_in_LV_W0, credit_in_LV_S0, credit_in_LV_0,
+     credit_in_LV_N0, credit_in_LV_E0, credit_in_LV_W0, credit_in_LV_S0, credit_in_LV_L0,
     valid_in_LV_N0, valid_in_LV_E0, valid_in_LV_W0, valid_in_LV_S0, valid_in_LV_L0,
     valid_out_LV_N0, valid_out_LV_E0, valid_out_LV_W0, valid_out_LV_S0, valid_out_LV_L0,
     credit_out_LV_N0, credit_out_LV_E0, credit_out_LV_W0, credit_out_LV_S0, credit_out_LV_L0,
     TX_LV_N0, TX_LV_E0, TX_LV_W0, TX_LV_S0, TX_LV_L0
     ); 
-R_lv_1: router_LV generic map (DATA_WIDTH => DATA_WIDTH_LV, 
+R_lv_1: router_LV generic map (DATA_WIDTH => 11, 
 current_address =>1, Rxy_rst => 60, Cx_rst =>12, 
  NoC_size =>2)    PORT MAP (reset, clk, RX_LV_N1, RX_LV_E1, RX_LV_W1, RX_LV_S1, RX_LV_L1,
-     credit_in_LV_N1, credit_in_LV_E1, credit_in_LV_W1, credit_in_LV_S1, credit_in_LV_1,
+     credit_in_LV_N1, credit_in_LV_E1, credit_in_LV_W1, credit_in_LV_S1, credit_in_LV_L1,
     valid_in_LV_N1, valid_in_LV_E1, valid_in_LV_W1, valid_in_LV_S1, valid_in_LV_L1,
     valid_out_LV_N1, valid_out_LV_E1, valid_out_LV_W1, valid_out_LV_S1, valid_out_LV_L1,
     credit_out_LV_N1, credit_out_LV_E1, credit_out_LV_W1, credit_out_LV_S1, credit_out_LV_L1,
     TX_LV_N1, TX_LV_E1, TX_LV_W1, TX_LV_S1, TX_LV_L1
     ); 
-R_lv_2: router_LV generic map (DATA_WIDTH => DATA_WIDTH_LV, 
+R_lv_2: router_LV generic map (DATA_WIDTH => 11, 
 current_address =>2, Rxy_rst => 60, Cx_rst =>3, 
  NoC_size =>2)    PORT MAP (reset, clk, RX_LV_N2, RX_LV_E2, RX_LV_W2, RX_LV_S2, RX_LV_L2,
-     credit_in_LV_N2, credit_in_LV_E2, credit_in_LV_W2, credit_in_LV_S2, credit_in_LV_2,
+     credit_in_LV_N2, credit_in_LV_E2, credit_in_LV_W2, credit_in_LV_S2, credit_in_LV_L2,
     valid_in_LV_N2, valid_in_LV_E2, valid_in_LV_W2, valid_in_LV_S2, valid_in_LV_L2,
     valid_out_LV_N2, valid_out_LV_E2, valid_out_LV_W2, valid_out_LV_S2, valid_out_LV_L2,
     credit_out_LV_N2, credit_out_LV_E2, credit_out_LV_W2, credit_out_LV_S2, credit_out_LV_L2,
     TX_LV_N2, TX_LV_E2, TX_LV_W2, TX_LV_S2, TX_LV_L2
     ); 
-R_lv_3: router_LV generic map (DATA_WIDTH => DATA_WIDTH_LV, 
+R_lv_3: router_LV generic map (DATA_WIDTH => 11, 
 current_address =>3, Rxy_rst => 60, Cx_rst =>5, 
  NoC_size =>2)    PORT MAP (reset, clk, RX_LV_N3, RX_LV_E3, RX_LV_W3, RX_LV_S3, RX_LV_L3,
-     credit_in_LV_N3, credit_in_LV_E3, credit_in_LV_W3, credit_in_LV_S3, credit_in_LV_3,
+     credit_in_LV_N3, credit_in_LV_E3, credit_in_LV_W3, credit_in_LV_S3, credit_in_LV_L3,
     valid_in_LV_N3, valid_in_LV_E3, valid_in_LV_W3, valid_in_LV_S3, valid_in_LV_L3,
     valid_out_LV_N3, valid_out_LV_E3, valid_out_LV_W3, valid_out_LV_S3, valid_out_LV_L3,
     credit_out_LV_N3, credit_out_LV_E3, credit_out_LV_W3, credit_out_LV_S3, credit_out_LV_L3,

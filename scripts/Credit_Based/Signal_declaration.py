@@ -40,18 +40,12 @@ def declare_signals(noc_file, network_dime, add_parity, add_lv):
                            ", healthy_packet_S"+str(i) + ", healthy_packet_L"+str(i)+" : std_logic;\n")
 
 
-    if add_lv:
-      for i in range(0, network_dime**2):
-        noc_file.write("    credit_in_LV_"+str(i) +": in std_logic;\n")
-        noc_file.write("    valid_out_LV_"+str(i) +" : out std_logic;\n")
-        noc_file.write("    TX_LV_"+str(i) +": out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
-
-
+    
     if add_lv:
 
       noc_file.write("\n\n")
       for i in range(0, network_dime**2):
-        noc_file.write("\tsignal RX_LV_N"+str(i)+", RX_LV_E"+str(i)+", RX_LV_W"+str(i)+", RX_LV_S"+str(i)+", RX_LV_L"+str(i)+" : std_logic_vector (DATA_WIDTH-1 downto 0);\n")
+        noc_file.write("\tsignal RX_LV_N"+str(i)+", RX_LV_E"+str(i)+", RX_LV_W"+str(i)+", RX_LV_S"+str(i)+", RX_LV_L"+str(i)+" : std_logic_vector (DATA_WIDTH_LV-1 downto 0);\n")
 
       noc_file.write("\n")
 
@@ -75,6 +69,6 @@ def declare_signals(noc_file, network_dime, add_parity, add_lv):
        
       noc_file.write("\n")
       for i in range(0, network_dime**2):
-          noc_file.write("\tsignal TX_LV_N"+str(i)+", TX_LV_E"+str(i)+", TX_LV_W"+str(i)+", TX_LV_S"+str(i)+", TX_LV_L"+str(i)+" : std_logic_vector (DATA_WIDTH-1 downto 0);\n")
+          noc_file.write("\tsignal TX_LV_N"+str(i)+", TX_LV_E"+str(i)+", TX_LV_W"+str(i)+", TX_LV_S"+str(i)+", TX_LV_L"+str(i)+" : std_logic_vector (DATA_WIDTH_LV-1 downto 0);\n")
 
     noc_file.write("\n")

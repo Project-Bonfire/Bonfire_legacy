@@ -28,13 +28,13 @@ def instantiate_shmu(noc_file, network_dime):
 def instantiate_routers(noc_file, network_dime, add_parity, add_lv):
     if add_lv:
         for i in range(0, network_dime**2):
-            noc_file.write("R_"+str(i)+": router_credit_based_parity_lv is\n")
-            noc_file.write("	generic (DATA_WIDTH =>DATA_WIDTH, ")
+            noc_file.write("R_"+str(i)+": router_credit_based_parity_lv \n")
+            noc_file.write("	generic map (DATA_WIDTH =>DATA_WIDTH, ")
             noc_file.write("        current_address => "+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+",\n")
             noc_file.write("        Cx_rst =>  "+str(cx_rst_calculator(i, network_dime)) +
                            ", NoC_size => "+str(network_dime)+")\n")
-            noc_file.write("    port (\n")
-            noc_file.write("    rst, clk,\n")
+            noc_file.write("    port map(\n")
+            noc_file.write("    reset, clk,\n")
             noc_file.write("\tRX_N_"+str(i)+", RX_E_"+str(i)+", RX_W_"+str(i)+", RX_S_"+str(i)+", RX_L_"+str(i)+",\n")
             noc_file.write("\tcredit_in_N_"+str(i)+", credit_in_E_"+str(i)+", credit_in_W_"+str(i) +
                            ", credit_in_S_"+str(i)+", credit_in_L_"+str(i)+",\n")
@@ -44,7 +44,7 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_lv):
                            ", valid_out_S_"+str(i)+", valid_out_L_"+str(i)+",\n")
             noc_file.write("\tcredit_out_N_"+str(i)+", credit_out_E_"+str(i)+", credit_out_W_"+str(i) +
                            ", credit_out_S_"+str(i)+", credit_out_L_"+str(i)+",\n")
-            noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_"+str(i))
+            noc_file.write("\tTX_N_"+str(i)+", TX_E_"+str(i)+", TX_W_"+str(i)+", TX_S_"+str(i)+", TX_L_"+str(i)+",")
 
             # todo: bellow this line should be fixed!
             noc_file.write("    ------------------------- lV network port\n")
@@ -91,10 +91,10 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_lv):
 def instantiate_lv_routers(noc_file, network_dime):
     noc_file.write("-- instantiating the LV routers\n")
     for i in range(0, network_dime**2):
-        noc_file.write("R_lv_"+str(i)+": router_LV generic map (DATA_WIDTH => 11, \n"
+        noc_file.write("R_lv_"+str(i)+": router_LV generic map (DATA_WIDTH => DATA_WIDTH_LV, \n"
                        "current_address =>"+str(i)+", Rxy_rst => " + str(rxy_rst_calculator(i)) +
-                       ", Cx_rst =>"+str(cx_rst_calculator(i, network_dime))+", \n NoC_size =>"+str(network_dime))
-        noc_file.write("    RX_LV_N"+str(i)+", RX_LV_E"+str(i)+", RX_LV_W"+str(i)+", RX_LV_S"+str(i)+", RX_LV_L"+str(i)+",\n ")
+                       ", Cx_rst =>"+str(cx_rst_calculator(i, network_dime))+", \n NoC_size =>"+str(network_dime)+")")
+        noc_file.write("    PORT MAP (reset, clk, RX_LV_N"+str(i)+", RX_LV_E"+str(i)+", RX_LV_W"+str(i)+", RX_LV_S"+str(i)+", RX_LV_L"+str(i)+",\n ")
         noc_file.write("")
         noc_file.write("    credit_in_LV_N" +str(i)+ ", credit_in_LV_E" +str(i)+ ", credit_in_LV_W" +str(i)+ ", credit_in_LV_S" +str(i)+ ", credit_in_LV_L" +str(i)+",\n")
         noc_file.write("    valid_in_LV_N" +str(i)+ ", valid_in_LV_E" +str(i)+ ", valid_in_LV_W" +str(i)+ ", valid_in_LV_S" +str(i)+ ", valid_in_LV_L" +str(i)+",\n")
