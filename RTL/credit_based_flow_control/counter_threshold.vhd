@@ -16,7 +16,7 @@ entity counter_threshold_classifier is
     port (  reset: in  std_logic;
             clk: in  std_logic;
             faulty_packet, Healthy_packet: in  std_logic;
-            Healthy, Intermittent, Faulty: out std_logic
+            Healthy, Intermittent, Faulty:out std_logic
             );
 end counter_threshold_classifier;
 
@@ -46,7 +46,7 @@ begin
  end process;
 
 
-process(faulty_packet, reset_counters)begin
+process(faulty_packet, reset_counters, faulty_counter_out)begin
   if reset_counters  = '1' then 
       faulty_counter_in <=  (others => '0');
   elsif faulty_packet = '1' then 
@@ -57,7 +57,7 @@ process(faulty_packet, reset_counters)begin
 end process;
 
 
-process(Healthy_packet, reset_counters)begin
+process(Healthy_packet, reset_counters, healthy_counter_out)begin
   if reset_counters  = '1' then 
       healthy_counter_in <=  (others => '0');
   elsif Healthy_packet = '1' then 
@@ -85,7 +85,7 @@ process(healthy_counter_out, faulty_counter_out) begin
 end process;  
 
 
-process (NET, DET)begin
+process (NET, DET, state)begin
   Healthy <= '0'; 
   Intermittent <= '0'; 
   Faulty <= '0';
@@ -111,9 +111,9 @@ process (NET, DET)begin
       when Faulty_state => 
             Faulty <= '1';
             next_state <= Faulty_state;
+      when others => 
+            next_state <= Healthy_state;
   end case;
-
-
 
 end process;
 
