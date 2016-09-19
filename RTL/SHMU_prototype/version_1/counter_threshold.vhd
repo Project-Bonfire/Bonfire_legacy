@@ -111,10 +111,10 @@ process (NET, DET)begin
       when Faulty_state => 
             Faulty <= '1';
             next_state <= Faulty_state;
+      when others => 
+            next_state <= Healthy_state;
   end case;
-
-
-
+  
 end process;
 
 END;
