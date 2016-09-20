@@ -22,7 +22,7 @@ entity LBDR is
             Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic; 
 
             -- Checker outputs
-            err_header_not_empty_Requests_in_onehot, 
+            --err_header_not_empty_Requests_in_onehot, 
             err_header_empty_Requests_FF_Requests_in, 
             err_tail_Requests_in_all_zero, 
             err_header_tail_Requests_FF_Requests_in, 
@@ -65,7 +65,7 @@ component LBDR_checkers is
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
 
             -- Checker outputs
-            err_header_not_empty_Requests_in_onehot, 
+            --err_header_not_empty_Requests_in_onehot, 
             err_header_empty_Requests_FF_Requests_in, 
             err_tail_Requests_in_all_zero, 
             err_header_tail_Requests_FF_Requests_in, 
@@ -116,7 +116,6 @@ LBDRCHECKERS: LBDR_checkers generic map (cur_addr_rst => cur_addr_rst, NoC_size 
                                       S1_out    => S1,
                                       dst_addr  => dst_addr,
 
-                                      err_header_not_empty_Requests_in_onehot => err_header_not_empty_Requests_in_onehot, 
                                       err_header_empty_Requests_FF_Requests_in => err_header_empty_Requests_FF_Requests_in,
                                       err_tail_Requests_in_all_zero => err_tail_Requests_in_all_zero,
                                       err_header_tail_Requests_FF_Requests_in => err_header_tail_Requests_FF_Requests_in,

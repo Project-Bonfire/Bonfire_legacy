@@ -32,10 +32,10 @@ entity FIFO_control_part_checkers is
 			err_read_pointer_write_pointer_full, 
 			err_read_pointer_increment, 
 			err_read_pointer_not_increment, 
-			err_CTS_in, 
+			--err_CTS_in, 
 			err_write_en, 
 			err_not_CTS_in, 
-			err_not_write_en, 
+			--err_not_write_en, 
 			err_read_en_mismatch : out std_logic
             );
 
@@ -123,14 +123,14 @@ begin
 	end if;
 end process;
 
-process (CTS_out, DRTS, full_out, CTS_in)
-begin
-	if (CTS_out = '0' and DRTS = '1' and full_out = '0' and CTS_in = '0') then
-		 err_CTS_in <= '1';
-	else
-		 err_CTS_in <= '0';
-	end if;
-end process;
+--process (CTS_out, DRTS, full_out, CTS_in)
+--begin
+--	if (CTS_out = '0' and DRTS = '1' and full_out = '0' and CTS_in = '0') then
+--		 err_CTS_in <= '1';
+--	else
+--		 err_CTS_in <= '0';
+--	end if;
+--end process;
 
 process (CTS_out, DRTS, full_out, write_en_out)
 begin
@@ -150,14 +150,14 @@ begin
 	end if;
 end process;
 
-process (CTS_out, DRTS, full_out, write_en_out)
-begin
-	if ( (CTS_out = '1' or (CTS_out = '0' and DRTS = '0') or (CTS_out = '0' and DRTS = '1' and full_out = '1')) and write_en_out = '1') then
-		 err_not_write_en <= '1';
-	else
-		 err_not_write_en <= '0';
-	end if;
-end process;
+--process (CTS_out, DRTS, full_out, write_en_out)
+--begin
+--	if ( (CTS_out = '1' or (CTS_out = '0' and DRTS = '0') or (CTS_out = '0' and DRTS = '1' and full_out = '1')) and write_en_out = '1') then
+--		 err_not_write_en <= '1';
+--	else
+--		 err_not_write_en <= '0';
+--	end if;
+--end process;
 
 process (read_en_out, read_en_signal)
 begin

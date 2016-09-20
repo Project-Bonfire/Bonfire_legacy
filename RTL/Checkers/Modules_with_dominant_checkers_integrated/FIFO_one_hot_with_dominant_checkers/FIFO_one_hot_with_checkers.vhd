@@ -31,10 +31,10 @@ entity FIFO is
             err_read_pointer_write_pointer_full, 
             err_read_pointer_increment, 
             err_read_pointer_not_increment, 
-            err_CTS_in, 
+            --err_CTS_in, 
             err_write_en, 
             err_not_CTS_in, 
-            err_not_write_en, 
+            --err_not_write_en, 
             err_read_en_mismatch : out std_logic
     );
 end FIFO;
@@ -77,10 +77,10 @@ component FIFO_control_part_checkers is
             err_read_pointer_write_pointer_full, 
             err_read_pointer_increment, 
             err_read_pointer_not_increment, 
-            err_CTS_in, 
+            --err_CTS_in, 
             err_write_en, 
             err_not_CTS_in, 
-            err_not_write_en, 
+            --err_not_write_en, 
             err_read_en_mismatch : out std_logic
             );
 end component;
@@ -120,32 +120,30 @@ begin
 
 -- FIFO Control Part checkers instantiation
 FIFOCONTROLPARTCHECKERS: FIFO_control_part_checkers port map (
-    DRTS => DRTS,
-    CTS_out => CTS_out, CTS_in => CTS_in,
-    read_en_N => read_en_N, read_en_E => read_en_E, read_en_W => read_en_W, read_en_S => read_en_S, read_en_L => read_en_L,
-    read_pointer => read_pointer, read_pointer_in => read_pointer_in, 
-    write_pointer => write_pointer, write_pointer_in => write_pointer_in,
-    empty_out => empty, full_out => full, 
-    read_en_out => read_en, write_en_out => write_en,
+                                                              DRTS => DRTS,
+                                                              CTS_out => CTS_out, CTS_in => CTS_in,
+                                                              read_en_N => read_en_N, read_en_E => read_en_E, read_en_W => read_en_W, read_en_S => read_en_S, read_en_L => read_en_L,
+                                                              read_pointer => read_pointer, read_pointer_in => read_pointer_in, 
+                                                              write_pointer => write_pointer, write_pointer_in => write_pointer_in,
+                                                              empty_out => empty, full_out => full, 
+                                                              read_en_out => read_en, write_en_out => write_en,
 
-    err_write_en_write_pointer => err_write_en_write_pointer,
-    err_not_write_en_write_pointer => err_not_write_en_write_pointer,
-    err_read_pointer_write_pointer_not_empty => err_read_pointer_write_pointer_not_empty,
-    err_read_pointer_write_pointer_empty => err_read_pointer_write_pointer_empty,
-    err_read_pointer_write_pointer_not_full => err_read_pointer_write_pointer_not_full,
-    err_read_pointer_write_pointer_full => err_read_pointer_write_pointer_full,
-    err_read_pointer_increment => err_read_pointer_increment,
-    err_read_pointer_not_increment => err_read_pointer_not_increment,
-    err_CTS_in => err_CTS_in,
-    err_write_en => err_write_en,
-    err_not_CTS_in => err_not_CTS_in,
-    err_not_write_en => err_not_write_en,
-    err_read_en_mismatch => err_read_en_mismatch
-    );
+                                                              err_write_en_write_pointer => err_write_en_write_pointer,
+                                                              err_not_write_en_write_pointer => err_not_write_en_write_pointer,
+                                                              err_read_pointer_write_pointer_not_empty => err_read_pointer_write_pointer_not_empty,
+                                                              err_read_pointer_write_pointer_empty => err_read_pointer_write_pointer_empty,
+                                                              err_read_pointer_write_pointer_not_full => err_read_pointer_write_pointer_not_full,
+                                                              err_read_pointer_write_pointer_full => err_read_pointer_write_pointer_full,
+                                                              err_read_pointer_increment => err_read_pointer_increment,
+                                                              err_read_pointer_not_increment => err_read_pointer_not_increment,
+                                                              err_write_en => err_write_en,
+                                                              err_not_CTS_in => err_not_CTS_in,
+                                                              err_read_en_mismatch => err_read_en_mismatch
+                                                             );
 
    process (clk, reset)begin
         if reset = '0' then
-            read_pointer <= "0001";
+             read_pointer <= "0001";
             write_pointer <= "0001";
             CTS_out<='0';
 

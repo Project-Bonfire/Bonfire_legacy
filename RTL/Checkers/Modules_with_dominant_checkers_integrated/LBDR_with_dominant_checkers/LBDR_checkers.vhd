@@ -18,7 +18,7 @@ entity LBDR_checkers is
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
 
             -- Checker outputs
-            err_header_not_empty_Requests_in_onehot, 
+            --err_header_not_empty_Requests_in_onehot, 
             err_header_empty_Requests_FF_Requests_in, 
             err_tail_Requests_in_all_zero, 
             err_header_tail_Requests_FF_Requests_in, 
@@ -54,15 +54,15 @@ begin
 
 -- Implementing checkers in form of concurrent assignments (combinational assertions)
 
-process (flit_type, empty, Requests_in)
-begin
-    if (flit_type = "001" and empty = '0' and Requests_in /= "00001" and Requests_in /= "00010" and Requests_in /= "00100" and
-        Requests_in /= "01000" and Requests_in /= "10000") then
-        err_header_not_empty_Requests_in_onehot <= '1';
-    else 
-        err_header_not_empty_Requests_in_onehot <= '0';
-    end if;
-end process;
+--process (flit_type, empty, Requests_in)
+--begin
+--    if (flit_type = "001" and empty = '0' and Requests_in /= "00001" and Requests_in /= "00010" and Requests_in /= "00100" and
+--        Requests_in /= "01000" and Requests_in /= "10000") then
+--        err_header_not_empty_Requests_in_onehot <= '1';
+--    else 
+--        err_header_not_empty_Requests_in_onehot <= '0';
+--    end if;
+--end process;
 
 process (flit_type, empty, Requests_FF, Requests_in)
 begin
