@@ -42,6 +42,7 @@ architecture behavior of FIFO_credit_based is
    signal xor_all, fault_out: std_logic;
    type state_type is (Idle, Header_flit, Body_flit, Tail_flit);
    signal  state_out, state_in : state_type;
+   signal write_fake_flit: std_logic;
 
 begin
  --------------------------------------------------------------------------------------------
@@ -155,6 +156,7 @@ begin
               if fault_out = '1' then 
                 -- new flit is faulty which should be a body! so we put a tail there
                 faulty_packet_in <= '1';
+                write_fake_flit <= '1';
                 case( write_pointer ) is
                     when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                     when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= fake_tail;  FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
@@ -198,6 +200,7 @@ begin
                 -- new flit is faulty
                 -- we dont care, we just add a fake tail!
                 faulty_packet_in <= '1';
+                write_fake_flit <= '1';
                 case( write_pointer ) is
                     when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                     when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= fake_tail;  FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
@@ -272,8 +275,8 @@ end process;
        end if;
   end process;
 
-  process(full, valid_in) begin
-     if valid_in = '1' and full ='0' then
+  process(full, valid_in, fault_out, write_fake_flit) begin
+     if (valid_in = '1' and full ='0' and fault_out = '0') or (valid_in = '1' and full ='0' and write_fake_flit = '1') then
          write_en <= '1';
      else
          write_en <= '0';
