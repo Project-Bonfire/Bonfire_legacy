@@ -72,7 +72,7 @@ begin
                   FIFO_MEM_3 <= FIFO_MEM_3_in;
                   FIFO_MEM_4 <= FIFO_MEM_4_in;                   
             end if;
-            if read_en = '1' then 
+            if empty = '0' and full = '0' then 
               credit_out <= '1';
             end if;
         end if;
