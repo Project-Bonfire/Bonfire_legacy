@@ -1573,8 +1573,4 @@ L_FIFO_handshaking_error <= L_err_CTS_in or
                             L_err_not_CTS_in or
                             L_err_not_write_en;
 
--- Arbiter Handshaking error signals
-
-N_Arbiter_handshaking_error <= 
-
 end;
