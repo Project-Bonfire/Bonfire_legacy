@@ -124,7 +124,7 @@ begin
    CTS <= CTS_out;
 
    process(write_en, write_pointer)begin
-     if write_en = '1'then
+     if write_en = '1' then
         write_pointer_in <= write_pointer(2 downto 0)&write_pointer(3); 
      else
         write_pointer_in <= write_pointer; 
@@ -141,7 +141,7 @@ begin
 
    process(full, DRTS, CTS_out) begin
       if CTS_out = '0' and DRTS = '1' and full ='0' then
-           CTS_in <= '1';
+          CTS_in <= '1';
           write_en <= '1';
       else
           CTS_in <= '0';

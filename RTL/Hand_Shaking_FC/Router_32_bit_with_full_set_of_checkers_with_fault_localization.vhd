@@ -681,6 +681,8 @@ architecture behavior of router is
 -- Fault localization related signals
   signal N_E_turn, N_W_turn, S_E_turn, S_W_turn, E_N_turn, E_S_turn, W_N_turn, W_S_turn : std_logic;
   signal N_S_path, S_N_path, E_W_path, W_E_path : std_logic;
+  signal N_FIFO_handshaking_error, E_FIFO_handshaking_error, W_FIFO_handshaking_error, S_FIFO_handshaking_error, L_FIFO_handshaking_error : std_logic;
+  signal N_Arbiter_handshaking_error, E_Arbiter_handshaking_error, W_Arbiter_handshaking_error, S_Arbiter_handshaking_error, L_Arbiter_handshaking_error : std_logic;
 
 begin
 
@@ -1543,5 +1545,36 @@ W_E_path <= ( W_err_write_en_write_pointer or
               E_err_IDLE_Req_W or
               E_err_state_west_xbar_sel or 
               E_err_DCTS_RTS_FF_state_Grant_W);
+
+-- FIFO Handshaking error signals
+
+N_FIFO_handshaking_error <= N_err_CTS_in or 
+                            N_err_write_en or
+                            N_err_not_CTS_in or
+                            N_err_not_write_en;
+
+E_FIFO_handshaking_error <= E_err_CTS_in or 
+                            E_err_write_en or
+                            E_err_not_CTS_in or
+                            E_err_not_write_en;
+
+W_FIFO_handshaking_error <= W_err_CTS_in or 
+                            W_err_write_en or
+                            W_err_not_CTS_in or
+                            W_err_not_write_en;
+
+S_FIFO_handshaking_error <= S_err_CTS_in or 
+                            S_err_write_en or
+                            S_err_not_CTS_in or
+                            S_err_not_write_en;
+
+L_FIFO_handshaking_error <= L_err_CTS_in or 
+                            L_err_write_en or
+                            L_err_not_CTS_in or
+                            L_err_not_write_en;
+
+-- Arbiter Handshaking error signals
+
+N_Arbiter_handshaking_error <= 
 
 end;
