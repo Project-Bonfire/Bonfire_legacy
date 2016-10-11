@@ -171,6 +171,7 @@ end process;
                     state_in <= state_out;
                   end if;    
               else
+                  write_fake_flit <= '1';
                   case( write_pointer ) is
                       when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                       when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= fake_tail;  FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
@@ -232,7 +233,7 @@ end process;
                if valid_in = '1' and flit_type = "001"  and fault_out = '0' then
                     faulty_packet_in <= '0';
                     state_in <= Header_flit;
- 
+                    write_fake_flit <= '1';
                     case( write_pointer ) is
                         when "0001" => FIFO_MEM_1_in <= RX;         FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                         when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= RX;         FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
