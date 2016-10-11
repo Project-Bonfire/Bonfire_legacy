@@ -143,40 +143,48 @@ process(credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L, grant_N
  	credit_counter_S_in <= credit_counter_S_out;
  	credit_counter_L_in <= credit_counter_L_out;
 
- 	if credit_in_N = '1'  and credit_counter_N_out < 3 then 
- 		credit_counter_N_in <= credit_counter_N_out + 1;
- 	end if;
- 	if grant_N = '1' and credit_counter_N_out > 0 then
- 		credit_counter_N_in <= credit_counter_N_out - 1;
+ 	if credit_in_N = '1' and grant_N = '1' then 
+       credit_counter_N_in <= credit_counter_N_out; 
+  elsif credit_in_N = '1'  and credit_counter_N_out < 3 then 
+ 		   credit_counter_N_in <= credit_counter_N_out + 1;
+ 	elsif grant_N = '1' and credit_counter_N_out > 0 then
+ 		   credit_counter_N_in <= credit_counter_N_out - 1;
  	end if;
  	
- 	if credit_in_E = '1' and credit_counter_E_out < 3 then 
+
+  if credit_in_E = '1' and grant_E = '1' then 
+       credit_counter_E_in <= credit_counter_E_out; 
+ 	elsif credit_in_E = '1' and credit_counter_E_out < 3 then 
  		credit_counter_E_in <= credit_counter_E_out + 1;
- 	end if;
- 	if grant_E = '1' and credit_counter_E_out > 0 then
+ 	elsif grant_E = '1' and credit_counter_E_out > 0 then
  		credit_counter_E_in <= credit_counter_E_out - 1;
  	end if;
 
- 	if credit_in_W = '1' and credit_counter_W_out < 3 then 
- 		credit_counter_W_in <= credit_counter_W_out + 1;
- 	end if;
- 	if grant_W = '1' and credit_counter_W_out > 0 then
- 		credit_counter_W_in <= credit_counter_W_out - 1;
- 	end if;
+ 	if credit_in_W = '1' and grant_W = '1' then 
+       credit_counter_W_in <= credit_counter_W_out; 
+  elsif credit_in_W = '1' and credit_counter_W_out < 3 then 
+    credit_counter_W_in <= credit_counter_W_out + 1;
+  elsif grant_W = '1' and credit_counter_W_out > 0 then
+    credit_counter_W_in <= credit_counter_W_out - 1;
+  end if;
 
- 	if credit_in_S = '1' and credit_counter_S_out < 3 then 
- 		credit_counter_S_in <= credit_counter_S_out + 1;
- 	end if;
- 	if grant_S = '1' and credit_counter_S_out > 0 then
- 		credit_counter_S_in <= credit_counter_S_out - 1;
- 	end if;
+ 	if credit_in_S = '1' and grant_S = '1' then 
+       credit_counter_S_in <= credit_counter_S_out; 
+  elsif credit_in_S = '1' and credit_counter_S_out < 3 then 
+    credit_counter_S_in <= credit_counter_S_out + 1;
+  elsif grant_S = '1' and credit_counter_S_out > 0 then
+    credit_counter_S_in <= credit_counter_S_out - 1;
+  end if;
+
  	
- 	if credit_in_L = '1' and credit_counter_L_out < 3 then 
- 		credit_counter_L_in <= credit_counter_L_out + 1;
- 	end if;
- 	if grant_L = '1' and credit_counter_L_out > 0 then
- 		credit_counter_L_in <= credit_counter_L_out - 1;
- 	end if;
+ 	if credit_in_L = '1' and grant_L = '1' then 
+       credit_counter_L_in <= credit_counter_L_out; 
+  elsif credit_in_L = '1' and credit_counter_L_out < 3 then 
+    credit_counter_L_in <= credit_counter_L_out + 1;
+  elsif grant_L = '1' and credit_counter_L_out > 0 then
+    credit_counter_L_in <= credit_counter_L_out - 1;
+  end if;
+
  end process;
 
 

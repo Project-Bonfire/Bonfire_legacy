@@ -32,8 +32,10 @@ begin
   		mask(to_integer(unsigned(address))) <=  '1';
   end process;
   
+
   Gen_faulty:
   for i in 0 to DATA_WIDTH-1 generate
-	data_out(i)  <= (data_in(i) and not sta_1 and not sta_0) or (mask(i) and sta_1);
+	data_out(i)  <= (not mask(i) and data_in(i)) or (mask(i) and not sta_0 and not sta_1  and data_in(i)) or (mask(i) and sta_1 and not sta_0) ;
+	--data_out(i)  <=   data_in(i);
   end generate;                          
 end;
