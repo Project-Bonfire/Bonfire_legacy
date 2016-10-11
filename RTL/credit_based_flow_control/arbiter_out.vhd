@@ -49,7 +49,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= IDLE;
           end if; 
       when North =>
-          if credit /= "00" then
+          if credit /= "00" and X_N_Y = '1'then
             grant_Y_N <= '1';
           end if;
           if X_N_Y ='1'  then
@@ -66,7 +66,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= IDLE;
           end if;
       when East =>
-          if credit /= "00" then
+          if credit /= "00" and X_E_Y = '1'then
             grant_Y_E <= '1';
           end if;
           if X_E_Y = '1' then
@@ -83,7 +83,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= IDLE;
           end if;
       when West =>
-          if credit /= "00" then
+          if credit /= "00" and X_W_Y = '1'then
             grant_Y_W <= '1';
           end if;
           if X_W_Y = '1' then
@@ -100,7 +100,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= IDLE;
           end if;
       when South =>
-          if credit /= "00" then
+          if credit /= "00" and X_S_Y = '1' then
             grant_Y_S <= '1';
           end if;
           if X_S_Y = '1' then
@@ -117,7 +117,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= IDLE;
           end if;
       when others =>
-          if credit /= "00" then
+          if credit /= "00" and X_L_Y = '1' then
             grant_Y_L <= '1';
           end if;
           if X_L_Y = '1' then
