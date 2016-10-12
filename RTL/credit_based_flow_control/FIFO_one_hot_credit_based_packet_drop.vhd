@@ -41,9 +41,9 @@ architecture behavior of FIFO_credit_based is
    signal xor_all, fault_out: std_logic;
    type state_type is (Idle, Header_flit, Body_flit, Tail_flit, Packet_drop);
    signal  state_out, state_in : state_type;
-   signal fake_credit, write_fake_flit: std_logic;
+   signal fake_credit, credit_in,  write_fake_flit: std_logic;
    signal fake_credit_counter, fake_credit_counter_in: std_logic_vector(1 downto 0);
-   signal credit_out_in: std_logic;
+
 
 begin
  --------------------------------------------------------------------------------------------
@@ -73,11 +73,16 @@ begin
             faulty_packet_out <= '0';
             credit_out <= '0';
             state_out <= Idle;
+
         elsif clk'event and clk = '1' then
             write_pointer <= write_pointer_in;
             read_pointer  <=  read_pointer_in;
- 
             state_out <= state_in;
+            
+            faulty_packet_out <=  faulty_packet_in;
+            credit_out <= credit_in;
+            fake_credit_counter <= fake_credit_counter_in;   
+
             if write_en = '1' then 
                 --write into the memory
                   FIFO_MEM_1 <= FIFO_MEM_1_in;
@@ -85,23 +90,8 @@ begin
                   FIFO_MEM_3 <= FIFO_MEM_3_in;
                   FIFO_MEM_4 <= FIFO_MEM_4_in;                   
             end if;
-            faulty_packet_out <=  faulty_packet_in;
 
-            credit_out <= '0';
-            fake_credit_counter <= fake_credit_counter;
 
-            if fake_credit = '1' and read_en = '1' then
-                fake_credit_counter <= fake_credit_counter + 1 ;
-            end if; 
-
-            if read_en ='1' or fake_credit = '1' then
-              credit_out <= '1';
-            end if;           
-
-            if read_en = '0' and fake_credit = '0' and fake_credit_counter > 0 then 
-              fake_credit_counter <= fake_credit_counter - 1 ;
-              credit_out <= '1';
-            end if;
 
         end if;
     end process;
@@ -109,8 +99,26 @@ begin
  -- anything below here is pure combinational
  
    -- combinatorial part 
+process(fake_credit, read_en, fake_credit_counter) begin
+	fake_credit_counter_in <= fake_credit_counter;
+	credit_in <= '0';
 
- 
+	if fake_credit = '1' and read_en = '1' then
+        fake_credit_counter_in <= fake_credit_counter + 1 ;
+    end if; 
+     
+    if (read_en ='1' or fake_credit = '1') then
+        credit_in <= '1';
+    end if;      
+
+    if read_en = '0' and fake_credit = '0' and fake_credit_counter > 0 then 
+        fake_credit_counter_in <= fake_credit_counter - 1 ;
+        credit_in <= '1';
+    end if;
+end process;
+
+
+
 process(valid_in, RX) begin
   if valid_in = '1' then 
     xor_all <= XOR_REDUCE(RX(DATA_WIDTH-1 downto 1));
