@@ -253,7 +253,7 @@ end process;
 	              	if fault_out = '0' then -- data (flit) is not faulty
 	                      if flit_type = "010" then
 	                          state_in <= state_out; -- We can also write (state_in <= Body_flit) ?? As the state is not changed.
-	                      elsif flit_type = "100" then xmind
+	                      elsif flit_type = "100" then
 	                          state_in <= Tail_flit;
 	                      else
 	                          -- we should not be here!
