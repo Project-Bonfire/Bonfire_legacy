@@ -165,59 +165,60 @@ end process;
               faulty_packet_in <= '1';
             end if;           
       	  when Header_flit => 
-              if fault_out = '0' then
-                  if valid_in = '1' then 
-                    if flit_type = "010" then   
-                       state_in <= Body_flit;
-                    elsif flit_type ="100" then
-                        state_in <= Tail_flit;
-                    else
-                        -- we should not be here!
-                        state_in <= state_out;
-                    end if;
-                  else
-                    state_in <= state_out;
-                  end if;    
-              else
-                  write_fake_flit <= '1';
-                  case( write_pointer ) is
-                      when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-                      when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= fake_tail;  FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-                      when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= fake_tail;  FIFO_MEM_4_in <= FIFO_MEM_4; 
-                      when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= fake_tail;                  
-                      when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-                  end case ;
-                  state_in <= Packet_drop;
-                  faulty_packet_in <= '1';       
-              end if;        
+      	  		if valid_in = '1' then 
+	              if fault_out = '0' then
+	                   
+	                    if flit_type = "010" then   
+	                       state_in <= Body_flit;
+	                    elsif flit_type ="100" then
+	                        state_in <= Tail_flit;
+	                    else
+	                        -- we should not be here!
+	                        state_in <= state_out;
+	                    end if; 
+	              else
+			        write_fake_flit <= '1';
+			        case( write_pointer ) is
+			            when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+			            when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= fake_tail;  FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+			            when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= fake_tail;  FIFO_MEM_4_in <= FIFO_MEM_4; 
+			            when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= fake_tail;                  
+			            when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+			        end case ;
+			        state_in <= Packet_drop;
+			        faulty_packet_in <= '1';                
+	              end if;  
+	            else
+	                state_in <= state_out;   	       
+	            end if;  
       	  when Body_flit => 
-
-              if fault_out = '0' then
-                  if valid_in = '1' then 
-                      if flit_type = "010" then
-                          state_in <= state_out;
-                      elsif flit_type = "100" then 
-                          state_in <= Tail_flit;
-                      else
-                          -- we should not be here!
-                          state_in <= state_out;
-                      end if;
-                  else
-                      state_in <= state_out;
-                  end if;
-              else
-                  write_fake_flit <= '1';
-                  case( write_pointer ) is
-                      when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-                      when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= fake_tail;  FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-                      when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= fake_tail;  FIFO_MEM_4_in <= FIFO_MEM_4; 
-                      when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= fake_tail;                  
-                      when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-                  end case ;
-                  state_in <= Packet_drop;
-                  faulty_packet_in <= '1'; 
- 
-              end if;
+      	  		if valid_in = '1' then 
+	              	if fault_out = '0' then
+	                   
+	                      if flit_type = "010" then
+	                          state_in <= state_out;
+	                      elsif flit_type = "100" then 
+	                          state_in <= Tail_flit;
+	                      else
+	                          -- we should not be here!
+	                          state_in <= state_out;
+	                      end if;
+	              else
+	                  write_fake_flit <= '1';
+	                  case( write_pointer ) is
+	                      when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+	                      when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= fake_tail;  FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+	                      when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= fake_tail;  FIFO_MEM_4_in <= FIFO_MEM_4; 
+	                      when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= fake_tail;                  
+	                      when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+	                  end case ;
+	                  state_in <= Packet_drop;
+	                  faulty_packet_in <= '1'; 
+	 				 
+	              end if;
+	            else
+	                state_in <= state_out;   	       
+	            end if; 
       	  when Tail_flit => 
               if valid_in = '1' then 
                   if fault_out = '0' then
