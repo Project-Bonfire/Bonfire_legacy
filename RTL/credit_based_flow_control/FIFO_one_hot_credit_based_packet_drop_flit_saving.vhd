@@ -34,7 +34,7 @@ architecture behavior of FIFO_credit_based is
    signal FIFO_MEM_2, FIFO_MEM_2_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_MEM_4, FIFO_MEM_4_in : std_logic_vector(DATA_WIDTH-1 downto 0);
-    constant fake_tail :  std_logic_vector := "10000000000000000000000000000001";
+   constant fake_tail :  std_logic_vector := "10000000000000000000000000000001";
    
    alias flit_type :  std_logic_vector(2 downto 0) is RX(DATA_WIDTH-1 downto DATA_WIDTH-3); 
    signal faulty_packet_in, faulty_packet_out: std_logic;
