@@ -101,14 +101,14 @@ begin
    -- combinatorial part 
 process(fake_credit, read_en, fake_credit_counter) begin
 	fake_credit_counter_in <= fake_credit_counter;
-	credit_in <= '0';
+	credit_in <= '0'; -- Is this actually credit_out from the router module ?
 
 	if fake_credit = '1' and read_en = '1' then
         fake_credit_counter_in <= fake_credit_counter + 1 ;
     end if; 
      
     if (read_en ='1' or fake_credit = '1') then
-        credit_in <= '1';
+        credit_in <= '1'; -- Is this actually credit_out from the router module ?
     end if;      
 
     if read_en = '0' and fake_credit = '0' and fake_credit_counter > 0 then 
@@ -123,19 +123,21 @@ process(valid_in, RX) begin
   if valid_in = '1' then 
     xor_all <= XOR_REDUCE(RX(DATA_WIDTH-1 downto 1));
   else
-    xor_all <= '0';
+    xor_all <= '0'; -- Is this correct ? This means parity is zero. Or does it mean we don't care about parity in this case ? 
   end if;
 end process;
 
 process(valid_in, RX, xor_all)begin 
   fault_out <= '0';
-  if valid_in = '1' and   xor_all /= RX(0) then 
+  if valid_in = '1' and   xor_all /= RX(0) then -- Parity checker (integrated inside FIFO)
     fault_out <= '1';
   end if;
 end process;
 
     process(RX, faulty_packet_out, fault_out, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4, state_out, flit_type, valid_in)begin
       -- this is the default value of the memory!
+      -- Store data from input (RX) to the appropriate FIFO slot, according to write pointer (which is encoded as one-hot)
+
       case( write_pointer ) is
           when "0001" => FIFO_MEM_1_in <= RX;         FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
           when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= RX;         FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
@@ -143,6 +145,9 @@ end process;
           when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= RX;                  
           when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
       end case ;
+
+     -- Up to here, we have written the data (RX) in FIFO, but we do not know yet, if it is faulty or not
+     -- The parity is checked later (in the FSM)
      
      --some defaults 
      fake_credit <= '0';
@@ -150,18 +155,24 @@ end process;
      faulty_packet_in <= faulty_packet_out;
       write_fake_flit <= '0';
 
+      -- FSM for FIFO (including the packet dropping capability)
+
       case(state_out) is
       	  when Idle => 
-            if fault_out = '0' then
-                if valid_in = '1' then 
+            -- fault_out is updated in another by checking the parity bit for input data (RX)
+            -- if (xor_all /= RX(0)) => fault_out = 1.          
+            if fault_out = '0' then -- Input data is correct and parity bit matches the one integrated in the data
+                                    -- The next expected flit (Header flit) is healthy
+                if valid_in = '1' then -- There is a request from previous router/NI
                   state_in <= Header_flit;
-                else
+                else -- No packet (flit)
                   state_in <= state_out;
                 end if;   
-            else
+            else -- If the received data (RX) (Header flit) is faulty, and detected by parity checker in current router
               if flit_type /= "001" then  
                   faulty_packet_in <= '0';
                   case( write_pointer ) is
+                     -- Is this the place where we do the saving for packet drop ?
                      when "0001" => FIFO_MEM_1_in <= "001"&RX(DATA_WIDTH-4 downto 0);         FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                      when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= "001"&RX(DATA_WIDTH-4 downto 0);         FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                      when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= "001"&RX(DATA_WIDTH-4 downto 0);         FIFO_MEM_4_in <= FIFO_MEM_4; 
@@ -170,41 +181,52 @@ end process;
                    end case ;
                   state_in <= Header_flit;
               else  
+                -- Fakely tell previous router/NI that FIFO has enough slots
                 fake_credit <= '1';
                 FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+                
+                -- We must drop the packet (FSM must go to Packet_drop state)
                 state_in <= Packet_drop;
-                faulty_packet_in <= '1';
+                faulty_packet_in <= '1'; -- Shows the packet is faulty
               end if;
             end if;           
+
       	  when Header_flit => 
       	  		if valid_in = '1' then 
-	              if fault_out = '0' then
+	              if fault_out = '0' then -- We expect body or tail flit, and the flit is healthy (parity matches)
 	                    if flit_type = "010" then   
 	                       state_in <= Body_flit;
 	                    elsif flit_type ="100" then
 	                        state_in <= Tail_flit;
-	                    else
-	                        -- we should not be here!
+	                    else -- Either flit type is invalid or there is no packet (but this should not happen)
+                           -- we should not be here!
 	                        state_in <= state_out;
 	                    end if; 
 	              else
+                    -- Parity checker has detected a fault in body/tail flit (parity mismatch)
+                    -- (fault_out = 1)
+
                     write_fake_flit <= '1';
-	              		if flit_type = "010" then   
+	              		if flit_type = "010" then -- the flit is faulty, but its flit type field is correct and valid
+                                              -- But, the payload is faulty.  
                          faulty_packet_in <= '0';
-                          
+                          -- We change state to Body Flit                          
 	                       state_in <= Body_flit;
 	                  elsif flit_type ="100" then
                           faulty_packet_in <= '0';
 	                        state_in <= Tail_flit;
                            
-	                  else
+	                  else -- if flit type field is damaged (incorrect)
         					        case( write_pointer ) is
+                              -- we store a fake tail instead of the faulty data in 
+                              -- the FIFO slot corresponding to the write pointer's location                          
         					            when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
         					            when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= fake_tail;  FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
         					            when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= fake_tail;  FIFO_MEM_4_in <= FIFO_MEM_4; 
         					            when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= fake_tail;                  
         					            when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
         					        end case ;
+                          -- And we still go to Packet drop state                          
         					        state_in <= Packet_drop;
 					                faulty_packet_in <= '1';      
 	                  end if; 		                  
@@ -212,27 +234,33 @@ end process;
 	            else
 	                state_in <= state_out;   	       
 	            end if;  
+
       	  when Body_flit => 
       	  		if valid_in = '1' then 
-	              	if fault_out = '0' then
+	              	if fault_out = '0' then -- data (flit) is not faulty
 	                      if flit_type = "010" then
-	                          state_in <= state_out;
+	                          state_in <= state_out; -- We can also write (state_in <= Body_flit) ?? As the state is not changed.
 	                      elsif flit_type = "100" then 
 	                          state_in <= Tail_flit;
 	                      else
 	                          -- we should not be here!
 	                          state_in <= state_out;
 	                      end if;
-	                else
+	                else -- Parity mismatch (flit is faulty)
                     write_fake_flit <= '1';
-	                  if flit_type = "010" then
+
+	                  if flit_type = "010" then -- flit type is not damaged (only payload is damaged)
+                                              -- Handling the error in payload is delegated to application level
                             faulty_packet_in <= '0';
 	                          state_in <= state_out;
                           
-	                  elsif flit_type = "100" then 
+	                  elsif flit_type = "100" then -- flit type is not damaged (only payload is damaged)
+                                                 -- Handling the error in payload is delegated to application level
                             faulty_packet_in <= '0';
 	                          state_in <= Tail_flit; 
 	                  else
+                        -- flit type is damaged (incorrect)
+                        -- makes fake tail and goes to packet drop state
     				            case( write_pointer ) is
     				              when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
     				              when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= fake_tail;  FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
@@ -247,17 +275,25 @@ end process;
 	            else
 	                state_in <= state_out;   	       
 	            end if; 
+
       	  when Tail_flit => 
               if valid_in = '1' then 
                   if fault_out = '0' then
                       if flit_type = "001" then
                           state_in <= Header_flit;
                       else 
+                          -- what is this case ??
+                          -- we should not be here ??
                           state_in <= state_out;
                       end if;
-                  else
+                  else -- Parity mismatch (error in flit)
                       fake_credit <= '1';
-                      FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+                      -- Dropping the flit (writing back previous values to FIFO slots)                      
+                      FIFO_MEM_1_in <= FIFO_MEM_1; 
+                      FIFO_MEM_2_in <= FIFO_MEM_2; 
+                      FIFO_MEM_3_in <= FIFO_MEM_3; 
+                      FIFO_MEM_4_in <= FIFO_MEM_4; 
+
                       state_in <= Packet_drop;
                       faulty_packet_in <= '1';        
                   end if;   
@@ -267,7 +303,7 @@ end process;
 
           when Packet_drop => 
             if faulty_packet_out = '1' then
-               if valid_in = '1' and flit_type = "001"  and fault_out = '0' then
+               if valid_in = '1' and flit_type = "001"  and fault_out = '0' then -- next flit is header and parity matches
                     faulty_packet_in <= '0';
                     state_in <= Header_flit;
                     write_fake_flit <= '1';
@@ -279,17 +315,29 @@ end process;
                         when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                     end case ;
  
-               elsif valid_in = '1' and flit_type ="100" and fault_out = '0' then
-                    FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+               elsif valid_in = '1' and flit_type ="100" and fault_out = '0' then -- next flit is Tail, and not faulty (parity matches)
+                    
+                    -- flit is dropped ?? Previous values of FIFO slots are re-written
+                    FIFO_MEM_1_in <= FIFO_MEM_1; 
+                    FIFO_MEM_2_in <= FIFO_MEM_2; 
+                    FIFO_MEM_3_in <= FIFO_MEM_3; 
+                    FIFO_MEM_4_in <= FIFO_MEM_4; 
+
                     faulty_packet_in <= '0';
                     state_in <= Idle;
                     fake_credit <= '1';
-               else
+
+               else -- includes the case that packet is faulty (parity mismatch)
                   if valid_in = '1' then 
                       fake_credit <= '1';
                   end if;
-                  FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-                  state_in <= state_out;
+                  -- previous values of FIFO slots are re-written (flit is dropped ??)
+                  FIFO_MEM_1_in <= FIFO_MEM_1; 
+                  FIFO_MEM_2_in <= FIFO_MEM_2; 
+                  FIFO_MEM_3_in <= FIFO_MEM_3; 
+                  FIFO_MEM_4_in <= FIFO_MEM_4; 
+
+                  state_in <= state_out; -- We stay in Packet Drop state
                end if;
             else
               -- we should not be here!
@@ -315,17 +363,17 @@ end process;
   empty_out <= empty;
   
 
-  process(write_en, write_pointer)begin
+  process(write_en, write_pointer) begin
     if write_en = '1' then
-       write_pointer_in <= write_pointer(2 downto 0)&write_pointer(3); 
+       write_pointer_in <= write_pointer(2 downto 0)&write_pointer(3); -- Rotate one bit to left
     else
        write_pointer_in <= write_pointer; 
     end if;
   end process;
 
-  process(read_en, empty, read_pointer)begin
+  process(read_en, empty, read_pointer) begin
        if (read_en = '1' and empty = '0') then
-           read_pointer_in <= read_pointer(2 downto 0)&read_pointer(3); 
+           read_pointer_in <= read_pointer(2 downto 0)&read_pointer(3); -- Rotate one bit to left
        else 
            read_pointer_in <= read_pointer; 
        end if;
