@@ -1,0 +1,11 @@
+vivado.log
+vivado.jou
+.Xil
+.directory
+vivado*.jou
+vivado*.log
+webtalk*.jou
+webtalk*.log
+vivado*.str
+abstraction_definition.xml
+bus_definition.xml
