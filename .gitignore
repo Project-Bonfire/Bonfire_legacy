@@ -1,17 +1,11 @@
 .DS_Store
-scripts/*.vhd
 *.pyc
-RTL/Checkers/minimization_tool/checker_vhdl/*.vhd
-RTL/Checkers/minimization_tool/synthesis_scripts/*.script
-RTL/Checkers/minimization_tool/temp/*
-RTL/Checkers/minimization_tool/logs/*
-
-
 *.bak
-
 *.png
 
 xgui
 component.xml
 .directory
 .Xil
+
+tmp
