@@ -6,14 +6,21 @@ import sys
 import shutil
 from math import ceil
 
-from include.helper_func import *
+from Scripts.include.helper_func import *
 
 """
 Constant declarations
 """
 # Temporary directory for storing simulation files
-SIMUL_DIR = "../simul_temp"
-SRC_DIR = "../src"
+TMP_DIR = "tmp"
+SIMUL_DIR = TMP_DIR + "/simul_temp"
+
+# Subfolders
+SCRIPTS_DIR = "Scripts"
+TEST_DIR = "Test"
+
+HANDSHAKING_SUFFIX = "_handshaking"
+CREDIT_BASED_SUFFIX = "_credit_based"
 
 NET_GEN_SCRIPT = SRC_DIR + "/EHA/scripts/network_gen_parameterized.py" # For Handshaking Flow Control
 NET_CREDIT_BASED_GEN_SCRIPT = SRC_DIR + "/EHA/scripts/Credit_Based/network_gen_parameterized_CB_FC.py" # For Credit-Based Flow Control
@@ -308,9 +315,9 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
         do_file.write("vcom \"" + SRC_DIR + "/EHA/RTL/credit_based_flow_control/LBDR.vhd\"\n")
         do_file.write("vcom \"" + SRC_DIR + "/EHA/RTL/credit_based_flow_control/xbar.vhd\"\n")
 
-    if program_argv['packet_drop'] == False and program_argv['credit_based_FC'] == True: 
+    if program_argv['packet_drop'] == False and program_argv['credit_based_FC'] == True:
         do_file.write("vcom \"" + SRC_DIR + "/EHA/RTL/credit_based_flow_control/FIFO_one_hot_credit_based.vhd\"\n")
-    elif program_argv['packet_drop'] == True and program_argv['credit_based_FC'] == True:         
+    elif program_argv['packet_drop'] == True and program_argv['credit_based_FC'] == True:
         do_file.write("vcom \"" + SRC_DIR + "/EHA/RTL/credit_based_flow_control/FIFO_one_hot_credit_based_packet_drop.vhd\"\n")
 
     if program_argv['add_NI'] != -1:
@@ -449,7 +456,7 @@ def main(argv):
         + ".vhd"
 
     # For Handshaking Flow Control
-    if program_argv['credit_based_FC'] == False: 
+    if program_argv['credit_based_FC'] == False:
 
         net_gen_command = "python " + NET_GEN_SCRIPT \
             + " -D " + str(program_argv['network_dime']) \
@@ -457,7 +464,7 @@ def main(argv):
             + (" -NI" if program_argv['add_NI'] != -1 else "") \
             + (" -FI" if program_argv['add_FI'] == True else "") \
             + " -o " + SIMUL_DIR + "/" + net_file_name
-    
+
     # For Credit-Based Flow Control
     elif program_argv['credit_based_FC'] == True:
 
@@ -491,7 +498,7 @@ def main(argv):
         + "_tb.vhd"
 
     # For Handshaking Flow Control
-    if program_argv['credit_based_FC'] == False: 
+    if program_argv['credit_based_FC'] == False:
 
         net_tb_gen_command = "python " + NET_TB_GEN_SCRIPT \
             + " -D " + str(program_argv['network_dime']) \
@@ -532,7 +539,7 @@ def main(argv):
     + ".do"
 
     # For Handshaking Flow Control
-    if program_argv['credit_based_FC'] == False: 
+    if program_argv['credit_based_FC'] == False:
 
         wave_do_gen_command = "python " + WAVE_DO_GEN_SCRIPT \
             + " -D " + str(program_argv['network_dime']) \
