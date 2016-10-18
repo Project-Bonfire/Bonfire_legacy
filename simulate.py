@@ -19,12 +19,20 @@ SIMUL_DIR = TMP_DIR + "/simul_temp"
 SCRIPTS_DIR = "Scripts"
 TEST_DIR = "Test"
 
-HANDSHAKING_SUFFIX = "_handshaking"
-CREDIT_BASED_SUFFIX = "_credit_based"
+HANDSHAKING_SUFFIX = "handshaking"
+CREDIT_BASED_SUFFIX = "credit_based"
 
-NET_GEN_SCRIPT = SRC_DIR + "/EHA/scripts/network_gen_parameterized.py" # For Handshaking Flow Control
+#TODO remove after you have finished updating
+SRC_DIR = "."
+
+NET_GEN_SCRIPT = "network_gen_parameterized"
+NET_TB_GEN_SCRIPT = "network_tb_gen_parameterized"
+
+
+#TODO NEED UPDATE/REMOVAL
+#####################
 NET_CREDIT_BASED_GEN_SCRIPT = SRC_DIR + "/EHA/scripts/Credit_Based/network_gen_parameterized_CB_FC.py" # For Credit-Based Flow Control
-NET_TB_GEN_SCRIPT = SRC_DIR + "/Test/scripts/network_tb_gen_parameterized.py" # For Handshaking Flow Control
+
 NET_CREDIT_BASED_TB_GEN_SCRIPT = SRC_DIR + "/Test/scripts/network_tb_gen_parameterized_credit_based.py" # For Credit-Based Flow Control
 WAVE_DO_GEN_SCRIPT = SRC_DIR + "/Test/scripts/wave_do_gen.py" # For Handshaking Flow Control
 WAVE_DO_CREDIT_BASED_GEN_SCRIPT = SRC_DIR + "/Test/scripts/wave_do_gen_credit_based.py" # For Credit-Based Flow Control
@@ -33,8 +41,13 @@ RECEIVED_TXT_PATH = SIMUL_DIR + "/received.txt"
 SENT_TXT_PATH = SIMUL_DIR + "/sent.txt"
 
 SIMUL_DO_SCRIPT = SIMUL_DIR + "/simulate.do"
+######################
 
-DEBUG = True
+
+
+DEBUG = False
+
+
 
 """
 Arguments parser
@@ -442,41 +455,36 @@ def main(argv):
         print_msg(MSG_ERROR, "Error " + str(e[0]) + ": " + e[1])
         sys.exit(1)
 
-    # Generate network
+    if program_argv['credit_based_FC']:
+        flow_control_type = CREDIT_BASED_SUFFIX
+    else:
+        flow_control_type = HANDSHAKING_SUFFIX
+
+    # Generated network file name
     net_file_name = "network_" \
         + str(program_argv['network_dime']) + "x" + str(program_argv['network_dime']) \
-        + ("_parity" if program_argv['add_parity'] == True else "") \
+        + ("_parity" if program_argv['add_parity'] else "") \
         + ("_NI" if program_argv['add_NI'] != -1 else "") \
-        + ("_FI" if program_argv['add_FI'] == True else "") \
-        + ("_packet_drop" if program_argv['packet_drop'] == True else "") \
-        + ("_FO" if program_argv['add_FO'] == True else "") \
-        + ("_SHMU" if program_argv['add_SHMU'] == True else "") \
-        + ("_LV" if program_argv['add_LV'] == True else "") \
-        + ("_with_checkers" if program_argv['add_checkers'] == True else "") \
+        + ("_FI" if program_argv['add_FI'] else "") \
+        + ("_packet_drop" if program_argv['packet_drop'] else "") \
+        + ("_FO" if program_argv['add_FO'] else "") \
+        + ("_SHMU" if program_argv['add_SHMU'] else "") \
+        + ("_LV" if program_argv['add_LV'] else "") \
+        + ("_credit_based" if program_argv['credit_based_FC'] else "_handshaking") \
+        + ("_with_checkers" if program_argv['add_checkers'] else "") \
         + ".vhd"
 
-    # For Handshaking Flow Control
-    if program_argv['credit_based_FC'] == False:
-
-        net_gen_command = "python " + NET_GEN_SCRIPT \
-            + " -D " + str(program_argv['network_dime']) \
-            + (" -P" if program_argv['add_parity'] == True else "") \
-            + (" -NI" if program_argv['add_NI'] != -1 else "") \
-            + (" -FI" if program_argv['add_FI'] == True else "") \
-            + " -o " + SIMUL_DIR + "/" + net_file_name
-
-    # For Credit-Based Flow Control
-    elif program_argv['credit_based_FC'] == True:
-
-        net_gen_command = "python " + NET_CREDIT_BASED_GEN_SCRIPT \
-            + " -D " + str(program_argv['network_dime']) \
-            + (" -P" if program_argv['add_parity'] == True else "") \
-            + (" -NI" if program_argv['add_NI'] != -1 else "") \
-            + (" -FI" if program_argv['add_FI'] == True else "") \
-            + (" -FO" if program_argv['add_FO'] == True else "") \
-            + (" -SHMU" if program_argv['add_SHMU'] == True else "") \
-            + (" -LV" if program_argv['add_LV'] == True else "") \
-            + " -o " + SIMUL_DIR + "/" + net_file_name
+    # Command to run for network generation
+    net_gen_command = "python " + SCRIPTS_DIR + "/" + flow_control_type \
+        + "/" + NET_GEN_SCRIPT + "_" + flow_control_type + ".py" \
+        + " -D " + str(program_argv['network_dime']) \
+        + (" -P" if program_argv['add_parity'] else "") \
+        + (" -NI" if program_argv['add_NI'] != -1 else "") \
+        + (" -FI" if program_argv['add_FI'] else "") \
+        + (" -FO" if program_argv['add_FO'] else "") \
+        + (" -SHMU" if program_argv['add_SHMU'] else "") \
+        + (" -LV" if program_argv['add_LV'] else "") \
+        + " -o " + SIMUL_DIR + "/" + net_file_name
 
     if DEBUG: print_msg(MSG_DEBUG, "Running network generator:\n\t" + net_gen_command)
 
@@ -485,8 +493,7 @@ def main(argv):
         print_msg(MSG_ERROR, "Error while running network generation script")
         sys.exit(1)
 
-    # Generate testbech
-
+    # Generate testbench
     net_tb_file_name = "network_" + str(program_argv['network_dime']) + "x" + str(program_argv['network_dime']) \
         + ("_parity" if program_argv['add_parity'] == True else "") \
         + ("_NI" if program_argv['add_NI'] != -1 else "") \
@@ -494,37 +501,22 @@ def main(argv):
         + ("_packet_drop" if program_argv['packet_drop'] == True else "") \
         + ("_Rand" if program_argv['rand'] != -1 else "") \
         + ("_BR" if program_argv['BR'] != -1 else "") \
-        + ("_with_checkers" if program_argv['add_checkers'] != -1 else "") \
+        + ("_credit_based" if program_argv['credit_based_FC'] else "_handshaking") \
+        + ("_with_checkers" if program_argv['add_checkers'] else "") \
         + "_tb.vhd"
 
-    # For Handshaking Flow Control
-    if program_argv['credit_based_FC'] == False:
-
-        net_tb_gen_command = "python " + NET_TB_GEN_SCRIPT \
-            + " -D " + str(program_argv['network_dime']) \
-            + (" -P" if program_argv['add_parity'] == True else "") \
-            + (" -NI " + str(program_argv['add_NI']) if program_argv['add_NI'] != -1 else "") \
-            + (" -FI" if program_argv['add_FI'] == True else "") \
-            + (" -Rand " + str(program_argv['rand']) if program_argv['rand'] != -1 else "") \
-            + (" -BR " + str(program_argv['BR']) if program_argv['BR'] != -1 else "") \
-            + " -PS " + str(program_argv['PS'][0]) + " " + str(program_argv['PS'][1]) \
-            + (" -sim " + str(program_argv['sim']) if program_argv['sim'] != -1 else "") \
-            + " -o " + SIMUL_DIR + "/" + net_tb_file_name
-
-    # For Credit-Based Flow Control
-    elif program_argv['credit_based_FC'] == True:
-
-        net_tb_gen_command = "python " + NET_CREDIT_BASED_TB_GEN_SCRIPT \
-            + " -D " + str(program_argv['network_dime']) \
-            + (" -P" if program_argv['add_parity'] == True else "") \
-            + (" -NI " + str(program_argv['add_NI']) if program_argv['add_NI'] != -1 else "") \
-            + (" -FI" if program_argv['add_FI'] == True else "") \
-            + (" -LV" if program_argv['add_LV'] == True else "") \
-            + (" -Rand " + str(program_argv['rand']) if program_argv['rand'] != -1 else "") \
-            + (" -BR " + str(program_argv['BR']) if program_argv['BR'] != -1 else "") \
-            + " -PS " + str(program_argv['PS'][0]) + " " + str(program_argv['PS'][1]) \
-            + (" -sim " + str(program_argv['sim']) if program_argv['sim'] != -1 else "") \
-            + " -o " + SIMUL_DIR + "/" + net_tb_file_name
+    net_tb_gen_command = "python " + SCRIPTS_DIR + "/" + flow_control_type \
+        + "/" + NET_TB_GEN_SCRIPT + "_" + flow_control_type + ".py" \
+        + " -D " + str(program_argv['network_dime']) \
+        + (" -P" if program_argv['add_parity'] == True else "") \
+        + (" -NI " + str(program_argv['add_NI']) if program_argv['add_NI'] != -1 else "") \
+        + (" -FI" if program_argv['add_FI'] == True else "") \
+        + (" -LV" if program_argv['add_LV'] == True else "") \
+        + (" -Rand " + str(program_argv['rand']) if program_argv['rand'] != -1 else "") \
+        + (" -BR " + str(program_argv['BR']) if program_argv['BR'] != -1 else "") \
+        + (" -PS " + str(program_argv['PS'][0]) + " " + str(program_argv['PS'][1])) \
+        + (" -sim " + str(program_argv['sim']) if program_argv['sim'] != -1 else "") \
+        + " -o " + SIMUL_DIR + "/" + net_tb_file_name
 
     if DEBUG: print_msg(MSG_DEBUG, "Running TB generator:\n\t" + net_tb_gen_command)
 
@@ -532,6 +524,9 @@ def main(argv):
     if return_value != 0:
         print_msg(MSG_ERROR, "Error while running network testbench generation script")
         sys.exit(1)
+
+#TODO remove
+    sys.exit(0)
 
     # Generate wave.do
     wave_do_file_name = "wave_" \
