@@ -27,14 +27,13 @@ SRC_DIR = "."
 
 NET_GEN_SCRIPT = "network_gen_parameterized"
 NET_TB_GEN_SCRIPT = "network_tb_gen_parameterized"
-
+WAVE_DO_GEN_SCRIPT = "wave_do_gen"
 
 #TODO NEED UPDATE/REMOVAL
 #####################
 NET_CREDIT_BASED_GEN_SCRIPT = SRC_DIR + "/EHA/scripts/Credit_Based/network_gen_parameterized_CB_FC.py" # For Credit-Based Flow Control
 
 NET_CREDIT_BASED_TB_GEN_SCRIPT = SRC_DIR + "/Test/scripts/network_tb_gen_parameterized_credit_based.py" # For Credit-Based Flow Control
-WAVE_DO_GEN_SCRIPT = SRC_DIR + "/Test/scripts/wave_do_gen.py" # For Handshaking Flow Control
 WAVE_DO_CREDIT_BASED_GEN_SCRIPT = SRC_DIR + "/Test/scripts/wave_do_gen_credit_based.py" # For Credit-Based Flow Control
 
 RECEIVED_TXT_PATH = SIMUL_DIR + "/received.txt"
@@ -525,27 +524,17 @@ def main(argv):
         print_msg(MSG_ERROR, "Error while running network testbench generation script")
         sys.exit(1)
 
-#TODO remove
-    sys.exit(0)
+
 
     # Generate wave.do
     wave_do_file_name = "wave_" \
     + str(program_argv['network_dime']) + "x" + str(program_argv['network_dime']) \
     + ".do"
 
-    # For Handshaking Flow Control
-    if program_argv['credit_based_FC'] == False:
-
-        wave_do_gen_command = "python " + WAVE_DO_GEN_SCRIPT \
-            + " -D " + str(program_argv['network_dime']) \
-            + " -o " + SIMUL_DIR + "/" + wave_do_file_name
-
-    # For Credit-Based Flow Control
-    elif program_argv['credit_based_FC'] == True:
-
-        wave_do_gen_command = "python " + WAVE_DO_CREDIT_BASED_GEN_SCRIPT \
-            + " -D " + str(program_argv['network_dime']) \
-            + " -o " + SIMUL_DIR + "/" + wave_do_file_name
+    wave_do_gen_command = "python " + SCRIPTS_DIR + "/" + flow_control_type + "/" \
+        + WAVE_DO_GEN_SCRIPT + "_" + flow_control_type + ".py" \
+        + " -D " + str(program_argv['network_dime']) \
+        + " -o " + SIMUL_DIR + "/" + wave_do_file_name
 
     if DEBUG: print_msg(MSG_DEBUG, "Running wave.do generator:\n\t" + wave_do_gen_command)
 
@@ -562,6 +551,9 @@ def main(argv):
     except IOError as e:
         print_msg(MSG_ERROR, "Generate simulate.do file: Error " + str(e[0]) + ": " + e[1])
         sys.exit(1)
+
+#TODO remove
+    sys.exit(0)
 
     # Running modelsim
     if DEBUG: print_msg(MSG_DEBUG, "Running Modelsim...")
