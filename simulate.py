@@ -339,7 +339,7 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
             # Include packet dropping functionality?
             if program_argv['packet_drop']:
                 do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/FIFO_one_hot_credit_based_packet_drop.vhd\"\n")
+                    + "/RTL/FIFO_one_hot_credit_based_packet_drop_flit_saving.vhd\"\n")
 
             else:
                 do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \

@@ -67,11 +67,12 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
 -- packet id: packet identification number! TODO: has to be implemented!
 -- initial_delay: waits for this number of clock cycles before sending the packet!
   variable seed1 :positive ;
-    variable seed2 :positive ;
-    variable rand : real ;
-    variable first_time :boolean := true;
-    variable destination_id: integer;
-      variable LINEVARIABLE : line; 
+  variable seed2 :positive ;
+  variable rand : real ;
+  variable first_time :boolean := true;
+  variable destination_id: integer;
+  variable id_counter: integer := 0;
+  variable LINEVARIABLE : line;
    file VEC_FILE : text is out "sent.txt";
    begin
    while true loop
@@ -84,10 +85,12 @@ procedure gen_packet(Packet_length, source, destination, packet_id, initial_dela
     else
       wait until clk'event and clk ='0';
     end if;
+    
+    id_counter := id_counter + 1;
 
   --wait untill the falling edge of the clock to avoid race!
-  report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination);
-  write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination) & " with length: "& integer'image(Packet_length));
+  report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: " & integer'image(Packet_length) & " id: " & integer'image(id_counter);
+  write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: " & integer'image(Packet_length) & " id: " & integer'image(id_counter));
   writeline(VEC_FILE, LINEVARIABLE);
   port_in <= Header_gen(Packet_length, source, destination, packet_id);
   wait until clk'event and clk ='1';
@@ -211,7 +214,7 @@ procedure gen_random_packet(frame_length, source, initial_delay, min_packet_size
 
 
       --wait untill the falling edge of the clock to avoid race!
-      report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id);
+      report "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: "& integer'image(Packet_length)& " with id: "&integer'image(id_counter);
       write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & 
             integer'image(destination_id) & " with length: "& integer'image(Packet_length)& " with id: "&integer'image(id_counter));
       writeline(VEC_FILE, LINEVARIABLE);
@@ -431,7 +434,8 @@ procedure get_packet(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk:
       report "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) & " with length: "& integer'image(P_length) & " counter: "& integer'image(counter);
       assert (P_length=counter) report "wrong packet size" severity failure;
       assert (Node_ID=destination_node) report "wrong packet destination " severity failure;
-       write(LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(source_node) & " to: " & integer'image(destination_node) & " length: "& integer'image(P_length)& " id: "& integer'image(packet_id));
+       --write(LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(source_node) & " to: " & integer'image(destination_node) & " length: "& integer'image(P_length)& " id: "& integer'image(packet_id));
+       write(LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(source_node) & " to: " & integer'image(destination_node) & " length: "& integer'image(P_length) & " actual length: "& integer'image(counter)  & " id: "& integer'image(packet_id));
        writeline(VEC_FILE, LINEVARIABLE);
    end loop;
 end get_packet;
