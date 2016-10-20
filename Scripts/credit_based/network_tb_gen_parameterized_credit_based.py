@@ -272,7 +272,7 @@ if add_FI:
                              ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+",\n\n"
       else:
           string_to_print +="\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
-                            ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+" \n\n"
+                            ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+", \n\n"
 if add_lv:
     for i in range(0, network_dime**2):
       string_to_print +="\t--------------\n"
