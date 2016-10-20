@@ -86,8 +86,9 @@ for identifier in sent_packets_dict:
 
 # print "delay_list:", delay_list
 print "number of processed packets:", len(delay_list)
-print "average delay:", sum(delay_list)/(len(delay_list)*1000), "ns!"
-
+print "maximum packet latency:", max(delay_list)/1000.0 , "ns"
+print "minimmum packet latency:", min(delay_list)/1000.0 , "ns"
+print "average packet latency:", "%.2f" % float(sum(delay_list)/(len(delay_list)*1000)), "ns!"
 
 
 
