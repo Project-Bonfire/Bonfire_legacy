@@ -254,6 +254,7 @@ for i in range(network_dime**2):
 
 if add_FI:
   string_to_print +="\t--fault injector signals\n"
+  string_to_print +="\t--vertical signals\n"
   for i in range(0, network_dime*network_dime):
     node_x = i % network_dime
     node_y = i / network_dime
@@ -261,17 +262,17 @@ if add_FI:
       string_to_print +="\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+network_dime)+", \n"
       string_to_print +="\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +\
                        ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+",\n\n"
+  string_to_print +="\t--horizontal signals\n"
   for i in range(0, network_dime*network_dime):
       node_x = i % network_dime
       node_y = i / network_dime
       if node_x != network_dime -1 :
           string_to_print +="\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) + ",\n"
-          if node_y != network_dime -1 :
-              string_to_print +="\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
-                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+",\n"
-          else:
-            string_to_print +="\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
-                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+");\n"
+          string_to_print +="\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+",\n\n"
+      else:
+          string_to_print +="\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
+                            ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+" \n\n"
 if add_lv:
     for i in range(0, network_dime**2):
       string_to_print +="\t--------------\n"
