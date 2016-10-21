@@ -9,3 +9,4 @@ component.xml
 .Xil
 
 tmp
+Scripts/*.vhd
