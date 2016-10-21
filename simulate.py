@@ -11,30 +11,39 @@ from Scripts.include.helper_func import *
 """
 Constant declarations
 """
+# Root directory
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+print PROJECT_ROOT
+
+# Better safe than sorry
+os.chdir(PROJECT_ROOT)
+
 # Temporary directory for storing simulation files
-TMP_DIR = "tmp"
+TMP_DIR = PROJECT_ROOT + "/tmp"
 SIMUL_DIR = TMP_DIR + "/simul_temp"
 
 # Subfolders
-SCRIPTS_DIR = "Scripts"
-TEST_DIR = "Test"
-ROUTER_RTL_DIR = "RTL/Router"
+SCRIPTS_DIR = PROJECT_ROOT + "/Scripts"
+TEST_DIR = PROJECT_ROOT + "/Test"
+ROUTER_RTL_DIR = PROJECT_ROOT + "/RTL/Router"
+FAULT_MANAGEMENT_RTL_DIR = PROJECT_ROOT + "/RTL/Fault_Management"
 
+# Flow control suffixes
 HANDSHAKING_SUFFIX = "handshaking"
 CREDIT_BASED_SUFFIX = "credit_based"
 
-#TODO remove after you have finished updating
-SRC_DIR = "."
-
+# Script names
 NET_GEN_SCRIPT = "network_gen_parameterized"
 NET_TB_GEN_SCRIPT = "network_tb_gen_parameterized"
 WAVE_DO_GEN_SCRIPT = "wave_do_gen"
 SIMUL_DO_SCRIPT = "simulate.do"
 RECEIVED_TXT_PATH = "received.txt"
 SENT_TXT_PATH = "sent.txt"
+LATENCY_CALCULATION_PATH = "calculate_latency.py"
 
 #TODO NEED UPDATE/REMOVAL
 #####################
+SRC_DIR = "."
 NET_CREDIT_BASED_GEN_SCRIPT = SRC_DIR + "/EHA/scripts/Credit_Based/network_gen_parameterized_CB_FC.py" # For Credit-Based Flow Control
 
 NET_CREDIT_BASED_TB_GEN_SCRIPT = SRC_DIR + "/Test/scripts/network_tb_gen_parameterized_credit_based.py" # For Credit-Based Flow Control
@@ -321,28 +330,28 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
         else:
             # Without checkers
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/arbiter_in.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/arbiter_out.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/allocator.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/LBDR.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/xbar.vhd\"\n")
 
             # Include packet dropping functionality?
             if program_argv['packet_drop']:
-                do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/FIFO_one_hot_credit_based_packet_drop_flit_saving.vhd\"\n")
 
             else:
-                do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/FIFO_one_hot_credit_based.vhd\"\n")
 
         # Add a network interface
@@ -355,12 +364,12 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
         # Add parity checking
         if program_argv['add_parity']:
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/ParityChecker_packet_detector.vhd\"\n")
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based_parity.vhd\"\n")
         else:
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based.vhd\"\n")
 
         # End of credit based flow control
@@ -369,78 +378,78 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
     else:
         # With checkers
         if program_argv['add_checkers']:
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
                 + "/Arbiter_one_hot_with_checkers/Arbiter_checkers.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
                 + "/Arbiter_one_hot_with_checkers/Arbiter_one_hot_with_checkers.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
                 + "/FIFO_one_hot_with_checkers/FIFO_control_part_checkers.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
                 + "/FIFO_one_hot_with_checkers/FIFO_one_hot_with_checkers.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
                 + "/LBDR_with_checkers/LBDR_checkers.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
                 + "/LBDR_with_checkers/LBDR_with_checkers.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/xbar.vhd\"\n")
 
         else:
             # No checkers
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Arbiter.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/FIFO_one_hot_handshaking.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/LBDR.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/xbar.vhd\"\n")
 
         # Add a network interface
         if program_argv['add_NI'] != -1:
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/NI.vhd\"\n")
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/NI_channel.vhd\"\n")
 
         # Add parity checking
         if program_argv['add_parity']:
-            do_file.write("vcom \"../../" \
-                + "RTL/Fault_Management/Error_Detection_Correction/ParityChecker.vhd\"\n")
+            do_file.write("vcom \"" + FAULT_MANAGEMENT_RTL_DIR \
+                + "/Error_Detection_Correction/ParityChecker.vhd\"\n")
 
-            do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_handshaking_parity.vhd\"\n")
         else:
             if program_argv['add_checkers']:
-                do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/Router_32_bit_handshaking_with_full_set_of_checkers.vhd\"\n")
             else:
-                do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/Router_32_bit_handshaking.vhd\"\n")
 
         # End of handshaking based flow control
 
     # Add fault injectors
     if program_argv['add_FI']:
-        do_file.write("vcom \"../../" + ROUTER_RTL_DIR + "/" + flow_control_type \
+        do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
             + "/RTL/Fault_injector.vhd\"\n")
 
     # Include file for the testbench
-    do_file.write("vcom \"../../" + TEST_DIR + "/" + flow_control_type \
+    do_file.write("vcom \"" + TEST_DIR + "/" + flow_control_type \
         + "/TB_Package_32_bit_" + flow_control_type + ".vhd\"\n")
 
     # Generated network files
@@ -648,8 +657,10 @@ def main(argv):
         # Read sent packets
         statistics(True)
 
+
+
         # Run latency calculation script
-        latency_command = "python " + SRC_DIR + "/Test/scripts/calculate_latency.py -S " + SENT_TXT_PATH + " -R " + RECEIVED_TXT_PATH
+        latency_command = "python " + SCRIPTS_DIR + "/include/" + LATENCY_CALCULATION_PATH + " -S " + SENT_TXT_PATH + " -R " + RECEIVED_TXT_PATH
 
         if program_argv['add_FI'] == False:
             if DEBUG: print_msg(MSG_DEBUG, "Running latency calculator script:\n\t" + latency_command)
