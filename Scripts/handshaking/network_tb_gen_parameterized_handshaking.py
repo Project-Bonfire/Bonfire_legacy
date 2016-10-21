@@ -220,20 +220,18 @@ noc_file.write("reset <= '1' after 1 ns;\n")
 
 noc_file.write("-- instantiating the network\n")
 
-if add_NI:
-  noc_file.write("NoC: network_"+str(network_dime)+"x"+str(network_dime)+" generic map (DATA_WIDTH  => "+str(data_width)+", NI_DEPTH => "+str(NI_depth)+")\n")
-else:
-  noc_file.write("NoC: network_"+str(network_dime)+"x"+str(network_dime)+" generic map (DATA_WIDTH  => "+str(data_width)+")\n")
-
-noc_file.write("PORT MAP (reset, clk, \n")
-for i in range(network_dime*network_dime):
-  noc_file.write("\tRX_L_"+str(i)+", RTS_L_"+str(i)+", CTS_L_"+str(i)+", DRTS_L_"+str(i)+", DCTS_L_"+str(i)+", ")
-  if i == network_dime*network_dime-1 and add_FI==False:
-    noc_file.write("TX_L_"+str(i)+");\n")
-  else:
-    noc_file.write("TX_L_"+str(i)+",\n")
-
 string_to_print = ""
+if add_NI:
+  string_to_print += "NoC: network_"+str(network_dime)+"x"+str(network_dime)+" generic map (DATA_WIDTH  => "+str(data_width)+", NI_DEPTH => "+str(NI_depth)+")\n"
+else:
+  string_to_print += "NoC: network_"+str(network_dime)+"x"+str(network_dime)+" generic map (DATA_WIDTH  => "+str(data_width)+")\n"
+
+string_to_print += "PORT MAP (reset, clk, \n"
+for i in range(network_dime*network_dime):
+  string_to_print += "\tRX_L_"+str(i)+", RTS_L_"+str(i)+", CTS_L_"+str(i)+", DRTS_L_"+str(i)+", DCTS_L_"+str(i)+", "
+  string_to_print += "TX_L_"+str(i)+",\n"
+
+
 if add_FI:
   string_to_print += "\t--fault injector signals\n"
   string_to_print +="\t--vertical signals\n"
@@ -241,20 +239,20 @@ if add_FI:
     node_x = i % network_dime
     node_y = i / network_dime
     if node_y != network_dime-1:
-      string_to_print += "\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+network_dime)+", \n"
-      string_to_print += "\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +\
-                       ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+",\n\n"
+      string_to_print += "\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+network_dime)+", "
+      string_to_print += "sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +\
+                       ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+",\n"
                        
   string_to_print +="\t--horizontal signals\n"
   for i in range(0, network_dime*network_dime):
       node_x = i % network_dime
       node_y = i / network_dime
       if node_x != network_dime -1 :
-          string_to_print += "\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) + ",\n"
-          string_to_print += "\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
-                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+",\n\n"
+          string_to_print += "\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) + ", "
+          string_to_print += "sta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+",\n"
 
-noc_file.write(string_to_print[:len(string_to_print)-3])
+noc_file.write(string_to_print[:len(string_to_print)-2])
 noc_file.write("\n            ); \n")
 
 noc_file.write("\n")
