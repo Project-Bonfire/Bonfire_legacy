@@ -238,26 +238,31 @@ for i in range(network_dime*network_dime):
     noc_file.write("TX_L_"+str(i)+");\n")
   else:
     noc_file.write("TX_L_"+str(i)+",\n")
+
+string_to_print = ""
 if add_FI:
-  noc_file.write("\t--fault injector signals\n")
+  string_to_print += "\t--fault injector signals\n"
+  string_to_print +="\t--vertical signals\n"
   for i in range(0, network_dime*network_dime):
     node_x = i % network_dime
     node_y = i / network_dime
     if node_y != network_dime-1:
-      noc_file.write("\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+network_dime)+", \n")
-      noc_file.write("\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
-                       ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+",\n\n")
+      string_to_print += "\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+network_dime)+", \n"
+      string_to_print += "\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +\
+                       ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+",\n\n"
+                       
+  string_to_print +="\t--horizontal signals\n"
   for i in range(0, network_dime*network_dime):
       node_x = i % network_dime
       node_y = i / network_dime
       if node_x != network_dime -1 :
-          noc_file.write("\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) + ",\n")
-          if node_y != network_dime -1 :
-              noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
-                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+",\n")
-          else:
-            noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
-                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+");\n")
+          string_to_print += "\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) + ",\n"
+          string_to_print += "\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
+                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+",\n\n"
+
+noc_file.write(string_to_print[:len(string_to_print)-3])
+noc_file.write("\n            ); \n")
+
 noc_file.write("\n")
 noc_file.write("-- connecting the packet generators\n")
 if random_dest:
@@ -316,22 +321,22 @@ if add_FI:
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
       noc_file.write("gen_fault(sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i) +
-                     ", FI_Add_"+str(i+1)+"_"+str(i)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
+                     ", FI_Add_"+str(i+1)+"_"+str(i)+", "+str(random_delay)+", "+ str(seed_1)+", "+ str(seed_2)+");\n")
       random_delay = random.randint(100, 200)
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
       noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
-                     ", FI_Add_"+str(i)+"_"+str(i+1)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
+                     ", FI_Add_"+str(i)+"_"+str(i+1)+", "+str(random_delay)+", "+ str(seed_1)+", "+ str(seed_2)+");\n")
     if node_y != network_dime-1:
       random_delay = random.randint(100, 200)
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
       noc_file.write("gen_fault(sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime) +
-                     "_"+str(i)+", FI_Add_"+str(i+network_dime)+"_"+str(i)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
+                     "_"+str(i)+", FI_Add_"+str(i+network_dime)+"_"+str(i)+", "+str(random_delay)+", "+ str(seed_1)+", "+ str(seed_2)+");\n")
       random_delay = random.randint(100, 200)
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
       noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
-                     ", FI_Add_"+str(i)+"_"+str(i+network_dime)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
-
+                     ", FI_Add_"+str(i)+"_"+str(i+network_dime)+", "+str(random_delay)+", "+ str(seed_1)+", "+ str(seed_2)+");\n")
+ 
 noc_file.write("end;\n")
