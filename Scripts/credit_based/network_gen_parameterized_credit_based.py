@@ -50,7 +50,7 @@ declare_components(noc_file, CB_Package.add_parity, CB_Package.add_FI, CB_Packag
 
 declare_signals(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV)
 
-generate_ascii_art(noc_file, CB_Package.network_dime)
+generate_ascii_art(noc_file, CB_Package.network_dime, CB_Package.add_FI)
 
 
 noc_file.write("begin\n\n\n")

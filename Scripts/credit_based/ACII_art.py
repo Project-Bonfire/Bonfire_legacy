@@ -1,7 +1,7 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
 
-def generate_ascii_art(noc_file, network_dime):
+def generate_ascii_art(noc_file, network_dime, FI):
 
     noc_file.write("\n\n")
     noc_file.write("--        organizaiton of the network:\n")
@@ -17,10 +17,13 @@ def generate_ascii_art(noc_file, network_dime):
         noc_file.write("--  |       ")
         for i in range(0, network_dime):
             if i != network_dime-1:
+                link = "---"
+                if FI: 
+                    link = "-*-"
                 if (i+network_dime*j) >= 10:
-                    noc_file.write(" | "+str(i+network_dime*j)+" | ---")
+                    noc_file.write(" | "+str(i+network_dime*j)+" | "+link)
                 else:
-                    noc_file.write(" | "+str(i+network_dime*j)+"  | ---")
+                    noc_file.write(" | "+str(i+network_dime*j)+"  | "+link)
             else:
                 if (i+network_dime*j) >= 10:
                     noc_file.write(" | "+str(i+network_dime*j)+" |")
@@ -28,6 +31,9 @@ def generate_ascii_art(noc_file, network_dime):
                     noc_file.write(" | "+str(i+network_dime*j)+"  |")
 
         noc_file.write("\n")
+        link = "|"
+        if FI:
+            link = "*"
         if j == network_dime-1:
             noc_file.write("--  v  ")
         else:
@@ -42,6 +48,6 @@ def generate_ascii_art(noc_file, network_dime):
         else:
             noc_file.write("\n--  |")
             for i in range(0, network_dime):
-                noc_file.write("          |")
+                noc_file.write("          "+link)
 
         noc_file.write("\n")

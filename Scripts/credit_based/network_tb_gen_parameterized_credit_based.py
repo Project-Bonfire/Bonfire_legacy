@@ -254,7 +254,7 @@ for i in range(network_dime**2):
 
 if add_FI:
   string_to_print +="\t--fault injector signals\n"
-  string_to_print +="\t--vertical signals\n"
+  string_to_print +="\t--FI vertical signals\n"
   for i in range(0, network_dime*network_dime):
     node_x = i % network_dime
     node_y = i / network_dime
@@ -263,7 +263,7 @@ if add_FI:
       string_to_print +="\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +\
                        ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+",\n\n"
 
-  string_to_print +="\t--horizontal signals\n"
+  string_to_print +="\t--FI horizontal signals\n"
   for i in range(0, network_dime*network_dime):
       node_x = i % network_dime
       node_y = i / network_dime

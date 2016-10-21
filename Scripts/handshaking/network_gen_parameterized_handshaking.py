@@ -129,31 +129,31 @@ for i in range(network_dime*network_dime):
   else:
     noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0);\n")
 
+string_to_print = ""
 if add_FI:
-  noc_file.write("\t--fault injector signals\n")
+  string_to_print += "\t--fault injector signals\n"
   for i in range(0, network_dime*network_dime):
     node_x = i % network_dime
     node_y = i / network_dime
     if node_y != network_dime-1:
 
-      noc_file.write("\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i) +
-                     "_"+str(i+network_dime)+": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n")
-      noc_file.write("\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
-                         ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+": in std_logic;\n\n")
+      string_to_print += "\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i) +\
+                     "_"+str(i+network_dime)+": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n"
+      string_to_print += "\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +\
+                         ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+": in std_logic;\n\n"
+
   for i in range(0, network_dime*network_dime):
       node_x = i % network_dime
       node_y = i / network_dime
       if node_x != network_dime -1 :
-          noc_file.write("\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) +
-                         ": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n")
-          if node_y != network_dime -1 :
-              noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
-                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic;\n\n")
-          else:
-            noc_file.write("\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
-                             ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic\n")
+          string_to_print += "\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) +\
+                             ": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n"
+          string_to_print +="\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
+                                ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic;\n\n"
 
-noc_file.write("            ); \n")
+noc_file.write(string_to_print[:len(string_to_print)-3])
+noc_file.write("\n            ); \n")
+
 noc_file.write("end network_"+str(network_dime)+"x"+str(network_dime)+"; \n")
 
 
