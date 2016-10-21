@@ -127,6 +127,9 @@ package body TB_Package is
 
       -- generating the packet 
       id_counter := id_counter + 1;
+      if id_counter = 256 then
+          id_counter := 0;
+      end if;
       --------------------------------------
       uniform(seed1, seed2, rand);
       Packet_length := integer((integer(rand*100.0)*frame_length)/300);
