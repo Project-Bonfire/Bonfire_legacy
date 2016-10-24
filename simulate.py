@@ -41,22 +41,8 @@ RECEIVED_TXT_PATH = "received.txt"
 SENT_TXT_PATH = "sent.txt"
 LATENCY_CALCULATION_PATH = "calculate_latency.py"
 
-#TODO NEED UPDATE/REMOVAL
-#####################
-SRC_DIR = "."
-NET_CREDIT_BASED_GEN_SCRIPT = SRC_DIR + "/EHA/scripts/Credit_Based/network_gen_parameterized_CB_FC.py" # For Credit-Based Flow Control
-
-NET_CREDIT_BASED_TB_GEN_SCRIPT = SRC_DIR + "/Test/scripts/network_tb_gen_parameterized_credit_based.py" # For Credit-Based Flow Control
-WAVE_DO_CREDIT_BASED_GEN_SCRIPT = SRC_DIR + "/Test/scripts/wave_do_gen_credit_based.py" # For Credit-Based Flow Control
-
-
-######################
-
-
-
+# Debug mode is off by default
 DEBUG = False
-
-
 
 """
 Arguments parser
