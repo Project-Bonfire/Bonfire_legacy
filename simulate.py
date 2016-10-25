@@ -232,6 +232,11 @@ def arg_parser(argv, program_argv):
     else:
         program_argv['add_FI'] = False
 
+    if '-LV' in argv[1:]:
+        program_argv['add_LV'] = True
+    else:
+        program_argv['add_LV'] = False
+
     if '-packet_drop' in argv[1:]:
         program_argv['packet_drop'] = True
     else:
@@ -340,15 +345,42 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 + "/RTL/xbar.vhd\"\n")
 
             # Include packet dropping functionality?
-            if program_argv['packet_drop']:
+            if program_argv['add_LV']:
+                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
+                + "/allocator_LV.vhd\"\n")
+                
+                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
+                + "/FIFO_one_hot_LV_CB.vhd\"\n")
+
+                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
+                + "/LBDR_LV.vhd\"\n")
+
+                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
+                + "/Router_LV_CB.vhd\"\n")
+
+                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
+                + "/xbar_LV.vhd\"\n")
+
+                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
+                + "/packetizer_LV.vhd\"\n")
+
+                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
+                + "/TB_Package_LV_CB_multi_flit.vhd\"\n")
+
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/FIFO_one_hot_credit_based_packet_drop.vhd\"\n")
-            elif program_argv['packet_saving']:
+                    + "/RTL/FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd\"\n")    
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/FIFO_one_hot_credit_based_packet_drop_flit_saving.vhd\"\n")
-            else:
-                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/FIFO_one_hot_credit_based.vhd\"\n")
+                    + "/RTL/Router_32_bit_credit_based_packet_drop_LV_compatible.vhd\"\n") 
+            else:    
+                if program_argv['packet_drop']:
+                    do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                        + "/RTL/FIFO_one_hot_credit_based_packet_drop.vhd\"\n")
+                elif program_argv['packet_saving']:
+                    do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                        + "/RTL/FIFO_one_hot_credit_based_packet_drop_flit_saving.vhd\"\n")
+                else:
+                    do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                        + "/RTL/FIFO_one_hot_credit_based.vhd\"\n")
 
         # Add a network interface
         if program_argv['add_NI'] != -1:

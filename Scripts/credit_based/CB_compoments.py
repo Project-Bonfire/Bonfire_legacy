@@ -6,6 +6,7 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, network_d
         noc_file.write("component router_credit_based_parity_lv is\n")
         noc_file.write("    generic (\n")
         noc_file.write("        DATA_WIDTH: integer := 32;\n")
+        noc_file.write("        DATA_WIDTH_LV: integer := 11;\n")
         noc_file.write("        current_address : integer := 0;\n")
         noc_file.write("        Rxy_rst : integer := 60;\n")
         noc_file.write("        Cx_rst : integer := 10;\n")

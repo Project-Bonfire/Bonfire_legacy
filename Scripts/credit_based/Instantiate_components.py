@@ -29,7 +29,7 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_lv):
     if add_lv:
         for i in range(0, network_dime**2):
             noc_file.write("R_"+str(i)+": router_credit_based_parity_lv \n")
-            noc_file.write("	generic map (DATA_WIDTH =>DATA_WIDTH, ")
+            noc_file.write("	generic map (DATA_WIDTH =>DATA_WIDTH, DATA_WIDTH_LV =>DATA_WIDTH_LV,")
             noc_file.write("        current_address => "+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+",\n")
             noc_file.write("        Cx_rst =>  "+str(cx_rst_calculator(i, network_dime)) +
                            ", NoC_size => "+str(network_dime)+")\n")

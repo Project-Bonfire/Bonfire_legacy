@@ -39,6 +39,7 @@ architecture behavior of PACKETIZER_LV is
  signal FIFO_MEM_2, FIFO_MEM_2_in : std_logic_vector(9 downto 0);
  signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(9 downto 0);
 
+ signal memory_input: std_logic_vector(9 downto 0);
  signal FIFO_Data_out: std_logic_vector(9 downto 0);
 
  signal grant, all_input_signals: std_logic;
@@ -69,7 +70,7 @@ end process;
 
 all_input_signals <= faulty_packet_N or faulty_packet_E or faulty_packet_W or faulty_packet_S or faulty_packet_L or healthy_packet_N or healthy_packet_E or healthy_packet_W or healthy_packet_S or healthy_packet_L;
 --all_input_signals <= faulty_packet_N or faulty_packet_E or faulty_packet_W or faulty_packet_S or faulty_packet_L or healthy_packet_N;
-
+memory_input <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L & healthy_packet_N & healthy_packet_E & healthy_packet_W & healthy_packet_S & healthy_packet_L;
 process(all_input_signals)begin
     if  all_input_signals = '1' then
         write_pointer_in <= write_pointer(0) & write_pointer(2 downto 1); 
@@ -78,11 +79,11 @@ process(all_input_signals)begin
     end if;
 end process;
 
-process(faulty_packet_N, faulty_packet_E, faulty_packet_W, faulty_packet_S, faulty_packet_L, healthy_packet_N, healthy_packet_E, healthy_packet_W, healthy_packet_S, healthy_packet_L, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3)begin
+process(memory_input, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3)begin
       case( write_pointer ) is
-          when "001" => FIFO_MEM_1_in <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L & healthy_packet_N & healthy_packet_E & healthy_packet_W & healthy_packet_S & healthy_packet_L; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; 
-          when "010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L & healthy_packet_N & healthy_packet_E & healthy_packet_W & healthy_packet_S & healthy_packet_L; FIFO_MEM_3_in <= FIFO_MEM_3; 
-          when "100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L & healthy_packet_N & healthy_packet_E & healthy_packet_W & healthy_packet_S & healthy_packet_L; 
+          when "001" => FIFO_MEM_1_in <= memory_input; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; 
+          when "010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= memory_input; FIFO_MEM_3_in <= FIFO_MEM_3; 
+          when "100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= memory_input; 
           when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3;  
       end case ;
 end process;
@@ -110,6 +111,7 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
     begin
         TX_LV <= (others => '0');
         grant<= '0';
+        read_pointer_in <=  read_pointer;
         case(state) is
         
             when IDLE =>
@@ -118,7 +120,7 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
                 else
                     state_in <= IDLE;
                 end if;
-                read_pointer_in <=  read_pointer;
+ 
             when HEADER_FLIT =>
                 if credit_counter_out /= "00" then
                     grant <= '1';
@@ -127,7 +129,8 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
                 else
                     state_in <= HEADER_FLIT;
                 end if;
-                read_pointer_in <=  read_pointer(0) & read_pointer(2 downto 1);    
+                
+
             when BODY_FLIT =>
                 if credit_counter_out /= "00" then
                     grant <= '1';
@@ -142,6 +145,7 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
                     grant <= '1';
                     TX_LV <= "000000" & FIFO_Data_out(9 downto 8) &  "100";
                     state_in <= IDLE;
+                    read_pointer_in <=  read_pointer(0) & read_pointer(2 downto 1);    
                 else
                     state_in <= TAIL_FLIT;
                 end if;
