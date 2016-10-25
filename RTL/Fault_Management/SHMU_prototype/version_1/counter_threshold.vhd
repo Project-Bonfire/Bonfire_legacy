@@ -96,20 +96,22 @@ process (NET, DET, state)begin
               next_state <= Healthy_state;
             elsif DET = '1' then
               next_state <= Intermittent_state;
+              Intermittent <= '1'; 
             else
               next_state <= Healthy_state;
             end if;
       when Intermittent_state => 
-            Intermittent <= '1'; 
+            Intermittent <= '0'; 
             if NET = '1' then 
               next_state <= Healthy_state;
             elsif DET = '1' then
               next_state <= Faulty_state;
+              Faulty <= '1';
             else
               next_state <= Intermittent_state;
             end if;
       when Faulty_state => 
-            Faulty <= '1';
+            Faulty <= '0';
             next_state <= Faulty_state;
       when others => 
             next_state <= Healthy_state;
