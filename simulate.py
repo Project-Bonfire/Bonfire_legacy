@@ -241,7 +241,7 @@ def arg_parser(argv, program_argv):
         program_argv['packet_drop'] = True
     else:
         program_argv['packet_drop'] = False
-    
+
     if '-packet_saving' in argv[1:]:
         program_argv['packet_saving'] = True
     else:
@@ -346,9 +346,13 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
             # Include packet dropping functionality?
             if program_argv['add_LV']:
+
+                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/SHMU_prototype/version_1"\
+                + "/counter_threshold.vhd\"\n")
+
                 do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
                 + "/allocator_LV.vhd\"\n")
-                
+
                 do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
                 + "/FIFO_one_hot_LV_CB.vhd\"\n")
 
@@ -368,10 +372,10 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 + "/TB_Package_LV_CB_multi_flit.vhd\"\n")
 
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd\"\n")    
+                    + "/RTL/FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd\"\n")
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/Router_32_bit_credit_based_packet_drop_LV_compatible.vhd\"\n") 
-            else:    
+                    + "/RTL/Router_32_bit_credit_based_packet_drop_LV_compatible.vhd\"\n")
+            else:
                 if program_argv['packet_drop']:
                     do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                         + "/RTL/FIFO_one_hot_credit_based_packet_drop.vhd\"\n")
@@ -640,13 +644,16 @@ def main(argv):
 
     # Generate wave.do
     wave_do_file_name = "wave_" \
-    + str(program_argv['network_dime']) + "x" + str(program_argv['network_dime']) \
-    + ".do"
+    + (str(program_argv['network_dime']) + "x" + str(program_argv['network_dime'])) \
+    + ("_LV" if program_argv['add_LV'] else "") \
+    + (".do")
 
     wave_do_gen_command = "python " + SCRIPTS_DIR + "/" + flow_control_type + "/" \
         + WAVE_DO_GEN_SCRIPT + "_" + flow_control_type + ".py" \
-        + " -D " + str(program_argv['network_dime']) \
-        + " -o " + SIMUL_DIR + "/" + wave_do_file_name
+        + (" -D " + str(program_argv['network_dime'])) \
+        + (" -LV " if program_argv['add_LV'] == True else "") \
+        + (" -o " + SIMUL_DIR + "/" + wave_do_file_name)
+
 
     if DEBUG: print_msg(MSG_DEBUG, "Running wave.do generator:\n\t" + wave_do_gen_command)
 

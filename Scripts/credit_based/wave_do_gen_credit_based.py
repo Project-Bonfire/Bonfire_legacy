@@ -11,7 +11,7 @@ else:
   	add_lv = False
 
 
-if '-o'  in sys.argv[1:]: 
+if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
   if ".do" not in file_path:
       raise ValueError("wrong file extention. only do files are accepted!")
@@ -37,7 +37,7 @@ for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -color Gold :"+tb_name+":valid_in_L_"+str(i)+"\n")
 	wave_file.write("add wave -noupdate -color Gold :"+tb_name+":credit_out_L_"+str(i)+"\n")
 	wave_file.write("add wave -noupdate -color Violet -radix decimal :"+tb_name+":TX_L_"+str(i)+"\n")
-	wave_file.write("add wave -noupdate -color Violet :"+tb_name+":valid_out_L_"+str(i)+"\n") 
+	wave_file.write("add wave -noupdate -color Violet :"+tb_name+":valid_out_L_"+str(i)+"\n")
 	wave_file.write("add wave -noupdate -color Violet :"+tb_name+":credit_in_L_"+str(i)+"\n")
  	wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 for i in range(0 , network_dime*network_dime):
@@ -50,7 +50,7 @@ wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 if add_lv:
 	for i in range(0 , network_dime*network_dime):
 		wave_file.write("add wave -noupdate -color Violet -radix decimal :"+tb_name+":TX_LV_"+str(i)+"\n")
-		wave_file.write("add wave -noupdate -color Violet :"+tb_name+":valid_out_LV_"+str(i)+"\n") 
+		wave_file.write("add wave -noupdate -color Violet :"+tb_name+":valid_out_LV_"+str(i)+"\n")
 		wave_file.write("add wave -noupdate -color Violet :"+tb_name+":credit_in_LV_"+str(i)+"\n")
 	 	wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 
@@ -69,6 +69,6 @@ wave_file.write("configure wave -gridoffset 0\n")
 wave_file.write("configure wave -gridperiod 1\n")
 wave_file.write("configure wave -griddelta 40\n")
 wave_file.write("configure wave -timeline 0\n")
-wave_file.write("configure wave -timelineunits ps\n")
+wave_file.write("configure wave -timelineunits ns\n")
 wave_file.write("update\n")
 wave_file.write("WaveRestoreZoom {0 ps} {147 ns}\n")
