@@ -146,6 +146,9 @@ def arg_parser(argv, program_argv):
         print BOLD + "  -packet_drop:" + ENDC
         print "\tAdd packet dropping capability to FIFO in case of fault injection. " \
             + "Default is " + str(program_argv['packet_drop']) + "."
+        print BOLD + "  -packet_saving:" + ENDC
+        print "\tAdd advance packet dropping capability to FIFO in case of fault injection." \
+            + "Default is " + str(program_argv['packet_drop']) + "."
         print
         print
         print BOLD + OKBLUE + "  Simulation parameters:" + ENDC
@@ -233,6 +236,11 @@ def arg_parser(argv, program_argv):
         program_argv['packet_drop'] = True
     else:
         program_argv['packet_drop'] = False
+    
+    if '-packet_saving' in argv[1:]:
+        program_argv['packet_saving'] = True
+    else:
+        program_argv['packet_saving'] = False
 
     if '-lat' in argv[1:]:
         program_argv['lat'] = True
@@ -334,8 +342,10 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
             # Include packet dropping functionality?
             if program_argv['packet_drop']:
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                    + "/RTL/FIFO_one_hot_credit_based_packet_drop.vhd\"\n")
+            elif program_argv['packet_saving']:
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/FIFO_one_hot_credit_based_packet_drop_flit_saving.vhd\"\n")
-
             else:
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/FIFO_one_hot_credit_based.vhd\"\n")
