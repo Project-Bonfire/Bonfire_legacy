@@ -21,7 +21,9 @@ entity FIFO_credit_based is
             read_en_L : in std_logic;
             credit_out: out std_logic; 
             empty_out: out std_logic; 
-            Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0)
+            Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0);
+
+            fault_info, health_info: out  std_logic
     );
 end FIFO_credit_based;
 
@@ -171,6 +173,8 @@ end process;
       end case ;
      
      --some defaults 
+     fault_info <= '0';
+     health_info <= '0';
      fake_credit <= '0';
      state_in <= state_out;
      faulty_packet_in <= faulty_packet_out;
@@ -188,6 +192,7 @@ end process;
               fake_credit <= '1';
               FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
               state_in <= Packet_drop;
+              fault_info <= '1';
               faulty_packet_in <= '1';
             end if;           
       	  when Header_flit => 
@@ -212,6 +217,7 @@ end process;
 			            when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
 			        end case ;
 			        state_in <= Packet_drop;
+              fault_info <= '1';
 			        faulty_packet_in <= '1';                
 	              end if;  
 	            else
@@ -225,6 +231,7 @@ end process;
 	                          state_in <= state_out;
 	                      elsif flit_type = "100" then 
 	                          state_in <= Tail_flit;
+                            health_info <= '1';
 	                      else
 	                          -- we should not be here!
 	                          state_in <= state_out;
@@ -239,6 +246,7 @@ end process;
 	                      when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
 	                  end case ;
 	                  state_in <= Packet_drop;
+                    fault_info <= '1';
 	                  faulty_packet_in <= '1'; 
 	 				 
 	              end if;
@@ -257,6 +265,7 @@ end process;
                       fake_credit <= '1';
                       FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                       state_in <= Packet_drop;
+                      fault_info <= '1';
                       faulty_packet_in <= '1';        
                   end if;   
               else
