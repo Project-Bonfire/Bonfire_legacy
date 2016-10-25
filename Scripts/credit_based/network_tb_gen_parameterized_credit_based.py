@@ -8,6 +8,7 @@ import random
 
 import sys
 
+
 if '--help' in sys.argv[1:]:
   print "\t-D [network size]: makes a test bench for network of [size]X[size]. Size can be "
   print "\t                   only multiples of two. default value is 4."
@@ -66,6 +67,7 @@ if '-BR'  in sys.argv[1:]:
   frame_size = int(ceil(1.0/PIR))
 else:
   bit_reversal = False
+
 
 if random_dest and bit_reversal:
   raise ValueError("Can not accept multiple traffic patterns at the same time...")
@@ -283,7 +285,7 @@ noc_file.write("\n            ); \n")
 
 noc_file.write("\n")
 noc_file.write("-- connecting the packet generators\n")
-if random_dest:
+if random_dest or bit_reversal:
   for i in range(0, network_dime*network_dime):
     random_start = random.randint(3, 50)
     if got_finish_time:
@@ -293,8 +295,13 @@ if random_dest:
 
     noc_file.write("credit_counter_control(clk, credit_out_L_"+str(i)+", valid_in_L_"+str(i)+", credit_counter_out_"+str(i)+");\n")
 
-    noc_file.write("gen_random_packet("+str(network_dime)+", "+str(frame_size)+", "+str(i)+", "+str(random_start)+", " +str(packet_size_min)+", " +str(packet_size_max)+", " +
+    if random_dest:
+      noc_file.write("gen_random_packet("+str(network_dime)+", "+str(frame_size)+", "+str(i)+", "+str(random_start)+", " +str(packet_size_min)+", " +str(packet_size_max)+", " +
                     str(random_end)+" ns, clk, credit_counter_out_"+str(i)+", valid_in_L_"+str(i)+", RX_L_"+str(i)+");\n")
+    elif bit_reversal:
+      noc_file.write("gen_bit_reversed_packet("+str(network_dime)+", "+str(frame_size)+", "+str(i)+", "+str(random_start)+", " +str(packet_size_min)+", " +str(packet_size_max)+", " +
+                    str(random_end)+" ns, clk, credit_counter_out_"+str(i)+", valid_in_L_"+str(i)+", RX_L_"+str(i)+");\n")
+
     noc_file.write("\n")
 
 noc_file.write("\n")

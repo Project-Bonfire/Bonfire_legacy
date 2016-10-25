@@ -19,6 +19,10 @@ package TB_Package is
                       finish_time: in time; signal clk: in std_logic;
                       signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic; 
                       signal port_in: out std_logic_vector);
+  procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
+                      finish_time: in time; signal clk: in std_logic;
+                      signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic; 
+                      signal port_in: out std_logic_vector); 
   procedure get_packet(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; 
                      signal credit_out: out std_logic; signal valid_in: in std_logic; signal port_in: in std_logic_vector);
   
@@ -206,6 +210,129 @@ package body TB_Package is
       end if;
     end loop;
   end gen_random_packet;
+
+procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
+                      finish_time: in time; signal clk: in std_logic;
+                      signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic; 
+                      signal port_in: out std_logic_vector) is
+    variable seed1 :positive ;
+    variable seed2 :positive ;
+    variable LINEVARIABLE : line; 
+    file VEC_FILE : text is out "sent.txt";
+    variable rand : real ;
+    variable destination_id: integer;
+    variable id_counter, frame_starting_delay, Packet_length, frame_ending_delay : integer:= 0;
+    variable credit_counter: std_logic_vector (1 downto 0);
+    begin
+
+    Packet_length := integer((integer(rand*100.0)*frame_length)/300);
+    valid_out <= '0';
+    port_in <= "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" ;
+    wait until clk'event and clk ='1';
+    for i in 0 to initial_delay loop
+      wait until clk'event and clk ='1';
+    end loop;
+    port_in <= "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU" ;
+
+    while true loop
+
+      --generating the frame initial delay
+      uniform(seed1, seed2, rand);
+      frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - 3*Packet_length)))/100);
+      --generating the frame ending delay
+      frame_ending_delay := frame_length - (3*Packet_length+frame_starting_delay);
+
+      for k in 0 to frame_starting_delay-1 loop 
+          wait until clk'event and clk ='0';
+      end loop;
+
+      valid_out <= '0';
+      while credit_counter_in = 0 loop
+        wait until clk'event and clk ='0';
+      end loop;
+
+
+      -- generating the packet 
+      id_counter := id_counter + 1;
+      if id_counter = 256 then
+          id_counter := 0;
+      end if;
+      --------------------------------------
+      uniform(seed1, seed2, rand);
+      Packet_length := integer((integer(rand*100.0)*frame_length)/300);
+      if (Packet_length < min_packet_size) then 
+          Packet_length:=min_packet_size;
+      end if;
+      if (Packet_length > max_packet_size) then 
+          Packet_length:=max_packet_size;
+      end if;
+      --------------------------------------
+      uniform(seed1, seed2, rand);
+      destination_id := integer(rand*real((network_size**2)-1));
+      while (destination_id = source) loop 
+          uniform(seed1, seed2, rand);
+          destination_id := integer(rand*3.0);
+      end loop;
+      --------------------------------------
+      write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: " & integer'image(Packet_length) & " id: " & integer'image(id_counter));
+      writeline(VEC_FILE, LINEVARIABLE);
+      wait until clk'event and clk ='0';
+      port_in <= Header_gen(Packet_length, source, destination_id, id_counter);
+      valid_out <= '1';
+      wait until clk'event and clk ='0';
+
+      --valid_out <= '0';
+      --while credit_counter_in = 0 loop
+      --  wait until clk'event and clk ='1';
+      --end loop;
+ 
+
+      for I in 0 to Packet_length-3 loop 
+            if credit_counter_in = "00" then 
+             valid_out <= '0'; 
+             wait until credit_counter_in'event and credit_counter_in >0;
+             wait until clk'event and clk ='0';
+            end if;
+
+            uniform(seed1, seed2, rand);
+            port_in <= Body_gen(Packet_length, integer(rand*1000.0));
+            valid_out <= '1';
+             wait until clk'event and clk ='0';
+            --valid_out <= '0';
+            --while credit_counter_in = 0 loop
+            --    wait until clk'event and clk ='0';
+            --end loop;  
+            --wait until clk'event and clk ='1';
+           
+           
+            
+      end loop;
+
+      if credit_counter_in = "00" then 
+             valid_out <= '0'; 
+             wait until credit_counter_in'event and credit_counter_in >0;
+             wait until clk'event and clk ='0';
+      end if;
+
+ 
+      uniform(seed1, seed2, rand);
+      port_in <= Tail_gen(Packet_length, integer(rand*1000.0));
+      valid_out <= '1';
+      wait until clk'event and clk ='0';
+
+      valid_out <= '0';
+      port_in <= "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" ;
+
+      for l in 0 to frame_ending_delay-1 loop 
+         wait until clk'event and clk ='0';
+      end loop;
+      port_in <= "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU" ;
+      
+      if now > finish_time then 
+          wait; 
+      end if;
+    end loop;
+  end gen_bit_reversed_packet;
 
 
   procedure get_packet(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; 
