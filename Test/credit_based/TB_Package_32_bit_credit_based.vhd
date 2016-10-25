@@ -15,7 +15,7 @@ package TB_Package is
   procedure credit_counter_control(signal clk: in std_logic; 
                                  signal credit_in: in std_logic; signal valid_out: in std_logic; 
                                  signal credit_counter_out: out std_logic_vector(1 downto 0));
-  procedure gen_random_packet(frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
+  procedure gen_random_packet(network_size, frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
                       finish_time: in time; signal clk: in std_logic;
                       signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic; 
                       signal port_in: out std_logic_vector);
@@ -84,7 +84,7 @@ package body TB_Package is
     end loop;
   end credit_counter_control;
 
-  procedure gen_random_packet(frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
+  procedure gen_random_packet(network_size, frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
                       finish_time: in time; signal clk: in std_logic;
                       signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic; 
                       signal port_in: out std_logic_vector) is
@@ -141,7 +141,7 @@ package body TB_Package is
       end if;
       --------------------------------------
       uniform(seed1, seed2, rand);
-      destination_id := integer(rand*3.0);
+      destination_id := integer(rand*real((network_size**2)-1));
       while (destination_id = source) loop 
           uniform(seed1, seed2, rand);
           destination_id := integer(rand*3.0);
