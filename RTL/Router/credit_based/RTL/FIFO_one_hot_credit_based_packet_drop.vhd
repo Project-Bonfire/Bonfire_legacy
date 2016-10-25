@@ -44,6 +44,10 @@ architecture behavior of FIFO_credit_based is
    signal fake_credit, credit_in,  write_fake_flit: std_logic;
    signal fake_credit_counter, fake_credit_counter_in: std_logic_vector(1 downto 0);
 
+   -- these signals are for fault classifier. They should be moved to the interface and 
+   -- be connected to counter-threshold module, parity unit should not be used any more if we
+   -- are using this module instead of the normal FIFO!
+   signal fault_info, health_info:  std_logic;
 
 begin
  --------------------------------------------------------------------------------------------
@@ -146,8 +150,6 @@ process(fake_credit, read_en, fake_credit_counter) begin
     end if;
 end process;
 
-
-
 process(valid_in, RX) begin
   if valid_in = '1' then 
     xor_all <= XOR_REDUCE(RX(DATA_WIDTH-1 downto 1));
@@ -162,9 +164,10 @@ process(valid_in, RX, xor_all)begin
     fault_out <= '1';
   end if;
 end process;
-
+ 
     process(RX, faulty_packet_out, fault_out, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4, state_out, flit_type, valid_in)begin
       -- this is the default value of the memory!
+      fault_info <= '0';
       case( write_pointer ) is
           when "0001" => FIFO_MEM_1_in <= RX;         FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
           when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= RX;         FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
@@ -174,6 +177,8 @@ end process;
       end case ;
      
      --some defaults 
+     fault_info <= '0';
+     health_info <= '0';
      fake_credit <= '0';
      state_in <= state_out;
      faulty_packet_in <= faulty_packet_out;
@@ -191,6 +196,7 @@ end process;
               fake_credit <= '1';
               FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
               state_in <= Packet_drop;
+              fault_info <= '1';
               faulty_packet_in <= '1';
             end if;           
       	  when Header_flit => 
@@ -215,6 +221,7 @@ end process;
 			            when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
 			        end case ;
 			        state_in <= Packet_drop;
+              fault_info <= '1';
 			        faulty_packet_in <= '1';                
 	              end if;  
 	            else
@@ -228,6 +235,7 @@ end process;
 	                          state_in <= state_out;
 	                      elsif flit_type = "100" then 
 	                          state_in <= Tail_flit;
+                            health_info <= '1';
 	                      else
 	                          -- we should not be here!
 	                          state_in <= state_out;
@@ -242,6 +250,7 @@ end process;
 	                      when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
 	                  end case ;
 	                  state_in <= Packet_drop;
+                    fault_info <= '1';
 	                  faulty_packet_in <= '1'; 
 	 				 
 	              end if;
@@ -260,10 +269,11 @@ end process;
                       fake_credit <= '1';
                       FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                       state_in <= Packet_drop;
+                      fault_info <= '1';
                       faulty_packet_in <= '1';        
                   end if;   
               else
-                      state_in <= state_out;
+                      state_in <= Idle;
               end if;
 
           when Packet_drop => 
