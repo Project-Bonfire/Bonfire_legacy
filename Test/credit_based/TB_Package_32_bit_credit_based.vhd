@@ -25,7 +25,6 @@ package TB_Package is
                       signal port_in: out std_logic_vector); 
   procedure get_packet(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; 
                      signal credit_out: out std_logic; signal valid_in: in std_logic; signal port_in: in std_logic_vector);
-  
   procedure gen_fault(signal sta_0, sta_1: out std_logic; signal address: out std_logic_vector; delay, seed_1, seed_2: in integer);
 
 end TB_Package;
@@ -158,12 +157,6 @@ package body TB_Package is
       valid_out <= '1';
       wait until clk'event and clk ='0';
 
-      --valid_out <= '0';
-      --while credit_counter_in = 0 loop
-      --  wait until clk'event and clk ='1';
-      --end loop;
- 
-
       for I in 0 to Packet_length-3 loop 
             if credit_counter_in = "00" then 
              valid_out <= '0'; 
@@ -175,14 +168,6 @@ package body TB_Package is
             port_in <= Body_gen(Packet_length, integer(rand*1000.0));
             valid_out <= '1';
              wait until clk'event and clk ='0';
-            --valid_out <= '0';
-            --while credit_counter_in = 0 loop
-            --    wait until clk'event and clk ='0';
-            --end loop;  
-            --wait until clk'event and clk ='1';
-           
-           
-            
       end loop;
 
       if credit_counter_in = "00" then 
@@ -281,12 +266,6 @@ procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_de
       valid_out <= '1';
       wait until clk'event and clk ='0';
 
-      --valid_out <= '0';
-      --while credit_counter_in = 0 loop
-      --  wait until clk'event and clk ='1';
-      --end loop;
- 
-
       for I in 0 to Packet_length-3 loop 
             if credit_counter_in = "00" then 
              valid_out <= '0'; 
@@ -298,14 +277,6 @@ procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_de
             port_in <= Body_gen(Packet_length, integer(rand*1000.0));
             valid_out <= '1';
              wait until clk'event and clk ='0';
-            --valid_out <= '0';
-            --while credit_counter_in = 0 loop
-            --    wait until clk'event and clk ='0';
-            --end loop;  
-            --wait until clk'event and clk ='1';
-           
-           
-            
       end loop;
 
       if credit_counter_in = "00" then 
@@ -357,8 +328,8 @@ procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_de
                 packet_id := to_integer(unsigned(port_in(8 downto 1)));
             end if;  
             if  (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) = "010")   then
-               report "flit type: " &integer'image(to_integer(unsigned(port_in(DATA_WIDTH-1 downto DATA_WIDTH-3)))) ;
-               report  "counter: " & integer'image(counter);
+               --report "flit type: " &integer'image(to_integer(unsigned(port_in(DATA_WIDTH-1 downto DATA_WIDTH-3)))) ;
+               --report  "counter: " & integer'image(counter);
                counter := counter+1; 
             end if;
             if (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100") then 
