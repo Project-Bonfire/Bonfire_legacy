@@ -1,7 +1,6 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 from CB_functions import rxy_rst_calculator, cx_rst_calculator
-
-
+ 
 def instantiate_shmu(noc_file, network_dime):
 
     noc_file.write("-- instantiating the SHMU\n")
@@ -25,16 +24,16 @@ def instantiate_shmu(noc_file, network_dime):
     noc_file.write(");\n")
 
 
-def instantiate_routers(noc_file, network_dime, add_parity, add_lv):
+def instantiate_routers(noc_file, network_dime, add_parity, add_lv, healthy_counter_threshold, faulty_counter_threshold, counter_depth):
     if add_lv:
         for i in range(0, network_dime**2):
             noc_file.write("R_"+str(i)+": router_credit_based_parity_lv \n")
             noc_file.write("	generic map (DATA_WIDTH =>DATA_WIDTH, DATA_WIDTH_LV =>DATA_WIDTH_LV,")
             noc_file.write("        current_address => "+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+",\n")
             noc_file.write("        Cx_rst =>  "+str(cx_rst_calculator(i, network_dime)) +
-                           ", NoC_size => "+str(network_dime)+", healthy_counter_threshold => 20" 
-                           +", faulty_counter_threshold => 3" 
-                           +", counter_depth => 4)\n")
+                           ", NoC_size => "+str(network_dime)+", healthy_counter_threshold => "+str(healthy_counter_threshold) 
+                           +", faulty_counter_threshold => "+str(faulty_counter_threshold) 
+                           +", counter_depth => "+str(counter_depth)+")\n")
             noc_file.write("    port map(\n")
             noc_file.write("    reset, clk,\n")
             noc_file.write("\tRX_N_"+str(i)+", RX_E_"+str(i)+", RX_W_"+str(i)+", RX_S_"+str(i)+", RX_L_"+str(i)+",\n")

@@ -55,7 +55,9 @@ generate_ascii_art(noc_file, CB_Package.network_dime, CB_Package.add_FI)
 
 noc_file.write("begin\n\n\n")
 
-instantiate_routers(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV)
+#todo: One should be able to control the threshold values!
+
+instantiate_routers(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV, CB_Package.healthy_counter_threshold, CB_Package.faulty_counter_threshold, CB_Package.counter_depth)
 
 if CB_Package.add_LV:
     instantiate_lv_routers(noc_file, CB_Package.network_dime)

@@ -9,6 +9,9 @@ class CreditBasedPackage():
         self.data_width = 32
         self.add_parity = False
         self.network_dime = 4
+        self.faulty_counter_threshold = 3
+        self.healthy_counter_threshold = 15
+        self.counter_depth = 4
         self.add_LV = False
         self.add_SHMU = False
         self.add_FO = False
