@@ -15,8 +15,8 @@ entity PACKETIZER_LV is
     port (
         reset, clk: in std_logic;
          
-        faulty_packet_N, faulty_packet_E, faulty_packet_W, faulty_packet_S, faulty_packet_L: in  std_logic;
-        healthy_packet_N, healthy_packet_E, healthy_packet_W, healthy_packet_S, healthy_packet_L: in  std_logic;
+        faulty_link_N, faulty_link_E, faulty_link_W, faulty_link_S, faulty_link_L: in  std_logic;
+        intermittent_link_N, intermittent_link_E, intermittent_link_W, intermittent_link_S, intermittent_link_L: in  std_logic;
 
         credit_in_LV: in std_logic;
         valid_out_LV : out std_logic;
@@ -68,9 +68,10 @@ process (clk, reset)begin
         end if;
 end process;
 
-all_input_signals <= faulty_packet_N or faulty_packet_E or faulty_packet_W or faulty_packet_S or faulty_packet_L or healthy_packet_N or healthy_packet_E or healthy_packet_W or healthy_packet_S or healthy_packet_L;
---all_input_signals <= faulty_packet_N or faulty_packet_E or faulty_packet_W or faulty_packet_S or faulty_packet_L or healthy_packet_N;
-memory_input <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L & healthy_packet_N & healthy_packet_E & healthy_packet_W & healthy_packet_S & healthy_packet_L;
+all_input_signals <= faulty_link_N or faulty_link_E or faulty_link_W or faulty_link_S or faulty_link_L or intermittent_link_N or intermittent_link_E or intermittent_link_W or intermittent_link_S or intermittent_link_L;
+
+memory_input <= faulty_link_N & faulty_link_E & faulty_link_W & faulty_link_S & faulty_link_L & intermittent_link_N & intermittent_link_E & intermittent_link_W & intermittent_link_S & intermittent_link_L;
+
 process(all_input_signals)begin
     if  all_input_signals = '1' then
         write_pointer_in <= write_pointer(0) & write_pointer(2 downto 1); 

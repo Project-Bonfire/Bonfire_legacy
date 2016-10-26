@@ -47,8 +47,8 @@ architecture behavior of router_credit_based_parity_lv is
     port (
         reset, clk: in std_logic;
          
-        faulty_packet_N, faulty_packet_E, faulty_packet_W, faulty_packet_S, faulty_packet_L: in  std_logic;
-        healthy_packet_N, healthy_packet_E, healthy_packet_W, healthy_packet_S, healthy_packet_L: in  std_logic;
+        faulty_link_N, faulty_link_E, faulty_link_W, faulty_link_S, faulty_link_L: in  std_logic;
+        intermittent_link_N, intermittent_link_E, intermittent_link_W, intermittent_link_S, intermittent_link_L: in  std_logic;
 
         credit_in_LV: in std_logic;
         valid_out_LV : out std_logic;
@@ -88,7 +88,7 @@ architecture behavior of router_credit_based_parity_lv is
     port (  reset: in  std_logic;
             clk: in  std_logic;
             faulty_packet, Healthy_packet: in  std_logic;
-            Healthy, Intermittent, Faulty:out std_logic
+            Healthy, intermittent, Faulty:out std_logic
             );
     end COMPONENT;
   
@@ -174,7 +174,7 @@ end COMPONENT;
     signal healthy_packet_N, healthy_packet_E, healthy_packet_W, healthy_packet_S, healthy_packet_L:  std_logic;
 
     signal faulty_link_N, faulty_link_E, faulty_link_W, faulty_link_S, faulty_link_L:  std_logic;
-    signal Intermittent_link_N, Intermittent_link_E, Intermittent_link_W, Intermittent_link_S, Intermittent_link_L:  std_logic;
+    signal intermittent_link_N, intermittent_link_E, intermittent_link_W, intermittent_link_S, intermittent_link_L:  std_logic;
 
 begin
 	
@@ -182,10 +182,10 @@ begin
 packetizer: PACKETIZER_LV generic map(DATA_WIDTH => DATA_WIDTH_LV, current_address => current_address, SHMU_address => 0)
             port map (reset => reset, clk => clk,
          
-        faulty_packet_N => faulty_link_N, faulty_packet_E => faulty_link_E, faulty_packet_W => faulty_link_W, 
-        faulty_packet_S => faulty_link_S, faulty_packet_L => faulty_link_L,
-        healthy_packet_N => Intermittent_link_N, healthy_packet_E => Intermittent_link_E, healthy_packet_W => Intermittent_link_W, 
-	    healthy_packet_S => Intermittent_link_S, healthy_packet_L => Intermittent_link_L,
+        faulty_link_N => faulty_link_N, faulty_link_E => faulty_link_E, faulty_link_W => faulty_link_W, 
+        faulty_link_S => faulty_link_S, faulty_link_L => faulty_link_L,
+        intermittent_link_N => intermittent_link_N, intermittent_link_E => intermittent_link_E, intermittent_link_W => intermittent_link_W, 
+	    intermittent_link_S => intermittent_link_S, intermittent_link_L => intermittent_link_L,
 
         credit_in_LV => credit_in_LV, 
         valid_out_LV => valid_out_LV,
@@ -194,23 +194,23 @@ packetizer: PACKETIZER_LV generic map(DATA_WIDTH => DATA_WIDTH_LV, current_addre
 -- all the counter_threshold modules
 CT_N:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_N, Healthy_packet => healthy_packet_N,
-             Intermittent=> Intermittent_link_N, Faulty => faulty_link_N);
+             intermittent=> intermittent_link_N, Faulty => faulty_link_N);
 
 CT_E:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_E, Healthy_packet => healthy_packet_E,
-             Intermittent=> Intermittent_link_E, Faulty => faulty_link_E);
+             intermittent=> intermittent_link_E, Faulty => faulty_link_E);
 
 CT_W:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_W, Healthy_packet => healthy_packet_W,
-             Intermittent=> Intermittent_link_W, Faulty => faulty_link_W);
+             intermittent=> intermittent_link_W, Faulty => faulty_link_W);
 
 CT_S:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_S, Healthy_packet => healthy_packet_S,
-             Intermittent=> Intermittent_link_S, Faulty => faulty_link_S);
+             intermittent=> intermittent_link_S, Faulty => faulty_link_S);
 
 CT_L:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_L, Healthy_packet => healthy_packet_L,
-             Intermittent=> Intermittent_link_L, Faulty => faulty_link_L);
+             intermittent=> intermittent_link_L, Faulty => faulty_link_L);
 
 -- all the FIFOs
 FIFO_N: FIFO_credit_based 
