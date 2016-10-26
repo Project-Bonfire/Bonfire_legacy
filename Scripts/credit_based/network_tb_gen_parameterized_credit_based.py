@@ -195,6 +195,7 @@ for i in range(0, network_dime*network_dime):
     noc_file.write("\tsignal credit_counter_out_"+str(i)+":  std_logic_vector (1 downto 0);\n")
     noc_file.write("\tsignal credit_out_L_"+str(i)+", credit_in_L_"+str(i)+", valid_in_L_"+str(i)+", valid_out_L_"+str(i) + ": std_logic;\n")
 
+#noc_file.write("\n\nAlias buried_sig is <<signal .NoC.valid_in_E_11 :std_logic>>;\n\n")
 
 if add_lv:
   for i in range(0, network_dime*network_dime):
