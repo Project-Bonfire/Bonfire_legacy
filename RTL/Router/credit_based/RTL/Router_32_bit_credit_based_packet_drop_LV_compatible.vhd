@@ -12,6 +12,9 @@ entity router_credit_based_parity_lv is
         current_address : integer := 0;
         Rxy_rst : integer := 60;
         Cx_rst : integer := 10;
+        healthy_counter_threshold : integer := 8;
+        faulty_counter_threshold: integer := 2;
+        counter_depth: integer := 4;
         NoC_size: integer := 4
     );
     port (
@@ -189,23 +192,23 @@ packetizer: PACKETIZER_LV generic map(DATA_WIDTH => DATA_WIDTH_LV, current_addre
         TX_LV => TX_LV);
 
 -- all the counter_threshold modules
-CT_N:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => 2, faulty_counter_threshold => 1)
+CT_N:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_N, Healthy_packet => healthy_packet_N,
              Intermittent=> Intermittent_link_N, Faulty => faulty_link_N);
 
-CT_E:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => 2, faulty_counter_threshold => 1)
+CT_E:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_E, Healthy_packet => healthy_packet_E,
              Intermittent=> Intermittent_link_E, Faulty => faulty_link_E);
 
-CT_W:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => 2, faulty_counter_threshold => 1)
+CT_W:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_W, Healthy_packet => healthy_packet_W,
              Intermittent=> Intermittent_link_W, Faulty => faulty_link_W);
 
-CT_S:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => 2, faulty_counter_threshold => 1)
+CT_S:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_S, Healthy_packet => healthy_packet_S,
              Intermittent=> Intermittent_link_S, Faulty => faulty_link_S);
 
-CT_L:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => 2, faulty_counter_threshold => 1)
+CT_L:  counter_threshold_classifier  generic map(counter_depth => 8, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_L, Healthy_packet => healthy_packet_L,
              Intermittent=> Intermittent_link_L, Faulty => faulty_link_L);
 

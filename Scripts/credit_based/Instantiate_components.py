@@ -32,7 +32,9 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_lv):
             noc_file.write("	generic map (DATA_WIDTH =>DATA_WIDTH, DATA_WIDTH_LV =>DATA_WIDTH_LV,")
             noc_file.write("        current_address => "+str(i)+", Rxy_rst => "+str(rxy_rst_calculator(i))+",\n")
             noc_file.write("        Cx_rst =>  "+str(cx_rst_calculator(i, network_dime)) +
-                           ", NoC_size => "+str(network_dime)+")\n")
+                           ", NoC_size => "+str(network_dime)+", healthy_counter_threshold => 20" 
+                           +", faulty_counter_threshold => 3" 
+                           +", counter_depth => 4)\n")
             noc_file.write("    port map(\n")
             noc_file.write("    reset, clk,\n")
             noc_file.write("\tRX_N_"+str(i)+", RX_E_"+str(i)+", RX_W_"+str(i)+", RX_S_"+str(i)+", RX_L_"+str(i)+",\n")
