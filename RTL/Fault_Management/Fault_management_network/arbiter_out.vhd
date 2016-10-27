@@ -3,17 +3,17 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity arbiter_out is
+entity arbiter_out_LV is
     port (  
             reset: in  std_logic;
             clk: in  std_logic;
             X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y :in std_logic; -- From LBDR modules
-            credit: in std_logic_vector(1 downto 0);
+            credit: in std_logic;
             grant_Y_N, grant_Y_E, grant_Y_W, grant_Y_S, grant_Y_L : out std_logic -- Grants given to LBDR requests (encoded as one-hot)
             );
 end;
 
-architecture behavior of arbiter_out is
+architecture behavior of arbiter_out_LV is
   TYPE STATE_TYPE IS (IDLE, North, East, West, South, Local);
   SIGNAL state, state_in   : STATE_TYPE := IDLE;
 
@@ -49,7 +49,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= IDLE;
           end if; 
       when North =>
-          if credit /= "00" then
+          if credit = '1' then
             grant_Y_N <= '1';
           end if;
           if X_N_Y ='1'  then
@@ -66,7 +66,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= IDLE;
           end if;
       when East =>
-          if credit /= "00" then
+          if credit = '1' then
             grant_Y_E <= '1';
           end if;
           if X_E_Y = '1' then
@@ -83,7 +83,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= IDLE;
           end if;
       when West =>
-          if credit /= "00" then
+          if credit = '1' then
             grant_Y_W <= '1';
           end if;
           if X_W_Y = '1' then
@@ -100,7 +100,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= IDLE;
           end if;
       when South =>
-          if credit /= "00" then
+          if credit = '1' then
             grant_Y_S <= '1';
           end if;
           if X_S_Y = '1' then
@@ -117,7 +117,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= IDLE;
           end if;
       when others =>
-          if credit /= "00" then
+          if credit = '1' then
             grant_Y_L <= '1';
           end if;
           if X_L_Y = '1' then

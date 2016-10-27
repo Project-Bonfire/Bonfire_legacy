@@ -351,6 +351,9 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 + "/counter_threshold.vhd\"\n")
 
                 do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
+                + "/arbiter_out.vhd\"\n")
+                
+                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
                 + "/allocator_LV.vhd\"\n")
 
                 do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\

@@ -35,11 +35,11 @@ end allocator_LV;
 architecture behavior of allocator_LV is
 
 -- so the idea is that we should have counters that keep track of credit!
-signal credit_counter_N_in, credit_counter_N_out: std_logic_vector(1 downto 0);
-signal credit_counter_E_in, credit_counter_E_out: std_logic_vector(1 downto 0);
-signal credit_counter_W_in, credit_counter_W_out: std_logic_vector(1 downto 0);
-signal credit_counter_S_in, credit_counter_S_out: std_logic_vector(1 downto 0);
-signal credit_counter_L_in, credit_counter_L_out: std_logic_vector(1 downto 0);
+signal credit_counter_N_in, credit_counter_N_out: std_logic;
+signal credit_counter_E_in, credit_counter_E_out: std_logic;
+signal credit_counter_W_in, credit_counter_W_out: std_logic;
+signal credit_counter_S_in, credit_counter_S_out: std_logic;
+signal credit_counter_L_in, credit_counter_L_out: std_logic;
 
 signal grant_N, grant_E, grant_W, grant_S, grant_L: std_logic;
 
@@ -52,11 +52,11 @@ signal grant_S_N_sig, grant_S_E_sig, grant_S_W_sig, grant_S_S_sig, grant_S_L_sig
 signal grant_L_N_sig, grant_L_E_sig, grant_L_W_sig, grant_L_S_sig, grant_L_L_sig: std_logic;
  
 
-component arbiter_out is
+component arbiter_out_LV is
     port (  reset: in  std_logic;
             clk: in  std_logic;
             X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y:in std_logic; -- From LBDR modules
-            credit: in std_logic_vector(1 downto 0);
+            credit: in std_logic;
             grant_Y_N, grant_Y_E, grant_Y_W, grant_Y_S, grant_Y_L :out std_logic -- Grants given to LBDR requests (encoded as one-hot)
             );
 end component;
@@ -68,11 +68,11 @@ process(clk, reset)
 begin
 	if reset = '0' then 
 		-- we start with all full cradit
-	 	credit_counter_N_out <= "01";
-		credit_counter_E_out <= "01";
-		credit_counter_W_out <= "01";
-		credit_counter_S_out <= "01";
-		credit_counter_L_out <= "01";
+	 	credit_counter_N_out <= '1';
+		credit_counter_E_out <= '1';
+		credit_counter_W_out <= '1';
+		credit_counter_S_out <= '1';
+		credit_counter_L_out <= '1';
 	elsif clk'event and clk = '1' then 
 		credit_counter_N_out <= credit_counter_N_in;
 		credit_counter_E_out <= credit_counter_E_in;
@@ -132,46 +132,62 @@ process(credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L, grant_N
  	credit_counter_S_in <= credit_counter_S_out;
  	credit_counter_L_in <= credit_counter_L_out;
 
- 	if credit_in_N = '1'  and credit_counter_N_out < 1 then 
- 		credit_counter_N_in <= credit_counter_N_out + 1;
- 	end if;
- 	if grant_N = '1' then
- 		credit_counter_N_in <= credit_counter_N_out - 1;
- 	end if;
- 	
- 	if credit_in_E = '1' and credit_counter_E_out < 1 then 
- 		credit_counter_E_in <= credit_counter_E_out + 1;
- 	end if;
- 	if grant_E = '1' then
- 		credit_counter_E_in <= credit_counter_E_out - 1;
+ 	if credit_in_N = '1'  and grant_N = '1' then 
+ 		credit_counter_N_in <= credit_counter_N_out;
+  elsif credit_in_N = '1'  and grant_N = '0' then 
+    credit_counter_N_in <= '1';
+  elsif credit_in_N = '0'  and grant_N = '1' then 
+    credit_counter_N_in <= '0';
+  else
+    credit_counter_N_in <= credit_counter_N_out;
  	end if;
 
- 	if credit_in_W = '1' and credit_counter_W_out < 1 then 
- 		credit_counter_W_in <= credit_counter_W_out + 1;
- 	end if;
- 	if grant_W = '1' then
- 		credit_counter_W_in <= credit_counter_W_out - 1;
- 	end if;
+ 	if credit_in_E = '1'  and grant_E = '1' then 
+    credit_counter_E_in <= credit_counter_E_out;
+  elsif credit_in_E = '1'  and grant_E = '0' then 
+    credit_counter_E_in <= '1';
+  elsif credit_in_E = '0'  and grant_E = '1' then 
+    credit_counter_E_in <= '0';
+  else
+    credit_counter_E_in <= credit_counter_E_out;
+  end if;
 
- 	if credit_in_S = '1' and credit_counter_S_out < 1 then 
- 		credit_counter_S_in <= credit_counter_S_out + 1;
- 	end if;
- 	if grant_S = '1' then
- 		credit_counter_S_in <= credit_counter_S_out - 1;
- 	end if;
- 	
- 	if credit_in_L = '1' and credit_counter_L_out < 1 then 
- 		credit_counter_L_in <= credit_counter_L_out + 1;
- 	end if;
- 	if grant_L = '1' then
- 		credit_counter_L_in <= credit_counter_L_out - 1;
- 	end if;
+  if credit_in_W = '1'  and grant_W = '1' then 
+    credit_counter_W_in <= credit_counter_W_out;
+  elsif credit_in_W = '1'  and grant_W = '0' then 
+    credit_counter_W_in <= '1';
+  elsif credit_in_W = '0'  and grant_W = '1' then 
+    credit_counter_W_in <= '0';
+  else
+    credit_counter_W_in <= credit_counter_W_out;
+  end if;
+
+    if credit_in_S = '1'  and grant_S = '1' then 
+    credit_counter_S_in <= credit_counter_S_out;
+  elsif credit_in_S = '1'  and grant_S = '0' then 
+    credit_counter_S_in <= '1';
+  elsif credit_in_S = '0'  and grant_S = '1' then 
+    credit_counter_S_in <= '0';
+  else
+    credit_counter_S_in <= credit_counter_S_out;
+  end if;
+
+    if credit_in_L = '1'  and grant_L = '1' then 
+    credit_counter_L_in <= credit_counter_L_out;
+  elsif credit_in_L = '1'  and grant_L = '0' then 
+    credit_counter_L_in <= '1';
+  elsif credit_in_L = '0'  and grant_L = '1' then 
+    credit_counter_L_in <= '0';
+  else
+    credit_counter_L_in <= credit_counter_L_out;
+  end if;
+
  end process;
 
  
   
 -- Y is N now
-arb_X_N: arbiter_out port map (reset => reset, clk => clk,
+arb_X_N: arbiter_out_LV port map (reset => reset, clk => clk,
                                 X_N_Y => req_N_N, X_E_Y => req_E_N,  X_W_Y => req_W_N,  X_S_Y => req_S_N,  X_L_Y => req_L_N, 
                                credit => credit_counter_N_out,
                                grant_Y_N => grant_N_N_sig, 
@@ -181,7 +197,7 @@ arb_X_N: arbiter_out port map (reset => reset, clk => clk,
                                grant_Y_L => grant_N_L_sig);
 
 -- Y is E now
-arb_X_E: arbiter_out port map (reset => reset, clk => clk,
+arb_X_E: arbiter_out_LV port map (reset => reset, clk => clk,
                                X_N_Y => req_N_E, X_E_Y => req_E_E, X_W_Y => req_W_E, X_S_Y => req_S_E, X_L_Y => req_L_E, 
                                credit => credit_counter_E_out,
                                grant_Y_N => grant_E_N_sig, 
@@ -191,7 +207,7 @@ arb_X_E: arbiter_out port map (reset => reset, clk => clk,
                                grant_Y_L => grant_E_L_sig);
 
 -- Y is W now
-arb_X_W: arbiter_out port map (reset => reset, clk => clk,
+arb_X_W: arbiter_out_LV port map (reset => reset, clk => clk,
                                 X_N_Y => req_N_W, X_E_Y => req_E_W, X_W_Y => req_W_W, X_S_Y => req_S_W, X_L_Y => req_L_W, 
                                credit => credit_counter_W_out,
                                grant_Y_N => grant_W_N_sig, 
@@ -201,7 +217,7 @@ arb_X_W: arbiter_out port map (reset => reset, clk => clk,
                                grant_Y_L => grant_W_L_sig);
 
 -- Y is S now
-arb_X_S: arbiter_out port map (reset => reset, clk => clk, 
+arb_X_S: arbiter_out_LV port map (reset => reset, clk => clk, 
                                X_N_Y => req_N_S, X_E_Y => req_E_S, X_W_Y => req_W_S, X_S_Y => req_S_S, X_L_Y => req_L_S, 
                                credit => credit_counter_S_out,
                                grant_Y_N => grant_S_N_sig, 
@@ -211,7 +227,7 @@ arb_X_S: arbiter_out port map (reset => reset, clk => clk,
                                grant_Y_L => grant_S_L_sig);
 
 -- Y is L now
-arb_X_L: arbiter_out port map (reset => reset, clk => clk, 
+arb_X_L: arbiter_out_LV port map (reset => reset, clk => clk, 
                                X_N_Y => req_N_L, X_E_Y => req_E_L, X_W_Y => req_W_L, X_S_Y => req_S_L, X_L_Y => req_L_L,
                                credit => credit_counter_L_out,
                                grant_Y_N => grant_L_N_sig, 
