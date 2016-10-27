@@ -125,6 +125,8 @@ noc_file.write("use work.TB_Package.all;\n\n")
 noc_file.write("USE ieee.numeric_std.ALL; \n")
 noc_file.write("use IEEE.math_real.\"ceil\";\n")
 noc_file.write("use IEEE.math_real.\"log2\";\n\n")
+if add_lv:
+  noc_file.write("use work.TB_Package_LV.all;\n\n")
 
 noc_file.write("entity tb_network_"+str(network_dime)+"x"+str(network_dime)+" is\n")
 
@@ -341,8 +343,15 @@ if add_FI:
       noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
                      ", FI_Add_"+str(i)+"_"+str(i+network_dime)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
 
+noc_file.write("\n\n")
 
 if add_lv:
+
+  for i in range(0, network_dime**2):
+    noc_file.write("get_packet_LV(11, 5, "+str(i)+", clk, credit_in_LV_"+str(i) +", valid_out_LV_"+str(i) +", TX_LV_"+str(i) +");\n");
+
+  noc_file.write("\n\n")
+
   for i in range(0, network_dime**2):
     noc_file.write("credit_in_LV_"+str(i)+" <= '1';\n")
 

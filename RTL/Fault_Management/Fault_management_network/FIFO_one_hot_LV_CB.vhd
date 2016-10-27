@@ -51,7 +51,7 @@ begin
             if read_en = '1' then 
               credit_out <= '1';
             end if;
-            read_pointer <=  read_pointer_in;
+ 
         end if;
     end process;
 
@@ -99,6 +99,6 @@ begin
      end if;        
   end process;
                  
- empty <= not full;
+ 
 
 end;

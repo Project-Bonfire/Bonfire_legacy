@@ -5,7 +5,8 @@ use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.NUMERIC_STD.all;
-
+ use std.textio.all;
+ 
 entity PACKETIZER_LV is
     generic (
         DATA_WIDTH: integer := 11;
@@ -109,6 +110,8 @@ end process;
 
 
 process(all_input_signals, state, read_pointer, credit_counter_out)
+    variable LINEVARIABLE : line; 
+    file VEC_FILE : text is out "LV_sent.txt";
     begin
         TX_LV <= (others => '0');
         grant<= '0';
@@ -147,6 +150,8 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
                     TX_LV <= "000000" & FIFO_Data_out(9 downto 8) &  "100";
                     state_in <= IDLE;
                     read_pointer_in <=  read_pointer(0) & read_pointer(2 downto 1);    
+                    write(LINEVARIABLE, "LV_Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(SHMU_address) & " with length: 3");
+                    writeline(VEC_FILE, LINEVARIABLE);
                 else
                     state_in <= TAIL_FLIT;
                 end if;

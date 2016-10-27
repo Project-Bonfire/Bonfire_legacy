@@ -8,25 +8,25 @@ use IEEE.NUMERIC_STD.all;
  use std.textio.all;
  use ieee.std_logic_misc.all;
 
-package TB_Package is
+package TB_Package_LV is
   function Header_gen(Packet_length, source, destination, packet_id: integer ) return std_logic_vector ;
   function Body_gen(Packet_length, Data: integer ) return std_logic_vector ;
   function Tail_gen(Packet_length, Data: integer ) return std_logic_vector ;
-  procedure credit_counter_control(signal clk: in std_logic; 
+  procedure credit_counter_control_LV(signal clk: in std_logic; 
                                  signal credit_in: in std_logic; signal valid_out: in std_logic; 
                                  signal credit_counter_out: out std_logic_vector(1 downto 0));
-  procedure gen_random_packet(SHMU_ID, frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
+  procedure gen_random_packet_LV(SHMU_ID, frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
                       finish_time: in time; signal clk: in std_logic;
                       signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic; 
                       signal port_in: out std_logic_vector);
-  procedure get_packet(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; 
+  procedure get_packet_LV(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; 
                      signal credit_out: out std_logic; signal valid_in: in std_logic; signal port_in: in std_logic_vector);
   
   
 
-end TB_Package;
+end TB_Package_LV;
 
-package body TB_Package is
+package body TB_Package_LV is
   constant Header_type : std_logic_vector := "001";
   constant Body_type : std_logic_vector := "010";
   constant Tail_type : std_logic_vector := "100";
@@ -68,7 +68,7 @@ package body TB_Package is
     return Tail_flit;
   end Tail_gen;
 
-  procedure credit_counter_control(signal clk: in std_logic; 
+  procedure credit_counter_control_LV(signal clk: in std_logic; 
                                    signal credit_in: in std_logic; signal valid_out: in std_logic; 
                                    signal credit_counter_out: out std_logic_vector(1 downto 0)) is
 
@@ -87,16 +87,16 @@ package body TB_Package is
         credit_counter := credit_counter - 1; 
       end if;
     end loop;
-  end credit_counter_control;
+  end credit_counter_control_LV;
 
-  procedure gen_random_packet(SHMU_ID, frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
+  procedure gen_random_packet_LV(SHMU_ID, frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
                       finish_time: in time; signal clk: in std_logic;
                       signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic; 
                       signal port_in: out std_logic_vector) is
     variable seed1 :positive ;
     variable seed2 :positive ;
     variable LINEVARIABLE : line; 
-    file VEC_FILE : text is out "sent.txt";
+    file VEC_FILE : text is out "LV_sent.txt";
     variable rand : real ;
     variable destination_id: integer;
     variable id_counter, frame_starting_delay, Packet_length, frame_ending_delay : integer:= 0;
@@ -150,7 +150,7 @@ package body TB_Package is
       --end loop;
       destination_id := SHMU_ID;
       --------------------------------------
-      write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: "& integer'image(Packet_length));
+      write(LINEVARIABLE, "LV_Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: "& integer'image(Packet_length));
       writeline(VEC_FILE, LINEVARIABLE);
       wait until clk'event and clk ='0';
       port_in <= Header_gen(Packet_length, source, destination_id, id_counter);
@@ -208,15 +208,15 @@ package body TB_Package is
           wait; 
       end if;
     end loop;
-  end gen_random_packet;
+  end gen_random_packet_LV;
 
 
-  procedure get_packet(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; 
+  procedure get_packet_LV(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; 
                        signal credit_out: out std_logic; signal valid_in: in std_logic; signal port_in: in std_logic_vector) is
   -- initial_delay: waits for this number of clock cycles before sending the packet!
     variable source_node, destination_node, P_length, packet_id, counter: integer;
     variable LINEVARIABLE : line; 
-     file VEC_FILE : text is out "received.txt";
+     file VEC_FILE : text is out "LV_received.txt";
      begin
      credit_out <= '1';
       while true loop
@@ -230,14 +230,14 @@ package body TB_Package is
              end if; 
              if (port_in(2 downto 0) = "100") then
               report "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) ;
-               write(LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(source_node) & " to: " & integer'image(destination_node) );
+               write(LINEVARIABLE, "LV_Packet received at " & time'image(now) & " From: " & integer'image(source_node) & " to: " & integer'image(destination_node) );
                writeline(VEC_FILE, LINEVARIABLE);
              end if; 
          end if;
 
      end loop;
-  end get_packet;
+  end get_packet_LV;
 
  
 
-end TB_Package;
+end TB_Package_LV;
