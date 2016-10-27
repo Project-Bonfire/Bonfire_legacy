@@ -132,54 +132,34 @@ process(credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L, grant_N
  	credit_counter_S_in <= credit_counter_S_out;
  	credit_counter_L_in <= credit_counter_L_out;
 
- 	if credit_in_N = '1'  and grant_N = '1' then 
- 		credit_counter_N_in <= credit_counter_N_out;
-  elsif credit_in_N = '1'  and grant_N = '0' then 
+ 	if credit_in_N = '1'  and grant_N = '0' then 
     credit_counter_N_in <= '1';
   elsif credit_in_N = '0'  and grant_N = '1' then 
     credit_counter_N_in <= '0';
-  else
-    credit_counter_N_in <= credit_counter_N_out;
  	end if;
 
- 	if credit_in_E = '1'  and grant_E = '1' then 
-    credit_counter_E_in <= credit_counter_E_out;
-  elsif credit_in_E = '1'  and grant_E = '0' then 
+  if credit_in_E = '1'  and grant_E = '0' then 
     credit_counter_E_in <= '1';
   elsif credit_in_E = '0'  and grant_E = '1' then 
     credit_counter_E_in <= '0';
-  else
-    credit_counter_E_in <= credit_counter_E_out;
   end if;
 
-  if credit_in_W = '1'  and grant_W = '1' then 
-    credit_counter_W_in <= credit_counter_W_out;
-  elsif credit_in_W = '1'  and grant_W = '0' then 
+  if credit_in_W = '1'  and grant_W = '0' then 
     credit_counter_W_in <= '1';
   elsif credit_in_W = '0'  and grant_W = '1' then 
     credit_counter_W_in <= '0';
-  else
-    credit_counter_W_in <= credit_counter_W_out;
   end if;
 
-    if credit_in_S = '1'  and grant_S = '1' then 
-    credit_counter_S_in <= credit_counter_S_out;
-  elsif credit_in_S = '1'  and grant_S = '0' then 
+  if credit_in_S = '1'  and grant_S = '0' then 
     credit_counter_S_in <= '1';
   elsif credit_in_S = '0'  and grant_S = '1' then 
     credit_counter_S_in <= '0';
-  else
-    credit_counter_S_in <= credit_counter_S_out;
   end if;
 
-    if credit_in_L = '1'  and grant_L = '1' then 
-    credit_counter_L_in <= credit_counter_L_out;
-  elsif credit_in_L = '1'  and grant_L = '0' then 
+  if credit_in_L = '1'  and grant_L = '0' then 
     credit_counter_L_in <= '1';
   elsif credit_in_L = '0'  and grant_L = '1' then 
     credit_counter_L_in <= '0';
-  else
-    credit_counter_L_in <= credit_counter_L_out;
   end if;
 
  end process;
