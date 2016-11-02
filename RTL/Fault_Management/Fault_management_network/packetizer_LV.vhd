@@ -16,6 +16,7 @@ entity PACKETIZER_LV is
     port (
         reset, clk: in std_logic;
          
+        healthy_link_N, healthy_link_E, healthy_link_W, healthy_link_S, healthy_link_L: in  std_logic;
         faulty_link_N, faulty_link_E, faulty_link_W, faulty_link_S, faulty_link_L: in  std_logic;
         intermittent_link_N, intermittent_link_E, intermittent_link_W, intermittent_link_S, intermittent_link_L: in  std_logic;
 
@@ -36,12 +37,12 @@ architecture behavior of PACKETIZER_LV is
  type STATE_TYPE IS (IDLE, HEADER_FLIT, BODY_FLIT, TAIL_FLIT);
  signal state, state_in   : STATE_TYPE := IDLE;
 
- signal FIFO_MEM_1, FIFO_MEM_1_in : std_logic_vector(9 downto 0);
- signal FIFO_MEM_2, FIFO_MEM_2_in : std_logic_vector(9 downto 0);
- signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(9 downto 0);
+ signal FIFO_MEM_1, FIFO_MEM_1_in : std_logic_vector(14 downto 0);
+ signal FIFO_MEM_2, FIFO_MEM_2_in : std_logic_vector(14 downto 0);
+ signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(14 downto 0);
 
- signal memory_input: std_logic_vector(9 downto 0);
- signal FIFO_Data_out: std_logic_vector(9 downto 0);
+ signal memory_input: std_logic_vector(14 downto 0);
+ signal FIFO_Data_out: std_logic_vector(14 downto 0);
 
  signal grant, all_input_signals: std_logic;
 
@@ -69,9 +70,13 @@ process (clk, reset)begin
         end if;
 end process;
 
-all_input_signals <= faulty_link_N or faulty_link_E or faulty_link_W or faulty_link_S or faulty_link_L or intermittent_link_N or intermittent_link_E or intermittent_link_W or intermittent_link_S or intermittent_link_L;
+all_input_signals <= healthy_link_N or healthy_link_E or healthy_link_W or healthy_link_S or healthy_link_L or 
+                     faulty_link_N or faulty_link_E or faulty_link_W or faulty_link_S or faulty_link_L or 
+                     intermittent_link_N or intermittent_link_E or intermittent_link_W or intermittent_link_S or intermittent_link_L;
 
-memory_input <= faulty_link_N & faulty_link_E & faulty_link_W & faulty_link_S & faulty_link_L & intermittent_link_N & intermittent_link_E & intermittent_link_W & intermittent_link_S & intermittent_link_L;
+memory_input <= healthy_link_N & healthy_link_E & healthy_link_W & healthy_link_S & healthy_link_L &  
+                faulty_link_N & faulty_link_E & faulty_link_W & faulty_link_S & faulty_link_L & intermittent_link_N & 
+                intermittent_link_E & intermittent_link_W & intermittent_link_S & intermittent_link_L;
 
 process(all_input_signals)begin
     if  all_input_signals = '1' then
@@ -147,7 +152,7 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
             when TAIL_FLIT =>
                 if credit_counter_out /= "00" then
                     grant <= '1';
-                    TX_LV <= "000000" & FIFO_Data_out(9 downto 8) &  "100";
+                    TX_LV <=  '0'& FIFO_Data_out(14 downto 8) &  "100";
                     state_in <= IDLE;
                     read_pointer_in <=  read_pointer(0) & read_pointer(2 downto 1);    
                     write(LINEVARIABLE, "LV_Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(SHMU_address) & " with length: 3");

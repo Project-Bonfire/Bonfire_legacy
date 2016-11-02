@@ -347,7 +347,7 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
             # Include packet dropping functionality?
             if program_argv['add_LV']:
 
-                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/SHMU_prototype/version_1"\
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type + "/RTL"\
                 + "/counter_threshold.vhd\"\n")
 
                 do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
@@ -404,8 +404,9 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based_parity.vhd\"\n")
         else:
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/Router_32_bit_credit_based.vhd\"\n")
+            if not program_argv['add_LV']:
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                    + "/RTL/Router_32_bit_credit_based.vhd\"\n")
 
         # End of credit based flow control
 
