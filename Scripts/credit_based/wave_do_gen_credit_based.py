@@ -10,6 +10,10 @@ if '-LV'  in sys.argv[1:]:
 else:
   	add_lv = False
 
+if '-FI'  in sys.argv[1:]:
+  	add_FI = True
+else:
+  	add_FI = False
 
 if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
@@ -61,6 +65,24 @@ if add_lv:
 		wave_file.write("add wave -noupdate -group {LV Detailed} -color Violet :"+tb_name+":valid_out_LV_"+str(i)+"\n")
 		wave_file.write("add wave -noupdate -group {LV Detailed} -color Violet :"+tb_name+":credit_in_LV_"+str(i)+"\n")
 	 	wave_file.write("add wave -noupdate -group {LV Detailed} :"+tb_name+":clk\n")
+
+if add_FI: 
+	for i in range (0 , network_dime-1):
+		for j in range (0 , network_dime):
+			current_node = i + network_dime*j
+			next_node = i +1 + network_dime*j
+			wave_file.write("add wave -noupdate -color Gold -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(current_node)+"_"+str(next_node)+":sta_0\n")
+			wave_file.write("add wave -noupdate -color Violet -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(current_node)+"_"+str(next_node)+":sta_1\n")
+			wave_file.write("add wave -noupdate -color Gold -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(next_node)+"_"+str(current_node)+":sta_0\n")
+			wave_file.write("add wave -noupdate -color Violet -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(next_node)+"_"+str(current_node)+":sta_1\n")
+	for j in range (0 , network_dime-1):
+		for i in range (0 , network_dime):	
+			current_node = i + network_dime*j
+			next_node = i + network_dime*(j+1)
+			wave_file.write("add wave -noupdate -color Gold -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(current_node)+"_"+str(next_node)+":sta_0\n")
+			wave_file.write("add wave -noupdate -color Violet -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(current_node)+"_"+str(next_node)+":sta_1\n")
+			wave_file.write("add wave -noupdate -color Gold -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(next_node)+"_"+str(current_node)+":sta_0\n")
+			wave_file.write("add wave -noupdate -color Violet -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(next_node)+"_"+str(current_node)+":sta_1\n")
 
 wave_file.write("TreeUpdate [SetDefaultTree]\n")
 wave_file.write("WaveRestoreCursors\n")

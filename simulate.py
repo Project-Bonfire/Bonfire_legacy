@@ -655,6 +655,7 @@ def main(argv):
         + WAVE_DO_GEN_SCRIPT + "_" + flow_control_type + ".py" \
         + (" -D " + str(program_argv['network_dime'])) \
         + (" -LV " if program_argv['add_LV'] == True else "") \
+        + (" -FI " if program_argv['add_FI'] == True else "") \
         + (" -o " + SIMUL_DIR + "/" + wave_do_file_name)
 
 
