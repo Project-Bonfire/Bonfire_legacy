@@ -6,6 +6,7 @@ use ieee.std_logic_unsigned.all;
 use IEEE.NUMERIC_STD.all;
  use ieee.math_real.all;
  use std.textio.all;
+
  use ieee.std_logic_misc.all;
 
 package TB_Package_LV is
@@ -217,6 +218,10 @@ package body TB_Package_LV is
     variable source_node, destination_node, P_length, packet_id, counter: integer;
     variable LINEVARIABLE : line; 
      file VEC_FILE : text is out "LV_received.txt";
+     file SHMU_FILE : text is out "SHMU_Notifications.txt";
+
+     variable body_input:std_logic_vector(10 downto 0);
+     variable tail_input:std_logic_vector(10 downto 0);
      begin
      credit_out <= '1';
       while true loop
@@ -224,14 +229,63 @@ package body TB_Package_LV is
          wait until clk'event and clk ='1';
         
          if valid_in = '1' then
-              if (port_in(2 downto 0) = "001") then
+             if (port_in(2 downto 0) = "001") then
                 destination_node := to_integer(unsigned(port_in(6 downto 3)));
                 source_node := to_integer(unsigned(port_in(10 downto 7)));
              end if; 
+             if (port_in(2 downto 0) = "010") then
+              body_input := port_in;
+             end if;
              if (port_in(2 downto 0) = "100") then
+              tail_input := port_in;
               report "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) ;
                write(LINEVARIABLE, "LV_Packet received at " & time'image(now) & " From: " & integer'image(source_node) & " to: " & integer'image(destination_node) );
                writeline(VEC_FILE, LINEVARIABLE);
+               if Node_ID = 0 then
+                  if body_input(3) = '1'  then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link L is Intermitent " );
+                  elsif body_input(8) = '1' then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link L is Faulty " );
+                  elsif tail_input(5) = '1' then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link L is Healthy " );
+                  end if;
+
+                  if body_input(4) = '1'  then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link S is Intermitent " );
+                  elsif body_input(9) = '1' then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link S is Faulty " );
+                  elsif tail_input(6) = '1' then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link S is Healthy " );
+                  end if;
+
+                  if body_input(5) = '1'  then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link W is Intermitent " );
+                  elsif body_input(10) = '1' then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link W is Faulty " );
+                  elsif tail_input(7) = '1' then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link W is Healthy " );
+                  end if;
+
+
+                  if body_input(6) = '1'  then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link E is Intermitent " );
+                  elsif tail_input(3) = '1' then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link E is Faulty " );
+                  elsif tail_input(8) = '1' then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link E is Healthy " );
+                  end if;
+
+                  if body_input(7) = '1'  then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link N is Intermitent " );
+                  elsif tail_input(4) = '1' then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link N is Faulty " );
+                  elsif tail_input(9) = '1' then 
+                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link N is Healthy " );
+                  end if;
+
+
+                  writeline(SHMU_FILE, LINEVARIABLE);
+              end if; 
              end if; 
          end if;
 
