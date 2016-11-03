@@ -243,44 +243,44 @@ package body TB_Package_LV is
                writeline(VEC_FILE, LINEVARIABLE);
                if Node_ID = 0 then
                   if body_input(3) = '1'  then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link L is Intermitent " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link L is Intermitent " );
                   elsif body_input(8) = '1' then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link L is Faulty " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link L is Faulty " );
                   elsif tail_input(5) = '1' then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link L is Healthy " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link L is Healthy " );
                   end if;
 
                   if body_input(4) = '1'  then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link S is Intermitent " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link S is Intermitent " );
                   elsif body_input(9) = '1' then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link S is Faulty " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link S is Faulty " );
                   elsif tail_input(6) = '1' then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link S is Healthy " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link S is Healthy " );
                   end if;
 
                   if body_input(5) = '1'  then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link W is Intermitent " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link W is Intermitent " );
                   elsif body_input(10) = '1' then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link W is Faulty " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link W is Faulty " );
                   elsif tail_input(7) = '1' then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link W is Healthy " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link W is Healthy " );
                   end if;
 
 
                   if body_input(6) = '1'  then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link E is Intermitent " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link E is Intermitent " );
                   elsif tail_input(3) = '1' then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link E is Faulty " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link E is Faulty " );
                   elsif tail_input(8) = '1' then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link E is Healthy " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link E is Healthy " );
                   end if;
 
                   if body_input(7) = '1'  then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link N is Intermitent " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link N is Intermitent " );
                   elsif tail_input(4) = '1' then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link N is Faulty " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link N is Faulty " );
                   elsif tail_input(9) = '1' then 
-                     write(LINEVARIABLE, " Source " & integer'image(source_node) & " link N is Healthy " );
+                     write(LINEVARIABLE, " Node " & integer'image(source_node) & " link N is Healthy " );
                   end if;
 
 
