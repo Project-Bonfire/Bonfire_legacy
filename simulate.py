@@ -97,8 +97,8 @@ def statistics(verbal):
     print "\tPackets sent:\t\t" + str(num_packets_sent)+"\tflits sent:\t" + str(flits_sent)
     print "\tPackets received:\t" + str(num_packets_recv)+"\tflits recieved:\t" + str(flits_recieved)
     print "\tPackets lost: \t\t" + str(num_packets_sent - num_packets_recv)+"\tflits lost:\t" + str(flits_sent-flits_recieved)
-    print "\tPacket loss:\t" + "%.2f" %(100 - (num_packets_recv * 100 / num_packets_sent)) + "%"
-    print "\tFlit loss:\t" + "%.2f" %(100 - (flits_recieved * 100 / flits_sent)) + "%"
+    print "\tPacket loss:\t" + "%.2f" %(100 - (num_packets_recv * 100.0 / num_packets_sent)) + "%"
+    print "\tFlit loss:\t" + "%.2f" %(100 - (flits_recieved * 100.0 / flits_sent)) + "%"
     return None
 
 def arg_parser(argv, program_argv):
