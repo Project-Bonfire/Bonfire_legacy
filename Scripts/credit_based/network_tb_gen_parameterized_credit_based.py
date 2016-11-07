@@ -146,6 +146,8 @@ noc_file.write("component network_"+str(network_dime)+"x"+str(network_dime)+" is
 noc_file.write(" generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);\n")
 noc_file.write("port (reset: in  std_logic; \n")
 noc_file.write("\tclk: in  std_logic; \n")
+noc_file.write("\tRxy_reconf: in  std_logic_vector(7 downto 0);\n")
+noc_file.write("\tReconfig : in std_logic;\n")
 for i in range(network_dime**2):
     noc_file.write("\t--------------\n")
     noc_file.write("\tRX_L_"+str(i)+": in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
@@ -227,6 +229,9 @@ if add_FI:
 noc_file.write("\t--------------\n")
 noc_file.write("\n")
 
+noc_file.write("signal Rxy_reconf: std_logic_vector (7 downto 0) := \"01111101\";\n")
+noc_file.write("signal Reconfig: std_logic := '0';\n")
+
 
 noc_file.write(" constant clk_period : time := 1 ns;\n")
 noc_file.write("signal reset,clk: std_logic :='0';\n")
@@ -251,7 +256,7 @@ noc_file.write("-- instantiating the network\n")
  
 string_to_print = ""
 string_to_print += "NoC: network_"+str(network_dime)+"x"+str(network_dime)+" generic map (DATA_WIDTH  => "+str(data_width)+", DATA_WIDTH_LV => 11)\n"
-string_to_print += "port map (reset, clk, \n"
+string_to_print += "port map (reset, clk, Rxy_reconf, Reconfig, \n"
 
 for i in range(network_dime**2):
     string_to_print += "\t--------------\n"
