@@ -370,7 +370,7 @@ begin
       else
         sta_0 <= '0';
         sta_1 <= '1';
-       end if; 
+      end if; 
       wait for 1 ns;
   end loop;
 end gen_fault;

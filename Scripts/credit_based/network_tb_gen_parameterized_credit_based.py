@@ -326,23 +326,27 @@ if add_FI:
     node_x = i % network_dime
     node_y = i / network_dime
     if node_x != network_dime -1 :
-      random_delay = random.randint(100, 200)
+      #random_delay = random.randint(100, 200)
+      random_delay = random.randint(40, 70)
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
       noc_file.write("gen_fault(sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i) +\
                      ", FI_Add_"+str(i+1)+"_"+str(i)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
-      random_delay = random.randint(100, 200)
+      #random_delay = random.randint(100, 200)
+      random_delay = random.randint(40, 70)
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
       noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
                      ", FI_Add_"+str(i)+"_"+str(i+1)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
     if node_y != network_dime-1:
-      random_delay = random.randint(100, 200)
+      #random_delay = random.randint(100, 200)
+      random_delay = random.randint(40, 70)
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
       noc_file.write("gen_fault(sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime) +\
                      "_"+str(i)+", FI_Add_"+str(i+network_dime)+"_"+str(i)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
-      random_delay = random.randint(100, 200)
+      #random_delay = random.randint(100, 200)
+      random_delay = random.randint(40, 70)
       seed_1 = random.randint(10, 2147483560)
       seed_2 = random.randint(10, 2147483560)
       noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +

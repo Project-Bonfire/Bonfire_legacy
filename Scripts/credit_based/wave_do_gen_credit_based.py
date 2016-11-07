@@ -49,6 +49,14 @@ for i in range(0 , network_dime*network_dime):
  	wave_file.write("add wave -noupdate -group {NoC Full_Sigs} :"+tb_name+":NoC:R_"+str(i)+":FIFO_L:full\n")
 wave_file.write("add wave -noupdate -group {NoC Full_Sigs} :"+tb_name+":clk\n")
 
+
+for i in range(0 , network_dime*network_dime):
+	wave_file.write("add wave -noupdate -group {LBDR CX} -color green :"+tb_name+":NoC:R_"+str(i)+":LBDR_N:Cx\n")
+	wave_file.write("add wave -noupdate -group {LBDR CX} -color green :"+tb_name+":NoC:R_"+str(i)+":LBDR_E:Cx\n")
+	wave_file.write("add wave -noupdate -group {LBDR CX} -color green :"+tb_name+":NoC:R_"+str(i)+":LBDR_W:Cx\n")
+	wave_file.write("add wave -noupdate -group {LBDR CX} -color green :"+tb_name+":NoC:R_"+str(i)+":LBDR_S:Cx\n")
+	wave_file.write("add wave -noupdate -group {LBDR CX} -color Gold :"+tb_name+":NoC:R_"+str(i)+":LBDR_L:Cx\n")
+
 if add_lv:
  
 	for i in range(0 , network_dime*network_dime):
