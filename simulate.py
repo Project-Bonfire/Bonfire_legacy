@@ -337,9 +337,13 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/allocator.vhd\"\n")
-
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/LBDR_packet_drop.vhd\"\n")
+            
+            if program_argv['add_LV']:
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                    + "/RTL/LBDR_packet_drop.vhd\"\n")
+            else:
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                    + "/RTL/LBDR.vhd\"\n")
             
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/xbar.vhd\"\n")
