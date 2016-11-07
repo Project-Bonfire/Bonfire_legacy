@@ -150,6 +150,9 @@ def arg_parser(argv, program_argv):
         print "\tAdd advance packet dropping capability to FIFO in case of fault injection." \
             + "Default is " + str(program_argv['packet_drop']) + "."
         print
+        print BOLD + "  -LV" + ENDC
+        print "\tAdd support for the Light Weight network " \
+            + "Default is False"
         print
         print BOLD + OKBLUE + "  Simulation parameters:" + ENDC
         print BOLD + "  -Rand [PIR]:" + ENDC
@@ -352,7 +355,7 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
                 do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
                 + "/arbiter_out.vhd\"\n")
-                
+
                 do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
                 + "/allocator_LV.vhd\"\n")
 
