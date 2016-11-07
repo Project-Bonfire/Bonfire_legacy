@@ -1,0 +1,12 @@
+.DS_Store
+*.pyc
+*.bak
+*.png
+
+xgui
+component.xml
+.directory
+.Xil
+
+tmp
+Scripts/**/*.vhd
