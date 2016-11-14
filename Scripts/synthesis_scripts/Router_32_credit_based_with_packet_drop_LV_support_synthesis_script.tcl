@@ -52,7 +52,7 @@ report_area > area/Router_32_bit_credit_based_packet_drop_LV_compatible_area.txt
 ####################################################################################################
 
 # Remove all designs (cached)
-remove_design -designs
+# remove_design -designs
 exit
 
 ####################################################################################################
