@@ -214,5 +214,26 @@ if CB_Package.add_LV:
             noc_file.write("credit_in_LV_W"+str(i+1)+" <= credit_out_LV_E"+str(i)+";\n")
             noc_file.write("credit_in_LV_E"+str(i)+" <= credit_out_LV_W"+str(i+1)+";\n")
             noc_file.write("-------------------\n")
+    
+    for i in range(0, CB_Package.network_dime**2):
+        north_node = i - CB_Package.network_dime
+        south_node = i + CB_Package.network_dime
+        west_node = i - 1
+        east_node = i + 1
 
+        node_x = i % CB_Package.network_dime
+        node_y = i / CB_Package.network_dime
+
+
+        if node_y > 0:
+            noc_file.write("Faulty_N_in"+str(i)+" <= Faulty_S_out"+str(north_node)+";\n")
+
+        if node_y < CB_Package.network_dime-1:
+            noc_file.write("Faulty_S_in"+str(i)+" <= Faulty_N_out"+str(south_node)+";\n")
+
+        if node_x > 0:
+            noc_file.write("Faulty_W_in"+str(i)+" <= Faulty_E_out"+str(west_node)+";\n")    
+        
+        if node_x < CB_Package.network_dime-1:
+            noc_file.write("Faulty_E_in"+str(i)+" <= Faulty_W_out"+str(east_node)+";\n")  
 noc_file.write("end;\n")

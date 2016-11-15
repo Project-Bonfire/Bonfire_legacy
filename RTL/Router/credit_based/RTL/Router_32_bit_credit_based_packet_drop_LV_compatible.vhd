@@ -28,7 +28,10 @@ entity router_credit_based_parity_lv is
     valid_out_N, valid_out_E, valid_out_W, valid_out_S, valid_out_L : out std_logic;
     credit_out_N, credit_out_E, credit_out_W, credit_out_S, credit_out_L: out std_logic;
     TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);
-    ------------------------- lV network port
+
+    Faulty_N_in, Faulty_E_in, Faulty_W_in, Faulty_S_in: in std_logic;
+    Faulty_N_out, Faulty_E_out, Faulty_W_out, Faulty_S_out: out std_logic;
+     ------------------------- lV network port
     -- the router just sends the packets out. no need for any incomming packets support. 
     -- the output of the LV network will be connected to the PEs
 
@@ -185,21 +188,35 @@ end COMPONENT;
     signal packet_drop_order_N, packet_drop_order_E, packet_drop_order_W, packet_drop_order_S, packet_drop_order_L:  std_logic;
 
     signal healthy_link_N, healthy_link_E, healthy_link_W, healthy_link_S, healthy_link_L:  std_logic;
-    signal faulty_link_N, faulty_link_E, faulty_link_W, faulty_link_S, faulty_link_L:  std_logic;
+    signal sig_Faulty_N_out, sig_Faulty_E_out, sig_Faulty_W_out, sig_Faulty_S_out, faulty_link_L:  std_logic;
     signal intermittent_link_N, intermittent_link_E, intermittent_link_W, intermittent_link_S, intermittent_link_L:  std_logic;
 
 begin
 	
+Faulty_N_out <= sig_Faulty_N_out;
+Faulty_E_out <= sig_Faulty_E_out;
+Faulty_W_out <= sig_Faulty_W_out;
+Faulty_S_out <= sig_Faulty_S_out;
+
 -- packetizer for LV network    
 packetizer: PACKETIZER_LV generic map(DATA_WIDTH => DATA_WIDTH_LV, current_address => current_address, SHMU_address => 0)
             port map (reset => reset, clk => clk,
          
-        healthy_link_N => healthy_link_N, healthy_link_E => healthy_link_E, healthy_link_W => healthy_link_W, 
-        healthy_link_S => healthy_link_S, healthy_link_L => healthy_link_L, 
-        faulty_link_N => faulty_link_N, faulty_link_E => faulty_link_E, faulty_link_W => faulty_link_W, 
-        faulty_link_S => faulty_link_S, faulty_link_L => faulty_link_L,
-        intermittent_link_N => intermittent_link_N, intermittent_link_E => intermittent_link_E, intermittent_link_W => intermittent_link_W, 
-	    intermittent_link_S => intermittent_link_S, intermittent_link_L => intermittent_link_L,
+        healthy_link_N => healthy_link_N, 
+        healthy_link_E => healthy_link_E, 
+        healthy_link_W => healthy_link_W, 
+        healthy_link_S => healthy_link_S, 
+        healthy_link_L => healthy_link_L, 
+        faulty_link_N => sig_Faulty_N_out, 
+        faulty_link_E => sig_Faulty_E_out, 
+        faulty_link_W => sig_Faulty_W_out, 
+        faulty_link_S => sig_Faulty_S_out, 
+        faulty_link_L => faulty_link_L,
+        intermittent_link_N => intermittent_link_N, 
+        intermittent_link_E => intermittent_link_E, 
+        intermittent_link_W => intermittent_link_W, 
+	    intermittent_link_S => intermittent_link_S, 
+        intermittent_link_L => intermittent_link_L,
 
         credit_in_LV => credit_in_LV, 
         valid_out_LV => valid_out_LV,
@@ -208,19 +225,19 @@ packetizer: PACKETIZER_LV generic map(DATA_WIDTH => DATA_WIDTH_LV, current_addre
 -- all the counter_threshold modules
 CT_N:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_N, Healthy_packet => healthy_packet_N,
-             Healthy => healthy_link_N, intermittent=> intermittent_link_N, Faulty => faulty_link_N);
+             Healthy => healthy_link_N, intermittent=> intermittent_link_N, Faulty => sig_Faulty_N_out);
 
 CT_E:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_E, Healthy_packet => healthy_packet_E,
-             Healthy => healthy_link_E, intermittent=> intermittent_link_E, Faulty => faulty_link_E);
+             Healthy => healthy_link_E, intermittent=> intermittent_link_E, Faulty => sig_Faulty_E_out);
 
 CT_W:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_W, Healthy_packet => healthy_packet_W,
-             Healthy => healthy_link_W, intermittent=> intermittent_link_W, Faulty => faulty_link_W);
+             Healthy => healthy_link_W, intermittent=> intermittent_link_W, Faulty => sig_Faulty_W_out);
 
 CT_S:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_S, Healthy_packet => healthy_packet_S,
-             Healthy => healthy_link_S, intermittent=> intermittent_link_S, Faulty => faulty_link_S);
+             Healthy => healthy_link_S, intermittent=> intermittent_link_S, Faulty => sig_Faulty_S_out);
 
 CT_L:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_L, Healthy_packet => healthy_packet_L,
@@ -261,7 +278,7 @@ FIFO_L: FIFO_credit_based
 --- all the LBDRs
 LBDR_N: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
        PORT MAP (reset => reset, clk => clk, empty => empty_N, Rxy_reconf => Rxy_reconf, Reconfig => Reconfig,
-       		 Faulty_C_N => faulty_link_N, Faulty_C_E => faulty_link_E, Faulty_C_W => faulty_link_W, Faulty_C_S => faulty_link_S,  
+       		 Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,  
              flit_type => FIFO_D_out_N(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_N(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              packet_drop_order => packet_drop_order_N,
              grant_N => '0', grant_E =>Grant_EN, grant_W => Grant_WN, grant_S=>Grant_SN, grant_L =>Grant_LN,
@@ -269,7 +286,7 @@ LBDR_N: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
 
 LBDR_E: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_E, Rxy_reconf => Rxy_reconf, Reconfig => Reconfig,
-   	 		 Faulty_C_N => faulty_link_N, Faulty_C_E => faulty_link_E, Faulty_C_W => faulty_link_W, Faulty_C_S => faulty_link_S,  
+   	 		 Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,  
              flit_type => FIFO_D_out_E(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_E(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              packet_drop_order => packet_drop_order_E,
              grant_N => Grant_NE, grant_E =>'0', grant_W => Grant_WE, grant_S=>Grant_SE, grant_L =>Grant_LE,
@@ -277,7 +294,7 @@ LBDR_E: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
 
 LBDR_W: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_W,  Rxy_reconf => Rxy_reconf, Reconfig => Reconfig,
-   			 Faulty_C_N => faulty_link_N, Faulty_C_E => faulty_link_E, Faulty_C_W => faulty_link_W, Faulty_C_S => faulty_link_S,  
+   			 Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,   
              flit_type => FIFO_D_out_W(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_W(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              packet_drop_order => packet_drop_order_W,
              grant_N => Grant_NW, grant_E =>Grant_EW, grant_W =>'0' ,grant_S=>Grant_SW, grant_L =>Grant_LW,
@@ -285,7 +302,7 @@ LBDR_W: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
 
 LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_S, Rxy_reconf => Rxy_reconf, Reconfig => Reconfig,
-   			 Faulty_C_N => faulty_link_N, Faulty_C_E => faulty_link_E, Faulty_C_W => faulty_link_W, Faulty_C_S => faulty_link_S,  
+   			 Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,    
              flit_type => FIFO_D_out_S(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_S(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              packet_drop_order => packet_drop_order_S,
              grant_N => Grant_NS, grant_E =>Grant_ES, grant_W =>Grant_WS ,grant_S=>'0', grant_L =>Grant_LS,
@@ -293,7 +310,7 @@ LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
 
 LBDR_L: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_L, Rxy_reconf => Rxy_reconf, Reconfig => Reconfig,
-   			 Faulty_C_N => faulty_link_N, Faulty_C_E => faulty_link_E, Faulty_C_W => faulty_link_W, Faulty_C_S => faulty_link_S,  
+   			 Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,  
              flit_type => FIFO_D_out_L(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_L(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              packet_drop_order => packet_drop_order_L,
              grant_N => Grant_NL, grant_E =>Grant_EL, grant_W => Grant_WL,grant_S=>Grant_SL, grant_L =>'0',

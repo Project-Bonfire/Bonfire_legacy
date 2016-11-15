@@ -71,4 +71,27 @@ def declare_signals(noc_file, network_dime, add_parity, add_lv):
       for i in range(0, network_dime**2):
           noc_file.write("\tsignal TX_LV_N"+str(i)+", TX_LV_E"+str(i)+", TX_LV_W"+str(i)+", TX_LV_S"+str(i)+", TX_LV_L"+str(i)+" : std_logic_vector (DATA_WIDTH_LV-1 downto 0);\n")
 
+      for i in range(0, network_dime**2):
+ 
+        string_to_print  = ""
+
+        string_to_print += "\t signal "
+        string_to_print += "Faulty_N_out"+str(i)+","
+        string_to_print += "Faulty_E_out"+str(i)+","
+        string_to_print += "Faulty_W_out"+str(i)+","
+        string_to_print += "Faulty_S_out"+str(i)+","
+        string_to_print = string_to_print [: len(string_to_print)-1]  + ": std_logic;\n"
+        noc_file.write(string_to_print)
+
+        string_to_print  = ""
+        string_to_print += "\t signal "
+ 
+        string_to_print += "Faulty_N_in"+str(i)+","
+        string_to_print += "Faulty_E_in"+str(i)+","
+        string_to_print += "Faulty_W_in"+str(i)+","
+        string_to_print += "Faulty_S_in"+str(i)+","
+
+        string_to_print = string_to_print [: len(string_to_print)-1] + ": std_logic;\n"
+        noc_file.write(string_to_print)
+        
     noc_file.write("\n")
