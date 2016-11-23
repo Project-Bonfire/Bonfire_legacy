@@ -23,7 +23,7 @@
 -- modified by: Siavoosh Payandeh Azad 
 -- Change logs:  
 --            * 2 new jump instructions have been added to the instruction set!
---            * IRQ return address register have been changed! It used to be saved in R0, now it is R46
+--            * EPC register have been changed! It used to be R0, now it is R26
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
