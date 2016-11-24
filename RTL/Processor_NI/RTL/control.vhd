@@ -365,6 +365,12 @@ begin
          pc_source := FROM_OPCODE25_0;
       end if;
 
+   when "011010" =>  -- SUBI   r[rt]=r[rs]-(short)imm;
+      b_source := B_FROM_SIGNED_IMM;
+      c_source := C_FROM_ALU;
+      rd := rt;
+      alu_function := ALU_SUBTRACT;
+
    when "100000" =>   --LB     r[rt]=*(signed char*)ptr;
       a_source := A_FROM_REG_SOURCE;
       b_source := B_FROM_SIGNED_IMM;
