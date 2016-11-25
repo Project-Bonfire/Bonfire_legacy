@@ -143,6 +143,10 @@ def arg_parser(argv, program_argv):
         print "\tAdd fault injector units to all the links (except the local) in the network. " \
             + "Default is " + str(program_argv['add_FI']) + "."
         print
+        print BOLD + "  -LV:" + ENDC
+        print "\tAdd light weight network to the system " \
+            + "Default is " + str(program_argv['add_LV']) + "."
+        print
         print BOLD + "  -packet_drop:" + ENDC
         print "\tAdd packet dropping capability to FIFO in case of fault injection. " \
             + "Default is " + str(program_argv['packet_drop']) + "."
@@ -198,29 +202,35 @@ def arg_parser(argv, program_argv):
 
         sys.exit()
 
+
+    program_argv['credit_based_FC'] = False
+    program_argv['network_dime'] = 4
+    program_argv['add_parity'] = False
+    program_argv['add_checkers'] = False
+    program_argv['add_FI'] = False
+    program_argv['add_LV'] = False
+    program_argv['packet_drop'] = False
+    program_argv['packet_saving'] = False
+    program_argv['lat'] = False
+    program_argv['debug'] = False
+
     if '-credit_based_FC' in argv[1:]:
         program_argv['credit_based_FC'] = True
-    else:
-        program_argv['credit_based_FC'] = False
-
+    
     if '-D'	in argv[1:]:
         program_argv['network_dime'] = int(argv[argv.index('-D')+1])
         if program_argv['network_dime'] < 2:
             raise ValueError("You cannot build a network with " + str(program_argv['network_dime']) + " node(s)!")
         if program_argv['network_dime'] % 2 != 0:
             raise ValueError("Wrong network size. Please choose multiples of 2. For example 4!")
-    else:
-        program_argv['network_dime'] = 4
-
+        
     if '-P' in argv[1:]:
         program_argv['add_parity'] = True
-    else:
-        program_argv['add_parity'] = False
+
 
     if '-checkers' in argv[1:]:
         program_argv['add_checkers'] = True
-    else:
-        program_argv['add_checkers'] = False
+        
 
     if '-NI' in argv[1:]:
         program_argv['add_NI'] = int(argv[argv.index('-NI')+1])
@@ -229,28 +239,22 @@ def arg_parser(argv, program_argv):
 
     if '-FI' in argv[1:]:
         program_argv['add_FI'] = True
-    else:
-        program_argv['add_FI'] = False
+        
 
     if '-LV' in argv[1:]:
         program_argv['add_LV'] = True
-    else:
-        program_argv['add_LV'] = False
+        
 
     if '-packet_drop' in argv[1:]:
         program_argv['packet_drop'] = True
-    else:
-        program_argv['packet_drop'] = False
+
 
     if '-packet_saving' in argv[1:]:
         program_argv['packet_saving'] = True
-    else:
-        program_argv['packet_saving'] = False
 
     if '-lat' in argv[1:]:
         program_argv['lat'] = True
-    else:
-        program_argv['lat'] = False
+
 
     if '-Rand'	in argv[1:]:
         program_argv['rand'] = float(argv[argv.index('-Rand')+1])
@@ -281,8 +285,7 @@ def arg_parser(argv, program_argv):
 
     if '--debug' in argv[1:]:
         program_argv['debug'] = True
-    else:
-        program_argv['debug'] = False
+        
 
     return program_argv
 
@@ -329,24 +332,17 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
         else:
             # Without checkers
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/arbiter_in.vhd\"\n")
-
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/arbiter_out.vhd\"\n")
-
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/allocator.vhd\"\n")
-            
+            list_of_credit_based_files = ["arbiter_in.vhd", "arbiter_out.vhd", "allocator.vhd", "xbar.vhd"]
+            for file in list_of_credit_based_files:
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                    + "/RTL/"+file+"\"\n")
+  
             if program_argv['add_LV']:
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/LBDR_packet_drop.vhd\"\n")
             else:
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/LBDR.vhd\"\n")
-            
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/xbar.vhd\"\n")
 
             # Include packet dropping functionality?
             if program_argv['add_LV']:
@@ -354,29 +350,13 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type + "/RTL"\
                 + "/counter_threshold.vhd\"\n")
 
-                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
-                + "/arbiter_out.vhd\"\n")
-                
-                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
-                + "/allocator_LV.vhd\"\n")
+                list_of_LV_files = ["arbiter_out.vhd", "allocator_LV.vhd", "FIFO_one_hot_LV_CB.vhd", 
+                                    "LBDR_LV.vhd", "Router_LV_CB.vhd", "xbar_LV.vhd", "packetizer_LV.vhd",
+                                    "TB_Package_LV_CB_multi_flit.vhd"] 
 
-                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
-                + "/FIFO_one_hot_LV_CB.vhd\"\n")
-
-                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
-                + "/LBDR_LV.vhd\"\n")
-
-                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
-                + "/Router_LV_CB.vhd\"\n")
-
-                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
-                + "/xbar_LV.vhd\"\n")
-
-                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
-                + "/packetizer_LV.vhd\"\n")
-
-                do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
-                + "/TB_Package_LV_CB_multi_flit.vhd\"\n")
+                for file in list_of_LV_files:
+                    do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
+                    + file + "\"\n")
 
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd\"\n")
@@ -392,7 +372,7 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 else:
                     do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                         + "/RTL/FIFO_one_hot_credit_based.vhd\"\n")
-
+                
         # Add a network interface
         if program_argv['add_NI'] != -1:
             # TODO: Just a placeholder
@@ -418,6 +398,7 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
     else:
         # With checkers
         if program_argv['add_checkers']:
+
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
                 + "/Arbiter_one_hot_with_checkers/Arbiter_checkers.vhd\"\n")
@@ -447,17 +428,12 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
         else:
             # No checkers
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/Arbiter.vhd\"\n")
+            list_of_handshaking_files = ["Arbiter.vhd", "FIFO_one_hot_handshaking.vhd",
+                                         "LBDR.vhd", "xbar.vhd"]
+            for file in list_of_handshaking_files:
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                    + "/RTL/"+file+"\"\n")
 
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/FIFO_one_hot_handshaking.vhd\"\n")
-
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/LBDR.vhd\"\n")
-
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/xbar.vhd\"\n")
 
         # Add a network interface
         if program_argv['add_NI'] != -1:
@@ -648,8 +624,6 @@ def main(argv):
         print_msg(MSG_ERROR, "Error while running network testbench generation script")
         sys.exit(1)
 
-
-
     # Generate wave.do
     wave_do_file_name = "wave_" \
     + (str(program_argv['network_dime']) + "x" + str(program_argv['network_dime'])) \
@@ -681,7 +655,6 @@ def main(argv):
         sys.exit(1)
 
 
-
     # Running modelsim
     if DEBUG: print_msg(MSG_DEBUG, "Running Modelsim...")
 
@@ -700,8 +673,6 @@ def main(argv):
 
         # Read sent packets
         statistics(True)
-
-
 
         # Run latency calculation script
         latency_command = "python " + SCRIPTS_DIR + "/include/" + LATENCY_CALCULATION_PATH + " -S " + SENT_TXT_PATH + " -R " + RECEIVED_TXT_PATH

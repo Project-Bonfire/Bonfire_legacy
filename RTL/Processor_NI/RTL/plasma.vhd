@@ -47,7 +47,8 @@ entity plasma is
    generic(memory_type : string := "XILINX_16X"; --"DUAL_PORT_" "ALTERA_LPM";
            log_file    : string := "UNUSED";
            ethernet    : std_logic := '0';
-           use_cache   : std_logic := '0');
+           use_cache   : std_logic := '0';
+           current_address : integer := 0);
    port(clk          : in std_logic;
         reset        : in std_logic;
 

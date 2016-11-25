@@ -472,7 +472,8 @@ package mlite_pack is
       generic(memory_type : string := "XILINX_X16"; --"DUAL_PORT_" "ALTERA_LPM";
               log_file    : string := "UNUSED";
               ethernet    : std_logic := '0';
-              use_cache   : std_logic := '0');
+              use_cache   : std_logic := '0';
+              current_address : integer := 10);
       port(clk          : in std_logic;
            reset        : in std_logic;
            uart_write   : out std_logic;

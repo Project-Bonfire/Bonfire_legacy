@@ -20,6 +20,7 @@ if '--help' in sys.argv[1:]:
   print "\t-PS [min packet size] [max packet size]: specifies packet size. default min value is 3 and defualt max value is 8."
   print "\t-FI: adds control for fault injector units in the network"
   print "\t-LV: adds control for light weight network"
+  print "\t-PE: adds procssing elements in each node"
   print "\t-sim: specifies the length of simulation in clock cycles. which at this time the packet generators will stop sending packets."
   print "\t**Example: python network_tb_gen_parameterized.py -D 2"
   print "\t           generates a testbench for a 2X2 network that has fault injector controller and uses "
@@ -29,44 +30,51 @@ if '--help' in sys.argv[1:]:
   print "\t           packet size of 3 and sends packets untill 10000 ns"
   sys.exit()
 
+network_dime = 4
+data_width = 32
+random_dest = False
+fi_addres_width = None
+add_FI = False
+add_lv = False
+add_node = False
+got_finish_time = False
+sim_finish_time = None
+bit_reversal = False
+get_packet_size = False
+packet_size_min = 3
+packet_size_max = 8
+file_path = file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd'
+
 if '-D'  in sys.argv[1:]:
   network_dime = int(sys.argv[sys.argv.index('-D')+1])
-else:
-  network_dime = 4
+
 
 if '-DW' in sys.argv[1:]:
   data_width = int(sys.argv[sys.argv.index('-DW')+1])
   if data_width % 2 != 0:
     raise ValueError("wrong data width. please choose powers of 2. for example 32!")
-else:
-  data_width = 32
 
 if '-Rand'  in sys.argv[1:]:
   random_dest = True
   PIR = float(sys.argv[sys.argv.index('-Rand')+1])
   frame_size = int(ceil(1.0/PIR))
-else:
-  random_dest = False
 
 if '-FI'  in sys.argv[1:]:
   fi_addres_width = int(ceil(log(data_width,2)))
   add_FI = True
-else:
-  fi_addres_width = None
-  add_FI = False
 
 if '-LV'  in sys.argv[1:]:
     add_lv = True
-else:
-    add_lv = False
+    
+
+if "-PE" in sys.arg[1:]:
+  add_node = True
 
 
 if '-BR'  in sys.argv[1:]:
   bit_reversal = True
   PIR = float(sys.argv[sys.argv.index('-BR')+1])
   frame_size = int(ceil(1.0/PIR))
-else:
-  bit_reversal = False
 
 
 if random_dest and bit_reversal:
@@ -75,19 +83,12 @@ if random_dest and bit_reversal:
 if '-sim'  in sys.argv[1:]:
   got_finish_time = True
   sim_finish_time = int(sys.argv[sys.argv.index('-sim')+1])
-else:
-  got_finish_time = False
-  sim_finish_time = None
+ 
 
 if '-PS'  in sys.argv[1:]:
   get_packet_size = True
   packet_size_min = int(sys.argv[sys.argv.index('-PS')+1])
   packet_size_max = int(sys.argv[sys.argv.index('-PS')+2])
-else:
-  get_packet_size = False
-  packet_size_min = 3
-  packet_size_max = 8
-
 
 
 file_name= 'tb_network'
@@ -102,9 +103,9 @@ if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
   if ".vhd" not in file_path:
       raise ValueError("wrong file extention. only vhdl files are accepted!")
-else:
-  file_path = file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd'
-
+  
+if add_node and add_lv:
+  raise ValueError("You can not currently have LV and PE at the same time!")
 
 noc_file = open(file_path, 'w')
 
@@ -125,7 +126,7 @@ noc_file.write("use work.TB_Package.all;\n\n")
 noc_file.write("USE ieee.numeric_std.ALL; \n")
 noc_file.write("use IEEE.math_real.\"ceil\";\n")
 noc_file.write("use IEEE.math_real.\"log2\";\n\n")
-if add_lv:
+if add_lv and not add_node:
   noc_file.write("use work.TB_Package_LV.all;\n\n")
 
 noc_file.write("entity tb_network_"+str(network_dime)+"x"+str(network_dime)+" is\n")
@@ -180,7 +181,7 @@ if add_FI:
         string_to_print += "\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
                            ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic;\n\n"
 
-if add_lv:
+if add_lv and not add_node:
   for i in range(0, network_dime**2):
     string_to_print +="\t--------------\n"
     string_to_print +="    credit_in_LV_"+str(i) +": in std_logic;\n"
@@ -191,6 +192,22 @@ noc_file.write(string_to_print[:len(string_to_print)-3])
 noc_file.write("\n            ); \n")
 noc_file.write("end component; \n")
 
+
+if add_node:
+  noc_file.write("component NoC_Node is\n")
+  noc_file.write("generic( current_address : integer := 0);\n")
+  noc_file.write("port( reset        : in std_logic;\n")
+  noc_file.write("      clk          : in std_logic;\n")
+  noc_file.write("      \n")
+  noc_file.write("        credit_in : in std_logic;\n")
+  noc_file.write("        valid_out: out std_logic;\n")
+  noc_file.write("        TX: out std_logic_vector(31 downto 0);\n")
+  noc_file.write("\n")
+  noc_file.write("        credit_out : out std_logic;\n")
+  noc_file.write("        valid_in: in std_logic;\n")
+  noc_file.write("        RX: in std_logic_vector(31 downto 0)\n")
+  noc_file.write("   );\n")
+  noc_file.write("end component; --component NoC_Node\n")
  
 noc_file.write("\n")
 noc_file.write("-- generating bulk signals...\n")
@@ -201,7 +218,7 @@ for i in range(0, network_dime*network_dime):
 
 #noc_file.write("\n\nAlias buried_sig is <<signal .NoC.valid_in_E_11 :std_logic>>;\n\n")
 
-if add_lv:
+if add_lv and not add_node:
   for i in range(0, network_dime*network_dime):
       noc_file.write("\tsignal credit_in_LV_"+str(i)+", valid_out_LV_"+str(i)+ " : std_logic;\n")
       noc_file.write("\tsignal TX_LV_"+str(i)+" : std_logic_vector (10 downto 0);\n")
@@ -281,7 +298,7 @@ if add_FI:
         string_to_print +="\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) + ",\n"
         string_to_print +="\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
                           ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+",\n\n"
-if add_lv:
+if add_lv and not add_node:
     for i in range(0, network_dime**2):
       string_to_print +="\t--------------\n"
       string_to_print +="    credit_in_LV_"+str(i) +", valid_out_LV_"+str(i) +", TX_LV_"+str(i) +",\n\n"
@@ -289,33 +306,51 @@ if add_lv:
 noc_file.write(string_to_print[:len(string_to_print)-3])
 noc_file.write("\n            ); \n")
 
-
-
-noc_file.write("\n")
-noc_file.write("-- connecting the packet generators\n")
-if random_dest or bit_reversal:
+if add_node:
+  noc_file.write("\n")
+  noc_file.write("-- connecting the PEs\n")
   for i in range(0, network_dime*network_dime):
-    random_start = random.randint(3, 50)
-    if got_finish_time:
-      random_end = sim_finish_time
-    else:
-      random_end = random.randint(random_start, 200)
+      noc_file.write("PE_"+str(i)+": NoC_Node is\n")
+      noc_file.write("generic map( current_address => "+str(i)+")\n")
+      noc_file.write("port map( reset, clk, \n")
+      noc_file.write("\n")
+      noc_file.write("        credit_in => credit_out_L_"+str(i)+", \n")
+      noc_file.write("        valid_out => valid_in_L_"+str(i)+",\n")
+      noc_file.write("        TX => RX_L_"+str(i)+", \n")
+      noc_file.write("\n")
+      noc_file.write("        credit_out => credit_in_L_"+str(i)+", \n")
+      noc_file.write("        valid_in => valid_out_L_"+str(i)+",\n")
+      noc_file.write("        RX => TX_L_"+str(i)+"\n")
+      noc_file.write("   );\n")
+      noc_file.write("end;\n")
 
-    noc_file.write("credit_counter_control(clk, credit_out_L_"+str(i)+", valid_in_L_"+str(i)+", credit_counter_out_"+str(i)+");\n")
+else:
+  noc_file.write("\n")
+  noc_file.write("-- connecting the packet generators\n")
+  if random_dest or bit_reversal:
+    for i in range(0, network_dime*network_dime):
+      random_start = random.randint(3, 50)
+      if got_finish_time:
+        random_end = sim_finish_time
+      else:
+        random_end = random.randint(random_start, 200)
+  
+      noc_file.write("credit_counter_control(clk, credit_out_L_"+str(i)+", valid_in_L_"+str(i)+", credit_counter_out_"+str(i)+");\n")
+  
+      if random_dest:
+        noc_file.write("gen_random_packet("+str(network_dime)+", "+str(frame_size)+", "+str(i)+", "+str(random_start)+", " +str(packet_size_min)+", " +str(packet_size_max)+", " +
+                      str(random_end)+" ns, clk, credit_counter_out_"+str(i)+", valid_in_L_"+str(i)+", RX_L_"+str(i)+");\n")
+      elif bit_reversal:
+        noc_file.write("gen_bit_reversed_packet("+str(network_dime)+", "+str(frame_size)+", "+str(i)+", "+str(random_start)+", " +str(packet_size_min)+", " +str(packet_size_max)+", " +
+                      str(random_end)+" ns, clk, credit_counter_out_"+str(i)+", valid_in_L_"+str(i)+", RX_L_"+str(i)+");\n")
+  
+      noc_file.write("\n")
 
-    if random_dest:
-      noc_file.write("gen_random_packet("+str(network_dime)+", "+str(frame_size)+", "+str(i)+", "+str(random_start)+", " +str(packet_size_min)+", " +str(packet_size_max)+", " +
-                    str(random_end)+" ns, clk, credit_counter_out_"+str(i)+", valid_in_L_"+str(i)+", RX_L_"+str(i)+");\n")
-    elif bit_reversal:
-      noc_file.write("gen_bit_reversed_packet("+str(network_dime)+", "+str(frame_size)+", "+str(i)+", "+str(random_start)+", " +str(packet_size_min)+", " +str(packet_size_max)+", " +
-                    str(random_end)+" ns, clk, credit_counter_out_"+str(i)+", valid_in_L_"+str(i)+", RX_L_"+str(i)+");\n")
-
-    noc_file.write("\n")
-
-noc_file.write("\n")
-noc_file.write("-- connecting the packet receivers\n")
-for i in range(0, network_dime*network_dime):
-  noc_file.write("get_packet("+str(data_width)+", 5, "+str(i)+", clk, credit_in_L_"+str(i)+", valid_out_L_"+str(i)+", TX_L_"+str(i)+");\n")
+if not add_node:
+  noc_file.write("\n")
+  noc_file.write("-- connecting the packet receivers\n")
+  for i in range(0, network_dime*network_dime):
+    noc_file.write("get_packet("+str(data_width)+", 5, "+str(i)+", clk, credit_in_L_"+str(i)+", valid_out_L_"+str(i)+", TX_L_"+str(i)+");\n")
 
 
 noc_file.write("\n")
@@ -354,8 +389,8 @@ if add_FI:
 
 noc_file.write("\n\n")
 
-if add_lv:
 
+if add_lv and not add_node:
   for i in range(0, network_dime**2):
     noc_file.write("get_packet_LV(11, 5, "+str(i)+", clk, credit_in_LV_"+str(i) +", valid_out_LV_"+str(i) +", TX_LV_"+str(i) +");\n");
 

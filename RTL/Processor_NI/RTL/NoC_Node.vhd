@@ -1,24 +1,35 @@
 ---------------------------------------------------------------------
--- TITLE: Test Bench
+-- TITLE: NoC_Node
 -- AUTHOR: Steve Rhoads (rhoadss@yahoo.com)
 -- DATE CREATED: 4/21/01
--- FILENAME: tbench.vhd
+-- ORIGNAL FILENAME: tbench.vhd
 -- PROJECT: Plasma CPU core
 -- COPYRIGHT: Software placed into the public domain by the author.
 --    Software 'as is' without warranty.  Author liable for nothing.
 -- DESCRIPTION:
---    This entity provides a test bench for testing the Plasma CPU core.
+--    This entity provides a simple NoC node with plasma as its processor
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
 use work.mlite_pack.all;
 use ieee.std_logic_unsigned.all;
-use work.TB_Package.all;
 
-entity tbench is
-end; --entity tbench
+entity NoC_Node is
+generic( current_address : integer := 0);
+port( reset        : in std_logic;
+      clk          : in std_logic;
+      
+        credit_in : in std_logic;
+        valid_out: out std_logic;
+        TX: out std_logic_vector(31 downto 0);
 
-architecture logic of tbench is
+        credit_out : out std_logic;
+        valid_in: in std_logic;
+        RX: in std_logic_vector(31 downto 0)
+   );
+end; --entity NoC_Node
+
+architecture messed_up of NoC_Node is
    constant memory_type : string := 
    "TRI_PORT_X";   
 --   "DUAL_PORT_";
@@ -28,9 +39,7 @@ architecture logic of tbench is
    constant log_file  : string := 
 --   "UNUSED";
    "output.txt";
-
-   signal clk         : std_logic := '1';
-   signal reset       : std_logic := '1';
+   
    signal interrupt   : std_logic := '0';
    signal mem_write   : std_logic;
    signal address     : std_logic_vector(31 downto 2);
@@ -54,29 +63,23 @@ architecture logic of tbench is
 
 
 begin  --architecture
-   --Uncomment the line below to test interrupts
-   --interrupt <= '1' after 20 us when interrupt = '0' else '0' after 445 ns;
-   -- Added by Behrad
-   --interrupt <= '1' after 500 ns when interrupt = '0' else '0' after 100 us;
    
- 
-
-   clk   <= not clk after 50 ns;
-   reset <= '0' after 500 ns;
-   pause1 <= '1' after 700 ns when pause1 = '0' else '0' after 200 ns;
-   pause2 <= '1' after 300 ns when pause2 = '0' else '0' after 200 ns;
+   --pause1 <= '1' after 700 ns when pause1 = '0' else '0' after 200 ns;
+   pause1 <= '0';
+   --pause2 <= '1' after 300 ns when pause2 = '0' else '0' after 200 ns;
+   pause2 <= '0';
    pause <= pause1 or pause2;
-   gpioA_in(20) <= not gpioA_in(20) after 200 ns; --E_RX_CLK
-   gpioA_in(19) <= not gpioA_in(19) after 20 us;  --E_RX_DV
-   gpioA_in(18 downto 15) <= gpioA_in(18 downto 15) + 1 after 400 ns; --E_RX_RXD
-   gpioA_in(14) <= not gpioA_in(14) after 200 ns; --E_TX_CLK
+   --gpioA_in(20) <= not gpioA_in(20) after 200 ns; --E_RX_CLK
+   --gpioA_in(19) <= not gpioA_in(19) after 20 us;  --E_RX_DV
+   --gpioA_in(18 downto 15) <= gpioA_in(18 downto 15) + 1 after 400 ns; --E_RX_RXD
+   --gpioA_in(14) <= not gpioA_in(14) after 200 ns; --E_TX_CLK
 
    u1_plasma: plasma
       generic map (memory_type => memory_type,
                    ethernet    => '0',
                    use_cache   => '0',
                    log_file    => log_file, 
-                   current_address => 10)
+                   current_address => current_address)
       PORT MAP (
          clk               => clk,
          reset             => reset,
@@ -138,12 +141,5 @@ begin  --architecture
          data_read <= data;
       end if;
    end process;
-
-
-credit_counter_control(clk, credit_out, valid_in, credit_counter_out_0);
-gen_random_packet(4, 10, 0, 24, 8, 8, 10000 ns, clk, credit_counter_out_0, valid_in, RX);
-
-
-get_packet(32, 5, 0, clk, credit_in, valid_out, TX);
 
 end; --architecture logic
