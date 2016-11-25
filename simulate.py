@@ -372,14 +372,17 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 else:
                     do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                         + "/RTL/FIFO_one_hot_credit_based.vhd\"\n")
-                
+
         # Add a network interface
         if program_argv['add_NI'] != -1:
-            # TODO: Just a placeholder
-
-            print_msg(MSG_ERROR, "NI is not implemented for credit based flow control")
-            do_file.close()
-            sys.exit(1)
+            list_of_PE_files = ["mlite_pack.vhd", "alu.vhd", "bus_mux.vhd", "cache.vhd",
+                                "control.vhd", "ddr_ctrl.vhd", "eth_dma.vhd", "mem_ctrl.vhd",
+                                "mult.vhd", "pc_next.vhd", "pipeline.vhd", "ram.vhd", 
+                                "reg_bank.vhd", "shifter.vhd", "uart.vhd", "NI.vhd", 
+                                "mlite_cpu.vhd", "plasma.vhd", "NoC_Node.vhd"]
+                                
+            for file in list_of_PE_files:               
+                do_file.write("vcom \"" + PROJECT_ROOT + "/RTL/Processor_NI/"+file+"\"\n")
 
         # Add parity checking
         if program_argv['add_parity']:
