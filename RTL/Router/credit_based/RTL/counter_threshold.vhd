@@ -1,4 +1,7 @@
 --Copyright (C) 2016 Siavoosh Payandeh Azad, Behrad Niazmand
+-- This design is based on the proposed method, discussed in the following publication:
+-- "A Fault Prediction Module for a Fault Tolerant NoC Operation" 
+-- by Silveira, J.; Bodin, M.; Ferreira, J.M.; Cadore Pinheiro, A.; Webber, T.; Marcon, C.
 
 library ieee;
 use ieee.std_logic_1164.all;
