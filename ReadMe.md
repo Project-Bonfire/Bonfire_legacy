@@ -9,6 +9,7 @@ License:  	GNU GENERAL PUBLIC LICENSE Version 3
 
 ----------------------------------------------------------------------------------------------------------------------------
 	Copyright (C) 2016 as collective work done by Siavoosh Payandeh Azad, Karl Janson, Behrad Niazmand and Tsotne Putkaradze
+	Parts of this work are re-use or modification of work under different licenses. Please refer to disclaimers in the related folders.
 ----------------------------------------------------------------------------------------------------------------------------
 
 This project implements a simple NoC router which does not use any Virtual Channels (VCs). The router is intended for a 2D Network on-chip and has 5 input and 5 output ports (North-N, East-E, West-W, South-S and Local-L). It is composed of the following components:
@@ -18,6 +19,7 @@ This project implements a simple NoC router which does not use any Virtual Chann
 - Arbitration unit (Arbiter) implemented using a Finite State Machine (FSM) based on Round-Robin (RR) prioritization, per each output port
 - Crossbar Switch (Xbar) implemented as Multiplexers (MUX) per each output port
 
+Two versions of the router exist: a handshaking based flow-control and credit based flow-control. 
 ----------------------------------------------------------------------------------------------------------------------------
 
 The general folder structure of the project is as follows:
