@@ -125,12 +125,7 @@ for line in input_file:
 			for i in range(0, 16-len(third_one)):
 				third_one = "0"+third_one
 			argument_binary = first_one + second_one + third_one	
-		
-		if line_split[0] == "JR":
-			first_one =  "{0:b}".format(int(line_split_arguments[0]))
-			rest =  "000000000000000001000"
-			argument_binary = first_one + rest
-		
+				
 		if line_split[0] == "AND":
 			first_one =  "{0:b}".format(int(line_split_arguments[1]))
 			second_one = "{0:b}".format(int(line_split_arguments[2]))
@@ -185,6 +180,128 @@ for line in input_file:
 			for i in range(0, 16-len(third_one)):
 				third_one = "0"+third_one
 			argument_binary = first_one + second_one + third_one	
+
+		if line_split[0] == "SLL": 
+			first_one =  "00000" # Register rs is implied as R0 which always stored zero
+			second_one = "{0:b}".format(int(line_split_arguments[1]))
+			third_one =  "{0:b}".format(int(line_split_arguments[0]))
+			fourth_one =  "{0:b}".format(int(line_split_arguments[2])) # shift amount
+			rest = "000000"
+
+			for i in range(0, 5-len(second_one)):
+				second_one = "0"+second_one
+			for i in range(0, 5-len(third_one)):
+				third_one = "0"+third_one
+			for i in range(0, 5-len(fourth_one)):
+				fourth_one = "0"+fourth_one
+			argument_binary = first_one + second_one + third_one + fourth_one + rest	
+
+		if line_split[0] == "SLLV" or line_split[0] == "SRAV" or line_split[0] == "SRLV": 
+			first_one =  "{0:b}".format(int(line_split_arguments[2]))
+			second_one = "{0:b}".format(int(line_split_arguments[1]))
+			third_one =  "{0:b}".format(int(line_split_arguments[0]))
+			rest = "00000000100"
+
+			for i in range(0, 5-len(second_one)):
+				first_one = "0"+second_one
+			for i in range(0, 5-len(second_one)):
+				second_one = "0"+second_one
+			for i in range(0, 5-len(third_one)):
+				third_one = "0"+third_one
+			argument_binary = first_one + second_one + third_one + rest	
+
+		if line_split[0] == "SRA": 
+			first_one =  "00000"
+			second_one = "{0:b}".format(int(line_split_arguments[1]))
+			third_one =  "{0:b}".format(int(line_split_arguments[0]))
+			fourth_one =  "{0:b}".format(int(line_split_arguments[2]))
+			rest = "000011"
+
+			for i in range(0, 5-len(second_one)):
+				second_one = "0"+second_one
+			for i in range(0, 5-len(third_one)):
+				third_one = "0"+third_one
+			for i in range(0, 5-len(third_one)):
+				fourth_one = "0"+fourth_one
+			argument_binary = first_one + second_one + third_one + fourth_one + rest	
+
+		if line_split[0] == "DIV": 
+			first_one =  "{0:b}".format(int(line_split_arguments[0]))
+			second_one = "{0:b}".format(int(line_split_arguments[1]))
+			rest = "0000000000011010"
+
+			for i in range(0, 5-len(first_one)):
+				first_one = "0"+first_one
+			for i in range(0, 5-len(second_one)):
+				second_one = "0"+second_one
+			argument_binary = first_one + second_one + rest	
+
+		if line_split[0] == "DIVU": 
+			first_one =  "{0:b}".format(int(line_split_arguments[0]))
+			second_one = "{0:b}".format(int(line_split_arguments[1]))
+			rest = "0000000000011011"
+
+			for i in range(0, 5-len(first_one)):
+				first_one = "0"+first_one
+			for i in range(0, 5-len(second_one)):
+				second_one = "0"+second_one
+			argument_binary = first_one + second_one + rest	
+
+		if line_split[0] == "MULT": 
+			first_one =  "{0:b}".format(int(line_split_arguments[0]))
+			second_one = "{0:b}".format(int(line_split_arguments[1]))
+			rest = "0000000000011000"
+
+			for i in range(0, 5-len(first_one)):
+				first_one = "0"+first_one
+			for i in range(0, 5-len(second_one)):
+				second_one = "0"+second_one
+			argument_binary = first_one + second_one + rest	
+
+		if line_split[0] == "MULTU": 
+			first_one =  "{0:b}".format(int(line_split_arguments[0]))
+			second_one = "{0:b}".format(int(line_split_arguments[1]))
+			rest = "0000000000011001"
+
+			for i in range(0, 5-len(first_one)):
+				first_one = "0"+first_one
+			for i in range(0, 5-len(second_one)):
+				second_one = "0"+second_one
+			argument_binary = first_one + second_one + rest	
+
+		if line_split[0] == "MFHI": 
+			first_one = "0000000000"
+			second_one =  "{0:b}".format(int(line_split_arguments[0]))
+			rest = "00000010000"
+
+			for i in range(0, 5-len(first_one)):
+				first_one = "0"+first_one
+			argument_binary = first_one + second_one + rest	
+
+		if line_split[0] == "MFLO": 
+			first_one = "0000000000"
+			second_one =  "{0:b}".format(int(line_split_arguments[0]))
+			rest = "00000010010"
+
+			for i in range(0, 5-len(first_one)):
+				first_one = "0"+first_one
+			argument_binary = first_one + second_one + rest	
+
+		if line_split[0] == "MTHI": 
+			first_one = "{0:b}".format(int(line_split_arguments[0]))
+			rest = "000000000000000010001"
+
+			for i in range(0, 5-len(first_one)):
+				first_one = "0"+first_one
+			argument_binary = first_one + rest	
+
+		if line_split[0] == "MTLO": 
+			first_one = "{0:b}".format(int(line_split_arguments[0]))
+			rest = "000000000000000010011"
+
+			for i in range(0, 5-len(first_one)):
+				first_one = "0"+first_one
+			argument_binary = first_one + rest	
 
 		if line_split[0] == "NOR":
 			first_one =  "{0:b}".format(int(line_split_arguments[1]))
@@ -284,6 +401,19 @@ for line in input_file:
 				third_one = "0"+third_one
 			argument_binary = first_one + second_one + third_one + rest	
 
+		if line_split[0] == "BEQ" or line_split[0] == "BNE":
+			first_one =  "{0:b}".format(int(line_split_arguments[0]))
+			second_one = "{0:b}".format(int(line_split_arguments[1]))
+			third_one =  "{0:b}".format(int(line_split_arguments[2]))
+			for i in range(0, 5-len(first_one)):
+				first_one = "0"+first_one
+			for i in range(0, 5-len(second_one)):
+				second_one = "0"+second_one
+
+			for i in range(0, 16-len(third_one)):
+				third_one = "0"+third_one
+			argument_binary = first_one + second_one + third_one
+
 		if line_split[0] == "BGEZ":
 			first_one =  "{0:b}".format(int(line_split_arguments[0]))
 			second_one =  "00001"
@@ -295,14 +425,34 @@ for line in input_file:
 				third_one = "0"+third_one
 			argument_binary = first_one + second_one + third_one
 
-		if line_split[0] == "BEQ":
+		if line_split[0] == "BGEZAL":
 			first_one =  "{0:b}".format(int(line_split_arguments[0]))
-			second_one = "{0:b}".format(int(line_split_arguments[1]))
-			third_one =  "{0:b}".format(int(line_split_arguments[2]))
+			second_one =  "10001"
+			third_one =  "{0:b}".format(int(line_split_arguments[1]))
 			for i in range(0, 5-len(first_one)):
 				first_one = "0"+first_one
-			for i in range(0, 5-len(second_one)):
-				second_one = "0"+second_one
+
+			for i in range(0, 16-len(third_one)):
+				third_one = "0"+third_one
+			argument_binary = first_one + second_one + third_one
+
+		if line_split[0] == "BGTZ" or line_split[0] == "BLEZ" or line_split[0] == "BLTZ":
+			first_one =  "{0:b}".format(int(line_split_arguments[0]))
+			second_one =  "00000"
+			third_one =  "{0:b}".format(int(line_split_arguments[1]))
+			for i in range(0, 5-len(first_one)):
+				first_one = "0"+first_one
+
+			for i in range(0, 16-len(third_one)):
+				third_one = "0"+third_one
+			argument_binary = first_one + second_one + third_one
+
+		if line_split[0] == "BLTZAL":
+			first_one =  "{0:b}".format(int(line_split_arguments[0]))
+			second_one =  "10000"
+			third_one =  "{0:b}".format(int(line_split_arguments[1]))
+			for i in range(0, 5-len(first_one)):
+				first_one = "0"+first_one
 
 			for i in range(0, 16-len(third_one)):
 				third_one = "0"+third_one
@@ -321,6 +471,17 @@ for line in input_file:
 				third_one = "0"+third_one
 			argument_binary = first_one + second_one + third_one
 
+		if line_split[0] == "JR":
+			first_one =  "{0:b}".format(int(line_split_arguments[0]))
+			rest =  "000000000000000001000"
+			argument_binary = first_one + rest
+
+		if line_split[0] == "JALR": # For JALR rs, rd is implied as R31 which should store PC ??
+			first_one =  "{0:b}".format(int(line_split_arguments[0]))
+			rest = "000001111100000001001" # rd is implied as register 31 (to store PC) ??
+
+		if line_split[0] == "SYSCALL": 
+			argument_binary = "00000000000000000000000000001100"
 
 		line = str(hex(int(dictionary[line_split[0]]+argument_binary, 2))[2:])
 		while len(line) < 8:
