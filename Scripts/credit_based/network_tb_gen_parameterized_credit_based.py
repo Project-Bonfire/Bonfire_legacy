@@ -43,7 +43,7 @@ bit_reversal = False
 get_packet_size = False
 packet_size_min = 3
 packet_size_max = 8
-file_path = file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd'
+# file_path = file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd'
 
 if '-D'  in sys.argv[1:]:
   network_dime = int(sys.argv[sys.argv.index('-D')+1])
@@ -67,7 +67,7 @@ if '-LV'  in sys.argv[1:]:
     add_lv = True
     
 
-if "-PE" in sys.arg[1:]:
+if "-PE" in sys.argv[1:]:
   add_node = True
 
 
@@ -103,7 +103,9 @@ if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
   if ".vhd" not in file_path:
       raise ValueError("wrong file extention. only vhdl files are accepted!")
-  
+else 
+  file_path = file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd'
+   
 if add_node and add_lv:
   raise ValueError("You can not currently have LV and PE at the same time!")
 
