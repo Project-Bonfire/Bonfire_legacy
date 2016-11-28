@@ -54,12 +54,12 @@ architecture messed_up of NoC_Node is
    signal uart_write  : std_logic;
    signal gpioA_in    : std_logic_vector(31 downto 0) := (others => '0');
 
-   signal credit_in, valid_in: std_logic := '0';
-   signal credit_out, valid_out: std_logic := '0';
-   signal RX: std_logic_vector(31 downto 0) := (others => '0');
-   signal TX: std_logic_vector(31 downto 0) := (others => '0');
+   --signal credit_in, valid_in: std_logic := '0';
+   --signal credit_out, valid_out: std_logic := '0';
+   --signal RX: std_logic_vector(31 downto 0) := (others => '0');
+   --signal TX: std_logic_vector(31 downto 0) := (others => '0');
 
-   signal credit_counter_out_0:  std_logic_vector (1 downto 0);
+   -- signal credit_counter_out_0:  std_logic_vector (1 downto 0);
 
 
 begin  --architecture

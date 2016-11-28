@@ -233,7 +233,10 @@ def arg_parser(argv, program_argv):
         
 
     if '-NI' in argv[1:]:
-        program_argv['add_NI'] = int(argv[argv.index('-NI')+1])
+        if argv[argv.index('-NI')+1].isdigit():
+            program_argv['add_NI'] = int(argv[argv.index('-NI')+1])
+        else:
+            program_argv['add_NI'] = True  
         if program_argv['add_NI'] < 0:
             raise ValueError("Network interface's depth cannot be negative!")
 
@@ -380,7 +383,7 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                                 "mult.vhd", "pc_next.vhd", "pipeline.vhd", "ram.vhd", 
                                 "reg_bank.vhd", "shifter.vhd", "uart.vhd", "NI.vhd", 
                                 "mlite_cpu.vhd", "plasma.vhd", "NoC_Node.vhd"]
-                                
+            
             for file in list_of_PE_files:               
                 do_file.write("vcom \"" + PROJECT_ROOT + "/RTL/Processor_NI/"+file+"\"\n")
 
@@ -607,11 +610,18 @@ def main(argv):
         + ("_with_checkers" if program_argv['add_checkers'] else "") \
         + "_tb.vhd"
 
+    NI_status = ""
+    if program_argv['add_NI'] != -1:
+        if program_argv['credit_based_FC']:
+            NI_status = " -PE"
+        else:
+            NI_status = " -NI " + str(program_argv['add_NI'])
+ 
     net_tb_gen_command = "python " + SCRIPTS_DIR + "/" + flow_control_type \
         + "/" + NET_TB_GEN_SCRIPT + "_" + flow_control_type + ".py" \
         + " -D " + str(program_argv['network_dime']) \
         + (" -P" if program_argv['add_parity'] == True else "") \
-        + (" -NI " + str(program_argv['add_NI']) if program_argv['add_NI'] != -1 else "") \
+        + str(NI_status) \
         + (" -FI" if program_argv['add_FI'] == True else "") \
         + (" -LV" if program_argv['add_LV'] == True else "") \
         + (" -Rand " + str(program_argv['rand']) if program_argv['rand'] != -1 else "") \
@@ -619,6 +629,8 @@ def main(argv):
         + (" -PS " + str(program_argv['PS'][0]) + " " + str(program_argv['PS'][1])) \
         + (" -sim " + str(program_argv['sim']) if program_argv['sim'] != -1 else "") \
         + " -o " + SIMUL_DIR + "/" + net_tb_file_name
+
+     
 
     if DEBUG: print_msg(MSG_DEBUG, "Running TB generator:\n\t" + net_tb_gen_command)
 

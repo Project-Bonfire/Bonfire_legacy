@@ -103,7 +103,7 @@ if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
   if ".vhd" not in file_path:
       raise ValueError("wrong file extention. only vhdl files are accepted!")
-else 
+else: 
   file_path = file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd'
    
 if add_node and add_lv:
@@ -253,7 +253,7 @@ noc_file.write("signal Reconfig: std_logic := '0';\n")
 
 
 noc_file.write(" constant clk_period : time := 1 ns;\n")
-noc_file.write("signal reset,clk: std_logic :='0';\n")
+noc_file.write("signal reset, not_reset, clk: std_logic :='0';\n")
 
 noc_file.write("\n")
 noc_file.write("begin\n\n")
@@ -308,13 +308,17 @@ if add_lv and not add_node:
 noc_file.write(string_to_print[:len(string_to_print)-3])
 noc_file.write("\n            ); \n")
 
+
+noc_file.write("not_reset <= not reset; \n")
+
+
 if add_node:
   noc_file.write("\n")
   noc_file.write("-- connecting the PEs\n")
   for i in range(0, network_dime*network_dime):
-      noc_file.write("PE_"+str(i)+": NoC_Node is\n")
+      noc_file.write("PE_"+str(i)+": NoC_Node \n")
       noc_file.write("generic map( current_address => "+str(i)+")\n")
-      noc_file.write("port map( reset, clk, \n")
+      noc_file.write("port map( not_reset, clk, \n")
       noc_file.write("\n")
       noc_file.write("        credit_in => credit_out_L_"+str(i)+", \n")
       noc_file.write("        valid_out => valid_in_L_"+str(i)+",\n")
@@ -324,7 +328,7 @@ if add_node:
       noc_file.write("        valid_in => valid_out_L_"+str(i)+",\n")
       noc_file.write("        RX => TX_L_"+str(i)+"\n")
       noc_file.write("   );\n")
-      noc_file.write("end;\n")
+ 
 
 else:
   noc_file.write("\n")
