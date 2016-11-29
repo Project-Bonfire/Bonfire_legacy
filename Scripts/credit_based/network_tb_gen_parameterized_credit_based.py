@@ -197,7 +197,7 @@ noc_file.write("end component; \n")
 
 if add_node:
   noc_file.write("component NoC_Node is\n")
-  noc_file.write("generic( current_address : integer := 0);\n")
+  noc_file.write("generic( current_address : integer := 0; stim_file: string :=\"code.txt\");\n")
   noc_file.write("port( reset        : in std_logic;\n")
   noc_file.write("      clk          : in std_logic;\n")
   noc_file.write("      \n")
@@ -317,7 +317,7 @@ if add_node:
   noc_file.write("-- connecting the PEs\n")
   for i in range(0, network_dime*network_dime):
       noc_file.write("PE_"+str(i)+": NoC_Node \n")
-      noc_file.write("generic map( current_address => "+str(i)+")\n")
+      noc_file.write("generic map( current_address => "+str(i)+", stim_file => \"code_"+str(i)+".txt\")\n")
       noc_file.write("port map( not_reset, clk, \n")
       noc_file.write("\n")
       noc_file.write("        credit_in => credit_out_L_"+str(i)+", \n")

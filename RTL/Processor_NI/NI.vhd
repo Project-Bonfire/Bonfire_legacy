@@ -280,11 +280,10 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                     grant <= '1';
 
                     
-                    TX <= "001" &  "0000" & --FIFO_Data_out(23 downto 16) 
-                            "00000011" &   FIFO_Data_out(31 downto 28) & 
-                           FIFO_Data_out(27 downto 24)  & packet_counter_out & XOR_REDUCE("001" &  "0000" & 
+                    TX <= "001" &  "0000" & FIFO_Data_out(23 downto 16) & FIFO_Data_out(31 downto 28) & 
+                           std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out & XOR_REDUCE("001" &  "0000" & 
                             FIFO_Data_out(23 downto 16) &  FIFO_Data_out(31 downto 28) & 
-                           FIFO_Data_out(27 downto 24)  & packet_counter_out);
+                           std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out);
 
                     state_in <= BODY_FLIT;
                     packet_length_counter_in <=   ("0000" & FIFO_Data_out(23 downto 16))-1;

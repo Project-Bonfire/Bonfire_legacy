@@ -15,7 +15,7 @@ use work.mlite_pack.all;
 use ieee.std_logic_unsigned.all;
 
 entity NoC_Node is
-generic( current_address : integer := 0);
+generic( current_address : integer := 0; stim_file: string :="code.txt");
 port( reset        : in std_logic;
       clk          : in std_logic;
       
@@ -79,7 +79,8 @@ begin  --architecture
                    ethernet    => '0',
                    use_cache   => '0',
                    log_file    => log_file, 
-                   current_address => current_address)
+                   current_address => current_address,
+                   stim_file => stim_file)
       PORT MAP (
          clk               => clk,
          reset             => reset,

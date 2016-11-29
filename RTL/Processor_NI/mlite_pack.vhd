@@ -395,7 +395,8 @@ package mlite_pack is
 
    component ram
       generic(memory_type : string := "DEFAULT";
-              reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111");
+              reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
+              stim_file: string :="code.txt");
       port(clk               : in std_logic;
            enable            : in std_logic;
 		   reset            : in std_logic;
@@ -473,7 +474,8 @@ package mlite_pack is
               log_file    : string := "UNUSED";
               ethernet    : std_logic := '0';
               use_cache   : std_logic := '0';
-              current_address : integer := 10);
+              current_address : integer := 10;
+              stim_file: string :="code.txt");
       port(clk          : in std_logic;
            reset        : in std_logic;
            uart_write   : out std_logic;

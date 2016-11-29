@@ -26,7 +26,8 @@ use work.mlite_pack.all;
 
 entity ram is
    generic(memory_type : string := "DEFAULT";
-           reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111");
+           reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
+           stim_file: string :="code.txt");
    port(clk               : in std_logic;
 		reset             : in std_logic;
         enable            : in std_logic;
@@ -53,7 +54,7 @@ begin
        variable data : std_logic_vector(31 downto 0); 
       
        variable index : natural := 0;
-      file load_file : text open read_mode is "code.txt";
+      file load_file : text open read_mode is stim_file;
       variable hex_file_line : line;
    begin
 

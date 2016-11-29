@@ -48,7 +48,8 @@ entity plasma is
            log_file    : string := "UNUSED";
            ethernet    : std_logic := '0';
            use_cache   : std_logic := '0';
-           current_address : integer := 0);
+           current_address : integer := 0;
+           stim_file: string :="code.txt");
    port(clk          : in std_logic;
         reset        : in std_logic;
 
@@ -296,7 +297,7 @@ begin  --architecture
    end process;
 
    u2_ram: ram 
-      generic map (memory_type => memory_type, reserved_address => "000000000000000001111111111111")
+      generic map (memory_type => memory_type, reserved_address => "000000000000000001111111111111", stim_file => stim_file)
       port map (
          clk               => clk,
 		 reset             => reset,
