@@ -32,8 +32,8 @@ use work.mlite_pack.all;
 entity control is
    port(opcode       : in  std_logic_vector(31 downto 0); -- not opcode, but the whole instruction !!! (opcode is the first 6 most significant bits of the instruction.)
         intr_signal  : in  std_logic;
-        NI_read_flag      : in  std_logic;
-        NI_write_flag      : in  std_logic;
+        --NI_read_flag      : in  std_logic;
+        --NI_write_flag      : in  std_logic;
         rs_index     : out std_logic_vector(5 downto 0);
         rt_index     : out std_logic_vector(5 downto 0);
         rd_index     : out std_logic_vector(5 downto 0);
@@ -355,15 +355,16 @@ begin
    --when "010101" =>   --BNEL   lbranch=r[rs]!=r[rt];
    --when "010110" =>   --BLEZL  lbranch=r[rs]<=0;
    --when "010111" =>   --BGTZL  lbranch=r[rs]>0;
-   when "011000" =>  -- JNIFR: FROM_OPCODE25_0->pc_next; branch=NI_read_flag=0; jump on NI flag
-      if NI_read_flag = '0' then 
-         pc_source := FROM_OPCODE25_0;
-      end if;
-
-   when "011001" =>  -- JNIFW: FROM_OPCODE25_0->pc_next; branch=NI_write_flag=0; jump on NI flag
-      if NI_write_flag = '0' then 
-         pc_source := FROM_OPCODE25_0;
-      end if;
+   
+   --when "011000" =>  -- JNIFR: FROM_OPCODE25_0->pc_next; branch=NI_read_flag=0; jump on NI flag
+   --   if NI_read_flag = '0' then 
+   --      pc_source := FROM_OPCODE25_0;
+   --   end if;
+ 
+   --when "011001" =>  -- JNIFW: FROM_OPCODE25_0->pc_next; branch=NI_write_flag=0; jump on NI flag
+   --   if NI_write_flag = '0' then 
+   --      pc_source := FROM_OPCODE25_0;
+   --   end if;
 
    when "011010" =>  -- SUBI   r[rt]=r[rs]-(short)imm;
       b_source := B_FROM_SIGNED_IMM;

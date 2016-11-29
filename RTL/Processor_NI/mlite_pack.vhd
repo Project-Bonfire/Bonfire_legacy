@@ -247,8 +247,8 @@ package mlite_pack is
    component control 
       port(opcode       : in  std_logic_vector(31 downto 0);
            intr_signal  : in  std_logic;
-           NI_read_flag      : in  std_logic;
-           NI_write_flag      : in  std_logic;
+           --NI_read_flag      : in  std_logic;
+           --NI_write_flag      : in  std_logic;
            rs_index     : out std_logic_vector(5 downto 0);
            rt_index     : out std_logic_vector(5 downto 0);
            rd_index     : out std_logic_vector(5 downto 0);
@@ -366,8 +366,8 @@ package mlite_pack is
       port(clk         : in std_logic;
            reset_in    : in std_logic;
            intr_in     : in std_logic;
-           NI_read_flag      : in  std_logic;
-           NI_write_flag      : in  std_logic;
+           --NI_read_flag      : in  std_logic;
+           --NI_write_flag      : in  std_logic;
 
            address_next : out std_logic_vector(31 downto 2); --for synch ram
            byte_we_next : out std_logic_vector(3 downto 0); 
@@ -396,10 +396,11 @@ package mlite_pack is
    component ram
       generic(memory_type : string := "DEFAULT";
               reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
+              flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";
               stim_file: string :="code.txt");
       port(clk               : in std_logic;
            enable            : in std_logic;
-		   reset            : in std_logic;
+		       reset            : in std_logic;
            write_byte_enable : in std_logic_vector(3 downto 0);
            address           : in std_logic_vector(31 downto 2);
            data_write        : in std_logic_vector(31 downto 0);
@@ -408,7 +409,8 @@ package mlite_pack is
    
    component NI
       generic(current_address : integer := 10;   
-              reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111");
+              reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
+              flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000");
       port(clk               : in std_logic;
            reset            : in std_logic;
            enable            : in std_logic;
@@ -416,8 +418,8 @@ package mlite_pack is
            address           : in std_logic_vector(31 downto 2);
            data_write        : in std_logic_vector(31 downto 0);
            data_read         : out std_logic_vector(31 downto 0);
-           NI_read_flag      : out  std_logic;
-           NI_write_flag      : out  std_logic;
+           --NI_read_flag      : out  std_logic;
+           --NI_write_flag      : out  std_logic;
            irq_out           : out std_logic;
            credit_in : in std_logic;
            valid_out: out std_logic;

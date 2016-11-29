@@ -22,7 +22,8 @@ use ieee.std_logic_misc.all;
 
 entity NI is
    generic(current_address : integer := 10; 	-- the current node's address
-   		   reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111");	-- reserved address for the memory mapped I/O
+   		   reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
+         flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000");	-- reserved address for the memory mapped I/O
    port(clk               : in std_logic;
         reset             : in std_logic;
         enable            : in std_logic;
@@ -32,8 +33,8 @@ entity NI is
         data_read         : out std_logic_vector(31 downto 0);
 
         -- Flags used by JNIFR and JNIFW instructions
-        NI_read_flag      : out  std_logic; 	-- One if the N2P fifo is empty. No read should be performed if one. 
-        NI_write_flag      : out  std_logic;	-- One if P2N fifo is full. no write should be performed if one. 
+        --NI_read_flag      : out  std_logic; 	-- One if the N2P fifo is empty. No read should be performed if one. 
+        --NI_write_flag      : out  std_logic;	-- One if P2N fifo is full. no write should be performed if one. 
 
         -- interrupt signal: generated evertime a packet is recieved!
         irq_out           : out std_logic;  
@@ -72,6 +73,7 @@ architecture logic of NI is
   type STATE_TYPE IS (IDLE, HEADER_FLIT, BODY_FLIT, TAIL_FLIT);
   signal state, state_in   : STATE_TYPE := IDLE;
   signal FIFO_Data_out : std_logic_vector(31 downto 0);
+  signal flag_register, flag_register_in : std_logic_vector(31 downto 0);
 
 
   -- all the following signals are for sending the packets from NoC to processor
@@ -117,6 +119,7 @@ begin
       credit_out <= '0';
        
       N2P_read_en <= '0';
+      flag_register <= (others =>'0');
    elsif clk'event and clk = '1'  then 
       
       P2N_FIFO_write_pointer <= P2N_FIFO_write_pointer_in;
@@ -152,7 +155,7 @@ begin
       if N2P_read_en = '1' then 
         credit_out <= '1'; 
       end if;
-       
+      flag_register <= flag_register_in;
    end if;
 end process;
 
@@ -350,6 +353,8 @@ valid_out <= grant;
   process(address, write_byte_enable, N2P_empty)begin
     if address = reserved_address and write_byte_enable = "0000" and N2P_empty = '0' then 
       N2P_read_en_in <= '1';
+    elsif address = flag_address and write_byte_enable = "0000" then
+      N2P_read_en_in <= '1';
     else
       N2P_read_en_in <= '0';
     end if;
@@ -397,7 +402,11 @@ valid_out <= grant;
 
 process(N2P_read_en, N2P_Data_out) begin
   if N2P_read_en = '1' then 
-    data_read <= N2P_Data_out; 
+    if address = reserved_address then
+      data_read <= N2P_Data_out;
+    elsif address = flag_address then
+      data_read <= flag_register;
+    end if; 
   else
     data_read <= (others => 'U');
   end if;
@@ -413,8 +422,9 @@ process(N2P_write_en, N2P_Data_out)begin
   end if;
 end process;
 
-NI_read_flag <= N2P_empty;
-NI_write_flag <= P2N_full;
+flag_register_in <= N2P_empty & P2N_full & "000000000000000000000000000000";
+--NI_read_flag <= N2P_empty;
+--NI_write_flag <= P2N_full;
 
 irq_out <= irq_out_FF or irq_out_FF_2;
 end; --architecture logic

@@ -90,8 +90,8 @@ entity mlite_cpu is
         reset_in     : in std_logic;
         intr_in      : in std_logic;
 
-        NI_read_flag      : in  std_logic;
-        NI_write_flag      : in  std_logic;
+        --NI_read_flag      : in  std_logic;
+        --NI_write_flag      : in  std_logic;
 
         address_next : out std_logic_vector(31 downto 2); --for synch ram
         byte_we_next : out std_logic_vector(3 downto 0); 
@@ -228,8 +228,8 @@ begin  --architecture
    u3_control: control PORT MAP (
         opcode       => opcode, -- is it opcode or the whole instruction ??
         intr_signal  => intr_signal,
-        NI_read_flag      => NI_read_flag,
-        NI_write_flag      => NI_write_flag,
+        --NI_read_flag      => NI_read_flag,
+        --NI_write_flag      => NI_write_flag,
         rs_index     => rs_index,
         rt_index     => rt_index,
         rd_index     => rd_index,

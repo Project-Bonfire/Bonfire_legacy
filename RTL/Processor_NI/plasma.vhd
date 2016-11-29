@@ -114,8 +114,8 @@ architecture logic of plasma is
    signal ram_data_w        : std_logic_vector(31 downto 0);
    signal ram_data_r, ram_data_r_ni        : std_logic_vector(31 downto 0);
    signal NI_irq_out        : std_logic;
-   signal NI_read_flag           : std_logic;
-   signal NI_write_flag           : std_logic;
+   --signal NI_read_flag           : std_logic;
+   --signal NI_write_flag           : std_logic;
 
    signal cache_access      : std_logic;
    signal cache_checking    : std_logic;
@@ -152,8 +152,8 @@ begin  --architecture
          clk          => clk,
          reset_in     => reset,
          intr_in      => irq,
-         NI_read_flag      => NI_read_flag,
-         NI_write_flag      => NI_write_flag,
+         --NI_read_flag      => NI_read_flag,
+         --NI_write_flag      => NI_write_flag,
          address_next => address_next,             --before rising_edge(clk)
          byte_we_next => byte_we_next,
 
@@ -369,8 +369,8 @@ u4_ni: NI
          address           => ram_address,
          data_write        => ram_data_w,
          data_read         => ram_data_r_ni,
-         NI_read_flag           => NI_read_flag, 
-         NI_write_flag           => NI_write_flag, 
+         --NI_read_flag           => NI_read_flag, 
+         --NI_write_flag           => NI_write_flag, 
          irq_out           => NI_irq_out,
          credit_in         => credit_in,
          valid_out         => valid_out, 

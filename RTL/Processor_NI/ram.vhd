@@ -27,6 +27,7 @@ use work.mlite_pack.all;
 entity ram is
    generic(memory_type : string := "DEFAULT";
            reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
+           flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";
            stim_file: string :="code.txt");
    port(clk               : in std_logic;
 		reset             : in std_logic;
@@ -73,7 +74,7 @@ begin
          index := conv_integer(address(ADDRESS_WIDTH-1 downto 2));
          data := storage(index);
 
-         if enable = '1' and address /= reserved_address then
+         if enable = '1' and address /= reserved_address and address /= flag_address then
             if write_byte_enable(0) = '1' then
                data(7 downto 0) := data_write(7 downto 0);
             end if;
