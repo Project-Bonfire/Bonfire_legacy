@@ -133,15 +133,15 @@ process(fake_credit, read_en, fake_credit_counter) begin
 	fake_credit_counter_in <= fake_credit_counter;
 	credit_in <= '0';
 
-	if fake_credit = '1' and read_en = '1' then
+	  if fake_credit = '1' and read_en = '1' then
         fake_credit_counter_in <= fake_credit_counter + 1 ;
     end if; 
      
-    if (read_en ='1' or fake_credit = '1') then
+    if fake_credit = '1' or read_en ='1' then
         credit_in <= '1';
     end if;      
 
-    if read_en = '0' and fake_credit = '0' and fake_credit_counter > 0 then 
+    if fake_credit = '0' and read_en = '0' and fake_credit_counter > 0 then 
         fake_credit_counter_in <= fake_credit_counter - 1 ;
         credit_in <= '1';
     end if;
