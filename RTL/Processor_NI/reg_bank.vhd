@@ -82,7 +82,7 @@ begin
       write_enable <= '0';
    end if;
    if rd_index = "101110" then  --reg_epc CP0 14
-      addr_write <= "11010";
+      addr_write <= "11010"; -- Reg $26 to save PC when interrupt occurs, but is it safe ??
    else
       addr_write <= rd_index(4 downto 0);
    end if;
@@ -93,7 +93,7 @@ begin
       if rd_index = "101110" then     --reg_epc CP0 14
          intr_enable_reg <= '0';      --disable interrupts
       elsif rd_index = "101100" then
-         intr_enable_reg <= reg_dest_new(0);
+         intr_enable_reg <= reg_dest_new(0); -- Check the IEc (Interrupt Enable current) bit (bit 0 of the status register)
       end if;
       -- Added by Behrad   
       if interrupt_in = '1' then -- ?? 
