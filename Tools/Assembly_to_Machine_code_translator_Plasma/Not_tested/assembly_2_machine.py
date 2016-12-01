@@ -196,6 +196,21 @@ for line in input_file:
 				fourth_one = "0"+fourth_one
 			argument_binary = first_one + second_one + third_one + fourth_one + rest	
 
+		if line_split[0] == "SRL": 
+			first_one =  "00000" # Register rs is implied as R0 which always stored zero
+			second_one = "{0:b}".format(int(line_split_arguments[1]))
+			third_one =  "{0:b}".format(int(line_split_arguments[0]))
+			fourth_one =  "{0:b}".format(int(line_split_arguments[2])) # shift amount
+			rest = "000010"
+
+			for i in range(0, 5-len(second_one)):
+				second_one = "0"+second_one
+			for i in range(0, 5-len(third_one)):
+				third_one = "0"+third_one
+			for i in range(0, 5-len(fourth_one)):
+				fourth_one = "0"+fourth_one
+			argument_binary = first_one + second_one + third_one + fourth_one + rest	
+
 		if line_split[0] == "SLLV" or line_split[0] == "SRAV" or line_split[0] == "SRLV": 
 			first_one =  "{0:b}".format(int(line_split_arguments[2]))
 			second_one = "{0:b}".format(int(line_split_arguments[1]))
