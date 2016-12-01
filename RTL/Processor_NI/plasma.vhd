@@ -297,7 +297,7 @@ begin  --architecture
    end process;
 
    u2_ram: ram 
-      generic map (memory_type => memory_type, reserved_address => "000000000000000001111111111111", stim_file => stim_file)
+      generic map (memory_type => memory_type, stim_file => stim_file)
       port map (
          clk               => clk,
 		 reset             => reset,
