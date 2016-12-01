@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------
-# -- Copyright (C) 2016 Siavoosh Payandeh Azad
+# -- Copyright (C) 2016 Siavoosh Payandeh Azad and Behrad Niazmand
 # --
 # -- 	Assembly to Machine code translator for Plasma
 # --	@ Input : assembly.txt (based on the sub-set of MIPS I 32-bit instruction set architecture)
