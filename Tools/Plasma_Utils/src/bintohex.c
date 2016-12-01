@@ -4,7 +4,7 @@ bintohex by Steve Rhoads 5/29/02
 Convert the binary object file [out_filename].bin
 into hexadecimal object file [out_filename].hex
 
-UPDATED: 11/30/16 by Karl Janson (karl.janson@ati.ttu.ee)
+MODIFIED: 11/30/16 by Karl Janson (karl.janson@ati.ttu.ee)
 * Added capability to specify input and output file names with arguments.
 * Changed some strings
 */
