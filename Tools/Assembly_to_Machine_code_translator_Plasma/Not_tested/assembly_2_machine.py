@@ -459,11 +459,9 @@ for line in input_file:
 			argument_binary = first_one + second_one + third_one
 
 		if line_split[0] == "LUI":
-			first_one =  "{0:b}".format(int(line_split_arguments[0]))
+			first_one =  "00000"
 			second_one = "{0:b}".format(int(line_split_arguments[0]))
 			third_one =  "{0:b}".format(int(line_split_arguments[1]))
-			for i in range(0, 5-len(first_one)):
-				first_one = "0"+first_one
 			for i in range(0, 5-len(second_one)):
 				second_one = "0"+second_one
 
