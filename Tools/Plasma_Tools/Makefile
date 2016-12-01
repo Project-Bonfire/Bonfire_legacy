@@ -1,4 +1,7 @@
 SRC_DIR = ./src
+BIN_DIR = ../../tmp/bin/plasma_tools #not used yet
+
+
 
 GCC_EXEC = gcc
 C_FLAGS = -Wall -O -g
