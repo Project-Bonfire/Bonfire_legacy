@@ -37,7 +37,6 @@
 -- Change logs:  
 --            * An NI has been instantiated!
 --            * some changes has been applied to the ports of the CPU to facilitate the new NI!  
---            * 2 new jump instructions have been added to the instruction set!
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;

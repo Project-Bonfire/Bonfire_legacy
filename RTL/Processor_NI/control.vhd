@@ -22,7 +22,6 @@
 
 -- modified by: Siavoosh Payandeh Azad 
 -- Change logs:  
---            * 2 new jump instructions have been added to the instruction set!
 --            * EPC register have been changed! It used to be R0, now it is R26
 ---------------------------------------------------------------------
 library ieee;
@@ -356,16 +355,6 @@ begin
    --when "010110" =>   --BLEZL  lbranch=r[rs]<=0;
    --when "010111" =>   --BGTZL  lbranch=r[rs]>0;
    
-   --when "011000" =>  -- JNIFR: FROM_OPCODE25_0->pc_next; branch=NI_read_flag=0; jump on NI flag
-   --   if NI_read_flag = '0' then 
-   --      pc_source := FROM_OPCODE25_0;
-   --   end if;
- 
-   --when "011001" =>  -- JNIFW: FROM_OPCODE25_0->pc_next; branch=NI_write_flag=0; jump on NI flag
-   --   if NI_write_flag = '0' then 
-   --      pc_source := FROM_OPCODE25_0;
-   --   end if;
-
    when "011010" =>  -- SUBI   r[rt]=r[rs]-(short)imm;
       b_source := B_FROM_SIGNED_IMM;
       c_source := C_FROM_ALU;

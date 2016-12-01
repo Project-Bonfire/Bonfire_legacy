@@ -11,9 +11,6 @@
 --    or for Altera "code[0-3].hex".
 --    Modified from "The Designer's Guide to VHDL" by Peter J. Ashenden
 
--- modified by: Siavoosh Payandeh Azad 
--- Change logs:  
---            * A specific memory address in external ram has been blocked to be used by the NI
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;

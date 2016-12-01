@@ -72,8 +72,7 @@
 --            * some changes has been applied to the ports of the older modules
 --              to facilitate the new module!  
 --            * A specific memory address in external ram has been blocked to be used by the NI
---            * 2 new jump instructions have been added to the instruction set!
---            * IRQ return address register have been changed! It used to be saved in R0, now it is 101110
+--            * IRQ return address register have been changed! It used to be saved in R0, now it is R26
 ---------------------------------------------------------------------
 library ieee;
 use work.mlite_pack.all;
