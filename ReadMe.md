@@ -1,9 +1,11 @@
 Authors:
 
-* Siavoosh Payandeh Azad
-* Karl Janson
-* Behrad Niazmand
-* Tsotne Putkaradze
+    * Siavoosh Payandeh Azad
+    * Karl Janson
+    * Behrad Niazmand
+    * Tsotne Putkaradze
+    * Nevin George 
+    * Stephen Adeboye Oyeniran 
 
 License:  	GNU GENERAL PUBLIC LICENSE Version 3
 
