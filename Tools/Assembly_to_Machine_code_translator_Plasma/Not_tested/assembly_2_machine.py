@@ -469,6 +469,30 @@ for line in input_file:
 				third_one = "0"+third_one
 			argument_binary = first_one + second_one + third_one
 
+		if line_split[0] == "MFC0":
+			first_one =  "00000"
+			second_one = "{0:b}".format(int(line_split_arguments[0]))
+			third_one =  "{0:b}".format(int(line_split_arguments[1]))
+			fourth_one =  "00000000000"
+			for i in range(0, 5-len(second_one)):
+				second_one = "0"+second_one
+
+			for i in range(0, 5-len(third_one)):
+				third_one = "0"+third_one
+			argument_binary = first_one + second_one + third_one + fourth_one
+
+		if line_split[0] == "MTC0":
+			first_one =  "00100"
+			second_one = "{0:b}".format(int(line_split_arguments[0]))
+			third_one =  "{0:b}".format(int(line_split_arguments[1]))
+			fourth_one =  "00000000000"
+			for i in range(0, 5-len(second_one)):
+				second_one = "0"+second_one
+
+			for i in range(0, 5-len(third_one)):
+				third_one = "0"+third_one
+			argument_binary = first_one + second_one + third_one + fourth_one
+
 		if line_split[0] == "JR":
 			first_one =  "{0:b}".format(int(line_split_arguments[0]))
 			rest =  "000000000000000001000"
