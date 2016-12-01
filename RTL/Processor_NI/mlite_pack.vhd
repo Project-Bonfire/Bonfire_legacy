@@ -395,8 +395,6 @@ package mlite_pack is
 
    component ram
       generic(memory_type : string := "DEFAULT";
-              reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
-              flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";
               stim_file: string :="code.txt");
       port(clk               : in std_logic;
            enable            : in std_logic;

@@ -11,9 +11,6 @@
 --    or for Altera "code[0-3].hex".
 --    Modified from "The Designer's Guide to VHDL" by Peter J. Ashenden
 
--- modified by: Siavoosh Payandeh Azad 
--- Change logs:  
---            * A specific memory address in external ram has been blocked to be used by the NI
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -26,8 +23,6 @@ use work.mlite_pack.all;
 
 entity ram is
    generic(memory_type : string := "DEFAULT";
-           reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
-           flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";
            stim_file: string :="code.txt");
    port(clk               : in std_logic;
 		reset             : in std_logic;
@@ -45,11 +40,8 @@ architecture logic of ram is
          array(natural range 0 to (2 ** ADDRESS_WIDTH)/4 - 1) of word;
    signal storage : storage_array;
 begin
-
-   generic_ram:
-   if memory_type /= "ALTERA_LPM" generate 
-   begin
-   --Simulate a synchronous RAM
+ 
+    
    ram_proc: process(clk, enable, write_byte_enable, 
          address, data_write) --mem_write, mem_sel
        variable data : std_logic_vector(31 downto 0); 
@@ -74,7 +66,7 @@ begin
          index := conv_integer(address(ADDRESS_WIDTH-1 downto 2));
          data := storage(index);
 
-         if enable = '1' and address /= reserved_address and address /= flag_address then
+         if enable = '1'  then
             if write_byte_enable(0) = '1' then
                data(7 downto 0) := data_write(7 downto 0);
             end if;
@@ -96,7 +88,7 @@ begin
 
       data_read <= data;
    end process;
-   end generate; --generic_ram
+ 
  
 
 end; --architecture logic
