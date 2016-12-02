@@ -1,13 +1,10 @@
 #include "plasma.h"
 
-#define MemoryRead(A) (*(volatile unsigned int*)(A))
-#define MemoryWrite(A,V) *(volatile unsigned int*)(A)=(V)
-
 int putchar(int value)
 {
-   while((MemoryRead(IRQ_STATUS) & IRQ_UART_WRITE_AVAILABLE) == 0)
+   while((memory_read(IRQ_STATUS) & IRQ_UART_WRITE_AVAILABLE) == 0)
       ;
-   MemoryWrite(UART_WRITE, value);
+   memory_write(UART_WRITE, value);
    return 0;
 }
 
@@ -26,12 +23,12 @@ void print_hex(unsigned long num)
 {
    long i;
    unsigned long j;
-   for(i = 28; i >= 0; i -= 4) 
+   for(i = 28; i >= 0; i -= 4)
    {
       j = (num >> i) & 0xf;
-      if(j < 10) 
+      if(j < 10)
          putchar('0' + j);
-      else 
+      else
          putchar('a' - 10 + j);
    }
 }
@@ -44,11 +41,11 @@ void OS_InterruptServiceRoutine(unsigned int status)
 
 int kbhit(void)
 {
-   return MemoryRead(IRQ_STATUS) & IRQ_UART_READ_AVAILABLE;
+   return memory_read(IRQ_STATUS) & IRQ_UART_READ_AVAILABLE;
 }
 
 int getch(void)
 {
    while(!kbhit()) ;
-   return MemoryRead(UART_READ);
+   return memory_read(UART_READ);
 }

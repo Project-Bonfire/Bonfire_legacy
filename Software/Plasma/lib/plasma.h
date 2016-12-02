@@ -8,9 +8,29 @@
  *    Software 'as is' without warranty.  Author liable for nothing.
  * DESCRIPTION:
  *    Plasma Hardware Defines
+ *
+ * MODIFIED by Karl Janson (karl.janson@ati.ttu.ee):
+ *    -- Moved memory accessing fuctions here from no-os.c
+ *    -- Added interrupt related function declarations
  *--------------------------------------------------------------------*/
 #ifndef __PLASMA_H__
 #define __PLASMA_H__
+
+/************ Type definitions ************/
+typedef unsigned int   uint32;
+typedef unsigned short uint16;
+typedef unsigned char  uint8;
+
+/***** Functions for accessing memory *****/
+#define memory_read(A) (*(volatile unsigned int*)(A))
+#define memory_write(A, V) (*(volatile unsigned int*)(A) = (V))
+
+/* Interrupt related assembly function declarations */
+extern void   OS_AsmInterruptInit();
+extern uint32 OS_AsmInterruptEnable();
+
+/* Interrupt handler called by the assmebly */
+void OS_InterruptServiceRoutine(uint32 status, uint32 *stack);
 
 /*********** Hardware addresses ***********/
 #define RAM_INTERNAL_BASE 0x00000000 //8KB
@@ -47,4 +67,3 @@
 #define IRQ_GPIO31               0x80
 
 #endif //__PLASMA_H__
-
