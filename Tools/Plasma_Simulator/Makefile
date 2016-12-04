@@ -1,20 +1,34 @@
-SRC_DIR = ./src
-BIN_DIR = ../../tmp/bin/plasma_simu #not used yet
+SOURCEDIR = src
+BUILDDIR = build
+
+EXECUTABLE = bonfire_simulator
+SOURCES = $(wildcard $(SOURCEDIR)/*.cpp)
+OBJECTS = $(patsubst $(SOURCEDIR)/%.cpp,$(BUILDDIR)/%.o,$(SOURCES))
+
+CC = gcc
+CFLAGS = -Wall -O -g -std=c++11
+OBJS = main.o memory.o
+
+LD = ld
+
+RM = rm -rf
 
 
+all: mlite_simulator bonfire_sim
 
-GCC_EXEC = gcc
-C_FLAGS = -Wall -O -g
+mlite_simulator:
+	@$(CC) -o mlite_simulator $(SRC_DIR)/mlite_simulator.c
 
-GCC_COMMAND = $(GCC_EXEC) $(C_FLAGS)
+bonfire_sim: dir $(BUILDDIR)/$(EXECUTABLE)
 
-RM_COMMAND = rm -rf
+dir:
+	mkdir -p $(BUILDDIR)
 
-all: mlite_simulator
+$(BUILDDIR)/$(EXECUTABLE): $(OBJECTS)
+	$(CC) $^ -o $@ -lstdc++
+
+$(OBJECTS): $(BUILDDIR)/%.o : $(SOURCEDIR)/%.cpp
+	$(CC) -c $(CFLAGS) $< -o $@
 
 clean:
-	-$(RM_COMMAND) mlite_simulator
-
-# Same as "objcopy -I elf32-big -O binary [filename].elf [filename].bin"
-mlite_simulator:
-	@$(GCC_EXEC) -o mlite_simulator $(SRC_DIR)/mlite_simulator.c
+	-$(RM) mlite_simulator $(BUILDDIR)
