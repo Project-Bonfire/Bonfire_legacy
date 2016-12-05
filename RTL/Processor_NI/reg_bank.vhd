@@ -95,11 +95,13 @@ begin
       elsif rd_index = "101100" then
          intr_enable_reg <= reg_dest_new(0); -- Check the IEc (Interrupt Enable current) bit (bit 0 of the status register)
       end if;
+
       -- Added by Behrad
       --if interrupt_in = '1' then -- ??
       --   intr_enable_reg <= '1';
       --end if;
       -- Added by Behrad
+      
    end if;
 
    intr_enable <= intr_enable_reg;
