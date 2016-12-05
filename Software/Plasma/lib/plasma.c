@@ -11,9 +11,11 @@
  *--------------------------------------------------------------------*/
 
  #include "plasma.h"
+ #include "ni.h"
 
  /* Interrupt handler called by the assmebly */
  void OS_InterruptServiceRoutine(uint32 status, uint32 *stack)
  {
-   int interrupt = 4242424242;
+   unsigned int recv_flit;
+   recv_flit = ni_read();
  }

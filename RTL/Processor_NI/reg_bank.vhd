@@ -50,8 +50,8 @@ architecture ram_block of reg_bank is
    signal write_enable           : std_logic;
 
 begin
-  
-reg_proc: process(clk, rs_index, rt_index, rd_index, reg_dest_new, 
+
+reg_proc: process(clk, rs_index, rt_index, rd_index, reg_dest_new,
       intr_enable_reg, data_out1, data_out2, reset_in, pause)
 begin
    --setup for first dual-port memory
@@ -82,7 +82,7 @@ begin
       write_enable <= '0';
    end if;
    if rd_index = "101110" then  --reg_epc CP0 14
-      addr_write <= "11010"; -- Reg $26 to save PC when interrupt occurs, but is it safe ??
+      addr_write <= "01110";--"11010"; -- Reg $26 to save PC when interrupt occurs, but is it safe ??
    else
       addr_write <= rd_index(4 downto 0);
    end if;
@@ -95,11 +95,11 @@ begin
       elsif rd_index = "101100" then
          intr_enable_reg <= reg_dest_new(0); -- Check the IEc (Interrupt Enable current) bit (bit 0 of the status register)
       end if;
-      -- Added by Behrad   
-      --if interrupt_in = '1' then -- ?? 
+      -- Added by Behrad
+      --if interrupt_in = '1' then -- ??
       --   intr_enable_reg <= '1';
       --end if;
-      -- Added by Behrad               
+      -- Added by Behrad
    end if;
 
    intr_enable <= intr_enable_reg;
@@ -115,9 +115,9 @@ end process;
    -- 32 registers 32-bits wide
    tri_port_mem:
    if memory_type = "TRI_PORT_X" generate
-      ram_proc: process(clk, addr_read1, addr_read2, 
+      ram_proc: process(clk, addr_read1, addr_read2,
             addr_write, reg_dest_new, write_enable)
-      
+
       begin
          data_out1 <= tri_port_ram(conv_integer(addr_read1));
          data_out2 <= tri_port_ram(conv_integer(addr_read2));
@@ -134,7 +134,7 @@ end process;
    -- Two dual-port RAMs, each with one read-port and one write-port
    dual_port_mem:
    if memory_type = "DUAL_PORT_" generate
-      ram_proc2: process(clk, addr_read1, addr_read2, 
+      ram_proc2: process(clk, addr_read1, addr_read2,
             addr_write, reg_dest_new, write_enable)
       variable dual_port_ram1 : ram_type := (others => ZERO);
       variable dual_port_ram2 : ram_type := (others => ZERO);
@@ -152,7 +152,7 @@ end process;
 
 
    ---- Option #3
-   ---- RAM16X1D: 16 x 1 positive edge write, asynchronous read dual-port 
+   ---- RAM16X1D: 16 x 1 positive edge write, asynchronous read dual-port
    ---- distributed RAM for all Xilinx FPGAs
    ---- From library UNISIM; use UNISIM.vcomponents.all;
    --xilinx_16x1d:
@@ -164,7 +164,7 @@ end process;
    --begin
    --   weA <= write_enable and not addr_write(4);  --lower 16 registers
    --   weB <= write_enable and addr_write(4);      --upper 16 registers
-      
+
    --   reg_loop: for i in 0 to 31 generate
    --   begin
    --      --Read port 1 lower 16 registers
@@ -243,7 +243,7 @@ end process;
 
 
    ---- Option #4
-   ---- RAM32X1D: 32 x 1 positive edge write, asynchronous read dual-port 
+   ---- RAM32X1D: 32 x 1 positive edge write, asynchronous read dual-port
    ---- distributed RAM for 5-LUT Xilinx FPGAs such as Virtex-5
    ---- From library UNISIM; use UNISIM.vcomponents.all;
    --xilinx_32x1d:
@@ -308,7 +308,7 @@ end process;
    --   -- at the rising edge).  This is very unfortunate.
    --   -- Therefore, the dual port RAM read clock must delayed so that
    --   -- the read address signal can be sent from the mem_ctrl block.
-   --   -- This solution also delays the how fast the registers are read so the 
+   --   -- This solution also delays the how fast the registers are read so the
    --   -- maximum clock speed is cut in half (12.5 MHz instead of 25 MHz).
 
    --   clk_delayed <= not clk;  --Could be delayed by 1/4 clock cycle instead
@@ -323,7 +323,7 @@ end process;
    --   -- Bypass dpram if reading what was just written (Altera limitation)
    --   data_out1 <= q1 when addr_read1 /= addr_reg else data_reg;
    --   data_out2 <= q2 when addr_read2 /= addr_reg else data_reg;
-      
+
    --   lpm_ram_dp_component1 : lpm_ram_dp
    --   generic map (
    --      LPM_WIDTH => 32,

@@ -27,7 +27,7 @@ typedef unsigned char  uint8;
 
 /* Interrupt related assembly function declarations */
 extern void   OS_AsmInterruptInit();
-extern uint32 OS_AsmInterruptEnable();
+extern uint32 OS_AsmInterruptEnable(uint32 state);
 
 /* Interrupt handler called by the assmebly */
 void OS_InterruptServiceRoutine(uint32 status, uint32 *stack);

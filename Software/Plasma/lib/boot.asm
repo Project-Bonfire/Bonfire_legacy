@@ -78,7 +78,7 @@ interrupt_service_routine:
    mflo  $27
    sw    $27, 96($29)    #lo
 
-   lui   $6,  0x2000    
+   lui   $6,  0x2000
    lw    $4,  0x20($6)   #IRQ_STATUS
    lw    $6,  0x10($6)   #IRQ_MASK
    and   $4,  $4, $6
@@ -138,6 +138,8 @@ OS_AsmInterruptEnable:
    .ent    OS_AsmInterruptInit
 OS_AsmInterruptInit:
    .set noreorder
+
+   # copy OS_AsmPatchValue into another area of memory starting with 0x3c
    #Patch interrupt vector to 0x1000003c
    la    $5, OS_AsmPatchValue
    lw    $6, 0($5)
@@ -235,5 +237,3 @@ OS_Syscall:
    nop
    .set reorder
    .end OS_Syscall
-
-

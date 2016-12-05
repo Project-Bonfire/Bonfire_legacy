@@ -3,13 +3,11 @@
 
 int main() {
 
-  OS_AsmInterruptInit();
-  OS_AsmInterruptEnable();
+  //OS_AsmInterruptInit();
+  OS_AsmInterruptEnable(1);
 
   while (1)
   {
-    unsigned int recv_flit;
-    recv_flit = ni_read();
   }
 
   return 0;
