@@ -16,6 +16,5 @@
  /* Interrupt handler called by the assmebly */
  void OS_InterruptServiceRoutine(uint32 status, uint32 *stack)
  {
-   unsigned int recv_flit;
-   recv_flit = ni_read();
+   recv_packet_counter++;
  }

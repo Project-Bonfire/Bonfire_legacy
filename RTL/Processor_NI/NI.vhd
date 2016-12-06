@@ -3,9 +3,9 @@
 --
 -- 	Network interface: Its an interrupt based memory mapped I/O for sending and recieving packets.
 --	the data that is sent to NI should be of the following form:
--- 	FIRST write:  4bit source(31-28), 4 bit destination(27-14), 8bit packet length(23-16) 
--- 	Body write:  28 bit data(27-0) 
--- 	Last write:  28 bit data(27-0) 
+-- 	FIRST write:  4bit source(31-28), 4 bit destination(27-14), 8bit packet length(23-16)
+-- 	Body write:  28 bit data(27-0)
+-- 	Last write:  28 bit data(27-0)
 
 ---------------------------------------------------------------------
 library ieee;
@@ -33,11 +33,11 @@ entity NI is
         data_read         : out std_logic_vector(31 downto 0);
 
         -- Flags used by JNIFR and JNIFW instructions
-        --NI_read_flag      : out  std_logic; 	-- One if the N2P fifo is empty. No read should be performed if one. 
-        --NI_write_flag      : out  std_logic;	-- One if P2N fifo is full. no write should be performed if one. 
+        --NI_read_flag      : out  std_logic; 	-- One if the N2P fifo is empty. No read should be performed if one.
+        --NI_write_flag      : out  std_logic;	-- One if P2N fifo is full. no write should be performed if one.
 
         -- interrupt signal: generated evertime a packet is recieved!
-        irq_out           : out std_logic;  
+        irq_out           : out std_logic;
 
         -- signals for sending packets to network
         credit_in : in std_logic;
@@ -46,17 +46,18 @@ entity NI is
 
         -- signals for reciving packets from the network
         credit_out : out std_logic;
-        valid_in: in std_logic;					
+        valid_in: in std_logic;
         RX: in std_logic_vector(31 downto 0)	-- data recieved form the NoC
-	);	
+	);
 end; --entity NI
 
-architecture logic of NI is 
+architecture logic of NI is
 
   -- all the following signals are for sending data from processor to NoC
-  signal storage, storage_in : std_logic_vector(31 downto 0); 
+  signal storage, storage_in : std_logic_vector(31 downto 0);
   signal valid_data_in, valid_data: std_logic;
 
+  signal old_address: std_logic_vector(31 downto 2);
   signal P2N_FIFO_read_pointer, P2N_FIFO_read_pointer_in,  P2N_FIFO_write_pointer, P2N_FIFO_write_pointer_in: std_logic_vector(3 downto 0);
   signal P2N_write_en: std_logic;
   signal P2N_FIFO_MEM_1, P2N_FIFO_MEM_1_in : std_logic_vector(31 downto 0);
@@ -81,7 +82,7 @@ architecture logic of NI is
   signal N2P_FIFO_MEM_2, N2P_FIFO_MEM_2_in : std_logic_vector(31 downto 0);
   signal N2P_FIFO_MEM_3, N2P_FIFO_MEM_3_in : std_logic_vector(31 downto 0);
   signal N2P_FIFO_MEM_4, N2P_FIFO_MEM_4_in : std_logic_vector(31 downto 0);
-  
+
   signal N2P_Data_out, data_read_in : std_logic_vector(31 downto 0);
 
   signal N2P_FIFO_read_pointer, N2P_FIFO_read_pointer_in: std_logic_vector(3 downto 0);
@@ -93,7 +94,7 @@ architecture logic of NI is
 
 begin
 
-process(clk, enable, write_byte_enable) 
+process(clk, enable, write_byte_enable)
 begin
    if reset = '1' then
       storage <= (others => '0');
@@ -107,7 +108,7 @@ begin
       credit_counter_out <= "11";
       packet_length_counter_out <= "000000000000";
       state <= IDLE;
-      packet_counter_out <= "00000000"; 
+      packet_counter_out <= "00000000";
       ------------------------------------------------
       N2P_FIFO_MEM_1 <= (others=>'0');
       N2P_FIFO_MEM_2 <= (others=>'0');
@@ -117,30 +118,31 @@ begin
       N2P_FIFO_read_pointer  <= "0001";
       N2P_FIFO_write_pointer <= "0001";
       credit_out <= '0';
-       
+
       N2P_read_en <= '0';
       flag_register <= (others =>'0');
-   elsif clk'event and clk = '1'  then 
-      
+      old_address <= (others =>'0');
+   elsif clk'event and clk = '1'  then
+      old_address <= address;
       P2N_FIFO_write_pointer <= P2N_FIFO_write_pointer_in;
-      P2N_FIFO_read_pointer  <=  P2N_FIFO_read_pointer_in;    
+      P2N_FIFO_read_pointer  <=  P2N_FIFO_read_pointer_in;
       credit_counter_out <= credit_counter_in;
       packet_length_counter_out <= packet_length_counter_in;
       valid_data <= valid_data_in;
-      if P2N_write_en = '1' then 
+      if P2N_write_en = '1' then
         --write into the memory
         P2N_FIFO_MEM_1 <= P2N_FIFO_MEM_1_in;
         P2N_FIFO_MEM_2 <= P2N_FIFO_MEM_2_in;
         P2N_FIFO_MEM_3 <= P2N_FIFO_MEM_3_in;
         P2N_FIFO_MEM_4 <= P2N_FIFO_MEM_4_in;
        end if;
-      packet_counter_out <= packet_counter_in; 
+      packet_counter_out <= packet_counter_in;
       if write_byte_enable /= "0000" then
          storage <= storage_in;
       end if;
       state <= state_in;
       ------------------------------------------------
-      if N2P_write_en = '1' then 
+      if N2P_write_en = '1' then
         --write into the memory
         N2P_FIFO_MEM_1 <= N2P_FIFO_MEM_1_in;
         N2P_FIFO_MEM_2 <= N2P_FIFO_MEM_2_in;
@@ -152,8 +154,8 @@ begin
       N2P_FIFO_read_pointer  <= N2P_FIFO_read_pointer_in;
       credit_out <= '0';
       N2P_read_en <= N2P_read_en_in;
-      if N2P_read_en = '1' then 
-        credit_out <= '1'; 
+      if N2P_read_en = '1' then
+        credit_out <= '1';
       end if;
       flag_register <= flag_register_in;
    end if;
@@ -170,7 +172,7 @@ process(write_byte_enable, enable, address, storage, data_write, valid_data, P2N
    valid_data_in <= valid_data;
 
    if enable = '1' and address = reserved_address then
-      if write_byte_enable /= "0000" then 
+      if write_byte_enable /= "0000" then
         valid_data_in <= '1';
       end if;
 
@@ -189,18 +191,18 @@ process(write_byte_enable, enable, address, storage, data_write, valid_data, P2N
    end if;
 
    if P2N_write_en = '1' then
-      valid_data_in <= '0'; 
+      valid_data_in <= '0';
     end if;
 
 end process;
 
 process(storage, P2N_FIFO_write_pointer, P2N_FIFO_MEM_1, P2N_FIFO_MEM_2, P2N_FIFO_MEM_3, P2N_FIFO_MEM_4)begin
       case(P2N_FIFO_write_pointer) is
-          when "0001" => P2N_FIFO_MEM_1_in <= storage;    	  P2N_FIFO_MEM_2_in <= P2N_FIFO_MEM_2; P2N_FIFO_MEM_3_in <= P2N_FIFO_MEM_3; P2N_FIFO_MEM_4_in <= P2N_FIFO_MEM_4; 
-          when "0010" => P2N_FIFO_MEM_1_in <= P2N_FIFO_MEM_1; P2N_FIFO_MEM_2_in <= storage;    	   P2N_FIFO_MEM_3_in <= P2N_FIFO_MEM_3; P2N_FIFO_MEM_4_in <= P2N_FIFO_MEM_4; 
-          when "0100" => P2N_FIFO_MEM_1_in <= P2N_FIFO_MEM_1; P2N_FIFO_MEM_2_in <= P2N_FIFO_MEM_2; P2N_FIFO_MEM_3_in <= storage;        P2N_FIFO_MEM_4_in <= P2N_FIFO_MEM_4; 
-          when "1000" => P2N_FIFO_MEM_1_in <= P2N_FIFO_MEM_1; P2N_FIFO_MEM_2_in <= P2N_FIFO_MEM_2; P2N_FIFO_MEM_3_in <= P2N_FIFO_MEM_3; P2N_FIFO_MEM_4_in <= storage;                  
-          when others => P2N_FIFO_MEM_1_in <= P2N_FIFO_MEM_1; P2N_FIFO_MEM_2_in <= P2N_FIFO_MEM_2; P2N_FIFO_MEM_3_in <= P2N_FIFO_MEM_3; P2N_FIFO_MEM_4_in <= P2N_FIFO_MEM_4; 
+          when "0001" => P2N_FIFO_MEM_1_in <= storage;    	  P2N_FIFO_MEM_2_in <= P2N_FIFO_MEM_2; P2N_FIFO_MEM_3_in <= P2N_FIFO_MEM_3; P2N_FIFO_MEM_4_in <= P2N_FIFO_MEM_4;
+          when "0010" => P2N_FIFO_MEM_1_in <= P2N_FIFO_MEM_1; P2N_FIFO_MEM_2_in <= storage;    	   P2N_FIFO_MEM_3_in <= P2N_FIFO_MEM_3; P2N_FIFO_MEM_4_in <= P2N_FIFO_MEM_4;
+          when "0100" => P2N_FIFO_MEM_1_in <= P2N_FIFO_MEM_1; P2N_FIFO_MEM_2_in <= P2N_FIFO_MEM_2; P2N_FIFO_MEM_3_in <= storage;        P2N_FIFO_MEM_4_in <= P2N_FIFO_MEM_4;
+          when "1000" => P2N_FIFO_MEM_1_in <= P2N_FIFO_MEM_1; P2N_FIFO_MEM_2_in <= P2N_FIFO_MEM_2; P2N_FIFO_MEM_3_in <= P2N_FIFO_MEM_3; P2N_FIFO_MEM_4_in <= storage;
+          when others => P2N_FIFO_MEM_1_in <= P2N_FIFO_MEM_1; P2N_FIFO_MEM_2_in <= P2N_FIFO_MEM_2; P2N_FIFO_MEM_3_in <= P2N_FIFO_MEM_3; P2N_FIFO_MEM_4_in <= P2N_FIFO_MEM_4;
       end case ;
 end process;
 
@@ -210,22 +212,22 @@ process(P2N_FIFO_read_pointer, P2N_FIFO_MEM_1, P2N_FIFO_MEM_2, P2N_FIFO_MEM_3, P
         when "0010" => FIFO_Data_out <= P2N_FIFO_MEM_2;
         when "0100" => FIFO_Data_out <= P2N_FIFO_MEM_3;
         when "1000" => FIFO_Data_out <= P2N_FIFO_MEM_4;
-        when others => FIFO_Data_out <= P2N_FIFO_MEM_1; 
+        when others => FIFO_Data_out <= P2N_FIFO_MEM_1;
     end case ;
   end process;
 
 process(P2N_write_en, P2N_FIFO_write_pointer)begin
     if P2N_write_en = '1'then
-       P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer(2 downto 0) & P2N_FIFO_write_pointer(3); 
+       P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer(2 downto 0) & P2N_FIFO_write_pointer(3);
     else
-       P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer; 
+       P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer;
     end if;
-  end process; 
- 
+  end process;
+
  process(P2N_FIFO_read_pointer, grant)begin
   P2N_FIFO_read_pointer_in <=  P2N_FIFO_read_pointer;
-  if grant  = '1' then 
-    P2N_FIFO_read_pointer_in <=  P2N_FIFO_read_pointer(2 downto 0) & P2N_FIFO_read_pointer(3);      
+  if grant  = '1' then
+    P2N_FIFO_read_pointer_in <=  P2N_FIFO_read_pointer(2 downto 0) & P2N_FIFO_read_pointer(3);
   end if;
 end process;
 
@@ -234,7 +236,7 @@ process(P2N_full, valid_data) begin
          P2N_write_en <= '1';
      else
          P2N_write_en <= '0';
-     end if;        
+     end if;
   end process;
 
 process(P2N_FIFO_write_pointer, P2N_FIFO_read_pointer) begin
@@ -245,14 +247,14 @@ process(P2N_FIFO_write_pointer, P2N_FIFO_read_pointer) begin
       end if;
       if P2N_FIFO_write_pointer = P2N_FIFO_read_pointer(0) & P2N_FIFO_read_pointer(3 downto 1) then
               P2N_full <= '1';
-      end if; 
+      end if;
   end process;
 
-process (credit_in, credit_counter_out, grant)begin  
+process (credit_in, credit_counter_out, grant)begin
     credit_counter_in <= credit_counter_out;
-    if credit_in = '1' and grant = '1' then 
-         credit_counter_in <= credit_counter_out; 
-    elsif credit_in = '1'  and credit_counter_out < 3 then 
+    if credit_in = '1' and grant = '1' then
+         credit_counter_in <= credit_counter_out;
+    elsif credit_in = '1'  and credit_counter_out < 3 then
          credit_counter_in <= credit_counter_out + 1;
     elsif grant = '1' and credit_counter_out > 0 then
          credit_counter_in <= credit_counter_out - 1;
@@ -262,7 +264,7 @@ end process;
 
 
 process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_counter_out, FIFO_Data_out)
-    variable LINEVARIABLE : line; 
+    variable LINEVARIABLE : line;
     file VEC_FILE : text is out "sent.txt";
     begin
         TX <= (others => '0');
@@ -270,22 +272,22 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
         packet_length_counter_in <= packet_length_counter_out;
         packet_counter_in <= packet_counter_out;
         case(state) is
-        
+
             when IDLE =>
                 if P2N_empty = '0' then
                     state_in <= HEADER_FLIT;
                 else
                     state_in <= IDLE;
                 end if;
- 
+
             when HEADER_FLIT =>
                 if credit_counter_out /= "00" then
                     grant <= '1';
 
-                    
-                    TX <= "001" &  "0000" & FIFO_Data_out(23 downto 16) & FIFO_Data_out(31 downto 28) & 
-                           std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out & XOR_REDUCE("001" &  "0000" & 
-                            FIFO_Data_out(23 downto 16) &  FIFO_Data_out(31 downto 28) & 
+
+                    TX <= "001" &  "0000" & FIFO_Data_out(23 downto 16) & FIFO_Data_out(31 downto 28) &
+                           std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out & XOR_REDUCE("001" &  "0000" &
+                            FIFO_Data_out(23 downto 16) &  FIFO_Data_out(31 downto 28) &
                            std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out);
 
                     state_in <= BODY_FLIT;
@@ -299,7 +301,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                     grant <= '1';
                     TX <= "010" & FIFO_Data_out(27 downto 0) & XOR_REDUCE("010" & FIFO_Data_out(27 downto 0));
                     packet_length_counter_in <= packet_length_counter_out - "000000000001";
-                    if packet_length_counter_out = "000000000010" then 
+                    if packet_length_counter_out = "000000000010" then
                       state_in <= TAIL_FLIT;
                     else
                       state_in <= BODY_FLIT;
@@ -329,14 +331,14 @@ valid_out <= grant;
 
 ----------------------------------------------------------------------------------------
 --below this is code for communication from NoC 2 PE
- 
+
    process(RX, N2P_FIFO_write_pointer, N2P_FIFO_MEM_1, N2P_FIFO_MEM_2, N2P_FIFO_MEM_3, N2P_FIFO_MEM_4)begin
       case( N2P_FIFO_write_pointer ) is
-          when "0001" => N2P_FIFO_MEM_1_in <= RX;             N2P_FIFO_MEM_2_in <= N2P_FIFO_MEM_2; N2P_FIFO_MEM_3_in <= N2P_FIFO_MEM_3; N2P_FIFO_MEM_4_in <= N2P_FIFO_MEM_4; 
-          when "0010" => N2P_FIFO_MEM_1_in <= N2P_FIFO_MEM_1; N2P_FIFO_MEM_2_in <= RX;             N2P_FIFO_MEM_3_in <= N2P_FIFO_MEM_3; N2P_FIFO_MEM_4_in <= N2P_FIFO_MEM_4; 
-          when "0100" => N2P_FIFO_MEM_1_in <= N2P_FIFO_MEM_1; N2P_FIFO_MEM_2_in <= N2P_FIFO_MEM_2; N2P_FIFO_MEM_3_in <= RX;             N2P_FIFO_MEM_4_in <= N2P_FIFO_MEM_4; 
-          when "1000" => N2P_FIFO_MEM_1_in <= N2P_FIFO_MEM_1; N2P_FIFO_MEM_2_in <= N2P_FIFO_MEM_2; N2P_FIFO_MEM_3_in <= N2P_FIFO_MEM_3; N2P_FIFO_MEM_4_in <= RX;                  
-          when others => N2P_FIFO_MEM_1_in <= N2P_FIFO_MEM_1; N2P_FIFO_MEM_2_in <= N2P_FIFO_MEM_2; N2P_FIFO_MEM_3_in <= N2P_FIFO_MEM_3; N2P_FIFO_MEM_4_in <= N2P_FIFO_MEM_4; 
+          when "0001" => N2P_FIFO_MEM_1_in <= RX;             N2P_FIFO_MEM_2_in <= N2P_FIFO_MEM_2; N2P_FIFO_MEM_3_in <= N2P_FIFO_MEM_3; N2P_FIFO_MEM_4_in <= N2P_FIFO_MEM_4;
+          when "0010" => N2P_FIFO_MEM_1_in <= N2P_FIFO_MEM_1; N2P_FIFO_MEM_2_in <= RX;             N2P_FIFO_MEM_3_in <= N2P_FIFO_MEM_3; N2P_FIFO_MEM_4_in <= N2P_FIFO_MEM_4;
+          when "0100" => N2P_FIFO_MEM_1_in <= N2P_FIFO_MEM_1; N2P_FIFO_MEM_2_in <= N2P_FIFO_MEM_2; N2P_FIFO_MEM_3_in <= RX;             N2P_FIFO_MEM_4_in <= N2P_FIFO_MEM_4;
+          when "1000" => N2P_FIFO_MEM_1_in <= N2P_FIFO_MEM_1; N2P_FIFO_MEM_2_in <= N2P_FIFO_MEM_2; N2P_FIFO_MEM_3_in <= N2P_FIFO_MEM_3; N2P_FIFO_MEM_4_in <= RX;
+          when others => N2P_FIFO_MEM_1_in <= N2P_FIFO_MEM_1; N2P_FIFO_MEM_2_in <= N2P_FIFO_MEM_2; N2P_FIFO_MEM_3_in <= N2P_FIFO_MEM_3; N2P_FIFO_MEM_4_in <= N2P_FIFO_MEM_4;
       end case ;
    end process;
 
@@ -346,34 +348,32 @@ valid_out <= grant;
         when "0010" => N2P_Data_out <= N2P_FIFO_MEM_2;
         when "0100" => N2P_Data_out <= N2P_FIFO_MEM_3;
         when "1000" => N2P_Data_out <= N2P_FIFO_MEM_4;
-        when others => N2P_Data_out <= N2P_FIFO_MEM_1; 
+        when others => N2P_Data_out <= N2P_FIFO_MEM_1;
     end case ;
   end process;
 
   process(address, write_byte_enable, N2P_empty)begin
-    if address = reserved_address and write_byte_enable = "0000" and N2P_empty = '0' then 
-      N2P_read_en_in <= '1';
-    elsif address = flag_address and write_byte_enable = "0000" then
+    if address = reserved_address and write_byte_enable = "0000" and N2P_empty = '0' then
       N2P_read_en_in <= '1';
     else
       N2P_read_en_in <= '0';
     end if;
   end process;
-   
+
 
   process(N2P_write_en, N2P_FIFO_write_pointer)begin
     if N2P_write_en = '1'then
-       N2P_FIFO_write_pointer_in <= N2P_FIFO_write_pointer(2 downto 0)&N2P_FIFO_write_pointer(3); 
+       N2P_FIFO_write_pointer_in <= N2P_FIFO_write_pointer(2 downto 0)&N2P_FIFO_write_pointer(3);
     else
-       N2P_FIFO_write_pointer_in <= N2P_FIFO_write_pointer; 
+       N2P_FIFO_write_pointer_in <= N2P_FIFO_write_pointer;
     end if;
   end process;
 
   process(N2P_read_en, N2P_empty, N2P_FIFO_read_pointer)begin
        if (N2P_read_en = '1' and N2P_empty = '0') then
-           N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer(2 downto 0)&N2P_FIFO_read_pointer(3); 
-       else 
-           N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer; 
+           N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer(2 downto 0)&N2P_FIFO_read_pointer(3);
+       else
+           N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer;
        end if;
   end process;
 
@@ -382,31 +382,31 @@ valid_out <= grant;
          N2P_write_en <= '1';
      else
          N2P_write_en <= '0';
-     end if;        
+     end if;
   end process;
-                        
+
   process(N2P_FIFO_write_pointer, N2P_FIFO_read_pointer) begin
       if N2P_FIFO_read_pointer = N2P_FIFO_write_pointer  then
               N2P_empty <= '1';
       else
               N2P_empty <= '0';
       end if;
- 
+
       if N2P_FIFO_write_pointer = N2P_FIFO_read_pointer(0)&N2P_FIFO_read_pointer(3 downto 1) then
               N2P_full <= '1';
       else
-              N2P_full <= '0'; 
-      end if; 
+              N2P_full <= '0';
+      end if;
   end process;
 
 
-process(N2P_read_en, N2P_Data_out) begin
-  if N2P_read_en = '1' then 
-    if address = reserved_address then
+process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
+  if N2P_read_en = '1' then
+    if old_address = reserved_address then
       data_read <= N2P_Data_out;
-    elsif address = flag_address then
+    elsif old_address = flag_address then
       data_read <= flag_register;
-    end if; 
+    end if;
   else
     data_read <= (others => 'U');
   end if;
@@ -414,8 +414,8 @@ process(N2P_read_en, N2P_Data_out) begin
 end process;
 
 
-process(N2P_write_en, N2P_Data_out)begin
-  if N2P_write_en = '1' and N2P_Data_out(31 downto 29) = "001" then 
+process(N2P_write_en, RX)begin
+  if N2P_write_en = '1' and RX(31 downto 29) = "001" then
     irq_out_FF <= '1';
   else
     irq_out_FF <= '0';
