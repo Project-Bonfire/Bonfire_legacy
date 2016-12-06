@@ -43,7 +43,7 @@ architecture behavior of FIFO_credit_based is
    signal xor_all, fault_out: std_logic;
    type state_type is (Idle, Header_flit, Body_flit, Tail_flit, Packet_drop);
    signal  state_out, state_in : state_type;
-   signal fake_credit, credit_in,  write_fake_flit: std_logic;
+   signal fake_credit, credit_in, write_fake_flit: std_logic;
    signal fake_credit_counter, fake_credit_counter_in: std_logic_vector(1 downto 0);
 
 begin
