@@ -33,10 +33,10 @@
 --      0   UartDataAvailable
 
 
--- modified by: Siavoosh Payandeh Azad 
--- Change logs:  
+-- modified by: Siavoosh Payandeh Azad
+-- Change logs:
 --            * An NI has been instantiated!
---            * some changes has been applied to the ports of the CPU to facilitate the new NI!  
+--            * some changes has been applied to the ports of the CPU to facilitate the new NI!
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -56,13 +56,13 @@ entity plasma is
         uart_read    : in std_logic;
 
         address      : out std_logic_vector(31 downto 2);
-        byte_we      : out std_logic_vector(3 downto 0); 
+        byte_we      : out std_logic_vector(3 downto 0);
         data_write   : out std_logic_vector(31 downto 0);
         data_read    : in std_logic_vector(31 downto 0);
         mem_pause_in : in std_logic;
         no_ddr_start : out std_logic;
         no_ddr_stop  : out std_logic;
-        
+
         gpio0_out    : out std_logic_vector(31 downto 0);
         gpioA_in     : in std_logic_vector(31 downto 0);
 
@@ -120,8 +120,9 @@ architecture logic of plasma is
    signal cache_checking    : std_logic;
    signal cache_miss        : std_logic;
    signal cache_hit         : std_logic;
-   
+
    constant reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
+   constant reserved_flag_address : std_logic_vector(29 downto 0) := "000000000000000010000000000000";
 
 begin  --architecture
    write_enable <= '1' when cpu_byte_we /= "0000" else '0';
@@ -131,7 +132,7 @@ begin  --architecture
       cache_miss or                                                    --Cache wait
       (cpu_address(28) and not cache_hit and mem_busy);                --DDR or flash
    irq_status <= gpioA_in(31) & not gpioA_in(31) &
-                 irq_eth_send & irq_eth_rec & 
+                 irq_eth_send & irq_eth_rec &
                  counter_reg(18) & not counter_reg(18) &
                  not uart_write_busy & uart_data_avail;
    irq <= '1' when ((irq_status and irq_mask_reg) /= ZERO(7 downto 0) or (NI_irq_out = '1')) else '0'; -- modified by Behrad
@@ -145,7 +146,7 @@ begin  --architecture
    enable_eth <= '1' when enable_misc = '1' and cpu_address(7 downto 4) = "0111" else '0';
    cpu_address(1 downto 0) <= "00";
 
-   u1_cpu: mlite_cpu 
+   u1_cpu: mlite_cpu
       generic map (memory_type => memory_type)
       PORT MAP (
          clk          => clk,
@@ -167,11 +168,11 @@ begin  --architecture
       cache_checking <= '0';
       cache_miss <= '0';
    end generate;
-   
+
    opt_cache2: if use_cache = '1' generate
    --Control 4KB unified cache that uses the upper 4KB of the 8KB
    --internal RAM.  Only lowest 2MB of DDR is cached.
-   u_cache: cache 
+   u_cache: cache
       generic map (memory_type => memory_type)
       PORT MAP (
          clk            => clk,
@@ -191,7 +192,7 @@ begin  --architecture
    eth_pause_in <= mem_pause_in or (not eth_pause and cache_miss and not cache_checking);
 
    misc_proc: process(clk, reset, cpu_address, enable_misc,
-      ram_data_r, ram_address_late, ram_data_r_ni,  
+      ram_data_r, ram_address_late, ram_data_r_ni,
       data_read, data_read_uart, cpu_pause,
       irq_mask_reg, irq_status, gpio0_reg, write_enable,
       cache_checking,
@@ -199,7 +200,7 @@ begin  --architecture
    begin
       case cpu_address(30 downto 28) is
       when "000" =>         --internal RAM
-         if ram_address_late = reserved_address  then 
+         if ((ram_address_late = reserved_address) or (ram_address_late = reserved_flag_address)) then
             cpu_data_r <= ram_data_r_ni;
          else
             cpu_data_r <= ram_data_r;
@@ -207,7 +208,7 @@ begin  --architecture
       when "001" =>         --external RAM
          if cache_checking = '1' then
             --cpu_data_r <= ram_data_r; --cache
-            if ram_address_late = reserved_address  then 
+            if ((ram_address_late = reserved_address) or (ram_address_late = reserved_flag_address)) then
                cpu_data_r <= ram_data_r_ni;
             else
                cpu_data_r <= ram_data_r; --cache
@@ -228,7 +229,7 @@ begin  --architecture
          when "101" =>      --gpioA
             cpu_data_r <= gpioA_in;
          when "110" =>      --counter
-            cpu_data_r <= counter_reg;        
+            cpu_data_r <= counter_reg;
          when others =>
             cpu_data_r <= gpioA_in;
          end case;
@@ -260,9 +261,9 @@ begin  --architecture
 
 
    process(ram_address, reset, clk)begin
-      if reset = '1' then 
+      if reset = '1' then
          ram_address_late <= (others => '0');
-      elsif clk'event and clk = '1' then 
+      elsif clk'event and clk = '1' then
          ram_address_late <= ram_address;
       end if;
    end process;
@@ -274,13 +275,13 @@ begin  --architecture
       if cache_access = '1' then    --Check if cache hit or write through
          ram_enable <= '1';
          ram_byte_we <= byte_we_next;
-         ram_address(31 downto 2) <= ZERO(31 downto 16) & 
+         ram_address(31 downto 2) <= ZERO(31 downto 16) &
             "0001" & address_next(11 downto 2);
          ram_data_w <= cpu_data_w;
       elsif cache_miss = '1' then  --Update cache after cache miss
          ram_enable <= '1';
          ram_byte_we <= "1111";
-         ram_address(31 downto 2) <= ZERO(31 downto 16) & 
+         ram_address(31 downto 2) <= ZERO(31 downto 16) &
             "0001" & cpu_address(11 downto 2);
          ram_data_w <= data_read;
       else                         --Normal non-cache access
@@ -295,7 +296,7 @@ begin  --architecture
       end if;
    end process;
 
-   u2_ram: ram 
+   u2_ram: ram
       generic map (memory_type => memory_type, stim_file => stim_file)
       port map (
          clk               => clk,
@@ -331,7 +332,7 @@ begin  --architecture
    end generate;
 
    dma_gen2: if ethernet = '1' generate
-   u4_eth: eth_dma 
+   u4_eth: eth_dma
       port map(
          clk         => clk,
          reset       => reset,
@@ -358,7 +359,7 @@ begin  --architecture
          E_TX_EN     => gpio0_out(28),
          E_TXD       => gpio0_out(27 downto 24));
    end generate;
-u4_ni: NI 
+u4_ni: NI
       generic map(current_address => current_address, reserved_address => "000000000000000001111111111111")
       port map (
          clk               => clk,
@@ -368,16 +369,15 @@ u4_ni: NI
          address           => ram_address,
          data_write        => ram_data_w,
          data_read         => ram_data_r_ni,
-         --NI_read_flag           => NI_read_flag, 
-         --NI_write_flag           => NI_write_flag, 
+         --NI_read_flag           => NI_read_flag,
+         --NI_write_flag           => NI_write_flag,
          irq_out           => NI_irq_out,
          credit_in         => credit_in,
-         valid_out         => valid_out, 
+         valid_out         => valid_out,
          TX                => TX,
          credit_out        => credit_out,
-         valid_in          => valid_in, 
+         valid_in          => valid_in,
          RX                => RX
          );
 
 end; --architecture logic
-

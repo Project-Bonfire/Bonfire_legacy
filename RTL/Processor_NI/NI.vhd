@@ -401,12 +401,11 @@ valid_out <= grant;
 
 
 process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
-  if N2P_read_en = '1' then
-    if old_address = reserved_address then
-      data_read <= N2P_Data_out;
-    elsif old_address = flag_address then
-      data_read <= flag_register;
-    end if;
+
+  if old_address = reserved_address and N2P_read_en = '1' then
+    data_read <= N2P_Data_out;
+  elsif old_address = flag_address then
+    data_read <= flag_register;
   else
     data_read <= (others => 'U');
   end if;
