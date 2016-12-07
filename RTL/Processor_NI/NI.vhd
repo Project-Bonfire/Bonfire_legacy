@@ -407,8 +407,8 @@ process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
     data_read <= N2P_Data_out;
   elsif old_address = flag_address then
     data_read <= flag_register;
-  elsif old_address = counter_address then 
-  	data_read <= "00000000000000000000000000000" & counter_register;
+  elsif old_address = counter_address then
+  	data_read <= "000000000000000000000000000000" & counter_register;
   else
     data_read <= (others => 'U');
   end if;
@@ -416,13 +416,13 @@ process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
 end process;
 
 
-process(N2P_write_en, N2P_read_en, RX, data_read)begin
+process(N2P_write_en, N2P_read_en, RX, N2P_Data_out)begin
   counter_register_in <= counter_register;
-  if N2P_write_en = '1' and RX(31 downto 29) = "001" and N2P_read_en = '1' and data_read = "100" then
+  if N2P_write_en = '1' and RX(31 downto 29) = "001" and N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "100" then
   	counter_register_in <= counter_register;
   elsif N2P_write_en = '1' and RX(31 downto 29) = "001" then
     counter_register_in <= counter_register +1;
-  elsif N2P_read_en = '1' and data_read = "100" then
+  elsif N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "100" then
   	counter_register_in <= counter_register -1;
   end if;
 end process;
