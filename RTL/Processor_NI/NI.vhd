@@ -23,7 +23,8 @@ use ieee.std_logic_misc.all;
 entity NI is
    generic(current_address : integer := 10; 	-- the current node's address
    		   reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
-         flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000");	-- reserved address for the memory mapped I/O
+         flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";	-- reserved address for the memory mapped I/O
+         counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001");	-- reserved address for the counter
    port(clk               : in std_logic;
         reset             : in std_logic;
         enable            : in std_logic;
@@ -90,7 +91,7 @@ architecture logic of NI is
 
   signal N2P_full, N2P_empty: std_logic;
   signal N2P_read_en, N2P_read_en_in, N2P_write_en: std_logic;
-  signal irq_out_FF, irq_out_FF_2 : std_logic;
+  signal counter_register_in, counter_register : std_logic_vector(1 downto 0);
 
 begin
 
@@ -118,7 +119,7 @@ begin
       N2P_FIFO_read_pointer  <= "0001";
       N2P_FIFO_write_pointer <= "0001";
       credit_out <= '0';
-
+      counter_register <= (others => '0');
       N2P_read_en <= '0';
       flag_register <= (others =>'0');
       old_address <= (others =>'0');
@@ -149,7 +150,7 @@ begin
         N2P_FIFO_MEM_3 <= N2P_FIFO_MEM_3_in;
         N2P_FIFO_MEM_4 <= N2P_FIFO_MEM_4_in;
        end if;
-      irq_out_FF_2 <= irq_out_FF;
+      counter_register <= counter_register_in;
       N2P_FIFO_write_pointer <= N2P_FIFO_write_pointer_in;
       N2P_FIFO_read_pointer  <= N2P_FIFO_read_pointer_in;
       credit_out <= '0';
@@ -406,6 +407,8 @@ process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
     data_read <= N2P_Data_out;
   elsif old_address = flag_address then
     data_read <= flag_register;
+  elsif old_address = counter_address then 
+  	data_read <= "00000000000000000000000000000" & counter_register;
   else
     data_read <= (others => 'U');
   end if;
@@ -413,11 +416,14 @@ process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
 end process;
 
 
-process(N2P_write_en, RX)begin
-  if N2P_write_en = '1' and RX(31 downto 29) = "001" then
-    irq_out_FF <= '1';
-  else
-    irq_out_FF <= '0';
+process(N2P_write_en, N2P_read_en, RX, data_read)begin
+  counter_register_in <= counter_register;
+  if N2P_write_en = '1' and RX(31 downto 29) = "001" and N2P_read_en = '1' and data_read = "100" then
+  	counter_register_in <= counter_register;
+  elsif N2P_write_en = '1' and RX(31 downto 29) = "001" then
+    counter_register_in <= counter_register +1;
+  elsif N2P_read_en = '1' and data_read = "100" then
+  	counter_register_in <= counter_register -1;
   end if;
 end process;
 
@@ -425,5 +431,5 @@ flag_register_in <= N2P_empty & P2N_full & "000000000000000000000000000000";
 --NI_read_flag <= N2P_empty;
 --NI_write_flag <= P2N_full;
 
-irq_out <= irq_out_FF or irq_out_FF_2;
+irq_out <= '0';
 end; --architecture logic
