@@ -17,26 +17,15 @@
 #ifndef __MEMORY_H__
 #define __MEMORY_H__
 
-using namespace std;
-
 class Memory
 {
     public:
       Memory(uint32_t memory_size);
+      ~Memory();
 
       void write(uint32_t address, uint32_t value);
 
-      int read(uint32_t address);
-
-      uint32_t load_byte(uint32_t address, bool load_signed);
-
-      uint32_t load_hword(uint32_t address, bool load_signed);
-
-      uint32_t load_word(uint32_t address);
-
-      void store_byte(uint32_t address, uint32_t value);
-      void store_hword(uint32_t address, uint32_t value);
-      void store_word(uint32_t address, uint32_t value);
+      uint32_t read(uint32_t address);
 
     private:
       uint32_t *memory;

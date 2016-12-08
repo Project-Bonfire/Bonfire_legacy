@@ -19,155 +19,39 @@
 
 using namespace std;
 
+/**
+ * Creates a memory.
+ * @param   memory_size     Size of the memory to be created
+ */
 Memory::Memory(uint32_t memory_size)
 {
     memory = (uint32_t *)malloc(sizeof(uint32_t)*memory_size);
 }
 
+/**
+ * Destructor. Releases memory.
+ */
+Memory::~Memory()
+{
+    free(memory);
+}
+
+/**
+ * Writes a word into a specified address in memory
+ * @param address Address of the memory cell to write into
+ * @param value   Value to write into the memory cell
+ */
 void Memory::write(uint32_t address, uint32_t value)
 {
-        memory[address] = value;
+    memory[address] = value;
 }
 
-int Memory::read(uint32_t address)
+/**
+ * Reads a word from the memory
+ * @param  address Address of the memory cell to read
+ * @return         Contents of the memory cell read
+ */
+uint32_t Memory::read(uint32_t address)
 {
-        return memory[address];
-}
-
-
-uint32_t Memory::load_byte(uint32_t address, bool load_signed)
-{
-
-    uint32_t cell_addr;
-    uint32_t byte_index;
-    uint32_t memory_cell;
-    uint32_t extracted_byte;
-
-    cell_addr = address / 4;
-    byte_index = address % 4;
-    memory_cell = memory[cell_addr];
-    extracted_byte = (memory_cell & (BYTE_MASK << byte_index*8)) >> byte_index*8;
-
-    if (load_signed)
-    {
-        if ((memory_cell & SIGN_MASK_32) >> 31) //value is negative
-        {
-            return 0xFFFFFF00 | extracted_byte;
-        }
-        else
-        {
-            return extracted_byte;
-        }
-
-    }
-    else // !load_siged
-    {
-        return extracted_byte;
-    }
-
-}
-
-uint32_t Memory::load_hword(uint32_t address, bool load_signed)
-{
-    uint32_t cell_addr;
-    uint32_t byte_index;
-    uint32_t memory_cell;
-    uint32_t extracted_byte;
-
-    if (address % 2 != 0)
-    {
-        cout << "Unaligned memory access at address " << address << endl;
-        cout << "This cannot be tolerated! Will exit." << endl;
-        //TODO: actually exit
-        return 1;
-    }
-
-    cell_addr = address / 4;
-    byte_index = address % 4;
-    memory_cell = memory[cell_addr];
-    extracted_byte = (memory_cell & (HWORD_MASK << byte_index*8)) >> byte_index*8;
-
-    if (load_signed)
-    {
-        if ((memory_cell & SIGN_MASK_32) >> 31) //value is negative
-        {
-            return 0xFFFF0000 | extracted_byte;
-        }
-        else
-        {
-            return extracted_byte;
-        }
-
-    }
-    else // !load_siged
-    {
-        return extracted_byte;
-    }
-}
-
-uint32_t Memory::load_word(uint32_t address)
-{
-    uint32_t cell_addr;
-
-    if (address % 4 != 0)
-    {
-        cout << "Unaligned memory access at address " << address << endl;
-        cout << "This cannot be tolerated! Will exit." << endl;
-        //TODO: actually exit
-        return 1;
-    }
-
-    cell_addr = address / 4;
-
-    return memory[cell_addr];
-
-}
-
-void Memory::store_byte(uint32_t address, uint32_t value)
-{
-    uint32_t cell_addr;
-    uint32_t byte_index;
-    uint32_t memory_cell;
-
-    cell_addr = address / 4;
-    byte_index = address % 4;
-    memory_cell = memory[cell_addr];
-    memory[cell_addr] = memory_cell | (value << byte_index*8);
-}
-
-void Memory::store_hword(uint32_t address, uint32_t value)
-{
-    uint32_t cell_addr;
-    uint32_t byte_index;
-    uint32_t memory_cell;
-
-    if (address % 2 != 0)
-    {
-        cout << "Unaligned memory access at address " << address << endl;
-        cout << "This cannot be tolerated! Will exit." << endl;
-        //TODO: actually exit
-        return 1;
-    }
-
-    cell_addr = address / 4;
-    byte_index = address % 4;
-    memory_cell = memory[cell_addr];
-    memory[cell_addr] = memory_cell | (value << byte_index*8);
-}
-
-void Memory::store_word(uint32_t address, uint32_t value)
-{
-    uint32_t cell_addr;
-
-    if (address % 4 != 0)
-    {
-        cout << "Unaligned memory access at address " << address << endl;
-        cout << "This cannot be tolerated! Will exit." << endl;
-        //TODO: actually exit
-        return 1;
-    }
-
-    cell_addr = address / 4;
-
-    memory[cell_addr] = value;
+    return memory[address];
 }

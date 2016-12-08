@@ -14,26 +14,26 @@
 #define __MULT_H__
 
 
-#include "defines.h"
+#include "common.h"
 #include <cstdint>
 
 class Multiplier {
     public:
-      reg read_lo();
-      reg read_hi();
+      uint32_t read_lo();
+      uint32_t read_hi();
 
-      void write_lo(reg value);
-      void write_hi(reg value);
+      void write_lo(uint32_t value);
+      void write_hi(uint32_t value);
 
-      void multiply(reg multiplier, reg multiplicand);
-      void multiply_unsigned(reg multiplier, reg multiplicand);
+      void multiply(uint32_t multiplier, uint32_t multiplicand);
+      void multiply_unsigned(uint32_t multiplier, uint32_t multiplicand);
 
-      void divide(reg dividend, reg divisor);
-      void divide_unsigned(reg dividend, reg divisor);
+      void divide(uint32_t dividend, uint32_t divisor);
+      void divide_unsigned(uint32_t dividend, uint32_t divisor);
 
     private:
-      reg high_reg;
-      reg low_reg;
+      uint32_t high_reg;
+      uint32_t low_reg;
 };
 
 #endif //__MULT_H__

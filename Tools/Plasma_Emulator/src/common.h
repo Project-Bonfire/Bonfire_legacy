@@ -18,6 +18,7 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
+#include <iostream>
 #include <cstdint>
 
 #define SIGNED    1
@@ -26,6 +27,10 @@
 #define BYTE_MASK   0xFF
 #define HWORD_MASK   0xFFFF
 #define SIGN_MASK_32    0x80000000
+
+#define BYTE_LENGTH     1
+#define HWORD_LENGTH    2
+#define WORD_LENGTH     4
 
 
 #endif //__COMMON_H__
