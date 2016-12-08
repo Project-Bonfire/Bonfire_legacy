@@ -12,23 +12,34 @@
 --   Can be used for RAM, register bank, or any other memory
 --------------------------------------------------------------------*/
 
-#include "defines.h"
+#include "common.h"
 
 #ifndef __MEMORY_H__
 #define __MEMORY_H__
 
 using namespace std;
 
-class Memory {
+class Memory
+{
     public:
-      Memory(reg memory_size);
+      Memory(uint32_t memory_size);
 
-      void write(reg address, reg value);
+      void write(uint32_t address, uint32_t value);
 
-      int read(reg address);
+      int read(uint32_t address);
+
+      uint32_t load_byte(uint32_t address, bool load_signed);
+
+      uint32_t load_hword(uint32_t address, bool load_signed);
+
+      uint32_t load_word(uint32_t address);
+
+      void store_byte(uint32_t address, uint32_t value);
+      void store_hword(uint32_t address, uint32_t value);
+      void store_word(uint32_t address, uint32_t value);
 
     private:
-      reg *memory;
+      uint32_t *memory;
 };
 
 #endif //__MEMORY_H__

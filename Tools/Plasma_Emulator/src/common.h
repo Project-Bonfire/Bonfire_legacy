@@ -2,7 +2,7 @@
  * TITLE: Plasma Hardware Defines
  * AUTHOR: Steve Rhoads (rhoadss@yahoo.com)
  * DATE CREATED: 12/17/05
- * FILENAME: plasma.h
+ * FILENAME: common.h
  * PROJECT: Plasma CPU core
  * COPYRIGHT: Software placed into the public domain by the author.
  *    Software 'as is' without warranty.  Author liable for nothing.
@@ -15,12 +15,17 @@
  *--------------------------------------------------------------------*/
 
 
-#ifndef __DEFINES_H__
-#define __DEFINES_H__
+#ifndef __COMMON_H__
+#define __COMMON_H__
 
 #include <cstdint>
 
-/************ Type definitions ************/
-typedef uint32_t reg;
+#define SIGNED    1
+#define UNSIGNED  0
 
-#endif //__DEFINES_H__
+#define BYTE_MASK   0xFF
+#define HWORD_MASK   0xFFFF
+#define SIGN_MASK_32    0x80000000
+
+
+#endif //__COMMON_H__
