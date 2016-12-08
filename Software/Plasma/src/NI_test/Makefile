@@ -1,6 +1,8 @@
 CFLAGS = -O0 -Wall -c -s
-CFLAGS += -fno-pic -mips1 -mno-abicalls -msoft-float
-ASFLAGS = -O0 -Wall -mips1 -msoft-float
+CFLAGS += -fno-pic -mips1 -mno-abicalls -mfp32 #-msoft-float
+ASFLAGS = -O0 -Wall -mips1 -mfp32 #-msoft-float
+
+# The compiler does not support floating soft-floats. Try to avoid floats, okey?
 
 GCC_MIPS = mips-linux-gnu-gcc $(CFLAGS)
 AS_MIPS = mips-linux-gnu-as $(ASFLAGS)

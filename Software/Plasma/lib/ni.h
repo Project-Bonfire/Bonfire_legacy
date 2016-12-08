@@ -15,6 +15,7 @@
 /*********** Hardware addresses ***********/
 #define NI_IO_ADDRESS     0x7FFCu
 #define NI_FLAGS_ADDRESS  0x8000u
+#define NI_COUNTER_ADDRESS  0x8004u
 
 /* NI flag masks */
 #define NI_READ_MASK   0x80000000
@@ -26,9 +27,8 @@
 
 /***** Functions for accessing NI *****/
 #define ni_read_flags() (*(volatile unsigned int*)NI_FLAGS_ADDRESS)
-
 /* Shared variables */
-static unsigned int *recv_packet_counter;
+//static unsigned int recv_packet_counter;
 
 
 #endif //__NI_H__
