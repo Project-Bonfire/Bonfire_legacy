@@ -8,7 +8,7 @@ LD = ld
 
 RM = rm -rf
 
-all: dir $(BUILDDIR)/convert_to_bin $(BUILDDIR)/convert_to_bin_le $(BUILDDIR)/bin_to_hex
+all: dir $(BUILDDIR)/convert_to_bin $(BUILDDIR)/convert_to_bin_le $(BUILDDIR)/bin_to_hex $(BUILDDIR)/gen_ram_image
 
 dir:
 	mkdir -p $(BUILDDIR)
@@ -26,6 +26,10 @@ $(BUILDDIR)/convert_to_bin_le:
 $(BUILDDIR)/bin_to_hex:
 	@echo "\nMaking bin_to_hex..."
 	@$(CC) -c $(CFLAGS) -o $(BUILDDIR)/bin_to_hex $(SOURCEDIR)/bintohex.c
+
+$(BUILDDIR)/gen_ram_image:
+	@echo "\nMaking get_ram_image..."
+	@$(CC) -c $(CFLAGS) -o $(BUILDDIR)/gen_ram_image $(SOURCEDIR)/gen_ram_image.c
 
 clean:
 	-$(RM) $(BUILDDIR)
