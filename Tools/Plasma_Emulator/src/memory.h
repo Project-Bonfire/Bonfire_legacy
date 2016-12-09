@@ -12,15 +12,18 @@
 --   Can be used for RAM, register bank, or any other memory
 --------------------------------------------------------------------*/
 
-#include "common.h"
-
 #ifndef __MEMORY_H__
 #define __MEMORY_H__
+
+#include "common.h"
+
+#define MEM_TYPE_RAM        0
+#define MEM_TYPE_REG_BANK   1
 
 class Memory
 {
     public:
-      Memory(uint32_t memory_size);
+      Memory(uint32_t memory_size, int mem_type);
       ~Memory();
 
       void write(uint32_t address, uint32_t value);
@@ -28,6 +31,7 @@ class Memory
       uint32_t read(uint32_t address);
 
     private:
+      int type;
       uint32_t *memory;
 };
 

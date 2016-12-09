@@ -23,8 +23,9 @@ using namespace std;
  * Creates a memory.
  * @param   memory_size     Size of the memory to be created
  */
-Memory::Memory(uint32_t memory_size)
+Memory::Memory(uint32_t memory_size, int mem_type)
 {
+    type = mem_type;
     memory = (uint32_t *)malloc(sizeof(uint32_t)*memory_size);
 }
 
@@ -53,5 +54,13 @@ void Memory::write(uint32_t address, uint32_t value)
  */
 uint32_t Memory::read(uint32_t address)
 {
-    return memory[address];
+    // Register 0 of MIPS always returns 0.
+    if (type == MEM_TYPE_REG_BANK)
+    {
+        return 0;
+    }
+    else
+    {
+        return memory[address];
+    }
 }
