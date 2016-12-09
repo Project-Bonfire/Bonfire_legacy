@@ -7,7 +7,6 @@ OBJECTS = $(patsubst $(SOURCEDIR)/%.cpp,$(BUILDDIR)/%.o,$(SOURCES))
 
 CC = gcc
 CFLAGS = -Wall -O -g -std=c++11
-OBJS = main.o memory.o
 
 LD = ld
 
