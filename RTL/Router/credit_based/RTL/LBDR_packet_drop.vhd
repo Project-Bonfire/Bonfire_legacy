@@ -108,6 +108,8 @@ end process;
 
 
 process(Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Cx, Temp_Cx, flit_type, reconfig_cx, empty, grants) begin
+  
+  Temp_Cx_in <= Temp_Cx;
   if reconfig_cx = '1' and flit_type = "100" and empty = '0' and grants = '1' then
     Cx_in <= Temp_Cx;
     reconfig_cx_in <= '0';
@@ -118,7 +120,6 @@ process(Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Cx, Temp_Cx, flit_type, 
       Temp_Cx_in <= not(Faulty_C_S & Faulty_C_W & Faulty_C_E & Faulty_C_N) and Cx;
     else
       reconfig_cx_in <= reconfig_cx;
-      Temp_Cx_in <= Temp_Cx;
     end if;
   end if;
 end process;
