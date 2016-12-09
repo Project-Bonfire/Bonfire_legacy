@@ -73,7 +73,7 @@ else:
 print "input_size:", input_size
 print "input_format:", input_format
 
-test_patern_list = list(itertools.product([0, 1], repeat=pattern_length))
+#test_patern_list = list(itertools.product([0, 1], repeat=pattern_length))
 test_patern_file = open(str(filename), 'w')
 
 
@@ -136,17 +136,18 @@ def check_input_format(data, input_format):
 
 print "--------------------------------------------------------------------------------"
 list_of_accepted_patterns= []
-for item in test_patern_list:
+for item in itertools.product([0, 1], repeat=pattern_length):
+	#print item
 	index = 0
 	acceptable = True
 	for i in range(0, len(input_size)):
 		data = item[index: index+input_size[i]]
-		# print data, check_input_format(data, input_format[i]), input_format[i]
+		#print data, check_input_format(data, input_format[i]), input_format[i]
 		if not check_input_format(data, input_format[i]):
 			acceptable = False
  		index += input_size[i]
  	if acceptable:
- 		print item
+ 		#print item
  		list_of_accepted_patterns.append(item)
 
 
