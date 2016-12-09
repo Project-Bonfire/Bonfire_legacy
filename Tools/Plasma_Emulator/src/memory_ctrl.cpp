@@ -78,7 +78,7 @@ uint32_t MemoryCtrl::extract_data(uint32_t mem_cell_contents, uint32_t byte_inde
     {
         if ((mem_cell_contents & SIGN_MASK_32) >> 31) // If the value is negative
         {
-            return 0xFFFFFF00 | extracted_data;
+            return 0xFFFFFF00 | extracted_data; //TODO FIX HWORD
         }
         else
         {

@@ -19,8 +19,8 @@ int main() {
         else
         {
             ni_write(0b00110000000000110000000000000000);
-            asm("nop");
-            asm("nop");
+            //asm("nop");
+            //asm("nop");
         }
 
     }

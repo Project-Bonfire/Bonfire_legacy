@@ -6,8 +6,10 @@
 using namespace std;
 
 int main(int argc, char const *argv[]) {
-  Memory ram(1024);
+  Memory ram(1024, MEM_TYPE_RAM);
   MemoryCtrl ram_ctrl;
+
+  Memory reg_bank(32, MEM_TYPE_REG_BANK);
 
   ram.write(10, 42);
   ram.write(2, 0xa1234567);

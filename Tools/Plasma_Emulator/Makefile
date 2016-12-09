@@ -1,5 +1,5 @@
 SOURCEDIR = src
-BUILDDIR = build
+BUILDDIR = ../../tmp/bin/plasma_emulator
 
 EXECUTABLE = bonfire_simulator
 SOURCES = $(wildcard $(SOURCEDIR)/*.cpp)
