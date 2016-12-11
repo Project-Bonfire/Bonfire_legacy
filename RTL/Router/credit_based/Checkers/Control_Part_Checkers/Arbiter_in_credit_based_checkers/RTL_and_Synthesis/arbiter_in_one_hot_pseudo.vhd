@@ -9,7 +9,7 @@ entity arbiter_in_one_hot_pseudo is
     	    state: in std_logic_vector (5 downto 0); -- 6 states for Arbiter_in's FSM
 
             X_N, X_E, X_W, X_S, X_L:out std_logic; -- Grants given to LBDR requests (encoded as one-hot)
-            state_in: out std_logic_vector (5 downto 0) -- 6 states for Arbiter's FSM            
+            state_in: out std_logic_vector (5 downto 0) -- 6 states for Arbiter's FSM
             );
 end;
 
@@ -22,8 +22,9 @@ architecture behavior of arbiter_in_one_hot_pseudo is
  CONSTANT West: std_logic_vector (5 downto 0) := "010000";
  CONSTANT South: std_logic_vector (5 downto 0) := "100000";
 
--- anything below here is pure combinational
 begin
+
+-- anything below here is pure combinational
 
 process(state, req_X_N, req_X_E, req_X_W, req_X_S, req_X_L)
 begin
