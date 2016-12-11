@@ -1,0 +1,1275 @@
+(edif Synopsys_edif (edifVersion 2 0 0) (edifLevel 0)
+ (keywordMap (keywordLevel 0))
+ (status
+  (written (timeStamp 2016 12 9 22 20 14)
+   (program "Synopsys Design Compiler" (Version "V-2004.06-SP1"))
+   (dataOrigin "company") (author "designer")
+  )
+ )
+ (external class (edifLevel 0) (technology (numberDefinition))
+  (cell IV (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port Z (direction OUTPUT)))
+   )
+  )
+  (cell AO6 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell AO2 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port D (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell OR2 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell AN2 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell OR4 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port D (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell AN3 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell AO4 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port D (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell EON1 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port D (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+ )
+ (library DESIGNS (edifLevel 0) (technology (numberDefinition))
+  (cell Cx_Reconf_pseudo (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port reconfig_cx (direction INPUT))
+     (port empty (direction INPUT)) (port grants (direction INPUT))
+     (port Faulty_C_N (direction INPUT)) (port Faulty_C_E (direction INPUT))
+     (port Faulty_C_W (direction INPUT)) (port Faulty_C_S (direction INPUT))
+     (port reconfig_cx_in (direction OUTPUT))
+     (port (array (rename flit_type_2_0_ "flit_type<2:0>") 3)
+      (direction INPUT)
+     )
+     (port (array (rename Temp_Cx_3_0_ "Temp_Cx<3:0>") 4) (direction INPUT))
+     (port (array (rename Cx_3_0_ "Cx<3:0>") 4) (direction INPUT))
+     (port (array (rename Cx_in_3_0_ "Cx_in<3:0>") 4) (direction OUTPUT))
+     (port (array (rename Temp_Cx_in_3_0_ "Temp_Cx_in<3:0>") 4)
+      (direction OUTPUT)
+     )
+    )
+    (contents
+     (instance U54
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U55
+      (viewRef Netlist_representation (cellRef AO6 (libraryRef class)))
+     )
+     (instance U56
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U57
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U58
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U59
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U60
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U61
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U62
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U63
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U64
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U65
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U66
+      (viewRef Netlist_representation (cellRef OR4 (libraryRef class)))
+     )
+     (instance U67
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U68
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U69
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U70
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U71
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U72
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U73
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U74
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U75
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U76
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U77
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U78
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U79
+      (viewRef Netlist_representation (cellRef OR4 (libraryRef class)))
+     )
+     (instance U80
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U81
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U82
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (net (rename Temp_Cx_3_ "Temp_Cx<3>")
+      (joined (portRef (member Temp_Cx_3_0_ 3)) (portRef A (instanceRef U69)))
+     )
+     (net (rename Temp_Cx_2_ "Temp_Cx<2>")
+      (joined (portRef (member Temp_Cx_3_0_ 2)) (portRef A (instanceRef U72)))
+     )
+     (net (rename Temp_Cx_1_ "Temp_Cx<1>")
+      (joined (portRef (member Temp_Cx_3_0_ 1)) (portRef A (instanceRef U75)))
+     )
+     (net (rename Temp_Cx_0_ "Temp_Cx<0>")
+      (joined (portRef (member Temp_Cx_3_0_ 0)) (portRef A (instanceRef U82)))
+     )
+     (net (rename Cx_3_ "Cx<3>")
+      (joined (portRef (member Cx_3_0_ 3)) (portRef A (instanceRef U68)))
+     )
+     (net (rename Cx_2_ "Cx<2>")
+      (joined (portRef (member Cx_3_0_ 2)) (portRef A (instanceRef U71)))
+     )
+     (net (rename Cx_1_ "Cx<1>")
+      (joined (portRef (member Cx_3_0_ 1)) (portRef A (instanceRef U74)))
+     )
+     (net (rename Cx_0_ "Cx<0>")
+      (joined (portRef (member Cx_3_0_ 0)) (portRef A (instanceRef U77)))
+     )
+     (net Faulty_C_N
+      (joined (portRef Faulty_C_N) (portRef A (instanceRef U63))
+       (portRef B (instanceRef U66))
+      )
+     )
+     (net Faulty_C_E
+      (joined (portRef Faulty_C_E) (portRef A (instanceRef U61))
+       (portRef A (instanceRef U66))
+      )
+     )
+     (net Faulty_C_W
+      (joined (portRef Faulty_C_W) (portRef A (instanceRef U59))
+       (portRef D (instanceRef U66))
+      )
+     )
+     (net Faulty_C_S
+      (joined (portRef Faulty_C_S) (portRef A (instanceRef U57))
+       (portRef C (instanceRef U66))
+      )
+     )
+     (net reconfig_cx
+      (joined (portRef reconfig_cx) (portRef B (instanceRef U55))
+       (portRef C (instanceRef U81))
+      )
+     )
+     (net (rename flit_type_2_ "flit_type<2>")
+      (joined (portRef (member flit_type_2_0_ 2))
+       (portRef B (instanceRef U81))
+      )
+     )
+     (net (rename flit_type_1_ "flit_type<1>")
+      (joined (portRef (member flit_type_2_0_ 1))
+       (portRef A (instanceRef U79))
+      )
+     )
+     (net (rename flit_type_0_ "flit_type<0>")
+      (joined (portRef (member flit_type_2_0_ 0))
+       (portRef B (instanceRef U79))
+      )
+     )
+     (net empty (joined (portRef empty) (portRef C (instanceRef U79))))
+     (net grants (joined (portRef grants) (portRef A (instanceRef U81))))
+     (net (rename Cx_in_3_ "Cx_in<3>")
+      (joined (portRef (member Cx_in_3_0_ 3)) (portRef Z (instanceRef U67)))
+     )
+     (net (rename Cx_in_2_ "Cx_in<2>")
+      (joined (portRef (member Cx_in_3_0_ 2)) (portRef Z (instanceRef U70)))
+     )
+     (net (rename Cx_in_1_ "Cx_in<1>")
+      (joined (portRef (member Cx_in_3_0_ 1)) (portRef Z (instanceRef U73)))
+     )
+     (net (rename Cx_in_0_ "Cx_in<0>")
+      (joined (portRef (member Cx_in_3_0_ 0)) (portRef Z (instanceRef U76)))
+     )
+     (net reconfig_cx_in
+      (joined (portRef reconfig_cx_in) (portRef Z (instanceRef U54)))
+     )
+     (net (rename Temp_Cx_in_3_ "Temp_Cx_in<3>")
+      (joined (portRef (member Temp_Cx_in_3_0_ 3))
+       (portRef Z (instanceRef U56))
+      )
+     )
+     (net (rename Temp_Cx_in_2_ "Temp_Cx_in<2>")
+      (joined (portRef (member Temp_Cx_in_3_0_ 2))
+       (portRef Z (instanceRef U58))
+      )
+     )
+     (net (rename Temp_Cx_in_1_ "Temp_Cx_in<1>")
+      (joined (portRef (member Temp_Cx_in_3_0_ 1))
+       (portRef Z (instanceRef U60))
+      )
+     )
+     (net (rename Temp_Cx_in_0_ "Temp_Cx_in<0>")
+      (joined (portRef (member Temp_Cx_in_3_0_ 0))
+       (portRef Z (instanceRef U62))
+      )
+     )
+     (net n108
+      (joined (portRef A (instanceRef U54)) (portRef Z (instanceRef U55)))
+     )
+     (net n109
+      (joined (portRef A (instanceRef U78)) (portRef D (instanceRef U76))
+       (portRef D (instanceRef U73)) (portRef D (instanceRef U70))
+       (portRef D (instanceRef U67)) (portRef B (instanceRef U65))
+       (portRef A (instanceRef U55)) (portRef Z (instanceRef U79))
+      )
+     )
+     (net n110
+      (joined (portRef A (instanceRef U64)) (portRef D (instanceRef U62))
+       (portRef D (instanceRef U60)) (portRef D (instanceRef U58))
+       (portRef D (instanceRef U56)) (portRef C (instanceRef U55))
+       (portRef Z (instanceRef U65))
+      )
+     )
+     (net n111
+      (joined (portRef A (instanceRef U67)) (portRef A (instanceRef U56))
+       (portRef Z (instanceRef U69))
+      )
+     )
+     (net n112
+      (joined (portRef B (instanceRef U62)) (portRef B (instanceRef U60))
+       (portRef B (instanceRef U58)) (portRef B (instanceRef U56))
+       (portRef Z (instanceRef U64))
+      )
+     )
+     (net n113
+      (joined (portRef C (instanceRef U56)) (portRef Z (instanceRef U57)))
+     )
+     (net n114
+      (joined (portRef C (instanceRef U67)) (portRef B (instanceRef U57))
+       (portRef Z (instanceRef U68))
+      )
+     )
+     (net n115
+      (joined (portRef A (instanceRef U70)) (portRef A (instanceRef U58))
+       (portRef Z (instanceRef U72))
+      )
+     )
+     (net n116
+      (joined (portRef C (instanceRef U58)) (portRef Z (instanceRef U59)))
+     )
+     (net n117
+      (joined (portRef C (instanceRef U70)) (portRef B (instanceRef U59))
+       (portRef Z (instanceRef U71))
+      )
+     )
+     (net n118
+      (joined (portRef A (instanceRef U73)) (portRef A (instanceRef U60))
+       (portRef Z (instanceRef U75))
+      )
+     )
+     (net n119
+      (joined (portRef C (instanceRef U60)) (portRef Z (instanceRef U61)))
+     )
+     (net n120
+      (joined (portRef C (instanceRef U73)) (portRef B (instanceRef U61))
+       (portRef Z (instanceRef U74))
+      )
+     )
+     (net n121
+      (joined (portRef A (instanceRef U76)) (portRef A (instanceRef U62))
+       (portRef Z (instanceRef U82))
+      )
+     )
+     (net n122
+      (joined (portRef C (instanceRef U62)) (portRef Z (instanceRef U63)))
+     )
+     (net n123
+      (joined (portRef C (instanceRef U76)) (portRef B (instanceRef U63))
+       (portRef Z (instanceRef U77))
+      )
+     )
+     (net n124
+      (joined (portRef A (instanceRef U65)) (portRef Z (instanceRef U66)))
+     )
+     (net n125
+      (joined (portRef B (instanceRef U76)) (portRef B (instanceRef U73))
+       (portRef B (instanceRef U70)) (portRef B (instanceRef U67))
+       (portRef Z (instanceRef U78))
+      )
+     )
+     (net n126
+      (joined (portRef D (instanceRef U79)) (portRef Z (instanceRef U80)))
+     )
+     (net n127
+      (joined (portRef A (instanceRef U80)) (portRef Z (instanceRef U81)))
+     )
+    )
+   )
+  )
+  (cell Cx_Reconf_pseudo_checkers (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port reconfig_cx (direction INPUT))
+     (port empty (direction INPUT)) (port grants (direction INPUT))
+     (port reconfig_cx_in (direction INPUT))
+     (port Faulty_C_N (direction INPUT)) (port Faulty_C_E (direction INPUT))
+     (port Faulty_C_W (direction INPUT)) (port Faulty_C_S (direction INPUT))
+     (port err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal
+      (direction OUTPUT)
+     )
+     (port err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in
+      (direction OUTPUT)
+     )
+     (port
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in
+      (direction OUTPUT)
+     )
+     (port
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in
+      (direction OUTPUT)
+     )
+     (port
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal
+      (direction OUTPUT)
+     )
+     (port (array (rename flit_type_2_0_ "flit_type<2:0>") 3)
+      (direction INPUT)
+     )
+     (port (array (rename Cx_in_3_0_ "Cx_in<3:0>") 4) (direction INPUT))
+     (port (array (rename Temp_Cx_3_0_ "Temp_Cx<3:0>") 4) (direction INPUT))
+     (port (array (rename Cx_3_0_ "Cx<3:0>") 4) (direction INPUT))
+     (port (array (rename Temp_Cx_in_3_0_ "Temp_Cx_in<3:0>") 4)
+      (direction INPUT)
+     )
+    )
+    (contents
+     (instance U174
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U175
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U176
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U177
+      (viewRef Netlist_representation (cellRef OR4 (libraryRef class)))
+     )
+     (instance U178
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U179
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U180
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U181
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U182
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U183
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U184
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U185
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U186
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U187
+      (viewRef Netlist_representation (cellRef OR4 (libraryRef class)))
+     )
+     (instance U188
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U189
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U190
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U191
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U192
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U193
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U194
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U195
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U196
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U197
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U198
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U199
+      (viewRef Netlist_representation (cellRef OR4 (libraryRef class)))
+     )
+     (instance U200
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U201
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U202
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U203
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U204
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U205
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U206
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U207
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U208
+      (viewRef Netlist_representation (cellRef OR4 (libraryRef class)))
+     )
+     (instance U209
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U210
+      (viewRef Netlist_representation (cellRef OR4 (libraryRef class)))
+     )
+     (instance U211
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U212
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U213
+      (viewRef Netlist_representation (cellRef OR4 (libraryRef class)))
+     )
+     (instance U214
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U215
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U216
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U217
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U218
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U219
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U220
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U221
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U222
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U223
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U224
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U225
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (net Faulty_C_S
+      (joined (portRef Faulty_C_S) (portRef A (instanceRef U205))
+       (portRef D (instanceRef U208))
+      )
+     )
+     (net Faulty_C_W
+      (joined (portRef Faulty_C_W) (portRef A (instanceRef U207))
+       (portRef C (instanceRef U208))
+      )
+     )
+     (net Faulty_C_E
+      (joined (portRef Faulty_C_E) (portRef A (instanceRef U201))
+       (portRef B (instanceRef U208))
+      )
+     )
+     (net Faulty_C_N
+      (joined (portRef Faulty_C_N) (portRef A (instanceRef U203))
+       (portRef A (instanceRef U208))
+      )
+     )
+     (net reconfig_cx
+      (joined (portRef reconfig_cx) (portRef A (instanceRef U184))
+       (portRef D (instanceRef U184)) (portRef C (instanceRef U212))
+      )
+     )
+     (net (rename flit_type_2_ "flit_type<2>")
+      (joined (portRef (member flit_type_2_0_ 2))
+       (portRef B (instanceRef U212))
+      )
+     )
+     (net (rename flit_type_1_ "flit_type<1>")
+      (joined (portRef (member flit_type_2_0_ 1))
+       (portRef A (instanceRef U210))
+      )
+     )
+     (net (rename flit_type_0_ "flit_type<0>")
+      (joined (portRef (member flit_type_2_0_ 0))
+       (portRef B (instanceRef U210))
+      )
+     )
+     (net empty (joined (portRef empty) (portRef C (instanceRef U210))))
+     (net grants (joined (portRef grants) (portRef A (instanceRef U212))))
+     (net (rename Cx_in_3_ "Cx_in<3>")
+      (joined (portRef (member Cx_in_3_0_ 3)) (portRef C (instanceRef U180))
+       (portRef A (instanceRef U220)) (portRef A (instanceRef U221))
+      )
+     )
+     (net (rename Cx_in_2_ "Cx_in<2>")
+      (joined (portRef (member Cx_in_3_0_ 2)) (portRef C (instanceRef U181))
+       (portRef A (instanceRef U223)) (portRef A (instanceRef U224))
+      )
+     )
+     (net (rename Cx_in_1_ "Cx_in<1>")
+      (joined (portRef (member Cx_in_3_0_ 1)) (portRef C (instanceRef U178))
+       (portRef A (instanceRef U214)) (portRef A (instanceRef U215))
+      )
+     )
+     (net (rename Cx_in_0_ "Cx_in<0>")
+      (joined (portRef (member Cx_in_3_0_ 0)) (portRef C (instanceRef U179))
+       (portRef A (instanceRef U217)) (portRef A (instanceRef U218))
+      )
+     )
+     (net (rename Temp_Cx_3_ "Temp_Cx<3>")
+      (joined (portRef (member Temp_Cx_3_0_ 3)) (portRef A (instanceRef U180))
+       (portRef A (instanceRef U193))
+      )
+     )
+     (net (rename Temp_Cx_2_ "Temp_Cx<2>")
+      (joined (portRef (member Temp_Cx_3_0_ 2)) (portRef A (instanceRef U181))
+       (portRef A (instanceRef U195))
+      )
+     )
+     (net (rename Temp_Cx_1_ "Temp_Cx<1>")
+      (joined (portRef (member Temp_Cx_3_0_ 1)) (portRef A (instanceRef U178))
+       (portRef A (instanceRef U189))
+      )
+     )
+     (net (rename Temp_Cx_0_ "Temp_Cx<0>")
+      (joined (portRef (member Temp_Cx_3_0_ 0)) (portRef A (instanceRef U179))
+       (portRef A (instanceRef U191))
+      )
+     )
+     (net reconfig_cx_in
+      (joined (portRef reconfig_cx_in) (portRef A (instanceRef U174))
+       (portRef A (instanceRef U197))
+      )
+     )
+     (net (rename Cx_3_ "Cx<3>")
+      (joined (portRef (member Cx_3_0_ 3)) (portRef C (instanceRef U220))
+       (portRef A (instanceRef U222))
+      )
+     )
+     (net (rename Cx_2_ "Cx<2>")
+      (joined (portRef (member Cx_3_0_ 2)) (portRef C (instanceRef U223))
+       (portRef A (instanceRef U225))
+      )
+     )
+     (net (rename Cx_1_ "Cx<1>")
+      (joined (portRef (member Cx_3_0_ 1)) (portRef C (instanceRef U214))
+       (portRef A (instanceRef U216))
+      )
+     )
+     (net (rename Cx_0_ "Cx<0>")
+      (joined (portRef (member Cx_3_0_ 0)) (portRef C (instanceRef U217))
+       (portRef A (instanceRef U219))
+      )
+     )
+     (net (rename Temp_Cx_in_3_ "Temp_Cx_in<3>")
+      (joined (portRef (member Temp_Cx_in_3_0_ 3))
+       (portRef A (instanceRef U192)) (portRef D (instanceRef U192))
+       (portRef A (instanceRef U204)) (portRef D (instanceRef U204))
+      )
+     )
+     (net (rename Temp_Cx_in_2_ "Temp_Cx_in<2>")
+      (joined (portRef (member Temp_Cx_in_3_0_ 2))
+       (portRef A (instanceRef U194)) (portRef D (instanceRef U194))
+       (portRef A (instanceRef U206)) (portRef D (instanceRef U206))
+      )
+     )
+     (net (rename Temp_Cx_in_1_ "Temp_Cx_in<1>")
+      (joined (portRef (member Temp_Cx_in_3_0_ 1))
+       (portRef A (instanceRef U188)) (portRef D (instanceRef U188))
+       (portRef A (instanceRef U200)) (portRef D (instanceRef U200))
+      )
+     )
+     (net (rename Temp_Cx_in_0_ "Temp_Cx_in<0>")
+      (joined (portRef (member Temp_Cx_in_3_0_ 0))
+       (portRef A (instanceRef U190)) (portRef D (instanceRef U190))
+       (portRef A (instanceRef U202)) (portRef D (instanceRef U202))
+      )
+     )
+     (net err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal
+      (joined
+       (portRef
+        err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal
+       )
+       (portRef Z (instanceRef U176))
+      )
+     )
+     (net err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in
+      (joined
+       (portRef
+        err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in
+       )
+       (portRef Z (instanceRef U174))
+      )
+     )
+     (net
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal
+      (joined
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal
+       )
+       (portRef Z (instanceRef U209))
+      )
+     )
+     (net
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in
+      (joined
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in
+       )
+       (portRef Z (instanceRef U196))
+      )
+     )
+     (net
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in
+      (joined
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in
+       )
+       (portRef Z (instanceRef U198))
+      )
+     )
+     (net
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal
+      (joined
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal
+       )
+       (portRef Z (instanceRef U183))
+      )
+     )
+     (net
+      err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal
+      (joined
+       (portRef
+        err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal
+       )
+       (portRef Z (instanceRef U175))
+      )
+     )
+     (net
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal
+      (joined
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal
+       )
+       (portRef Z (instanceRef U185))
+      )
+     )
+     (net n862
+      (joined (portRef A (instanceRef U176)) (portRef A (instanceRef U175))
+       (portRef B (instanceRef U174)) (portRef Z (instanceRef U182))
+      )
+     )
+     (net n863
+      (joined (portRef A (instanceRef U185)) (portRef B (instanceRef U175))
+       (portRef Z (instanceRef U187))
+      )
+     )
+     (net n864
+      (joined (portRef B (instanceRef U176)) (portRef Z (instanceRef U177)))
+     )
+     (net n865
+      (joined (portRef A (instanceRef U177)) (portRef Z (instanceRef U181)))
+     )
+     (net n866
+      (joined (portRef B (instanceRef U177)) (portRef Z (instanceRef U180)))
+     )
+     (net n867
+      (joined (portRef C (instanceRef U177)) (portRef Z (instanceRef U179)))
+     )
+     (net n868
+      (joined (portRef D (instanceRef U177)) (portRef Z (instanceRef U178)))
+     )
+     (net n869
+      (joined (portRef D (instanceRef U214)) (portRef B (instanceRef U178))
+       (portRef Z (instanceRef U215))
+      )
+     )
+     (net n870
+      (joined (portRef C (instanceRef U188)) (portRef B (instanceRef U188))
+       (portRef D (instanceRef U178)) (portRef Z (instanceRef U189))
+      )
+     )
+     (net n871
+      (joined (portRef D (instanceRef U217)) (portRef B (instanceRef U179))
+       (portRef Z (instanceRef U218))
+      )
+     )
+     (net n872
+      (joined (portRef C (instanceRef U190)) (portRef B (instanceRef U190))
+       (portRef D (instanceRef U179)) (portRef Z (instanceRef U191))
+      )
+     )
+     (net n873
+      (joined (portRef D (instanceRef U220)) (portRef B (instanceRef U180))
+       (portRef Z (instanceRef U221))
+      )
+     )
+     (net n874
+      (joined (portRef C (instanceRef U192)) (portRef B (instanceRef U192))
+       (portRef D (instanceRef U180)) (portRef Z (instanceRef U193))
+      )
+     )
+     (net n875
+      (joined (portRef D (instanceRef U223)) (portRef B (instanceRef U181))
+       (portRef Z (instanceRef U224))
+      )
+     )
+     (net n876
+      (joined (portRef C (instanceRef U194)) (portRef B (instanceRef U194))
+       (portRef D (instanceRef U181)) (portRef Z (instanceRef U195))
+      )
+     )
+     (net n877
+      (joined (portRef B (instanceRef U209)) (portRef B (instanceRef U198))
+       (portRef A (instanceRef U196)) (portRef B (instanceRef U185))
+       (portRef B (instanceRef U183)) (portRef A (instanceRef U182))
+       (portRef Z (instanceRef U210))
+      )
+     )
+     (net n878
+      (joined (portRef A (instanceRef U183)) (portRef Z (instanceRef U184)))
+     )
+     (net n879
+      (joined (portRef C (instanceRef U185)) (portRef C (instanceRef U183))
+       (portRef Z (instanceRef U186))
+      )
+     )
+     (net n880
+      (joined (portRef B (instanceRef U196)) (portRef C (instanceRef U184))
+       (portRef B (instanceRef U184)) (portRef Z (instanceRef U197))
+      )
+     )
+     (net n881
+      (joined (portRef A (instanceRef U198)) (portRef C (instanceRef U196))
+       (portRef A (instanceRef U186)) (portRef Z (instanceRef U208))
+      )
+     )
+     (net n882
+      (joined (portRef A (instanceRef U187)) (portRef Z (instanceRef U194)))
+     )
+     (net n883
+      (joined (portRef B (instanceRef U187)) (portRef Z (instanceRef U192)))
+     )
+     (net n884
+      (joined (portRef C (instanceRef U187)) (portRef Z (instanceRef U190)))
+     )
+     (net n885
+      (joined (portRef D (instanceRef U187)) (portRef Z (instanceRef U188)))
+     )
+     (net n886
+      (joined (portRef C (instanceRef U198)) (portRef Z (instanceRef U199)))
+     )
+     (net n887
+      (joined (portRef A (instanceRef U199)) (portRef Z (instanceRef U206)))
+     )
+     (net n888
+      (joined (portRef B (instanceRef U199)) (portRef Z (instanceRef U204)))
+     )
+     (net n889
+      (joined (portRef C (instanceRef U199)) (portRef Z (instanceRef U202)))
+     )
+     (net n890
+      (joined (portRef D (instanceRef U199)) (portRef Z (instanceRef U200)))
+     )
+     (net n891
+      (joined (portRef C (instanceRef U200)) (portRef B (instanceRef U200))
+       (portRef Z (instanceRef U201))
+      )
+     )
+     (net n892
+      (joined (portRef B (instanceRef U214)) (portRef B (instanceRef U201))
+       (portRef Z (instanceRef U216))
+      )
+     )
+     (net n893
+      (joined (portRef C (instanceRef U202)) (portRef B (instanceRef U202))
+       (portRef Z (instanceRef U203))
+      )
+     )
+     (net n894
+      (joined (portRef B (instanceRef U217)) (portRef B (instanceRef U203))
+       (portRef Z (instanceRef U219))
+      )
+     )
+     (net n895
+      (joined (portRef C (instanceRef U204)) (portRef B (instanceRef U204))
+       (portRef Z (instanceRef U205))
+      )
+     )
+     (net n896
+      (joined (portRef B (instanceRef U220)) (portRef B (instanceRef U205))
+       (portRef Z (instanceRef U222))
+      )
+     )
+     (net n897
+      (joined (portRef C (instanceRef U206)) (portRef B (instanceRef U206))
+       (portRef Z (instanceRef U207))
+      )
+     )
+     (net n898
+      (joined (portRef B (instanceRef U223)) (portRef B (instanceRef U207))
+       (portRef Z (instanceRef U225))
+      )
+     )
+     (net n899
+      (joined (portRef A (instanceRef U209)) (portRef Z (instanceRef U213)))
+     )
+     (net n900
+      (joined (portRef D (instanceRef U210)) (portRef Z (instanceRef U211)))
+     )
+     (net n901
+      (joined (portRef A (instanceRef U211)) (portRef Z (instanceRef U212)))
+     )
+     (net n902
+      (joined (portRef A (instanceRef U213)) (portRef Z (instanceRef U223)))
+     )
+     (net n903
+      (joined (portRef B (instanceRef U213)) (portRef Z (instanceRef U220)))
+     )
+     (net n904
+      (joined (portRef C (instanceRef U213)) (portRef Z (instanceRef U217)))
+     )
+     (net n905
+      (joined (portRef D (instanceRef U213)) (portRef Z (instanceRef U214)))
+     )
+    )
+   )
+  )
+  (cell Cx_Reconf_pseudo_with_checkers_top (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port reconfig_cx (direction INPUT))
+     (port empty (direction INPUT)) (port grants (direction INPUT))
+     (port Faulty_C_N (direction INPUT)) (port Faulty_C_E (direction INPUT))
+     (port Faulty_C_W (direction INPUT)) (port Faulty_C_S (direction INPUT))
+     (port reconfig_cx_in_out (direction OUTPUT))
+     (port err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal
+      (direction OUTPUT)
+     )
+     (port err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in
+      (direction OUTPUT)
+     )
+     (port
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in
+      (direction OUTPUT)
+     )
+     (port
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in
+      (direction OUTPUT)
+     )
+     (port
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal
+      (direction OUTPUT)
+     )
+     (port (array (rename flit_type_2_0_ "flit_type<2:0>") 3)
+      (direction INPUT)
+     )
+     (port (array (rename Temp_Cx_3_0_ "Temp_Cx<3:0>") 4) (direction INPUT))
+     (port (array (rename Cx_3_0_ "Cx<3:0>") 4) (direction INPUT))
+     (port (array (rename Cx_in_out_3_0_ "Cx_in_out<3:0>") 4)
+      (direction OUTPUT)
+     )
+     (port (array (rename Temp_Cx_in_out_3_0_ "Temp_Cx_in_out<3:0>") 4)
+      (direction OUTPUT)
+     )
+    )
+    (contents
+     (instance Cx_Reconf
+      (viewRef Netlist_representation (cellRef Cx_Reconf_pseudo))
+     )
+     (instance CHECKERS
+      (viewRef Netlist_representation (cellRef Cx_Reconf_pseudo_checkers))
+     )
+     (net (rename Cx_in_out_3_ "Cx_in_out<3>")
+      (joined (portRef (member Cx_in_out_3_0_ 3))
+       (portRef (member Cx_in_3_0_ 3) (instanceRef CHECKERS))
+       (portRef (member Cx_in_3_0_ 3) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Cx_in_out_2_ "Cx_in_out<2>")
+      (joined (portRef (member Cx_in_out_3_0_ 2))
+       (portRef (member Cx_in_3_0_ 2) (instanceRef CHECKERS))
+       (portRef (member Cx_in_3_0_ 2) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Cx_in_out_1_ "Cx_in_out<1>")
+      (joined (portRef (member Cx_in_out_3_0_ 1))
+       (portRef (member Cx_in_3_0_ 1) (instanceRef CHECKERS))
+       (portRef (member Cx_in_3_0_ 1) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Cx_in_out_0_ "Cx_in_out<0>")
+      (joined (portRef (member Cx_in_out_3_0_ 0))
+       (portRef (member Cx_in_3_0_ 0) (instanceRef CHECKERS))
+       (portRef (member Cx_in_3_0_ 0) (instanceRef Cx_Reconf))
+      )
+     )
+     (net reconfig_cx_in_out
+      (joined (portRef reconfig_cx_in_out)
+       (portRef reconfig_cx_in (instanceRef CHECKERS))
+       (portRef reconfig_cx_in (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Temp_Cx_in_out_3_ "Temp_Cx_in_out<3>")
+      (joined (portRef (member Temp_Cx_in_out_3_0_ 3))
+       (portRef (member Temp_Cx_in_3_0_ 3) (instanceRef CHECKERS))
+       (portRef (member Temp_Cx_in_3_0_ 3) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Temp_Cx_in_out_2_ "Temp_Cx_in_out<2>")
+      (joined (portRef (member Temp_Cx_in_out_3_0_ 2))
+       (portRef (member Temp_Cx_in_3_0_ 2) (instanceRef CHECKERS))
+       (portRef (member Temp_Cx_in_3_0_ 2) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Temp_Cx_in_out_1_ "Temp_Cx_in_out<1>")
+      (joined (portRef (member Temp_Cx_in_out_3_0_ 1))
+       (portRef (member Temp_Cx_in_3_0_ 1) (instanceRef CHECKERS))
+       (portRef (member Temp_Cx_in_3_0_ 1) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Temp_Cx_in_out_0_ "Temp_Cx_in_out<0>")
+      (joined (portRef (member Temp_Cx_in_out_3_0_ 0))
+       (portRef (member Temp_Cx_in_3_0_ 0) (instanceRef CHECKERS))
+       (portRef (member Temp_Cx_in_3_0_ 0) (instanceRef Cx_Reconf))
+      )
+     )
+     (net reconfig_cx
+      (joined (portRef reconfig_cx)
+       (portRef reconfig_cx (instanceRef CHECKERS))
+       (portRef reconfig_cx (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename flit_type_2_ "flit_type<2>")
+      (joined (portRef (member flit_type_2_0_ 2))
+       (portRef (member flit_type_2_0_ 2) (instanceRef CHECKERS))
+       (portRef (member flit_type_2_0_ 2) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename flit_type_1_ "flit_type<1>")
+      (joined (portRef (member flit_type_2_0_ 1))
+       (portRef (member flit_type_2_0_ 1) (instanceRef CHECKERS))
+       (portRef (member flit_type_2_0_ 1) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename flit_type_0_ "flit_type<0>")
+      (joined (portRef (member flit_type_2_0_ 0))
+       (portRef (member flit_type_2_0_ 0) (instanceRef CHECKERS))
+       (portRef (member flit_type_2_0_ 0) (instanceRef Cx_Reconf))
+      )
+     )
+     (net empty
+      (joined (portRef empty) (portRef empty (instanceRef CHECKERS))
+       (portRef empty (instanceRef Cx_Reconf))
+      )
+     )
+     (net grants
+      (joined (portRef grants) (portRef grants (instanceRef CHECKERS))
+       (portRef grants (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Temp_Cx_3_ "Temp_Cx<3>")
+      (joined (portRef (member Temp_Cx_3_0_ 3))
+       (portRef (member Temp_Cx_3_0_ 3) (instanceRef CHECKERS))
+       (portRef (member Temp_Cx_3_0_ 3) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Temp_Cx_2_ "Temp_Cx<2>")
+      (joined (portRef (member Temp_Cx_3_0_ 2))
+       (portRef (member Temp_Cx_3_0_ 2) (instanceRef CHECKERS))
+       (portRef (member Temp_Cx_3_0_ 2) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Temp_Cx_1_ "Temp_Cx<1>")
+      (joined (portRef (member Temp_Cx_3_0_ 1))
+       (portRef (member Temp_Cx_3_0_ 1) (instanceRef CHECKERS))
+       (portRef (member Temp_Cx_3_0_ 1) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Temp_Cx_0_ "Temp_Cx<0>")
+      (joined (portRef (member Temp_Cx_3_0_ 0))
+       (portRef (member Temp_Cx_3_0_ 0) (instanceRef CHECKERS))
+       (portRef (member Temp_Cx_3_0_ 0) (instanceRef Cx_Reconf))
+      )
+     )
+     (net Faulty_C_N
+      (joined (portRef Faulty_C_N) (portRef Faulty_C_N (instanceRef CHECKERS))
+       (portRef Faulty_C_N (instanceRef Cx_Reconf))
+      )
+     )
+     (net Faulty_C_E
+      (joined (portRef Faulty_C_E) (portRef Faulty_C_E (instanceRef CHECKERS))
+       (portRef Faulty_C_E (instanceRef Cx_Reconf))
+      )
+     )
+     (net Faulty_C_W
+      (joined (portRef Faulty_C_W) (portRef Faulty_C_W (instanceRef CHECKERS))
+       (portRef Faulty_C_W (instanceRef Cx_Reconf))
+      )
+     )
+     (net Faulty_C_S
+      (joined (portRef Faulty_C_S) (portRef Faulty_C_S (instanceRef CHECKERS))
+       (portRef Faulty_C_S (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Cx_3_ "Cx<3>")
+      (joined (portRef (member Cx_3_0_ 3))
+       (portRef (member Cx_3_0_ 3) (instanceRef CHECKERS))
+       (portRef (member Cx_3_0_ 3) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Cx_2_ "Cx<2>")
+      (joined (portRef (member Cx_3_0_ 2))
+       (portRef (member Cx_3_0_ 2) (instanceRef CHECKERS))
+       (portRef (member Cx_3_0_ 2) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Cx_1_ "Cx<1>")
+      (joined (portRef (member Cx_3_0_ 1))
+       (portRef (member Cx_3_0_ 1) (instanceRef CHECKERS))
+       (portRef (member Cx_3_0_ 1) (instanceRef Cx_Reconf))
+      )
+     )
+     (net (rename Cx_0_ "Cx<0>")
+      (joined (portRef (member Cx_3_0_ 0))
+       (portRef (member Cx_3_0_ 0) (instanceRef CHECKERS))
+       (portRef (member Cx_3_0_ 0) (instanceRef Cx_Reconf))
+      )
+     )
+     (net err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal
+      (joined
+       (portRef
+        err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal
+       )
+       (portRef
+        err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in
+      (joined
+       (portRef
+        err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in
+       )
+       (portRef
+        err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal
+      (joined
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal
+       )
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in
+      (joined
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in
+       )
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in
+      (joined
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in
+       )
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal
+      (joined
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal
+       )
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal
+      (joined
+       (portRef
+        err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal
+       )
+       (portRef
+        err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal
+      (joined
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal
+       )
+       (portRef
+        err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+    )
+   )
+  )
+ )
+ (design Synopsys_edif
+  (cellRef Cx_Reconf_pseudo_with_checkers_top (libraryRef DESIGNS))
+ )
+)
