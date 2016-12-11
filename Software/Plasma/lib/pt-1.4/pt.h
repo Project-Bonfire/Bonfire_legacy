@@ -112,7 +112,7 @@ struct pt {
  *
  * \hideinitializer
  */
-#define PT_BEGIN(pt) { char PT_YIELD_FLAG = 1; LC_RESUME((pt)->lc)
+#define PT_BEGIN(pt) { char PT_YIELD_FLAG = 1; if (PT_YIELD_FLAG) {;} LC_RESUME((pt)->lc)
 
 /**
  * Declare the end of a protothread.
