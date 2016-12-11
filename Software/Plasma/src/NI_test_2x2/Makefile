@@ -15,29 +15,33 @@ ni_test_0:
 	$(AS_MIPS) -o boot.o ../../lib/boot.asm
 	$(GCC_MIPS) ni_test_0.c
 	$(GCC_MIPS) ../../lib/plasma.c
+	$(GCC_MIPS) ../../lib/packets.c
 	$(LD_MIPS) -Ttext 0 -e entry -s -N -o ni_test_0.elf \
-		boot.o ni_test_0.o plasma.o
+		boot.o ni_test_0.o plasma.o packets.o
 
 ni_test_1:
 	$(AS_MIPS) -o boot.o ../../lib/boot.asm
 	$(GCC_MIPS) ni_test_1.c
 	$(GCC_MIPS) ../../lib/plasma.c
+	$(GCC_MIPS) ../../lib/packets.c
 	$(LD_MIPS) -Ttext 0 -e entry -s -N -o ni_test_1.elf \
-		boot.o ni_test_1.o plasma.o
+		boot.o ni_test_1.o plasma.o packets.o
 
 ni_test_2:
 	$(AS_MIPS) -o boot.o ../../lib/boot.asm
 	$(GCC_MIPS) ni_test_2.c
 	$(GCC_MIPS) ../../lib/plasma.c
+	$(GCC_MIPS) ../../lib/packets.c
 	$(LD_MIPS) -Ttext 0 -e entry -s -N -o ni_test_2.elf \
-		boot.o ni_test_2.o plasma.o
+		boot.o ni_test_2.o plasma.o packets.o
 
 ni_test_3:
 	$(AS_MIPS) -o boot.o ../../lib/boot.asm
 	$(GCC_MIPS) ni_test_3.c
 	$(GCC_MIPS) ../../lib/plasma.c
+	$(GCC_MIPS) ../../lib/packets.c
 	$(LD_MIPS) -Ttext 0 -e entry -s -N -o ni_test_3.elf \
-		boot.o ni_test_3.o plasma.o
+		boot.o ni_test_3.o plasma.o packets.o
 
 
 

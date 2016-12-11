@@ -1,5 +1,6 @@
 #include "../../lib/plasma.h"
 #include "../../lib/ni.h"
+#include "../../lib/packets.h"
 
 int main() {
     unsigned int ni_flags;
@@ -18,9 +19,7 @@ int main() {
         }
         else
         {
-            ni_write(0b00010000000000110000000000000000);
-            //asm("nop");
-            //asm("nop");
+            ni_write(build_header(1, 3));
         }
 
     }
