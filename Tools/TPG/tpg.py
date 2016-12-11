@@ -1,3 +1,5 @@
+# Copyright (C) 2016 Siavoosh Payandeh Azad
+
 import itertools
 import sys
 
@@ -36,12 +38,10 @@ if '-IF'  in sys.argv[1:]:
 		if not sys.argv[pointer].isdigit():
 			raise ValueError("Wrong input size!")
 		input_size.append(int(sys.argv[pointer]))
-		# print "here:",sys.argv[pointer]
 		pointer += 1
 		input_format[counter] = []
 		while not sys.argv[pointer].isdigit():
 			input_format[counter].append(sys.argv[pointer])
-			# print "there:", sys.argv[pointer]
 			if sys.argv[pointer].isdigit():
 				wrong_format = False
 			elif sys.argv[pointer] in ["oh", "z", "ao", "we"]:
@@ -70,87 +70,44 @@ else:
 	print "no input patterns provided...Exit!"
 	sys.exit()
  
-print "input_size:", input_size
-print "input_format:", input_format
-
-#test_patern_list = list(itertools.product([0, 1], repeat=pattern_length))
-test_patern_file = open(str(filename), 'w')
-
-
-def is_list_one_hot(binary_list):
-	sum = 0
-	for item in binary_list:
-		sum += item
-	if sum == 1:
-		return True
-	else:
-		return False
-
-def is_list_zero(binary_list):
-	sum = 0
-	for item in binary_list:
-		sum += item
-	if sum == 0:
-		return True
-	else:
-		return False
-
-def is_list_all_ones(binary_list):
-	sum = 0
-	for item in binary_list:
-		sum += item
-	if sum == len(binary_list):
-		return True
-	else:
-		return False
-
-def list_follows_exact_format(binary_list, input_format):
-	binary_string = ""
-	for item in binary_list:
-		binary_string+=str(item)
-	if binary_string == input_format:
-		return True
-	return False
-
-
-def check_input_format(data, input_format):
-	if "we" in input_format:		# What Ever!
-		return True
-	else:
-		if is_list_one_hot(data):
-			if "oh" in input_format:
-				return True
-		if is_list_zero(data):
-			if "z" in input_format:
-				return True
-		if is_list_all_ones(data):
-			if "ao" in input_format:
-				return True
-		for item in input_format:
-			if "B" in item:
-				if  item[1:].isdigit():
-					if list_follows_exact_format(data, item[1:]):
-						return True
-		return False
-		
+test_patern_file = open(str(filename), 'w')	
 
 print "--------------------------------------------------------------------------------"
 list_of_accepted_patterns= []
-for item in itertools.product([0, 1], repeat=pattern_length):
-	#print item
-	index = 0
-	acceptable = True
-	for i in range(0, len(input_size)):
-		data = item[index: index+input_size[i]]
-		#print data, check_input_format(data, input_format[i]), input_format[i]
-		if not check_input_format(data, input_format[i]):
-			acceptable = False
- 		index += input_size[i]
- 	if acceptable:
- 		#print item
- 		list_of_accepted_patterns.append(item)
 
+print "input_size:", input_size
+print "input_format:", input_format
 
+for item in input_format:
+	string = []
+	if "z" in input_format[item]:
+		string.append('0'*input_size[item])
+
+	elif "ao" in input_format[item]:
+		string.append('1'*input_size[item])
+
+	elif "B" in input_format[item][0]:
+		string.append(input_format[item][0][1:])
+
+	elif "we" in input_format[item]:
+		string = [''.join(map(str,tup)) for tup in itertools.product([0, 1], repeat=input_size[item])]
+	
+	elif "oh" in input_format[item]:
+		for i in range(0, input_size[item]):
+			string.append('0'*i + '1' +  '0'* (input_size[item]-i-1))
+
+ 	input_format[item].append(string)
+
+list_of_accepted_patterns = []
+for item in input_format:
+	if len(input_format[item]) > 0:
+			sub_item = input_format[item][1] 
+			if len(list_of_accepted_patterns) == 0:
+				list_of_accepted_patterns = sub_item	
+			else:
+				list_of_accepted_patterns =  map(''.join, itertools.chain(itertools.product(list_of_accepted_patterns, sub_item)))
+
+#print list_of_accepted_patterns
 
 test_patern_file.write("\n.VECTORS "+str(len(list_of_accepted_patterns))+"\n\n")
 test_patern_file.write("\n.PATTERNS\n\n")
