@@ -44,7 +44,7 @@ if '-IF'  in sys.argv[1:]:
 			input_format[counter].append(sys.argv[pointer])
 			if sys.argv[pointer].isdigit():
 				wrong_format = False
-			elif sys.argv[pointer] in ["oh", "z", "ao", "we"]:
+			elif sys.argv[pointer] in ["oh","oh", "z", "ao", "we"]:
 				wrong_format = False
 			elif "B" in sys.argv[pointer]:
 				wrong_format = False
@@ -83,25 +83,29 @@ for item in input_format:
 	if "z" in input_format[item]:
 		string.append('0'*input_size[item])
 
-	elif "ao" in input_format[item]:
+	if "ao" in input_format[item]:
 		string.append('1'*input_size[item])
 
-	elif "B" in input_format[item][0]:
+	if "B" in input_format[item][0]:
 		string.append(input_format[item][0][1:])
 
-	elif "we" in input_format[item]:
+	if len(input_format[item])>0:
+		for sub_item in input_format[item]:
+			if "B" in sub_item:
+				string.append(sub_item[1:])
+
+	if "we" in input_format[item]:
 		string = [''.join(map(str,tup)) for tup in itertools.product([0, 1], repeat=input_size[item])]
 	
-	elif "oh" in input_format[item]:
+	if "oh" in input_format[item]:
 		for i in range(0, input_size[item]):
 			string.append('0'*i + '1' +  '0'* (input_size[item]-i-1))
-
  	input_format[item].append(string)
 
 list_of_accepted_patterns = []
 for item in input_format:
 	if len(input_format[item]) > 0:
-			sub_item = input_format[item][1] 
+			sub_item = input_format[item][len(input_format[item])-1]
 			if len(list_of_accepted_patterns) == 0:
 				list_of_accepted_patterns = sub_item	
 			else:
