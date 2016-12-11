@@ -22,7 +22,10 @@ send_thread(struct pt *pt)
         PT_WAIT_UNTIL(pt, recv_thread_flag != 0);
 
         /* Sending code */
-        ni_write(build_header(2, 3));
+        if ((ni_read_flags() & NI_WRITE_MASK) == 0)
+        {
+            ni_write(build_header(2, 3));
+        }
 
         /* End of sending code */
 
