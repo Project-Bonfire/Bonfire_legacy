@@ -145,7 +145,7 @@ def arg_parser(argv, program_argv):
         print
         print BOLD + "  -FC:" + ENDC
         print "\tAdd fault classifier units to all the links (except the local) in the network. " \
-            + "Default is " + str(program_argv['FC']) + "."
+            + "Default is " + str(program_argv['add_FC']) + "."
         print
         print BOLD + "  -LV:" + ENDC
         print "\tAdd light weight network to the system " \
