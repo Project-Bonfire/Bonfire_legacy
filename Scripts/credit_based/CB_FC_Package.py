@@ -28,6 +28,7 @@ class CreditBasedPackage():
             print "\t-DW [data_width]: sets the data width of the network!"
             print "\t-P: adds parity to the network"
             print "\t-FI: adds fault injector units to all the links (except the local) in the network"
+            print "\t-FC: adds fault classifier units to all the links (except the local) in the network"
             print "\t-FO: takes the fault/health packet signals (output of parity units) to interface"
             print "\t-SHMU: adds SHMU to the network as a component and connects parity units outputs to them"
             print "\t-LV: adds light weight network to the network"
