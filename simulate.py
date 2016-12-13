@@ -143,6 +143,10 @@ def arg_parser(argv, program_argv):
         print "\tAdd fault injector units to all the links (except the local) in the network. " \
             + "Default is " + str(program_argv['add_FI']) + "."
         print
+        print BOLD + "  -FC:" + ENDC
+        print "\tAdd fault classifier units to all the links (except the local) in the network. " \
+            + "Default is " + str(program_argv['FC']) + "."
+        print
         print BOLD + "  -LV:" + ENDC
         print "\tAdd light weight network to the system " \
             + "Default is " + str(program_argv['add_LV']) + "."
@@ -208,6 +212,7 @@ def arg_parser(argv, program_argv):
     program_argv['add_parity'] = False
     program_argv['add_checkers'] = False
     program_argv['add_FI'] = False
+    program_argv['add_FC'] = False
     program_argv['add_LV'] = False
     program_argv['packet_drop'] = False
     program_argv['packet_saving'] = False
@@ -242,7 +247,9 @@ def arg_parser(argv, program_argv):
 
     if '-FI' in argv[1:]:
         program_argv['add_FI'] = True
-        
+    
+    if '-FC' in argv[1:]:
+        program_argv['add_FC'] = True
 
     if '-LV' in argv[1:]:
         program_argv['add_LV'] = True
@@ -340,33 +347,33 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/"+file+"\"\n")
   
-            if program_argv['add_LV']:
+            if program_argv['packet_drop'] and program_argv['add_FC']:
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/LBDR_packet_drop.vhd\"\n")
             else:
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/LBDR.vhd\"\n")
 
-            # Include packet dropping functionality?
-            if program_argv['add_LV']:
-
+            if program_argv['add_LV'] or program_argv['add_FC']:
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type + "/RTL"\
-                + "/counter_threshold.vhd\"\n")
+                    + "/counter_threshold.vhd\"\n")
 
+            if program_argv['add_LV']:
                 list_of_LV_files = ["arbiter_out.vhd", "allocator_LV.vhd", "FIFO_one_hot_LV_CB.vhd", 
                                     "LBDR_LV.vhd", "Router_LV_CB.vhd", "xbar_LV.vhd", "packetizer_LV.vhd",
                                     "TB_Package_LV_CB_multi_flit.vhd"] 
-
                 for file in list_of_LV_files:
-                    do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network"\
+                    do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network/"\
                     + file + "\"\n")
 
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd\"\n")
-                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/Router_32_bit_credit_based_packet_drop_LV_compatible.vhd\"\n")
+                
             else:
-                if program_argv['packet_drop']:
+                if program_argv['packet_drop'] and program_argv['add_FC']:
+                    do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                        + "/RTL/FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd\"\n")
+                elif program_argv['packet_drop'] and not program_argv['add_FC']:
                     do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                         + "/RTL/FIFO_one_hot_credit_based_packet_drop.vhd\"\n")
                 elif program_argv['packet_saving']:
@@ -391,12 +398,23 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
         if program_argv['add_parity']:
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/ParityChecker_packet_detector.vhd\"\n")
+
+        # all the routers
+        if program_argv['add_parity']:
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based_parity.vhd\"\n")
+
+        elif program_argv['add_LV'] and program_argv['packet_drop'] and program_argv['add_FC']:
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/RTL/Router_32_bit_credit_based_packet_drop_LV_compatible.vhd\"\n")
+
+        elif not program_argv['add_LV'] and program_argv['packet_drop'] and program_argv['add_FC']:
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/RTL/Router_32_bit_credit_based_packet_drop_classifier.vhd\"\n")
+
         else:
-            if not program_argv['add_LV']:
-                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/Router_32_bit_credit_based.vhd\"\n")
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/RTL/Router_32_bit_credit_based.vhd\"\n")
 
         # End of credit based flow control
 
@@ -519,6 +537,7 @@ def main(argv):
         'packet_drop':     False,
         'add_NI':          -1,
         'add_FI':          False,
+        'add_FC':          False,
         'add_FO':          False,
         'add_LV':          False,
         'add_SHMU':        False,
@@ -584,9 +603,11 @@ def main(argv):
         + "/" + NET_GEN_SCRIPT + "_" + flow_control_type + ".py" \
         + " -D " + str(program_argv['network_dime']) \
         + (" -P" if program_argv['add_parity'] else "") \
+        + (" -PD" if program_argv['packet_drop'] else "") \
         + (" -NI" if program_argv['add_NI'] != -1 else "") \
         + (" -FI" if program_argv['add_FI'] else "") \
         + (" -FO" if program_argv['add_FO'] else "") \
+        + (" -FC" if program_argv['add_FC'] else "") \
         + (" -SHMU" if program_argv['add_SHMU'] else "") \
         + (" -LV" if program_argv['add_LV'] else "") \
         + " -o " + SIMUL_DIR + "/" + net_file_name

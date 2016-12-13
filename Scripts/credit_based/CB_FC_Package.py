@@ -13,6 +13,8 @@ class CreditBasedPackage():
         self.healthy_counter_threshold = 15
         self.counter_depth = 4
         self.add_LV = False
+        self.add_packet_drop = False
+        self.add_FC = False
         self.add_SHMU = False
         self.add_FO = False
         self.fi_addres_width = None
@@ -46,6 +48,12 @@ class CreditBasedPackage():
 
         if '-P' in arguments_list:
             self.add_parity = True
+
+        if '-PD' in arguments_list:
+            self.add_packet_drop = True
+        
+        if '-FC' in arguments_list:
+            self.add_FC = True
 
         if '-FI' in arguments_list:
             self.add_FI = True

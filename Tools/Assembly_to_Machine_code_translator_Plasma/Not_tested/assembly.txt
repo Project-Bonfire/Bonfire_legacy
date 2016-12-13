@@ -1,0 +1,23 @@
+	initialize interrupt
+	enable interrupt
+	jump to main
+	nop
+
+
+interrupt:
+	increment a counter register	-lets call it R1
+	OR
+	JR to EPC
+	MTCP
+
+
+
+Main:
+	if R1 > 0:
+		if read flag of NI is 0:
+			LW R0,R?,32764
+
+	if write flag of NI is 0:
+		SW R0,R?,32764
+
+	J to Main

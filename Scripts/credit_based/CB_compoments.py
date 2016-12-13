@@ -1,8 +1,9 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
 
-def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, network_dime, fi_addres_width):
-    if add_lv:
+def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packet_drop, add_FC, network_dime, fi_addres_width):
+    
+    if add_lv :
         noc_file.write("component router_credit_based_parity_lv is\n")
         noc_file.write("    generic (\n")
         noc_file.write("        DATA_WIDTH: integer := 32;\n")
@@ -36,6 +37,37 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, network_d
         noc_file.write("    TX_LV: out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
         noc_file.write(" ); \n")
         noc_file.write("end component;\n")
+
+    elif add_packet_drop and add_FC and not add_lv:
+        noc_file.write("component router_credit_based_PD_C is  --fault classifier plus packet-dropping  \n")
+        noc_file.write("    generic ( \n")
+        noc_file.write("        DATA_WIDTH: integer := 32; \n")
+        noc_file.write("        current_address : integer := 0; \n")
+        noc_file.write("        Cx_rst : integer := 10; \n")
+        noc_file.write("        healthy_counter_threshold : integer := 8; \n")
+        noc_file.write("        faulty_counter_threshold: integer := 2; \n")
+        noc_file.write("        counter_depth: integer := 4; \n")
+        noc_file.write("        NoC_size: integer := 4 \n")
+        noc_file.write("    ); \n")
+        noc_file.write("    port ( \n")
+        noc_file.write("    reset, clk: in std_logic; \n")
+        noc_file.write(" \n")
+        noc_file.write("    Rxy_reconf: in  std_logic_vector(7 downto 0); \n")
+        noc_file.write("    Reconfig : in std_logic; \n")
+        noc_file.write(" \n")
+        noc_file.write("    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0);  \n")
+        noc_file.write("    credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic; \n")
+        noc_file.write("    valid_in_N, valid_in_E, valid_in_W, valid_in_S, valid_in_L : in std_logic; \n")
+        noc_file.write("    valid_out_N, valid_out_E, valid_out_W, valid_out_S, valid_out_L : out std_logic; \n")
+        noc_file.write("    credit_out_N, credit_out_E, credit_out_W, credit_out_S, credit_out_L: out std_logic; \n")
+        noc_file.write("    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0); \n")
+        noc_file.write(" \n")
+        noc_file.write("    Faulty_N_in, Faulty_E_in, Faulty_W_in, Faulty_S_in: in std_logic; \n")
+        noc_file.write("    Faulty_N_out, Faulty_E_out, Faulty_W_out, Faulty_S_out: out std_logic \n")
+        noc_file.write(" \n")
+        noc_file.write(" );  \n")
+        noc_file.write("end component;  \n")
+
     elif add_parity:
         noc_file.write("-- Declaring router component\n")
         noc_file.write("component router_credit_based_parity is\n")

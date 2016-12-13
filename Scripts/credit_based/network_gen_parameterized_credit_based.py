@@ -38,17 +38,19 @@ noc_file.write("use IEEE.STD_LOGIC_UNSIGNED.ALL;\n")
 noc_file.write("USE ieee.numeric_std.ALL; \n")
 noc_file.write("\n")
 
-generate_entity(noc_file, CB_Package.network_dime, CB_Package.add_FI, CB_Package.fi_addres_width, CB_Package.add_LV, CB_Package.add_FO)
+generate_entity(noc_file, CB_Package.network_dime, CB_Package.add_FI, CB_Package.fi_addres_width, 
+                CB_Package.add_LV, CB_Package.add_FO)
 
 noc_file.write("\n\n")
 noc_file.write("architecture behavior of network_"+str(CB_Package.network_dime)+"x" +
                str(CB_Package.network_dime)+" is\n\n")
 
 # declaring components, signals and making ascii art!!!
-declare_components(noc_file, CB_Package.add_parity, CB_Package.add_FI, CB_Package.add_SHMU, CB_Package.add_LV,
-                   CB_Package.network_dime, CB_Package.fi_addres_width)
+declare_components(noc_file, CB_Package.add_parity, CB_Package.add_FI, CB_Package.add_SHMU, CB_Package.add_LV, 
+                   CB_Package.add_packet_drop, CB_Package.add_FC, CB_Package.network_dime, CB_Package.fi_addres_width)
 
-declare_signals(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV)
+declare_signals(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV, CB_Package.add_packet_drop,
+                CB_Package.add_FC)
 
 generate_ascii_art(noc_file, CB_Package.network_dime, CB_Package.add_FI)
 
@@ -57,7 +59,8 @@ noc_file.write("begin\n\n\n")
 
 #todo: One should be able to control the threshold values!
 
-instantiate_routers(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV, CB_Package.healthy_counter_threshold, CB_Package.faulty_counter_threshold, CB_Package.counter_depth)
+instantiate_routers(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV, CB_Package.add_packet_drop,
+                    CB_Package.add_FC, CB_Package.healthy_counter_threshold, CB_Package.faulty_counter_threshold, CB_Package.counter_depth)
 
 if CB_Package.add_LV:
     instantiate_lv_routers(noc_file, CB_Package.network_dime)
@@ -214,7 +217,8 @@ if CB_Package.add_LV:
             noc_file.write("credit_in_LV_W"+str(i+1)+" <= credit_out_LV_E"+str(i)+";\n")
             noc_file.write("credit_in_LV_E"+str(i)+" <= credit_out_LV_W"+str(i+1)+";\n")
             noc_file.write("-------------------\n")
-    
+
+if CB_Package.add_LV or (CB_Package.add_packet_drop and CB_Package.add_FC):
     for i in range(0, CB_Package.network_dime**2):
         north_node = i - CB_Package.network_dime
         south_node = i + CB_Package.network_dime

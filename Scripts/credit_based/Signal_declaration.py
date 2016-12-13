@@ -1,7 +1,7 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
 
-def declare_signals(noc_file, network_dime, add_parity, add_lv):
+def declare_signals(noc_file, network_dime, add_parity, add_lv, add_packet_drop, add_FC):
     noc_file.write("\n\n")
     noc_file.write("-- generating bulk signals. not all of them are used in the design...\n")
 
@@ -71,6 +71,7 @@ def declare_signals(noc_file, network_dime, add_parity, add_lv):
       for i in range(0, network_dime**2):
           noc_file.write("\tsignal TX_LV_N"+str(i)+", TX_LV_E"+str(i)+", TX_LV_W"+str(i)+", TX_LV_S"+str(i)+", TX_LV_L"+str(i)+" : std_logic_vector (DATA_WIDTH_LV-1 downto 0);\n")
 
+    if add_lv or (add_packet_drop and add_FC):
       for i in range(0, network_dime**2):
  
         string_to_print  = ""
