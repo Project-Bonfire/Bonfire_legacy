@@ -308,12 +308,18 @@ end component;
    signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_MEM_4, FIFO_MEM_4_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    constant fake_tail :  std_logic_vector := "10000000000000000000000000000001";
+
+   CONSTANT Idle: std_logic_vector (4 downto 0) := "00001";
+   CONSTANT Header_flit: std_logic_vector (4 downto 0) := "00010";
+   CONSTANT Body_flit: std_logic_vector (4 downto 0) := "00100";
+   CONSTANT Tail_flit: std_logic_vector (4 downto 0) := "01000";
+   CONSTANT Packet_drop: std_logic_vector (4 downto 0) := "10000";
    
-   alias  flit_type :  std_logic_vector(2 downto 0) is RX(DATA_WIDTH-1 downto DATA_WIDTH-3); 
+   --alias  flit_type :  std_logic_vector(2 downto 0) is RX(DATA_WIDTH-1 downto DATA_WIDTH-3); 
    signal faulty_packet_in, faulty_packet_out: std_logic;
    signal xor_all, fault_out: std_logic;
-   type   state_type is (Idle, Header_flit, Body_flit, Tail_flit, Packet_drop);
-   signal state_out, state_in : state_type;
+   --type   state_type is (Idle, Header_flit, Body_flit, Tail_flit, Packet_drop);
+   signal state_out, state_in : std_logic_vector(4 downto 0); --  : state_type;
    signal fake_credit, credit_in, write_fake_flit: std_logic;
    signal fake_credit_counter, fake_credit_counter_in: std_logic_vector(1 downto 0);
 
@@ -393,7 +399,7 @@ FIFO_control_part_checkers: FIFO_credit_based_control_part_checkers port map (
                                                             health_info => health_info_sig, 
                                                             faulty_packet_out => faulty_packet_out, 
                                                             faulty_packet_in => faulty_packet_in, 
-                                                            flit_type => flit_type, 
+                                                            flit_type => RX(DATA_WIDTH-1 downto DATA_WIDTH-3), 
                                                             fault_out => fault_out, 
                                                             write_fake_flit => write_fake_flit, 
 
@@ -516,6 +522,11 @@ FIFO_control_part_checkers: FIFO_credit_based_control_part_checkers port map (
                                                             err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change => err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change
                                                            );
 
+ 
+   credit_out  <= credit_out_sig;
+   fault_info  <= fault_info_sig;
+   health_info <= health_info_sig;
+
   -- Sequential part
 
    process (clk, reset)begin
@@ -589,14 +600,14 @@ end process;
 -- Data-path related part (parity checking)
 process(valid_in, RX, xor_all)begin 
   fault_out <= '0';
-  if valid_in = '1' and   xor_all /= RX(0) then 
+  if valid_in = '1' and xor_all /= RX(0) then 
     fault_out <= '1';
   end if;
 end process;
  
  -- Mixture of data-path related and control part
 
-    process(RX, faulty_packet_out, fault_out, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4, state_out, flit_type, valid_in)begin
+    process(RX, faulty_packet_out, fault_out, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4, state_out, RX, valid_in)begin
       -- this is the default value of the memory!
       -- Writing to the corresponding location where write pointer is pointing to (in the FIFO slots)
 
@@ -636,9 +647,9 @@ end process;
       	  		if valid_in = '1' then 
 	              if fault_out = '0' then
 	                   
-	                    if flit_type = "010" then   
+	                    if RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "010" then   
 	                       state_in <= Body_flit;
-	                    elsif flit_type ="100" then
+	                    elsif RX(DATA_WIDTH-1 downto DATA_WIDTH-3) ="100" then
 	                        state_in <= Tail_flit;
 	                    else
 	                        -- we should not be here!
@@ -664,9 +675,9 @@ end process;
       	  		if valid_in = '1' then 
 	              	if fault_out = '0' then
 	                   
-	                      if flit_type = "010" then
+	                      if RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "010" then
 	                          state_in <= state_out;
-	                      elsif flit_type = "100" then 
+	                      elsif RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100" then 
 	                          state_in <= Tail_flit;
                             health_info <= '1';
 	                      else
@@ -693,7 +704,7 @@ end process;
       	  when Tail_flit => 
               if valid_in = '1' then 
                   if fault_out = '0' then
-                      if flit_type = "001" then
+                      if RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001" then
                           state_in <= Header_flit;
                       else 
                           state_in <= state_out;
@@ -711,7 +722,7 @@ end process;
 
           when Packet_drop => 
             if faulty_packet_out = '1' then
-               if valid_in = '1' and flit_type = "001"  and fault_out = '0' then
+               if valid_in = '1' and RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001"  and fault_out = '0' then
                     faulty_packet_in <= '0';
                     state_in <= Header_flit;
                     write_fake_flit <= '1';
@@ -723,7 +734,7 @@ end process;
                         when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                     end case ;
  
-               elsif valid_in = '1' and flit_type ="100" and fault_out = '0' then
+               elsif valid_in = '1' and RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100" and fault_out = '0' then
                     FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                     faulty_packet_in <= '0';
                     state_in <= Idle;
