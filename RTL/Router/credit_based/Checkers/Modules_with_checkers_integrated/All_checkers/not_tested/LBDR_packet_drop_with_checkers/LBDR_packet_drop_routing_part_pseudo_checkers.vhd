@@ -267,7 +267,7 @@ end process;
 
 -- Updated !
 
-process (flit_type, empty, cur_addr, dst_addr, Req_L_in)
+process (flit_type, empty, cur_addr, dst_addr, Req_L_in, Req_L_FF)
 begin
     if ( flit_type = "001" and empty = '0' and cur_addr /= dst_addr and Req_L_in /= Req_L_FF) then
         err_dst_addr_cur_addr_Req_L_in <= '1';
