@@ -3,11 +3,20 @@
 #include "../../lib/packets.h"
 #include "../../lib/pt-1.4/pt.h"
 
+unsigned int recv_buffer[16];
+unsigned int send_buffer[16];
+
+int recv_pointer   = 0;
+int send_pointer   = 0;
+
+
 /* Flags for protothreads */
-static int send_thread_flag, recv_thread_flag;
+static int send_thread_flag, recv_thread_flag, process_thread_flag;
 
 /* Protothread state variables */
-static struct pt pt_send, pt_recv;
+static struct pt pt_send, pt_recv, pt_process;
+
+int test = 0;
 
 /**
  * NI sending protothread
@@ -15,24 +24,29 @@ static struct pt pt_send, pt_recv;
 static int
 send_thread(struct pt *pt)
 {
+    int i;
     PT_BEGIN(pt);
 
     while(1) {
         /* Wait until the recieving protothread has set its flag. */
-        PT_WAIT_UNTIL(pt, recv_thread_flag != 0);
+        PT_WAIT_UNTIL(pt, send_thread_flag != 0);
 
         /* Sending code */
-        if ((ni_read_flags() & NI_WRITE_MASK) == 0)
+        if (((ni_read_flags() & NI_WRITE_MASK) == 0) && (send_pointer != 0))
         {
-            ni_write(build_header(1, 3));
+            for (i = 0; i < send_pointer; i++)
+            {
+                ni_write(send_buffer[i]);
+            }
+            send_pointer = 0;
         }
 
         /* End of sending code */
 
         /* Enable the recieving protothread to run*/
-        recv_thread_flag = 0;
-        send_thread_flag = 1;
-
+        send_thread_flag = 0;
+        recv_thread_flag = 1;
+        process_thread_flag = 0;
     }
 
     PT_END(pt);
@@ -51,11 +65,10 @@ recv_thread(struct pt *pt)
     PT_BEGIN(pt);
 
     while(1) {
-        /* Let the sending protothread run. */
-        recv_thread_flag = 1;
+
 
         /* Wait until the other protothread has set its flag. */
-        PT_WAIT_UNTIL(pt, send_thread_flag != 0);
+        PT_WAIT_UNTIL(pt, recv_thread_flag != 0);
 
         /* Recieving code */
         packet_counter = memory_read(NI_COUNTER_ADDRESS);
@@ -70,20 +83,64 @@ recv_thread(struct pt *pt)
 
         /* We then reset the sending protothread's flag. */
         send_thread_flag = 0;
+        recv_thread_flag = 0;
+        process_thread_flag = 1;
     }
     PT_END(pt);
 }
+
+/**
+ * Data processing protothread
+ */
+static int
+proc_thread(struct pt *pt)
+{
+    PT_BEGIN(pt);
+
+    while(1) {
+        /* Let the sending protothread run. */
+
+
+        /* Wait until the other protothread has set its flag. */
+        PT_WAIT_UNTIL(pt, process_thread_flag != 0);
+
+        /* Data processing code */
+        send_buffer[send_pointer] = build_header(1,3);
+        send_pointer++;
+        test++;
+        send_buffer[send_pointer] = test;
+        send_pointer++;
+        test++;
+        send_buffer[send_pointer] = test;
+        send_pointer++;
+
+        /* End of processing code */
+
+        /* We then reset the sending protothread's flag. */
+        send_thread_flag = 1;
+        recv_thread_flag = 0;
+        process_thread_flag = 0;
+    }
+    PT_END(pt);
+}
+
 
 int main() {
 
     /* Initialize protothreads */
     PT_INIT(&pt_send);
     PT_INIT(&pt_recv);
+    PT_INIT(&pt_process);
 
     while (1)
     {
+        send_thread_flag = 1;
+        recv_thread_flag = 0;
+        process_thread_flag = 0;
+
         send_thread(&pt_send);
         recv_thread(&pt_recv);
+        proc_thread(&pt_process);
     }
 
     return 0;
