@@ -427,7 +427,7 @@ end process;
 
 process (fake_credit, read_en_out, fake_credit_counter, fake_credit_counter_in)
 begin
-	if (fake_credit = '0' and read_en_out = '0' and fake_credit_counter <= 0 and fake_credit_counter_in /= fake_credit_counter) then
+	if (fake_credit = '0' and read_en_out = '0' and fake_credit_counter = 0 and fake_credit_counter_in /= fake_credit_counter) then
 		 err_not_fake_credit_not_read_en_fake_credit_counter_zero_fake_credit_counter_in_not_change <= '1';
 	else
 		 err_not_fake_credit_not_read_en_fake_credit_counter_zero_fake_credit_counter_in_not_change <= '0';
@@ -454,7 +454,7 @@ end process;
 
 process (fake_credit, read_en_out, fake_credit_counter, credit_out)
 begin
-	if (fake_credit = '0' and read_en_out = '0' and fake_credit_counter <= 0 and credit_out = '1') then
+	if (fake_credit = '0' and read_en_out = '0' and fake_credit_counter = 0 and credit_out = '1') then
 		 err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out <= '1';
 	else
 		 err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out <= '0';

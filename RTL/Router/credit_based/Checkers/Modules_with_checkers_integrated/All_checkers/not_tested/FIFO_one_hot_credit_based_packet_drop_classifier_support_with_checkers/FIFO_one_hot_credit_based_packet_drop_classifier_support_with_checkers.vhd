@@ -325,7 +325,7 @@ end component;
 
    -- Signal(s) needed for FIFO control part checkers
 
-   signal credit_out_sig, fault_info_sig, health_info_sig : std_logic; 
+   signal fault_info_sig, health_info_sig : std_logic; 
 
 begin
 
@@ -385,7 +385,7 @@ FIFO_control_part_checkers: FIFO_credit_based_control_part_checkers port map (
                                                             read_pointer_in => read_pointer_in, 
                                                             write_pointer => write_pointer, 
                                                             write_pointer_in => write_pointer_in, 
-                                                            credit_out => credit_out_sig, 
+                                                            credit_out => credit_in, 
                                                             empty_out => empty, 
                                                             full_out => full, 
                                                             read_en_out => read_en, 
@@ -523,7 +523,6 @@ FIFO_control_part_checkers: FIFO_credit_based_control_part_checkers port map (
                                                            );
 
  
-   credit_out  <= credit_out_sig;
    fault_info  <= fault_info_sig;
    health_info <= health_info_sig;
 
@@ -541,7 +540,7 @@ FIFO_control_part_checkers: FIFO_credit_based_control_part_checkers port map (
 
             fake_credit_counter <= (others=>'0');
             faulty_packet_out <= '0';
-            credit_out_sig <= '0';
+            credit_out <= '0';
             state_out <= Idle;
 
         elsif clk'event and clk = '1' then
@@ -550,7 +549,7 @@ FIFO_control_part_checkers: FIFO_credit_based_control_part_checkers port map (
             state_out <= state_in;
             
             faulty_packet_out <=  faulty_packet_in;
-            credit_out_sig <= credit_in;
+            credit_out <= credit_in;
             fake_credit_counter <= fake_credit_counter_in;   
 
             if write_en = '1' then 
@@ -599,15 +598,15 @@ end process;
 
 -- Data-path related part (parity checking)
 process(valid_in, RX, xor_all)begin 
-  fault_out <= '0';
+  fault_info_sig <= '0';
   if valid_in = '1' and xor_all /= RX(0) then 
-    fault_out <= '1';
+    fault_info_sig <= '1';
   end if;
 end process;
  
  -- Mixture of data-path related and control part
 
-    process(RX, faulty_packet_out, fault_out, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4, state_out, RX, valid_in)begin
+    process(RX, faulty_packet_out, fault_info_sig, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4, state_out, RX, valid_in)begin
       -- this is the default value of the memory!
       -- Writing to the corresponding location where write pointer is pointing to (in the FIFO slots)
 
@@ -621,16 +620,16 @@ end process;
      
      -- Some default values (some sort of initialization, also used for avoiding latch(es) ??)
 
-     fault_info <= '0';
-     health_info <= '0';
+     fault_info_sig <= '0';
+     health_info_sig <= '0';
      fake_credit <= '0';
      state_in <= state_out;
      faulty_packet_in <= faulty_packet_out;
-      write_fake_flit <= '0';
+     write_fake_flit <= '0';
 
       case(state_out) is
       	  when Idle => 
-            if fault_out = '0' then
+            if fault_info_sig = '0' then
                 if valid_in = '1' then 
                   state_in <= Header_flit;
                 else
@@ -645,7 +644,7 @@ end process;
             end if;           
       	  when Header_flit => 
       	  		if valid_in = '1' then 
-	              if fault_out = '0' then
+	              if fault_info_sig = '0' then
 	                   
 	                    if RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "010" then   
 	                       state_in <= Body_flit;
@@ -673,13 +672,13 @@ end process;
 	            end if;  
       	  when Body_flit => 
       	  		if valid_in = '1' then 
-	              	if fault_out = '0' then
+	              	if fault_info_sig = '0' then
 	                   
 	                      if RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "010" then
 	                          state_in <= state_out;
 	                      elsif RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100" then 
 	                          state_in <= Tail_flit;
-                            health_info <= '1';
+                            health_info_sig <= '1';
 	                      else
 	                          -- we should not be here!
 	                          state_in <= state_out;
@@ -703,7 +702,7 @@ end process;
 	            end if; 
       	  when Tail_flit => 
               if valid_in = '1' then 
-                  if fault_out = '0' then
+                  if fault_info_sig = '0' then
                       if RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001" then
                           state_in <= Header_flit;
                       else 
@@ -722,7 +721,7 @@ end process;
 
           when Packet_drop => 
             if faulty_packet_out = '1' then
-               if valid_in = '1' and RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001"  and fault_out = '0' then
+               if valid_in = '1' and RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001"  and fault_info_sig = '0' then
                     faulty_packet_in <= '0';
                     state_in <= Header_flit;
                     write_fake_flit <= '1';
@@ -734,7 +733,7 @@ end process;
                         when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                     end case ;
  
-               elsif valid_in = '1' and RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100" and fault_out = '0' then
+               elsif valid_in = '1' and RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100" and fault_info_sig = '0' then
                     FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                     faulty_packet_in <= '0';
                     state_in <= Idle;
@@ -796,8 +795,8 @@ end process;
 
 -- Control part of FIFO (more or less, although because of fault_out, it is also a bit related to the data-path part)
 
-  process(full, valid_in, write_fake_flit, faulty_packet_out, fault_out) begin
-     if valid_in = '1' and ((faulty_packet_out = '0' and fault_out = '0') or write_fake_flit = '1') and full ='0' then
+  process(full, valid_in, write_fake_flit, faulty_packet_out, fault_info_sig) begin
+     if valid_in = '1' and ((faulty_packet_out = '0' and fault_info_sig = '0') or write_fake_flit = '1') and full ='0' then
          write_en <= '1';
      else
          write_en <= '0';
