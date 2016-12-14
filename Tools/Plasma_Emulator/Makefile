@@ -6,7 +6,7 @@ SOURCES = $(wildcard $(SOURCEDIR)/*.cpp)
 OBJECTS = $(patsubst $(SOURCEDIR)/%.cpp,$(BUILDDIR)/%.o,$(SOURCES))
 
 CC = gcc
-CFLAGS = -Wall -O -g -std=c++11
+CFLAGS = -Wall -O -g -std=c++11 -pthread
 
 LD = ld
 
@@ -24,7 +24,7 @@ dir:
 	mkdir -p $(BUILDDIR)
 
 $(BUILDDIR)/$(EXECUTABLE): $(OBJECTS)
-	$(CC) $^ -o $@ -lstdc++
+	$(CC) $(CFLAGS) $^ -o $@ -lstdc++
 
 $(OBJECTS): $(BUILDDIR)/%.o : $(SOURCEDIR)/%.cpp
 	$(CC) -c $(CFLAGS) $< -o $@
