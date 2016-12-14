@@ -541,7 +541,7 @@ FIFO_control_part_checkers: FIFO_credit_based_control_part_checkers port map (
 
             fake_credit_counter <= (others=>'0');
             faulty_packet_out <= '0';
-            credit_out <= '0';
+            credit_out_sig <= '0';
             state_out <= Idle;
 
         elsif clk'event and clk = '1' then
@@ -550,7 +550,7 @@ FIFO_control_part_checkers: FIFO_credit_based_control_part_checkers port map (
             state_out <= state_in;
             
             faulty_packet_out <=  faulty_packet_in;
-            credit_out <= credit_in;
+            credit_out_sig <= credit_in;
             fake_credit_counter <= fake_credit_counter_in;   
 
             if write_en = '1' then 
