@@ -1,0 +1,2534 @@
+(edif Synopsys_edif (edifVersion 2 0 0) (edifLevel 0)
+ (keywordMap (keywordLevel 0))
+ (status
+  (written (timeStamp 2016 12 15 15 47 19)
+   (program "Synopsys Design Compiler" (Version "V-2004.06-SP1"))
+   (dataOrigin "company") (author "designer")
+  )
+ )
+ (external class (edifLevel 0) (technology (numberDefinition))
+  (cell AO3 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port D (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell OR2 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell AO7 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell AN2 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell IV (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port Z (direction OUTPUT)))
+   )
+  )
+  (cell AO2 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port D (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell AN3 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell AO1 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port D (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell AO4 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port D (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell EON1 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port D (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+  (cell EO1 (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port A (direction INPUT)) (port B (direction INPUT))
+     (port C (direction INPUT)) (port D (direction INPUT))
+     (port Z (direction OUTPUT))
+    )
+   )
+  )
+ )
+ (library DESIGNS (edifLevel 0) (technology (numberDefinition))
+  (cell allocator_credit_counter_logic_pseudo (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port credit_in_N (direction INPUT))
+     (port credit_in_E (direction INPUT)) (port credit_in_W (direction INPUT))
+     (port credit_in_S (direction INPUT)) (port credit_in_L (direction INPUT))
+     (port grant_N (direction INPUT)) (port grant_E (direction INPUT))
+     (port grant_W (direction INPUT)) (port grant_S (direction INPUT))
+     (port grant_L (direction INPUT))
+     (port
+      (array (rename credit_counter_N_out_1_0_ "credit_counter_N_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_E_out_1_0_ "credit_counter_E_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_W_out_1_0_ "credit_counter_W_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_S_out_1_0_ "credit_counter_S_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_L_out_1_0_ "credit_counter_L_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_N_in_1_0_ "credit_counter_N_in<1:0>") 2)
+      (direction OUTPUT)
+     )
+     (port
+      (array (rename credit_counter_E_in_1_0_ "credit_counter_E_in<1:0>") 2)
+      (direction OUTPUT)
+     )
+     (port
+      (array (rename credit_counter_W_in_1_0_ "credit_counter_W_in<1:0>") 2)
+      (direction OUTPUT)
+     )
+     (port
+      (array (rename credit_counter_S_in_1_0_ "credit_counter_S_in<1:0>") 2)
+      (direction OUTPUT)
+     )
+     (port
+      (array (rename credit_counter_L_in_1_0_ "credit_counter_L_in<1:0>") 2)
+      (direction OUTPUT)
+     )
+    )
+    (contents
+     (instance U234
+      (viewRef Netlist_representation (cellRef AO3 (libraryRef class)))
+     )
+     (instance U235
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U236
+      (viewRef Netlist_representation (cellRef AO3 (libraryRef class)))
+     )
+     (instance U237
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U238
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U239
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U240
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U241
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U242
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U243
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U244
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U245
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U246
+      (viewRef Netlist_representation (cellRef AO3 (libraryRef class)))
+     )
+     (instance U247
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U248
+      (viewRef Netlist_representation (cellRef AO3 (libraryRef class)))
+     )
+     (instance U249
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U250
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U251
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U252
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U253
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U254
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U255
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U256
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U257
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U258
+      (viewRef Netlist_representation (cellRef AO3 (libraryRef class)))
+     )
+     (instance U259
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U260
+      (viewRef Netlist_representation (cellRef AO3 (libraryRef class)))
+     )
+     (instance U261
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U262
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U263
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U264
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U265
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U266
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U267
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U268
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U269
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U270
+      (viewRef Netlist_representation (cellRef AO3 (libraryRef class)))
+     )
+     (instance U271
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U272
+      (viewRef Netlist_representation (cellRef AO3 (libraryRef class)))
+     )
+     (instance U273
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U274
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U275
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U276
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U277
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U278
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U279
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U280
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U281
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U282
+      (viewRef Netlist_representation (cellRef AO3 (libraryRef class)))
+     )
+     (instance U283
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U284
+      (viewRef Netlist_representation (cellRef AO3 (libraryRef class)))
+     )
+     (instance U285
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U286
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U287
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U288
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U289
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U290
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U291
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U292
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U293
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (net (rename credit_counter_N_out_1_ "credit_counter_N_out<1>")
+      (joined (portRef (member credit_counter_N_out_1_0_ 1))
+       (portRef B (instanceRef U261)) (portRef A (instanceRef U264))
+      )
+     )
+     (net (rename credit_counter_N_out_0_ "credit_counter_N_out<0>")
+      (joined (portRef (member credit_counter_N_out_1_0_ 0))
+       (portRef A (instanceRef U266)) (portRef B (instanceRef U267))
+       (portRef A (instanceRef U268))
+      )
+     )
+     (net (rename credit_counter_E_out_1_ "credit_counter_E_out<1>")
+      (joined (portRef (member credit_counter_E_out_1_0_ 1))
+       (portRef B (instanceRef U285)) (portRef A (instanceRef U288))
+      )
+     )
+     (net (rename credit_counter_E_out_0_ "credit_counter_E_out<0>")
+      (joined (portRef (member credit_counter_E_out_1_0_ 0))
+       (portRef A (instanceRef U290)) (portRef B (instanceRef U291))
+       (portRef A (instanceRef U292))
+      )
+     )
+     (net (rename credit_counter_W_out_1_ "credit_counter_W_out<1>")
+      (joined (portRef (member credit_counter_W_out_1_0_ 1))
+       (portRef B (instanceRef U237)) (portRef A (instanceRef U240))
+      )
+     )
+     (net (rename credit_counter_W_out_0_ "credit_counter_W_out<0>")
+      (joined (portRef (member credit_counter_W_out_1_0_ 0))
+       (portRef A (instanceRef U242)) (portRef B (instanceRef U243))
+       (portRef A (instanceRef U244))
+      )
+     )
+     (net (rename credit_counter_S_out_1_ "credit_counter_S_out<1>")
+      (joined (portRef (member credit_counter_S_out_1_0_ 1))
+       (portRef B (instanceRef U249)) (portRef A (instanceRef U252))
+      )
+     )
+     (net (rename credit_counter_S_out_0_ "credit_counter_S_out<0>")
+      (joined (portRef (member credit_counter_S_out_1_0_ 0))
+       (portRef A (instanceRef U254)) (portRef B (instanceRef U255))
+       (portRef A (instanceRef U256))
+      )
+     )
+     (net (rename credit_counter_L_out_1_ "credit_counter_L_out<1>")
+      (joined (portRef (member credit_counter_L_out_1_0_ 1))
+       (portRef B (instanceRef U273)) (portRef A (instanceRef U276))
+      )
+     )
+     (net (rename credit_counter_L_out_0_ "credit_counter_L_out<0>")
+      (joined (portRef (member credit_counter_L_out_1_0_ 0))
+       (portRef A (instanceRef U278)) (portRef B (instanceRef U279))
+       (portRef A (instanceRef U280))
+      )
+     )
+     (net credit_in_N
+      (joined (portRef credit_in_N) (portRef B (instanceRef U266))
+       (portRef D (instanceRef U267)) (portRef A (instanceRef U269))
+      )
+     )
+     (net credit_in_E
+      (joined (portRef credit_in_E) (portRef B (instanceRef U290))
+       (portRef D (instanceRef U291)) (portRef A (instanceRef U293))
+      )
+     )
+     (net credit_in_W
+      (joined (portRef credit_in_W) (portRef B (instanceRef U242))
+       (portRef D (instanceRef U243)) (portRef A (instanceRef U245))
+      )
+     )
+     (net credit_in_S
+      (joined (portRef credit_in_S) (portRef B (instanceRef U254))
+       (portRef D (instanceRef U255)) (portRef A (instanceRef U257))
+      )
+     )
+     (net credit_in_L
+      (joined (portRef credit_in_L) (portRef B (instanceRef U278))
+       (portRef D (instanceRef U279)) (portRef A (instanceRef U281))
+      )
+     )
+     (net grant_N
+      (joined (portRef grant_N) (portRef A (instanceRef U259))
+       (portRef A (instanceRef U260)) (portRef B (instanceRef U262))
+      )
+     )
+     (net grant_E
+      (joined (portRef grant_E) (portRef A (instanceRef U283))
+       (portRef A (instanceRef U284)) (portRef B (instanceRef U286))
+      )
+     )
+     (net grant_W
+      (joined (portRef grant_W) (portRef A (instanceRef U235))
+       (portRef A (instanceRef U236)) (portRef B (instanceRef U238))
+      )
+     )
+     (net grant_S
+      (joined (portRef grant_S) (portRef A (instanceRef U247))
+       (portRef A (instanceRef U248)) (portRef B (instanceRef U250))
+      )
+     )
+     (net grant_L
+      (joined (portRef grant_L) (portRef A (instanceRef U271))
+       (portRef A (instanceRef U272)) (portRef B (instanceRef U274))
+      )
+     )
+     (net (rename credit_counter_N_in_1_ "credit_counter_N_in<1>")
+      (joined (portRef (member credit_counter_N_in_1_0_ 1))
+       (portRef Z (instanceRef U258))
+      )
+     )
+     (net (rename credit_counter_N_in_0_ "credit_counter_N_in<0>")
+      (joined (portRef (member credit_counter_N_in_1_0_ 0))
+       (portRef Z (instanceRef U260))
+      )
+     )
+     (net (rename credit_counter_E_in_1_ "credit_counter_E_in<1>")
+      (joined (portRef (member credit_counter_E_in_1_0_ 1))
+       (portRef Z (instanceRef U282))
+      )
+     )
+     (net (rename credit_counter_E_in_0_ "credit_counter_E_in<0>")
+      (joined (portRef (member credit_counter_E_in_1_0_ 0))
+       (portRef Z (instanceRef U284))
+      )
+     )
+     (net (rename credit_counter_W_in_1_ "credit_counter_W_in<1>")
+      (joined (portRef (member credit_counter_W_in_1_0_ 1))
+       (portRef Z (instanceRef U234))
+      )
+     )
+     (net (rename credit_counter_W_in_0_ "credit_counter_W_in<0>")
+      (joined (portRef (member credit_counter_W_in_1_0_ 0))
+       (portRef Z (instanceRef U236))
+      )
+     )
+     (net (rename credit_counter_S_in_1_ "credit_counter_S_in<1>")
+      (joined (portRef (member credit_counter_S_in_1_0_ 1))
+       (portRef Z (instanceRef U246))
+      )
+     )
+     (net (rename credit_counter_S_in_0_ "credit_counter_S_in<0>")
+      (joined (portRef (member credit_counter_S_in_1_0_ 0))
+       (portRef Z (instanceRef U248))
+      )
+     )
+     (net (rename credit_counter_L_in_1_ "credit_counter_L_in<1>")
+      (joined (portRef (member credit_counter_L_in_1_0_ 1))
+       (portRef Z (instanceRef U270))
+      )
+     )
+     (net (rename credit_counter_L_in_0_ "credit_counter_L_in<0>")
+      (joined (portRef (member credit_counter_L_in_1_0_ 0))
+       (portRef Z (instanceRef U272))
+      )
+     )
+     (net n1125
+      (joined (portRef C (instanceRef U237)) (portRef A (instanceRef U234))
+       (portRef Z (instanceRef U238))
+      )
+     )
+     (net n1126
+      (joined (portRef B (instanceRef U239)) (portRef B (instanceRef U234))
+       (portRef Z (instanceRef U240))
+      )
+     )
+     (net n1127
+      (joined (portRef C (instanceRef U234)) (portRef Z (instanceRef U235)))
+     )
+     (net n1128
+      (joined (portRef C (instanceRef U236)) (portRef D (instanceRef U234))
+       (portRef Z (instanceRef U239))
+      )
+     )
+     (net n1129
+      (joined (portRef A (instanceRef U239)) (portRef B (instanceRef U235))
+       (portRef Z (instanceRef U241))
+      )
+     )
+     (net n1130
+      (joined (portRef A (instanceRef U238)) (portRef B (instanceRef U236))
+       (portRef Z (instanceRef U243))
+      )
+     )
+     (net n1131
+      (joined (portRef D (instanceRef U236)) (portRef Z (instanceRef U237)))
+     )
+     (net n1132
+      (joined (portRef A (instanceRef U241)) (portRef A (instanceRef U237))
+       (portRef Z (instanceRef U242))
+      )
+     )
+     (net n1133
+      (joined (portRef A (instanceRef U243)) (portRef Z (instanceRef U245)))
+     )
+     (net n1134
+      (joined (portRef C (instanceRef U243)) (portRef Z (instanceRef U244)))
+     )
+     (net n1135
+      (joined (portRef C (instanceRef U249)) (portRef A (instanceRef U246))
+       (portRef Z (instanceRef U250))
+      )
+     )
+     (net n1136
+      (joined (portRef B (instanceRef U251)) (portRef B (instanceRef U246))
+       (portRef Z (instanceRef U252))
+      )
+     )
+     (net n1137
+      (joined (portRef C (instanceRef U246)) (portRef Z (instanceRef U247)))
+     )
+     (net n1138
+      (joined (portRef C (instanceRef U248)) (portRef D (instanceRef U246))
+       (portRef Z (instanceRef U251))
+      )
+     )
+     (net n1139
+      (joined (portRef A (instanceRef U251)) (portRef B (instanceRef U247))
+       (portRef Z (instanceRef U253))
+      )
+     )
+     (net n1140
+      (joined (portRef A (instanceRef U250)) (portRef B (instanceRef U248))
+       (portRef Z (instanceRef U255))
+      )
+     )
+     (net n1141
+      (joined (portRef D (instanceRef U248)) (portRef Z (instanceRef U249)))
+     )
+     (net n1142
+      (joined (portRef A (instanceRef U253)) (portRef A (instanceRef U249))
+       (portRef Z (instanceRef U254))
+      )
+     )
+     (net n1143
+      (joined (portRef A (instanceRef U255)) (portRef Z (instanceRef U257)))
+     )
+     (net n1144
+      (joined (portRef C (instanceRef U255)) (portRef Z (instanceRef U256)))
+     )
+     (net n1145
+      (joined (portRef C (instanceRef U261)) (portRef A (instanceRef U258))
+       (portRef Z (instanceRef U262))
+      )
+     )
+     (net n1146
+      (joined (portRef B (instanceRef U263)) (portRef B (instanceRef U258))
+       (portRef Z (instanceRef U264))
+      )
+     )
+     (net n1147
+      (joined (portRef C (instanceRef U258)) (portRef Z (instanceRef U259)))
+     )
+     (net n1148
+      (joined (portRef C (instanceRef U260)) (portRef D (instanceRef U258))
+       (portRef Z (instanceRef U263))
+      )
+     )
+     (net n1149
+      (joined (portRef A (instanceRef U263)) (portRef B (instanceRef U259))
+       (portRef Z (instanceRef U265))
+      )
+     )
+     (net n1150
+      (joined (portRef A (instanceRef U262)) (portRef B (instanceRef U260))
+       (portRef Z (instanceRef U267))
+      )
+     )
+     (net n1151
+      (joined (portRef D (instanceRef U260)) (portRef Z (instanceRef U261)))
+     )
+     (net n1152
+      (joined (portRef A (instanceRef U265)) (portRef A (instanceRef U261))
+       (portRef Z (instanceRef U266))
+      )
+     )
+     (net n1153
+      (joined (portRef A (instanceRef U267)) (portRef Z (instanceRef U269)))
+     )
+     (net n1154
+      (joined (portRef C (instanceRef U267)) (portRef Z (instanceRef U268)))
+     )
+     (net n1155
+      (joined (portRef C (instanceRef U273)) (portRef A (instanceRef U270))
+       (portRef Z (instanceRef U274))
+      )
+     )
+     (net n1156
+      (joined (portRef B (instanceRef U275)) (portRef B (instanceRef U270))
+       (portRef Z (instanceRef U276))
+      )
+     )
+     (net n1157
+      (joined (portRef C (instanceRef U270)) (portRef Z (instanceRef U271)))
+     )
+     (net n1158
+      (joined (portRef C (instanceRef U272)) (portRef D (instanceRef U270))
+       (portRef Z (instanceRef U275))
+      )
+     )
+     (net n1159
+      (joined (portRef A (instanceRef U275)) (portRef B (instanceRef U271))
+       (portRef Z (instanceRef U277))
+      )
+     )
+     (net n1160
+      (joined (portRef A (instanceRef U274)) (portRef B (instanceRef U272))
+       (portRef Z (instanceRef U279))
+      )
+     )
+     (net n1161
+      (joined (portRef D (instanceRef U272)) (portRef Z (instanceRef U273)))
+     )
+     (net n1162
+      (joined (portRef A (instanceRef U277)) (portRef A (instanceRef U273))
+       (portRef Z (instanceRef U278))
+      )
+     )
+     (net n1163
+      (joined (portRef A (instanceRef U279)) (portRef Z (instanceRef U281)))
+     )
+     (net n1164
+      (joined (portRef C (instanceRef U279)) (portRef Z (instanceRef U280)))
+     )
+     (net n1165
+      (joined (portRef C (instanceRef U285)) (portRef A (instanceRef U282))
+       (portRef Z (instanceRef U286))
+      )
+     )
+     (net n1166
+      (joined (portRef B (instanceRef U287)) (portRef B (instanceRef U282))
+       (portRef Z (instanceRef U288))
+      )
+     )
+     (net n1167
+      (joined (portRef C (instanceRef U282)) (portRef Z (instanceRef U283)))
+     )
+     (net n1168
+      (joined (portRef C (instanceRef U284)) (portRef D (instanceRef U282))
+       (portRef Z (instanceRef U287))
+      )
+     )
+     (net n1169
+      (joined (portRef A (instanceRef U287)) (portRef B (instanceRef U283))
+       (portRef Z (instanceRef U289))
+      )
+     )
+     (net n1170
+      (joined (portRef A (instanceRef U286)) (portRef B (instanceRef U284))
+       (portRef Z (instanceRef U291))
+      )
+     )
+     (net n1171
+      (joined (portRef D (instanceRef U284)) (portRef Z (instanceRef U285)))
+     )
+     (net n1172
+      (joined (portRef A (instanceRef U289)) (portRef A (instanceRef U285))
+       (portRef Z (instanceRef U290))
+      )
+     )
+     (net n1173
+      (joined (portRef A (instanceRef U291)) (portRef Z (instanceRef U293)))
+     )
+     (net n1174
+      (joined (portRef C (instanceRef U291)) (portRef Z (instanceRef U292)))
+     )
+    )
+   )
+  )
+  (cell allocator_credit_counter_logic_pseudo_checkers (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port credit_in_N (direction INPUT))
+     (port credit_in_E (direction INPUT)) (port credit_in_W (direction INPUT))
+     (port credit_in_S (direction INPUT)) (port credit_in_L (direction INPUT))
+     (port valid_N (direction INPUT)) (port valid_E (direction INPUT))
+     (port valid_W (direction INPUT)) (port valid_S (direction INPUT))
+     (port valid_L (direction INPUT))
+     (port
+      err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+      (direction OUTPUT)
+     )
+     (port err_credit_in_N_credit_counter_N_out_increment (direction OUTPUT))
+     (port
+      err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change
+      (direction OUTPUT)
+     )
+     (port err_grant_N_credit_counter_N_out_decrement (direction OUTPUT))
+     (port
+      err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change
+      (direction OUTPUT)
+     )
+     (port
+      err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_credit_in_E_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+      (direction OUTPUT)
+     )
+     (port err_credit_in_E_credit_counter_E_out_increment (direction OUTPUT))
+     (port
+      err_not_credit_in_E_credit_counter_E_out_max_credit_counter_E_in_not_change
+      (direction OUTPUT)
+     )
+     (port err_grant_E_credit_counter_E_out_decrement (direction OUTPUT))
+     (port
+      err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change
+      (direction OUTPUT)
+     )
+     (port
+      err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+      (direction OUTPUT)
+     )
+     (port err_credit_in_W_credit_counter_W_out_increment (direction OUTPUT))
+     (port
+      err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change
+      (direction OUTPUT)
+     )
+     (port err_grant_W_credit_counter_W_out_decrement (direction OUTPUT))
+     (port
+      err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change
+      (direction OUTPUT)
+     )
+     (port
+      err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+      (direction OUTPUT)
+     )
+     (port err_credit_in_S_credit_counter_S_out_increment (direction OUTPUT))
+     (port
+      err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change
+      (direction OUTPUT)
+     )
+     (port err_grant_S_credit_counter_S_out_decrement (direction OUTPUT))
+     (port
+      err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change
+      (direction OUTPUT)
+     )
+     (port
+      err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+      (direction OUTPUT)
+     )
+     (port err_credit_in_L_credit_counter_L_out_increment (direction OUTPUT))
+     (port
+      err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change
+      (direction OUTPUT)
+     )
+     (port err_grant_L_credit_counter_L_out_decrement (direction OUTPUT))
+     (port
+      err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change
+      (direction OUTPUT)
+     )
+     (port
+      err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+      (direction OUTPUT)
+     )
+     (port
+      (array (rename credit_counter_N_out_1_0_ "credit_counter_N_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_E_out_1_0_ "credit_counter_E_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_W_out_1_0_ "credit_counter_W_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_S_out_1_0_ "credit_counter_S_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_L_out_1_0_ "credit_counter_L_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_N_in_1_0_ "credit_counter_N_in<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_E_in_1_0_ "credit_counter_E_in<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_W_in_1_0_ "credit_counter_W_in<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_S_in_1_0_ "credit_counter_S_in<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_L_in_1_0_ "credit_counter_L_in<1:0>") 2)
+      (direction INPUT)
+     )
+    )
+    (contents
+     (instance U479
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U480
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U481
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U482
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U483
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U484
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U485
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U486
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U487
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U488
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U489
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U490
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U491
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U492
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U493
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U494
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U495
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U496
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U497
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U498
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U499
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U500
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U501
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U502
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U503
+      (viewRef Netlist_representation (cellRef AO7 (libraryRef class)))
+     )
+     (instance U504
+      (viewRef Netlist_representation (cellRef AO1 (libraryRef class)))
+     )
+     (instance U505
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U506
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U507
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U508
+      (viewRef Netlist_representation (cellRef AO1 (libraryRef class)))
+     )
+     (instance U509
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U510
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U511
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U512
+      (viewRef Netlist_representation (cellRef AO1 (libraryRef class)))
+     )
+     (instance U513
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U514
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U515
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U516
+      (viewRef Netlist_representation (cellRef AO1 (libraryRef class)))
+     )
+     (instance U517
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U518
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U519
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U520
+      (viewRef Netlist_representation (cellRef AO1 (libraryRef class)))
+     )
+     (instance U521
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U522
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U523
+      (viewRef Netlist_representation (cellRef AO4 (libraryRef class)))
+     )
+     (instance U524
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U525
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U526
+      (viewRef Netlist_representation (cellRef AO1 (libraryRef class)))
+     )
+     (instance U527
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U528
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U529
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U530
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U531
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U532
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U533
+      (viewRef Netlist_representation (cellRef EO1 (libraryRef class)))
+     )
+     (instance U534
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U535
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U536
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U537
+      (viewRef Netlist_representation (cellRef AO1 (libraryRef class)))
+     )
+     (instance U538
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U539
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U540
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U541
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U542
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U543
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U544
+      (viewRef Netlist_representation (cellRef EO1 (libraryRef class)))
+     )
+     (instance U545
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U546
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U547
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U548
+      (viewRef Netlist_representation (cellRef AO1 (libraryRef class)))
+     )
+     (instance U549
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U550
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U551
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U552
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U553
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U554
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U555
+      (viewRef Netlist_representation (cellRef EO1 (libraryRef class)))
+     )
+     (instance U556
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U557
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U558
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U559
+      (viewRef Netlist_representation (cellRef AO1 (libraryRef class)))
+     )
+     (instance U560
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U561
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U562
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U563
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U564
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U565
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U566
+      (viewRef Netlist_representation (cellRef EO1 (libraryRef class)))
+     )
+     (instance U567
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U568
+      (viewRef Netlist_representation (cellRef AN3 (libraryRef class)))
+     )
+     (instance U569
+      (viewRef Netlist_representation (cellRef OR2 (libraryRef class)))
+     )
+     (instance U570
+      (viewRef Netlist_representation (cellRef AO1 (libraryRef class)))
+     )
+     (instance U571
+      (viewRef Netlist_representation (cellRef AN2 (libraryRef class)))
+     )
+     (instance U572
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U573
+      (viewRef Netlist_representation (cellRef EON1 (libraryRef class)))
+     )
+     (instance U574
+      (viewRef Netlist_representation (cellRef AO2 (libraryRef class)))
+     )
+     (instance U575
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U576
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (instance U577
+      (viewRef Netlist_representation (cellRef EO1 (libraryRef class)))
+     )
+     (instance U578
+      (viewRef Netlist_representation (cellRef IV (libraryRef class)))
+     )
+     (net credit_in_N
+      (joined (portRef credit_in_N) (portRef C (instanceRef U546))
+       (portRef A (instanceRef U550))
+      )
+     )
+     (net credit_in_E
+      (joined (portRef credit_in_E) (portRef C (instanceRef U568))
+       (portRef A (instanceRef U572))
+      )
+     )
+     (net credit_in_W
+      (joined (portRef credit_in_W) (portRef C (instanceRef U524))
+       (portRef A (instanceRef U528))
+      )
+     )
+     (net credit_in_S
+      (joined (portRef credit_in_S) (portRef C (instanceRef U535))
+       (portRef A (instanceRef U539))
+      )
+     )
+     (net credit_in_L
+      (joined (portRef credit_in_L) (portRef C (instanceRef U557))
+       (portRef A (instanceRef U561))
+      )
+     )
+     (net (rename credit_counter_N_out_1_ "credit_counter_N_out<1>")
+      (joined (portRef (member credit_counter_N_out_1_0_ 1))
+       (portRef B (instanceRef U549)) (portRef A (instanceRef U556))
+      )
+     )
+     (net (rename credit_counter_N_out_0_ "credit_counter_N_out<0>")
+      (joined (portRef (member credit_counter_N_out_1_0_ 0))
+       (portRef A (instanceRef U515)) (portRef A (instanceRef U549))
+       (portRef B (instanceRef U552)) (portRef A (instanceRef U553))
+      )
+     )
+     (net (rename credit_counter_E_out_1_ "credit_counter_E_out<1>")
+      (joined (portRef (member credit_counter_E_out_1_0_ 1))
+       (portRef B (instanceRef U571)) (portRef A (instanceRef U578))
+      )
+     )
+     (net (rename credit_counter_E_out_0_ "credit_counter_E_out<0>")
+      (joined (portRef (member credit_counter_E_out_1_0_ 0))
+       (portRef A (instanceRef U523)) (portRef A (instanceRef U571))
+       (portRef B (instanceRef U574)) (portRef A (instanceRef U575))
+      )
+     )
+     (net (rename credit_counter_W_out_1_ "credit_counter_W_out<1>")
+      (joined (portRef (member credit_counter_W_out_1_0_ 1))
+       (portRef B (instanceRef U527)) (portRef A (instanceRef U534))
+      )
+     )
+     (net (rename credit_counter_W_out_0_ "credit_counter_W_out<0>")
+      (joined (portRef (member credit_counter_W_out_1_0_ 0))
+       (portRef A (instanceRef U507)) (portRef A (instanceRef U527))
+       (portRef B (instanceRef U530)) (portRef A (instanceRef U531))
+      )
+     )
+     (net (rename credit_counter_S_out_1_ "credit_counter_S_out<1>")
+      (joined (portRef (member credit_counter_S_out_1_0_ 1))
+       (portRef B (instanceRef U538)) (portRef A (instanceRef U545))
+      )
+     )
+     (net (rename credit_counter_S_out_0_ "credit_counter_S_out<0>")
+      (joined (portRef (member credit_counter_S_out_1_0_ 0))
+       (portRef A (instanceRef U511)) (portRef A (instanceRef U538))
+       (portRef B (instanceRef U541)) (portRef A (instanceRef U542))
+      )
+     )
+     (net (rename credit_counter_L_out_1_ "credit_counter_L_out<1>")
+      (joined (portRef (member credit_counter_L_out_1_0_ 1))
+       (portRef B (instanceRef U560)) (portRef A (instanceRef U567))
+      )
+     )
+     (net (rename credit_counter_L_out_0_ "credit_counter_L_out<0>")
+      (joined (portRef (member credit_counter_L_out_1_0_ 0))
+       (portRef A (instanceRef U519)) (portRef A (instanceRef U560))
+       (portRef B (instanceRef U563)) (portRef A (instanceRef U564))
+      )
+     )
+     (net valid_N
+      (joined (portRef valid_N) (portRef A (instanceRef U514))
+       (portRef A (instanceRef U546))
+      )
+     )
+     (net valid_E
+      (joined (portRef valid_E) (portRef A (instanceRef U522))
+       (portRef A (instanceRef U568))
+      )
+     )
+     (net valid_W
+      (joined (portRef valid_W) (portRef C (instanceRef U480))
+       (portRef A (instanceRef U506)) (portRef A (instanceRef U524))
+      )
+     )
+     (net valid_S
+      (joined (portRef valid_S) (portRef C (instanceRef U482))
+       (portRef A (instanceRef U510)) (portRef A (instanceRef U535))
+      )
+     )
+     (net valid_L
+      (joined (portRef valid_L) (portRef C (instanceRef U486))
+       (portRef A (instanceRef U518)) (portRef A (instanceRef U557))
+      )
+     )
+     (net (rename credit_counter_N_in_1_ "credit_counter_N_in<1>")
+      (joined (portRef (member credit_counter_N_in_1_0_ 1))
+       (portRef B (instanceRef U555)) (portRef C (instanceRef U555))
+      )
+     )
+     (net (rename credit_counter_N_in_0_ "credit_counter_N_in<0>")
+      (joined (portRef (member credit_counter_N_in_1_0_ 0))
+       (portRef A (instanceRef U551)) (portRef D (instanceRef U551))
+      )
+     )
+     (net (rename credit_counter_E_in_1_ "credit_counter_E_in<1>")
+      (joined (portRef (member credit_counter_E_in_1_0_ 1))
+       (portRef B (instanceRef U577)) (portRef C (instanceRef U577))
+      )
+     )
+     (net (rename credit_counter_E_in_0_ "credit_counter_E_in<0>")
+      (joined (portRef (member credit_counter_E_in_1_0_ 0))
+       (portRef A (instanceRef U573)) (portRef D (instanceRef U573))
+      )
+     )
+     (net (rename credit_counter_W_in_1_ "credit_counter_W_in<1>")
+      (joined (portRef (member credit_counter_W_in_1_0_ 1))
+       (portRef A (instanceRef U480)) (portRef B (instanceRef U533))
+       (portRef C (instanceRef U533))
+      )
+     )
+     (net (rename credit_counter_W_in_0_ "credit_counter_W_in<0>")
+      (joined (portRef (member credit_counter_W_in_1_0_ 0))
+       (portRef B (instanceRef U480)) (portRef A (instanceRef U529))
+       (portRef D (instanceRef U529))
+      )
+     )
+     (net (rename credit_counter_S_in_1_ "credit_counter_S_in<1>")
+      (joined (portRef (member credit_counter_S_in_1_0_ 1))
+       (portRef A (instanceRef U482)) (portRef B (instanceRef U544))
+       (portRef C (instanceRef U544))
+      )
+     )
+     (net (rename credit_counter_S_in_0_ "credit_counter_S_in<0>")
+      (joined (portRef (member credit_counter_S_in_1_0_ 0))
+       (portRef B (instanceRef U482)) (portRef A (instanceRef U540))
+       (portRef D (instanceRef U540))
+      )
+     )
+     (net (rename credit_counter_L_in_1_ "credit_counter_L_in<1>")
+      (joined (portRef (member credit_counter_L_in_1_0_ 1))
+       (portRef A (instanceRef U486)) (portRef B (instanceRef U566))
+       (portRef C (instanceRef U566))
+      )
+     )
+     (net (rename credit_counter_L_in_0_ "credit_counter_L_in<0>")
+      (joined (portRef (member credit_counter_L_in_1_0_ 0))
+       (portRef B (instanceRef U486)) (portRef A (instanceRef U562))
+       (portRef D (instanceRef U562))
+      )
+     )
+     (net
+      err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+      (joined
+       (portRef
+        err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+       )
+       (portRef Z (instanceRef U546))
+      )
+     )
+     (net err_credit_in_N_credit_counter_N_out_increment
+      (joined (portRef err_credit_in_N_credit_counter_N_out_increment)
+       (portRef Z (instanceRef U548))
+      )
+     )
+     (net
+      err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change
+      (joined
+       (portRef
+        err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change
+       )
+       (portRef Z (instanceRef U496))
+      )
+     )
+     (net err_grant_N_credit_counter_N_out_decrement
+      (joined (portRef err_grant_N_credit_counter_N_out_decrement)
+       (portRef Z (instanceRef U512))
+      )
+     )
+     (net
+      err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change
+      (joined
+       (portRef
+        err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change
+       )
+       (portRef Z (instanceRef U483))
+      )
+     )
+     (net
+      err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+      (joined
+       (portRef
+        err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+       )
+       (portRef Z (instanceRef U495))
+      )
+     )
+     (net
+      err_credit_in_E_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+      (joined
+       (portRef
+        err_credit_in_E_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+       )
+       (portRef Z (instanceRef U568))
+      )
+     )
+     (net err_credit_in_E_credit_counter_E_out_increment
+      (joined (portRef err_credit_in_E_credit_counter_E_out_increment)
+       (portRef Z (instanceRef U570))
+      )
+     )
+     (net
+      err_not_credit_in_E_credit_counter_E_out_max_credit_counter_E_in_not_change
+      (joined
+       (portRef
+        err_not_credit_in_E_credit_counter_E_out_max_credit_counter_E_in_not_change
+       )
+       (portRef Z (instanceRef U502))
+      )
+     )
+     (net err_grant_E_credit_counter_E_out_decrement
+      (joined (portRef err_grant_E_credit_counter_E_out_decrement)
+       (portRef Z (instanceRef U520))
+      )
+     )
+     (net
+      err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change
+      (joined
+       (portRef
+        err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change
+       )
+       (portRef Z (instanceRef U487))
+      )
+     )
+     (net
+      err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+      (joined
+       (portRef
+        err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+       )
+       (portRef Z (instanceRef U501))
+      )
+     )
+     (net
+      err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+      (joined
+       (portRef
+        err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+       )
+       (portRef Z (instanceRef U524))
+      )
+     )
+     (net err_credit_in_W_credit_counter_W_out_increment
+      (joined (portRef err_credit_in_W_credit_counter_W_out_increment)
+       (portRef Z (instanceRef U526))
+      )
+     )
+     (net
+      err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change
+      (joined
+       (portRef
+        err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change
+       )
+       (portRef Z (instanceRef U490))
+      )
+     )
+     (net err_grant_W_credit_counter_W_out_decrement
+      (joined (portRef err_grant_W_credit_counter_W_out_decrement)
+       (portRef Z (instanceRef U504))
+      )
+     )
+     (net
+      err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change
+      (joined
+       (portRef
+        err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change
+       )
+       (portRef Z (instanceRef U479))
+      )
+     )
+     (net
+      err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+      (joined
+       (portRef
+        err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+       )
+       (portRef Z (instanceRef U489))
+      )
+     )
+     (net
+      err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+      (joined
+       (portRef
+        err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+       )
+       (portRef Z (instanceRef U535))
+      )
+     )
+     (net err_credit_in_S_credit_counter_S_out_increment
+      (joined (portRef err_credit_in_S_credit_counter_S_out_increment)
+       (portRef Z (instanceRef U537))
+      )
+     )
+     (net
+      err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change
+      (joined
+       (portRef
+        err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change
+       )
+       (portRef Z (instanceRef U493))
+      )
+     )
+     (net err_grant_S_credit_counter_S_out_decrement
+      (joined (portRef err_grant_S_credit_counter_S_out_decrement)
+       (portRef Z (instanceRef U508))
+      )
+     )
+     (net
+      err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change
+      (joined
+       (portRef
+        err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change
+       )
+       (portRef Z (instanceRef U481))
+      )
+     )
+     (net
+      err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+      (joined
+       (portRef
+        err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+       )
+       (portRef Z (instanceRef U492))
+      )
+     )
+     (net
+      err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+      (joined
+       (portRef
+        err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+       )
+       (portRef Z (instanceRef U557))
+      )
+     )
+     (net err_credit_in_L_credit_counter_L_out_increment
+      (joined (portRef err_credit_in_L_credit_counter_L_out_increment)
+       (portRef Z (instanceRef U559))
+      )
+     )
+     (net
+      err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change
+      (joined
+       (portRef
+        err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change
+       )
+       (portRef Z (instanceRef U499))
+      )
+     )
+     (net err_grant_L_credit_counter_L_out_decrement
+      (joined (portRef err_grant_L_credit_counter_L_out_decrement)
+       (portRef Z (instanceRef U516))
+      )
+     )
+     (net
+      err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change
+      (joined
+       (portRef
+        err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change
+       )
+       (portRef Z (instanceRef U485))
+      )
+     )
+     (net
+      err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+      (joined
+       (portRef
+        err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+       )
+       (portRef Z (instanceRef U498))
+      )
+     )
+     (net n3355
+      (joined (portRef A (instanceRef U479)) (portRef Z (instanceRef U480)))
+     )
+     (net n3356
+      (joined (portRef B (instanceRef U524)) (portRef C (instanceRef U491))
+       (portRef C (instanceRef U489)) (portRef B (instanceRef U479))
+       (portRef Z (instanceRef U525))
+      )
+     )
+     (net n3357
+      (joined (portRef A (instanceRef U481)) (portRef Z (instanceRef U482)))
+     )
+     (net n3358
+      (joined (portRef B (instanceRef U535)) (portRef C (instanceRef U494))
+       (portRef C (instanceRef U492)) (portRef B (instanceRef U481))
+       (portRef Z (instanceRef U536))
+      )
+     )
+     (net n3359
+      (joined (portRef A (instanceRef U483)) (portRef Z (instanceRef U484)))
+     )
+     (net n3360
+      (joined (portRef C (instanceRef U512)) (portRef B (instanceRef U495))
+       (portRef A (instanceRef U484)) (portRef Z (instanceRef U514))
+      )
+     )
+     (net n3361
+      (joined (portRef D (instanceRef U512)) (portRef B (instanceRef U484))
+       (portRef Z (instanceRef U513))
+      )
+     )
+     (net n3362
+      (joined (portRef B (instanceRef U546)) (portRef C (instanceRef U497))
+       (portRef C (instanceRef U495)) (portRef C (instanceRef U484))
+       (portRef Z (instanceRef U547))
+      )
+     )
+     (net n3363
+      (joined (portRef A (instanceRef U485)) (portRef Z (instanceRef U486)))
+     )
+     (net n3364
+      (joined (portRef B (instanceRef U557)) (portRef C (instanceRef U500))
+       (portRef C (instanceRef U498)) (portRef B (instanceRef U485))
+       (portRef Z (instanceRef U558))
+      )
+     )
+     (net n3365
+      (joined (portRef A (instanceRef U487)) (portRef Z (instanceRef U488)))
+     )
+     (net n3366
+      (joined (portRef C (instanceRef U520)) (portRef B (instanceRef U501))
+       (portRef A (instanceRef U488)) (portRef Z (instanceRef U522))
+      )
+     )
+     (net n3367
+      (joined (portRef D (instanceRef U520)) (portRef B (instanceRef U488))
+       (portRef Z (instanceRef U521))
+      )
+     )
+     (net n3368
+      (joined (portRef B (instanceRef U568)) (portRef C (instanceRef U503))
+       (portRef C (instanceRef U501)) (portRef C (instanceRef U488))
+       (portRef Z (instanceRef U569))
+      )
+     )
+     (net n3369
+      (joined (portRef C (instanceRef U526)) (portRef A (instanceRef U491))
+       (portRef A (instanceRef U489)) (portRef Z (instanceRef U528))
+      )
+     )
+     (net n3370
+      (joined (portRef C (instanceRef U504)) (portRef B (instanceRef U489))
+       (portRef Z (instanceRef U506))
+      )
+     )
+     (net n3371
+      (joined (portRef A (instanceRef U490)) (portRef Z (instanceRef U491)))
+     )
+     (net n3372
+      (joined (portRef D (instanceRef U526)) (portRef B (instanceRef U491))
+       (portRef Z (instanceRef U527))
+      )
+     )
+     (net n3373
+      (joined (portRef C (instanceRef U537)) (portRef A (instanceRef U494))
+       (portRef A (instanceRef U492)) (portRef Z (instanceRef U539))
+      )
+     )
+     (net n3374
+      (joined (portRef C (instanceRef U508)) (portRef B (instanceRef U492))
+       (portRef Z (instanceRef U510))
+      )
+     )
+     (net n3375
+      (joined (portRef A (instanceRef U493)) (portRef Z (instanceRef U494)))
+     )
+     (net n3376
+      (joined (portRef D (instanceRef U537)) (portRef B (instanceRef U494))
+       (portRef Z (instanceRef U538))
+      )
+     )
+     (net n3377
+      (joined (portRef C (instanceRef U548)) (portRef A (instanceRef U497))
+       (portRef A (instanceRef U495)) (portRef Z (instanceRef U550))
+      )
+     )
+     (net n3378
+      (joined (portRef A (instanceRef U496)) (portRef Z (instanceRef U497)))
+     )
+     (net n3379
+      (joined (portRef D (instanceRef U548)) (portRef B (instanceRef U497))
+       (portRef Z (instanceRef U549))
+      )
+     )
+     (net n3380
+      (joined (portRef C (instanceRef U559)) (portRef A (instanceRef U500))
+       (portRef A (instanceRef U498)) (portRef Z (instanceRef U561))
+      )
+     )
+     (net n3381
+      (joined (portRef C (instanceRef U516)) (portRef B (instanceRef U498))
+       (portRef Z (instanceRef U518))
+      )
+     )
+     (net n3382
+      (joined (portRef A (instanceRef U499)) (portRef Z (instanceRef U500)))
+     )
+     (net n3383
+      (joined (portRef D (instanceRef U559)) (portRef B (instanceRef U500))
+       (portRef Z (instanceRef U560))
+      )
+     )
+     (net n3384
+      (joined (portRef C (instanceRef U570)) (portRef A (instanceRef U503))
+       (portRef A (instanceRef U501)) (portRef Z (instanceRef U572))
+      )
+     )
+     (net n3385
+      (joined (portRef A (instanceRef U502)) (portRef Z (instanceRef U503)))
+     )
+     (net n3386
+      (joined (portRef D (instanceRef U570)) (portRef B (instanceRef U503))
+       (portRef Z (instanceRef U571))
+      )
+     )
+     (net n3387
+      (joined (portRef A (instanceRef U504)) (portRef Z (instanceRef U507)))
+     )
+     (net n3388
+      (joined (portRef B (instanceRef U526)) (portRef B (instanceRef U525))
+       (portRef B (instanceRef U504)) (portRef Z (instanceRef U529))
+      )
+     )
+     (net n3389
+      (joined (portRef D (instanceRef U504)) (portRef Z (instanceRef U505)))
+     )
+     (net n3390
+      (joined (portRef D (instanceRef U533)) (portRef A (instanceRef U533))
+       (portRef A (instanceRef U505)) (portRef Z (instanceRef U534))
+      )
+     )
+     (net n3391
+      (joined (portRef D (instanceRef U530)) (portRef C (instanceRef U529))
+       (portRef B (instanceRef U529)) (portRef C (instanceRef U507))
+       (portRef B (instanceRef U505)) (portRef Z (instanceRef U531))
+      )
+     )
+     (net n3392
+      (joined (portRef A (instanceRef U532)) (portRef A (instanceRef U530))
+       (portRef B (instanceRef U507)) (portRef Z (instanceRef U533))
+      )
+     )
+     (net n3393
+      (joined (portRef C (instanceRef U530)) (portRef A (instanceRef U525))
+       (portRef D (instanceRef U507)) (portRef Z (instanceRef U532))
+      )
+     )
+     (net n3394
+      (joined (portRef A (instanceRef U508)) (portRef Z (instanceRef U511)))
+     )
+     (net n3395
+      (joined (portRef B (instanceRef U537)) (portRef B (instanceRef U536))
+       (portRef B (instanceRef U508)) (portRef Z (instanceRef U540))
+      )
+     )
+     (net n3396
+      (joined (portRef D (instanceRef U508)) (portRef Z (instanceRef U509)))
+     )
+     (net n3397
+      (joined (portRef D (instanceRef U544)) (portRef A (instanceRef U544))
+       (portRef A (instanceRef U509)) (portRef Z (instanceRef U545))
+      )
+     )
+     (net n3398
+      (joined (portRef D (instanceRef U541)) (portRef C (instanceRef U540))
+       (portRef B (instanceRef U540)) (portRef C (instanceRef U511))
+       (portRef B (instanceRef U509)) (portRef Z (instanceRef U542))
+      )
+     )
+     (net n3399
+      (joined (portRef A (instanceRef U543)) (portRef A (instanceRef U541))
+       (portRef B (instanceRef U511)) (portRef Z (instanceRef U544))
+      )
+     )
+     (net n3400
+      (joined (portRef C (instanceRef U541)) (portRef A (instanceRef U536))
+       (portRef D (instanceRef U511)) (portRef Z (instanceRef U543))
+      )
+     )
+     (net n3401
+      (joined (portRef A (instanceRef U512)) (portRef Z (instanceRef U515)))
+     )
+     (net n3402
+      (joined (portRef B (instanceRef U548)) (portRef B (instanceRef U547))
+       (portRef B (instanceRef U512)) (portRef Z (instanceRef U551))
+      )
+     )
+     (net n3403
+      (joined (portRef D (instanceRef U552)) (portRef C (instanceRef U551))
+       (portRef B (instanceRef U551)) (portRef C (instanceRef U515))
+       (portRef A (instanceRef U513)) (portRef Z (instanceRef U553))
+      )
+     )
+     (net n3404
+      (joined (portRef D (instanceRef U555)) (portRef A (instanceRef U555))
+       (portRef B (instanceRef U513)) (portRef Z (instanceRef U556))
+      )
+     )
+     (net n3405
+      (joined (portRef A (instanceRef U554)) (portRef A (instanceRef U552))
+       (portRef B (instanceRef U515)) (portRef Z (instanceRef U555))
+      )
+     )
+     (net n3406
+      (joined (portRef C (instanceRef U552)) (portRef A (instanceRef U547))
+       (portRef D (instanceRef U515)) (portRef Z (instanceRef U554))
+      )
+     )
+     (net n3407
+      (joined (portRef A (instanceRef U516)) (portRef Z (instanceRef U519)))
+     )
+     (net n3408
+      (joined (portRef B (instanceRef U559)) (portRef B (instanceRef U558))
+       (portRef B (instanceRef U516)) (portRef Z (instanceRef U562))
+      )
+     )
+     (net n3409
+      (joined (portRef D (instanceRef U516)) (portRef Z (instanceRef U517)))
+     )
+     (net n3410
+      (joined (portRef D (instanceRef U566)) (portRef A (instanceRef U566))
+       (portRef A (instanceRef U517)) (portRef Z (instanceRef U567))
+      )
+     )
+     (net n3411
+      (joined (portRef D (instanceRef U563)) (portRef C (instanceRef U562))
+       (portRef B (instanceRef U562)) (portRef C (instanceRef U519))
+       (portRef B (instanceRef U517)) (portRef Z (instanceRef U564))
+      )
+     )
+     (net n3412
+      (joined (portRef A (instanceRef U565)) (portRef A (instanceRef U563))
+       (portRef B (instanceRef U519)) (portRef Z (instanceRef U566))
+      )
+     )
+     (net n3413
+      (joined (portRef C (instanceRef U563)) (portRef A (instanceRef U558))
+       (portRef D (instanceRef U519)) (portRef Z (instanceRef U565))
+      )
+     )
+     (net n3414
+      (joined (portRef A (instanceRef U520)) (portRef Z (instanceRef U523)))
+     )
+     (net n3415
+      (joined (portRef B (instanceRef U570)) (portRef B (instanceRef U569))
+       (portRef B (instanceRef U520)) (portRef Z (instanceRef U573))
+      )
+     )
+     (net n3416
+      (joined (portRef D (instanceRef U574)) (portRef C (instanceRef U573))
+       (portRef B (instanceRef U573)) (portRef C (instanceRef U523))
+       (portRef A (instanceRef U521)) (portRef Z (instanceRef U575))
+      )
+     )
+     (net n3417
+      (joined (portRef D (instanceRef U577)) (portRef A (instanceRef U577))
+       (portRef B (instanceRef U521)) (portRef Z (instanceRef U578))
+      )
+     )
+     (net n3418
+      (joined (portRef A (instanceRef U576)) (portRef A (instanceRef U574))
+       (portRef B (instanceRef U523)) (portRef Z (instanceRef U577))
+      )
+     )
+     (net n3419
+      (joined (portRef C (instanceRef U574)) (portRef A (instanceRef U569))
+       (portRef D (instanceRef U523)) (portRef Z (instanceRef U576))
+      )
+     )
+     (net n3420
+      (joined (portRef A (instanceRef U526)) (portRef Z (instanceRef U530)))
+     )
+     (net n3421
+      (joined (portRef A (instanceRef U537)) (portRef Z (instanceRef U541)))
+     )
+     (net n3422
+      (joined (portRef A (instanceRef U548)) (portRef Z (instanceRef U552)))
+     )
+     (net n3423
+      (joined (portRef A (instanceRef U559)) (portRef Z (instanceRef U563)))
+     )
+     (net n3424
+      (joined (portRef A (instanceRef U570)) (portRef Z (instanceRef U574)))
+     )
+    )
+   )
+  )
+  (cell allocator_credit_counter_logic_pseudo_with_checkers_top
+   (cellType GENERIC)
+   (view Netlist_representation (viewType NETLIST)
+    (interface (port credit_in_N (direction INPUT))
+     (port credit_in_E (direction INPUT)) (port credit_in_W (direction INPUT))
+     (port credit_in_S (direction INPUT)) (port credit_in_L (direction INPUT))
+     (port grant_N (direction INPUT)) (port grant_E (direction INPUT))
+     (port grant_W (direction INPUT)) (port grant_S (direction INPUT))
+     (port grant_L (direction INPUT))
+     (port
+      err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+      (direction OUTPUT)
+     )
+     (port err_credit_in_N_credit_counter_N_out_increment (direction OUTPUT))
+     (port
+      err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change
+      (direction OUTPUT)
+     )
+     (port err_grant_N_credit_counter_N_out_decrement (direction OUTPUT))
+     (port
+      err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change
+      (direction OUTPUT)
+     )
+     (port
+      err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_credit_in_E_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+      (direction OUTPUT)
+     )
+     (port err_credit_in_E_credit_counter_E_out_increment (direction OUTPUT))
+     (port
+      err_not_credit_in_E_credit_counter_E_out_max_credit_counter_E_in_not_change
+      (direction OUTPUT)
+     )
+     (port err_grant_E_credit_counter_E_out_decrement (direction OUTPUT))
+     (port
+      err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change
+      (direction OUTPUT)
+     )
+     (port
+      err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+      (direction OUTPUT)
+     )
+     (port err_credit_in_W_credit_counter_W_out_increment (direction OUTPUT))
+     (port
+      err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change
+      (direction OUTPUT)
+     )
+     (port err_grant_W_credit_counter_W_out_decrement (direction OUTPUT))
+     (port
+      err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change
+      (direction OUTPUT)
+     )
+     (port
+      err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+      (direction OUTPUT)
+     )
+     (port err_credit_in_S_credit_counter_S_out_increment (direction OUTPUT))
+     (port
+      err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change
+      (direction OUTPUT)
+     )
+     (port err_grant_S_credit_counter_S_out_decrement (direction OUTPUT))
+     (port
+      err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change
+      (direction OUTPUT)
+     )
+     (port
+      err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+      (direction OUTPUT)
+     )
+     (port
+      err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+      (direction OUTPUT)
+     )
+     (port err_credit_in_L_credit_counter_L_out_increment (direction OUTPUT))
+     (port
+      err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change
+      (direction OUTPUT)
+     )
+     (port err_grant_L_credit_counter_L_out_decrement (direction OUTPUT))
+     (port
+      err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change
+      (direction OUTPUT)
+     )
+     (port
+      err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+      (direction OUTPUT)
+     )
+     (port
+      (array (rename credit_counter_N_out_1_0_ "credit_counter_N_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_E_out_1_0_ "credit_counter_E_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_W_out_1_0_ "credit_counter_W_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_S_out_1_0_ "credit_counter_S_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_L_out_1_0_ "credit_counter_L_out<1:0>") 2)
+      (direction INPUT)
+     )
+     (port
+      (array (rename credit_counter_N_in_1_0_ "credit_counter_N_in<1:0>") 2)
+      (direction OUTPUT)
+     )
+     (port
+      (array (rename credit_counter_E_in_1_0_ "credit_counter_E_in<1:0>") 2)
+      (direction OUTPUT)
+     )
+     (port
+      (array (rename credit_counter_W_in_1_0_ "credit_counter_W_in<1:0>") 2)
+      (direction OUTPUT)
+     )
+     (port
+      (array (rename credit_counter_S_in_1_0_ "credit_counter_S_in<1:0>") 2)
+      (direction OUTPUT)
+     )
+     (port
+      (array (rename credit_counter_L_in_1_0_ "credit_counter_L_in<1:0>") 2)
+      (direction OUTPUT)
+     )
+    )
+    (contents
+     (instance ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0
+      (viewRef Netlist_representation
+       (cellRef allocator_credit_counter_logic_pseudo)
+      )
+     )
+     (instance CHECKERS
+      (viewRef Netlist_representation
+       (cellRef allocator_credit_counter_logic_pseudo_checkers)
+      )
+     )
+     (net (rename credit_counter_N_in_1_ "credit_counter_N_in<1>")
+      (joined (portRef (member credit_counter_N_in_1_0_ 1))
+       (portRef (member credit_counter_N_in_1_0_ 1) (instanceRef CHECKERS))
+       (portRef (member credit_counter_N_in_1_0_ 1)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_N_in_0_ "credit_counter_N_in<0>")
+      (joined (portRef (member credit_counter_N_in_1_0_ 0))
+       (portRef (member credit_counter_N_in_1_0_ 0) (instanceRef CHECKERS))
+       (portRef (member credit_counter_N_in_1_0_ 0)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_E_in_1_ "credit_counter_E_in<1>")
+      (joined (portRef (member credit_counter_E_in_1_0_ 1))
+       (portRef (member credit_counter_E_in_1_0_ 1) (instanceRef CHECKERS))
+       (portRef (member credit_counter_E_in_1_0_ 1)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_E_in_0_ "credit_counter_E_in<0>")
+      (joined (portRef (member credit_counter_E_in_1_0_ 0))
+       (portRef (member credit_counter_E_in_1_0_ 0) (instanceRef CHECKERS))
+       (portRef (member credit_counter_E_in_1_0_ 0)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_W_in_1_ "credit_counter_W_in<1>")
+      (joined (portRef (member credit_counter_W_in_1_0_ 1))
+       (portRef (member credit_counter_W_in_1_0_ 1) (instanceRef CHECKERS))
+       (portRef (member credit_counter_W_in_1_0_ 1)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_W_in_0_ "credit_counter_W_in<0>")
+      (joined (portRef (member credit_counter_W_in_1_0_ 0))
+       (portRef (member credit_counter_W_in_1_0_ 0) (instanceRef CHECKERS))
+       (portRef (member credit_counter_W_in_1_0_ 0)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_S_in_1_ "credit_counter_S_in<1>")
+      (joined (portRef (member credit_counter_S_in_1_0_ 1))
+       (portRef (member credit_counter_S_in_1_0_ 1) (instanceRef CHECKERS))
+       (portRef (member credit_counter_S_in_1_0_ 1)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_S_in_0_ "credit_counter_S_in<0>")
+      (joined (portRef (member credit_counter_S_in_1_0_ 0))
+       (portRef (member credit_counter_S_in_1_0_ 0) (instanceRef CHECKERS))
+       (portRef (member credit_counter_S_in_1_0_ 0)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_L_in_1_ "credit_counter_L_in<1>")
+      (joined (portRef (member credit_counter_L_in_1_0_ 1))
+       (portRef (member credit_counter_L_in_1_0_ 1) (instanceRef CHECKERS))
+       (portRef (member credit_counter_L_in_1_0_ 1)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_L_in_0_ "credit_counter_L_in<0>")
+      (joined (portRef (member credit_counter_L_in_1_0_ 0))
+       (portRef (member credit_counter_L_in_1_0_ 0) (instanceRef CHECKERS))
+       (portRef (member credit_counter_L_in_1_0_ 0)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net credit_in_N
+      (joined (portRef credit_in_N)
+       (portRef credit_in_N (instanceRef CHECKERS))
+       (portRef credit_in_N
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net credit_in_E
+      (joined (portRef credit_in_E)
+       (portRef credit_in_E (instanceRef CHECKERS))
+       (portRef credit_in_E
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net credit_in_W
+      (joined (portRef credit_in_W)
+       (portRef credit_in_W (instanceRef CHECKERS))
+       (portRef credit_in_W
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net credit_in_S
+      (joined (portRef credit_in_S)
+       (portRef credit_in_S (instanceRef CHECKERS))
+       (portRef credit_in_S
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net credit_in_L
+      (joined (portRef credit_in_L)
+       (portRef credit_in_L (instanceRef CHECKERS))
+       (portRef credit_in_L
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_N_out_1_ "credit_counter_N_out<1>")
+      (joined (portRef (member credit_counter_N_out_1_0_ 1))
+       (portRef (member credit_counter_N_out_1_0_ 1) (instanceRef CHECKERS))
+       (portRef (member credit_counter_N_out_1_0_ 1)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_N_out_0_ "credit_counter_N_out<0>")
+      (joined (portRef (member credit_counter_N_out_1_0_ 0))
+       (portRef (member credit_counter_N_out_1_0_ 0) (instanceRef CHECKERS))
+       (portRef (member credit_counter_N_out_1_0_ 0)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_E_out_1_ "credit_counter_E_out<1>")
+      (joined (portRef (member credit_counter_E_out_1_0_ 1))
+       (portRef (member credit_counter_E_out_1_0_ 1) (instanceRef CHECKERS))
+       (portRef (member credit_counter_E_out_1_0_ 1)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_E_out_0_ "credit_counter_E_out<0>")
+      (joined (portRef (member credit_counter_E_out_1_0_ 0))
+       (portRef (member credit_counter_E_out_1_0_ 0) (instanceRef CHECKERS))
+       (portRef (member credit_counter_E_out_1_0_ 0)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_W_out_1_ "credit_counter_W_out<1>")
+      (joined (portRef (member credit_counter_W_out_1_0_ 1))
+       (portRef (member credit_counter_W_out_1_0_ 1) (instanceRef CHECKERS))
+       (portRef (member credit_counter_W_out_1_0_ 1)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_W_out_0_ "credit_counter_W_out<0>")
+      (joined (portRef (member credit_counter_W_out_1_0_ 0))
+       (portRef (member credit_counter_W_out_1_0_ 0) (instanceRef CHECKERS))
+       (portRef (member credit_counter_W_out_1_0_ 0)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_S_out_1_ "credit_counter_S_out<1>")
+      (joined (portRef (member credit_counter_S_out_1_0_ 1))
+       (portRef (member credit_counter_S_out_1_0_ 1) (instanceRef CHECKERS))
+       (portRef (member credit_counter_S_out_1_0_ 1)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_S_out_0_ "credit_counter_S_out<0>")
+      (joined (portRef (member credit_counter_S_out_1_0_ 0))
+       (portRef (member credit_counter_S_out_1_0_ 0) (instanceRef CHECKERS))
+       (portRef (member credit_counter_S_out_1_0_ 0)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_L_out_1_ "credit_counter_L_out<1>")
+      (joined (portRef (member credit_counter_L_out_1_0_ 1))
+       (portRef (member credit_counter_L_out_1_0_ 1) (instanceRef CHECKERS))
+       (portRef (member credit_counter_L_out_1_0_ 1)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net (rename credit_counter_L_out_0_ "credit_counter_L_out<0>")
+      (joined (portRef (member credit_counter_L_out_1_0_ 0))
+       (portRef (member credit_counter_L_out_1_0_ 0) (instanceRef CHECKERS))
+       (portRef (member credit_counter_L_out_1_0_ 0)
+        (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0)
+       )
+      )
+     )
+     (net grant_N
+      (joined (portRef grant_N) (portRef valid_N (instanceRef CHECKERS))
+       (portRef grant_N (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0))
+      )
+     )
+     (net grant_E
+      (joined (portRef grant_E) (portRef valid_E (instanceRef CHECKERS))
+       (portRef grant_E (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0))
+      )
+     )
+     (net grant_W
+      (joined (portRef grant_W) (portRef valid_W (instanceRef CHECKERS))
+       (portRef grant_W (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0))
+      )
+     )
+     (net grant_S
+      (joined (portRef grant_S) (portRef valid_S (instanceRef CHECKERS))
+       (portRef grant_S (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0))
+      )
+     )
+     (net grant_L
+      (joined (portRef grant_L) (portRef valid_L (instanceRef CHECKERS))
+       (portRef grant_L (instanceRef ALLOCATOR_CREDIT_COUNTER_LOGIC_PSEUDO0))
+      )
+     )
+     (net
+      err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+      (joined
+       (portRef
+        err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+       )
+       (portRef
+        err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net err_credit_in_N_credit_counter_N_out_increment
+      (joined (portRef err_credit_in_N_credit_counter_N_out_increment)
+       (portRef err_credit_in_N_credit_counter_N_out_increment
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change
+      (joined
+       (portRef
+        err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change
+       )
+       (portRef
+        err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net err_grant_N_credit_counter_N_out_decrement
+      (joined (portRef err_grant_N_credit_counter_N_out_decrement)
+       (portRef err_grant_N_credit_counter_N_out_decrement
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change
+      (joined
+       (portRef
+        err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change
+       )
+       (portRef
+        err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+      (joined
+       (portRef
+        err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+       )
+       (portRef
+        err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_credit_in_E_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+      (joined
+       (portRef
+        err_credit_in_E_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+       )
+       (portRef
+        err_credit_in_E_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net err_credit_in_E_credit_counter_E_out_increment
+      (joined (portRef err_credit_in_E_credit_counter_E_out_increment)
+       (portRef err_credit_in_E_credit_counter_E_out_increment
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_credit_in_E_credit_counter_E_out_max_credit_counter_E_in_not_change
+      (joined
+       (portRef
+        err_not_credit_in_E_credit_counter_E_out_max_credit_counter_E_in_not_change
+       )
+       (portRef
+        err_not_credit_in_E_credit_counter_E_out_max_credit_counter_E_in_not_change
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net err_grant_E_credit_counter_E_out_decrement
+      (joined (portRef err_grant_E_credit_counter_E_out_decrement)
+       (portRef err_grant_E_credit_counter_E_out_decrement
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change
+      (joined
+       (portRef
+        err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change
+       )
+       (portRef
+        err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+      (joined
+       (portRef
+        err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+       )
+       (portRef
+        err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+      (joined
+       (portRef
+        err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+       )
+       (portRef
+        err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net err_credit_in_W_credit_counter_W_out_increment
+      (joined (portRef err_credit_in_W_credit_counter_W_out_increment)
+       (portRef err_credit_in_W_credit_counter_W_out_increment
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change
+      (joined
+       (portRef
+        err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change
+       )
+       (portRef
+        err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net err_grant_W_credit_counter_W_out_decrement
+      (joined (portRef err_grant_W_credit_counter_W_out_decrement)
+       (portRef err_grant_W_credit_counter_W_out_decrement
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change
+      (joined
+       (portRef
+        err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change
+       )
+       (portRef
+        err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+      (joined
+       (portRef
+        err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+       )
+       (portRef
+        err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+      (joined
+       (portRef
+        err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+       )
+       (portRef
+        err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net err_credit_in_S_credit_counter_S_out_increment
+      (joined (portRef err_credit_in_S_credit_counter_S_out_increment)
+       (portRef err_credit_in_S_credit_counter_S_out_increment
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change
+      (joined
+       (portRef
+        err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change
+       )
+       (portRef
+        err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net err_grant_S_credit_counter_S_out_decrement
+      (joined (portRef err_grant_S_credit_counter_S_out_decrement)
+       (portRef err_grant_S_credit_counter_S_out_decrement
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change
+      (joined
+       (portRef
+        err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change
+       )
+       (portRef
+        err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+      (joined
+       (portRef
+        err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+       )
+       (portRef
+        err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+      (joined
+       (portRef
+        err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+       )
+       (portRef
+        err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net err_credit_in_L_credit_counter_L_out_increment
+      (joined (portRef err_credit_in_L_credit_counter_L_out_increment)
+       (portRef err_credit_in_L_credit_counter_L_out_increment
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change
+      (joined
+       (portRef
+        err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change
+       )
+       (portRef
+        err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net err_grant_L_credit_counter_L_out_decrement
+      (joined (portRef err_grant_L_credit_counter_L_out_decrement)
+       (portRef err_grant_L_credit_counter_L_out_decrement
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change
+      (joined
+       (portRef
+        err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change
+       )
+       (portRef
+        err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+     (net
+      err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+      (joined
+       (portRef
+        err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+       )
+       (portRef
+        err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal
+        (instanceRef CHECKERS)
+       )
+      )
+     )
+    )
+   )
+  )
+ )
+ (design Synopsys_edif
+  (cellRef allocator_credit_counter_logic_pseudo_with_checkers_top
+   (libraryRef DESIGNS)
+  )
+ )
+)

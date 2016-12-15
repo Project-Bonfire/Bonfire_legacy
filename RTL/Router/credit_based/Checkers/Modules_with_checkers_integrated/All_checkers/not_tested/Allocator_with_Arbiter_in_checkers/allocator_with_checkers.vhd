@@ -5,7 +5,6 @@ use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-
 entity allocator is      
     port (  reset: in  std_logic;
             clk: in  std_logic;
@@ -28,6 +27,111 @@ entity allocator is
            	grant_W_N, grant_W_E, grant_W_W, grant_W_S, grant_W_L: out std_logic;
            	grant_S_N, grant_S_E, grant_S_W, grant_S_S, grant_S_L: out std_logic;
            	grant_L_N, grant_L_E, grant_L_W, grant_L_S, grant_L_L: out std_logic;
+
+            -- Allocator logic checker outputs
+            err_grant_N_N_sig_not_empty_N_grant_N_N, 
+            err_not_grant_N_N_sig_or_empty_N_not_grant_N_N, 
+            err_grant_N_E_sig_not_empty_E_grant_N_E, 
+            err_not_grant_N_E_sig_or_empty_E_not_grant_N_E, 
+            err_grant_N_W_sig_not_empty_W_grant_N_W, 
+            err_not_grant_N_W_sig_or_empty_W_not_grant_N_W, 
+            err_grant_N_S_sig_not_empty_S_grant_N_S, 
+            err_not_grant_N_S_sig_or_empty_S_not_grant_N_S, 
+            err_grant_N_L_sig_not_empty_L_grant_N_L, 
+            err_not_grant_N_L_sig_or_empty_L_not_grant_N_L, 
+
+            err_grant_E_N_sig_not_empty_N_grant_E_N, 
+            err_not_grant_E_N_sig_or_empty_N_not_grant_E_N, 
+            err_grant_E_E_sig_not_empty_E_grant_E_E, 
+            err_not_grant_E_E_sig_or_empty_E_not_grant_E_E, 
+            err_grant_E_W_sig_not_empty_W_grant_E_W, 
+            err_not_grant_E_W_sig_or_empty_W_not_grant_E_W, 
+            err_grant_E_S_sig_not_empty_S_grant_E_S, 
+            err_not_grant_E_S_sig_or_empty_S_not_grant_E_S, 
+            err_grant_E_L_sig_not_empty_L_grant_E_L, 
+            err_not_grant_E_L_sig_or_empty_L_not_grant_E_L, 
+
+            err_grant_W_N_sig_not_empty_N_grant_W_N, 
+            err_not_grant_W_N_sig_or_empty_N_not_grant_W_N, 
+            err_grant_W_E_sig_not_empty_E_grant_W_E, 
+            err_not_grant_W_E_sig_or_empty_E_not_grant_W_E, 
+            err_grant_W_W_sig_not_empty_W_grant_W_W, 
+            err_not_grant_W_W_sig_or_empty_W_not_grant_W_W, 
+            err_grant_W_S_sig_not_empty_S_grant_W_S, 
+            err_not_grant_W_S_sig_or_empty_S_not_grant_W_S, 
+            err_grant_W_L_sig_not_empty_L_grant_W_L, 
+            err_not_grant_W_L_sig_or_empty_L_not_grant_W_L, 
+
+            err_grant_S_N_sig_not_empty_N_grant_S_N, 
+            err_not_grant_S_N_sig_or_empty_N_not_grant_S_N, 
+            err_grant_S_E_sig_not_empty_E_grant_S_E, 
+            err_not_grant_S_E_sig_or_empty_E_not_grant_S_E, 
+            err_grant_S_W_sig_not_empty_W_grant_S_W, 
+            err_not_grant_S_W_sig_or_empty_W_not_grant_S_W, 
+            err_grant_S_S_sig_not_empty_S_grant_S_S, 
+            err_not_grant_S_S_sig_or_empty_S_not_grant_S_S, 
+            err_grant_S_L_sig_not_empty_L_grant_S_L, 
+            err_not_grant_S_L_sig_or_empty_L_not_grant_S_L, 
+
+            err_grant_L_N_sig_not_empty_N_grant_L_N, 
+            err_not_grant_L_N_sig_or_empty_N_not_grant_L_N, 
+            err_grant_L_E_sig_not_empty_E_grant_L_E, 
+            err_not_grant_L_E_sig_or_empty_E_not_grant_L_E, 
+            err_grant_L_W_sig_not_empty_W_grant_L_W, 
+            err_not_grant_L_W_sig_or_empty_W_not_grant_L_W, 
+            err_grant_L_S_sig_not_empty_S_grant_L_S, 
+            err_not_grant_L_S_sig_or_empty_S_not_grant_L_S, 
+            err_grant_L_L_sig_not_empty_L_grant_L_L, 
+            err_not_grant_L_L_sig_or_empty_L_not_grant_L_L, 
+
+            err_grant_signals_not_empty_grant_N, 
+            err_not_grant_signals_empty_not_grant_N, 
+            err_grant_signals_not_empty_grant_E, 
+            err_not_grant_signals_empty_not_grant_E, 
+            err_grant_signals_not_empty_grant_W, 
+            err_not_grant_signals_empty_not_grant_W, 
+            err_grant_signals_not_empty_grant_S, 
+            err_not_grant_signals_empty_not_grant_S, 
+            err_grant_signals_not_empty_grant_L, 
+            err_not_grant_signals_empty_not_grant_L, 
+
+            err_grants_valid_not_match, 
+
+            -- Allocator credit counter logic checker outputs
+            err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal, 
+            err_credit_in_N_credit_counter_N_out_increment, 
+            err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change, 
+            err_grant_N_credit_counter_N_out_decrement, 
+            err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change,             
+            err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal, 
+
+            err_credit_in_E_grant_E_credit_counter_E_in_credit_counter_E_out_equal, 
+            err_credit_in_E_credit_counter_E_out_increment, 
+            err_not_credit_in_E_credit_counter_E_out_max_credit_counter_E_in_not_change, 
+            err_grant_E_credit_counter_E_out_decrement, 
+            err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change,             
+            err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal, 
+
+            err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal, 
+            err_credit_in_W_credit_counter_W_out_increment, 
+            err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change, 
+            err_grant_W_credit_counter_W_out_decrement, 
+            err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change,             
+            err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal, 
+
+            err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal, 
+            err_credit_in_S_credit_counter_S_out_increment, 
+            err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change, 
+            err_grant_S_credit_counter_S_out_decrement, 
+            err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change,             
+            err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal, 
+
+            err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal, 
+            err_credit_in_L_credit_counter_L_out_increment, 
+            err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change, 
+            err_grant_L_credit_counter_L_out_decrement, 
+            err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change, 
+            err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal, 
 
             -- Arbiter_in checker outputs
 
@@ -446,6 +550,16 @@ signal grant_W_N_sig, grant_W_E_sig, grant_W_W_sig, grant_W_S_sig, grant_W_L_sig
 signal grant_S_N_sig, grant_S_E_sig, grant_S_W_sig, grant_S_S_sig, grant_S_L_sig: std_logic;
 signal grant_L_N_sig, grant_L_E_sig, grant_L_W_sig, grant_L_S_sig, grant_L_L_sig: std_logic;
 
+signal valid_N_sig, valid_E_sig, valid_W_sig, valid_S_sig, valid_L_sig : std_logic;
+
+signal grant_N_N_signal, grant_N_E_signal, grant_N_W_signal, grant_N_S_signal, grant_N_L_signal: std_logic;
+signal grant_E_N_signal, grant_E_E_signal, grant_E_W_signal, grant_E_S_signal, grant_E_L_signal: std_logic;
+signal grant_W_N_signal, grant_W_E_signal, grant_W_W_signal, grant_W_S_signal, grant_W_L_signal: std_logic;
+signal grant_S_N_signal, grant_S_E_signal, grant_S_W_signal, grant_S_S_signal, grant_S_L_signal: std_logic;
+signal grant_L_N_signal, grant_L_E_signal, grant_L_W_signal, grant_L_S_signal, grant_L_L_signal: std_logic;
+
+-- Allocator logic checker outputs and allocator credit counter logic checker outputs go directly to the output interface of Allocator
+
 component Arbiter_in is
     port (  reset: in std_logic;
             clk: in std_logic;
@@ -542,6 +656,147 @@ component arbiter_out is
             );
 end component;
 
+-- Checker modules
+
+component allocator_logic_pseudo_checkers is
+    port (  
+            -- grant_X_Y means the grant for X output port towards Y input port
+            -- this means for any X in [N, E, W, S, L] then set grant_X_Y is one hot!
+            empty_N, empty_E, empty_W, empty_S, empty_L: in std_logic;            
+            grant_N_N_sig, grant_N_E_sig, grant_N_W_sig, grant_N_S_sig, grant_N_L_sig: in std_logic;
+            grant_E_N_sig, grant_E_E_sig, grant_E_W_sig, grant_E_S_sig, grant_E_L_sig: in std_logic;
+            grant_W_N_sig, grant_W_E_sig, grant_W_W_sig, grant_W_S_sig, grant_W_L_sig: in std_logic;
+            grant_S_N_sig, grant_S_E_sig, grant_S_W_sig, grant_S_S_sig, grant_S_L_sig: in std_logic;
+            grant_L_N_sig, grant_L_E_sig, grant_L_W_sig, grant_L_S_sig, grant_L_L_sig: in std_logic;
+
+            valid_N, valid_E, valid_W, valid_S, valid_L : in std_logic;
+            grant_N_N, grant_N_E, grant_N_W, grant_N_S, grant_N_L: in std_logic;
+            grant_E_N, grant_E_E, grant_E_W, grant_E_S, grant_E_L: in std_logic;
+            grant_W_N, grant_W_E, grant_W_W, grant_W_S, grant_W_L: in std_logic;
+            grant_S_N, grant_S_E, grant_S_W, grant_S_S, grant_S_L: in std_logic;
+            grant_L_N, grant_L_E, grant_L_W, grant_L_S, grant_L_L: in std_logic;
+            grant_N, grant_E, grant_W, grant_S, grant_L : in std_logic;
+
+            -- Checker outputs
+            err_grant_N_N_sig_not_empty_N_grant_N_N, 
+            err_not_grant_N_N_sig_or_empty_N_not_grant_N_N, 
+            err_grant_N_E_sig_not_empty_E_grant_N_E, 
+            err_not_grant_N_E_sig_or_empty_E_not_grant_N_E, 
+            err_grant_N_W_sig_not_empty_W_grant_N_W, 
+            err_not_grant_N_W_sig_or_empty_W_not_grant_N_W, 
+            err_grant_N_S_sig_not_empty_S_grant_N_S, 
+            err_not_grant_N_S_sig_or_empty_S_not_grant_N_S, 
+            err_grant_N_L_sig_not_empty_L_grant_N_L, 
+            err_not_grant_N_L_sig_or_empty_L_not_grant_N_L, 
+
+            err_grant_E_N_sig_not_empty_N_grant_E_N, 
+            err_not_grant_E_N_sig_or_empty_N_not_grant_E_N, 
+            err_grant_E_E_sig_not_empty_E_grant_E_E, 
+            err_not_grant_E_E_sig_or_empty_E_not_grant_E_E, 
+            err_grant_E_W_sig_not_empty_W_grant_E_W, 
+            err_not_grant_E_W_sig_or_empty_W_not_grant_E_W, 
+            err_grant_E_S_sig_not_empty_S_grant_E_S, 
+            err_not_grant_E_S_sig_or_empty_S_not_grant_E_S, 
+            err_grant_E_L_sig_not_empty_L_grant_E_L, 
+            err_not_grant_E_L_sig_or_empty_L_not_grant_E_L, 
+
+            err_grant_W_N_sig_not_empty_N_grant_W_N, 
+            err_not_grant_W_N_sig_or_empty_N_not_grant_W_N, 
+            err_grant_W_E_sig_not_empty_E_grant_W_E, 
+            err_not_grant_W_E_sig_or_empty_E_not_grant_W_E, 
+            err_grant_W_W_sig_not_empty_W_grant_W_W, 
+            err_not_grant_W_W_sig_or_empty_W_not_grant_W_W, 
+            err_grant_W_S_sig_not_empty_S_grant_W_S, 
+            err_not_grant_W_S_sig_or_empty_S_not_grant_W_S, 
+            err_grant_W_L_sig_not_empty_L_grant_W_L, 
+            err_not_grant_W_L_sig_or_empty_L_not_grant_W_L, 
+
+            err_grant_S_N_sig_not_empty_N_grant_S_N, 
+            err_not_grant_S_N_sig_or_empty_N_not_grant_S_N, 
+            err_grant_S_E_sig_not_empty_E_grant_S_E, 
+            err_not_grant_S_E_sig_or_empty_E_not_grant_S_E, 
+            err_grant_S_W_sig_not_empty_W_grant_S_W, 
+            err_not_grant_S_W_sig_or_empty_W_not_grant_S_W, 
+            err_grant_S_S_sig_not_empty_S_grant_S_S, 
+            err_not_grant_S_S_sig_or_empty_S_not_grant_S_S, 
+            err_grant_S_L_sig_not_empty_L_grant_S_L, 
+            err_not_grant_S_L_sig_or_empty_L_not_grant_S_L, 
+
+            err_grant_L_N_sig_not_empty_N_grant_L_N, 
+            err_not_grant_L_N_sig_or_empty_N_not_grant_L_N, 
+            err_grant_L_E_sig_not_empty_E_grant_L_E, 
+            err_not_grant_L_E_sig_or_empty_E_not_grant_L_E, 
+            err_grant_L_W_sig_not_empty_W_grant_L_W, 
+            err_not_grant_L_W_sig_or_empty_W_not_grant_L_W, 
+            err_grant_L_S_sig_not_empty_S_grant_L_S, 
+            err_not_grant_L_S_sig_or_empty_S_not_grant_L_S, 
+            err_grant_L_L_sig_not_empty_L_grant_L_L, 
+            err_not_grant_L_L_sig_or_empty_L_not_grant_L_L, 
+
+            err_grant_signals_not_empty_grant_N, 
+            err_not_grant_signals_empty_not_grant_N, 
+            err_grant_signals_not_empty_grant_E, 
+            err_not_grant_signals_empty_not_grant_E, 
+            err_grant_signals_not_empty_grant_W, 
+            err_not_grant_signals_empty_not_grant_W, 
+            err_grant_signals_not_empty_grant_S, 
+            err_not_grant_signals_empty_not_grant_S, 
+            err_grant_signals_not_empty_grant_L, 
+            err_not_grant_signals_empty_not_grant_L, 
+
+            err_grants_valid_not_match : out std_logic
+         );
+end component;
+
+component allocator_credit_counter_logic_pseudo_checkers is
+    port (  
+            -- flow control
+            credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic;
+            credit_counter_N_out, credit_counter_E_out, credit_counter_W_out, credit_counter_S_out, credit_counter_L_out : in std_logic_vector(1 downto 0);            
+            valid_N, valid_E, valid_W, valid_S, valid_L: in std_logic; -- ?? Not sure yet ! grant or valid !
+
+            credit_counter_N_in, credit_counter_E_in, credit_counter_W_in, credit_counter_S_in, credit_counter_L_in : in std_logic_vector(1 downto 0);
+
+            -- Checker outputs
+            -- Not complete yet !
+            err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal, 
+            err_credit_in_N_credit_counter_N_out_increment, 
+            err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change, 
+            err_grant_N_credit_counter_N_out_decrement, 
+            err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change,             
+            err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal, 
+
+            err_credit_in_E_grant_E_credit_counter_E_in_credit_counter_E_out_equal, 
+            err_credit_in_E_credit_counter_E_out_increment, 
+            err_not_credit_in_E_credit_counter_E_out_max_credit_counter_E_in_not_change, 
+            err_grant_E_credit_counter_E_out_decrement, 
+            err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change,             
+            err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal, 
+
+            err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal, 
+            err_credit_in_W_credit_counter_W_out_increment, 
+            err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change, 
+            err_grant_W_credit_counter_W_out_decrement, 
+            err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change,             
+            err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal, 
+
+            err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal, 
+            err_credit_in_S_credit_counter_S_out_increment, 
+            err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change, 
+            err_grant_S_credit_counter_S_out_decrement, 
+            err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change,             
+            err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal, 
+
+            err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal, 
+            err_credit_in_L_credit_counter_L_out_increment, 
+            err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change, 
+            err_grant_L_credit_counter_L_out_decrement, 
+            err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change, 
+            err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal : out std_logic
+         );
+end component;
+
+
 begin 
   
 -- sequential part
@@ -567,39 +822,76 @@ end process;
  
 -- The combionational part
 
+-- We did this because of the checkers
+
+valid_N <= valid_N_sig;  
+valid_E <= valid_E_sig;  
+valid_W <= valid_W_sig;  
+valid_S <= valid_S_sig;  
+valid_L <= valid_L_sig; 
+
+grant_N_N <= grant_N_N_signal;
+grant_E_N <= grant_E_N_signal;
+grant_W_N <= grant_W_N_signal;
+grant_S_N <= grant_S_N_signal;
+grant_L_N <= grant_L_N_signal;
+
+grant_N_E <= grant_N_E_signal;
+grant_E_E <= grant_E_E_signal;
+grant_W_E <= grant_W_E_signal;
+grant_S_E <= grant_S_E_signal;
+grant_L_E <= grant_L_E_signal;
+
+grant_N_W <= grant_N_W_signal;
+grant_E_W <= grant_E_W_signal;
+grant_W_W <= grant_W_W_signal;
+grant_S_W <= grant_S_W_signal;
+grant_L_W <= grant_L_W_signal;
+
+grant_N_S <= grant_N_S_signal;
+grant_E_S <= grant_E_S_signal;
+grant_W_S <= grant_W_S_signal;
+grant_S_S <= grant_S_S_signal;
+grant_L_S <= grant_L_S_signal;
+
+grant_N_L <= grant_N_L_signal;
+grant_E_L <= grant_E_L_signal;
+grant_W_L <= grant_W_L_signal;
+grant_S_L <= grant_S_L_signal;
+grant_L_L <= grant_L_L_signal;
+
 -- Taking Arbiter_in checker outputs to outputs of Allocator
 
 
+    grant_N_N_signal <= grant_N_N_sig and not empty_N;
+    grant_N_E_signal <= grant_N_E_sig and not empty_E;
+    grant_N_W_signal <= grant_N_W_sig and not empty_W;
+    grant_N_S_signal <= grant_N_S_sig and not empty_S;
+    grant_N_L_signal <= grant_N_L_sig and not empty_L;
 
-    grant_N_N <= grant_N_N_sig and not empty_N;
-    grant_N_E <= grant_N_E_sig and not empty_E;
-    grant_N_W <= grant_N_W_sig and not empty_W;
-    grant_N_S <= grant_N_S_sig and not empty_S;
-    grant_N_L <= grant_N_L_sig and not empty_L;
+    grant_E_N_signal <= grant_E_N_sig and not empty_N;
+    grant_E_E_signal <= grant_E_E_sig and not empty_E;
+    grant_E_W_signal <= grant_E_W_sig and not empty_W;
+    grant_E_S_signal <= grant_E_S_sig and not empty_S;
+    grant_E_L_signal <= grant_E_L_sig and not empty_L;
 
-    grant_E_N <= grant_E_N_sig and not empty_N;
-    grant_E_E <= grant_E_E_sig and not empty_E;
-    grant_E_W <= grant_E_W_sig and not empty_W;
-    grant_E_S <= grant_E_S_sig and not empty_S;
-    grant_E_L <= grant_E_L_sig and not empty_L;
+    grant_W_N_signal <= grant_W_N_sig and not empty_N;
+    grant_W_E_signal <= grant_W_E_sig and not empty_E;
+    grant_W_W_signal <= grant_W_W_sig and not empty_W;
+    grant_W_S_signal <= grant_W_S_sig and not empty_S;
+    grant_W_L_signal <= grant_W_L_sig and not empty_L;
 
-    grant_W_N <= grant_W_N_sig and not empty_N;
-    grant_W_E <= grant_W_E_sig and not empty_E;
-    grant_W_W <= grant_W_W_sig and not empty_W;
-    grant_W_S <= grant_W_S_sig and not empty_S;
-    grant_W_L <= grant_W_L_sig and not empty_L;
+    grant_S_N_signal <= grant_S_N_sig and not empty_N;
+    grant_S_E_signal <= grant_S_E_sig and not empty_E;
+    grant_S_W_signal <= grant_S_W_sig and not empty_W;
+    grant_S_S_signal <= grant_S_S_sig and not empty_S;
+    grant_S_L_signal <= grant_S_L_sig and not empty_L;
 
-    grant_S_N <= grant_S_N_sig and not empty_N;
-    grant_S_E <= grant_S_E_sig and not empty_E;
-    grant_S_W <= grant_S_W_sig and not empty_W;
-    grant_S_S <= grant_S_S_sig and not empty_S;
-    grant_S_L <= grant_S_L_sig and not empty_L;
-
-    grant_L_N <= grant_L_N_sig and not empty_N;
-    grant_L_E <= grant_L_E_sig and not empty_E;
-    grant_L_W <= grant_L_W_sig and not empty_W;
-    grant_L_S <= grant_L_S_sig and not empty_S;
-    grant_L_L <= grant_L_L_sig and not empty_L;
+    grant_L_N_signal <= grant_L_N_sig and not empty_N;
+    grant_L_E_signal <= grant_L_E_sig and not empty_E;
+    grant_L_W_signal <= grant_L_W_sig and not empty_W;
+    grant_L_S_signal <= grant_L_S_sig and not empty_S;
+    grant_L_L_signal <= grant_L_L_sig and not empty_L;
     
 grant_N <=  (grant_N_N_sig and not empty_N )or (grant_N_E_sig and not empty_E) or (grant_N_W_sig and not empty_W) or (grant_N_S_sig and not empty_S) or (grant_N_L_sig and not empty_L);
 grant_E <=  (grant_E_N_sig and not empty_N )or (grant_E_E_sig and not empty_E) or (grant_E_W_sig and not empty_W) or (grant_E_S_sig and not empty_S) or (grant_E_L_sig and not empty_L);
@@ -607,7 +899,7 @@ grant_W <=  (grant_W_N_sig and not empty_N )or (grant_W_E_sig and not empty_E) o
 grant_S <=  (grant_S_N_sig and not empty_N )or (grant_S_E_sig and not empty_E) or (grant_S_W_sig and not empty_W) or (grant_S_S_sig and not empty_S) or (grant_S_L_sig and not empty_L);
 grant_L <=  (grant_L_N_sig and not empty_N )or (grant_L_E_sig and not empty_E) or (grant_L_W_sig and not empty_W) or (grant_L_S_sig and not empty_S) or (grant_L_L_sig and not empty_L);
 
--- this process handels the credit counters!
+-- this process handles the credit counters!
 process(credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L, grant_N, grant_E, grant_W, grant_S, grant_L,
 		credit_counter_N_out, credit_counter_E_out, credit_counter_W_out, credit_counter_S_out, credit_counter_L_out
 		)
@@ -662,7 +954,186 @@ process(credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L, grant_N
 
  end process;
 
--- North Arbiter_in with checkers integrated
+-- Allocator logic checkers module instantiation
+ALLOCATOR_LOGIC_CHECKERS: allocator_logic_pseudo_checkers  PORT MAP (
+                                                       empty_N => empty_N,  
+                                                       empty_E => empty_E,  
+                                                       empty_W => empty_W,  
+                                                       empty_S => empty_S,  
+                                                       empty_L => empty_L, 
+                                                       grant_N_N_sig => grant_N_N_sig, grant_N_E_sig => grant_N_E_sig, grant_N_W_sig => grant_N_W_sig, grant_N_S_sig => grant_N_S_sig, grant_N_L_sig => grant_N_L_sig, 
+                                                       grant_E_N_sig => grant_E_N_sig, grant_E_E_sig => grant_E_E_sig, grant_E_W_sig => grant_E_W_sig, grant_E_S_sig => grant_E_S_sig, grant_E_L_sig => grant_E_L_sig,
+                                                       grant_W_N_sig => grant_W_N_sig, grant_W_E_sig => grant_W_E_sig, grant_W_W_sig => grant_W_W_sig, grant_W_S_sig => grant_W_S_sig, grant_W_L_sig => grant_W_L_sig,
+                                                       grant_S_N_sig => grant_S_N_sig, grant_S_E_sig => grant_S_E_sig, grant_S_W_sig => grant_S_W_sig, grant_S_S_sig => grant_S_S_sig, grant_S_L_sig => grant_S_L_sig,
+                                                       grant_L_N_sig => grant_L_N_sig, grant_L_E_sig => grant_L_E_sig, grant_L_W_sig => grant_L_W_sig, grant_L_S_sig => grant_L_S_sig, grant_L_L_sig => grant_L_L_sig,
+
+                                                       valid_N => valid_N_sig, 
+                                                       valid_E => valid_E_sig, 
+                                                       valid_W => valid_W_sig, 
+                                                       valid_S => valid_S_sig, 
+                                                       valid_L => valid_L_sig,
+                                                       grant_N_N => grant_N_N_signal, 
+                                                       grant_N_E => grant_N_E_signal, 
+                                                       grant_N_W => grant_N_W_signal, 
+                                                       grant_N_S => grant_N_S_signal, 
+                                                       grant_N_L => grant_N_L_signal, 
+                                                       grant_E_N => grant_E_N_signal, 
+                                                       grant_E_E => grant_E_E_signal, 
+                                                       grant_E_W => grant_E_W_signal, 
+                                                       grant_E_S => grant_E_S_signal, 
+                                                       grant_E_L => grant_E_L_signal, 
+                                                       grant_W_N => grant_W_N_signal, 
+                                                       grant_W_E => grant_W_E_signal, 
+                                                       grant_W_W => grant_W_W_signal, 
+                                                       grant_W_S => grant_W_S_signal, 
+                                                       grant_W_L => grant_W_L_signal, 
+                                                       grant_S_N => grant_S_N_signal, 
+                                                       grant_S_E => grant_S_E_signal, 
+                                                       grant_S_W => grant_S_W_signal, 
+                                                       grant_S_S => grant_S_S_signal, 
+                                                       grant_S_L => grant_S_L_signal, 
+                                                       grant_L_N => grant_L_N_signal, 
+                                                       grant_L_E => grant_L_E_signal, 
+                                                       grant_L_W => grant_L_W_signal, 
+                                                       grant_L_S => grant_L_S_signal, 
+                                                       grant_L_L => grant_L_L_signal, 
+                                                       grant_N   => grant_N, 
+                                                       grant_E   => grant_E, 
+                                                       grant_W   => grant_W, 
+                                                       grant_S   => grant_S, 
+                                                       grant_L   => grant_L,
+
+                                                      -- Checker Outputs
+                                                      err_grant_N_N_sig_not_empty_N_grant_N_N => err_grant_N_N_sig_not_empty_N_grant_N_N, 
+                                                      err_not_grant_N_N_sig_or_empty_N_not_grant_N_N => err_not_grant_N_N_sig_or_empty_N_not_grant_N_N, 
+                                                      err_grant_N_E_sig_not_empty_E_grant_N_E => err_grant_N_E_sig_not_empty_E_grant_N_E, 
+                                                      err_not_grant_N_E_sig_or_empty_E_not_grant_N_E => err_not_grant_N_E_sig_or_empty_E_not_grant_N_E, 
+                                                      err_grant_N_W_sig_not_empty_W_grant_N_W => err_grant_N_W_sig_not_empty_W_grant_N_W, 
+                                                      err_not_grant_N_W_sig_or_empty_W_not_grant_N_W => err_not_grant_N_W_sig_or_empty_W_not_grant_N_W, 
+                                                      err_grant_N_S_sig_not_empty_S_grant_N_S => err_grant_N_S_sig_not_empty_S_grant_N_S, 
+                                                      err_not_grant_N_S_sig_or_empty_S_not_grant_N_S => err_not_grant_N_S_sig_or_empty_S_not_grant_N_S, 
+                                                      err_grant_N_L_sig_not_empty_L_grant_N_L => err_grant_N_L_sig_not_empty_L_grant_N_L, 
+                                                      err_not_grant_N_L_sig_or_empty_L_not_grant_N_L => err_not_grant_N_L_sig_or_empty_L_not_grant_N_L, 
+
+                                                      err_grant_E_N_sig_not_empty_N_grant_E_N => err_grant_E_N_sig_not_empty_N_grant_E_N, 
+                                                      err_not_grant_E_N_sig_or_empty_N_not_grant_E_N => err_not_grant_E_N_sig_or_empty_N_not_grant_E_N, 
+                                                      err_grant_E_E_sig_not_empty_E_grant_E_E => err_grant_E_E_sig_not_empty_E_grant_E_E, 
+                                                      err_not_grant_E_E_sig_or_empty_E_not_grant_E_E => err_not_grant_E_E_sig_or_empty_E_not_grant_E_E, 
+                                                      err_grant_E_W_sig_not_empty_W_grant_E_W => err_grant_E_W_sig_not_empty_W_grant_E_W, 
+                                                      err_not_grant_E_W_sig_or_empty_W_not_grant_E_W => err_not_grant_E_W_sig_or_empty_W_not_grant_E_W, 
+                                                      err_grant_E_S_sig_not_empty_S_grant_E_S => err_grant_E_S_sig_not_empty_S_grant_E_S, 
+                                                      err_not_grant_E_S_sig_or_empty_S_not_grant_E_S => err_not_grant_E_S_sig_or_empty_S_not_grant_E_S, 
+                                                      err_grant_E_L_sig_not_empty_L_grant_E_L => err_grant_E_L_sig_not_empty_L_grant_E_L, 
+                                                      err_not_grant_E_L_sig_or_empty_L_not_grant_E_L => err_not_grant_E_L_sig_or_empty_L_not_grant_E_L, 
+
+                                                      err_grant_W_N_sig_not_empty_N_grant_W_N => err_grant_W_N_sig_not_empty_N_grant_W_N, 
+                                                      err_not_grant_W_N_sig_or_empty_N_not_grant_W_N => err_not_grant_W_N_sig_or_empty_N_not_grant_W_N, 
+                                                      err_grant_W_E_sig_not_empty_E_grant_W_E => err_grant_W_E_sig_not_empty_E_grant_W_E, 
+                                                      err_not_grant_W_E_sig_or_empty_E_not_grant_W_E => err_not_grant_W_E_sig_or_empty_E_not_grant_W_E, 
+                                                      err_grant_W_W_sig_not_empty_W_grant_W_W => err_grant_W_W_sig_not_empty_W_grant_W_W, 
+                                                      err_not_grant_W_W_sig_or_empty_W_not_grant_W_W => err_not_grant_W_W_sig_or_empty_W_not_grant_W_W, 
+                                                      err_grant_W_S_sig_not_empty_S_grant_W_S => err_grant_W_S_sig_not_empty_S_grant_W_S, 
+                                                      err_not_grant_W_S_sig_or_empty_S_not_grant_W_S => err_not_grant_W_S_sig_or_empty_S_not_grant_W_S, 
+                                                      err_grant_W_L_sig_not_empty_L_grant_W_L => err_grant_W_L_sig_not_empty_L_grant_W_L, 
+                                                      err_not_grant_W_L_sig_or_empty_L_not_grant_W_L => err_not_grant_W_L_sig_or_empty_L_not_grant_W_L, 
+
+                                                      err_grant_S_N_sig_not_empty_N_grant_S_N => err_grant_S_N_sig_not_empty_N_grant_S_N, 
+                                                      err_not_grant_S_N_sig_or_empty_N_not_grant_S_N => err_not_grant_S_N_sig_or_empty_N_not_grant_S_N, 
+                                                      err_grant_S_E_sig_not_empty_E_grant_S_E => err_grant_S_E_sig_not_empty_E_grant_S_E, 
+                                                      err_not_grant_S_E_sig_or_empty_E_not_grant_S_E => err_not_grant_S_E_sig_or_empty_E_not_grant_S_E, 
+                                                      err_grant_S_W_sig_not_empty_W_grant_S_W => err_grant_S_W_sig_not_empty_W_grant_S_W, 
+                                                      err_not_grant_S_W_sig_or_empty_W_not_grant_S_W => err_not_grant_S_W_sig_or_empty_W_not_grant_S_W, 
+                                                      err_grant_S_S_sig_not_empty_S_grant_S_S => err_grant_S_S_sig_not_empty_S_grant_S_S, 
+                                                      err_not_grant_S_S_sig_or_empty_S_not_grant_S_S => err_not_grant_S_S_sig_or_empty_S_not_grant_S_S, 
+                                                      err_grant_S_L_sig_not_empty_L_grant_S_L => err_grant_S_L_sig_not_empty_L_grant_S_L, 
+                                                      err_not_grant_S_L_sig_or_empty_L_not_grant_S_L => err_not_grant_S_L_sig_or_empty_L_not_grant_S_L, 
+
+                                                      err_grant_L_N_sig_not_empty_N_grant_L_N => err_grant_L_N_sig_not_empty_N_grant_L_N, 
+                                                      err_not_grant_L_N_sig_or_empty_N_not_grant_L_N => err_not_grant_L_N_sig_or_empty_N_not_grant_L_N, 
+                                                      err_grant_L_E_sig_not_empty_E_grant_L_E => err_grant_L_E_sig_not_empty_E_grant_L_E, 
+                                                      err_not_grant_L_E_sig_or_empty_E_not_grant_L_E => err_not_grant_L_E_sig_or_empty_E_not_grant_L_E, 
+                                                      err_grant_L_W_sig_not_empty_W_grant_L_W => err_grant_L_W_sig_not_empty_W_grant_L_W, 
+                                                      err_not_grant_L_W_sig_or_empty_W_not_grant_L_W => err_not_grant_L_W_sig_or_empty_W_not_grant_L_W, 
+                                                      err_grant_L_S_sig_not_empty_S_grant_L_S => err_grant_L_S_sig_not_empty_S_grant_L_S, 
+                                                      err_not_grant_L_S_sig_or_empty_S_not_grant_L_S => err_not_grant_L_S_sig_or_empty_S_not_grant_L_S, 
+                                                      err_grant_L_L_sig_not_empty_L_grant_L_L => err_grant_L_L_sig_not_empty_L_grant_L_L, 
+                                                      err_not_grant_L_L_sig_or_empty_L_not_grant_L_L => err_not_grant_L_L_sig_or_empty_L_not_grant_L_L, 
+
+                                                      err_grant_signals_not_empty_grant_N     => err_grant_signals_not_empty_grant_N     , 
+                                                      err_not_grant_signals_empty_not_grant_N => err_not_grant_signals_empty_not_grant_N , 
+                                                      err_grant_signals_not_empty_grant_E     => err_grant_signals_not_empty_grant_E     , 
+                                                      err_not_grant_signals_empty_not_grant_E => err_not_grant_signals_empty_not_grant_E , 
+                                                      err_grant_signals_not_empty_grant_W     => err_grant_signals_not_empty_grant_W     , 
+                                                      err_not_grant_signals_empty_not_grant_W => err_not_grant_signals_empty_not_grant_W , 
+                                                      err_grant_signals_not_empty_grant_S     => err_grant_signals_not_empty_grant_S     , 
+                                                      err_not_grant_signals_empty_not_grant_S => err_not_grant_signals_empty_not_grant_S , 
+                                                      err_grant_signals_not_empty_grant_L     => err_grant_signals_not_empty_grant_L     , 
+                                                      err_not_grant_signals_empty_not_grant_L => err_not_grant_signals_empty_not_grant_L , 
+
+                                                      err_grants_valid_not_match => err_grants_valid_not_match
+                                                    );
+
+
+-- Allocator credit counter logic checkers module instantiation
+ALLOCATOR_CREDIT_COUNTER_LOGIC_CHECKERS: allocator_credit_counter_logic_pseudo_checkers  PORT MAP (
+                                                                       credit_in_N => credit_in_N, 
+                                                                       credit_in_E => credit_in_E, 
+                                                                       credit_in_W => credit_in_W, 
+                                                                       credit_in_S => credit_in_S, 
+                                                                       credit_in_L => credit_in_L, 
+                                                                       credit_counter_N_out => credit_counter_N_out, credit_counter_E_out => credit_counter_E_out, credit_counter_W_out => credit_counter_W_out, credit_counter_S_out => credit_counter_S_out, credit_counter_L_out => credit_counter_L_out,
+                                                                       valid_N => grant_N, -- Must be connected to grant signals!
+                                                                       valid_E => grant_E, -- Must be connected to grant signals!
+                                                                       valid_W => grant_W, -- Must be connected to grant signals!
+                                                                       valid_S => grant_S, -- Must be connected to grant signals!
+                                                                       valid_L => grant_L, -- Must be connected to grant signals!
+
+                                                                       credit_counter_N_in => credit_counter_N_in, 
+                                                                       credit_counter_E_in => credit_counter_E_in, 
+                                                                       credit_counter_W_in => credit_counter_W_in, 
+                                                                       credit_counter_S_in => credit_counter_S_in, 
+                                                                       credit_counter_L_in => credit_counter_L_in, 
+
+                                                                       -- Checker Outputs
+                                                                       -- Not complete yet !
+                                                                       err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal => err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal, 
+                                                                       err_credit_in_N_credit_counter_N_out_increment => err_credit_in_N_credit_counter_N_out_increment, 
+                                                                       err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change => err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change, 
+                                                                       err_grant_N_credit_counter_N_out_decrement => err_grant_N_credit_counter_N_out_decrement, 
+                                                                       err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change => err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change, 
+                                                                       err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal => err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal, 
+ 
+                                                                       err_credit_in_E_grant_E_credit_counter_E_in_credit_counter_E_out_equal => err_credit_in_E_grant_E_credit_counter_E_in_credit_counter_E_out_equal, 
+                                                                       err_credit_in_E_credit_counter_E_out_increment => err_credit_in_E_credit_counter_E_out_increment, 
+                                                                       err_not_credit_in_E_credit_counter_E_out_max_credit_counter_E_in_not_change => err_not_credit_in_E_credit_counter_E_out_max_credit_counter_E_in_not_change, 
+                                                                       err_grant_E_credit_counter_E_out_decrement => err_grant_E_credit_counter_E_out_decrement, 
+                                                                       err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change => err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change,
+                                                                       err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal => err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal, 
+ 
+                                                                       err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal => err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal, 
+                                                                       err_credit_in_W_credit_counter_W_out_increment => err_credit_in_W_credit_counter_W_out_increment, 
+                                                                       err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change => err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change, 
+                                                                       err_grant_W_credit_counter_W_out_decrement => err_grant_W_credit_counter_W_out_decrement, 
+                                                                       err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change => err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change, 
+                                                                       err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal => err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal, 
+ 
+                                                                       err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal => err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal, 
+                                                                       err_credit_in_S_credit_counter_S_out_increment => err_credit_in_S_credit_counter_S_out_increment, 
+                                                                       err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change => err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change, 
+                                                                       err_grant_S_credit_counter_S_out_decrement => err_grant_S_credit_counter_S_out_decrement, 
+                                                                       err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change => err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change, 
+                                                                       err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal => err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal, 
+ 
+                                                                       err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal => err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal, 
+                                                                       err_credit_in_L_credit_counter_L_out_increment => err_credit_in_L_credit_counter_L_out_increment, 
+                                                                       err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change => err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change, 
+                                                                       err_grant_L_credit_counter_L_out_decrement => err_grant_L_credit_counter_L_out_decrement, 
+                                                                       err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change => err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change,
+                                                                       err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal => err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal 
+                                                                   );
+
+
+-- North Arbiter_in with checkers integrated (module instantiation)
 arb_N_X: Arbiter_in  PORT MAP (reset => reset, clk => clk,
 				                       Req_X_N=>req_N_N, Req_X_E=> req_N_E, Req_X_W=>req_N_W, Req_X_S=>req_N_S, Req_X_L=>req_N_L,
                                X_N=>X_N_N, X_E=>X_N_E, X_W=>X_N_W, X_S=>X_N_S, X_L=>X_N_L, 
@@ -1128,11 +1599,11 @@ arb_X_L: arbiter_out port map (reset => reset, clk => clk,
                                grant_Y_S => grant_L_S_sig, 
                                grant_Y_L => grant_L_L_sig);
 
-valid_N <= grant_N;
-valid_E <= grant_E;
-valid_W <= grant_W;
-valid_S <= grant_S;
-valid_L <= grant_L;
+valid_N_sig <= grant_N;
+valid_E_sig <= grant_E;
+valid_W_sig <= grant_W;
+valid_S_sig <= grant_S;
+valid_L_sig <= grant_L;
  
 
 END;
