@@ -12,6 +12,7 @@ if  '--help' in sys.argv[1:]:
 	print "\t\t\t  ao: all-one, these bits stay one for all patterns "
 	print "\t\t\t  we: what-ever, the tool doesnt apply any constriants on the pattern "
 	print "\t\t\t  B\"binary string\": should be exactly following this pattern"
+	print "\t-V will be printing more info... "
 	print "\t-o [outputfile_name]: name of the output \".inp\" file, \"test_patterns.inp\" by default"
 	print "\t---------------------------------------"
 	print "\t***EXAMPLE: python tpg.py -IF 2 oh 1 z  3 oh 5 we -o all_test_patterns.inp "
@@ -31,6 +32,11 @@ else:
 input_size = []
 input_format = {}
 counter = 0
+
+if '-V'  in sys.argv[1:]:
+	verbose = True
+else:
+	verbose = False
 
 if '-IF'  in sys.argv[1:]:
 	pointer = sys.argv.index('-IF')+1
@@ -74,10 +80,18 @@ test_patern_file = open(str(filename), 'w')
 
 print "--------------------------------------------------------------------------------"
 list_of_accepted_patterns= []
+print '\033[92m'+"INFO: "+'\033[0m'+"reporting the configuration:\n"
+print "\t.---------------------------------------."
+print "\t|  input size 	|	input format\t|"
+print "   .----'---------------------------------------'"
+for i in range(0, len(input_size)):	
+	print '   |{:3d} | {:10d} \t|\t {:10s}'.format(i, input_size[i], input_format [i]) 
+	print "    ---------------------------------------------"
 
-print "input_size:", input_size
-print "input_format:", input_format
-
+print 
+if verbose:
+	print '\033[92m'+"INFO: "+'\033[0m'+"Starting preparing individual lists..."
+output_size = 1
 for item in input_format:
 	string = []
 	if "z" in input_format[item]:
@@ -101,6 +115,21 @@ for item in input_format:
 		for i in range(0, input_size[item]):
 			string.append('0'*i + '1' +  '0'* (input_size[item]-i-1))
  	input_format[item].append(string)
+ 	output_size = output_size * len(string)
+ 	if verbose:
+	 	print "----------------------------"
+	 	print "calculating for size: ", input_size[item], "with format:", input_format[item][0]
+	 	print "\tlist of inputs to be added:", string
+	 	print "\toutput size so far:", output_size
+
+if verbose:
+	print "----------------------------"
+	print '\033[92m'+"INFO: "+'\033[0m'+"Individual lists are prepared for input sets..."
+	print '\033[92m'+"INFO: "+'\033[0m'+"Final output size:", output_size
+	if output_size > 100000000:
+		print '\033[91m'+ "WARNING: "+'\033[0m'+"your final output size is big... you might run out of disc space!"
+	print 
+	print '\033[92m'+"INFO: "+'\033[0m'+"Starting making product of the lists... This might take a while!"
 
 list_of_accepted_patterns = []
 for item in input_format:
