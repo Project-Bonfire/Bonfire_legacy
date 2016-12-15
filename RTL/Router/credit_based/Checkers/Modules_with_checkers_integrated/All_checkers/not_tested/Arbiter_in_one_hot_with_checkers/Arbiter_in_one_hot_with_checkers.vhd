@@ -204,6 +204,9 @@ component Arbiter_in_one_hot_checkers is
             );
 end component;
 
+
+begin
+
 -- Becuase of checkers we did this
 
 X_N <= X_N_sig;
@@ -214,7 +217,6 @@ X_L <= X_L_sig;
 
 -- Sequential part
 
-begin
 process (clk, reset)begin
   if reset = '0' then
       state <= IDLE;
@@ -324,68 +326,68 @@ ARBITER_IN_CHECKERS: Arbiter_in_one_hot_checkers port map (
 process(state, req_X_N, req_X_E, req_X_W, req_X_S, req_X_L)
 begin
 
-    X_N <= '0';
-    X_E <= '0';
-    X_W <= '0';
-    X_S <= '0';
-    X_L <= '0';
+    X_N_sig <= '0';
+    X_E_sig <= '0';
+    X_W_sig <= '0';
+    X_S_sig <= '0';
+    X_L_sig <= '0';
     
     case state is 
       when IDLE => -- In the arbiter for hand-shaking FC router, L had the  highest priority (L, N, E, W, S)
       			   -- Here it seems N has the higest priority, is it fine ? 
       	if req_X_N ='1'  then
       		state_in <= North;
-        	X_N <= '1';
+        	X_N_sig <= '1';
 	    elsif req_X_E = '1' then
 	    	state_in <= East;
-	        X_E <= '1';
+	        X_E_sig <= '1';
 	    elsif req_X_W = '1' then
 	    	state_in <= West;
-	        X_W <= '1';
+	        X_W_sig <= '1';
 	    elsif req_X_S = '1' then
 	    	state_in <= South;
-	        X_S <= '1';
+	        X_S_sig <= '1';
 	    elsif req_X_L = '1' then
 	    	state_in <= Local;
-	        X_L <= '1';
+	        X_L_sig <= '1';
 	    else
 	    	state_in <= state;
 	    end if;
       when North =>
       	if req_X_N ='1'  then
       		state_in <= North;
-        	X_N <= '1';
+        	X_N_sig <= '1';
 	    elsif req_X_E = '1' then
 	    	state_in <= East;
-	        X_E <= '1';
+	        X_E_sig <= '1';
 	    elsif req_X_W = '1' then
 	    	state_in <= West;
-	        X_W <= '1';
+	        X_W_sig <= '1';
 	    elsif req_X_S = '1' then
 	    	state_in <= South;
-	        X_S <= '1';
+	        X_S_sig <= '1';
 	    elsif req_X_L = '1' then
 	    	state_in <= Local;
-	        X_L <= '1';
+	        X_L_sig <= '1';
 	    else
 	    	state_in <= state;
 	    end if;
       when East =>
 	    if req_X_E = '1' then
 	    	state_in <= East;
-	        X_E <= '1';
+	        X_E_sig <= '1';
 	    elsif req_X_W = '1' then
 	    	state_in <= West;
-	        X_W <= '1';
+	        X_W_sig <= '1';
 	    elsif req_X_S = '1' then
 	    	state_in <= South;
-	        X_S <= '1';
+	        X_S_sig <= '1';
 	    elsif req_X_L = '1' then
 	    	state_in <= Local;
-	        X_L <= '1';
+	        X_L_sig <= '1';
 	    elsif req_X_N ='1'  then
       		state_in <= North;
-        	X_N <= '1';
+        	X_N_sig <= '1';
 	    else
 	    	state_in <= state;
 	    end if;
@@ -393,19 +395,19 @@ begin
 
 	    if req_X_W = '1' then
 	    	state_in <= West;
-	        X_W <= '1';
+	        X_W_sig <= '1';
 	    elsif req_X_S = '1' then
 	    	state_in <= South;
-	        X_S <= '1';
+	        X_S_sig <= '1';
 	    elsif req_X_L = '1' then
 	    	state_in <= Local;
-	        X_L <= '1';
+	        X_L_sig <= '1';
 	    elsif req_X_N ='1'  then
       		state_in <= North;
-        	X_N <= '1';
+        	X_N_sig <= '1';
         elsif req_X_E = '1' then
 	    	state_in <= East;
-	        X_E <= '1';
+	        X_E_sig <= '1';
 	    else
 	    	state_in <= state;
 	    end if;
@@ -413,19 +415,19 @@ begin
 
 	    if req_X_S = '1' then
 	    	state_in <= South;
-	        X_S <= '1';
+	        X_S_sig <= '1';
 	    elsif req_X_L = '1' then
 	    	state_in <= Local;
-	        X_L <= '1';
+	        X_L_sig <= '1';
 	    elsif req_X_N ='1'  then
       		state_in <= North;
-        	X_N <= '1';
+        	X_N_sig <= '1';
         elsif req_X_E = '1' then
 	    	state_in <= East;
-	        X_E <= '1';
+	        X_E_sig <= '1';
 	    elsif req_X_W = '1' then
 	    	state_in <= West;
-	        X_W <= '1';
+	        X_W_sig <= '1';
 	    else
 	    	state_in <= state;
 	    end if;
@@ -433,19 +435,19 @@ begin
 
 	    if req_X_L = '1' then
 	    	state_in <= Local;
-	        X_L <= '1';
+	        X_L_sig <= '1';
 	    elsif req_X_N ='1'  then
       		state_in <= North;
-        	X_N <= '1';
+        	X_N_sig <= '1';
         elsif req_X_E = '1' then
 	    	state_in <= East;
-	        X_E <= '1';
+	        X_E_sig <= '1';
 	    elsif req_X_W = '1' then
 	    	state_in <= West;
-	        X_W <= '1';
+	        X_W_sig <= '1';
 	    elsif req_X_S = '1' then
 	    	state_in <= South;
-	        X_S <= '1';
+	        X_S_sig <= '1';
 	    else
 	    	state_in <= state;
 	    end if;

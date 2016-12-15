@@ -1,17 +1,13 @@
 /*--------------------------------------------------------------------
- * TITLE: Plasma Hardware Defines
- * AUTHOR: Steve Rhoads (rhoadss@yahoo.com)
- * DATE CREATED: 12/17/05
+ * TITLE: Common defines
+ * AUTHOR: Karl Janson
+ * DATE CREATED: 14.12.16
  * FILENAME: common.h
- * PROJECT: Plasma CPU core
+ * PROJECT: Bonfire NoC CPU Emulator
  * COPYRIGHT: Software placed into the public domain by the author.
  *    Software 'as is' without warranty.  Author liable for nothing.
  * DESCRIPTION:
- *    Plasma Hardware Defines
- *
- * MODIFIED by Karl Janson (karl.janson@ati.ttu.ee):
- *    -- Moved memory accessing fuctions here from no-os.c
- *    -- Added interrupt related function declarations
+ *    Common defines and variables used everywhere in the project
  *--------------------------------------------------------------------*/
 
 
@@ -20,6 +16,9 @@
 
 #include <iostream>
 #include <cstdint>
+
+extern volatile bool exit_signal;
+
 
 #define SIGNED    1
 #define UNSIGNED  0
