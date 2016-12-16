@@ -334,11 +334,61 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
     if program_argv['credit_based_FC']:
         if program_argv['add_checkers']:
             # With checkers
-            # TODO: Just a placeholder
+            # Currently being tested (but still a TODO)
 
-            print_msg(MSG_ERROR, "Checkers are not yet implemented for credit based flow control")
-            do_file.close()
-            sys.exit(1)
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/Allocator_with_Arbiter_in_checkers/Arbiter_in_one_hot_checkers.vhd\"\n")
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/Allocator_with_Arbiter_in_checkers/Arbiter_in_one_hot_with_checkers.vhd\"\n")
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/RTL/arbiter_out.vhd\"\n")            
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/Allocator_with_Arbiter_in_checkers/allocator_logic_pseudo_checkers.vhd\"\n")
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/Allocator_with_Arbiter_in_checkers/allocator_credit_counter_logic_pseudo_checkers.vhd\"\n")
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/Allocator_with_Arbiter_in_checkers/allocator_with_checkers.vhd\"\n")   
+                
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers/FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd\"\n")   
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers.vhd\"\n")   
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/LBDR_packet_drop_with_checkers/Cx_Reconf_pseudo_checkers.vhd\"\n")   
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/LBDR_packet_drop_with_checkers/Rxy_Reconf_pseudo_checkers.vhd\"\n")   
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/LBDR_packet_drop_with_checkers/LBDR_packet_drop_routing_part_pseudo_checkers.vhd\"\n")   
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/LBDR_packet_drop_with_checkers/LBDR_packet_drop_with_checkers.vhd\"\n")   
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/RTL/xbar.vhd\"\n")            
+
+            # print_msg(MSG_ERROR, "Checkers are not yet implemented for credit based flow control")
+            # do_file.close()
+            # sys.exit(1)
 
         else:
             # Without checkers
@@ -400,19 +450,23 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 + "/RTL/ParityChecker_packet_detector.vhd\"\n")
 
         # all the routers
-        if program_argv['add_parity']:
+        if program_argv['add_parity'] and not program_argv['add_checkers']:
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based_parity.vhd\"\n")
 
-        elif program_argv['add_LV'] and program_argv['packet_drop'] and program_argv['add_FC']:
+        elif program_argv['add_LV'] and program_argv['packet_drop'] and program_argv['add_FC'] and not program_argv['add_checkers']:
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based_packet_drop_LV_compatible.vhd\"\n")
 
-        elif not program_argv['add_LV'] and program_argv['packet_drop'] and program_argv['add_FC']:
+        elif not program_argv['add_LV'] and program_argv['packet_drop'] and program_argv['add_FC'] and not program_argv['add_checkers']:
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based_packet_drop_classifier.vhd\"\n")
 
-        else:
+        elif not program_argv['add_LV'] and program_argv['add_checkers'] and program_argv['packet_drop'] and program_argv['add_FC']:
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/RTL/Router_32_bit_credit_based_packet_drop_classifier_with_full_set_of_checkers.vhd\"\n")
+
+        else:             
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based.vhd\"\n")
 
