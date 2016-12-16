@@ -91,7 +91,7 @@ int proc_thread(struct pt *pt);
         PT_WAIT_UNTIL(pt, process_thread_flag == THREAD_ENABLE);            \
         if(1)                                                               \
 
-#define BONFIRE_RET()                                                  \
+#define BONFIRE_RET()                                                       \
         /* Next thread's turn */                                            \
         send_thread_flag    = THREAD_ENABLE;                                \
         recv_thread_flag    = THREAD_DISABLE;                               \
