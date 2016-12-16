@@ -1,6 +1,7 @@
 #include "plasma.h"
+#include "uart.h"
 
-int putchar(int value)
+int uart_putchar(int value)
 {
    while((memory_read(IRQ_STATUS) & IRQ_UART_WRITE_AVAILABLE) == 0)
       ;
@@ -8,18 +9,18 @@ int putchar(int value)
    return 0;
 }
 
-int puts(const char *string)
+int uart_puts(const char *string)
 {
    while(*string)
    {
       if(*string == '\n')
-         putchar('\r');
-      putchar(*string++);
+         uart_putchar('\r');
+      uart_putchar(*string++);
    }
    return 0;
 }
 
-void print_hex(unsigned long num)
+void uart_print_hex(unsigned long num)
 {
    long i;
    unsigned long j;
@@ -27,25 +28,19 @@ void print_hex(unsigned long num)
    {
       j = (num >> i) & 0xf;
       if(j < 10)
-         putchar('0' + j);
+         uart_putchar('0' + j);
       else
-         putchar('a' - 10 + j);
+         uart_putchar('a' - 10 + j);
    }
 }
 
-void OS_InterruptServiceRoutine(unsigned int status)
-{
-   (void)status;
-   putchar('I');
-}
-
-int kbhit(void)
+int uart_kbhit(void)
 {
    return memory_read(IRQ_STATUS) & IRQ_UART_READ_AVAILABLE;
 }
 
-int getch(void)
+int uart_getch(void)
 {
-   while(!kbhit()) ;
+   while(!uart_kbhit()) ;
    return memory_read(UART_READ);
 }

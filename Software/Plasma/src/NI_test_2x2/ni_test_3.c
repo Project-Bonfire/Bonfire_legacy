@@ -2,6 +2,7 @@
 #include "../../lib/ni.h"
 #include "../../lib/packets.h"
 #include "../../lib/pt-1.4/pt.h"
+#include "../../lib/uart.h"
 
 /* Flags for protothreads */
 static int send_thread_flag, recv_thread_flag;
@@ -76,6 +77,9 @@ recv_thread(struct pt *pt)
 
 int main() {
 
+    uart_puts("Hello, cruel world!\n");
+    //uart_putchar('B');
+    //uart_putchar('\n');
     /* Initialize protothreads */
     PT_INIT(&pt_send);
     PT_INIT(&pt_recv);

@@ -17,8 +17,9 @@ ni_test_0:
 	$(GCC_MIPS) ../../lib/plasma.c
 	$(GCC_MIPS) ../../lib/packets.c
 	$(GCC_MIPS) ../../lib/bonfire.c
+	$(GCC_MIPS) ../../lib/uart.c
 	$(LD_MIPS) -Ttext 0 -e entry -s -N -o ni_test_0.elf \
-		boot.o ni_test_0.o plasma.o packets.o bonfire.o
+		boot.o ni_test_0.o plasma.o packets.o bonfire.o uart.o
 
 ni_test_1:
 	$(AS_MIPS) -o boot.o ../../lib/boot.asm
@@ -26,8 +27,9 @@ ni_test_1:
 	$(GCC_MIPS) ../../lib/plasma.c
 	$(GCC_MIPS) ../../lib/packets.c
 	$(GCC_MIPS) ../../lib/bonfire.c
+	$(GCC_MIPS) ../../lib/uart.c
 	$(LD_MIPS) -Ttext 0 -e entry -s -N -o ni_test_1.elf \
-		boot.o ni_test_1.o plasma.o packets.o bonfire.o
+		boot.o ni_test_1.o plasma.o packets.o bonfire.o uart.o
 
 ni_test_2:
 	$(AS_MIPS) -o boot.o ../../lib/boot.asm
@@ -35,8 +37,9 @@ ni_test_2:
 	$(GCC_MIPS) ../../lib/plasma.c
 	$(GCC_MIPS) ../../lib/packets.c
 	$(GCC_MIPS) ../../lib/bonfire.c
+	$(GCC_MIPS) ../../lib/uart.c
 	$(LD_MIPS) -Ttext 0 -e entry -s -N -o ni_test_2.elf \
-		boot.o ni_test_2.o plasma.o packets.o bonfire.o
+		boot.o ni_test_2.o plasma.o packets.o bonfire.o uart.o
 
 ni_test_3:
 	$(AS_MIPS) -o boot.o ../../lib/boot.asm
@@ -44,8 +47,9 @@ ni_test_3:
 	$(GCC_MIPS) ../../lib/plasma.c
 	$(GCC_MIPS) ../../lib/packets.c
 	$(GCC_MIPS) ../../lib/bonfire.c
+	$(GCC_MIPS) ../../lib/uart.c
 	$(LD_MIPS) -Ttext 0 -e entry -s -N -o ni_test_3.elf \
-		boot.o ni_test_3.o plasma.o packets.o bonfire.o
+		boot.o ni_test_3.o plasma.o packets.o bonfire.o uart.o
 
 
 
