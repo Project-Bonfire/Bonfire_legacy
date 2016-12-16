@@ -65,7 +65,7 @@ if '-FI'  in sys.argv[1:]:
 
 if '-LV'  in sys.argv[1:]:
     add_lv = True
-    
+
 
 if "-PE" in sys.argv[1:]:
   add_node = True
@@ -83,7 +83,7 @@ if random_dest and bit_reversal:
 if '-sim'  in sys.argv[1:]:
   got_finish_time = True
   sim_finish_time = int(sys.argv[sys.argv.index('-sim')+1])
- 
+
 
 if '-PS'  in sys.argv[1:]:
   get_packet_size = True
@@ -103,9 +103,9 @@ if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
   if ".vhd" not in file_path:
       raise ValueError("wrong file extention. only vhdl files are accepted!")
-else: 
+else:
   file_path = file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd'
-   
+
 if add_node and add_lv:
   raise ValueError("You can not currently have LV and PE at the same time!")
 
@@ -197,7 +197,10 @@ noc_file.write("end component; \n")
 
 if add_node:
   noc_file.write("component NoC_Node is\n")
-  noc_file.write("generic( current_address : integer := 0; stim_file: string :=\"code.txt\");\n")
+
+  noc_file.write("generic( current_address : integer := 0; stim_file: string :=\"code.txt\";\n")
+  noc_file.write("\tlog_file  : string := \"output.txt\");\n\n")
+
   noc_file.write("port( reset        : in std_logic;\n")
   noc_file.write("      clk          : in std_logic;\n")
   noc_file.write("      \n")
@@ -209,8 +212,9 @@ if add_node:
   noc_file.write("        valid_in: in std_logic;\n")
   noc_file.write("        RX: in std_logic_vector(31 downto 0)\n")
   noc_file.write("   );\n")
+
   noc_file.write("end component; --component NoC_Node\n")
- 
+
 noc_file.write("\n")
 noc_file.write("-- generating bulk signals...\n")
 for i in range(0, network_dime*network_dime):
@@ -271,8 +275,8 @@ noc_file.write("reset <= '1' after 1 ns;\n")
 
 noc_file.write("-- instantiating the network\n")
 
- 
- 
+
+
 string_to_print = ""
 string_to_print += "NoC: network_"+str(network_dime)+"x"+str(network_dime)+" generic map (DATA_WIDTH  => "+str(data_width)+", DATA_WIDTH_LV => 11)\n"
 string_to_print += "port map (reset, clk, Rxy_reconf, Reconfig, \n"
@@ -315,20 +319,26 @@ noc_file.write("not_reset <= not reset; \n")
 if add_node:
   noc_file.write("\n")
   noc_file.write("-- connecting the PEs\n")
-  for i in range(0, network_dime*network_dime):
-      noc_file.write("PE_"+str(i)+": NoC_Node \n")
-      noc_file.write("generic map( current_address => "+str(i)+", stim_file => \"code_"+str(i)+".txt\")\n")
+
+  for node_number in range(0, network_dime*network_dime):
+
+      noc_file.write("PE_" + str(node_number) + ": NoC_Node \n")
+
+      noc_file.write("generic map( current_address => " + str(node_number) + ",\n")
+      noc_file.write("\tstim_file => \"code_" + str(node_number) + ".txt\",\n")
+      noc_file.write("\tlog_file  => \"output_" + str(node_number) + ".txt\")\n\n")
+
       noc_file.write("port map( not_reset, clk, \n")
       noc_file.write("\n")
-      noc_file.write("        credit_in => credit_out_L_"+str(i)+", \n")
-      noc_file.write("        valid_out => valid_in_L_"+str(i)+",\n")
-      noc_file.write("        TX => RX_L_"+str(i)+", \n")
+      noc_file.write("        credit_in => credit_out_L_" + str(node_number) + ", \n")
+      noc_file.write("        valid_out => valid_in_L_" + str(node_number) + ",\n")
+      noc_file.write("        TX => RX_L_" + str(node_number) + ", \n")
       noc_file.write("\n")
-      noc_file.write("        credit_out => credit_in_L_"+str(i)+", \n")
-      noc_file.write("        valid_in => valid_out_L_"+str(i)+",\n")
-      noc_file.write("        RX => TX_L_"+str(i)+"\n")
+      noc_file.write("        credit_out => credit_in_L_" + str(node_number) + ", \n")
+      noc_file.write("        valid_in => valid_out_L_" + str(node_number) + ",\n")
+      noc_file.write("        RX => TX_L_" + str(node_number) + "\n")
       noc_file.write("   );\n")
- 
+
 
 else:
   noc_file.write("\n")
@@ -340,16 +350,16 @@ else:
         random_end = sim_finish_time
       else:
         random_end = random.randint(random_start, 200)
-  
+
       noc_file.write("credit_counter_control(clk, credit_out_L_"+str(i)+", valid_in_L_"+str(i)+", credit_counter_out_"+str(i)+");\n")
-  
+
       if random_dest:
         noc_file.write("gen_random_packet("+str(network_dime)+", "+str(frame_size)+", "+str(i)+", "+str(random_start)+", " +str(packet_size_min)+", " +str(packet_size_max)+", " +
                       str(random_end)+" ns, clk, credit_counter_out_"+str(i)+", valid_in_L_"+str(i)+", RX_L_"+str(i)+");\n")
       elif bit_reversal:
         noc_file.write("gen_bit_reversed_packet("+str(network_dime)+", "+str(frame_size)+", "+str(i)+", "+str(random_start)+", " +str(packet_size_min)+", " +str(packet_size_max)+", " +
                       str(random_end)+" ns, clk, credit_counter_out_"+str(i)+", valid_in_L_"+str(i)+", RX_L_"+str(i)+");\n")
-  
+
       noc_file.write("\n")
 
 if not add_node:

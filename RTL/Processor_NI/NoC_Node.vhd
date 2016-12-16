@@ -15,10 +15,13 @@ use work.mlite_pack.all;
 use ieee.std_logic_unsigned.all;
 
 entity NoC_Node is
-generic( current_address : integer := 0; stim_file: string :="code.txt");
+generic( current_address : integer := 0;
+         stim_file: string :="code.txt";
+         log_file  : string := "output.txt");
+
 port( reset        : in std_logic;
       clk          : in std_logic;
-      
+
         credit_in : in std_logic;
         valid_out: out std_logic;
         TX: out std_logic_vector(31 downto 0);
@@ -30,16 +33,12 @@ port( reset        : in std_logic;
 end; --entity NoC_Node
 
 architecture messed_up of NoC_Node is
-   constant memory_type : string := 
-   "TRI_PORT_X";   
+   constant memory_type : string :=
+   "TRI_PORT_X";
 --   "DUAL_PORT_";
 --   "ALTERA_LPM";
 --   "XILINX_16X";
 
-   constant log_file  : string := 
---   "UNUSED";
-   "output.txt";
-   
    signal interrupt   : std_logic := '0';
    signal mem_write   : std_logic;
    signal address     : std_logic_vector(31 downto 2);
@@ -63,7 +62,7 @@ architecture messed_up of NoC_Node is
 
 
 begin  --architecture
-   
+
    --pause1 <= '1' after 700 ns when pause1 = '0' else '0' after 200 ns;
    pause1 <= '0';
    --pause2 <= '1' after 300 ns when pause2 = '0' else '0' after 200 ns;
@@ -78,7 +77,7 @@ begin  --architecture
       generic map (memory_type => memory_type,
                    ethernet    => '0',
                    use_cache   => '0',
-                   log_file    => log_file, 
+                   log_file    => log_file,
                    current_address => current_address,
                    stim_file => stim_file)
       PORT MAP (
@@ -86,7 +85,7 @@ begin  --architecture
          reset             => reset,
          uart_read         => uart_write,
          uart_write        => uart_write,
- 
+
          address           => address,
          byte_we           => byte_we,
          data_write        => data_write,
@@ -94,14 +93,14 @@ begin  --architecture
          mem_pause_in      => pause,
          no_ddr_start      => no_ddr_start,
          no_ddr_stop       => no_ddr_stop,
-         
+
          gpio0_out         => open,
          gpioA_in          => gpioA_in,
 
          credit_in         => credit_in,
          valid_out         => valid_out,
          TX                => TX,
-         
+
          credit_out        => credit_out,
          valid_in          => valid_in,
          RX                => RX
@@ -110,10 +109,10 @@ begin  --architecture
    dram_proc: process(clk, address, byte_we, data_write, pause)
       constant ADDRESS_WIDTH : natural := 16;
       type storage_array is
-         array(natural range 0 to (2 ** ADDRESS_WIDTH) / 4 - 1) of 
+         array(natural range 0 to (2 ** ADDRESS_WIDTH) / 4 - 1) of
          std_logic_vector(31 downto 0);
       variable storage : storage_array;
-      variable data    : std_logic_vector(31 downto 0); 
+      variable data    : std_logic_vector(31 downto 0);
       variable index   : natural := 0;
    begin
       index := conv_integer(address(ADDRESS_WIDTH-1 downto 2));
@@ -131,7 +130,7 @@ begin  --architecture
       if byte_we(3) = '1' then
          data(31 downto 24) := data_write(31 downto 24);
       end if;
-      
+
       if rising_edge(clk) then
          if address(30 downto 28) = "001" and byte_we /= "0000" then
             storage(index) := data;
