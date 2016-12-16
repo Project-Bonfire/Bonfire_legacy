@@ -921,11 +921,11 @@ process(credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L, grant_N
 
   if credit_in_E = '1' and grant_E = '1' then 
        credit_counter_E_in <= credit_counter_E_out; 
- 	elsif credit_in_E = '1' and credit_counter_E_out < 3 then 
- 		credit_counter_E_in <= credit_counter_E_out + 1;
- 	elsif grant_E = '1' and credit_counter_E_out > 0 then
- 		credit_counter_E_in <= credit_counter_E_out - 1;
- 	end if;
+ elsif credit_in_E = '1' and credit_counter_E_out < 3 then 
+ 	credit_counter_E_in <= credit_counter_E_out + 1;
+ elsif grant_E = '1' and credit_counter_E_out > 0 then
+ 	credit_counter_E_in <= credit_counter_E_out - 1;
+ end if;
 
  	if credit_in_W = '1' and grant_W = '1' then 
        credit_counter_W_in <= credit_counter_W_out; 
