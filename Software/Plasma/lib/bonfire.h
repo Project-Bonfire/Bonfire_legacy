@@ -60,7 +60,10 @@ int recv_thread(struct pt *pt);
  */
 int proc_thread(struct pt *pt);
 
-
+/**
+ * Macro to define the main function and intialize the treads
+ * @return [description]
+ */
 #define BONFIRE_MAIN()                                                      \
                                                                             \
     int main() {                                                            \
@@ -82,6 +85,9 @@ int proc_thread(struct pt *pt);
                                                                             \
     int proc_thread(struct pt *pt)
 
+/**
+ * Beginning of data processing thread and start a while loop
+ */
 #define BONFIRE_LOOP()                                                                                                                        \
     PT_BEGIN(pt);                                                           \
                                                                             \
@@ -91,6 +97,9 @@ int proc_thread(struct pt *pt);
         PT_WAIT_UNTIL(pt, process_thread_flag == THREAD_ENABLE);            \
         if(1)                                                               \
 
+/**
+ * End of data processing thread and while loop
+ */
 #define BONFIRE_RET()                                                       \
         /* Next thread's turn */                                            \
         send_thread_flag    = THREAD_ENABLE;                                \

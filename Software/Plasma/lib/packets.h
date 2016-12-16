@@ -1,7 +1,17 @@
+/*--------------------------------------------------------------------
+ * TITLE: NoC packetization / de-packetization
+ * AUTHOR: Karl Janson (karl.janson@ati.ttu.ee)
+ * DATE CREATED: 02.12.16
+ * FILENAME: ni.h
+ * PROJECT: Project Bonfire
+ * COPYRIGHT: Software placed into the public domain by the author.
+ *    Software 'as is' without warranty. Author liable for nothing.
+ * DESCRIPTION:
+ *    NoC packetization / de-packetization related functions
+ *--------------------------------------------------------------------*/
+
 #ifndef __PACKETS_H__
 #define __PACKETS_H__
-
-#include "packets.h"
 
 /* Offset defintions */
 #define TX_OFFSET           0   // Data to be sent (32-bit, out)

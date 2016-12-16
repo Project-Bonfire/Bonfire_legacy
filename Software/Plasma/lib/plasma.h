@@ -13,6 +13,7 @@
  *    -- Moved memory accessing fuctions here from no-os.c
  *    -- Added interrupt related function declarations
  *--------------------------------------------------------------------*/
+
 #ifndef __PLASMA_H__
 #define __PLASMA_H__
 
@@ -39,8 +40,8 @@ void OS_InterruptServiceRoutine(uint32 status, uint32 *stack);
 #define ETHERNET_RECEIVE  0x13ff0000
 #define ETHERNET_TRANSMIT 0x13fe0000
 #define MISC_BASE         0x20000000
-#define UART_WRITE        0x20000000
-#define UART_READ         0x20000000
+#define UART_WRITE_ADDR   0x20000000
+#define UART_READ_ADDR    0x20000000
 #define IRQ_MASK          0x20000010
 #define IRQ_STATUS        0x20000020
 #define GPIO0_SET         0x20000030

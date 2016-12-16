@@ -9,6 +9,7 @@
  * DESCRIPTION:
  *    Functions for accessing the Bonfire NoC
  *--------------------------------------------------------------------*/
+ 
 #ifndef __NI_H__
 #define __NI_H__
 
@@ -27,8 +28,5 @@
 
 /***** Functions for accessing NI *****/
 #define ni_read_flags() (*(volatile unsigned int*)NI_FLAGS_ADDRESS)
-/* Shared variables */
-//static unsigned int recv_packet_counter;
-
 
 #endif //__NI_H__

@@ -16,9 +16,5 @@
  /* Interrupt handler called by the assmebly */
  void OS_InterruptServiceRoutine(uint32 status, uint32 *stack)
  {
-   //unsigned int recv_packet_counter;
-   //recv_packet_counter = memory_read(NI_COUNTER_ADDRESS);
-   //recv_packet_counter++;
-   //memory_write(NI_COUNTER_ADDRESS, recv_packet_counter);
-   //recv_packet_counter++;
+     
  }
