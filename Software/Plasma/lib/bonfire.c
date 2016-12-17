@@ -23,7 +23,7 @@ int bonfire_send(unsigned int data)
 {
     if (send_pointer < SEND_BUF_SIZE - 1)
     {
-        send_buffer[send_pointer] = build_header(1,3);
+        send_buffer[send_pointer] = data;
         send_pointer++;
 
         return 0;
@@ -94,7 +94,7 @@ int recv_thread(struct pt *pt)
             ((ni_flags & NI_READ_MASK) == 0) && \
             (recv_pointer < RECV_BUF_SIZE - 1))
         {
-            recv_buffer[recv_pointer] = ni_read();;
+            recv_buffer[recv_pointer] = ni_read();
             recv_pointer++;
         }
 
