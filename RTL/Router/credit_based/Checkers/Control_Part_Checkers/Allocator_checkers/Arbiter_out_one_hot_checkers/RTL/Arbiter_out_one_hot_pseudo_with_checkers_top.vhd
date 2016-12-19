@@ -66,12 +66,6 @@ entity Arbiter_out_one_hot_pseudo_with_checkers_top is
 			err_request_IDLE_state, 
 
 			err_request_IDLE_not_Grants : out std_logic 
- 
-			--err_no_req_X_N_grant_Y_N, 
-			--err_no_req_X_E_grant_Y_E, 
-			--err_no_req_X_W_grant_Y_W, 
-			--err_no_req_X_S_grant_Y_S, 
-			--err_no_req_X_L_grant_Y_L : out std_logic
          );
 end Arbiter_out_one_hot_pseudo_with_checkers_top;
 
@@ -147,12 +141,6 @@ component Arbiter_out_one_hot_pseudo_checkers is
 			err_no_request_grants, 
 			err_request_IDLE_state, 
 			err_request_IDLE_not_Grants : out std_logic 
- 
-			--err_no_req_X_N_grant_Y_N, 
-			--err_no_req_X_E_grant_Y_E, 
-			--err_no_req_X_W_grant_Y_W, 
-			--err_no_req_X_S_grant_Y_S, 
-			--err_no_req_X_L_grant_Y_L : out std_logic
             );
 end component;
 
@@ -253,12 +241,6 @@ CHECKERS: Arbiter_out_one_hot_pseudo_checkers port map (
 												  err_no_request_grants => err_no_request_grants, 
 												  err_request_IDLE_state => err_request_IDLE_state, 
 												  err_request_IDLE_not_Grants => err_request_IDLE_not_Grants 
-										  
-												  --err_no_req_X_N_grant_Y_N => err_no_req_X_N_grant_Y_N, 
-												  --err_no_req_X_E_grant_Y_E => err_no_req_X_E_grant_Y_E, 
-												  --err_no_req_X_W_grant_Y_W => err_no_req_X_W_grant_Y_W, 
-												  --err_no_req_X_S_grant_Y_S => err_no_req_X_S_grant_Y_S, 
-												  --err_no_req_X_L_grant_Y_L => err_no_req_X_L_grant_Y_L
                                     		   );
 
 end behavior;
