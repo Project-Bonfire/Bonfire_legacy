@@ -59,7 +59,8 @@ set_dont_use { class/EO, class/EN, class/EOP, class/ENP, class/EO3, class/EN3, c
 
 analyze -format vhdl Arbiter_in_one_hot_checkers.vhd
 analyze -format vhdl Arbiter_in_one_hot_with_checkers.vhd
-analyze -format vhdl arbiter_out.vhd
+analyze -format vhdl Arbiter_out_one_hot_pseudo_checkers.vhd
+analyze -format vhdl arbiter_out_one_hot_with_checkers.vhd
 analyze -format vhdl allocator_logic_pseudo_checkers.vhd
 analyze -format vhdl allocator_credit_counter_logic_pseudo_checkers.vhd
 
