@@ -67,7 +67,13 @@ entity Arbiter_out_one_hot_pseudo_checkers is
             err_no_request_grants, 
             err_request_IDLE_state, 
 
-            err_request_IDLE_not_Grants : out std_logic             
+            err_request_IDLE_not_Grants, 
+            err_state_North_Invalid_Grant, 
+            err_state_East_Invalid_Grant, 
+            err_state_West_Invalid_Grant, 
+            err_state_South_Invalid_Grant, 
+            err_state_Local_Invalid_Grant, 
+            err_Grants_onehot_or_all_zero : out std_logic             
             );
 end Arbiter_out_one_hot_pseudo_checkers;
 
@@ -133,7 +139,7 @@ end process;
 
 process (state, credit, req_X_N, grant_Y_N)
 begin 
-	if ( state = North and credit /= "00" and req_X_N = '1' and grant_Y_N = '0' ) then
+	if ( state = North and credit /= "00" and req_X_N = '1' and grant_Y_N /= '1' ) then
 		err_North_credit_not_zero_req_X_N_grant_N <= '1';
 	else 
 		err_North_credit_not_zero_req_X_N_grant_N <= '0';	
@@ -622,53 +628,63 @@ begin
 	end if;
 end process;
 
+process (state, grant_Y_E, grant_Y_W, grant_Y_S, grant_Y_L)
+begin
+	if (state = North and (grant_Y_E = '1' or grant_Y_W = '1' or grant_Y_S = '1' or grant_Y_L = '1') ) then
+		err_state_North_Invalid_Grant <= '1';
+	else 
+		err_state_North_Invalid_Grant <= '0';
+	end if;
+end process;
+
+process (state, grant_Y_N, grant_Y_W, grant_Y_S, grant_Y_L)
+begin
+	if (state = East and (grant_Y_N = '1' or grant_Y_W = '1' or grant_Y_S = '1' or grant_Y_L = '1') ) then
+		err_state_East_Invalid_Grant <= '1';
+	else 
+		err_state_East_Invalid_Grant <= '0';
+	end if;
+end process;
+
+process (state, grant_Y_N, grant_Y_E, grant_Y_S, grant_Y_L)
+begin
+	if (state = West and (grant_Y_N = '1' or grant_Y_E = '1' or grant_Y_S = '1' or grant_Y_L = '1') ) then
+		err_state_West_Invalid_Grant <= '1';
+	else 
+		err_state_West_Invalid_Grant <= '0';
+	end if;
+end process;
+
+process (state, grant_Y_N, grant_Y_E, grant_Y_W, grant_Y_L)
+begin
+	if (state = South and (grant_Y_N = '1' or grant_Y_E = '1' or grant_Y_W = '1' or grant_Y_L = '1') ) then
+		err_state_South_Invalid_Grant <= '1';
+	else 
+		err_state_South_Invalid_Grant <= '0';
+	end if;
+end process;
+
+-- Local or invalid state(s) (a bit different logic!)
+process (state, grant_Y_N, grant_Y_E, grant_Y_W, grant_Y_S)
+begin
+	if (state /= IDLE and state /= North and state /= East and state /= West and state /= South and 
+	   (grant_Y_N = '1' or grant_Y_E = '1' or grant_Y_W = '1' or grant_Y_S = '1') ) then
+		err_state_Local_Invalid_Grant <= '1';
+	else 
+		err_state_Local_Invalid_Grant <= '0';
+	end if;
+end process;
 
 
---process (req_X_N, grant_Y_N)
---begin
---	if (req_X_N = '0' and grant_Y_N = '1') then
---		err_no_req_X_N_grant_Y_N <= '1';
---	else 
---		err_no_req_X_N_grant_Y_N <= '0';
---	end if;
---end process;
-
---process (req_X_E, grant_Y_E)
---begin
---	if (req_X_E = '0' and grant_Y_E = '1') then
---		err_no_req_X_E_grant_Y_E <= '1';
---	else 
---		err_no_req_X_E_grant_Y_E <= '0';
---	end if;
---end process;
-
---process (req_X_W, grant_Y_W)
---begin
---	if (req_X_W = '0' and grant_Y_W = '1') then
---		err_no_req_X_W_grant_Y_W <= '1';
---	else 
---		err_no_req_X_W_grant_Y_W <= '0';
---	end if;
---end process;
-
---process (req_X_S, grant_Y_S)
---begin
---	if (req_X_S = '0' and grant_Y_S = '1') then
---		err_no_req_X_S_grant_Y_S <= '1';
---	else 
---		err_no_req_X_S_grant_Y_S <= '0';
---	end if;
---end process;
-
---process (req_X_L, grant_Y_L)
---begin
---	if (req_X_L = '0' and grant_Y_L = '1') then
---		err_no_req_X_L_grant_Y_L <= '1';
---	else 
---		err_no_req_X_L_grant_Y_L <= '0';
---	end if;
---end process;
-
+-- Because we do not have multi-casting, Grants must always be one-hot or all zeros, no other possible combination for them !
+process (Grants)
+begin
+	if (Grants /= "00000" and Grants /= "00001" and Grants /= "00010" and Grants /= "00100" and Grants /= "01000" and Grants /= "10000") then
+		err_Grants_onehot_or_all_zero <= '1';
+	else 
+		err_Grants_onehot_or_all_zero <= '0';
+	end if;
+end process;
 
 
 end behavior;

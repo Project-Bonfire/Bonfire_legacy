@@ -64,7 +64,13 @@ entity arbiter_out is
             err_no_request_grants, 
             err_request_IDLE_state, 
 
-            err_request_IDLE_not_Grants : out std_logic             
+            err_request_IDLE_not_Grants, 
+            err_state_North_Invalid_Grant, 
+            err_state_East_Invalid_Grant, 
+            err_state_West_Invalid_Grant, 
+            err_state_South_Invalid_Grant, 
+            err_state_Local_Invalid_Grant, 
+            err_Grants_onehot_or_all_zero : out std_logic             
             );
 end;
 
@@ -130,7 +136,13 @@ component Arbiter_out_one_hot_pseudo_checkers is
             err_no_request_grants, 
             err_request_IDLE_state, 
 
-            err_request_IDLE_not_Grants : out std_logic 
+            err_request_IDLE_not_Grants, 
+            err_state_North_Invalid_Grant, 
+            err_state_East_Invalid_Grant, 
+            err_state_West_Invalid_Grant, 
+            err_state_South_Invalid_Grant, 
+            err_state_Local_Invalid_Grant, 
+            err_Grants_onehot_or_all_zero : out std_logic             
          );
 end component;
 
@@ -237,7 +249,13 @@ CHECKERS: Arbiter_out_one_hot_pseudo_checkers
                                                 err_no_request_grants => err_no_request_grants, 
                                                 err_request_IDLE_state => err_request_IDLE_state, 
 
-                                                err_request_IDLE_not_Grants => err_request_IDLE_not_Grants
+                                                err_request_IDLE_not_Grants => err_request_IDLE_not_Grants, 
+                                                err_state_North_Invalid_Grant => err_state_North_Invalid_Grant, 
+                                                err_state_East_Invalid_Grant => err_state_East_Invalid_Grant, 
+                                                err_state_West_Invalid_Grant => err_state_West_Invalid_Grant, 
+                                                err_state_South_Invalid_Grant => err_state_South_Invalid_Grant, 
+                                                err_state_Local_Invalid_Grant => err_state_Local_Invalid_Grant, 
+                                                err_Grants_onehot_or_all_zero => err_Grants_onehot_or_all_zero
                                             );
 
 
