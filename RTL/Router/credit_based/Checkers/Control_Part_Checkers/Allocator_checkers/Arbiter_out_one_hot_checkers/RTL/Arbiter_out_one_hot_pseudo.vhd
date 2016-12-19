@@ -5,7 +5,7 @@ use ieee.std_logic_1164.all;
 
 entity Arbiter_out_one_hot_pseudo is
     port (  credit: in std_logic_vector(1 downto 0);
-            req_X_E, req_X_N, req_X_W, req_X_S, req_X_L :in std_logic; -- From LBDR modules
+            req_X_N, req_X_E, req_X_W, req_X_S, req_X_L :in std_logic; -- From LBDR modules
             state: in std_logic_vector (5 downto 0); -- 6 states for Arbiter_out's FSM
 
             grant_Y_N, grant_Y_E, grant_Y_W, grant_Y_S, grant_Y_L : out std_logic; -- Grants given to LBDR requests (encoded as one-hot)
@@ -133,7 +133,7 @@ begin
               state_in <= IDLE;
           end if;
 
-      when others =>
+      when others => -- Includes Local state and invalid state(s)
           if credit /= "00" and req_X_L = '1' then
             grant_Y_L <= '1';
           end if;
