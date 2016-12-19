@@ -338,26 +338,31 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
-                + "/Allocator_with_Arbiter_in_checkers/Arbiter_in_one_hot_checkers.vhd\"\n")
+                + "/Allocator_with_checkers/Arbiter_in_one_hot_checkers.vhd\"\n")
 
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
-                + "/Allocator_with_Arbiter_in_checkers/Arbiter_in_one_hot_with_checkers.vhd\"\n")
-
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/arbiter_out.vhd\"\n")            
+                + "/Allocator_with_checkers/Arbiter_in_one_hot_with_checkers.vhd\"\n")
 
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
-                + "/Allocator_with_Arbiter_in_checkers/allocator_logic_pseudo_checkers.vhd\"\n")
+                + "/Allocator_with_checkers/Arbiter_out_one_hot_pseudo_checkers.vhd\"\n")
 
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
-                + "/Allocator_with_Arbiter_in_checkers/allocator_credit_counter_logic_pseudo_checkers.vhd\"\n")
+                + "/Allocator_with_checkers/arbiter_out_one_hot_with_checkers.vhd\"\n")
 
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
-                + "/Allocator_with_Arbiter_in_checkers/allocator_with_checkers.vhd\"\n")   
+                + "/Allocator_with_checkers/allocator_logic_pseudo_checkers.vhd\"\n")
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/Allocator_with_checkers/allocator_credit_counter_logic_pseudo_checkers.vhd\"\n")
+
+            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
+                + "/Allocator_with_checkers/allocator_with_checkers.vhd\"\n")   
                 
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/Checkers/Modules_with_checkers_integrated/All_checkers" \
