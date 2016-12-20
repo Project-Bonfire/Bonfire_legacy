@@ -17,9 +17,12 @@ class Cpu
 {
 
 public:
+    Cpu(struct Command_storage &command);
     void run();
 private:
     void execute();
+    Command_storage& command_storage;
+    bool exit_signal;
 };
 
 #endif //__CPU_H__

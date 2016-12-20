@@ -22,10 +22,13 @@ class TextUI
 {
 
 public:
+    TextUI(struct Command_storage &command);
     void cmd();
 private:
     void extract_command(string line, string &command, string &param);
     void process_command(string command, string param);
+    Command_storage& command_storage;
+    bool exit_signal;
 };
 
 #endif //__TEXT_UI_H__

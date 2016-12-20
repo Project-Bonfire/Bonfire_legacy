@@ -17,7 +17,24 @@
 #include <iostream>
 #include <cstdint>
 
-extern volatile bool exit_signal;
+enum class Cmd_type
+{
+    cmd_none,
+    cmd_exit,
+    cmd_asm
+};
+
+enum class Cmd_status
+{
+    set,
+    reset
+};
+
+struct Command_storage
+{
+    Cmd_type    Type;
+    Cmd_status  Status;
+};
 
 
 #define SIGNED    1

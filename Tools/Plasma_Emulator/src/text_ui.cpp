@@ -18,6 +18,11 @@
 
 using namespace std;
 
+TextUI::TextUI(struct Command_storage &command) : command_storage(command)
+{
+    exit_signal = false;
+}
+
 void TextUI::extract_command(string line, string &command, string &param)
 {
     stringstream ss;
@@ -28,11 +33,23 @@ void TextUI::extract_command(string line, string &command, string &param)
 
 void TextUI::process_command(string command, string param)
 {
+    while(command_storage.Status != Cmd_status::reset);
+
     if (command == "exit" || command == "quit")
     {
+        command_storage.Type = Cmd_type::cmd_exit;
+        command_storage.Status = Cmd_status::set;
         exit_signal = true;
     }
-
+    else if (command == "asm")
+    {
+        command_storage.Type = Cmd_type::cmd_asm;
+        command_storage.Status = Cmd_status::set;
+    }
+    else
+    {
+        cout << "Error! Command \'" << command << "\' not recognized!" << endl;
+    }
 }
 
 void TextUI::cmd()

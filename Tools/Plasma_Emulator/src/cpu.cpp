@@ -18,19 +18,37 @@
 
 using namespace std;
 
+Cpu::Cpu(struct Command_storage &command) : command_storage(command)
+{
+    exit_signal = false;
+}
+
 void Cpu::execute(){}
 
 void Cpu::run()
 {
+
     Memory ram(1024, MEM_TYPE_RAM);
-    MemoryCtrl ram_ctrl;
 
     Memory reg_bank(32, MEM_TYPE_REG_BANK);
 
 
     while (!exit_signal)
     {
-        execute();
+        if (command_storage.Status == Cmd_status::set)
+        {
+            switch (command_storage.Type)
+            {
+                case Cmd_type::cmd_exit:
+                    exit_signal = true;
+                    break;
+                case Cmd_type::cmd_asm:
+                    cout << "ASM cmd" << endl;
+                default:
+                    break;
+            }
+            command_storage.Status = Cmd_status::reset;
+        }
     }
     cout << "cpu out" << endl;
 }

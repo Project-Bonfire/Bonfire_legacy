@@ -12,5 +12,3 @@
  *--------------------------------------------------------------------*/
 
 #include "common.h"
-
-volatile bool exit_signal = false;
