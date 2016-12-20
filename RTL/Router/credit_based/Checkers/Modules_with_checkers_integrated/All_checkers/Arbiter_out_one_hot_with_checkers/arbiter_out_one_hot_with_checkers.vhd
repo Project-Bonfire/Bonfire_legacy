@@ -264,11 +264,11 @@ CHECKERS: Arbiter_out_one_hot_pseudo_checkers
 process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) 
 begin
 
-    grant_Y_N <= '0';
-    grant_Y_E <= '0';
-    grant_Y_W <= '0';
-    grant_Y_S <= '0';
-    grant_Y_L <= '0';
+    grant_Y_N_sig <= '0';
+    grant_Y_E_sig <= '0';
+    grant_Y_W_sig <= '0';
+    grant_Y_S_sig <= '0';
+    grant_Y_L_sig <= '0';
 
     case state is 
 
@@ -288,8 +288,8 @@ begin
           end if; 
 
       when North =>
-          if credit /= "00" and X_N_Y = '1'then
-            grant_Y_N <= '1';
+          if credit /= "00" and X_N_Y = '1' then
+            grant_Y_N_sig <= '1';
           end if;
           if X_N_Y ='1'  then
               state_in <= North;
@@ -306,8 +306,8 @@ begin
           end if;
 
       when East =>
-          if credit /= "00" and X_E_Y = '1'then
-            grant_Y_E <= '1';
+          if credit /= "00" and X_E_Y = '1' then
+            grant_Y_E_sig <= '1';
           end if;
           if X_E_Y = '1' then
               state_in <= East;
@@ -324,8 +324,8 @@ begin
           end if;
 
       when West =>
-          if credit /= "00" and X_W_Y = '1'then
-            grant_Y_W <= '1';
+          if credit /= "00" and X_W_Y = '1' then
+            grant_Y_W_sig <= '1';
           end if;
           if X_W_Y = '1' then
               state_in <= West;
@@ -343,7 +343,7 @@ begin
 
       when South =>
           if credit /= "00" and X_S_Y = '1' then
-            grant_Y_S <= '1';
+            grant_Y_S_sig <= '1';
           end if;
           if X_S_Y = '1' then
               state_in <= South;
@@ -361,7 +361,7 @@ begin
 
       when others =>
           if credit /= "00" and X_L_Y = '1' then
-            grant_Y_L <= '1';
+            grant_Y_L_sig <= '1';
           end if;
           if X_L_Y = '1' then
               state_in <= Local;
