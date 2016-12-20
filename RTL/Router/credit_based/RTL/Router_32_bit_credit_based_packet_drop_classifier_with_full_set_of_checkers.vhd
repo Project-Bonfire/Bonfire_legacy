@@ -4497,7 +4497,7 @@ allocator_unit: allocator port map ( reset => reset, clk => clk,
             L_err_East_req_X_W => L_err_East_req_X_W, 
             L_err_West_req_X_S => L_err_West_req_X_S, 
             L_err_South_req_X_L => L_err_South_req_X_L, 
-            L_err_Local_req_X_N
+            L_err_Local_req_X_N => L_err_Local_req_X_N, 
        
             L_err_IDLE_req_X_W => L_err_IDLE_req_X_W, 
             L_err_North_req_X_W => L_err_North_req_X_W, 
