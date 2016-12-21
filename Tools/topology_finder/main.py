@@ -1,9 +1,10 @@
 
 import networkx
 import itertools
+import sys
 
-number_of_ports = 2 
-
+number_of_ports = 3
+starting_number_of_links = 8
 
 def calculate_reachability(ag): 
 	reachability_counter = 0
@@ -34,7 +35,7 @@ ag = networkx.DiGraph()
 for i in range(0, 16):
 	ag.add_node(i)
 
-print "generated architecture graph with these nodes:", ag.nodes()
+print "generated architecture graph with nodes:", ag.nodes()
 
 list_of_edges = []
 for item in list(itertools.combinations(ag.nodes(), 2)):
@@ -43,33 +44,47 @@ for item in list(itertools.combinations(ag.nodes(), 2)):
 
 print "list of all available edges in  a mesh topology:", list_of_edges
 max_dic = {}
-all_edge_lists = []
+all_edge_lists = {}
 for index in range(1, 5):
 	max_dic[index] = [0, []]
 
-for i in range(1, len(list_of_edges)): 
+if len(list_of_edges) < starting_number_of_links:
+	raise ValueError("starting_number_of_links is bigger than the maximum available links!")
+
+print "starting from ", starting_number_of_links, "links in the network"
+#for i in range(starting_number_of_links, starting_number_of_links+1): 
+for i in range(starting_number_of_links, len(list_of_edges)): 
 	print "-------------------------------------------------------------------------------------"
 	print "starting to check lists with", i, "bi-directional links out of ",  len(list_of_edges)
 	chosen_edges = itertools.combinations(list_of_edges, i)
 	for edge_list in chosen_edges:
+		#print edge_list
 		if len(edge_list)>0:
+
 			ag = networkx.DiGraph()
+			trying = True
 			for link in edge_list:
 				ag.add_edge(link[0], link[1])
 				ag.add_edge(link[1], link[0])
-				if  ag.degree(link[1]) > number_of_ports or ag.degree(link[0]) > number_of_ports:
+				if  (ag.degree(link[1])/2 > number_of_ports) or (ag.degree(link[0])/2 > number_of_ports):
+					trying = False
+					# print ag.degree(link[0])/2, ag.degree(link[1])/2
 					break
-			degree_sequence=sorted(networkx.degree(ag).values(),reverse=True)  
-			degree = max(degree_sequence)/2
-			if number_of_ports == degree:
-				reachability = calculate_reachability(ag)
 
-				if max_dic[degree][0] < reachability:
-					max_dic[degree] = [reachability, edge_list]
-					all_edge_lists = [edge_list]
+			if trying:
+				degree_sequence=sorted(networkx.degree(ag).values(),reverse=True)  
+				degree = max(degree_sequence)/2
+				if number_of_ports == degree:
+					reachability = calculate_reachability(ag)
 
-				if max_dic[degree][0] == reachability :
-					all_edge_lists.append(edge_list)
+					if max_dic[degree][0] < reachability:
+						print "found solution with better reachability:", reachability
+						max_dic[degree] = [reachability, edge_list]
+						all_edge_lists[degree] = [edge_list]
+
+					if max_dic[degree][0] == reachability :
+						all_edge_lists[degree].append(edge_list)
+
 			del ag 
 	for i in max_dic.keys():
 		if i == number_of_ports:
@@ -83,5 +98,6 @@ for i in max_dic.keys():
 print "*************"
 print "all_edge_list:"
 for item in all_edge_lists:
-	print item 
-
+	print "number of ports:", item
+	for sub_item in all_edge_lists[item]:
+		print sub_item
