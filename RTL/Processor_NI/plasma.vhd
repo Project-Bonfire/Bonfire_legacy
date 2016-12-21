@@ -247,6 +247,7 @@ begin  --architecture
          gpio0_reg <= ZERO;
          counter_reg <= ZERO;
       elsif rising_edge(clk) then
+         counter_reg <= bv_inc(counter_reg);
          if cpu_pause = '0' then
             if enable_misc = '1' and write_enable = '1' then
                if cpu_address(6 downto 4) = "001" then
@@ -255,10 +256,11 @@ begin  --architecture
                   gpio0_reg <= gpio0_reg or cpu_data_w;
                elsif cpu_address(6 downto 4) = "100" then
                   gpio0_reg <= gpio0_reg and not cpu_data_w;
+               elsif cpu_address(6 downto 4) = "110" then
+                  counter_reg <= cpu_data_w(18 downto 0);
                end if;
             end if;
          end if;
-         counter_reg <= bv_inc(counter_reg);
       end if;
    end process;
 
