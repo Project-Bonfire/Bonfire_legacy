@@ -47,10 +47,16 @@ int send_thread(struct pt *pt)
     while(1)
     {
         /* Wait for our turn */
-        PT_WAIT_UNTIL(pt, send_thread_flag == THREAD_ENABLE);
+        PT_YIELD_UNTIL(pt, send_thread_flag == THREAD_ENABLE);
+
+        if (((ni_read_flags() & NI_WRITE_MASK) == 0) && \
+            (send_pointer > 0))
+        {
+            ni_write(send_buffer[0]);
+        }
 
         /****** Sending code ******/
-        if (((ni_read_flags() & NI_WRITE_MASK) == 0) && \
+        /*if (((ni_read_flags() & NI_WRITE_MASK) == 0) && \
             (send_pointer > 0))
         {
             for (i = 0; i < send_pointer; i++)
@@ -58,7 +64,7 @@ int send_thread(struct pt *pt)
                 ni_write(send_buffer[i]);
             }
             send_pointer = 0;
-        }
+        }*/
 
         /****** End of sending code ******/
 
@@ -84,7 +90,7 @@ int recv_thread(struct pt *pt)
     while(1)
     {
         /* Wait for our turn */
-        PT_WAIT_UNTIL(pt, recv_thread_flag == THREAD_ENABLE);
+        PT_YIELD_UNTIL(pt, recv_thread_flag == THREAD_ENABLE);
 
         /****** Recieving code ******/
         packet_counter = memory_read(NI_COUNTER_ADDRESS);

@@ -94,7 +94,7 @@ int proc_thread(struct pt *pt);
     while(1)                                                                \
     {                                                                       \
         /* Wait for our turn */                                             \
-        PT_WAIT_UNTIL(pt, process_thread_flag == THREAD_ENABLE);            \
+        PT_YIELD_UNTIL(pt, process_thread_flag == THREAD_ENABLE);            \
         if(1)                                                               \
 
 /**

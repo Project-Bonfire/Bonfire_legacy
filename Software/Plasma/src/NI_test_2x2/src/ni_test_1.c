@@ -1,6 +1,6 @@
-#include "../../lib/bonfire.h"
-#include "../../lib/packets.h"
-#include "../../lib/uart.h"
+#include "../../../lib/bonfire.h"
+#include "../../../lib/packets.h"
+#include "../../../lib/uart.h"
 
 BONFIRE_MAIN()
 {

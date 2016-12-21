@@ -19,7 +19,7 @@ LD 	 = mips-linux-gnu-ld
 RM = rm -rf
 
 # Program name
-PROG_NAME = NI_test_2x2
+PROG_NAME = counter_test
 
 # Directories
 SOURCEDIR 	= src

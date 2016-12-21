@@ -1,15 +1,15 @@
-#include "../../lib/bonfire.h"
-#include "../../lib/packets.h"
-#include "../../lib/uart.h"
+#include "../../../lib/bonfire.h"
+#include "../../../lib/packets.h"
+#include "../../../lib/uart.h"
 
 BONFIRE_MAIN()
 {
-    //uart_puts("Node 2 started.\n")
+    uart_puts("Node 0 started.\n");
     int test = 0;
 
     BONFIRE_LOOP()
     {
-        bonfire_send(build_header(3,3));
+        bonfire_send(build_header(1,3));
         test++;
         bonfire_send(test);
         test++;
