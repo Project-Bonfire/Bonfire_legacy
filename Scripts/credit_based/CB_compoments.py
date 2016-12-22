@@ -1,7 +1,7 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
 
-def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packet_drop, add_FC, network_dime, fi_addres_width):
+def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packet_drop, add_FC, network_dime, fi_addres_width, lv_ports):
     
     if add_lv :
         noc_file.write("component router_credit_based_parity_lv is\n")
@@ -117,6 +117,7 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packe
     noc_file.write("\n\n")
 
     if add_lv:
+        
         noc_file.write("component router_LV is\n")
         noc_file.write("	generic (\n")
         noc_file.write("        DATA_WIDTH: integer := 11;\n")
@@ -128,17 +129,29 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packe
         noc_file.write("    port (\n")
         noc_file.write("    reset, clk: in std_logic;\n")
         noc_file.write("\n")
-        noc_file.write("    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); \n")
-        noc_file.write("\n")
-        noc_file.write("    credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic;\n")
-        noc_file.write("    valid_in_N, valid_in_E, valid_in_W, valid_in_S, valid_in_L : in std_logic;\n")
-        noc_file.write("\n")
-        noc_file.write("    valid_out_N, valid_out_E, valid_out_W, valid_out_S, valid_out_L : out std_logic;\n")
-        noc_file.write("    credit_out_N, credit_out_E, credit_out_W, credit_out_S, credit_out_L: out std_logic;\n")
-        noc_file.write("\n")
-        noc_file.write("    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
+        if lv_ports == 4:
+            noc_file.write("    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); \n")
+            noc_file.write("\n")
+            noc_file.write("    credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic;\n")
+            noc_file.write("    valid_in_N, valid_in_E, valid_in_W, valid_in_S, valid_in_L : in std_logic;\n")
+            noc_file.write("\n")
+            noc_file.write("    valid_out_N, valid_out_E, valid_out_W, valid_out_S, valid_out_L : out std_logic;\n")
+            noc_file.write("    credit_out_N, credit_out_E, credit_out_W, credit_out_S, credit_out_L: out std_logic;\n")
+            noc_file.write("\n")
+            noc_file.write("    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
+        elif lv_ports == 2:
+            noc_file.write("    RX_E, RX_W, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); \n")
+            noc_file.write("\n")
+            noc_file.write("    credit_in_E, credit_in_W, credit_in_L: in std_logic;\n")
+            noc_file.write("    valid_in_E, valid_in_W, valid_in_L : in std_logic;\n")
+            noc_file.write("\n")
+            noc_file.write("    valid_out_E, valid_out_W, valid_out_L : out std_logic;\n")
+            noc_file.write("    credit_out_E, credit_out_W, credit_out_L: out std_logic;\n")
+            noc_file.write("\n")
+            noc_file.write("    TX_E, TX_W, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
         noc_file.write("    ); \n")
         noc_file.write("end component;\n")
+        
 
         noc_file.write("\n\n")
 

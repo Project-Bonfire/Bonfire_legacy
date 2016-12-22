@@ -157,20 +157,32 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_lv, add_packet_d
     noc_file.write("\n")
 
 
-def instantiate_lv_routers(noc_file, network_dime):
+def instantiate_lv_routers(noc_file, network_dime, number_of_ports):
     noc_file.write("-- instantiating the LV routers\n")
     for i in range(0, network_dime**2):
         noc_file.write("R_lv_"+str(i)+": router_LV generic map (DATA_WIDTH => DATA_WIDTH_LV, \n"
                        "current_address =>"+str(i)+", Rxy_rst => " + str(rxy_rst_calculator(i)) +
                        ", Cx_rst =>"+str(cx_rst_calculator(i, network_dime))+", \n NoC_size =>"+str(network_dime)+")")
-        noc_file.write("    PORT MAP (reset, clk, RX_LV_N"+str(i)+", RX_LV_E"+str(i)+", RX_LV_W"+str(i)+", RX_LV_S"+str(i)+", RX_LV_L"+str(i)+",\n ")
-        noc_file.write("")
-        noc_file.write("    credit_in_LV_N" +str(i)+ ", credit_in_LV_E" +str(i)+ ", credit_in_LV_W" +str(i)+ ", credit_in_LV_S" +str(i)+ ", credit_in_LV_" +str(i)+",\n")
-        noc_file.write("    valid_in_LV_N" +str(i)+ ", valid_in_LV_E" +str(i)+ ", valid_in_LV_W" +str(i)+ ", valid_in_LV_S" +str(i)+ ", valid_in_LV_L" +str(i)+",\n")
-        noc_file.write("")
-        noc_file.write("    valid_out_LV_N" +str(i)+ ", valid_out_LV_E" +str(i)+ ", valid_out_LV_W" +str(i)+ ", valid_out_LV_S" +str(i)+ ", valid_out_LV_" +str(i)+",\n")
-        noc_file.write("    credit_out_LV_N" +str(i)+ ", credit_out_LV_E" +str(i)+ ", credit_out_LV_W" +str(i)+ ", credit_out_LV_S" +str(i)+ ", credit_out_LV_L" +str(i)+",\n")
-        noc_file.write("")
-        noc_file.write("    TX_LV_N"+str(i)+", TX_LV_E"+str(i)+", TX_LV_W"+str(i)+", TX_LV_S"+str(i)+", TX_LV_"+str(i)+"\n")
-        noc_file.write("    ); \n")
+        if number_of_ports == 4 :
+            noc_file.write("    PORT MAP (reset, clk, RX_LV_N"+str(i)+", RX_LV_E"+str(i)+", RX_LV_W"+str(i)+", RX_LV_S"+str(i)+", RX_LV_L"+str(i)+",\n ")
+            noc_file.write("")
+            noc_file.write("    credit_in_LV_N" +str(i)+ ", credit_in_LV_E" +str(i)+ ", credit_in_LV_W" +str(i)+ ", credit_in_LV_S" +str(i)+ ", credit_in_LV_" +str(i)+",\n")
+            noc_file.write("    valid_in_LV_N" +str(i)+ ", valid_in_LV_E" +str(i)+ ", valid_in_LV_W" +str(i)+ ", valid_in_LV_S" +str(i)+ ", valid_in_LV_L" +str(i)+",\n")
+            noc_file.write("")
+            noc_file.write("    valid_out_LV_N" +str(i)+ ", valid_out_LV_E" +str(i)+ ", valid_out_LV_W" +str(i)+ ", valid_out_LV_S" +str(i)+ ", valid_out_LV_" +str(i)+",\n")
+            noc_file.write("    credit_out_LV_N" +str(i)+ ", credit_out_LV_E" +str(i)+ ", credit_out_LV_W" +str(i)+ ", credit_out_LV_S" +str(i)+ ", credit_out_LV_L" +str(i)+",\n")
+            noc_file.write("")
+            noc_file.write("    TX_LV_N"+str(i)+", TX_LV_E"+str(i)+", TX_LV_W"+str(i)+", TX_LV_S"+str(i)+", TX_LV_"+str(i)+"\n")
+            noc_file.write("    ); \n")
+        else:
+            noc_file.write("    PORT MAP (reset, clk, RX_LV_E"+str(i)+", RX_LV_W"+str(i)+", RX_LV_L"+str(i)+",\n ")
+            noc_file.write("")
+            noc_file.write("    credit_in_LV_E" +str(i)+ ", credit_in_LV_W" +str(i)+ ", credit_in_LV_" +str(i)+",\n")
+            noc_file.write("    valid_in_LV_E" +str(i)+ ", valid_in_LV_W" +str(i)+ ",  valid_in_LV_L" +str(i)+",\n")
+            noc_file.write("")
+            noc_file.write("    valid_out_LV_E" +str(i)+ ", valid_out_LV_W" +str(i)+ ", valid_out_LV_" +str(i)+",\n")
+            noc_file.write("    credit_out_LV_E" +str(i)+ ", credit_out_LV_W" +str(i)+ ", credit_out_LV_L" +str(i)+",\n")
+            noc_file.write("")
+            noc_file.write("    TX_LV_E"+str(i)+", TX_LV_W"+str(i)+", TX_LV_"+str(i)+"\n")
+            noc_file.write("    ); \n")
     #todo: i have to finish this!

@@ -47,10 +47,10 @@ noc_file.write("architecture behavior of network_"+str(CB_Package.network_dime)+
 
 # declaring components, signals and making ascii art!!!
 declare_components(noc_file, CB_Package.add_parity, CB_Package.add_FI, CB_Package.add_SHMU, CB_Package.add_LV, 
-                   CB_Package.add_packet_drop, CB_Package.add_FC, CB_Package.network_dime, CB_Package.fi_addres_width)
+                   CB_Package.add_packet_drop, CB_Package.add_FC, CB_Package.network_dime, CB_Package.fi_addres_width, CB_Package.lv_ports)
 
 declare_signals(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV, CB_Package.add_packet_drop,
-                CB_Package.add_FC)
+                CB_Package.add_FC, CB_Package.lv_ports)
 
 generate_ascii_art(noc_file, CB_Package.network_dime, CB_Package.add_FI)
 
@@ -63,7 +63,7 @@ instantiate_routers(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB
                     CB_Package.add_FC, CB_Package.healthy_counter_threshold, CB_Package.faulty_counter_threshold, CB_Package.counter_depth)
 
 if CB_Package.add_LV:
-    instantiate_lv_routers(noc_file, CB_Package.network_dime)
+    instantiate_lv_routers(noc_file, CB_Package.network_dime, CB_Package.lv_ports)
 
 if CB_Package.add_SHMU:
     instantiate_shmu(noc_file, CB_Package.network_dime)
@@ -170,53 +170,88 @@ for i in range(0, CB_Package.network_dime**2):
         noc_file.write("-------------------\n")
 
 if CB_Package.add_LV:
-    noc_file.write("---------------------------------------------------------------\n")
-    noc_file.write("-- binding the routers together\n")
-    noc_file.write("-- vertical ins/outs\n")
-    for i in range(0, CB_Package.network_dime**2):
-        node_x = i % CB_Package.network_dime
-        node_y = i / CB_Package.network_dime
-        if node_y != CB_Package.network_dime-1:
-            noc_file.write("-- connecting router: "+str(i)+" to router: " +
-                           str(i+CB_Package.network_dime)+" and vice versa\n")
-            noc_file.write("RX_LV_N"+str(i+CB_Package.network_dime)+"<= TX_LV_S"+str(i)+";\n")
-            noc_file.write("RX_LV_S"+str(i)+"<= TX_LV_N"+str(i+CB_Package.network_dime)+";\n")
-            noc_file.write("-------------------\n")
-    noc_file.write("\n")
-    noc_file.write("-- horizontal ins/outs\n")
-    for i in range(0, CB_Package.network_dime**2):
-        node_x = i % CB_Package.network_dime
-        node_y = i / CB_Package.network_dime
-        if node_x != CB_Package.network_dime-1:
-            noc_file.write("-- connecting router: "+str(i)+" to router: "+str(i+1)+" and vice versa\n")
-            noc_file.write("RX_LV_E"+str(i)+" <= TX_LV_W"+str(i+1)+";\n")
-            noc_file.write("RX_LV_W"+str(i+1)+" <= TX_LV_E"+str(i)+";\n")
-            noc_file.write("-------------------\n")
+    if CB_Package.lv_ports == 4:
+        noc_file.write("---------------------------------------------------------------\n")
+        noc_file.write("-- binding the routers together\n")
+        noc_file.write("-- vertical ins/outs\n")
+        for i in range(0, CB_Package.network_dime**2):
+            node_x = i % CB_Package.network_dime
+            node_y = i / CB_Package.network_dime
+            if node_y != CB_Package.network_dime-1:
+                noc_file.write("-- connecting router: "+str(i)+" to router: " +
+                               str(i+CB_Package.network_dime)+" and vice versa\n")
+                noc_file.write("RX_LV_N"+str(i+CB_Package.network_dime)+"<= TX_LV_S"+str(i)+";\n")
+                noc_file.write("RX_LV_S"+str(i)+"<= TX_LV_N"+str(i+CB_Package.network_dime)+";\n")
+                noc_file.write("valid_in_LV_N"+str(i+CB_Package.network_dime)+" <= valid_out_LV_S"+str(i)+";\n")
+                noc_file.write("valid_in_LV_S"+str(i)+" <= valid_out_LV_N"+str(i+CB_Package.network_dime)+";\n")
+                noc_file.write("credit_in_LV_S"+str(i)+" <= credit_out_LV_N"+str(i+CB_Package.network_dime)+";\n")
+                noc_file.write("credit_in_LV_N"+str(i+CB_Package.network_dime)+" <= credit_out_LV_S"+str(i)+";\n")
+                noc_file.write("-------------------\n")
+        noc_file.write("\n")
+        noc_file.write("-- horizontal ins/outs\n")
+        for i in range(0, CB_Package.network_dime**2):
+            node_x = i % CB_Package.network_dime
+            node_y = i / CB_Package.network_dime
+            if node_x != CB_Package.network_dime-1:
+                noc_file.write("-- connecting router: "+str(i)+" to router: "+str(i+1)+" and vice versa\n")
+                noc_file.write("RX_LV_E"+str(i)+" <= TX_LV_W"+str(i+1)+";\n")
+                noc_file.write("RX_LV_W"+str(i+1)+" <= TX_LV_E"+str(i)+";\n")
+                noc_file.write("valid_in_LV_E"+str(i)+" <= valid_out_LV_W"+str(i+1)+";\n")
+                noc_file.write("valid_in_LV_W"+str(i+1)+" <= valid_out_LV_E"+str(i)+";\n")
+                noc_file.write("credit_in_LV_W"+str(i+1)+" <= credit_out_LV_E"+str(i)+";\n")
+                noc_file.write("credit_in_LV_E"+str(i)+" <= credit_out_LV_W"+str(i+1)+";\n")
+                noc_file.write("-------------------\n")
 
-    noc_file.write("-- binding the LV routers together\n")
-    for i in range(0, CB_Package.network_dime**2):
-        node_x = i % CB_Package.network_dime
-        node_y = i / CB_Package.network_dime
-        if node_y != CB_Package.network_dime-1:
-            noc_file.write("-- connecting router: "+str(i)+" to router: " +
-                           str(i+CB_Package.network_dime)+" and vice versa\n")
-            noc_file.write("valid_in_LV_N"+str(i+CB_Package.network_dime)+" <= valid_out_LV_S"+str(i)+";\n")
-            noc_file.write("valid_in_LV_S"+str(i)+" <= valid_out_LV_N"+str(i+CB_Package.network_dime)+";\n")
-            noc_file.write("credit_in_LV_S"+str(i)+" <= credit_out_LV_N"+str(i+CB_Package.network_dime)+";\n")
-            noc_file.write("credit_in_LV_N"+str(i+CB_Package.network_dime)+" <= credit_out_LV_S"+str(i)+";\n")
-            noc_file.write("-------------------\n")
-    noc_file.write("\n")
-     
-    for i in range(0, CB_Package.network_dime**2):
-        node_x = i % CB_Package.network_dime
-        node_y = i / CB_Package.network_dime
-        if node_x != CB_Package.network_dime-1:
-            noc_file.write("-- connecting router: "+str(i)+" to router: "+str(i+1)+" and vice versa\n")
-            noc_file.write("valid_in_LV_E"+str(i)+" <= valid_out_LV_W"+str(i+1)+";\n")
-            noc_file.write("valid_in_LV_W"+str(i+1)+" <= valid_out_LV_E"+str(i)+";\n")
-            noc_file.write("credit_in_LV_W"+str(i+1)+" <= credit_out_LV_E"+str(i)+";\n")
-            noc_file.write("credit_in_LV_E"+str(i)+" <= credit_out_LV_W"+str(i+1)+";\n")
-            noc_file.write("-------------------\n")
+    elif CB_Package.lv_ports == 2:
+        noc_file.write("---------------------------------------------------------------\n")
+        noc_file.write("-- binding the routers together\n")
+        noc_file.write("-- vertical ins/outs\n")
+        for i in range(0, CB_Package.network_dime**2):
+            node_x = i % CB_Package.network_dime
+            node_y = i / CB_Package.network_dime
+            if node_y != CB_Package.network_dime-1:
+                if node_y % 2 == 0:
+                    if node_x == CB_Package.network_dime - 1:
+                        noc_file.write("-- connecting router: "+str(i)+" to router: " +
+                                       str(i+CB_Package.network_dime)+" and vice versa\n")
+                        noc_file.write("RX_LV_N"+str(i+CB_Package.network_dime)+"<= TX_LV_S"+str(i)+";\n")
+                        noc_file.write("RX_LV_S"+str(i)+"<= TX_LV_N"+str(i+CB_Package.network_dime)+";\n")
+                        noc_file.write("valid_in_LV_N"+str(i+CB_Package.network_dime)+" <= valid_out_LV_S"+str(i)+";\n")
+                        noc_file.write("valid_in_LV_S"+str(i)+" <= valid_out_LV_N"+str(i+CB_Package.network_dime)+";\n")
+                        noc_file.write("credit_in_LV_S"+str(i)+" <= credit_out_LV_N"+str(i+CB_Package.network_dime)+";\n")
+                        noc_file.write("credit_in_LV_N"+str(i+CB_Package.network_dime)+" <= credit_out_LV_S"+str(i)+";\n")
+                        noc_file.write("-------------------\n")
+                else:
+                    if node_x == 0:
+                        noc_file.write("-- connecting router: "+str(i)+" to router: " +
+                                       str(i+CB_Package.network_dime)+" and vice versa\n")
+                        noc_file.write("RX_LV_N"+str(i+CB_Package.network_dime)+"<= TX_LV_S"+str(i)+";\n")
+                        noc_file.write("RX_LV_S"+str(i)+"<= TX_LV_N"+str(i+CB_Package.network_dime)+";\n")
+                        noc_file.write("valid_in_LV_N"+str(i+CB_Package.network_dime)+" <= valid_out_LV_S"+str(i)+";\n")
+                        noc_file.write("valid_in_LV_S"+str(i)+" <= valid_out_LV_N"+str(i+CB_Package.network_dime)+";\n")
+                        noc_file.write("credit_in_LV_S"+str(i)+" <= credit_out_LV_N"+str(i+CB_Package.network_dime)+";\n")
+                        noc_file.write("credit_in_LV_N"+str(i+CB_Package.network_dime)+" <= credit_out_LV_S"+str(i)+";\n")
+                        noc_file.write("-------------------\n")
+
+        noc_file.write("\n")
+        noc_file.write("-- horizontal ins/outs\n")
+        for i in range(0, CB_Package.network_dime**2):
+            node_x = i % CB_Package.network_dime
+            node_y = i / CB_Package.network_dime
+            if node_x != CB_Package.network_dime-1:
+                noc_file.write("-- connecting router: "+str(i)+" to router: "+str(i+1)+" and vice versa\n")
+                noc_file.write("RX_LV_E"+str(i)+" <= TX_LV_W"+str(i+1)+";\n")
+                noc_file.write("RX_LV_W"+str(i+1)+" <= TX_LV_E"+str(i)+";\n")
+                noc_file.write("valid_in_LV_E"+str(i)+" <= valid_out_LV_W"+str(i+1)+";\n")
+                noc_file.write("valid_in_LV_W"+str(i+1)+" <= valid_out_LV_E"+str(i)+";\n")
+                noc_file.write("credit_in_LV_W"+str(i+1)+" <= credit_out_LV_E"+str(i)+";\n")
+                noc_file.write("credit_in_LV_E"+str(i)+" <= credit_out_LV_W"+str(i+1)+";\n")
+                noc_file.write("-------------------\n")
+
+        noc_file.write("\n")
+         
+
+
 
 if CB_Package.add_LV or (CB_Package.add_packet_drop and CB_Package.add_FC):
     for i in range(0, CB_Package.network_dime**2):

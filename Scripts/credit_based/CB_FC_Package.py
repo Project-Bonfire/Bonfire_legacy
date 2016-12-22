@@ -13,6 +13,7 @@ class CreditBasedPackage():
         self.healthy_counter_threshold = 15
         self.counter_depth = 4
         self.add_LV = False
+        self.lv_ports = 4
         self.add_packet_drop = False
         self.add_FC = False
         self.add_SHMU = False
@@ -65,6 +66,7 @@ class CreditBasedPackage():
 
         if "-LV" in arguments_list:
             self.add_LV = True
+            self.lv_ports = int(arguments_list[arguments_list.index('-LV')+1])
 
         if '-FO' in arguments_list:
             self.add_FO = True
