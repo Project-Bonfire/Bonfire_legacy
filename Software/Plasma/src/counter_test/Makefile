@@ -1,8 +1,18 @@
+# Program name
+PROG_NAME = counter_test
+
+# Directories
 BONFIRE_ROOT = ../../../..
+SOURCEDIR 	= src
+LIBDIR 		= ../../lib
+BUILDDIR	= $(BONFIRE_ROOT)/tmp/bin/$(PROG_NAME)
+UTIL_FOLDER = $(BONFIRE_ROOT)/tmp/bin/plasma_utils
+SIMUL_TEMP	= $(BONFIRE_ROOT)/tmp/simul_temp
 
 # Compiler flags
 CFLAGS = -O0 -Wall -c -s
-CFLAGS += -fno-pic -mips1 -mno-abicalls -mfp32 #-msoft-float
+CFLAGS += -fno-pic -mips1 -mno-abicalls -mfp32
+CFLAGS += -I $(LIBDIR) #-msoft-float
 
 # Assembler flags
 ASFLAGS = -O0 -Wall -mips1 -mfp32#-msoft-float
@@ -17,16 +27,6 @@ LD 	 = mips-linux-gnu-ld
 
 # System Commands
 RM = rm -rf
-
-# Program name
-PROG_NAME = counter_test
-
-# Directories
-SOURCEDIR 	= src
-LIBDIR 		= ../../lib
-BUILDDIR	= $(BONFIRE_ROOT)/tmp/bin/$(PROG_NAME)
-UTIL_FOLDER = $(BONFIRE_ROOT)/tmp/bin/plasma_utils
-SIMUL_TEMP	= $(BONFIRE_ROOT)/tmp/simul_temp
 
 # Program sources
 PROG_C_SOURCES	= $(wildcard $(SOURCEDIR)/*.c)
@@ -44,15 +44,12 @@ PROG_MAIN_OBJECTS = $(patsubst $(SOURCEDIR)/%.c,$(BUILDDIR)/%.o,$(PROG_MAIN_SRCS
 
 LIB_OBJECTS 	= $(patsubst $(LIBDIR)/%.c,$(BUILDDIR)/%.o,$(LIB_SOURCES))
 LIB_ASM_OBJECTS = $(patsubst $(LIBDIR)/%.asm,$(BUILDDIR)/%.o,$(LIB_ASM_SOURCES))
-A="counter_test_0.o"
+
 
 # Rules
 PHONY: all
 
 all: dir elf_files
-
-test:
-	@echo $(shell echo $A | tail -c 4 | head -c 1)
 
 # Create a directory
 dir:
