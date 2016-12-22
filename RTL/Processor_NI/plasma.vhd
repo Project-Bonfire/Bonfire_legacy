@@ -257,7 +257,7 @@ begin  --architecture
                elsif cpu_address(6 downto 4) = "100" then
                   gpio0_reg <= gpio0_reg and not cpu_data_w;
                elsif cpu_address(6 downto 4) = "110" then
-                  counter_reg <= cpu_data_w(18 downto 0);
+                  counter_reg <= cpu_data_w;
                end if;
             end if;
          end if;
