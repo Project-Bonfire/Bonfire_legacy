@@ -94,7 +94,7 @@ architecture behavior of router_LV is
         East_in: in std_logic_vector(DATA_WIDTH-1 downto 0);
         West_in: in std_logic_vector(DATA_WIDTH-1 downto 0);
         Local_in: in std_logic_vector(DATA_WIDTH-1 downto 0);
-        sel: in std_logic_vector (4 downto 0);
+        sel: in std_logic_vector (2 downto 0);
         Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0)
     );
 	end COMPONENT;
