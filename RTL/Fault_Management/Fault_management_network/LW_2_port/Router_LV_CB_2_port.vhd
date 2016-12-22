@@ -114,7 +114,7 @@ architecture behavior of router_LV is
 
     signal empty_E, empty_W, empty_L: std_logic; 
 
- 	signal Xbar_sel_E, Xbar_sel_W, Xbar_sel_L: std_logic_vector(4 downto 0);
+ 	signal Xbar_sel_E, Xbar_sel_W, Xbar_sel_L: std_logic_vector(2 downto 0); -- Changed from 5 to 3 bits!
 begin
 
 
@@ -208,12 +208,12 @@ Xbar_sel_L <= Grant_LE & Grant_LW & Grant_LL;
 
 XBAR_E: XBAR_LV generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, Local_in => FIFO_D_out_L,
-        sel => Xbar_sel_E,  Data_out=> TX_E);
+             sel => Xbar_sel_E,  Data_out=> TX_E);
 XBAR_W: XBAR_LV generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, Local_in => FIFO_D_out_L,
-        sel => Xbar_sel_W,  Data_out=> TX_W);
+             sel => Xbar_sel_W,  Data_out=> TX_W);
 XBAR_L: XBAR_LV generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, Local_in => FIFO_D_out_L,
-        sel => Xbar_sel_L,  Data_out=> TX_L);
+             sel => Xbar_sel_L,  Data_out=> TX_L);
 
 end;

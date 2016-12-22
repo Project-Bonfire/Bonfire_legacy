@@ -16,7 +16,7 @@ entity allocator_LV is
            
            	req_E_E, req_E_W, req_E_L: in std_logic;
            	req_W_E, req_W_W, req_W_L: in std_logic;
-           	req_S_E, req_S_W, req_S_L: in std_logic;
+           	req_L_E, req_L_W, req_L_L: in std_logic;
            	
 
             empty_E, empty_W, empty_L: in std_logic;
@@ -94,9 +94,8 @@ grant_W <=  (grant_W_E_sig and not empty_E) or (grant_W_W_sig and not empty_W) o
 grant_L <=  (grant_L_E_sig and not empty_E) or (grant_L_W_sig and not empty_W) or (grant_L_L_sig and not empty_L);
 
 -- this process handels the credit counters!
-process(credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L, grant_N, grant_E, grant_W, grant_S, grant_L,
-		credit_counter_N_out, credit_counter_E_out, credit_counter_W_out, credit_counter_S_out, credit_counter_L_out
-		)
+process(credit_in_E, credit_in_W, credit_in_L, grant_E, grant_W, grant_L,
+		    credit_counter_E_out, credit_counter_W_out, credit_counter_L_out)
  begin
  	credit_counter_E_in <= credit_counter_E_out;
  	credit_counter_W_in <= credit_counter_W_out;
@@ -141,7 +140,7 @@ arb_X_W: arbiter_out_LV port map (reset => reset, clk => clk,
 
 -- Y is L now
 arb_X_L: arbiter_out_LV port map (reset => reset, clk => clk, 
-                               X_E_Y => req_E_L, X_W_Y => req_W_L,X_L_Y => req_L_L,
+                               X_E_Y => req_E_L, X_W_Y => req_W_L, X_L_Y => req_L_L,
                                credit => credit_counter_L_out,
                                grant_Y_E => grant_L_E_sig, 
                                grant_Y_W => grant_L_W_sig, 

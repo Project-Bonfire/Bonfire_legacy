@@ -31,6 +31,9 @@ architecture behavior of LBDR_LV is
   signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  
   signal N1, E1, W1, S1  :std_logic :='0';  
   signal grants: std_logic;
+  signal Req_E_in, Req_W_in, Req_L_in: std_logic;  
+  signal Req_E_FF, Req_W_FF, Req_L_FF: std_logic;
+ 
 begin 
 
  grants <= grant_E or grant_W or grant_L;
@@ -64,7 +67,7 @@ Req_E <= Req_E_FF;
 Req_W <= Req_W_FF;
 Req_L <= Req_L_FF;
 
-process(N1, E1, W1, S1, Rxy, Cx, empty, Req_E_FF, Req_W_FF, Req_L_FF, grants) begin
+process(N1, E1, W1, S1, Cx, empty, Req_E_FF, Req_W_FF, Req_L_FF, grants) begin
  if  flit_type = "001" and empty = '0' then
         Req_E_in <= (S1 or (E1 and not N1)) and Cx(1);
         Req_W_in <= (N1 or (W1 and not S1)) and Cx(2);
