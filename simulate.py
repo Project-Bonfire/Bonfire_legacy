@@ -147,9 +147,11 @@ def arg_parser(argv, program_argv):
         print "\tAdd fault classifier units to all the links (except the local) in the network. " \
             + "Default is " + str(program_argv['add_FC']) + "."
         print
-        print BOLD + "  -LV:" + ENDC
+        print BOLD + "  -LV [number of ports]:" + ENDC
         print "\tAdd light weight network to the system " \
             + "Default is " + str(program_argv['add_LV']) + "."
+        print "\tnumber of ports determines the number of chennels in LV, can be 2 or 4" \
+            + "Default is " + str(program_argv['lv_port']) + "."
         print
         print BOLD + "  -packet_drop:" + ENDC
         print "\tAdd packet dropping capability to FIFO in case of fault injection. " \
@@ -214,6 +216,7 @@ def arg_parser(argv, program_argv):
     program_argv['add_FI'] = False
     program_argv['add_FC'] = False
     program_argv['add_LV'] = False
+    program_argv['add_LV'] = 4
     program_argv['packet_drop'] = False
     program_argv['packet_saving'] = False
     program_argv['lat'] = False
@@ -253,6 +256,9 @@ def arg_parser(argv, program_argv):
 
     if '-LV' in argv[1:]:
         program_argv['add_LV'] = True
+
+    if '-LV' in argv[1:]:
+        program_argv['lv_port'] = argv[argv.index('-LV')+1]
         
 
     if '-packet_drop' in argv[1:]:
@@ -414,12 +420,21 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                     + "/counter_threshold.vhd\"\n")
 
             if program_argv['add_LV']:
-                list_of_LV_files = ["arbiter_out.vhd", "allocator_LV.vhd", "FIFO_one_hot_LV_CB.vhd", 
-                                    "LBDR_LV.vhd", "Router_LV_CB.vhd", "xbar_LV.vhd", "packetizer_LV.vhd",
-                                    "TB_Package_LV_CB_multi_flit.vhd"] 
-                for file in list_of_LV_files:
-                    do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network/"\
-                    + file + "\"\n")
+                if program_argv['lv_port'] == 4:
+                    list_of_LV_files = ["arbiter_out.vhd", "allocator_LV.vhd", "FIFO_one_hot_LV_CB.vhd", 
+                                        "LBDR_LV.vhd", "Router_LV_CB.vhd", "xbar_LV.vhd", "packetizer_LV.vhd",
+                                        "TB_Package_LV_CB_multi_flit.vhd"] 
+                    for file in list_of_LV_files:
+                        do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network/"\
+                        + file + "\"\n")
+                elif program_argv['lv_port'] == 2:
+                    list_of_LV_files = ["arbiter_out.vhd", "allocator_LV.vhd", "FIFO_one_hot_LV_CB.vhd", 
+                                        "LBDR_LV.vhd", "Router_LV_CB_2_port.vhd", "xbar_LV.vhd"] 
+                    do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network/packetizer_LV.vhd")
+                    do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network/TB_Package_LV_CB_multi_flit.vhd")
+                    for file in list_of_LV_files:
+                        do_file.write("vcom \"" + PROJECT_ROOT +"/RTL/Fault_Management/Fault_management_network/LW_2_port"\
+                        + file + "\"\n")
 
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd\"\n")
@@ -668,7 +683,7 @@ def main(argv):
         + (" -FO" if program_argv['add_FO'] else "") \
         + (" -FC" if program_argv['add_FC'] else "") \
         + (" -SHMU" if program_argv['add_SHMU'] else "") \
-        + (" -LV" if program_argv['add_LV'] else "") \
+        + (" -LV "+str(program_argv['lv_port']) if program_argv['add_LV'] else "") \
         + " -o " + SIMUL_DIR + "/" + net_file_name
 
     if DEBUG: print_msg(MSG_DEBUG, "Running network generator:\n\t" + net_gen_command)
