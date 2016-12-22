@@ -2,9 +2,10 @@
 import networkx
 import itertools
 import sys
+from display_topology import draw_ag
 
-number_of_ports = 3
-starting_number_of_links = 8
+number_of_ports = 2
+starting_number_of_links = 15
 
 def calculate_reachability(ag): 
 	reachability_counter = 0
@@ -43,17 +44,15 @@ for item in list(itertools.combinations(ag.nodes(), 2)):
 		list_of_edges.append(item)
 
 print "list of all available edges in  a mesh topology:", list_of_edges
-max_dic = {}
-all_edge_lists = {}
-for index in range(1, 5):
-	max_dic[index] = [0, []]
+
 
 if len(list_of_edges) < starting_number_of_links:
 	raise ValueError("starting_number_of_links is bigger than the maximum available links!")
 
 print "starting from ", starting_number_of_links, "links in the network"
-#for i in range(starting_number_of_links, starting_number_of_links+1): 
-for i in range(starting_number_of_links, len(list_of_edges)): 
+counter = 0
+
+for i in range(len(list_of_edges)-1 , starting_number_of_links-1, -1): 
 	print "-------------------------------------------------------------------------------------"
 	print "starting to check lists with", i, "bi-directional links out of ",  len(list_of_edges)
 	chosen_edges = itertools.combinations(list_of_edges, i)
@@ -77,27 +76,11 @@ for i in range(starting_number_of_links, len(list_of_edges)):
 				if number_of_ports == degree:
 					reachability = calculate_reachability(ag)
 
-					if max_dic[degree][0] < reachability:
-						print "found solution with better reachability:", reachability
-						max_dic[degree] = [reachability, edge_list]
-						all_edge_lists[degree] = [edge_list]
-
-					if max_dic[degree][0] == reachability :
-						all_edge_lists[degree].append(edge_list)
+					if reachability == 240:
+						draw_ag(ag, "top_"+str(number_of_ports)+"_"+str(len(edge_list))+"_port_"+str(counter))
+						print "port number:", degree, "with reachability: 240 list of links:", edge_list
+						counter += 1
 
 			del ag 
-	for i in max_dic.keys():
-		if i == number_of_ports:
-			print "port number:", i, "with reachability:", max_dic[i][0] 
+	
 
-print "-------------------------------------------------------------------"
-print "list of best solutios:"
-for i in max_dic.keys():
-	print "port number:", i, "with reachability:", max_dic[i][0], "list of links:", max_dic[i][1] 
-
-print "*************"
-print "all_edge_list:"
-for item in all_edge_lists:
-	print "number of ports:", item
-	for sub_item in all_edge_lists[item]:
-		print sub_item
