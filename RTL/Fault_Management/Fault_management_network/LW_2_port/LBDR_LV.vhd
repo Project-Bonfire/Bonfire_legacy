@@ -28,7 +28,6 @@ end LBDR_LV;
 architecture behavior of LBDR_LV is
 
   signal Cx:  std_logic_vector(3 downto 0);
-  signal Rxy:  std_logic_vector(7 downto 0);
   signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  
   signal N1, E1, W1, S1  :std_logic :='0';  
   signal grants: std_logic;
@@ -37,7 +36,6 @@ begin
  grants <= grant_E or grant_W or grant_L;
 
   Cx       <=  std_logic_vector(to_unsigned(Cx_rst, Cx'length));
-  Rxy      <= std_logic_vector(to_unsigned(Rxy_rst, Rxy'length));
   cur_addr <= std_logic_vector(to_unsigned(cur_addr_rst, cur_addr'length));
 
   N1 <= '1' when  dst_addr(NoC_size-1 downto NoC_size/2) < cur_addr(NoC_size-1 downto NoC_size/2) else '0';
@@ -48,15 +46,15 @@ begin
 
 process(clk, reset)
 begin
-if reset = '0' then 
-  Req_E_FF <= '0';
-  Req_W_FF <= '0';
-  Req_L_FF <= '0';
-elsif clk'event and clk = '1' then 
-  Req_E_FF <= Req_E_in;
-  Req_W_FF <= Req_W_in;
-  Req_L_FF <= Req_L_in;
-end if;
+  if reset = '0' then 
+    Req_E_FF <= '0';
+    Req_W_FF <= '0';
+    Req_L_FF <= '0';
+  elsif clk'event and clk = '1' then 
+    Req_E_FF <= Req_E_in;
+    Req_W_FF <= Req_W_in;
+    Req_L_FF <= Req_L_in;
+  end if;
 end process;
  
 
@@ -68,9 +66,9 @@ Req_L <= Req_L_FF;
 
 process(N1, E1, W1, S1, Rxy, Cx, empty, Req_E_FF, Req_W_FF, Req_L_FF, grants) begin
  if  flit_type = "001" and empty = '0' then
-        Req_E_in <= ((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1);
-        Req_W_in <= ((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2);
-        Req_L_in <= not N1 and  not E1 and not W1 and not S1;
+        Req_E_in <= (S1 or (E1 and not N1)) and Cx(1);
+        Req_W_in <= (N1 or (W1 and not S1)) and Cx(2);
+        Req_L_in <= not N1 and not E1 and not W1 and not S1;
   elsif  ( flit_type = "100" and empty = '0' and grants = '1') then
         Req_E_in <= '0';
         Req_W_in <= '0';
