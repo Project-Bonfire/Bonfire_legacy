@@ -210,25 +210,25 @@ if CB_Package.add_LV:
             node_x = i % CB_Package.network_dime
             node_y = i / CB_Package.network_dime
             if node_y != CB_Package.network_dime-1:
-                if node_y % 2 == 0:
-                    if node_x == CB_Package.network_dime - 1:
-                        noc_file.write("-- connecting router: "+str(i)+" to router: "+str(i+CB_Package.network_dime)+" and vice versa\n")
-                        noc_file.write("RX_LV_E"+str(i)+" <= TX_LV_W"+str(i+CB_Package.network_dime)+";\n")
-                        noc_file.write("RX_LV_W"+str(i+CB_Package.network_dime)+" <= TX_LV_E"+str(i)+";\n")
-                        noc_file.write("valid_in_LV_E"+str(i)+" <= valid_out_LV_W"+str(i+CB_Package.network_dime)+";\n")
-                        noc_file.write("valid_in_LV_W"+str(i+CB_Package.network_dime)+" <= valid_out_LV_E"+str(i)+";\n")
-                        noc_file.write("credit_in_LV_W"+str(i+CB_Package.network_dime)+" <= credit_out_LV_E"+str(i)+";\n")
-                        noc_file.write("credit_in_LV_E"+str(i)+" <= credit_out_LV_W"+str(i+CB_Package.network_dime)+";\n")            
-                else:
+                if node_y % 2 == 1:
                     if node_x == 0:
+                        noc_file.write("-- connecting router: "+str(i)+" to router: "+str(i+CB_Package.network_dime)+" and vice versa\n")
+                        noc_file.write("RX_LV_W"+str(i)+" <= TX_LV_W"+str(i+CB_Package.network_dime)+";\n")
+                        noc_file.write("RX_LV_W"+str(i+CB_Package.network_dime)+" <= TX_LV_W"+str(i)+";\n")
+                        noc_file.write("valid_in_LV_W"+str(i)+" <= valid_out_LV_W"+str(i+CB_Package.network_dime)+";\n")
+                        noc_file.write("valid_in_LV_W"+str(i+CB_Package.network_dime)+" <= valid_out_LV_W"+str(i)+";\n")
+                        noc_file.write("credit_in_LV_W"+str(i+CB_Package.network_dime)+" <= credit_out_LV_W"+str(i)+";\n")
+                        noc_file.write("credit_in_LV_W"+str(i)+" <= credit_out_LV_W"+str(i+CB_Package.network_dime)+";\n")            
+                else:
+                    if node_x == CB_Package.network_dime - 1:
                         noc_file.write("-- connecting router: "+str(i)+" to router: " +
                                        str(i+CB_Package.network_dime)+" and vice versa\n")
-                        noc_file.write("RX_LV_E"+str(i+CB_Package.network_dime)+" <= TX_LV_W"+str(i)+";\n")
-                        noc_file.write("RX_LV_W"+str(i)+" <= TX_LV_E"+str(i+CB_Package.network_dime)+";\n")
-                        noc_file.write("valid_in_LV_E"+str(i+CB_Package.network_dime)+" <= valid_out_LV_W"+str(i)+";\n")
-                        noc_file.write("valid_in_LV_W"+str(i)+" <= valid_out_LV_E"+str(i+CB_Package.network_dime)+";\n")
-                        noc_file.write("credit_in_LV_W"+str(i)+" <= credit_out_LV_E"+str(i+CB_Package.network_dime)+";\n")
-                        noc_file.write("credit_in_LV_E"+str(i+CB_Package.network_dime)+" <= credit_out_LV_W"+str(i)+";\n")
+                        noc_file.write("RX_LV_E"+str(i+CB_Package.network_dime)+" <= TX_LV_E"+str(i)+";\n")
+                        noc_file.write("RX_LV_E"+str(i)+" <= TX_LV_E"+str(i+CB_Package.network_dime)+";\n")
+                        noc_file.write("valid_in_LV_E"+str(i+CB_Package.network_dime)+" <= valid_out_LV_E"+str(i)+";\n")
+                        noc_file.write("valid_in_LV_E"+str(i)+" <= valid_out_LV_E"+str(i+CB_Package.network_dime)+";\n")
+                        noc_file.write("credit_in_LV_E"+str(i)+" <= credit_out_LV_E"+str(i+CB_Package.network_dime)+";\n")
+                        noc_file.write("credit_in_LV_E"+str(i+CB_Package.network_dime)+" <= credit_out_LV_E"+str(i)+";\n")
                         noc_file.write("-------------------\n")
 
         noc_file.write("\n")

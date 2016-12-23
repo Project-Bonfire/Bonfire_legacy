@@ -162,7 +162,8 @@ def instantiate_lv_routers(noc_file, network_dime, number_of_ports):
     for i in range(0, network_dime**2):
         noc_file.write("R_lv_"+str(i)+": router_LV generic map (DATA_WIDTH => DATA_WIDTH_LV, \n"
                        "current_address =>"+str(i)+", Rxy_rst => " + str(rxy_rst_calculator(i)) +
-                       ", Cx_rst =>"+str(cx_rst_calculator(i, network_dime))+", \n NoC_size =>"+str(network_dime)+")")
+                       #", Cx_rst =>"+str(cx_rst_calculator(i, network_dime))+", \n NoC_size =>"+str(network_dime)+")")
+                       ", Cx_rst => 15, \n NoC_size =>"+str(network_dime)+")")
         if number_of_ports == 4 :
             noc_file.write("    PORT MAP (reset, clk, RX_LV_N"+str(i)+", RX_LV_E"+str(i)+", RX_LV_W"+str(i)+", RX_LV_S"+str(i)+", RX_LV_L"+str(i)+",\n ")
             noc_file.write("")

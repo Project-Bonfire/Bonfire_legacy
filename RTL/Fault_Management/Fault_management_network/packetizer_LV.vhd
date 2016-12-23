@@ -30,16 +30,14 @@ architecture behavior of PACKETIZER_LV is
 
  
  
- signal read_pointer, read_pointer_in,  write_pointer, write_pointer_in: std_logic_vector(2 downto 0);
-
- signal credit_counter_in, credit_counter_out: std_logic_vector(1 downto 0);
+ 
+ signal credit_counter_in, credit_counter_out: std_logic;
  
  type STATE_TYPE IS (IDLE, HEADER_FLIT, BODY_FLIT, TAIL_FLIT);
  signal state, state_in   : STATE_TYPE := IDLE;
 
  signal FIFO_MEM_1, FIFO_MEM_1_in : std_logic_vector(14 downto 0);
- signal FIFO_MEM_2, FIFO_MEM_2_in : std_logic_vector(14 downto 0);
- signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(14 downto 0);
+ 
 
  signal memory_input: std_logic_vector(14 downto 0);
  signal FIFO_Data_out: std_logic_vector(14 downto 0);
@@ -51,20 +49,11 @@ begin
 process (clk, reset)begin
         if reset = '0' then
              FIFO_MEM_1 <= (others=>'0');
-             FIFO_MEM_2 <= (others=>'0');
-             FIFO_MEM_3 <= (others=>'0');
-             read_pointer <= "001";
-             write_pointer <= "001";
-             credit_counter_out<="01";
+             credit_counter_out<='1';
              state<=IDLE;
         elsif clk'event and clk = '1' then
-            if all_input_signals = '1' then
-                FIFO_MEM_1 <= FIFO_MEM_1_in;
-                FIFO_MEM_2 <= FIFO_MEM_2_in;
-                FIFO_MEM_3 <= FIFO_MEM_3_in;
-            end if;
-            read_pointer <=  read_pointer_in;
-            write_pointer <=  write_pointer_in;
+             
+            FIFO_MEM_1 <= FIFO_MEM_1_in;
             credit_counter_out <=  credit_counter_in;
             state <= state_in;
         end if;
@@ -78,50 +67,36 @@ memory_input <= healthy_link_N & healthy_link_E & healthy_link_W & healthy_link_
                 faulty_link_N & faulty_link_E & faulty_link_W & faulty_link_S & faulty_link_L & intermittent_link_N & 
                 intermittent_link_E & intermittent_link_W & intermittent_link_S & intermittent_link_L;
 
-process(all_input_signals)begin
-    if  all_input_signals = '1' then
-        write_pointer_in <= write_pointer(0) & write_pointer(2 downto 1); 
-    else
-        write_pointer_in <= write_pointer; 
+
+process(all_input_signals,  FIFO_MEM_1, memory_input)begin
+    if all_input_signals = '1' then
+        FIFO_MEM_1_in <= memory_input; 
+    else 
+        FIFO_MEM_1_in <= FIFO_MEM_1; 
     end if;
 end process;
 
-process(memory_input, write_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3)begin
-      case( write_pointer ) is
-          when "001" => FIFO_MEM_1_in <= memory_input; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; 
-          when "010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= memory_input; FIFO_MEM_3_in <= FIFO_MEM_3; 
-          when "100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= memory_input; 
-          when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3;  
-      end case ;
-end process;
+FIFO_Data_out <= FIFO_MEM_1;
 
-process(read_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3) begin
- case( read_pointer ) is
-        when "001" => FIFO_Data_out <= FIFO_MEM_1;
-        when "010" => FIFO_Data_out <= FIFO_MEM_2;
-        when "100" => FIFO_Data_out <= FIFO_MEM_3;
-        when others => FIFO_Data_out <= FIFO_MEM_1; 
-end case ;
-end process;
 
 process (credit_in_LV, credit_counter_out, grant)begin
-    credit_counter_in <= credit_counter_out;
-    if credit_in_LV = '1' and credit_counter_out < 1 then 
-        credit_counter_in <= credit_counter_out + 1;
-    elsif grant = '1' then
-        credit_counter_in <= credit_counter_out - 1;
+    if credit_in_LV = '1' and grant  = '0' then 
+        credit_counter_in <= '1';
+    elsif credit_in_LV = '0' and grant = '1'then
+        credit_counter_in <= '0';
+    else
+        credit_counter_in <= credit_counter_out;
     end if;
 end process;
 
 
-process(all_input_signals, state, read_pointer, credit_counter_out)
+process(all_input_signals, state, credit_counter_out, FIFO_Data_out)
     variable LINEVARIABLE : line; 
     file VEC_FILE : text is out "LV_sent.txt";
     begin
         TX_LV <= (others => '0');
         grant<= '0';
-        read_pointer_in <=  read_pointer;
-        case(state) is
+         case(state) is
         
             when IDLE =>
                 if all_input_signals= '1' then
@@ -131,7 +106,7 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
                 end if;
  
             when HEADER_FLIT =>
-                if credit_counter_out /= "00" then
+                if credit_counter_out /= '0' then
                     grant <= '1';
                     TX_LV <= std_logic_vector(to_unsigned(current_address, 4))  & std_logic_vector(to_unsigned(SHMU_address, 4)) &  "001";
                     state_in <= BODY_FLIT;
@@ -141,7 +116,7 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
                 
 
             when BODY_FLIT =>
-                if credit_counter_out /= "00" then
+                if credit_counter_out /= '0' then
                     grant <= '1';
                     TX_LV <= FIFO_Data_out(7 downto 0) &  "010";
                     state_in <= TAIL_FLIT;
@@ -150,11 +125,10 @@ process(all_input_signals, state, read_pointer, credit_counter_out)
                 end if;
 
             when TAIL_FLIT =>
-                if credit_counter_out /= "00" then
+                if credit_counter_out /= '0' then
                     grant <= '1';
                     TX_LV <=  '0'& FIFO_Data_out(14 downto 8) &  "100";
                     state_in <= IDLE;
-                    read_pointer_in <=  read_pointer(0) & read_pointer(2 downto 1);    
                     write(LINEVARIABLE, "LV_Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(SHMU_address) & " with length: 3");
                     writeline(VEC_FILE, LINEVARIABLE);
                 else

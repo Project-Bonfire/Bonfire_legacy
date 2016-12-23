@@ -46,7 +46,7 @@ begin
   W1 <= '1' when  dst_addr((NoC_size/2)-1 downto 0) < cur_addr((NoC_size/2)-1 downto 0) else '0';
   S1 <= '1' when  cur_addr(NoC_size-1 downto NoC_size/2) < dst_addr(NoC_size-1 downto NoC_size/2) else '0';
 
-
+  
 process(clk, reset)
 begin
   if reset = '0' then 
@@ -69,9 +69,16 @@ Req_L <= Req_L_FF;
 
 process(N1, E1, W1, S1, Cx, empty, Req_E_FF, Req_W_FF, Req_L_FF, grants) begin
  if  flit_type = "001" and empty = '0' then
+    if cur_addr (NoC_size-1)  = '1' then
+        Req_E_in <= (N1 or (E1 and not S1)) and Cx(1);
+        Req_W_in <= (S1 or (W1 and not N1)) and Cx(2);
+        Req_L_in <= not N1 and not E1 and not W1 and not S1;
+    else 
         Req_E_in <= (S1 or (E1 and not N1)) and Cx(1);
         Req_W_in <= (N1 or (W1 and not S1)) and Cx(2);
         Req_L_in <= not N1 and not E1 and not W1 and not S1;
+    end if;
+
   elsif  ( flit_type = "100" and empty = '0' and grants = '1') then
         Req_E_in <= '0';
         Req_W_in <= '0';
