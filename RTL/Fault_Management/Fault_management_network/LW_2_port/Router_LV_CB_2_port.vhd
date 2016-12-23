@@ -71,7 +71,6 @@ architecture behavior of router_LV is
 	COMPONENT LBDR_LV is
     generic (
         cur_addr_rst: integer := 0;
-        Rxy_rst: integer := 60;
         Cx_rst: integer := 8;
         NoC_size: integer := 4
     );
@@ -79,7 +78,6 @@ architecture behavior of router_LV is
             clk: in  std_logic;
             empty: in  std_logic; 
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
-            packet_info: in std_logic;
             flit_type: in std_logic_vector(2 downto 0);
 	        grant_E, grant_W, grant_L: in std_logic;
             Req_E, Req_W, Req_L:out std_logic
@@ -152,18 +150,18 @@ FIFO_L: FIFO_LV
 
 -- all the LBDRs
 
-LBDR_E: LBDR_LV generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_E, dst_addr=> FIFO_D_out_E(3+NoC_size-1 downto 3) , packet_info => FIFO_D_out_E(3), flit_type=> FIFO_D_out_E(2 downto 0),
+LBDR_E: LBDR_LV generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
+   PORT MAP (reset =>  reset, clk => clk, empty => empty_E, dst_addr=> FIFO_D_out_E(3+NoC_size-1 downto 3) , flit_type=> FIFO_D_out_E(2 downto 0),
              grant_E =>'0', grant_W => Grant_WE, grant_L =>Grant_LE,
              Req_E=>Req_EE, Req_W=>Req_EW, Req_L=>Req_EL);
 
-LBDR_W: LBDR_LV generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_W,  dst_addr=> FIFO_D_out_W(3+NoC_size-1 downto 3) , packet_info => FIFO_D_out_W(3), flit_type=> FIFO_D_out_W(2 downto 0),
+LBDR_W: LBDR_LV generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
+   PORT MAP (reset =>  reset, clk => clk, empty => empty_W,  dst_addr=> FIFO_D_out_W(3+NoC_size-1 downto 3) , flit_type=> FIFO_D_out_W(2 downto 0),
              grant_E =>Grant_EW, grant_W =>'0', grant_L =>Grant_LW,
              Req_E=>Req_WE, Req_W=>Req_WW, Req_L=>Req_WL);
 
-LBDR_L: LBDR_LV generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_L, dst_addr=> FIFO_D_out_L(3+NoC_size-1 downto 3) , packet_info => FIFO_D_out_L(3), flit_type=> FIFO_D_out_L(2 downto 0),
+LBDR_L: LBDR_LV generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
+   PORT MAP (reset =>  reset, clk => clk, empty => empty_L, dst_addr=> FIFO_D_out_L(3+NoC_size-1 downto 3), flit_type=> FIFO_D_out_L(2 downto 0),
              grant_E =>Grant_EL, grant_W => Grant_WL, grant_L => Grant_LL,
              Req_E=>Req_LE, Req_W=>Req_LW, Req_L=>Req_LL);
 

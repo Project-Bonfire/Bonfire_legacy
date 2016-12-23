@@ -10,7 +10,6 @@ use IEEE.MATH_REAL.ALL;
 entity LBDR_LV is
     generic (
         cur_addr_rst: integer := 8;
-        Rxy_rst: integer := 8;
         Cx_rst: integer := 8;
         NoC_size: integer := 4
     );
@@ -18,7 +17,6 @@ entity LBDR_LV is
             clk: in  std_logic;
             empty: in  std_logic;
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
-            packet_info: in std_logic;
             flit_type: in std_logic_vector(2 downto 0);
 	          grant_E, grant_W, grant_L: in std_logic;
             Req_E, Req_W, Req_L:out std_logic
