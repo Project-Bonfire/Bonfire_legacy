@@ -17,10 +17,23 @@
 #ifndef __PLASMA_H__
 #define __PLASMA_H__
 
+/************ Clock Calculation ***********/
+#define F_CPU       1000000000UL //1Ghz, for simulation
+
+#define CLK_PERIOD_NS   (1000000000UL / F_CPU)
+#define LENGTH_OF_US    (1000 / CLK_PERIOD_NS)
+
+/********** Counter Calculation ***********/
+#define COUNTER_MAX     262144
+#define US_INIT_VALUE   (COUNTER_MAX - LENGTH_OF_US)
+
 /************ Type definitions ************/
 typedef unsigned int   uint32;
 typedef unsigned short uint16;
 typedef unsigned char  uint8;
+
+/*********** Global Variables *************/
+//unsigned int us_counter;
 
 /***** Functions for accessing memory *****/
 #define memory_read(A) (*(volatile unsigned int*)(A))

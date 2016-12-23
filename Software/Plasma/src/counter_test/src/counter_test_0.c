@@ -1,20 +1,25 @@
-#include "../../../lib/bonfire.h"
-#include "../../../lib/packets.h"
-#include "../../../lib/uart.h"
+#include "bonfire.h"
+#include "plasma.h"
+#include "uart.h"
 
-BONFIRE_MAIN()
+unsigned int us_counter;
+
+int main()
 {
-    uart_puts("Node 0 started.\n");
-    int test = 0;
+    us_counter = 5;
 
-    BONFIRE_LOOP()
+    memory_write(IRQ_MASK, IRQ_COUNTER18);
+    memory_write(COUNTER_REG, US_INIT_VALUE);
+
+    OS_AsmInterruptEnable(1);
+
+
+
+    while (1)
     {
-        bonfire_send(build_header(1,3));
-        test++;
-        bonfire_send(test);
-        test++;
-        bonfire_send(test);
+        //uart_print_hex(us_counter);
+        //uart_putchar('\n');
+        us_counter++;
     }
-
-    BONFIRE_RET();
+    return 0;
 }
