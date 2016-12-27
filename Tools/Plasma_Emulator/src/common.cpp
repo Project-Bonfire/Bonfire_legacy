@@ -12,3 +12,13 @@
  *--------------------------------------------------------------------*/
 
 #include "common.h"
+/*
+std::queue<Message<Type_cmd>> command_queue;
+std::mutex command_mutex;
+volatile bool command_lock = false;
+//std::condition_variable command_cond;
+
+std::queue<Message<Type_txt>> msg_queue;
+std::mutex msg_mutex;
+volatile bool msg_lock = false;
+*/

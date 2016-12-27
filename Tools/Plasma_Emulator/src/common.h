@@ -16,27 +16,14 @@
 
 #include <iostream>
 #include <cstdint>
+#include <queue>
+#include <condition_variable>
+#include <mutex>
+#include "message.h"
 
-enum class Cmd_type
-{
-    cmd_none,
-    cmd_exit,
-    cmd_asm
-};
-
-enum class Cmd_status
-{
-    set,
-    reset
-};
-
-struct Command_storage
-{
-    Cmd_type    Type;
-    Cmd_status  Status;
-};
-
-
+/**
+ * Global Defines
+ */
 #define SIGNED    1
 #define UNSIGNED  0
 
@@ -48,5 +35,18 @@ struct Command_storage
 #define HWORD_LENGTH    2
 #define WORD_LENGTH     4
 
+/**
+ * Threading Related Variables
+ */
+/*
+extern std::queue<Message<Type_cmd>> command_queue;
+extern std::mutex command_mutex;
+extern volatile bool command_lock;
+//extern std::condition_variable command_cond;
+
+extern std::queue<Message<Type_txt>> msg_queue;
+extern std::mutex msg_mutex;
+extern volatile bool msg_lock;
+*/
 
 #endif //__COMMON_H__

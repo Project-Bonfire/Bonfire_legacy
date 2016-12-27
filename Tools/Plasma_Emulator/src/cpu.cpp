@@ -11,6 +11,7 @@
  *--------------------------------------------------------------------*/
 
 #include <iostream>
+#include "message.h"
 #include "common.h"
 #include "cpu.h"
 #include "memory.h"
@@ -18,12 +19,14 @@
 
 using namespace std;
 
-Cpu::Cpu(struct Command_storage &command) : command_storage(command)
+Cpu::Cpu()
 {
     exit_signal = false;
 }
 
-void Cpu::execute(){}
+void Cpu::execute()
+{
+}
 
 void Cpu::run()
 {
@@ -32,23 +35,36 @@ void Cpu::run()
 
     Memory reg_bank(32, MEM_TYPE_REG_BANK);
 
+    //Message<Type_cmd> message;
 
     while (!exit_signal)
     {
-        if (command_storage.Status == Cmd_status::set)
+
+        /*if (command_lock == true)
         {
-            switch (command_storage.Type)
+            command_mutex.lock();
+            message = command_queue.front();
+            command_queue.pop();
+            command_mutex.unlock();
+
+            cout << message.param << endl;
+
+            command_lock = false;
+
+            switch (message.type)
             {
-                case Cmd_type::cmd_exit:
+                case Type_cmd::cmd_exit:
                     exit_signal = true;
                     break;
-                case Cmd_type::cmd_asm:
-                    cout << "ASM cmd" << endl;
+                case Type_cmd::cmd_asm:
+                    cout << "ASM cmd: " << message.param << endl;
+                    break;
                 default:
+                    cout << "def" << endl;
                     break;
             }
-            command_storage.Status = Cmd_status::reset;
-        }
+        }*/
+
     }
     cout << "cpu out" << endl;
 }

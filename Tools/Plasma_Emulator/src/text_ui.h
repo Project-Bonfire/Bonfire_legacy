@@ -14,21 +14,18 @@
 #define __TEXT_UI_H__
 
 #include <string>
-#include <map>
+#include "ui.h"
+#include "message.h"
 
-using namespace std;
-
-class TextUI
+class TextUI : public UI
 {
+private:
+    Message process_command(std::string command, std::string param);
 
 public:
-    TextUI(struct Command_storage &command);
-    void cmd();
-private:
-    void extract_command(string line, string &command, string &param);
-    void process_command(string command, string param);
-    Command_storage& command_storage;
-    bool exit_signal;
+    TextUI();
+    Message get_command();
+    void display_msg(int msg_type, std::string message, std::string title = "");
 };
 
 #endif //__TEXT_UI_H__
