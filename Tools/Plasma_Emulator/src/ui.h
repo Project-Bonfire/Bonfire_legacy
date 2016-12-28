@@ -24,29 +24,32 @@
 class UI
 {
 private:
-    /* Display reg/mem contents */
-    void read_reg(unsigned reg_num) {};
-    void read_mem_addr(unsigned addr) {};
-
-    void read_reg_bank() {};
-    void read_mem() {};
 
 public:
+
+    /* Communication with other parts of the system */
     virtual Message get_command() = 0;
     virtual void display_msg(int msg_type, std::string message, std::string title = "") = 0;
 
+    /* Display reg/mem contents */
+    uint32_t read_reg(uint32_t reg_num);
+    uint32_t read_mem(uint32_t addr);
+
+    uint32_t read_reg_bank();
+    uint32_t read_mem_all();
+
     /* Set reg / mem contents */
-    void set_reg(unsigned reg_num) {};
-    void set_mem(unsigned addr) {};
+    void set_reg(uint32_t reg_num, uint32_t value);
+    void set_mem(uint32_t addr, uint32_t value);
 
-    void mm_io_read() {};
-    void mm_io_write() {};
+    void mm_io_read();
+    void mm_io_write();
 
-    void get_last_command() {};
+    void get_last_command();
 
-    void set_breakpoint() {};
-    void list_breakpoints() {};
-    void del_breakpoint() {};
+    void set_breakpoint();
+    void list_breakpoints();
+    void del_breakpoint();
 };
 
 #endif //__UI_H__

@@ -19,6 +19,8 @@
 #include "text_ui.h"
 #include "message.h"
 #include "wv_except.h"
+#include "ui.h"
+#include <boost/lexical_cast.hpp>
 
 using namespace std;
 
@@ -39,54 +41,125 @@ TextUI::TextUI()
 }
 
 /**
+ * Extracts a command and its parameters from an user imput
+ * @param line    User input
+ * @param command Reference to an object for storing the command.
+ * @param param   Reference to an object for storing the command's parameters
+ */
+void TextUI::extract_command(string line, string& command, string& param)
+{
+    stringstream ss;
+
+    ss.str(line);
+    getline(ss, command, ' ');
+    getline(ss, param);
+}
+
+/**
  * Executes the command or sends it to the higher layer,
  * based on the command type.
+ * @param  message A reference to a Message object where the information will be
+ *                 stored in case it needs to be sent to the calling function.
  * @param  command The command the user enteres
  * @param  param   String with all the other data
  *                 the command had after the space
- * @return         The command to the top level
+ * @return         True if the command needs to be sent to the calling function,
+ *                      false if it was handled locally.
  */
-Message TextUI::process_command(string command, string param)
+bool TextUI::process_command(Message& message, string command, string param)
 {
-    Message message;
 
     /* Control messages */
     if (command == "exit" || command == "quit")
     {
         message.build(Msg_type::cmd_exit, "");
+
+        return true;
     }
 
     else if (command == "asm")
     {
         message.build(Msg_type::cmd_asm, param);
+
+        return true;
     }
 
     else if (command == "bp")
     {
         message.build(Msg_type::cmd_bp, param);
+
+        return true;
     }
 
     else if (command == "load")
     {
         message.build(Msg_type::cmd_load, param);
+
+        return true;
     }
 
     else if (command == "run")
     {
         message.build(Msg_type::cmd_run, param);
+
+        return true;
     }
 
     else if (command == "pause")
     {
         message.build(Msg_type::cmd_pause, param);
+
+        return true;
+    }
+
+    /* Locally handled messages */
+    else if (command == "read_reg")
+    {
+        try
+        {
+            /* Read a register and display its contents on the screen */
+            if (param != "")
+            {
+                auto data = UI::read_reg(boost::lexical_cast<uint32_t>(param));
+                display_msg(MSG_INFO, to_string(data), "Contents of register " + param + ":");
+            }
+            else
+            {
+                display_msg(MSG_ERR, "Please specify a register number to read!");
+            }
+        }
+        catch (...) { throw; }
+
+        return false;
+    }
+
+    else if (command == "read_mem")
+    {
+        try
+        {
+            /* Read a memory address and display its contents on the screen */
+            if (param != "")
+            {
+                auto data = UI::read_mem(boost::lexical_cast<uint32_t>(param));
+                display_msg(MSG_INFO, to_string(data), "Contents of memeory address " + param + ":");
+            }
+            else
+            {
+                display_msg(MSG_ERR, "Please specify a memory address to read!");
+            }
+        }
+        catch (...) { throw; }
+
+        return false;
     }
 
     else
     {
         display_msg(MSG_ERR, "Error! Command \'" + command + "\' not recognized!");
+
+        return false;
     }
 
-    return message;
 }
 
 /**
@@ -133,24 +206,28 @@ Message TextUI::get_command()
     string line;
     string command;
     string param;
-    stringstream ss;
     Message message;
 
-    try
+    while (1)
     {
-        getline (cin, line);
+        try
+        {
+            /* Read a line from the console */
+            getline (cin, line);
+            extract_command(line, command, param);
+        }
+        catch (...) { throw; }
 
-        ss.str(line);
-        getline(ss, command, ' ');
-        getline(ss, param);
+       /*
+        * If we got a command that is needed to be sent to the main(),
+        * return, otherwize continue.
+        */
 
-        message = process_command(command, param);
-    }
-
-    catch (...)
-    {
-        throw;
+        auto result = process_command(message, command, param);
+        if (result == true)
+        {
+            break;
+        }
     }
     return message;
-
 }

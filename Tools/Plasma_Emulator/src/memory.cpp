@@ -1,5 +1,5 @@
 /*-------------------------------------------------------------------
--- TITLE: A gemory class for Plasma MIPS simulator
+-- TITLE: A memory class for Plasma MIPS simulator
 -- AUTHOR: Karl Janson (karl.janson@ati.ttu.ee)
 -- DATE CREATED: 04.12.16
 -- FILENAME: memory.cpp
@@ -20,13 +20,43 @@
 using namespace std;
 
 /**
+ * Get size of the current memory object
+ * @return Size of the current memory object (in cells)
+ */
+uint32_t Memory::get_size()
+{
+    return size;
+}
+
+/**
+ * Get type of the current memory object.
+ * @return Type of the current memory object
+ */
+Mem_Type Memory::get_type()
+{
+    return type;
+}
+
+/**
  * Creates a memory.
  * @param   memory_size     Size of the memory to be created
  */
-Memory::Memory(uint32_t memory_size, int mem_type)
+Memory::Memory(uint32_t memory_size, Mem_Type mem_type)
 {
     type = mem_type;
-    memory = (uint32_t *)malloc(sizeof(uint32_t)*memory_size);
+
+    try
+    {
+        /* Allocate memory */
+        memory = new uint32_t[memory_size];
+    }
+    catch (bad_alloc& ba)
+    {
+        cerr << endl << "Memory allocation failed for virtual " << \
+        ((type == Mem_Type::ram) ? "RAM!" : "register file!") << endl << endl;
+
+        throw;
+    }
 }
 
 /**
@@ -34,7 +64,7 @@ Memory::Memory(uint32_t memory_size, int mem_type)
  */
 Memory::~Memory()
 {
-    free(memory);
+    delete[] memory;
 }
 
 /**
@@ -44,7 +74,19 @@ Memory::~Memory()
  */
 void Memory::write(uint32_t address, uint32_t value)
 {
-    memory[address] = value;
+    try
+    {
+        memory[address] = value;
+    }
+    catch (out_of_range& oor)
+    {
+        cerr << endl << "Memory write failed for virtual " << \
+            ((type == Mem_Type::ram) ? "RAM!" : "register file!") << \
+            " Address was " << address << " This is out of range. " << endl \
+            << endl;
+
+        throw;
+    }
 }
 
 /**
@@ -55,12 +97,23 @@ void Memory::write(uint32_t address, uint32_t value)
 uint32_t Memory::read(uint32_t address)
 {
     // Register 0 of MIPS always returns 0.
-    if (type == MEM_TYPE_REG_BANK)
+    if ((type == Mem_Type::reg_bank) && (address == 0))
     {
         return 0;
     }
     else
     {
-        return memory[address];
+        try
+        {
+            return memory[address];
+        }
+        catch (out_of_range& oor)
+        {
+            cerr << endl << "Memory read failed for virtual " << \
+                ((type == Mem_Type::ram) ? "RAM!" : "register file!") << \
+                " Address was " << address << " This is out of range. " << endl \
+                << endl;
+            throw;
+        }
     }
 }

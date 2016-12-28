@@ -12,6 +12,25 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
+
+    try
+    {
+        state = new CPU_State(AMOUNT_OF_RAM, AMOUNT_OF_REGS);
+    }
+    catch (exception& e)
+    {
+        cerr << "Cannot create CPU state variable! " << \
+            "(Illegal amount of RAM / Registers specified in the configuration?)" \
+            << endl << endl;
+        terminate();
+    }
+
+    /* TODO: Remove. For debugging only */
+    state->reg_bank->write(0, 55);
+    state->reg_bank->write(3, 42);
+
+    state->ram->write(12, 34);
+    
     /* For UI */
     TextUI ui;
     std::future<Message> ui_command;

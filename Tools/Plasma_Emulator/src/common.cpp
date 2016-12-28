@@ -12,6 +12,8 @@
  *--------------------------------------------------------------------*/
 
 #include "common.h"
+
+CPU_State* state;
 /*
 std::queue<Message<Type_cmd>> command_queue;
 std::mutex command_mutex;

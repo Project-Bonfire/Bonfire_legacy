@@ -20,6 +20,13 @@
 #include <condition_variable>
 #include <mutex>
 #include "message.h"
+#include "cpu_state.h"
+
+/**
+ * Configuration
+ */
+#define AMOUNT_OF_RAM   1024    // Amount of 32-bit memory cells
+#define AMOUNT_OF_REGS  32      // Amount of 32-bit registers
 
 /**
  * Global Defines
@@ -27,13 +34,18 @@
 #define SIGNED    1
 #define UNSIGNED  0
 
-#define BYTE_MASK   0xFF
-#define HWORD_MASK   0xFFFF
+#define BYTE_MASK       0xFF
+#define HWORD_MASK      0xFFFF
 #define SIGN_MASK_32    0x80000000
 
 #define BYTE_LENGTH     1
 #define HWORD_LENGTH    2
 #define WORD_LENGTH     4
+
+/**
+ * CPU state object
+ */
+extern CPU_State* state;
 
 /**
  * Threading Related Variables

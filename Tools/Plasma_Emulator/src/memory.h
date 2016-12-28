@@ -1,5 +1,5 @@
 /*-------------------------------------------------------------------
--- TITLE: A gemory class for Plasma MIPS simulator
+-- TITLE: A memory class for Plasma MIPS simulator
 -- AUTHOR: Karl Janson (karl.janson@ati.ttu.ee)
 -- DATE CREATED: 04.12.16
 -- FILENAME: memory.h
@@ -17,22 +17,31 @@
 
 #include "common.h"
 
-#define MEM_TYPE_RAM        0
-#define MEM_TYPE_REG_BANK   1
+enum class Mem_Type
+{
+    ram,
+    reg_bank
+};
 
 class Memory
 {
-    public:
-      Memory(uint32_t memory_size, int mem_type);
-      ~Memory();
 
-      void write(uint32_t address, uint32_t value);
+public:
+    Memory(uint32_t memory_size, Mem_Type mem_type);
+    ~Memory();
 
-      uint32_t read(uint32_t address);
+    void write(uint32_t address, uint32_t value);
 
-    private:
-      int type;
-      uint32_t *memory;
+    uint32_t read(uint32_t address);
+
+    uint32_t get_size();
+    Mem_Type get_type();
+
+private:
+    Mem_Type type;
+    uint32_t *memory;
+    uint32_t size;
+
 };
 
 #endif //__MEMORY_H__

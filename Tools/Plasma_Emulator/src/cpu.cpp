@@ -31,9 +31,9 @@ void Cpu::execute()
 void Cpu::run()
 {
 
-    Memory ram(1024, MEM_TYPE_RAM);
+    //Memory ram(1024, MEM_TYPE_RAM);
 
-    Memory reg_bank(32, MEM_TYPE_REG_BANK);
+    //Memory reg_bank(32, MEM_TYPE_REG_BANK);
 
     //Message<Type_cmd> message;
 
