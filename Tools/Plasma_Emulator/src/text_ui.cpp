@@ -10,6 +10,7 @@
  *    Text user interface
  *--------------------------------------------------------------------*/
 
+#include <boost/lexical_cast.hpp>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -20,7 +21,6 @@
 #include "command.h"
 #include "wv_except.h"
 #include "ui.h"
-#include <boost/lexical_cast.hpp>
 
 using namespace std;
 
@@ -41,87 +41,47 @@ TextUI::TextUI()
 }
 
 /**
- * Extracts a command and its parameters from an user imput
- * @param line    User input
- * @param command Reference to an object for storing the command.
- * @param param   Reference to an object for storing the command's parameters
+ * Extracts a command from the user input and generated a Command object.
+ * @param  line Line input from the user
+ * @return      Produced command object
  */
-void TextUI::extract_command(string line, string& command, string& param)
+Command TextUI::extract_command(string line)
 {
+    Command command;
     stringstream ss;
 
     ss.str(line);
-    getline(ss, command, ' ');
-    getline(ss, param);
+
+    /* Extract all space seperated words from line and put the in the command object */
+    while (! ss.eof())
+    {
+        getline(ss, line, ' ');
+        command.push_back(line);
+    }
+
+    return command;
 }
 
 /**
- * Executes the command or sends it to the higher layer,
- * based on the command type.
- * @param  Command A reference to a Command object where the information will be
- *                 stored in case it needs to be sent to the calling function.
- * @param  command The command the user enteres
- * @param  param   String with all the other data
- *                 the command had after the space
- * @return         True if the command needs to be sent to the calling function,
- *                      false if it was handled locally.
+* Executes the command or sends it to the higher layer,
+* based on the command type.
+ * @param  command The Command object to work on
+ * @return         False if the command needs to be sent to the calling function,
+ *                      true if it was handled locally.
  */
-bool TextUI::process_command(Command& Command, string command, string param)
+bool TextUI::process_command(Command& command)
 {
 
-    /* Control Commands */
-    if (command == "exit" || command == "quit")
-    {
-        Command.build(Msg_type::cmd_exit, "");
-
-        return true;
-    }
-
-    else if (command == "asm")
-    {
-        Command.build(Msg_type::cmd_asm, param);
-
-        return true;
-    }
-
-    else if (command == "bp")
-    {
-        Command.build(Msg_type::cmd_bp, param);
-
-        return true;
-    }
-
-    else if (command == "load")
-    {
-        Command.build(Msg_type::cmd_load, param);
-
-        return true;
-    }
-
-    else if (command == "run")
-    {
-        Command.build(Msg_type::cmd_run, param);
-
-        return true;
-    }
-
-    else if (command == "pause")
-    {
-        Command.build(Msg_type::cmd_pause, param);
-
-        return true;
-    }
-
     /* Locally handled Commands */
-    else if (command == "read_reg")
+    if (command.get_head() == "read_reg")
     {
         try
         {
             /* Read a register and display its contents on the screen */
-            if (param != "")
+            if (command.body_size() != 0)
             {
-                auto data = UI::read_reg(boost::lexical_cast<uint32_t>(param));
-                display_msg(MSG_INFO, to_string(data), "Contents of register " + param + ":");
+                auto data = UI::read_reg(boost::lexical_cast<uint32_t>(command.get_body()[0]));
+                display_msg(MSG_INFO, to_string(data), "Contents of register " + command.get_body()[0] + ":");
             }
             else
             {
@@ -130,18 +90,18 @@ bool TextUI::process_command(Command& Command, string command, string param)
         }
         catch (...) { throw; }
 
-        return false;
+        return true;
     }
 
-    else if (command == "read_mem")
+    else if (command.get_head() == "read_mem")
     {
         try
         {
             /* Read a memory address and display its contents on the screen */
-            if (param != "")
+            if (command.body_size() != 0)
             {
-                auto data = UI::read_mem(boost::lexical_cast<uint32_t>(param));
-                display_msg(MSG_INFO, to_string(data), "Contents of memeory address " + param + ":");
+                auto data = UI::read_mem(boost::lexical_cast<uint32_t>(command.get_body()[0]));
+                display_msg(MSG_INFO, to_string(data), "Contents of memeory address " + command.get_body()[0] + ":");
             }
             else
             {
@@ -150,13 +110,11 @@ bool TextUI::process_command(Command& Command, string command, string param)
         }
         catch (...) { throw; }
 
-        return false;
+        return true;
     }
 
     else
     {
-        display_msg(MSG_ERR, "Error! Command \'" + command + "\' not recognized!");
-
         return false;
     }
 
@@ -203,10 +161,8 @@ void TextUI::display_msg(int msg_type, std::string Command, std::string title)
  */
 Command TextUI::get_command()
 {
+    Command command;
     string line;
-    string command;
-    string param;
-    Command Command;
 
     while (1)
     {
@@ -214,7 +170,7 @@ Command TextUI::get_command()
         {
             /* Read a line from the console */
             getline (cin, line);
-            extract_command(line, command, param);
+            command = extract_command(line);
         }
         catch (...) { throw; }
 
@@ -223,11 +179,12 @@ Command TextUI::get_command()
         * return, otherwize continue.
         */
 
-        auto result = process_command(Command, command, param);
-        if (result == true)
+        auto cmd_processed_locally = process_command(command);
+
+        if (! cmd_processed_locally)
         {
             break;
         }
     }
-    return Command;
+    return command;
 }

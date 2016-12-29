@@ -20,8 +20,8 @@
 class TextUI : public UI
 {
 private:
-    bool process_command(Command& Command, std::string command, std::string param);
-    void extract_command(std::string line, std::string& command, std::string& param);
+    bool process_command(Command& Command);
+    Command extract_command(std::string line);
 
 public:
     TextUI();

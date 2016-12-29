@@ -63,9 +63,6 @@ public:
         contents = v;
         contents.insert(contents.begin(), head);
     }
-
-    /* Process the message */
-    virtual void process() {}
 };
 
 #endif //__MESSAGE_H__

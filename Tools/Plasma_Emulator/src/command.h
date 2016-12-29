@@ -15,38 +15,13 @@
 #define __COMMAND_H__
 
 #include <string>
+#include <iostream>
+#include "message.h"
 
-enum class Msg_type
-{
-    /* Commands */
-    cmd_none,
-    cmd_exit,
-    cmd_asm,
-    cmd_bp,
-    cmd_load,
-    cmd_run,
-    cmd_pause,
-
-    /* Text */
-    txt_info,
-    txt_debug,
-    txt_warn,
-    txt_err
-};
-
-class Command
+class Command : public Message
 {
 public:
-  Msg_type type;
-  std::string param;
-
-  Command(){}
-
-  void build(Msg_type m_type, std::string parameters = "")
-  {
-    type = m_type;
-    param = parameters;
-  }
+    void execute () { std::cout << "exec" << std::endl; };
 };
 
 #endif //__COMMAND_H__

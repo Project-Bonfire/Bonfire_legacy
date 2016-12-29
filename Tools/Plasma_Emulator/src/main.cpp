@@ -30,7 +30,7 @@ int main(int argc, char const *argv[]) {
     state->reg_bank->write(3, 42);
 
     state->ram->write(12, 34);
-    
+
     /* For UI */
     TextUI ui;
     std::future<Command> ui_command;
@@ -50,40 +50,45 @@ int main(int argc, char const *argv[]) {
             {
                 auto command = ui_command.get();
 
+                /* TODO: Just for testing */
+                command.execute();
+
                 /* Process command */
-                switch (command.type)
+                if (command.get_head() == "exit")
                 {
-                    case Msg_type::cmd_exit:
-
                     exit_signal = true;
-                    break;
-
-                    case Msg_type::cmd_asm:
-                    ui.display_msg(MSG_DEBUG, "Command not implemented!", "Stub");
-                    break;
-
-                    case Msg_type::cmd_bp:
-                    ui.display_msg(MSG_DEBUG, "Command not implemented!", "Stub");
-                    break;
-
-                    case Msg_type::cmd_load:
-                    ui.display_msg(MSG_DEBUG, "Command not implemented!", "Stub");
-                    break;
-
-                    case Msg_type::cmd_run:
-                    ui.display_msg(MSG_DEBUG, "Command not implemented!", "Stub");
-                    break;
-
-                    case Msg_type::cmd_pause:
-                    ui.display_msg(MSG_DEBUG, "Command not implemented!", "Stub");
-                    break;
-
-                    case Msg_type::cmd_none:
-                    break;
-
-                    default:
-                    break;
                 }
+
+                else if (command.get_head() == "asm")
+                {
+                    ui.display_msg(MSG_DEBUG, "Command not implemented!", "Stub");
+                }
+
+                else if (command.get_head() == "pb")
+                {
+                    ui.display_msg(MSG_DEBUG, "Command not implemented!", "Stub");
+                }
+
+                else if (command.get_head() == "load")
+                {
+                    ui.display_msg(MSG_DEBUG, "Command not implemented!", "Stub");
+                }
+
+                else if (command.get_head() == "run")
+                {
+                    ui.display_msg(MSG_DEBUG, "Command not implemented!", "Stub");
+                }
+
+                else if (command.get_head() == "pause")
+                {
+                    ui.display_msg(MSG_DEBUG, "Command not implemented!", "Stub");
+                }
+
+                else
+                {
+                    ui.display_msg(MSG_ERR, "Error! Command \'" + command.get_head() + "\' not recognized!");
+                }
+
 
                 if (exit_signal)
                 {
