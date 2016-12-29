@@ -15,19 +15,23 @@
 #ifndef __MEMORY_H__
 #define __MEMORY_H__
 
+#include <map>
 #include "common.h"
-
-enum class Mem_Type
-{
-    ram,
-    reg_bank
-};
 
 class Memory
 {
 
+private:
+
+    uint32_t size;
+    uint32_t *memory;
+
+    //   map < addr,     constant value > Contains only addresses with constant values
+    std::map < uint32_t, int > addr_const_map;
+
 public:
-    Memory(uint32_t memory_size, Mem_Type mem_type);
+    Memory(uint32_t memory_size);
+    Memory(uint32_t memory_size, std::map < uint32_t, int > &const_map);
     ~Memory();
 
     void write(uint32_t address, uint32_t value);
@@ -35,13 +39,6 @@ public:
     uint32_t read(uint32_t address);
 
     uint32_t get_size();
-    Mem_Type get_type();
-
-private:
-    Mem_Type type;
-    uint32_t *memory;
-    uint32_t size;
-
 };
 
 #endif //__MEMORY_H__

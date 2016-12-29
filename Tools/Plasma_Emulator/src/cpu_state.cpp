@@ -12,6 +12,7 @@
 --------------------------------------------------------------------*/
 
 #include <iostream>
+#include <map>
 #include "common.h"
 #include "cpu_state.h"
 #include "memory.h"
@@ -37,16 +38,16 @@ CPU_State::CPU_State(uint32_t memory_size, uint32_t reg_bank_size)
         throw WrongValueException ("Register bank size cannot be negative!");
     }
 
-
+    std::map<uint32_t, int> v = {{0,0}};
     try
     {
        /*
         * Assign nullptr in case the respective size is 0. Implemented for suppoting
         * other types of PE-s that do not require memory and / or register bank
         */
-       
-        ram = (memory_size == 0) ? nullptr : new Memory(memory_size, Mem_Type::ram);
-        reg_bank = (reg_bank_size == 0) ? nullptr : new Memory(reg_bank_size, Mem_Type::reg_bank);
+
+        ram = (memory_size == 0) ? nullptr : new Memory(memory_size);
+        reg_bank = (reg_bank_size == 0) ? nullptr : new Memory(reg_bank_size, v);
     }
     catch (...){throw;}
 }

@@ -14,36 +14,19 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include <map>
 #include "common.h"
 #include "memory.h"
 
 using namespace std;
 
-/**
- * Get size of the current memory object
- * @return Size of the current memory object (in cells)
- */
-uint32_t Memory::get_size()
-{
-    return size;
-}
-
-/**
- * Get type of the current memory object.
- * @return Type of the current memory object
- */
-Mem_Type Memory::get_type()
-{
-    return type;
-}
 
 /**
  * Creates a memory.
  * @param   memory_size     Size of the memory to be created
  */
-Memory::Memory(uint32_t memory_size, Mem_Type mem_type)
+Memory::Memory(uint32_t memory_size)
 {
-    type = mem_type;
 
     try
     {
@@ -52,8 +35,28 @@ Memory::Memory(uint32_t memory_size, Mem_Type mem_type)
     }
     catch (bad_alloc& ba)
     {
-        cerr << endl << "Memory allocation failed for virtual " << \
-        ((type == Mem_Type::ram) ? "RAM!" : "register file!") << endl << endl;
+        cerr << endl << "Memory allocation failed" << endl << endl;
+
+        throw;
+    }
+}
+
+/**
+ * Creates a memory.
+ * @param   memory_size     Size of the memory to be created
+ */
+Memory::Memory(uint32_t memory_size, std::map < uint32_t, int > &const_map)
+{
+    addr_const_map = const_map;
+
+    try
+    {
+        /* Allocate memory */
+        memory = new uint32_t[memory_size];
+    }
+    catch (bad_alloc& ba)
+    {
+        cerr << endl << "Memory allocation failed" << endl << endl;
 
         throw;
     }
@@ -65,6 +68,15 @@ Memory::Memory(uint32_t memory_size, Mem_Type mem_type)
 Memory::~Memory()
 {
     delete[] memory;
+}
+
+/**
+* Get size of the current memory object
+* @return Size of the current memory object (in cells)
+*/
+uint32_t Memory::get_size()
+{
+    return size;
 }
 
 /**
@@ -80,10 +92,8 @@ void Memory::write(uint32_t address, uint32_t value)
     }
     catch (out_of_range& oor)
     {
-        cerr << endl << "Memory write failed for virtual " << \
-            ((type == Mem_Type::ram) ? "RAM!" : "register file!") << \
-            " Address was " << address << " This is out of range. " << endl \
-            << endl;
+        cerr << endl << "Memory write failed! Address was " << \
+            address << " This is out of range. " << endl << endl;
 
         throw;
     }
@@ -96,23 +106,23 @@ void Memory::write(uint32_t address, uint32_t value)
  */
 uint32_t Memory::read(uint32_t address)
 {
-    // Register 0 of MIPS always returns 0.
-    if ((type == Mem_Type::reg_bank) && (address == 0))
+    /* Check if we are using an address that is defined as constant */
+    if (addr_const_map.find(address) != addr_const_map.end())
     {
-        return 0;
+        return addr_const_map[address];
     }
+
+    /* Else read the memory contents */
     else
     {
         try
         {
             return memory[address];
         }
-        catch (out_of_range& oor)
+        catch (...)
         {
-            cerr << endl << "Memory read failed for virtual " << \
-                ((type == Mem_Type::ram) ? "RAM!" : "register file!") << \
-                " Address was " << address << " This is out of range. " << endl \
-                << endl;
+            cerr << endl << "Memory read failed! Address was " << \
+                address << " This is out of range. " << endl << endl;
             throw;
         }
     }
