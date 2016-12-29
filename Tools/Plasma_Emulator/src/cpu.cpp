@@ -11,7 +11,7 @@
  *--------------------------------------------------------------------*/
 
 #include <iostream>
-#include "message.h"
+#include "command.h"
 #include "common.h"
 #include "cpu.h"
 #include "memory.h"
@@ -35,7 +35,7 @@ void Cpu::run()
 
     //Memory reg_bank(32, MEM_TYPE_REG_BANK);
 
-    //Message<Type_cmd> message;
+    //Command<Type_cmd> Command;
 
     while (!exit_signal)
     {
@@ -43,21 +43,21 @@ void Cpu::run()
         /*if (command_lock == true)
         {
             command_mutex.lock();
-            message = command_queue.front();
+            Command = command_queue.front();
             command_queue.pop();
             command_mutex.unlock();
 
-            cout << message.param << endl;
+            cout << Command.param << endl;
 
             command_lock = false;
 
-            switch (message.type)
+            switch (Command.type)
             {
                 case Type_cmd::cmd_exit:
                     exit_signal = true;
                     break;
                 case Type_cmd::cmd_asm:
-                    cout << "ASM cmd: " << message.param << endl;
+                    cout << "ASM cmd: " << Command.param << endl;
                     break;
                 default:
                     cout << "def" << endl;

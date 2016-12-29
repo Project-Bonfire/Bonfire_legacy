@@ -17,7 +17,7 @@
 #include <chrono>
 #include "common.h"
 #include "text_ui.h"
-#include "message.h"
+#include "command.h"
 #include "wv_except.h"
 #include "ui.h"
 #include <boost/lexical_cast.hpp>
@@ -58,7 +58,7 @@ void TextUI::extract_command(string line, string& command, string& param)
 /**
  * Executes the command or sends it to the higher layer,
  * based on the command type.
- * @param  message A reference to a Message object where the information will be
+ * @param  Command A reference to a Command object where the information will be
  *                 stored in case it needs to be sent to the calling function.
  * @param  command The command the user enteres
  * @param  param   String with all the other data
@@ -66,53 +66,53 @@ void TextUI::extract_command(string line, string& command, string& param)
  * @return         True if the command needs to be sent to the calling function,
  *                      false if it was handled locally.
  */
-bool TextUI::process_command(Message& message, string command, string param)
+bool TextUI::process_command(Command& Command, string command, string param)
 {
 
-    /* Control messages */
+    /* Control Commands */
     if (command == "exit" || command == "quit")
     {
-        message.build(Msg_type::cmd_exit, "");
+        Command.build(Msg_type::cmd_exit, "");
 
         return true;
     }
 
     else if (command == "asm")
     {
-        message.build(Msg_type::cmd_asm, param);
+        Command.build(Msg_type::cmd_asm, param);
 
         return true;
     }
 
     else if (command == "bp")
     {
-        message.build(Msg_type::cmd_bp, param);
+        Command.build(Msg_type::cmd_bp, param);
 
         return true;
     }
 
     else if (command == "load")
     {
-        message.build(Msg_type::cmd_load, param);
+        Command.build(Msg_type::cmd_load, param);
 
         return true;
     }
 
     else if (command == "run")
     {
-        message.build(Msg_type::cmd_run, param);
+        Command.build(Msg_type::cmd_run, param);
 
         return true;
     }
 
     else if (command == "pause")
     {
-        message.build(Msg_type::cmd_pause, param);
+        Command.build(Msg_type::cmd_pause, param);
 
         return true;
     }
 
-    /* Locally handled messages */
+    /* Locally handled Commands */
     else if (command == "read_reg")
     {
         try
@@ -163,12 +163,12 @@ bool TextUI::process_command(Message& message, string command, string param)
 }
 
 /**
- * Prints a message on the screen.
- * @param msg_type Message type
- * @param message  Message body
- * @param title    Message title (optional)
+ * Prints a Command on the screen.
+ * @param msg_type Command type
+ * @param Command  Command body
+ * @param title    Command title (optional)
  */
-void TextUI::display_msg(int msg_type, std::string message, std::string title)
+void TextUI::display_msg(int msg_type, std::string Command, std::string title)
 {
     switch (msg_type) {
         case MSG_DEBUG:
@@ -188,25 +188,25 @@ void TextUI::display_msg(int msg_type, std::string message, std::string title)
             break;
 
         default:
-            throw WrongValueException("Cannot display message: wrong message type!\n \
-                The message was: " + message);
+            throw WrongValueException("Cannot display Command: wrong Command type!\n \
+                The Command was: " + Command);
             break;
     }
 
-    cout << message << endl << endl;
+    cout << Command << endl << endl;
     cout << "Command:> ";
 }
 
 /**
  * Gets input from the terminal
- * @return The message conatining the command
+ * @return The Command conatining the command
  */
-Message TextUI::get_command()
+Command TextUI::get_command()
 {
     string line;
     string command;
     string param;
-    Message message;
+    Command Command;
 
     while (1)
     {
@@ -223,11 +223,11 @@ Message TextUI::get_command()
         * return, otherwize continue.
         */
 
-        auto result = process_command(message, command, param);
+        auto result = process_command(Command, command, param);
         if (result == true)
         {
             break;
         }
     }
-    return message;
+    return Command;
 }

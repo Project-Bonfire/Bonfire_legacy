@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------
- * TITLE: Message object
+ * TITLE: Genereic Message Object
  * AUTHOR: Karl Janson
  * DATE CREATED: 14.12.16
  * FILENAME: common.h
@@ -15,38 +15,57 @@
 #define __MESSAGE_H__
 
 #include <string>
-
-enum class Msg_type
-{
-    /* Commands */
-    cmd_none,
-    cmd_exit,
-    cmd_asm,
-    cmd_bp,
-    cmd_load,
-    cmd_run,
-    cmd_pause,
-
-    /* Text */
-    txt_info,
-    txt_debug,
-    txt_warn,
-    txt_err
-};
+#include <vector>
 
 class Message
 {
+private:
+    std::vector<std::string> contents;
+
 public:
-  Msg_type type;
-  std::string param;
+    Message() {}
 
-  Message(){}
+    /* Element manpulation */
+    void push_back(std::string elem) { contents.push_back(elem); }
+    void pop_back() { contents.pop_back(); }
+    void swap(std::vector<std::string>& v) { contents.swap(v); }
 
-  void build(Msg_type m_type, std::string parameters = "")
-  {
-    type = m_type;
-    param = parameters;
-  }
+    /* Element access */
+    std::string& operator[] (int& n) { return contents[n]; }
+    std::string& operator[] (const int& n) { return contents[n]; }
+
+    std::vector<std::string>::iterator begin() { return contents.begin(); }
+    std::vector<std::string>::iterator end()   { return contents.end(); }
+
+    /* Size */
+
+    int size() { return contents.size(); }
+    int body_size() { return contents.size() - 1; }
+
+    /* Making equal and initializing*/
+    void operator=(const std::vector<std::string>& vec) { contents = vec; }
+    void operator=(std::initializer_list<std::string> ilist) { contents = ilist; }
+
+    /* Getters / setters for head and body parts of the message */
+    std::string get_head() { return contents[0]; }
+    void set_head(std::string head) { contents.insert(contents.begin(), head); }
+
+    std::vector<std::string> get_body()
+    {
+        std::vector<std::string> v = contents;
+        v.erase(v.begin());
+        return v;
+    }
+
+    void set_body(std::vector<std::string>& v)
+    {
+        auto head = contents[0];
+        contents = v;
+        contents.insert(contents.begin(), head);
+    }
+
+    /* Process the message */
+    virtual void process() {}
 };
 
 #endif //__MESSAGE_H__

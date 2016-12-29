@@ -5,7 +5,7 @@
 #include "common.h"
 #include "text_ui.h"
 #include "cpu.h"
-#include "message.h"
+#include "command.h"
 
 using namespace std;
 
@@ -33,7 +33,7 @@ int main(int argc, char const *argv[]) {
     
     /* For UI */
     TextUI ui;
-    std::future<Message> ui_command;
+    std::future<Command> ui_command;
 
     /* Variable declarations */
     auto exit_signal = false;

@@ -13,7 +13,7 @@
 #include <string>
 #include "ui.h"
 #include "common.h"
-#include "message.h"
+#include "command.h"
 
 uint32_t UI::read_reg(uint32_t reg_num)
 {

@@ -15,18 +15,18 @@
 
 #include <string>
 #include "ui.h"
-#include "message.h"
+#include "command.h"
 
 class TextUI : public UI
 {
 private:
-    bool process_command(Message& message, std::string command, std::string param);
+    bool process_command(Command& Command, std::string command, std::string param);
     void extract_command(std::string line, std::string& command, std::string& param);
 
 public:
     TextUI();
-    Message get_command();
-    void display_msg(int msg_type, std::string message, std::string title = "");
+    Command get_command();
+    void display_msg(int msg_type, std::string Command, std::string title = "");
 };
 
 #endif //__TEXT_UI_H__

@@ -19,7 +19,7 @@
 #define MSG_ERR     3
 
 #include <string>
-#include "message.h"
+#include "command.h"
 
 class UI
 {
@@ -28,8 +28,8 @@ private:
 public:
 
     /* Communication with other parts of the system */
-    virtual Message get_command() = 0;
-    virtual void display_msg(int msg_type, std::string message, std::string title = "") = 0;
+    virtual Command get_command() = 0;
+    virtual void display_msg(int msg_type, std::string Command, std::string title = "") = 0;
 
     /* Display reg/mem contents */
     uint32_t read_reg(uint32_t reg_num);

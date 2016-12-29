@@ -19,7 +19,7 @@
 #include <queue>
 #include <condition_variable>
 #include <mutex>
-#include "message.h"
+#include "command.h"
 #include "cpu_state.h"
 
 /**
@@ -51,12 +51,12 @@ extern CPU_State* state;
  * Threading Related Variables
  */
 /*
-extern std::queue<Message<Type_cmd>> command_queue;
+extern std::queue<Command<Type_cmd>> command_queue;
 extern std::mutex command_mutex;
 extern volatile bool command_lock;
 //extern std::condition_variable command_cond;
 
-extern std::queue<Message<Type_txt>> msg_queue;
+extern std::queue<Command<Type_txt>> msg_queue;
 extern std::mutex msg_mutex;
 extern volatile bool msg_lock;
 */
