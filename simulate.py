@@ -205,6 +205,16 @@ def arg_parser(argv, program_argv):
         print "\t\tBy default the flow control mechanism is handshaking-based."
         print "\t\talso generates a testbench which uses random traffic pattern generator with PIR of 0.005"
         print "\t\tand fixed packet size of 3 and sends packets until 10000 ns."
+        print 
+        print BOLD + "  Example 3:" + ENDC
+        print "\t " + argv[0] + " -D 4 -credit_based_FC -FC -LV 2 -FI -Rand 0.1 -PS 8 8 -sim 10000 -end 11000"
+        print "\t\tSimulates a 4X4 network "
+        print "\t\tflow control mechanism is credit-based with fault classfiers support"
+	print "\t\tutlilizes LV network with 2 ports for fault information transport "        
+	print "\t\twith Fault Injection(40-60 clock cycle injection, i.e approx. 16 million faults per second) "	
+	print "\t\talso generates a testbench which uses random traffic pattern generator with Packet Injection Rate of 0.1"
+        print "\t\tand fixed packet size of 8 and sends packets until 10000 ns and ends simulation at 11000 ns"
+
 
         sys.exit()
 
