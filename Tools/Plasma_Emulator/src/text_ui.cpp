@@ -75,8 +75,8 @@ bool TextUI::process_command(Command& command)
     /* Locally handled Commands */
     if (command.get_head() == "read_reg")
     {
-        try
-        {
+        //try
+        //{
             /* Read a register and display its contents on the screen */
             if (command.body_size() != 0)
             {
@@ -87,8 +87,14 @@ bool TextUI::process_command(Command& command)
             {
                 display_msg(MSG_ERR, "Please specify a register number to read!");
             }
-        }
-        catch (...) { throw; }
+        //}
+        //catch (exception& e)
+        //{
+            //ostringstream e_stream;
+            //e_stream  << "Error while reading register " << command.get_body()[0] << ": " << e.what();
+            //throw out_of_range (e_stream.str());
+
+        //}
 
         return true;
     }
@@ -178,13 +184,20 @@ Command TextUI::get_command()
         * If we got a command that is needed to be sent to the main(),
         * return, otherwize continue.
         */
-
-        auto cmd_processed_locally = process_command(command);
-
-        if (! cmd_processed_locally)
+        try
         {
-            break;
+            auto cmd_processed_locally = process_command(command);
+
+            if (! cmd_processed_locally)
+            {
+                break;
+            }
         }
+        catch (out_of_range& e)
+        {
+            display_msg(MSG_ERR, e.what());
+        }
+
     }
     return command;
 }

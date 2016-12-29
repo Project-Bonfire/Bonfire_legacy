@@ -20,25 +20,19 @@
 
 using namespace std;
 
-
 /**
  * Creates a memory.
  * @param   memory_size     Size of the memory to be created
  */
 Memory::Memory(uint32_t memory_size)
 {
+    size = memory_size;
 
     try
     {
-        /* Allocate memory */
-        memory = new uint32_t[memory_size];
+        allocate(memory_size);
     }
-    catch (bad_alloc& ba)
-    {
-        cerr << endl << "Memory allocation failed" << endl << endl;
-
-        throw;
-    }
+    catch(...) { throw; }
 }
 
 /**
@@ -51,6 +45,29 @@ Memory::Memory(uint32_t memory_size, std::map < uint32_t, int > &const_map)
 
     try
     {
+        allocate(memory_size);
+    }
+    catch(...) { throw; }
+}
+
+/**
+ * Destructor. Releases memory.
+ */
+Memory::~Memory()
+{
+    delete[] memory;
+}
+
+/**
+ * Allocates the memory.
+ * @param Number of 32-bit register / memory cells to allocate
+ */
+void Memory::allocate(uint32_t memory_size)
+{
+    size = memory_size;
+
+    try
+    {
         /* Allocate memory */
         memory = new uint32_t[memory_size];
     }
@@ -60,14 +77,6 @@ Memory::Memory(uint32_t memory_size, std::map < uint32_t, int > &const_map)
 
         throw;
     }
-}
-
-/**
- * Destructor. Releases memory.
- */
-Memory::~Memory()
-{
-    delete[] memory;
 }
 
 /**
@@ -86,17 +95,12 @@ uint32_t Memory::get_size()
  */
 void Memory::write(uint32_t address, uint32_t value)
 {
-    try
+    if ((address < 0) || (address >= size))
     {
-        memory[address] = value;
+        throw std::out_of_range ("Address out of bounds!");
     }
-    catch (out_of_range& oor)
-    {
-        cerr << endl << "Memory write failed! Address was " << \
-            address << " This is out of range. " << endl << endl;
 
-        throw;
-    }
+    memory[address] = value;
 }
 
 /**
@@ -106,7 +110,12 @@ void Memory::write(uint32_t address, uint32_t value)
  */
 uint32_t Memory::read(uint32_t address)
 {
-    /* Check if we are using an address that is defined as constant */
+    if ((address < 0) || (address >= size))
+    {
+        throw std::out_of_range ("Address out of bounds!");
+    }
+
+    /* Check whether we are using an address that is defined as constant */
     if (addr_const_map.find(address) != addr_const_map.end())
     {
         return addr_const_map[address];
@@ -115,15 +124,6 @@ uint32_t Memory::read(uint32_t address)
     /* Else read the memory contents */
     else
     {
-        try
-        {
-            return memory[address];
-        }
-        catch (...)
-        {
-            cerr << endl << "Memory read failed! Address was " << \
-                address << " This is out of range. " << endl << endl;
-            throw;
-        }
+        return memory[address];
     }
 }

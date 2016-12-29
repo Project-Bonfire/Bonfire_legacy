@@ -29,13 +29,14 @@ private:
     //   map < addr,     constant value > Contains only addresses with constant values
     std::map < uint32_t, int > addr_const_map;
 
+    void allocate(uint32_t memory_size);
+
 public:
     Memory(uint32_t memory_size);
     Memory(uint32_t memory_size, std::map < uint32_t, int > &const_map);
     ~Memory();
 
     void write(uint32_t address, uint32_t value);
-
     uint32_t read(uint32_t address);
 
     uint32_t get_size();
