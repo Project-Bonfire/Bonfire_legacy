@@ -17,11 +17,24 @@
 #include <string>
 #include <iostream>
 #include "message.h"
+#include "ui.h"
+#include "cpu.h"
+
+class UI;
+class CPU;
 
 class Command : public Message
 {
+protected:
+    UI* ui;
+    CPU* cpu;
 public:
-    void execute () { std::cout << "exec" << std::endl; };
+    Command(UI* r_ui, CPU* r_cpu)
+    {
+        ui = r_ui;
+        cpu = r_cpu;
+    }
+    virtual void execute () { std::cout << "exec" << std::endl; }
 };
 
 #endif //__COMMAND_H__

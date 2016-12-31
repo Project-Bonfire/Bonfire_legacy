@@ -19,7 +19,8 @@ uint32_t UI::read_reg(uint32_t reg_num)
 {
     try
     {
-        return state->reg_bank->read(reg_num);
+        //return state->reg_bank->read(reg_num);
+        return 0;
     }
     catch (...) { throw; }
 }
@@ -28,7 +29,8 @@ uint32_t UI::read_mem(uint32_t addr)
 {
     try
     {
-        return state->ram->read(addr);
+        //return state->ram->read(addr);
+        return 0;
     }
     catch (...) { throw; }}
 
@@ -46,7 +48,7 @@ void UI::set_reg(uint32_t reg_num, uint32_t value)
 {
     try
     {
-        state->reg_bank->write(reg_num, value);
+        //state->reg_bank->write(reg_num, value);
     }
     catch (...) { throw; }
 }
@@ -55,7 +57,7 @@ void UI::set_mem(uint32_t addr, uint32_t value)
 {
     try
     {
-        state->ram->write(addr, value);
+        //state->ram->write(addr, value);
     }
     catch (...) { throw; }
 }
@@ -63,7 +65,7 @@ void UI::set_mem(uint32_t addr, uint32_t value)
 void UI::mm_io_read() {}
 void UI::mm_io_write() {}
 
-void UI::get_last_command() {}
+void UI::print_status() {}
 
 void UI::set_breakpoint() {}
 void UI::list_breakpoints() {}

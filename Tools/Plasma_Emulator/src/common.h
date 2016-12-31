@@ -45,7 +45,7 @@
 /**
  * CPU state object
  */
-extern CPU_State* state;
+//extern CPU_State* state;
 
 /**
  * Threading Related Variables

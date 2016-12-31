@@ -10,12 +10,15 @@
  *    Text user interface
  *--------------------------------------------------------------------*/
 
-#include <boost/lexical_cast.hpp>
 #include <iostream>
 #include <string>
 #include <sstream>
 #include <future>
 #include <chrono>
+#include <boost/lexical_cast.hpp>
+#include <boost/functional/factory.hpp>
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
 #include "common.h"
 #include "text_ui.h"
 #include "command.h"
@@ -29,6 +32,17 @@ using namespace std;
  */
 TextUI::TextUI()
 {
+    /* Initiate command factory */
+    command_factory["help"]           = boost::bind( boost::factory<Help_Command*>(), this);
+    command_factory["read_reg"]       = boost::bind( boost::factory<Read_Reg_Command*>(), this);
+    command_factory["read_mem"]       = boost::bind( boost::factory<Read_Mem_Command*>(), this);
+    command_factory["read_reg_bank"]  = boost::bind( boost::factory<Read_Reg_Bank_Command*>(), this);
+    command_factory["read_mem_all"]   = boost::bind( boost::factory<Read_Mem_All_Command*>(), this);
+    command_factory["set_reg"]        = boost::bind( boost::factory<Set_Reg_Command*>(), this);
+    command_factory["set_mem"]        = boost::bind( boost::factory<Set_Mem_Command*>(), this);
+    command_factory["io_read"]     = boost::bind( boost::factory<MM_IO_Read_Command*>(), this);
+    command_factory["io_write"]    = boost::bind( boost::factory<MM_IO_Write_Command*>(), this);
+
     cout << endl << endl;
     cout << "*****************************************" << endl;
     cout << "*                                       *" << endl;
@@ -45,9 +59,9 @@ TextUI::TextUI()
  * @param  line Line input from the user
  * @return      Produced command object
  */
-Command TextUI::extract_command(string line)
+Command* TextUI::extract_command(string line)
 {
-    Command command;
+    Command* command = new Command (this, nullptr);
     stringstream ss;
 
     ss.str(line);
@@ -56,74 +70,10 @@ Command TextUI::extract_command(string line)
     while (! ss.eof())
     {
         getline(ss, line, ' ');
-        command.push_back(line);
+        command -> push_back(line);
     }
 
     return command;
-}
-
-/**
-* Executes the command or sends it to the higher layer,
-* based on the command type.
- * @param  command The Command object to work on
- * @return         False if the command needs to be sent to the calling function,
- *                      true if it was handled locally.
- */
-bool TextUI::process_command(Command& command)
-{
-
-    /* Locally handled Commands */
-    if (command.get_head() == "read_reg")
-    {
-        //try
-        //{
-            /* Read a register and display its contents on the screen */
-            if (command.body_size() != 0)
-            {
-                auto data = UI::read_reg(boost::lexical_cast<uint32_t>(command.get_body()[0]));
-                display_msg(MSG_INFO, to_string(data), "Contents of register " + command.get_body()[0] + ":");
-            }
-            else
-            {
-                display_msg(MSG_ERR, "Please specify a register number to read!");
-            }
-        //}
-        //catch (exception& e)
-        //{
-            //ostringstream e_stream;
-            //e_stream  << "Error while reading register " << command.get_body()[0] << ": " << e.what();
-            //throw out_of_range (e_stream.str());
-
-        //}
-
-        return true;
-    }
-
-    else if (command.get_head() == "read_mem")
-    {
-        try
-        {
-            /* Read a memory address and display its contents on the screen */
-            if (command.body_size() != 0)
-            {
-                auto data = UI::read_mem(boost::lexical_cast<uint32_t>(command.get_body()[0]));
-                display_msg(MSG_INFO, to_string(data), "Contents of memeory address " + command.get_body()[0] + ":");
-            }
-            else
-            {
-                display_msg(MSG_ERR, "Please specify a memory address to read!");
-            }
-        }
-        catch (...) { throw; }
-
-        return true;
-    }
-
-    else
-    {
-        return false;
-    }
-
 }
 
 /**
@@ -165,9 +115,10 @@ void TextUI::display_msg(int msg_type, std::string Command, std::string title)
  * Gets input from the terminal
  * @return The Command conatining the command
  */
-Command TextUI::get_command()
+Command* TextUI::get_command()
 {
-    Command command;
+
+    Command* command = new Command(this, nullptr);
     string line;
 
     while (1)
@@ -186,11 +137,14 @@ Command TextUI::get_command()
         */
         try
         {
-            auto cmd_processed_locally = process_command(command);
 
-            if (! cmd_processed_locally)
+            if (command_factory.find(command->get_type()) != command_factory.end())
             {
-                break;
+                command_factory[command->get_type()]()->execute();
+            }
+            else
+            {
+                cout << "not a gui command" << endl;
             }
         }
         catch (out_of_range& e)

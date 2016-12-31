@@ -25,31 +25,9 @@ using namespace std;
  * @param   memory_size: Size of RAM to create (in memory cells)
  * @param   reg_bank_size:  Size of register bank to create (in registers)
  */
-CPU_State::CPU_State(uint32_t memory_size, uint32_t reg_bank_size)
+CPU_State::CPU_State(std::map<std::string,Memory*> memories)
 {
-
-    if (memory_size < 0)
-    {
-        throw WrongValueException ("Memory size cannot be negative!");
-    }
-
-    else if (reg_bank_size < 0)
-    {
-        throw WrongValueException ("Register bank size cannot be negative!");
-    }
-
-    std::map<uint32_t, int> v = {{0,0}};
-    try
-    {
-       /*
-        * Assign nullptr in case the respective size is 0. Implemented for suppoting
-        * other types of PE-s that do not require memory and / or register bank
-        */
-
-        ram = (memory_size == 0) ? nullptr : new Memory(memory_size);
-        reg_bank = (reg_bank_size == 0) ? nullptr : new Memory(reg_bank_size, v);
-    }
-    catch (...){throw;}
+    m_memories = memories;
 }
 
 /**
@@ -57,6 +35,4 @@ CPU_State::CPU_State(uint32_t memory_size, uint32_t reg_bank_size)
  */
 CPU_State::~CPU_State()
 {
-    delete ram;
-    delete reg_bank;
 }

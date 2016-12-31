@@ -46,9 +46,9 @@ public:
     void operator=(const std::vector<std::string>& vec) { contents = vec; }
     void operator=(std::initializer_list<std::string> ilist) { contents = ilist; }
 
-    /* Getters / setters for head and body parts of the message */
-    std::string get_head() { return contents[0]; }
-    void set_head(std::string head) { contents.insert(contents.begin(), head); }
+    /* Getters / setters for type and body parts of the message */
+    std::string get_type() { return contents[0]; }
+    void set_type(std::string type) { contents.insert(contents.begin(), type); }
 
     std::vector<std::string> get_body()
     {
@@ -59,9 +59,9 @@ public:
 
     void set_body(std::vector<std::string>& v)
     {
-        auto head = contents[0];
+        auto type = contents[0];
         contents = v;
-        contents.insert(contents.begin(), head);
+        contents.insert(contents.begin(), type);
     }
 };
 

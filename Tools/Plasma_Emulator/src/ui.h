@@ -21,6 +21,8 @@
 #include <string>
 #include "command.h"
 
+class Command;
+
 class UI
 {
 private:
@@ -28,7 +30,7 @@ private:
 public:
 
     /* Communication with other parts of the system */
-    virtual Command get_command() = 0;
+    virtual Command* get_command() = 0;
     virtual void display_msg(int msg_type, std::string Command, std::string title = "") = 0;
 
     /* Display reg/mem contents */
@@ -45,7 +47,7 @@ public:
     void mm_io_read();
     void mm_io_write();
 
-    void get_last_command();
+    void print_status();
 
     void set_breakpoint();
     void list_breakpoints();
