@@ -102,8 +102,10 @@ void TextUI::display_msg(const int msg_type, std::string contents, std::string t
 
     if (msg_type_map.find(msg_type) != msg_type_map.end())
     {
-        cout << endl << msg_type_map[msg_type_debug] << title << endl \
-        << contents << endl << endl;
+        cout << endl << \
+        msg_type_map[msg_type_debug] << \
+        title << endl << \
+        contents << endl << endl;
 
         cout << "Command:> ";
     }
