@@ -14,12 +14,13 @@
 #define __PLASMA_H__
 
 #include "cpu.h"
-#include "cpu_state.h"
+
+class UI;
 
 class Plasma : public CPU
 {
 public:
-    Plasma() : CPU() {}
+    Plasma(UI* ui) : CPU(ui) {}
 
     void init();
 };

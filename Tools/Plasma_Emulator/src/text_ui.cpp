@@ -13,36 +13,49 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <future>
-#include <chrono>
-#include <boost/lexical_cast.hpp>
+#include <map>
 #include <boost/functional/factory.hpp>
-#include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include "common.h"
 #include "text_ui.h"
 #include "command.h"
+#include "text_ui_commands.h"
 #include "wv_except.h"
-#include "ui.h"
-
-using namespace std;
 
 /**
  * Constructor
  */
 TextUI::TextUI()
 {
-    /* Initiate command factory */
-    command_factory["help"]           = boost::bind( boost::factory<Help_Command*>(), this);
-    command_factory["read_reg"]       = boost::bind( boost::factory<Read_Reg_Command*>(), this);
-    command_factory["read_mem"]       = boost::bind( boost::factory<Read_Mem_Command*>(), this);
-    command_factory["read_reg_bank"]  = boost::bind( boost::factory<Read_Reg_Bank_Command*>(), this);
-    command_factory["read_mem_all"]   = boost::bind( boost::factory<Read_Mem_All_Command*>(), this);
-    command_factory["set_reg"]        = boost::bind( boost::factory<Set_Reg_Command*>(), this);
-    command_factory["set_mem"]        = boost::bind( boost::factory<Set_Mem_Command*>(), this);
-    command_factory["io_read"]     = boost::bind( boost::factory<MM_IO_Read_Command*>(), this);
-    command_factory["io_write"]    = boost::bind( boost::factory<MM_IO_Write_Command*>(), this);
+    /* Initialize command factory */
+    command_factory["help"]           = boost::bind( boost::factory<text_ui_cmds::Help_Command*>(), this);
+    command_factory["read_reg"]       = boost::bind( boost::factory<text_ui_cmds::Read_Reg_Command*>(), this);
+    command_factory["read_mem"]       = boost::bind( boost::factory<text_ui_cmds::Read_Mem_Command*>(), this);
+    command_factory["read_reg_bank"]  = boost::bind( boost::factory<text_ui_cmds::Read_Reg_Bank_Command*>(), this);
+    command_factory["read_mem_all"]   = boost::bind( boost::factory<text_ui_cmds::Read_Mem_All_Command*>(), this);
+    command_factory["set_reg"]        = boost::bind( boost::factory<text_ui_cmds::Set_Reg_Command*>(), this);
+    command_factory["set_mem"]        = boost::bind( boost::factory<text_ui_cmds::Set_Mem_Command*>(), this);
+    command_factory["io_read"]        = boost::bind( boost::factory<text_ui_cmds::MM_IO_Read_Command*>(), this);
+    command_factory["io_write"]       = boost::bind( boost::factory<text_ui_cmds::MM_IO_Write_Command*>(), this);
 
+    /* Initialize message types */
+    msg_type_map[msg_type_debug] = "DEBUG: ";
+    msg_type_map[msg_type_debug] = "INFO: ";
+    msg_type_map[msg_type_debug] = "WARNING: ";
+    msg_type_map[msg_type_debug] = "ERROR: ";
+
+    print_hello_msg();
+}
+
+/**
+ * Prints a hello message upon startup.
+ */
+void TextUI::print_hello_msg()
+{
+    using std::cout;
+    using std::endl;
+
+    /* Print message */
     cout << endl << endl;
     cout << "*****************************************" << endl;
     cout << "*                                       *" << endl;
@@ -59,17 +72,17 @@ TextUI::TextUI()
  * @param  line Line input from the user
  * @return      Produced command object
  */
-Command* TextUI::extract_command(string line)
+Command* TextUI::extract_command(std::string line)
 {
     Command* command = new Command (this, nullptr);
-    stringstream ss;
+    std::stringstream ss;
 
     ss.str(line);
 
     /* Extract all space seperated words from line and put the in the command object */
     while (! ss.eof())
     {
-        getline(ss, line, ' ');
+        std::getline(ss, line, ' ');
         command -> push_back(line);
     }
 
@@ -78,37 +91,27 @@ Command* TextUI::extract_command(string line)
 
 /**
  * Prints a Command on the screen.
- * @param msg_type Command type
- * @param Command  Command body
- * @param title    Command title (optional)
+ * @param msg_type Message type
+ * @param contents Message body
+ * @param title    Message title (optional)
  */
-void TextUI::display_msg(int msg_type, std::string Command, std::string title)
+void TextUI::display_msg(const int msg_type, std::string contents, std::string title)
 {
-    switch (msg_type) {
-        case MSG_DEBUG:
-            cout << endl << "DEBUG: " << title << endl;
-            break;
+    using std::cout;
+    using std::endl;
 
-        case MSG_INFO:
-            cout << endl << "INFO: " << title << endl;
-            break;
+    if (msg_type_map.find(msg_type) != msg_type_map.end())
+    {
+        cout << endl << msg_type_map[msg_type_debug] << title << endl \
+        << contents << endl << endl;
 
-        case MSG_WARN:
-            cout << endl << "WARNING: " << title << endl;
-            break;
-
-        case MSG_ERR:
-            cout << endl << "ERROR: " << title << endl;
-            break;
-
-        default:
-            throw WrongValueException("Cannot display Command: wrong Command type!\n \
-                The Command was: " + Command);
-            break;
+        cout << "Command:> ";
+    }
+    else
+    {
+        throw WrongValueException("Cannot display Command: wrong Command type!\n");
     }
 
-    cout << Command << endl << endl;
-    cout << "Command:> ";
 }
 
 /**
@@ -119,14 +122,14 @@ Command* TextUI::get_command()
 {
 
     Command* command = new Command(this, nullptr);
-    string line;
+    std::string line;
 
     while (1)
     {
         try
         {
             /* Read a line from the console */
-            getline (cin, line);
+            std::getline (std::cin, line);
             command = extract_command(line);
         }
         catch (...) { throw; }
@@ -144,14 +147,15 @@ Command* TextUI::get_command()
             }
             else
             {
-                cout << "not a gui command" << endl;
+                return command;
             }
         }
-        catch (out_of_range& e)
+        catch (std::out_of_range& e)
         {
-            display_msg(MSG_ERR, e.what());
+            display_msg(msg_type_err, e.what());
         }
 
     }
-    return command;
+    /* Erronous state that we should never end up in */
+    return nullptr;
 }
