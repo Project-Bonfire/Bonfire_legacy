@@ -17,11 +17,12 @@
 
 /************** Constant Definitions ***************/
 const int msg_type_debug  = 0;
-const int msg_type_info   = 0;
-const int msg_type_warn   = 0;
-const int msg_type_err    = 0;
+const int msg_type_info   = 1;
+const int msg_type_warn   = 2;
+const int msg_type_err    = 3;
 
 class Command;
+class CPU;
 
 class UI
 {
@@ -30,7 +31,7 @@ private:
 public:
 
     /* Communication with other parts of the system */
-    virtual Command* get_command() = 0;
+    virtual Command* get_command(CPU* cpu) = 0;
     virtual void display_msg(int msg_type, std::string Command, std::string title = "") = 0;
 
     /* Display reg/mem contents */

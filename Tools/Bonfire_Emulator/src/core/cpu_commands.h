@@ -23,7 +23,7 @@ class CPU;
 namespace CPU_Cmds
 {
     /***************** Type Definitions *****************/
-    typedef boost::function< Command*() > CPU_command_class;
+    typedef boost::function< Command*() > cpu_cmd_class;
 
     /************* CPU Internal Commands *************/
 

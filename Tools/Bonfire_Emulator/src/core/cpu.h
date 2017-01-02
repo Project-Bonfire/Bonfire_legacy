@@ -18,20 +18,22 @@
 #include "cpu_commands.h"
 
 class UI;
+class Command;
 
 class CPU
 {
 protected:
     CPU_State* cpu_state;
-    std::map<std::string,CPU_Cmds::CPU_command_class> command_factory;
 
 public:
+    std::map<std::string,CPU_Cmds::cpu_cmd_class> cpu_cmd_factory;
     CPU(UI* ui);
     ~CPU();
 
     virtual void init() = 0;
 
-    CPU_State* state();
+    CPU_State* get_state();
+    Command* get_command(std::string command_name);
 };
 
 #endif //__CPU_H__

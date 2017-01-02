@@ -16,8 +16,9 @@
 #include <map>
 #include <boost/functional/factory.hpp>
 #include <boost/bind.hpp>
-#include "common.h"
 #include "text_ui.h"
+#include "cpu.h"
+#include "common.h"
 #include "command.h"
 #include "text_ui_commands.h"
 #include "wv_except.h"
@@ -28,21 +29,21 @@
 TextUI::TextUI()
 {
     /* Initialize command factory */
-    command_factory["help"]           = boost::bind( boost::factory<text_ui_cmds::Help_Command*>(), this);
-    command_factory["read_reg"]       = boost::bind( boost::factory<text_ui_cmds::Read_Reg_Command*>(), this);
-    command_factory["read_mem"]       = boost::bind( boost::factory<text_ui_cmds::Read_Mem_Command*>(), this);
-    command_factory["read_reg_bank"]  = boost::bind( boost::factory<text_ui_cmds::Read_Reg_Bank_Command*>(), this);
-    command_factory["read_mem_all"]   = boost::bind( boost::factory<text_ui_cmds::Read_Mem_All_Command*>(), this);
-    command_factory["set_reg"]        = boost::bind( boost::factory<text_ui_cmds::Set_Reg_Command*>(), this);
-    command_factory["set_mem"]        = boost::bind( boost::factory<text_ui_cmds::Set_Mem_Command*>(), this);
-    command_factory["io_read"]        = boost::bind( boost::factory<text_ui_cmds::MM_IO_Read_Command*>(), this);
-    command_factory["io_write"]       = boost::bind( boost::factory<text_ui_cmds::MM_IO_Write_Command*>(), this);
+    ui_cmd_factory["help"]           = boost::bind( boost::factory<text_ui_cmds::Help_Command*>(), this);
+    ui_cmd_factory["read_reg"]       = boost::bind( boost::factory<text_ui_cmds::Read_Reg_Command*>(), this);
+    ui_cmd_factory["read_mem"]       = boost::bind( boost::factory<text_ui_cmds::Read_Mem_Command*>(), this);
+    ui_cmd_factory["read_reg_bank"]  = boost::bind( boost::factory<text_ui_cmds::Read_Reg_Bank_Command*>(), this);
+    ui_cmd_factory["read_mem_all"]   = boost::bind( boost::factory<text_ui_cmds::Read_Mem_All_Command*>(), this);
+    ui_cmd_factory["set_reg"]        = boost::bind( boost::factory<text_ui_cmds::Set_Reg_Command*>(), this);
+    ui_cmd_factory["set_mem"]        = boost::bind( boost::factory<text_ui_cmds::Set_Mem_Command*>(), this);
+    ui_cmd_factory["io_read"]        = boost::bind( boost::factory<text_ui_cmds::MM_IO_Read_Command*>(), this);
+    ui_cmd_factory["io_write"]       = boost::bind( boost::factory<text_ui_cmds::MM_IO_Write_Command*>(), this);
 
     /* Initialize message types */
     msg_type_map[msg_type_debug] = "DEBUG: ";
-    msg_type_map[msg_type_debug] = "INFO: ";
-    msg_type_map[msg_type_debug] = "WARNING: ";
-    msg_type_map[msg_type_debug] = "ERROR: ";
+    msg_type_map[msg_type_info]  = "INFO: ";
+    msg_type_map[msg_type_warn]  = "WARNING: ";
+    msg_type_map[msg_type_err]   = "ERROR: ";
 
     print_hello_msg();
 }
@@ -72,9 +73,9 @@ void TextUI::print_hello_msg()
  * @param  line Line input from the user
  * @return      Produced command object
  */
-Command* TextUI::extract_command(std::string line)
+std::vector<std::string> TextUI::extract_command(std::string line)
 {
-    Command* command = new Command (this, nullptr);
+    std::vector<std::string> command_v;
     std::stringstream ss;
 
     ss.str(line);
@@ -83,10 +84,10 @@ Command* TextUI::extract_command(std::string line)
     while (! ss.eof())
     {
         std::getline(ss, line, ' ');
-        command -> push_back(line);
+        command_v.push_back(line);
     }
 
-    return command;
+    return command_v;
 }
 
 /**
@@ -103,7 +104,7 @@ void TextUI::display_msg(const int msg_type, std::string contents, std::string t
     if (msg_type_map.find(msg_type) != msg_type_map.end())
     {
         cout << endl << \
-        msg_type_map[msg_type_debug] << \
+        msg_type_map[msg_type] << \
         title << endl << \
         contents << endl << endl;
 
@@ -111,7 +112,7 @@ void TextUI::display_msg(const int msg_type, std::string contents, std::string t
     }
     else
     {
-        throw WrongValueException("Cannot display Command: wrong Command type!\n");
+        throw WrongValueException("Cannot display message: wrong message type!\n");
     }
 
 }
@@ -120,41 +121,55 @@ void TextUI::display_msg(const int msg_type, std::string contents, std::string t
  * Gets input from the terminal
  * @return The Command conatining the command
  */
-Command* TextUI::get_command()
+Command* TextUI::get_command(CPU* cpu)
 {
-
-    Command* command = new Command(this, nullptr);
+    Command* command;
     std::string line;
+    std::vector<std::string> command_v;
 
     while (1)
     {
-        try
-        {
-            /* Read a line from the console */
-            std::getline (std::cin, line);
-            command = extract_command(line);
-        }
-        catch (...) { throw; }
+
+        /* Read a line from the console */
+        std::getline (std::cin, line);
+        command_v = extract_command(line);
 
        /*
         * If we got a command that is needed to be sent to the main(),
         * return, otherwize continue.
         */
-        try
+        for (auto i : command_v)
         {
-
-            if (command_factory.find(command->get_type()) != command_factory.end())
-            {
-                command_factory[command->get_type()]()->execute();
-            }
-            else
-            {
-                return command;
-            }
+            std::cout << i << std::endl;
         }
-        catch (std::out_of_range& e)
+        /* UI command? */
+        if (ui_cmd_factory.find(command_v[0]) != ui_cmd_factory.end())
         {
-            display_msg(msg_type_err, e.what());
+            command = ui_cmd_factory[command_v[0]]();
+            for (auto i : command_v)
+            {
+                command->push_back(i);
+            }
+            command->execute();
+        }
+
+        /* System command? */
+        else if (cpu->get_command(command_v[0]) != nullptr)
+        {
+            command = (cpu->get_command(command_v[0]));
+            for (auto i : command_v)
+            {
+                command->push_back(i);
+            }
+
+            std::cout << "returning: " << std::endl;
+            return command;
+        }
+
+        /* Unknown command */
+        else
+        {
+            display_msg(msg_type_err, "Unknown command!", "");
         }
 
     }

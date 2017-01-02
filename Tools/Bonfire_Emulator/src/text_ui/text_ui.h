@@ -19,19 +19,22 @@
 #include "command.h"
 #include "text_ui_commands.h"
 
+class CPU;
 
 /**************** TextUI Main Class *****************/
 class TextUI : public UI
 {
 private:
     std::map<const int, std::string> msg_type_map;
-    Command* extract_command(std::string line);
-    std::map<std::string,text_ui_cmds::command_class> command_factory;
+    std::map<std::string,text_ui_cmds::text_ui_cmd_class> ui_cmd_factory;
+
     void print_hello_msg();
+    std::vector<std::string> extract_command(std::string line);
 
 public:
     TextUI();
-    Command* get_command();
+
+    Command* get_command(CPU* cpu);
     void display_msg(int msg_type, std::string Command, std::string title = "");
 };
 

@@ -19,26 +19,30 @@ int main(int argc, char const *argv[]) {
     auto exit_signal = false;
 
     /* Create a simple text-based UI */
-    TextUI* ui = new TextUI();
+    UI* ui = new TextUI();
 
     /* Create a Plasma CPU */
     CPU* plasma_CPU = new Plasma(ui);
 
+    std::future<Command*> ui_command;
+
     /* Start listening for commands from the UI */
 
+    ui_command = std::async(std::launch::async, &UI::get_command, ui, plasma_CPU);
     /* Main loop */
     do
     {
-        auto ui_command = std::async(std::launch::async,&UI::get_command, ui);
         try
         {
             /* Check if user has sent a command through the UI, non-blocking */
             if (ui_command.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
             {
-                auto command = ui_command.get();
-                if (command != nullptr) // Something went very wrong
+                Command* command = ui_command.get();
+                std::cout << "message recv:" << command-> get_type() << std::endl;
+                if (command != nullptr) // Something went very very wrong
                 {
-                    // command.execute();
+                    command->execute();
+                    ui_command = std::async(std::launch::async, &UI::get_command, ui, plasma_CPU);
                 }
                 else
                 {

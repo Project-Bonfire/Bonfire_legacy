@@ -21,7 +21,7 @@ class UI;
 namespace text_ui_cmds
 {
     /*************** Type Definitions *******************/
-    typedef boost::function< Command*() > command_class;
+    typedef boost::function< Command*() > text_ui_cmd_class;
 
     /************* CPU Internal Commands *************/
 
