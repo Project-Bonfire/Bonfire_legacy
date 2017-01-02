@@ -6,7 +6,7 @@ Constant declarations
 import os
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))[:-16]
-print PROJECT_ROOT
+
 
 # Better safe than sorry
 os.chdir(PROJECT_ROOT)

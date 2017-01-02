@@ -1,9 +1,11 @@
-"""
-Arguments parser
-    argv:           List of program arguments (sys.argv)
-    program_argv:   Dictionary consisting of network configuration variables
-"""
-def arg_parser(argv, program_argv):
+from helper_func import *
+
+def arg_parser(argv, program_argv, logging):
+    """
+    Arguments parser
+        argv:           List of program arguments (sys.argv)
+        program_argv:   Dictionary consisting of network configuration variables
+    """
 
     # MAN:
     # you should run this as
@@ -16,6 +18,10 @@ def arg_parser(argv, program_argv):
     #                           packet injection rate of PIR. By default, repeatative packets being sent from source to same destination
     #       -PS [min packet size] [max packet size]: specifies packet size. default min value is 3 and defualt max value is 8."
     #       -sim: specifies the length of simulation in clock cycles. which at this time the packet generators will stop sending packets."
+    
+    logging.info("starting parsing the progam arguments...")
+    logging.debug("program_argv list is following:")
+    logging.debug(argv[1:])
 
     if '--help' in argv[1:] or len(argv) == 1:
         print_help()
@@ -116,5 +122,16 @@ def arg_parser(argv, program_argv):
     if '--debug' in argv[1:]:
         program_argv['debug'] = True
 
+    logging.info("Finished parsing program arguments")
+    logging.info("Command line parameters:")
+    for i in program_argv:
+        logging.info("\t" + str(i) + ": " + str(program_argv[i]))
 
     return program_argv
+
+def report_parogram_arguments(program_argv, DEBUG):
+    if DEBUG: 
+        print_msg(MSG_DEBUG,  "Command line parameters:")
+        for i in program_argv:
+            print "\t" + i + ": " + str(program_argv[i])
+        print

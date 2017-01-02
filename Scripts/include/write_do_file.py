@@ -9,8 +9,8 @@ Generates a simulate.do file for running Modelsim.
 import file_lists
 from Scripts.include.package import *
 
-def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_name):
-
+def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_name, logging):
+    logging.info("Generating simulation.do")
     if program_argv['credit_based_FC']:
         flow_control_type = CREDIT_BASED_SUFFIX
     else:
@@ -216,3 +216,6 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
         do_file.write("\n# Exit Modelsim after simulation\n")
         do_file.write("exit\n")
     do_file.close()
+    logging.info("finished writing do file...")
+
+    return None
