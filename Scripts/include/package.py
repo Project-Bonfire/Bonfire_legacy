@@ -35,5 +35,28 @@ RECEIVED_TXT_PATH = "received.txt"
 SENT_TXT_PATH = "sent.txt"
 LATENCY_CALCULATION_PATH = "calculate_latency.py"
 
+# Default simulation configuration
+program_argv = {
+        'network_dime':    4,
+        'credit_based_FC': False,
+        'add_parity':      False,
+        'add_checkers':    False,
+        'packet_drop':     False,
+        'add_NI':          -1,
+        'add_FI':          False,
+        'add_FC':          False,
+        'add_FO':          False,
+        'add_LV':          False,
+        'lv_port':         4,
+        'add_SHMU':        False,
+        'rand':            -1,
+        'BR':              -1,
+        'PS':              [3,8],
+        'sim':             -1,
+        'end':             -1,
+        'lat':             False,
+        'debug':           False
+    }
+
 # Debug mode is off by default
 DEBUG = False
