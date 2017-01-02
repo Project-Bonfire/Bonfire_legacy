@@ -22,7 +22,6 @@ from Scripts.include.file_gen import gen_network_and_tb, gen_wave_do
 Main program
 """
 def main(argv):
-    global program_argv
     print "Project Root:", PROJECT_ROOT
 
     # Check if the temporary folder exists. If it does, clear it, if not, create it.
