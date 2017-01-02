@@ -24,7 +24,9 @@ def arg_parser(argv, program_argv, logging):
     logging.debug(argv[1:])
 
     if '--help' in argv[1:] or len(argv) == 1:
+        logging.info("printing manual...")
         print_help()
+        logging.info("exiting the program!")
         sys.exit()
 
     program_argv['credit_based_FC'] = False

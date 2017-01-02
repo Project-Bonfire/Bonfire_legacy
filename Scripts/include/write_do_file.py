@@ -1,15 +1,17 @@
-"""
-Generates a simulate.do file for running Modelsim.
 
-    netwrok_conf:       directory with program parameters
-    net_file_name:      file name for the generated network
-    net_tb_file_name:   file name for the generated network
-    wave_do_file_name:  file name for the generated wave.do file
-"""
 import file_lists
 from Scripts.include.package import *
 
 def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_name, logging):
+    """
+    Generates a simulate.do file for running Modelsim.
+        program_argv:       program arguments
+        net_file_name:      file name for the generated network
+        net_tb_file_name:   file name for the generated network
+        wave_do_file_name:  file name for the generated wave.do file
+        logging:            logging file
+    """
+
     logging.info("Generating simulation.do")
     if program_argv['credit_based_FC']:
         flow_control_type = CREDIT_BASED_SUFFIX
