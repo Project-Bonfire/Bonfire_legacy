@@ -13,6 +13,7 @@ from Scripts.include.file_lists import *
 from Scripts.include.Help_note import print_help
 from Scripts.include.write_do_file import write_do_file
 from Scripts.include.package import *
+
 from Scripts.include.arg_parser import arg_parser, report_parogram_arguments
 from Scripts.include.stats import statistics
 from Scripts.include.file_gen import gen_network_and_tb, gen_wave_do
@@ -21,7 +22,7 @@ from Scripts.include.file_gen import gen_network_and_tb, gen_wave_do
 Main program
 """
 def main(argv):
-
+    global program_argv
     print "Project Root:", PROJECT_ROOT
 
     # Check if the temporary folder exists. If it does, clear it, if not, create it.
