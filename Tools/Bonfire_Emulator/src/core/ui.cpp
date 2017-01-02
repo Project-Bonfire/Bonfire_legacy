@@ -14,6 +14,9 @@
 #include "ui.h"
 #include "common.h"
 #include "command.h"
+#include "cpu.h"
+
+//TODO: Cleanup
 
 uint32_t UI::read_reg(uint32_t reg_num)
 {

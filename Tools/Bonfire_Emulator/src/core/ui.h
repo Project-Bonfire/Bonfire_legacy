@@ -13,13 +13,13 @@
 #ifndef __UI_H__
 #define __UI_H__
 
-#define MSG_DEBUG   0
-#define MSG_INFO    1
-#define MSG_WARN    2
-#define MSG_ERR     3
-
 #include <string>
-#include "command.h"
+
+/************** Constant Definitions ***************/
+const int msg_type_debug  = 0;
+const int msg_type_info   = 0;
+const int msg_type_warn   = 0;
+const int msg_type_err    = 0;
 
 class Command;
 

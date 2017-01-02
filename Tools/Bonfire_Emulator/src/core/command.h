@@ -17,8 +17,6 @@
 #include <string>
 #include <iostream>
 #include "message.h"
-#include "ui.h"
-#include "cpu.h"
 
 class UI;
 class CPU;
@@ -34,7 +32,7 @@ public:
         ui = r_ui;
         cpu = r_cpu;
     }
-    virtual void execute () { std::cout << "exec" << std::endl; }
+    virtual void execute () {}
 };
 
 #endif //__COMMAND_H__

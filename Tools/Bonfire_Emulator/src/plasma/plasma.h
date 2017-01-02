@@ -1,35 +1,28 @@
 /*--------------------------------------------------------------------
- * TITLE: Text Based User Interface
+ * TITLE: Plasma CPU
  * AUTHOR: Karl Janson
- * DATE CREATED: 14.12.16
- * FILENAME: cpu.cpp
+ * DATE CREATED: 31.12.16
+ * FILENAME: plasma.h
  * PROJECT: Bonfire NoC CPU Emulator
  * COPYRIGHT: Software placed into the public domain by the author.
  *    Software 'as is' without warranty.  Author liable for nothing.
  * DESCRIPTION:
- *    Text user interface
+ *    Implements toplevel Plasma CPU functions
  *--------------------------------------------------------------------*/
 
-#include <iostream>
-#include "command.h"
-#include "common.h"
+#ifndef __PLASMA_H__
+#define __PLASMA_H__
+
 #include "cpu.h"
-#include "memory.h"
-#include "memory_ctrl.h"
-#include "cpu_state.h"
 
+class UI;
 
-CPU::CPU()
+class Plasma : public CPU
 {
-    cpu_state = new CPU_State;
-}
+public:
+    Plasma(UI* ui) : CPU(ui) {}
 
-CPU_State* CPU::state()
-{
-    return cpu_state;
-}
+    void init();
+};
 
-CPU::~CPU()
-{
-    delete cpu_state;
-}
+#endif //__PLASMA_H__

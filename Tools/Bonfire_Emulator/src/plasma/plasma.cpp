@@ -10,8 +10,8 @@
  *    Implements toplevel Plasma CPU functions
  *--------------------------------------------------------------------*/
 
-#include "cpu.h"
 #include "plasma.h"
+#include "cpu_state.h"
 
 /**
  * Initialize the Plasma CPU
