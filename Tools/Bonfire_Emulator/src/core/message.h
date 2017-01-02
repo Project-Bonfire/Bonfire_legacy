@@ -63,6 +63,17 @@ public:
         contents = v;
         contents.insert(contents.begin(), type);
     }
+
+    std::vector<std::string> get()
+    {
+        return contents;
+    }
+
+    void set(std::vector<std::string>& v)
+    {
+        contents = v;
+    }
+
 };
 
 #endif //__MESSAGE_H__

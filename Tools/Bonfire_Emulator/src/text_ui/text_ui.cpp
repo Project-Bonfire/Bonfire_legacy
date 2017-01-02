@@ -123,53 +123,37 @@ void TextUI::display_msg(const int msg_type, std::string contents, std::string t
  */
 Command* TextUI::get_command(CPU* cpu)
 {
-    Command* command;
     std::string line;
-    std::vector<std::string> command_v;
 
     while (1)
     {
 
         /* Read a line from the console */
         std::getline (std::cin, line);
-        command_v = extract_command(line);
+        auto command_v = extract_command(line);
 
-       /*
-        * If we got a command that is needed to be sent to the main(),
-        * return, otherwize continue.
-        */
-        for (auto i : command_v)
-        {
-            std::cout << i << std::endl;
-        }
         /* UI command? */
         if (ui_cmd_factory.find(command_v[0]) != ui_cmd_factory.end())
         {
-            command = ui_cmd_factory[command_v[0]]();
-            for (auto i : command_v)
-            {
-                command->push_back(i);
-            }
+            auto command = ui_cmd_factory[command_v[0]]();
+            command->set(command_v);
             command->execute();
         }
 
         /* System command? */
         else if (cpu->get_command(command_v[0]) != nullptr)
         {
-            command = (cpu->get_command(command_v[0]));
-            for (auto i : command_v)
-            {
-                command->push_back(i);
-            }
+            auto command = (cpu->get_command(command_v[0]));
+            command->set(command_v);
 
-            std::cout << "returning: " << std::endl;
             return command;
         }
 
         /* Unknown command */
         else
         {
-            display_msg(msg_type_err, "Unknown command!", "");
+            display_msg(msg_type_err, \
+                "Command " + command_v[0] + " not recognized", "Unknown command!");
         }
 
     }

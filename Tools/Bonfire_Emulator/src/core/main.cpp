@@ -29,6 +29,7 @@ int main(int argc, char const *argv[]) {
     /* Start listening for commands from the UI */
 
     ui_command = std::async(std::launch::async, &UI::get_command, ui, plasma_CPU);
+
     /* Main loop */
     do
     {
@@ -37,15 +38,28 @@ int main(int argc, char const *argv[]) {
             /* Check if user has sent a command through the UI, non-blocking */
             if (ui_command.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
             {
-                Command* command = ui_command.get();
-                std::cout << "message recv:" << command-> get_type() << std::endl;
-                if (command != nullptr) // Something went very very wrong
+                auto command = ui_command.get();
+
+                if (command != nullptr)
                 {
-                    command->execute();
-                    ui_command = std::async(std::launch::async, &UI::get_command, ui, plasma_CPU);
+                    if (command-> get_type() == "exit")
+                    {
+                        exit_signal = true;
+                    }
+
+                    else
+                    {
+                        command->execute();
+
+                        /* Get a new command */
+                        ui_command = std::async(std::launch::async, &UI::get_command, ui, plasma_CPU);
+                    }
                 }
+
+                /* Something went very very wrong. We should never end up here */
                 else
                 {
+                    std::cerr << "Unknown UI error!!!" << std::endl;
                     std::terminate();
                 }
             }
