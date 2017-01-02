@@ -312,6 +312,9 @@ procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_de
     variable source_node, destination_node, P_length, packet_id, counter: integer;
     variable LINEVARIABLE : line; 
      file VEC_FILE : text is out "received.txt";
+     file DIAGNOSIS_FILE : text is out "DIAGNOSIS.txt";
+     variable DIAGNOSIS: std_logic;
+     variable DIAGNOSIS_vector: std_logic_vector(12 downto 0);
      begin
      credit_out <= '1';
      counter := 0;
@@ -322,6 +325,7 @@ procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_de
          if valid_in = '1' then
               if (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001") then
                 counter := 1; 
+                DIAGNOSIS := '0';
                 P_length := to_integer(unsigned(port_in(28 downto 17)));
                 destination_node := to_integer(unsigned(port_in(16 downto 13)));
                 source_node := to_integer(unsigned(port_in(12 downto 9)));
@@ -331,14 +335,24 @@ procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_de
                --report "flit type: " &integer'image(to_integer(unsigned(port_in(DATA_WIDTH-1 downto DATA_WIDTH-3)))) ;
                --report  "counter: " & integer'image(counter);
                counter := counter+1; 
+               if port_in(28 downto 13) = "0100011001000100" then
+                  DIAGNOSIS := '1';
+                  DIAGNOSIS_vector(11 downto 0) := port_in(12 downto 1);
+               end if; 
             end if;
             if (port_in(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100") then 
                 counter := counter+1; 
               report "Packet received at " & time'image(now) & " From " & integer'image(source_node) & " to " & integer'image(destination_node) & " with length: "& integer'image(P_length) & " counter: "& integer'image(counter);
               assert (P_length=counter) report "wrong packet size" severity warning;
               assert (Node_ID=destination_node) report "wrong packet destination " severity failure;
-               write(LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(source_node) & " to: " & integer'image(destination_node) & " length: "& integer'image(P_length) & " actual length: "& integer'image(counter)  & " id: "& integer'image(packet_id));
-               writeline(VEC_FILE, LINEVARIABLE);
+              if DIAGNOSIS = '1' then 
+                DIAGNOSIS_vector(12) := port_in(28);
+                write(LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(source_node) & " to: " & integer'image(destination_node) & " length: "& integer'image(P_length) & " actual length: "& integer'image(counter)  & " id: "& integer'image(packet_id));
+                writeline(DIAGNOSIS_FILE, LINEVARIABLE);
+              else
+                write(LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(source_node) & " to: " & integer'image(destination_node) & " length: "& integer'image(P_length) & " actual length: "& integer'image(counter)  & " id: "& integer'image(packet_id));
+                writeline(VEC_FILE, LINEVARIABLE);
+              end if;
                counter := 0;
             end if;
          end if;
