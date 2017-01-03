@@ -39,6 +39,7 @@ architecture behavior of FIFO_credit_based is
     constant fake_tail :  std_logic_vector := "10000000000000000000000000000001";
    
    alias flit_type :  std_logic_vector(2 downto 0) is RX(DATA_WIDTH-1 downto DATA_WIDTH-3); 
+   signal fault_info_in, fault_info_out: std_logic;
    signal faulty_packet_in, faulty_packet_out: std_logic;
    signal xor_all, fault_out: std_logic;
    type state_type is (Idle, Header_flit, Body_flit, Tail_flit, Packet_drop);
@@ -103,7 +104,7 @@ begin
             faulty_packet_out <= '0';
             credit_out <= '0';
             state_out <= Idle;
-
+            fault_info_out <= '0';
         elsif clk'event and clk = '1' then
             write_pointer <= write_pointer_in;
             read_pointer  <=  read_pointer_in;
@@ -121,7 +122,7 @@ begin
                   FIFO_MEM_4 <= FIFO_MEM_4_in;                   
             end if;
 
-
+            fault_info_out <= fault_info_in;
 
         end if;
     end process;
@@ -129,6 +130,9 @@ begin
  -- anything below here is pure combinational
  
    -- combinatorial part 
+
+fault_info <= fault_info_out;
+
 process(fake_credit, read_en, fake_credit_counter) begin
 	fake_credit_counter_in <= fake_credit_counter;
 	credit_in <= '0';
@@ -173,7 +177,7 @@ end process;
       end case ;
      
      --some defaults 
-     fault_info <= '0';
+     fault_info_in <= '0';
      health_info <= '0';
      fake_credit <= '0';
      state_in <= state_out;
@@ -192,7 +196,7 @@ end process;
               fake_credit <= '1';
               FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
               state_in <= Packet_drop;
-              fault_info <= '1';
+              fault_info_in <= '1';
               faulty_packet_in <= '1';
             end if;           
       	  when Header_flit => 
@@ -217,7 +221,7 @@ end process;
 			            when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
 			        end case ;
 			        state_in <= Packet_drop;
-              fault_info <= '1';
+              fault_info_in <= '1';
 			        faulty_packet_in <= '1';                
 	              end if;  
 	            else
@@ -246,7 +250,7 @@ end process;
 	                      when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
 	                  end case ;
 	                  state_in <= Packet_drop;
-                    fault_info <= '1';
+                    fault_info_in <= '1';
 	                  faulty_packet_in <= '1'; 
 	 				 
 	              end if;
@@ -265,7 +269,7 @@ end process;
                       fake_credit <= '1';
                       FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                       state_in <= Packet_drop;
-                      fault_info <= '1';
+                      fault_info_in <= '1';
                       faulty_packet_in <= '1';        
                   end if;   
               else

@@ -22,6 +22,7 @@ use ieee.std_logic_misc.all;
 
 entity NI is
    generic(current_address : integer := 10; 	-- the current node's address
+           SHMU_address : integer := 0;
    		   reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
          flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";	-- reserved address for the memory mapped I/O
          counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001";
@@ -311,10 +312,11 @@ process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
 end process; 
 
 
-process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_counter_out, FIFO_Data_out, fault_info_ready_in)
+process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_counter_out, FIFO_Data_out, fault_info_ready)
     variable LINEVARIABLE : line;
     file VEC_FILE : text is out "sent.txt";
     begin
+    	sent_info <= '0';
         TX <= (others => '0');
         grant<= '0';
         packet_length_counter_in <= packet_length_counter_out;
@@ -322,7 +324,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
 
         case(state) is
             when IDLE =>
-                if fault_info_ready_in = '1' then 
+                if fault_info_ready = '1' and SHMU_address /= current_address then 
                     state_in <= DIAGNOSIS_HEADER;
                 elsif P2N_empty = '0' then
                     state_in <= HEADER_FLIT;
@@ -398,6 +400,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                     grant <= '1';
                     TX <= "100" & fault_info(12) & "000000000000000000000000000" & XOR_REDUCE("100" & fault_info(12) & "000000000000000000000000000");
                     state_in <= IDLE;
+                    sent_info <= '1';
                     packet_counter_in <= packet_counter_out +1;
                 else
                     state_in <= DIAGNOSIS_TAIL;

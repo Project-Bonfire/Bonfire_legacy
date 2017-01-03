@@ -372,7 +372,7 @@ begin  --architecture
          E_TXD       => gpio0_out(27 downto 24));
    end generate;
 u4_ni: NI
-      generic map(current_address => current_address)
+      generic map(current_address => current_address, SHMU_address => 0)
       port map (
          clk               => clk,
 		 reset             => reset,

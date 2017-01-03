@@ -49,6 +49,19 @@ port (reset: in  std_logic;
 	credit_out_L_3, valid_out_L_3: out std_logic;
 	credit_in_L_3, valid_in_L_3: in std_logic;
 	TX_L_3: out std_logic_vector (DATA_WIDTH-1 downto 0);
+	--fault injector signals
+	FI_Add_2_0, FI_Add_0_2: in std_logic_vector(4 downto 0);
+	sta0_0_2, sta1_0_2, sta0_2_0, sta1_2_0: in std_logic;
+
+	FI_Add_3_1, FI_Add_1_3: in std_logic_vector(4 downto 0);
+	sta0_1_3, sta1_1_3, sta0_3_1, sta1_3_1: in std_logic;
+
+	FI_Add_1_0, FI_Add_0_1: in std_logic_vector(4 downto 0);
+	sta0_0_1, sta1_0_1, sta0_1_0, sta1_1_0: in std_logic;
+
+	FI_Add_3_2, FI_Add_2_3: in std_logic_vector(4 downto 0);
+	sta0_2_3, sta1_2_3, sta0_3_2, sta1_3_2: in std_logic;
+
 	--------------
     link_faults_0: out std_logic_vector(4 downto 0);
     turn_faults_0: out std_logic_vector(7 downto 0);
@@ -117,6 +130,19 @@ end component; --component NoC_Node
 	signal RX_L_3, TX_L_3:  std_logic_vector (31 downto 0);
 	signal credit_counter_out_3:  std_logic_vector (1 downto 0);
 	signal credit_out_L_3, credit_in_L_3, valid_in_L_3, valid_out_L_3: std_logic;
+	--fault injector signals
+	signal FI_Add_2_0, FI_Add_0_2: std_logic_vector(integer(ceil(log2(real(31))))-1 downto 0) := (others=>'0');
+	signal sta0_0_2, sta1_0_2, sta0_2_0, sta1_2_0: std_logic :='0';
+
+	signal FI_Add_3_1, FI_Add_1_3: std_logic_vector(integer(ceil(log2(real(31))))-1 downto 0) := (others=>'0');
+	signal sta0_1_3, sta1_1_3, sta0_3_1, sta1_3_1: std_logic :='0';
+
+	signal FI_Add_1_0, FI_Add_0_1: std_logic_vector(integer(ceil(log2(real(31))))-1 downto 0):= (others=>'0');
+	signal sta0_0_1, sta1_0_1, sta0_1_0, sta1_1_0: std_logic :='0';
+
+	signal FI_Add_3_2, FI_Add_2_3: std_logic_vector(integer(ceil(log2(real(31))))-1 downto 0):= (others=>'0');
+	signal sta0_2_3, sta1_2_3, sta0_3_2, sta1_3_2: std_logic :='0';
+
 	signal link_faults_0 : std_logic_vector(4 downto 0);
 	signal turn_faults_0 : std_logic_vector(7 downto 0);
 	signal Rxy_reconf_PE_0 : std_logic_vector(7 downto 0);
@@ -162,6 +188,17 @@ port map (reset, clk, Rxy_reconf, Reconfig,
 	RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1,  TX_L_1, 
 	RX_L_2, credit_out_L_2, valid_out_L_2, credit_in_L_2, valid_in_L_2,  TX_L_2, 
 	RX_L_3, credit_out_L_3, valid_out_L_3, credit_in_L_3, valid_in_L_3,  TX_L_3, 
+	--fault injector signals
+	--FI vertical signals
+	FI_Add_2_0, FI_Add_0_2, 
+	sta0_0_2, sta1_0_2, sta0_2_0, sta1_2_0, 
+	FI_Add_3_1, FI_Add_1_3, 
+	sta0_1_3, sta1_1_3, sta0_3_1, sta1_3_1, 
+	--FI horizontal signals
+	FI_Add_1_0, FI_Add_0_1,
+	sta0_0_1, sta1_0_1, sta0_1_0, sta1_1_0, 
+	FI_Add_3_2, FI_Add_2_3,
+	sta0_2_3, sta1_2_3, sta0_3_2, sta1_3_2, 
 	-- should be connected to NI
 	link_faults_0, turn_faults_0,	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0, 
 	link_faults_1, turn_faults_1,	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1, 
@@ -252,6 +289,15 @@ port map( not_reset, clk,
         Reconfig_command => Reconfig_command_3
    );
 
+-- connecting the fault generators
+gen_fault(sta0_1_0, sta1_1_0, FI_Add_1_0, 62,459589083,999781261);
+gen_fault(sta0_0_1, sta1_0_1, FI_Add_0_1, 44,1197833894,2048899594);
+gen_fault(sta0_2_0, sta1_2_0, FI_Add_2_0, 67,1125461812,1357715246);
+gen_fault(sta0_0_2, sta1_0_2, FI_Add_0_2, 52,402901581,1490849015);
+gen_fault(sta0_3_1, sta1_3_1, FI_Add_3_1, 42,1536200839,717250242);
+gen_fault(sta0_1_3, sta1_1_3, FI_Add_1_3, 67,82595215,1440385257);
+gen_fault(sta0_3_2, sta1_3_2, FI_Add_3_2, 64,1155804138,149175648);
+gen_fault(sta0_2_3, sta1_2_3, FI_Add_2_3, 63,211881743,957311960);
 
 
 end;

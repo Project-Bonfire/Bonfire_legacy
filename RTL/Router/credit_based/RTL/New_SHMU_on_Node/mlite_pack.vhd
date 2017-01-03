@@ -407,6 +407,7 @@ package mlite_pack is
    
    component NI
      generic(current_address : integer := 10;   -- the current node's address
+          SHMU_address : integer := 0;
          reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
          flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";  -- reserved address for the memory mapped I/O
          counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001");  -- reserved address for the counter

@@ -179,7 +179,8 @@ end COMPONENT;
 begin
 	
 turn_faults  <= "00000000";
-link_faults  <= sig_Faulty_N_out & sig_Faulty_E_out & sig_Faulty_W_out & sig_Faulty_S_out & faulty_link_L;
+--link_faults  <= sig_Faulty_N_out & sig_Faulty_E_out & sig_Faulty_W_out & sig_Faulty_S_out & faulty_link_L;
+link_faults  <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L;
 
 Faulty_N_out <= sig_Faulty_N_out;
 Faulty_E_out <= sig_Faulty_E_out;
