@@ -66,7 +66,7 @@ CB_Allocator_with_checkers_files = ["Arbiter_in_one_hot_checkers.vhd", "Arbiter_
 CB_FIFO_one_hot_CB_PD_FC_with_checkers_files = ["FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd",
 											                          "FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers.vhd"]								
 
-CB_LBDR_PD_with_checkers_files = ["Cx_Reconf_pseudo_checkers.vhd", "Rxy_Reconf_pseudo_checkers", 
+CB_LBDR_PD_with_checkers_files = ["Cx_Reconf_pseudo_checkers.vhd", "Rxy_Reconf_pseudo_checkers.vhd", 
                                   "LBDR_packet_drop_routing_part_pseudo_checkers.vhd",
 								                  "LBDR_packet_drop_with_checkers.vhd"]
 

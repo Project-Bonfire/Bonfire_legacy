@@ -1,4 +1,6 @@
 from helper_func import *
+from Help_note import print_help
+import sys
 
 def arg_parser(argv, program_argv, logging):
     """
@@ -25,7 +27,7 @@ def arg_parser(argv, program_argv, logging):
 
     if '--help' in argv[1:] or len(argv) == 1:
         logging.info("printing manual...")
-        print_help()
+        print_help(argv, program_argv)
         logging.info("exiting the program!")
         sys.exit()
 

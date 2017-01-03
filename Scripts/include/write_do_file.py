@@ -45,7 +45,7 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
       
             for file in file_lists.CB_FIFO_one_hot_CB_PD_FC_with_checkers_files:    
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type + CHECKERS_DIR \
-                    + "/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers/"+file+".vhd\"\n")
+                    + "/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers/"+file+"\"\n")
 
             for file in file_lists.CB_LBDR_PD_with_checkers_files:
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type + CHECKERS_DIR \
