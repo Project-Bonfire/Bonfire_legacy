@@ -12,8 +12,12 @@ from Scripts.include.helper_func import *
 from Scripts.include.file_lists import *
 from Scripts.include.Help_note import print_help
 from Scripts.include.write_do_file import write_do_file
+<<<<<<< HEAD
+from Scripts.include import package
+=======
 from Scripts.include.package import *
 
+>>>>>>> ed3ab92ffb9f381391becf394c524a8854da7e15
 from Scripts.include.arg_parser import arg_parser, report_parogram_arguments
 from Scripts.include.stats import statistics
 from Scripts.include.file_gen import gen_network_and_tb, gen_wave_do
@@ -22,17 +26,22 @@ from Scripts.include.file_gen import gen_network_and_tb, gen_wave_do
 Main program
 """
 def main(argv):
+<<<<<<< HEAD
+
+    print "Project Root:", package.PROJECT_ROOT
+=======
     print "Project Root:", PROJECT_ROOT
+>>>>>>> ed3ab92ffb9f381391becf394c524a8854da7e15
 
     # Check if the temporary folder exists. If it does, clear it, if not, create it.
     if os.path.exists(SIMUL_DIR):
         try:
-            shutil.rmtree(SIMUL_DIR)
+            shutil.rmtree(package.SIMUL_DIR)
         except OSError as e:
             print_msg(MSG_ERROR, "Error " + str(e[0]) + ": " + e[1])
             sys.exit(1)
     try:
-        os.makedirs(SIMUL_DIR)
+        os.makedirs(package.SIMUL_DIR)
     except OSError as e:
         print_msg(MSG_ERROR, "Error " + str(e[0]) + ": " + e[1])
         sys.exit(1)
@@ -46,29 +55,29 @@ def main(argv):
 
     # Parse the arguments given to the system
     try:
-        program_argv = arg_parser(argv, program_argv, logging)
+        package.program_argv = arg_parser(argv, package.program_argv, logging)
     except ValueError as e:
         print_msg(MSG_ERROR, str(e))
         sys.exit(1)
 
-    DEBUG = program_argv['debug']
-    report_parogram_arguments(program_argv, DEBUG)
+    DEBUG = package.program_argv['debug']
+    report_parogram_arguments(package.program_argv, DEBUG)
     
-    if program_argv['credit_based_FC']:
-        flow_control_type = CREDIT_BASED_SUFFIX
+    if package.program_argv['credit_based_FC']:
+        flow_control_type = package.CREDIT_BASED_SUFFIX
     else:
-        flow_control_type = HANDSHAKING_SUFFIX
+        flow_control_type = package.HANDSHAKING_SUFFIX
 
-    net_file_name, net_tb_file_name = gen_network_and_tb(program_argv, flow_control_type)
+    net_file_name, net_tb_file_name = gen_network_and_tb(package.program_argv, flow_control_type)
 
     # Generate wave.do
-    wave_do_file_name = gen_wave_do(program_argv, flow_control_type)
+    wave_do_file_name = gen_wave_do(package.program_argv, flow_control_type)
 
     # Generate simulate.do
     if DEBUG: print_msg(MSG_DEBUG, "Generating simulation.do")
 
     try:
-        write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_name, logging)
+        write_do_file(package.program_argv, net_file_name, net_tb_file_name, wave_do_file_name, logging)
     except IOError as e:
         print_msg(MSG_ERROR, "Generate simulate.do file: Error " + str(e[0]) + ": " + e[1])
         sys.exit(1)
@@ -77,10 +86,10 @@ def main(argv):
     if DEBUG: print_msg(MSG_DEBUG, "Running Modelsim...")
 
     os.chdir(SIMUL_DIR)
-    if program_argv['lat']:
-        return_value = os.system("vsim -c -do " + SIMUL_DO_SCRIPT)
+    if package.program_argv['lat']:
+        return_value = os.system("vsim -c -do " + package.SIMUL_DO_SCRIPT)
     else:
-        return_value = os.system("vsim -do " + SIMUL_DO_SCRIPT)
+        return_value = os.system("vsim -do " + package.SIMUL_DO_SCRIPT)
 
     if return_value != 0:
         logging.error("Error while running Modelsim")
@@ -89,14 +98,14 @@ def main(argv):
 
     # Latency calculation
     logging.info('starting latency calculation...')
-    if program_argv['lat']:
+    if package.program_argv['lat']:
         # Read sent packets
         statistics(True)
 
         # Run latency calculation script
         latency_command = "python " + SCRIPTS_DIR + "/include/" + LATENCY_CALCULATION_PATH + " -S " + SENT_TXT_PATH + " -R " + RECEIVED_TXT_PATH
 
-        if program_argv['add_FI'] == False:
+        if package.program_argv['add_FI'] == False:
             if DEBUG: print_msg(MSG_DEBUG, "Running latency calculator script:\n\t" + latency_command)
 
             return_value = os.system(latency_command)
