@@ -12,12 +12,7 @@ from Scripts.include.helper_func import *
 from Scripts.include.file_lists import *
 from Scripts.include.Help_note import print_help
 from Scripts.include.write_do_file import write_do_file
-<<<<<<< HEAD
 from Scripts.include import package
-=======
-from Scripts.include.package import *
-
->>>>>>> ed3ab92ffb9f381391becf394c524a8854da7e15
 from Scripts.include.arg_parser import arg_parser, report_parogram_arguments
 from Scripts.include.stats import statistics
 from Scripts.include.file_gen import gen_network_and_tb, gen_wave_do
@@ -26,12 +21,10 @@ from Scripts.include.file_gen import gen_network_and_tb, gen_wave_do
 Main program
 """
 def main(argv):
-<<<<<<< HEAD
+ 
 
     print "Project Root:", package.PROJECT_ROOT
-=======
-    print "Project Root:", PROJECT_ROOT
->>>>>>> ed3ab92ffb9f381391becf394c524a8854da7e15
+ 
 
     # Check if the temporary folder exists. If it does, clear it, if not, create it.
     if os.path.exists(SIMUL_DIR):
