@@ -1,7 +1,7 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
 
-def declare_signals(noc_file, network_dime, add_parity, add_lv, add_packet_drop, add_FC, lv_port):
+def declare_signals(noc_file, network_dime, add_parity, add_lv, add_packet_drop, add_FC, add_SHMU, lv_port):
     noc_file.write("\n\n")
     noc_file.write("-- generating bulk signals. not all of them are used in the design...\n")
 
@@ -107,5 +107,5 @@ def declare_signals(noc_file, network_dime, add_parity, add_lv, add_packet_drop,
 
         string_to_print = string_to_print [: len(string_to_print)-1] + ": std_logic;\n"
         noc_file.write(string_to_print)
-        
+
     noc_file.write("\n")

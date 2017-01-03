@@ -79,7 +79,7 @@ if reset = '0' then
   Req_L_FF <= '0';
   Cx <= std_logic_vector(to_unsigned(Cx_rst, Cx'length));
   Temp_Cx <= (others => '0');
-  ReConf_FF_out <= '00';
+  ReConf_FF_out <= '0';
   reconfig_cx <= '0';
   packet_drop <= '0';
 elsif clk'event and clk = '1' then
@@ -108,7 +108,7 @@ process(Reconfig, Reconfig_command, Rxy_reconf, Rxy_reconf_PE, Rxy_tmp, ReConf_F
 	  	ReConf_FF_in <= '0';
   else
   	Rxy_in <= Rxy;
-  	if Reconfig = '1' 
+  	if Reconfig = '1' then
       Rxy_tmp_in <= Rxy_reconf;
       ReConf_FF_in <= '1';
     elsif Reconfig_command = '1'then 

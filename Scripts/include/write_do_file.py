@@ -96,7 +96,7 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
         # Add a network interface
         if program_argv['add_NI'] != -1:
-            for file in file_lists.list_of_PE_files:
+            for file in file_lists.PE_files:
                 do_file.write("vcom \"" + PROJECT_ROOT + "/RTL/Processor_NI/"+file+"\"\n")
 
         # Add parity checking

@@ -6,7 +6,7 @@ from CB_FC_Package import CreditBasedPackage
 from CB_compoments import declare_components
 from Signal_declaration import declare_signals
 from ACII_art import generate_ascii_art
-from Instantiate_components import instantiate_shmu, instantiate_routers, instantiate_lv_routers
+from Instantiate_components import  instantiate_routers, instantiate_lv_routers
 from network_entity import generate_entity
 
 
@@ -38,8 +38,8 @@ noc_file.write("use IEEE.STD_LOGIC_UNSIGNED.ALL;\n")
 noc_file.write("USE ieee.numeric_std.ALL; \n")
 noc_file.write("\n")
 
-generate_entity(noc_file, CB_Package.network_dime, CB_Package.add_FI, CB_Package.fi_addres_width, 
-                CB_Package.add_LV, CB_Package.add_FO)
+generate_entity(noc_file, CB_Package.network_dime, CB_Package.add_FI, CB_Package.add_SHMU, 
+                CB_Package.fi_addres_width, CB_Package.add_LV)
 
 noc_file.write("\n\n")
 noc_file.write("architecture behavior of network_"+str(CB_Package.network_dime)+"x" +
@@ -50,7 +50,7 @@ declare_components(noc_file, CB_Package.add_parity, CB_Package.add_FI, CB_Packag
                    CB_Package.add_packet_drop, CB_Package.add_FC, CB_Package.network_dime, CB_Package.fi_addres_width, CB_Package.lv_ports)
 
 declare_signals(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV, CB_Package.add_packet_drop,
-                CB_Package.add_FC, CB_Package.lv_ports)
+                CB_Package.add_FC, CB_Package.add_SHMU, CB_Package.lv_ports)
 
 generate_ascii_art(noc_file, CB_Package.network_dime, CB_Package.add_FI)
 
@@ -60,13 +60,10 @@ noc_file.write("begin\n\n\n")
 #todo: One should be able to control the threshold values!
 
 instantiate_routers(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV, CB_Package.add_packet_drop,
-                    CB_Package.add_FC, CB_Package.healthy_counter_threshold, CB_Package.faulty_counter_threshold, CB_Package.counter_depth)
+                    CB_Package.add_FC, CB_Package.add_SHMU, CB_Package.healthy_counter_threshold, CB_Package.faulty_counter_threshold, CB_Package.counter_depth)
 
 if CB_Package.add_LV:
     instantiate_lv_routers(noc_file, CB_Package.network_dime, CB_Package.lv_ports)
-
-if CB_Package.add_SHMU:
-    instantiate_shmu(noc_file, CB_Package.network_dime)
 
 if CB_Package.add_FI:
     noc_file.write("-- instantiating the Fault injectors\n")

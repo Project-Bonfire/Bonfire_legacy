@@ -21,6 +21,7 @@ if '--help' in sys.argv[1:]:
   print "\t-FI: adds control for fault injector units in the network"
   print "\t-LV: adds control for light weight network"
   print "\t-PE: adds procssing elements in each node"
+  print "\t-SHMU: maps shmu on one of the nodes"
   print "\t-sim: specifies the length of simulation in clock cycles. which at this time the packet generators will stop sending packets."
   print "\t**Example: python network_tb_gen_parameterized.py -D 2"
   print "\t           generates a testbench for a 2X2 network that has fault injector controller and uses "
@@ -36,6 +37,7 @@ random_dest = False
 fi_addres_width = None
 add_FI = False
 add_lv = False
+add_SHMU = False
 add_node = False
 got_finish_time = False
 sim_finish_time = None
@@ -65,6 +67,9 @@ if '-FI'  in sys.argv[1:]:
 
 if '-LV'  in sys.argv[1:]:
     add_lv = True
+
+if '-SHMU'  in sys.argv[1:]:
+    add_SHMU = True
 
 
 if "-PE" in sys.argv[1:]:
@@ -156,7 +161,7 @@ for i in range(network_dime**2):
     noc_file.write("\tRX_L_"+str(i)+": in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
     noc_file.write("\tcredit_out_L_"+str(i)+", valid_out_L_"+str(i)+": out std_logic;\n")
     noc_file.write("\tcredit_in_L_"+str(i)+", valid_in_L_"+str(i)+": in std_logic;\n")
-    if i == network_dime**2-1 and (add_FI or add_lv)== False:
+    if i == network_dime**2-1 and (add_FI or add_lv or add_SHMU)== False:
         noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
     else:
         noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0);\n")
@@ -190,14 +195,22 @@ if add_lv and not add_node:
     string_to_print +="    valid_out_LV_"+str(i) +" : out std_logic;\n"
     string_to_print +="    TX_LV_"+str(i) +": out std_logic_vector (DATA_WIDTH_LV-1 downto 0);\n\n"
 
+if add_SHMU:
+  for i in range(0, network_dime**2):
+      string_to_print +="\t--------------\n"
+      string_to_print +="    link_faults_"+str(i) +": out std_logic_vector(4 downto 0);\n"
+      string_to_print +="    turn_faults_"+str(i) +": out std_logic_vector(7 downto 0);\n"
+      string_to_print +="    Rxy_reconf_PE_"+str(i) +": in  std_logic_vector(7 downto 0);\n"
+      string_to_print +="    Cx_reconf_PE_"+str(i) +": in  std_logic_vector(3 downto 0);\n"
+      string_to_print +="    Reconfig_command_"+str(i) +" : in std_logic;\n\n"
+
 noc_file.write(string_to_print[:len(string_to_print)-3])
 noc_file.write("\n            ); \n")
 noc_file.write("end component; \n")
 
-
-if add_node:
+print "here", add_SHMU, add_node
+if add_node and not add_SHMU:
   noc_file.write("component NoC_Node is\n")
-
   noc_file.write("generic( current_address : integer := 0; stim_file: string :=\"code.txt\";\n")
   noc_file.write("\tlog_file  : string := \"output.txt\");\n\n")
 
@@ -212,7 +225,32 @@ if add_node:
   noc_file.write("        valid_in: in std_logic;\n")
   noc_file.write("        RX: in std_logic_vector(31 downto 0)\n")
   noc_file.write("   );\n")
-
+  noc_file.write("end component; --component NoC_Node\n")
+elif add_node and add_SHMU:
+  noc_file.write("component NoC_Node is\n")
+  noc_file.write("generic( current_address : integer := 0;\n")
+  noc_file.write("         stim_file: string :=\"code.txt\";\n")
+  noc_file.write("         log_file  : string := \"output.txt\");\n")
+  noc_file.write("\n")
+  noc_file.write("port( reset        : in std_logic;\n")
+  noc_file.write("      clk          : in std_logic;\n")
+  noc_file.write("\n")
+  noc_file.write("        credit_in : in std_logic;\n")
+  noc_file.write("        valid_out: out std_logic;\n")
+  noc_file.write("        TX: out std_logic_vector(31 downto 0);\n")
+  noc_file.write("\n")
+  noc_file.write("        credit_out : out std_logic;\n")
+  noc_file.write("        valid_in: in std_logic;\n")
+  noc_file.write("        RX: in std_logic_vector(31 downto 0);\n")
+  noc_file.write("\n")
+  noc_file.write("        link_faults: in std_logic_vector(4 downto 0);\n")
+  noc_file.write("        turn_faults: in std_logic_vector(7 downto 0);\n")
+  noc_file.write("\n")
+  noc_file.write("        Rxy_reconf_PE: out  std_logic_vector(7 downto 0);\n")
+  noc_file.write("        Cx_reconf_PE: out  std_logic_vector(3 downto 0);\n")
+  noc_file.write("        Reconfig_command : out std_logic\n")
+  noc_file.write("\n")
+  noc_file.write("   );\n")
   noc_file.write("end component; --component NoC_Node\n")
 
 noc_file.write("\n")
@@ -247,7 +285,13 @@ if add_FI:
                          ": std_logic_vector(integer(ceil(log2(real("+str(data_width-1)+"))))-1 downto 0):= (others=>'0');\n")
           noc_file.write("\tsignal sta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
                           ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": std_logic :='0';\n\n")
-
+if add_SHMU:
+  for i in range(0, network_dime*network_dime):
+    noc_file.write("\tsignal link_faults_"+str(i)+ " : std_logic_vector(4 downto 0);\n")
+    noc_file.write("\tsignal turn_faults_"+str(i)+ " : std_logic_vector(7 downto 0);\n")
+    noc_file.write("\tsignal Rxy_reconf_PE_"+str(i)+ " : std_logic_vector(7 downto 0);\n")
+    noc_file.write("\tsignal Cx_reconf_PE_"+str(i)+ " : std_logic_vector(3 downto 0);\n")
+    noc_file.write("\tsignal Reconfig_command_"+str(i)+ " : std_logic;\n")
 
 noc_file.write("\t--------------\n")
 noc_file.write("\n")
@@ -282,8 +326,8 @@ string_to_print += "NoC: network_"+str(network_dime)+"x"+str(network_dime)+" gen
 string_to_print += "port map (reset, clk, Rxy_reconf, Reconfig, \n"
 
 for i in range(network_dime**2):
-    string_to_print += "\t--------------\n"
     string_to_print += "\tRX_L_"+str(i)+", credit_out_L_"+str(i)+", valid_out_L_"+str(i)+", credit_in_L_"+str(i)+", valid_in_L_"+str(i)+",  TX_L_"+str(i)+", \n"
+
 
 if add_FI:
   string_to_print +="\t--fault injector signals\n"
@@ -294,7 +338,7 @@ if add_FI:
     if node_y != network_dime-1:
       string_to_print +="\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+network_dime)+", \n"
       string_to_print +="\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +\
-                       ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+",\n\n"
+                       ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+", \n"
 
   string_to_print +="\t--FI horizontal signals\n"
   for i in range(0, network_dime*network_dime):
@@ -303,11 +347,17 @@ if add_FI:
       if node_x != network_dime -1 :
         string_to_print +="\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) + ",\n"
         string_to_print +="\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
-                          ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+",\n\n"
+                          ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+", \n"
 if add_lv and not add_node:
     for i in range(0, network_dime**2):
       string_to_print +="\t--------------\n"
-      string_to_print +="    credit_in_LV_"+str(i) +", valid_out_LV_"+str(i) +", TX_LV_"+str(i) +",\n\n"
+      string_to_print +="    credit_in_LV_"+str(i) +", valid_out_LV_"+str(i) +", TX_LV_"+str(i) +", \n"
+
+if add_SHMU:
+    string_to_print += "\t-- should be connected to NI\n"
+    for i in range(0, network_dime**2):
+      string_to_print += "\tlink_faults_"+str(i)+", turn_faults_"+str(i)+","
+      string_to_print += "\tRxy_reconf_PE_"+str(i)+", Cx_reconf_PE_"+str(i)+", Reconfig_command_"+str(i)+", \n"
 
 noc_file.write(string_to_print[:len(string_to_print)-3])
 noc_file.write("\n            ); \n")
@@ -316,7 +366,7 @@ noc_file.write("\n            ); \n")
 noc_file.write("not_reset <= not reset; \n")
 
 
-if add_node:
+if add_node and not add_SHMU:
   noc_file.write("\n")
   noc_file.write("-- connecting the PEs\n")
 
@@ -339,6 +389,33 @@ if add_node:
       noc_file.write("        RX => TX_L_" + str(node_number) + "\n")
       noc_file.write("   );\n")
 
+if add_SHMU:
+  noc_file.write("\n")
+  noc_file.write("-- connecting the PEs\n")
+
+  for node_number in range(0, network_dime*network_dime):
+
+      noc_file.write("PE_" + str(node_number) + ": NoC_Node \n")
+
+      noc_file.write("generic map( current_address => " + str(node_number) + ",\n")
+      noc_file.write("\tstim_file => \"code_" + str(node_number) + ".txt\",\n")
+      noc_file.write("\tlog_file  => \"output_" + str(node_number) + ".txt\")\n\n")
+
+      noc_file.write("port map( not_reset, clk, \n")
+      noc_file.write("\n")
+      noc_file.write("        credit_in => credit_out_L_" + str(node_number) + ", \n")
+      noc_file.write("        valid_out => valid_in_L_" + str(node_number) + ",\n")
+      noc_file.write("        TX => RX_L_" + str(node_number) + ", \n")
+      noc_file.write("\n")
+      noc_file.write("        credit_out => credit_in_L_" + str(node_number) + ", \n")
+      noc_file.write("        valid_in => valid_out_L_" + str(node_number) + ",\n")
+      noc_file.write("        RX => TX_L_" + str(node_number) + ",\n")
+      noc_file.write("        link_faults => link_faults_"+str(node_number)+",\n")
+      noc_file.write("        turn_faults => turn_faults_"+str(node_number)+",\n")
+      noc_file.write("        Rxy_reconf_PE => Rxy_reconf_PE_"+str(node_number)+", \n")
+      noc_file.write("        Cx_reconf_PE => Cx_reconf_PE_"+str(node_number)+",\n")
+      noc_file.write("        Reconfig_command => Reconfig_command_"+str(node_number)+"\n")
+      noc_file.write("   );\n")
 
 else:
   noc_file.write("\n")

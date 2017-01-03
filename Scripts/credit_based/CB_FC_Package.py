@@ -30,8 +30,7 @@ class CreditBasedPackage():
             print "\t-P: adds parity to the network"
             print "\t-FI: adds fault injector units to all the links (except the local) in the network"
             print "\t-FC: adds fault classifier units to all the links (except the local) in the network"
-            print "\t-FO: takes the fault/health packet signals (output of parity units) to interface"
-            print "\t-SHMU: adds SHMU to the network as a component and connects parity units outputs to them"
+            print "\t-SHMU: uses different NI that can pass information to SHMU nodes"
             print "\t-LV: adds light weight network to the network"
             print "\t-o: specifies the name and path of the output file. default path is current folder!"
             print "\t**Example: python network_gen_parameterized.py -D 2 -o ../output.vhd"
@@ -61,23 +60,18 @@ class CreditBasedPackage():
             self.add_FI = True
             self.fi_addres_width = int(ceil(log(self.data_width, 2)))
 
-        if self.add_parity and '-SHMU' in arguments_list:
+        if '-SHMU' in arguments_list:
             self.add_SHMU = True
 
         if "-LV" in arguments_list:
             self.add_LV = True
             self.lv_ports = int(arguments_list[arguments_list.index('-LV')+1])
-
-        if '-FO' in arguments_list:
-            self.add_FO = True
         return 0
 
     def parameters_sanity_check(self):
-        if self.add_parity and self.add_SHMU and not self.add_FO:
-            raise ValueError("look mate, you can not have SHMU and FO at the same time! just saying...")
 
-        if self.add_LV and (self.add_SHMU or self.add_FO):
-            raise ValueError("If you are using LV netwrok, then you should not use the SHMU or FO switches!")
+        if self.add_LV and self.add_SHMU:
+            raise ValueError("If you are using LV netwrok, then you should not use the SHMU!")
 
     def generate_file_name(self, arguments_list):
         file_name= 'network'

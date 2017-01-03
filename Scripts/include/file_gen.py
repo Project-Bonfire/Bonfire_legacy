@@ -1,5 +1,7 @@
-from helper_func import print_msg
+from helper_func import *
 from package import *
+import sys
+import os
 
 def gen_network_and_tb(program_argv, flow_control_type):
     
@@ -11,7 +13,6 @@ def gen_network_and_tb(program_argv, flow_control_type):
         + ("_NI" if program_argv['add_NI'] != -1 else "") \
         + ("_FI" if program_argv['add_FI'] else "") \
         + ("_packet_drop" if program_argv['packet_drop'] else "") \
-        + ("_FO" if program_argv['add_FO'] else "") \
         + ("_SHMU" if program_argv['add_SHMU'] else "") \
         + ("_LV" if program_argv['add_LV'] else "") \
         + ("_credit_based" if program_argv['credit_based_FC'] else "_handshaking") \
@@ -26,7 +27,6 @@ def gen_network_and_tb(program_argv, flow_control_type):
         + (" -PD" if program_argv['packet_drop'] else "") \
         + (" -NI" if program_argv['add_NI'] != -1 else "") \
         + (" -FI" if program_argv['add_FI'] else "") \
-        + (" -FO" if program_argv['add_FO'] else "") \
         + (" -FC" if program_argv['add_FC'] else "") \
         + (" -SHMU" if program_argv['add_SHMU'] else "") \
         + (" -LV " + str(program_argv['lv_port']) if program_argv['add_LV'] else "") \
@@ -41,11 +41,12 @@ def gen_network_and_tb(program_argv, flow_control_type):
 
     # Generate testbench
     net_tb_file_name = "network_" + str(program_argv['network_dime']) + "x" + str(program_argv['network_dime']) \
-        + ("_parity" if program_argv['add_parity'] == True else "") \
+        + ("_parity" if program_argv['add_parity'] else "") \
         + ("_NI" if program_argv['add_NI'] != -1 else "") \
-        + ("_FI" if program_argv['add_FI'] == True else "") \
-        + ("_packet_drop" if program_argv['packet_drop'] == True else "") \
+        + ("_FI" if program_argv['add_FI'] else "") \
+        + ("_packet_drop" if program_argv['packet_drop'] else "") \
         + ("_Rand" if program_argv['rand'] != -1 else "") \
+        + ("_SHMU" if program_argv['add_SHMU'] else "") \
         + ("_BR" if program_argv['BR'] != -1 else "") \
         + ("_credit_based" if program_argv['credit_based_FC'] else "_handshaking") \
         + ("_with_checkers" if program_argv['add_checkers'] else "") \
@@ -61,10 +62,11 @@ def gen_network_and_tb(program_argv, flow_control_type):
     net_tb_gen_command = "python " + SCRIPTS_DIR + "/" + flow_control_type \
         + "/" + NET_TB_GEN_SCRIPT + "_" + flow_control_type + ".py" \
         + " -D " + str(program_argv['network_dime']) \
-        + (" -P" if program_argv['add_parity'] == True else "") \
+        + (" -P" if program_argv['add_parity'] else "") \
         + str(NI_status) \
-        + (" -FI" if program_argv['add_FI'] == True else "") \
-        + (" -LV" if program_argv['add_LV'] == True else "") \
+        + (" -FI" if program_argv['add_FI'] else "") \
+        + (" -SHMU" if program_argv['add_SHMU']  else "") \
+        + (" -LV" if program_argv['add_LV'] else "") \
         + (" -Rand " + str(program_argv['rand']) if program_argv['rand'] != -1 else "") \
         + (" -BR " + str(program_argv['BR']) if program_argv['BR'] != -1 else "") \
         + (" -PS " + str(program_argv['PS'][0]) + " " + str(program_argv['PS'][1])) \

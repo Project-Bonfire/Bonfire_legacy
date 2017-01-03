@@ -49,7 +49,7 @@ entity NI is
         -- signals for reciving packets from the network
         credit_out : out std_logic;
         valid_in: in std_logic;
-        RX: in std_logic_vector(31 downto 0)	-- data recieved form the NoC
+        RX: in std_logic_vector(31 downto 0);	-- data recieved form the NoC
 
         -- fault information signals from the router
         link_faults: in std_logic_vector(4 downto 0);
@@ -189,8 +189,8 @@ end process;
  
 process(write_byte_enable, address)begin
   Reconfig_command <= '0';
-  Rxy_reconf_PE <= (others =>'0')
-  Cx_reconf_PE <= (others =>'0')
+  Rxy_reconf_PE <= (others =>'0');
+  Cx_reconf_PE <= (others =>'0');
   if address = reconfiguration_address and enable = '1' then
     Rxy_reconf_PE <= data_write(7 downto 0);
     Cx_reconf_PE <= data_write(4 downto 8);
@@ -376,8 +376,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
 
                 if credit_counter_out /= "00" then
                     grant <= '1';
-                    TX <= "001" "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out  
-                          & XOR_REDUCE("001" "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out );
+                    TX <= "001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out & XOR_REDUCE("001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out);
                     state_in <= DIAGNOSIS_BODY;
                 else
                     state_in <= DIAGNOSIS_HEADER;
