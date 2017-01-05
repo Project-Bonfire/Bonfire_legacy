@@ -9,8 +9,9 @@ def generate_entity(noc_file, network_dime, add_FI, add_SHMU, fi_addres_width, a
     noc_file.write("port (reset: in  std_logic; \n")
     noc_file.write("\tclk: in  std_logic; \n")
     noc_file.write("\t--------------\n")
-    noc_file.write("\tRxy_reconf: in  std_logic_vector(7 downto 0);\n")
-    noc_file.write("\tReconfig : in std_logic;\n")
+    if not add_SHMU:
+        noc_file.write("\tRxy_reconf: in  std_logic_vector(7 downto 0);\n")
+        noc_file.write("\tReconfig : in std_logic;\n")
     for i in range(network_dime**2):
         noc_file.write("\t--------------\n")
         noc_file.write("\tRX_L_"+str(i)+": in std_logic_vector (DATA_WIDTH-1 downto 0);\n")

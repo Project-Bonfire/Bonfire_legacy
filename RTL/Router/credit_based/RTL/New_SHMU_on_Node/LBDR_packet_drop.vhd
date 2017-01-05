@@ -10,16 +10,13 @@ use IEEE.MATH_REAL.ALL;
 entity LBDR_packet_drop is
     generic (
         cur_addr_rst: integer := 8;
-
+        Rxy_rst: integer := 8;
         Cx_rst: integer := 8;
         NoC_size: integer := 4
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
             
-            Rxy_reconf: in  std_logic_vector(7 downto 0);
-            Reconfig : in std_logic;
-
             Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S: in std_logic;
 
             empty: in  std_logic;
@@ -40,7 +37,9 @@ architecture behavior of LBDR_packet_drop is
 
   signal Cx, Cx_in:  std_logic_vector(3 downto 0);
   signal Temp_Cx, Temp_Cx_in:  std_logic_vector(3 downto 0);
+
   signal reconfig_cx, reconfig_cx_in: std_logic;
+  signal ReConf_FF_in, ReConf_FF_out: std_logic;
 
   signal Rxy, Rxy_in:  std_logic_vector(7 downto 0);
   signal Rxy_tmp, Rxy_tmp_in:  std_logic_vector(7 downto 0);
@@ -51,7 +50,7 @@ architecture behavior of LBDR_packet_drop is
   signal Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: std_logic;
   signal grants: std_logic;
   signal packet_drop, packet_drop_in: std_logic;
-  signal ReConf_FF_in, ReConf_FF_out: std_logic;
+  
 begin 
 
  grants <= grant_N or grant_E or grant_W or grant_S or grant_L;
@@ -69,7 +68,7 @@ begin
 process(clk, reset)
 begin
 if reset = '0' then 
-  Rxy <= Rxy_reconf;
+  Rxy <= std_logic_vector(to_unsigned(Rxy_rst, Rxy'length));
   Rxy_tmp <= (others => '0');
 
   Req_N_FF <= '0';
@@ -102,16 +101,13 @@ end process;
 
 -- The combionational part
  
-process(Reconfig, Reconfig_command, Rxy_reconf, Rxy_reconf_PE, Rxy_tmp, ReConf_FF_out, Rxy, flit_type, grants, empty)begin
+process(Reconfig_command, Rxy_reconf_PE, Rxy_tmp, ReConf_FF_out, Rxy, flit_type, grants, empty)begin
   if ReConf_FF_out= '1' and flit_type = "100" and empty = '0' and grants = '1' then
 	  	Rxy_in <= Rxy_tmp;
 	  	ReConf_FF_in <= '0';
   else
   	Rxy_in <= Rxy;
-  	if Reconfig = '1' then
-      Rxy_tmp_in <= Rxy_reconf;
-      ReConf_FF_in <= '1';
-    elsif Reconfig_command = '1'then 
+    if Reconfig_command = '1'then 
       Rxy_tmp_in <= Rxy_reconf_PE;
   		ReConf_FF_in <= '1';
   	else
@@ -122,7 +118,7 @@ process(Reconfig, Reconfig_command, Rxy_reconf, Rxy_reconf_PE, Rxy_tmp, ReConf_F
 end process;
 
 
-process(Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Cx, Temp_Cx, flit_type, reconfig_cx, empty, grants) begin
+process(Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Cx, Temp_Cx, flit_type, reconfig_cx, empty, grants, Cx_reconf_PE, Reconfig_command) begin
   Temp_Cx_in <= Temp_Cx;
   if reconfig_cx = '1' and flit_type = "100" and empty = '0' and grants = '1' then
     Cx_in <= Temp_Cx;
@@ -135,7 +131,7 @@ process(Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Cx, Temp_Cx, flit_type, 
 
     elsif Reconfig_command = '1' then
       reconfig_cx_in <= '1';
-      Temp_Cx_in <=  Cx and Cx_reconf_PE;
+      Temp_Cx_in <=  Cx_reconf_PE;
 
     else 
       reconfig_cx_in <= reconfig_cx;
@@ -152,21 +148,21 @@ Req_L <= Req_L_FF;
 process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF, grants, packet_drop) begin
  packet_drop_in <= packet_drop;
  if flit_type = "001" and empty = '0' then
-        Req_N_in <= ((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0);
-        Req_E_in <= ((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1);
-        Req_W_in <= ((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2);
-        Req_S_in <= ((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3);
-        if dst_addr = cur_addr then
-          Req_L_in <= '1';
-        else 
-          Req_L_in <= Req_L_FF; -- Added to remove latch possibility. Correct ??
-        end if;
-        if ((((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0)) or 
-           (((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1)) or 
-           (((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2)) or 
-           (((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3))) ='0' and dst_addr /= cur_addr then
-          packet_drop_in <= '1';
-        end if;
+    Req_N_in <= ((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0);
+    Req_E_in <= ((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1);
+    Req_W_in <= ((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2);
+    Req_S_in <= ((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3);
+    if dst_addr = cur_addr then
+      Req_L_in <= '1';
+    else 
+      Req_L_in <= Req_L_FF; -- Added to remove latch possibility. Correct ??
+    end if;
+    if ((((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0)) or 
+       (((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1)) or 
+       (((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2)) or 
+       (((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3))) ='0' and dst_addr /= cur_addr then
+      packet_drop_in <= '1';
+    end if;
   elsif flit_type = "100" and empty = '0' and grants = '1' then
         Req_N_in <= '0';
         Req_E_in <= '0';

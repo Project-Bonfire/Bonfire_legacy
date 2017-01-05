@@ -21,8 +21,6 @@ entity network_2x2 is
 port (reset: in  std_logic; 
 	clk: in  std_logic; 
 	--------------
-	Rxy_reconf: in  std_logic_vector(7 downto 0);
-	Reconfig : in std_logic;
 	--------------
 	RX_L_0: in std_logic_vector (DATA_WIDTH-1 downto 0);
 	credit_out_L_0, valid_out_L_0: out std_logic;
@@ -93,6 +91,7 @@ component router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropp
     generic (
         DATA_WIDTH: integer := 32;
         current_address : integer := 0;
+        Rxy_rst : integer := 10;
         Cx_rst : integer := 10;
         healthy_counter_threshold : integer := 8;
         faulty_counter_threshold: integer := 2;
@@ -101,9 +100,6 @@ component router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropp
     );
     port (
     reset, clk: in std_logic;
-
-    Rxy_reconf: in  std_logic_vector(7 downto 0);
-    Reconfig : in std_logic;
 
     RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
     credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic;
@@ -195,11 +191,10 @@ begin
 
 
 R_0: router_credit_based_PD_C_SHMU 
-    generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 0,
+    generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 0, Rxy_rst => 60,
         Cx_rst =>  10, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
     reset, clk,
-    Rxy_reconf, Reconfig,
 	RX_N_0, RX_E_0, RX_W_0, RX_S_0, RX_L_0,
 	credit_in_N_0, credit_in_E_0, credit_in_W_0, credit_in_S_0, credit_in_L_0,
 	valid_in_N_0, valid_in_E_0, valid_in_W_0, valid_in_S_0, valid_in_L_0,
@@ -213,11 +208,10 @@ R_0: router_credit_based_PD_C_SHMU
 	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0
  ); 
 R_1: router_credit_based_PD_C_SHMU 
-    generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 1,
+    generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 1, Rxy_rst => 60,
         Cx_rst =>  12, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
     reset, clk,
-    Rxy_reconf, Reconfig,
 	RX_N_1, RX_E_1, RX_W_1, RX_S_1, RX_L_1,
 	credit_in_N_1, credit_in_E_1, credit_in_W_1, credit_in_S_1, credit_in_L_1,
 	valid_in_N_1, valid_in_E_1, valid_in_W_1, valid_in_S_1, valid_in_L_1,
@@ -231,11 +225,10 @@ R_1: router_credit_based_PD_C_SHMU
 	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1
  ); 
 R_2: router_credit_based_PD_C_SHMU 
-    generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 2,
+    generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 2, Rxy_rst => 60,
         Cx_rst =>  3, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
     reset, clk,
-    Rxy_reconf, Reconfig,
 	RX_N_2, RX_E_2, RX_W_2, RX_S_2, RX_L_2,
 	credit_in_N_2, credit_in_E_2, credit_in_W_2, credit_in_S_2, credit_in_L_2,
 	valid_in_N_2, valid_in_E_2, valid_in_W_2, valid_in_S_2, valid_in_L_2,
@@ -249,11 +242,10 @@ R_2: router_credit_based_PD_C_SHMU
 	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2
  ); 
 R_3: router_credit_based_PD_C_SHMU 
-    generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 3,
+    generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 3, Rxy_rst => 60,
         Cx_rst =>  5, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
     reset, clk,
-    Rxy_reconf, Reconfig,
 	RX_N_3, RX_E_3, RX_W_3, RX_S_3, RX_L_3,
 	credit_in_N_3, credit_in_E_3, credit_in_W_3, credit_in_S_3, credit_in_L_3,
 	valid_in_N_3, valid_in_E_3, valid_in_W_3, valid_in_S_3, valid_in_L_3,

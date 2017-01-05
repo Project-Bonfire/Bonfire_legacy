@@ -27,8 +27,6 @@ component network_2x2 is
  generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
 port (reset: in  std_logic; 
 	clk: in  std_logic; 
-	Rxy_reconf: in  std_logic_vector(7 downto 0);
-	Reconfig : in std_logic;
 	--------------
 	RX_L_0: in std_logic_vector (DATA_WIDTH-1 downto 0);
 	credit_out_L_0, valid_out_L_0: out std_logic;
@@ -165,8 +163,6 @@ end component; --component NoC_Node
 	signal Reconfig_command_3 : std_logic;
 	--------------
 
-signal Rxy_reconf: std_logic_vector (7 downto 0) := "01111101";
-signal Reconfig: std_logic := '0';
  constant clk_period : time := 1 ns;
 signal reset, not_reset, clk: std_logic :='0';
 
@@ -183,7 +179,7 @@ begin
 reset <= '1' after 1 ns;
 -- instantiating the network
 NoC: network_2x2 generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
-port map (reset, clk, Rxy_reconf, Reconfig, 
+port map (reset, clk, 
 	RX_L_0, credit_out_L_0, valid_out_L_0, credit_in_L_0, valid_in_L_0,  TX_L_0, 
 	RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1,  TX_L_1, 
 	RX_L_2, credit_out_L_2, valid_out_L_2, credit_in_L_2, valid_in_L_2,  TX_L_2, 
@@ -290,14 +286,14 @@ port map( not_reset, clk,
    );
 
 -- connecting the fault generators
-gen_fault(sta0_1_0, sta1_1_0, FI_Add_1_0, 62,459589083,999781261);
-gen_fault(sta0_0_1, sta1_0_1, FI_Add_0_1, 44,1197833894,2048899594);
-gen_fault(sta0_2_0, sta1_2_0, FI_Add_2_0, 67,1125461812,1357715246);
-gen_fault(sta0_0_2, sta1_0_2, FI_Add_0_2, 52,402901581,1490849015);
-gen_fault(sta0_3_1, sta1_3_1, FI_Add_3_1, 42,1536200839,717250242);
-gen_fault(sta0_1_3, sta1_1_3, FI_Add_1_3, 67,82595215,1440385257);
-gen_fault(sta0_3_2, sta1_3_2, FI_Add_3_2, 64,1155804138,149175648);
-gen_fault(sta0_2_3, sta1_2_3, FI_Add_2_3, 63,211881743,957311960);
+gen_fault(sta0_1_0, sta1_1_0, FI_Add_1_0, 64,1884873252,1849962622);
+gen_fault(sta0_0_1, sta1_0_1, FI_Add_0_1, 51,710263493,1413186641);
+gen_fault(sta0_2_0, sta1_2_0, FI_Add_2_0, 47,1630963664,1250895050);
+gen_fault(sta0_0_2, sta1_0_2, FI_Add_0_2, 63,146323302,1747222846);
+gen_fault(sta0_3_1, sta1_3_1, FI_Add_3_1, 62,1356339636,1685606931);
+gen_fault(sta0_1_3, sta1_1_3, FI_Add_1_3, 62,386173565,1483655742);
+gen_fault(sta0_3_2, sta1_3_2, FI_Add_3_2, 70,318559100,1454220668);
+gen_fault(sta0_2_3, sta1_2_3, FI_Add_2_3, 60,1079300062,2123392467);
 
 
 end;

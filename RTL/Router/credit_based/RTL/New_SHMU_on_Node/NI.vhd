@@ -26,7 +26,8 @@ entity NI is
    		   reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
          flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";	-- reserved address for the memory mapped I/O
          counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001";
-         reconfiguration_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000010");	-- reserved address for reconfiguration register
+         reconfiguration_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000010";  -- reserved address for reconfiguration register
+         self_diagnosis_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000011");	-- reserved address for self diagnosis register
    port(clk               : in std_logic;
         reset             : in std_logic;
         enable            : in std_logic;
@@ -76,6 +77,7 @@ architecture logic of NI is
   signal P2N_FIFO_MEM_3, P2N_FIFO_MEM_3_in : std_logic_vector(31 downto 0);
   signal P2N_FIFO_MEM_4, P2N_FIFO_MEM_4_in : std_logic_vector(31 downto 0);
   signal P2N_full, P2N_empty: std_logic;
+  
 
   signal credit_counter_in, credit_counter_out: std_logic_vector(1 downto 0);
   signal packet_counter_in, packet_counter_out: std_logic_vector(7 downto 0);
@@ -105,11 +107,11 @@ architecture logic of NI is
 
   signal fault_info, fault_info_in: std_logic_vector(12 downto 0);
   signal sent_info, fault_info_ready, fault_info_ready_in: std_logic;
+  signal self_diagnosis_reg_out, self_diagnosis_reg_in: std_logic_vector(31 downto 0);
+  signal self_diagnosis_flag, self_diagnosis_flag_in: std_logic;
+begin 
 
-begin
-
-process(clk, enable, write_byte_enable)
-begin
+process(clk, enable, write_byte_enable) begin
    if reset = '1' then
       storage <= (others => '0');
       valid_data <= '0';
@@ -139,6 +141,8 @@ begin
 
       fault_info <= (others => '0');
       fault_info_ready <= '0';
+      self_diagnosis_reg_out <= (others => '0');
+      self_diagnosis_flag <= '0';
 
    elsif clk'event and clk = '1'  then
       old_address <= address;
@@ -179,7 +183,9 @@ begin
 
       fault_info <= fault_info_in; 
       fault_info_ready <= fault_info_ready_in;
-      
+      self_diagnosis_reg_out <= self_diagnosis_reg_in;
+      self_diagnosis_flag <= self_diagnosis_flag_in;
+
    end if;
 end process;
 
@@ -188,7 +194,7 @@ end process;
 ---------------------------------------------------------------------------------------
 --below this is code for communication from PE 2 NoC
  
-process(write_byte_enable, address)begin
+process(write_byte_enable, address) begin
   Reconfig_command <= '0';
   Rxy_reconf_PE <= (others =>'0');
   Cx_reconf_PE <= (others =>'0');
@@ -200,8 +206,7 @@ process(write_byte_enable, address)begin
 end process;
 
 
-process(write_byte_enable, enable, address, storage, data_write, valid_data, P2N_write_en)
- begin
+process(write_byte_enable, enable, address, storage, data_write, valid_data, P2N_write_en) begin
    storage_in <= storage ;
    valid_data_in <= valid_data;
 
@@ -295,11 +300,28 @@ process (credit_in, credit_counter_out, grant)begin
     end if;
 end process;
 
+
+-- flag setting and clearing for self diagnosis 
+process(link_faults, turn_faults, self_diagnosis_flag, old_address)begin
+  if (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address = current_address then
+    self_diagnosis_flag_in <= '1';
+  elsif old_address = self_diagnosis_address then
+    self_diagnosis_flag_in <= '0';
+  else
+    self_diagnosis_flag_in <= self_diagnosis_flag;
+  end if;
+end process;
+
+-- handling fault information!
 process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
-  
-  if link_faults  /= "00000" or turn_faults /= "00000000" then
+ 
+  self_diagnosis_reg_in <= self_diagnosis_reg_out;
+
+  if (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address /= current_address then
     fault_info_in <= turn_faults & link_faults;
     fault_info_ready_in <= '1';
+  elsif (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address = current_address then
+      self_diagnosis_reg_in <= "0000000000000000000" & turn_faults & link_faults;
   else
     fault_info_in <= fault_info;
     fault_info_ready_in <= fault_info_ready;
@@ -324,7 +346,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
 
         case(state) is
             when IDLE =>
-                if fault_info_ready = '1' and SHMU_address /= current_address then 
+                if fault_info_ready = '1' then 
                     state_in <= DIAGNOSIS_HEADER;
                 elsif P2N_empty = '0' then
                     state_in <= HEADER_FLIT;
@@ -494,6 +516,8 @@ process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
     data_read <= flag_register;
   elsif old_address = counter_address then
   	data_read <= "000000000000000000000000000000" & counter_register;
+  elsif old_address = self_diagnosis_address then
+    data_read <= self_diagnosis_reg_out;
   else
     data_read <= (others => 'U');
   end if;
@@ -511,7 +535,7 @@ process(N2P_write_en, N2P_read_en, RX, N2P_Data_out)begin
   end if;
 end process;
 
-flag_register_in <= N2P_empty & P2N_full & "000000000000000000000000000000";
+flag_register_in <= N2P_empty & P2N_full & self_diagnosis_flag& "00000000000000000000000000000";
 --NI_read_flag <= N2P_empty;
 --NI_write_flag <= P2N_full;
 

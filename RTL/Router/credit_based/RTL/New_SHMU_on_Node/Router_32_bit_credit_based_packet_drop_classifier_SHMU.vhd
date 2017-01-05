@@ -9,6 +9,7 @@ entity router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping
 	generic (
         DATA_WIDTH: integer := 32;
         current_address : integer := 0;
+        Rxy_rst : integer := 10;
         Cx_rst : integer := 10;
         healthy_counter_threshold : integer := 8;
         faulty_counter_threshold: integer := 2;
@@ -17,9 +18,6 @@ entity router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping
     );
     port (
     reset, clk: in std_logic;
-
-    Rxy_reconf: in  std_logic_vector(7 downto 0);
-    Reconfig : in std_logic;
 
     RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
     credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic;
@@ -108,14 +106,12 @@ end COMPONENT;
 	COMPONENT LBDR_packet_drop is
     generic (
         cur_addr_rst: integer := 0;
+        Rxy_rst: integer := 8;
         Cx_rst: integer := 8;
         NoC_size: integer := 4
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-
-            Rxy_reconf: in  std_logic_vector(7 downto 0);
-            Reconfig : in std_logic;
 
             Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S: in std_logic;
 
@@ -242,8 +238,8 @@ FIFO_L: FIFO_credit_based
 ------------------------------------------------------------------------------------------------------------------------------
 
 --- all the LBDRs
-LBDR_N: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
-       PORT MAP (reset => reset, clk => clk, empty => empty_N, Rxy_reconf => Rxy_reconf, Reconfig => Reconfig,
+LBDR_N: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
+       PORT MAP (reset => reset, clk => clk, empty => empty_N, 
        		 Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,  
              flit_type => FIFO_D_out_N(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_N(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              packet_drop_order => packet_drop_order_N,
@@ -251,8 +247,8 @@ LBDR_N: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Req_N=> Req_NN, Req_E=>Req_NE, Req_W=>Req_NW, Req_S=>Req_NS, Req_L=>Req_NL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command);
        
-LBDR_E: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_E, Rxy_reconf => Rxy_reconf, Reconfig => Reconfig,
+LBDR_E: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
+   PORT MAP (reset =>  reset, clk => clk, empty => empty_E, 
    	 		 Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,  
              flit_type => FIFO_D_out_E(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_E(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              packet_drop_order => packet_drop_order_E,
@@ -260,8 +256,8 @@ LBDR_E: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Req_N=> Req_EN, Req_E=>Req_EE, Req_W=>Req_EW, Req_S=>Req_ES, Req_L=>Req_EL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command);
 
-LBDR_W: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_W,  Rxy_reconf => Rxy_reconf, Reconfig => Reconfig,
+LBDR_W: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
+   PORT MAP (reset =>  reset, clk => clk, empty => empty_W,  
    			 Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,   
              flit_type => FIFO_D_out_W(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_W(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              packet_drop_order => packet_drop_order_W,
@@ -269,8 +265,8 @@ LBDR_W: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Req_N=> Req_WN, Req_E=>Req_WE, Req_W=>Req_WW, Req_S=>Req_WS, Req_L=>Req_WL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command);
 
-LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_S, Rxy_reconf => Rxy_reconf, Reconfig => Reconfig,
+LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
+   PORT MAP (reset =>  reset, clk => clk, empty => empty_S, 
    			 Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,    
              flit_type => FIFO_D_out_S(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_S(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              packet_drop_order => packet_drop_order_S,
@@ -278,8 +274,8 @@ LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Req_N=> Req_SN, Req_E=>Req_SE, Req_W=>Req_SW, Req_S=>Req_SS, Req_L=>Req_SL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command);
 
-LBDR_L: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_L, Rxy_reconf => Rxy_reconf, Reconfig => Reconfig,
+LBDR_L: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
+   PORT MAP (reset =>  reset, clk => clk, empty => empty_L, 
    			 Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,  
              flit_type => FIFO_D_out_L(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_L(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              packet_drop_order => packet_drop_order_L,

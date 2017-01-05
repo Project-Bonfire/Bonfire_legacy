@@ -99,6 +99,7 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packe
         noc_file.write("    generic (\n")
         noc_file.write("        DATA_WIDTH: integer := 32;\n")
         noc_file.write("        current_address : integer := 0;\n")
+        noc_file.write("        Rxy_rst : integer := 10;\n")
         noc_file.write("        Cx_rst : integer := 10;\n")
         noc_file.write("        healthy_counter_threshold : integer := 8;\n")
         noc_file.write("        faulty_counter_threshold: integer := 2;\n")
@@ -107,9 +108,6 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packe
         noc_file.write("    );\n")
         noc_file.write("    port (\n")
         noc_file.write("    reset, clk: in std_logic;\n\n")
- 
-        noc_file.write("    Rxy_reconf: in  std_logic_vector(7 downto 0);\n")
-        noc_file.write("    Reconfig : in std_logic;\n\n")
  
         noc_file.write("    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); \n")
         noc_file.write("    credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic;\n")
