@@ -1,7 +1,8 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
 
-def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packet_drop, add_FC, network_dime, fi_addres_width, lv_ports):
+def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packet_drop, add_FC, network_dime, 
+                       fi_addres_width, lv_ports, add_tracker):
     
     if add_lv :
         noc_file.write("component router_credit_based_parity_lv is\n")
@@ -205,4 +206,14 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packe
 
         noc_file.write("\n\n")
 
-   
+    if add_tracker:
+        noc_file.write("component flit_tracker is\n")
+        noc_file.write("    generic (\n")
+        noc_file.write("        DATA_WIDTH: integer := 32;\n")
+        noc_file.write("        tracker_file: string :=\"track.txt\"\n")
+        noc_file.write("    );\n")
+        noc_file.write("    port (\n")
+        noc_file.write("        RX: in std_logic_vector (DATA_WIDTH-1 downto 0); \n")
+        noc_file.write("        valid_in : in std_logic \n")
+        noc_file.write("    );\n")
+        noc_file.write("end component;\n")

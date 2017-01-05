@@ -47,7 +47,8 @@ noc_file.write("architecture behavior of network_"+str(CB_Package.network_dime)+
 
 # declaring components, signals and making ascii art!!!
 declare_components(noc_file, CB_Package.add_parity, CB_Package.add_FI, CB_Package.add_SHMU, CB_Package.add_LV, 
-                   CB_Package.add_packet_drop, CB_Package.add_FC, CB_Package.network_dime, CB_Package.fi_addres_width, CB_Package.lv_ports)
+                   CB_Package.add_packet_drop, CB_Package.add_FC, CB_Package.network_dime, CB_Package.fi_addres_width, 
+                   CB_Package.lv_ports, CB_Package.add_tracker)
 
 declare_signals(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_LV, CB_Package.add_packet_drop,
                 CB_Package.add_FC, CB_Package.add_SHMU, CB_Package.lv_ports)
@@ -138,6 +139,22 @@ else:
             noc_file.write("RX_E_"+str(i)+" <= TX_W_"+str(i+1)+";\n")
             noc_file.write("RX_W_"+str(i+1)+" <= TX_E_"+str(i)+";\n")
             noc_file.write("-------------------\n")
+
+if CB_Package.add_tracker:
+    noc_file.write("-- instantiating the flit trackers\n")
+    for i in range(0, CB_Package.network_dime**2):
+        node_x = i % CB_Package.network_dime
+        node_y = i / CB_Package.network_dime
+        for input_port  in ['N', 'E', 'W', 'S', 'L']:
+            noc_file.write("F_T_"+str(i)+"_"+input_port+": flit_tracker  generic map (\n")
+            noc_file.write("        DATA_WIDTH: integer => DATA_WIDTH, \n")
+            noc_file.write("        tracker_file =>\"traces/track"+str(i)+"_"+input_port+".txt\"\n")
+            noc_file.write("    );\n")
+            noc_file.write("    port map (\n")
+            noc_file.write("        RX => RX_"+input_port+"_"+str(i)+", \n")
+            noc_file.write("        valid_in => valid_in_"+input_port+"_"+str(i)+"\n")
+            noc_file.write("    );\n")
+
 
 noc_file.write("---------------------------------------------------------------\n")
 noc_file.write("-- binding the routers together\n")

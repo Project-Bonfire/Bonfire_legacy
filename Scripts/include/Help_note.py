@@ -75,6 +75,8 @@ def print_help(argv, program_argv):
     print BOLD + OKBLUE + "  Other parameters:" + ENDC
     print BOLD + "  --debug:" + ENDC
     print "\tIncrease verbocity of the script. Useful for debugging."
+    print BOLD + "  --trace:" + ENDC
+    print "\tadds packet tracing."
     print
     print
     print BOLD + OKBLUE + "  Examples:" + ENDC

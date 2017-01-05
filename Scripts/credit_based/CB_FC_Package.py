@@ -20,6 +20,7 @@ class CreditBasedPackage():
         self.add_FO = False
         self.fi_addres_width = None
         self.add_FI = False
+        self.add_tracker = False
 
     def sort_out_parameters(self, arguments_list):
  
@@ -66,6 +67,8 @@ class CreditBasedPackage():
         if "-LV" in arguments_list:
             self.add_LV = True
             self.lv_ports = int(arguments_list[arguments_list.index('-LV')+1])
+        if "-trace" in arguments_list:
+            self.add_tracker = True
         return 0
 
     def parameters_sanity_check(self):

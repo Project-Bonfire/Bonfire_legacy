@@ -43,6 +43,7 @@ def arg_parser(argv, program_argv, logging):
     program_argv['packet_saving'] = False
     program_argv['lat'] = False
     program_argv['debug'] = False
+    program_argv['trace'] = False
 
     if '-credit_based_FC' in argv[1:]:
         program_argv['credit_based_FC'] = True
@@ -125,6 +126,9 @@ def arg_parser(argv, program_argv, logging):
 
     if '--debug' in argv[1:]:
         program_argv['debug'] = True
+
+    if '--trace' in argv[1:]:
+        program_argv['trace'] = True
 
     logging.info("Finished parsing program arguments")
     logging.info("Command line parameters:")

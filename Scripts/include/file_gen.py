@@ -29,6 +29,7 @@ def gen_network_and_tb(program_argv, flow_control_type):
         + (" -FI" if program_argv['add_FI'] else "") \
         + (" -FC" if program_argv['add_FC'] else "") \
         + (" -SHMU" if program_argv['add_SHMU'] else "") \
+        + (" -trace" if program_argv['trace'] else "") \
         + (" -LV " + str(program_argv['lv_port']) if program_argv['add_LV'] else "") \
         + " -o " + SIMUL_DIR + "/" + net_file_name
 

@@ -27,7 +27,7 @@ def main(argv):
  
 
     # Check if the temporary folder exists. If it does, clear it, if not, create it.
-    if os.path.exists(SIMUL_DIR):
+    if os.path.exists(package.SIMUL_DIR):
         try:
             shutil.rmtree(package.SIMUL_DIR)
         except OSError as e:
@@ -35,6 +35,8 @@ def main(argv):
             sys.exit(1)
     try:
         os.makedirs(package.SIMUL_DIR)
+        os.makedirs(package.LOG_DIR)
+        os.makedirs(package.TRACE_DIR)
     except OSError as e:
         print_msg(MSG_ERROR, "Error " + str(e[0]) + ": " + e[1])
         sys.exit(1)
@@ -43,7 +45,7 @@ def main(argv):
     sys.stdout = Logger()
 
     # setup Logging
-    logging.basicConfig(filename=SIMUL_DIR+'/Logging_Log_'+str(time.time())+'.log', level=logging.DEBUG)
+    logging.basicConfig(filename=LOG_DIR+'/Logging_Log_'+str(time.time())+'.log', level=logging.DEBUG)
     logging.info('Starting logging...')
 
     # Parse the arguments given to the system
@@ -78,7 +80,7 @@ def main(argv):
     # Running modelsim
     if DEBUG: print_msg(MSG_DEBUG, "Running Modelsim...")
 
-    os.chdir(SIMUL_DIR)
+    os.chdir(package.SIMUL_DIR)
     if package.program_argv['lat']:
         return_value = os.system("vsim -c -do " + package.SIMUL_DO_SCRIPT)
     else:

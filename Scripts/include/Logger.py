@@ -1,7 +1,7 @@
 import sys
 import os
 import time
-from Scripts.include.package import SIMUL_DIR
+from Scripts.include.package import LOG_DIR
 
 
 
@@ -11,7 +11,7 @@ class Logger(object):
     """
     def __init__(self):
         self.terminal = sys.stdout
-        self.log = open(SIMUL_DIR+'/Console_log_'+str(time.time())+'.log', "a")
+        self.log = open(LOG_DIR+'/Console_log_'+str(time.time())+'.log', "a")
 
     def write(self, message):
         self.terminal.write(message)

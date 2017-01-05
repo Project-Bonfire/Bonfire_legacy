@@ -14,6 +14,8 @@ os.chdir(PROJECT_ROOT)
 # Temporary directory for storing simulation files
 TMP_DIR = PROJECT_ROOT + "/tmp"
 SIMUL_DIR = TMP_DIR + "/simul_temp"
+LOG_DIR = SIMUL_DIR+ "/logs"
+TRACE_DIR = SIMUL_DIR+ "/traces"
 
 # Subfolders
 SCRIPTS_DIR = PROJECT_ROOT + "/Scripts"
@@ -55,7 +57,8 @@ program_argv = {
         'sim':             -1,
         'end':             -1,
         'lat':             False,
-        'debug':           False
+        'debug':           False,
+        'trace':           False
     }
 
 # Debug mode is off by default
