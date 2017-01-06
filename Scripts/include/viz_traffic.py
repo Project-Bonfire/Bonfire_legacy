@@ -6,10 +6,12 @@ import re
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import animation
+import matplotlib.patches as patches
 
 def find_events():
     end_of_sim = 0
     dictionary_of_all = {}
+    traffic_dic = {}
     for f in os.listdir(package.TRACE_DIR): 
         if f.endswith('.txt'):
             traffic_dic = {}
@@ -94,22 +96,44 @@ def animate(i):
     particles.set_color("red") 
     return particles,
 
+def viz_traffic(noc_size):
+    global particles, events
+    events, end_of_sim = find_events()   
+    fig = plt.figure()
 
-events, end_of_sim = find_events()   
-fig = plt.figure()
- 
-ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
-                     xlim=(-0.5, 1.5), ylim=(-0.5, 1.5))
-for item in range(0, 4):
-    circle1 = plt.Circle((item%2, item/2), radius=0.1, color='#8ABDFF', fill=False, lw=2)
-    circle2 = plt.Circle((item%2-0.2, item/2-0.2), radius=0.05, color='#8ABDFF', fill=False, lw=2)
-    plt.gca().add_patch(circle1)
-    plt.gca().add_patch(circle2)
+    ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
+                         xlim=(-0.5, (noc_size-1)+0.5), ylim=(-0.5, (noc_size-1)+0.5))
+    
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+    
+    for item in range(0, noc_size**2):
+        x = item%noc_size
+        y = item/noc_size
+        circle1 = plt.Circle((x, y), radius=0.1, color='#8ABDFF', fill=False, lw=2)
+        circle2 = plt.Circle((x-0.2, y-0.2), radius=0.05, color='#8ABDFF', fill=False, lw=2)
+        plt.gca().add_patch(circle1)
+        plt.gca().add_patch(circle2)
+        if item < 10:
+            plt.text(x-0.03, y-0.03, str(item), fontsize=10)
+        else:
+            plt.text(x-0.07, y-0.03, str(item), fontsize=10)
+        if x != noc_size-1:
+            plt.gca().add_patch(patches.Arrow(x+0.1, y+0.03, 0.8, 0, width=0.05, color = "gray"))
+        if x != 0:
+            plt.gca().add_patch(patches.Arrow(x-0.1, y-0.03, -0.8, 0, width=0.05, color = "gray"))
+    
+        if y != 0:
+            plt.gca().add_patch(patches.Arrow(x+0.03, y-0.1, 0, -0.8, width=0.05, color = "gray"))
+    
+        if y != noc_size-1:
+            plt.gca().add_patch(patches.Arrow(x-0.03, y+0.1, 0, 0.8, width=0.05, color = "gray"))
+    
+    particles, = ax.plot([], [], 'bo', ms=15)
+    
+    
+    ani = animation.FuncAnimation(fig, animate, frames=int(end_of_sim), 
+                                  interval=10, blit=False, init_func=init)
+    plt.show()
 
-particles, = ax.plot([], [], 'bo', ms=15)
-
-
-ani = animation.FuncAnimation(fig, animate, frames=int(end_of_sim), 
-                              interval=150, blit=True, init_func=init)
-
-plt.show()
+viz_traffic(2)
