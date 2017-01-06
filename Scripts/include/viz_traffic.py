@@ -107,6 +107,7 @@ def viz_traffic(noc_size):
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
     
+    # setting up the background!
     for item in range(0, noc_size**2):
         x = item%noc_size
         y = item/noc_size
@@ -114,6 +115,9 @@ def viz_traffic(noc_size):
         circle2 = plt.Circle((x-0.2, y-0.2), radius=0.05, color='#8ABDFF', fill=False, lw=2)
         plt.gca().add_patch(circle1)
         plt.gca().add_patch(circle2)
+        plt.gca().add_patch(patches.Arrow(x-0.09, y-0.05, -0.1, -0.1, width=0.05, color = "gray"))
+        plt.gca().add_patch(patches.Arrow(x-0.15, y-0.17, 0.09, 0.09, width=0.05, color = "gray"))
+
         if item < 10:
             plt.text(x-0.03, y-0.03, str(item), fontsize=10)
         else:
