@@ -147,11 +147,11 @@ if CB_Package.add_tracker:
         node_y = i / CB_Package.network_dime
         for input_port  in ['N', 'E', 'W', 'S', 'L']:
             noc_file.write("F_T_"+str(i)+"_"+input_port+": flit_tracker  generic map (\n")
-            noc_file.write("        DATA_WIDTH: integer => DATA_WIDTH, \n")
+            noc_file.write("        DATA_WIDTH => DATA_WIDTH, \n")
             noc_file.write("        tracker_file =>\"traces/track"+str(i)+"_"+input_port+".txt\"\n")
-            noc_file.write("    );\n")
+            noc_file.write("    )\n")
             noc_file.write("    port map (\n")
-            noc_file.write("        RX => RX_"+input_port+"_"+str(i)+", \n")
+            noc_file.write("        clk => clk, RX => RX_"+input_port+"_"+str(i)+", \n")
             noc_file.write("        valid_in => valid_in_"+input_port+"_"+str(i)+"\n")
             noc_file.write("    );\n")
 

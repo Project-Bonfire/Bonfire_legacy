@@ -134,6 +134,17 @@ component fault_injector is
 end component;
 
 
+component flit_tracker is
+    generic (
+        DATA_WIDTH: integer := 32;
+        tracker_file: string :="track.txt"
+    );
+    port (
+        clk: in std_logic;
+        RX: in std_logic_vector (DATA_WIDTH-1 downto 0); 
+        valid_in : in std_logic 
+    );
+end component;
 
 
 -- generating bulk signals. not all of them are used in the design...
@@ -326,6 +337,167 @@ FI_3_2: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
     sta_0 => sta0_3_2,
     sta_1 => sta1_3_2,
     data_out => RX_E_2
+    );
+-- instantiating the flit trackers
+F_T_0_N: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track0_N.txt"
+    )
+    port map (
+        clk => clk, RX => RX_N_0, 
+        valid_in => valid_in_N_0
+    );
+F_T_0_E: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track0_E.txt"
+    )
+    port map (
+        clk => clk, RX => RX_E_0, 
+        valid_in => valid_in_E_0
+    );
+F_T_0_W: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track0_W.txt"
+    )
+    port map (
+        clk => clk, RX => RX_W_0, 
+        valid_in => valid_in_W_0
+    );
+F_T_0_S: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track0_S.txt"
+    )
+    port map (
+        clk => clk, RX => RX_S_0, 
+        valid_in => valid_in_S_0
+    );
+F_T_0_L: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track0_L.txt"
+    )
+    port map (
+        clk => clk, RX => RX_L_0, 
+        valid_in => valid_in_L_0
+    );
+F_T_1_N: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track1_N.txt"
+    )
+    port map (
+        clk => clk, RX => RX_N_1, 
+        valid_in => valid_in_N_1
+    );
+F_T_1_E: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track1_E.txt"
+    )
+    port map (
+        clk => clk, RX => RX_E_1, 
+        valid_in => valid_in_E_1
+    );
+F_T_1_W: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track1_W.txt"
+    )
+    port map (
+        clk => clk, RX => RX_W_1, 
+        valid_in => valid_in_W_1
+    );
+F_T_1_S: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track1_S.txt"
+    )
+    port map (
+        clk => clk, RX => RX_S_1, 
+        valid_in => valid_in_S_1
+    );
+F_T_1_L: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track1_L.txt"
+    )
+    port map (
+        clk => clk, RX => RX_L_1, 
+        valid_in => valid_in_L_1
+    );
+F_T_2_N: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track2_N.txt"
+    )
+    port map (
+        clk => clk, RX => RX_N_2, 
+        valid_in => valid_in_N_2
+    );
+F_T_2_E: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track2_E.txt"
+    )
+    port map (
+        clk => clk, RX => RX_E_2, 
+        valid_in => valid_in_E_2
+    );
+F_T_2_W: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track2_W.txt"
+    )
+    port map (
+        clk => clk, RX => RX_W_2, 
+        valid_in => valid_in_W_2
+    );
+F_T_2_S: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track2_S.txt"
+    )
+    port map (
+        clk => clk, RX => RX_S_2, 
+        valid_in => valid_in_S_2
+    );
+F_T_2_L: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track2_L.txt"
+    )
+    port map (
+        clk => clk, RX => RX_L_2, 
+        valid_in => valid_in_L_2
+    );
+F_T_3_N: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track3_N.txt"
+    )
+    port map (
+        clk => clk, RX => RX_N_3, 
+        valid_in => valid_in_N_3
+    );
+F_T_3_E: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track3_E.txt"
+    )
+    port map (
+        clk => clk, RX => RX_E_3, 
+        valid_in => valid_in_E_3
+    );
+F_T_3_W: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track3_W.txt"
+    )
+    port map (
+        clk => clk, RX => RX_W_3, 
+        valid_in => valid_in_W_3
+    );
+F_T_3_S: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track3_S.txt"
+    )
+    port map (
+        clk => clk, RX => RX_S_3, 
+        valid_in => valid_in_S_3
+    );
+F_T_3_L: flit_tracker  generic map (
+        DATA_WIDTH => DATA_WIDTH, 
+        tracker_file =>"traces/track3_L.txt"
+    )
+    port map (
+        clk => clk, RX => RX_L_3, 
+        valid_in => valid_in_L_3
     );
 ---------------------------------------------------------------
 -- binding the routers together

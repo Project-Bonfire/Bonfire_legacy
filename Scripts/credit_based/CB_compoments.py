@@ -213,6 +213,7 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packe
         noc_file.write("        tracker_file: string :=\"track.txt\"\n")
         noc_file.write("    );\n")
         noc_file.write("    port (\n")
+        noc_file.write("        clk: in std_logic;\n")
         noc_file.write("        RX: in std_logic_vector (DATA_WIDTH-1 downto 0); \n")
         noc_file.write("        valid_in : in std_logic \n")
         noc_file.write("    );\n")

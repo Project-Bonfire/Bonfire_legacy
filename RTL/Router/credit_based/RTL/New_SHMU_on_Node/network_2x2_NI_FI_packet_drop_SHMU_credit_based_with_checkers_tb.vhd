@@ -286,14 +286,14 @@ port map( not_reset, clk,
    );
 
 -- connecting the fault generators
-gen_fault(sta0_1_0, sta1_1_0, FI_Add_1_0, 64,1884873252,1849962622);
-gen_fault(sta0_0_1, sta1_0_1, FI_Add_0_1, 51,710263493,1413186641);
-gen_fault(sta0_2_0, sta1_2_0, FI_Add_2_0, 47,1630963664,1250895050);
-gen_fault(sta0_0_2, sta1_0_2, FI_Add_0_2, 63,146323302,1747222846);
-gen_fault(sta0_3_1, sta1_3_1, FI_Add_3_1, 62,1356339636,1685606931);
-gen_fault(sta0_1_3, sta1_1_3, FI_Add_1_3, 62,386173565,1483655742);
-gen_fault(sta0_3_2, sta1_3_2, FI_Add_3_2, 70,318559100,1454220668);
-gen_fault(sta0_2_3, sta1_2_3, FI_Add_2_3, 60,1079300062,2123392467);
+gen_fault(sta0_1_0, sta1_1_0, FI_Add_1_0, 63,442052708,1828205602);
+gen_fault(sta0_0_1, sta1_0_1, FI_Add_0_1, 53,1295222520,931907344);
+gen_fault(sta0_2_0, sta1_2_0, FI_Add_2_0, 70,384023008,1549010334);
+gen_fault(sta0_0_2, sta1_0_2, FI_Add_0_2, 61,460224063,1900282825);
+gen_fault(sta0_3_1, sta1_3_1, FI_Add_3_1, 51,1175811338,1371195782);
+gen_fault(sta0_1_3, sta1_1_3, FI_Add_1_3, 48,2134559509,1884522909);
+gen_fault(sta0_3_2, sta1_3_2, FI_Add_3_2, 52,69484405,203739638);
+gen_fault(sta0_2_3, sta1_2_3, FI_Add_2_3, 48,1017472312,722198941);
 
 
 end;
