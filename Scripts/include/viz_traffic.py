@@ -63,42 +63,51 @@ def find_events():
 
 
 def init():
-    particles.set_data([], [], )
-    return particles,
+    flits.set_data([], [], )
+    return flits,
 
 # animation function.  This is called sequentially
-def animate(i):
+def func(i):
     global events
     x = []
     y = []
-    time = i+0.5
+    time = i/10.0
+    if time%0.5 == 0:
+        time = int(time)
+    else:
+        time = int(time) + 0.5
     # print time
     if time in events.keys():
-        
         for event in events[time]:
             # print time, event[0], event[1]
             current_x = event[0]%2
             current_y = event[0]/2
             if event[1] == "N":
-                current_y -= 0.2
+                current_x -= 0.03
+                current_y -= 0.12
             if event[1] == "E":
-                current_x += 0.2
+                current_x += 0.12
+                current_y -= 0.03
             if event[1] == "W":
-                current_x -= 0.2
+                current_x -= 0.12
+                current_y += 0.03
             if event[1] == "S":
-                current_y += 0.2
+                current_x += 0.03
+                current_y += 0.12
             if event[1] == "L":
-                current_x -= 0.1
+                current_x -= 0.08
                 current_y -= 0.1
             x.append(current_x)
             y.append(current_y)
-    particles.set_data(x, y, )
-    particles.set_color("red") 
-    return particles,
+    flits.set_data(x, y, )
+    flits.set_color("red") 
+    return flits,
 
 def viz_traffic(noc_size):
-    global particles, events
-    events, end_of_sim = find_events()   
+
+    global flits, events
+    events, end_of_sim = find_events() 
+    # print events  
     fig = plt.figure()
 
     ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
@@ -133,11 +142,12 @@ def viz_traffic(noc_size):
         if y != noc_size-1:
             plt.gca().add_patch(patches.Arrow(x-0.03, y+0.1, 0, 0.8, width=0.05, color = "gray"))
     
-    particles, = ax.plot([], [], 'bo', ms=15)
+    flits, = ax.plot([], [], 'bo', ms=10)
     
     
-    ani = animation.FuncAnimation(fig, animate, frames=int(end_of_sim), 
-                                  interval=10, blit=False, init_func=init)
+    ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim)*20, 
+                                  interval=1, blit=False, init_func=init)
     plt.show()
+    
 
 viz_traffic(2)
