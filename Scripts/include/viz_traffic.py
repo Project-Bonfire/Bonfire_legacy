@@ -103,6 +103,8 @@ def func(i):
     time = i/20.0
     x={}
     y={}
+    step = (time-int(time))
+
     if time%0.5 == 0:
         time = int(time)
     else:
@@ -115,19 +117,19 @@ def func(i):
             current_y = event[0]/2
             if event[1] == "N":
                 current_x -= 0.03
-                current_y -= 0.12
+                current_y -= 0.12 +0.8-step*0.8
             if event[1] == "E":
-                current_x += 0.12
+                current_x += 0.12-0.8+step*0.8
                 current_y -= 0.03
             if event[1] == "W":
-                current_x -= 0.12
+                current_x -= 0.12+0.8-step*0.8
                 current_y += 0.03
             if event[1] == "S":
                 current_x += 0.03
-                current_y += 0.12
+                current_y += 0.12 +0.8-step*0.8
             if event[1] == "L":
-                current_x -= 0.08
-                current_y -= 0.1
+                current_x -= 0.08 + 0.08 -step*0.08
+                current_y -= 0.1 + 0.1 -step*0.1
             if event[2] not in x.keys():
                 x[event[2]] = [current_x]
                 y[event[2]] = [current_y]
