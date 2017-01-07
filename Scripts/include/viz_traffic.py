@@ -10,6 +10,13 @@ from matplotlib import animation
 import matplotlib.patches as patches
 
 def find_events():
+    """
+    goes through all the files in trace folder and generates info dictionaries 
+    returns time_dic, packet_dic, end_of_sim
+    time dic: dictionary with time as key and list of flit info as value
+    packet_dic: dictionary with packet identifier (source,destination,id) as key and list of flit info as value
+    end_of_sim: largest time stamp found in the files
+    """
     end_of_sim = 0
     dictionary_of_all = {}
     traffic_dic = {}
@@ -31,28 +38,17 @@ def find_events():
                     end_of_sim = time_stamp
 
                 packet_identifier = source+destination+packet_id
-                #print packet_identifier, "\t", flit_type, time_stamp, length
                 traffic_dic[time_stamp] =  packet_identifier
                  
                 line = file.readline()
             if len(traffic_dic.keys())>0:
                 dictionary_of_all[f] = traffic_dic
     del traffic_dic
-    # for item in dictionary_of_all.keys():
-    #     print "-------------------------------------------"
-    #     print "file name:", int(re.search(r'\d+', item).group()), item[-5]
-    #     keylist = dictionary_of_all[item].keys()
-    #     keylist.sort()
-    #     for time in keylist:
-    #         print time,  dictionary_of_all[item][time]
-    # print "-------------------------------------------"
     time_dic = {}
     packet_dic = {}
     print "end of simulation:", end_of_sim 
     i = 0
     while i < end_of_sim:
-        #print "-----"
-        #print i
         time_dic[i] = []
         
         for item in dictionary_of_all.keys():
@@ -62,7 +58,6 @@ def find_events():
                     packet_dic[dictionary_of_all[item][i]].append([int(re.search(r'\d+', item).group()), item[-5], i])
                 else:
                     packet_dic[dictionary_of_all[item][i]] = [[int(re.search(r'\d+', item).group()), item[-5], i]]
-        #print time_dic[i]
         i += 0.5
     del dictionary_of_all
     print "sorted all the events... returning!"
@@ -82,6 +77,9 @@ def init(noc_size):
         plt.gca().add_patch(patches.Arrow(x-0.09, y-0.05, -0.1, -0.1, width=0.05, color = "gray"))
         plt.gca().add_patch(patches.Arrow(x-0.15, y-0.17, 0.09, 0.09, width=0.05, color = "gray"))
 
+        plt.gca().add_patch(patches.Arrow(-0.4, -0.4, 0.5, 0, width=0.03, color = "black"))
+        plt.gca().add_patch(patches.Arrow(-0.4, -0.4, 0, 0.5, width=0.03, color = "black"))
+
         if item < 10:
             plt.text(x-0.03, y-0.03, str(item), fontsize=10)
         else:
@@ -99,24 +97,27 @@ def init(noc_size):
     time_stamp_view = plt.text(-0.35, -0.35, str(0), fontsize=10)
     return None
 
-# animation function.  This is called sequentially
+
 def func(i):
+    """
+    Updates the positoons of the flits...
+    """
     global events, flits, time_stamp_view, death_times
 
     time = i/10.0
     x={}
     y={}
+    # step is used for moving the flits along the lines
     step = (time-int(time))
 
+    # here we stay in one time stamp for longer period
     if time%0.5 == 0:
         time = int(time)
     else:
         time = int(time) + 0.5
-    # print time
 
     if time in events.keys():
         for event in events[time]:
-            #print time, event[0], event[1], event[2]
             if death_times[event[2]] > time:
                 current_x = event[0]%2
                 current_y = event[0]/2
@@ -148,7 +149,6 @@ def func(i):
     if time in events.keys():
         for event in events[time]:
             flits[event[2]].set_data(x[event[2]], y[event[2]], )
-            #print event[2], colors[int(event[2])%len(colors)]
 
     time_stamp_view.remove()
     time_stamp_view = plt.text(-0.35, -0.35, "time:\t"+str(i/10.0)+"\tns", fontsize=10)
@@ -157,8 +157,7 @@ def func(i):
 def viz_traffic(noc_size):
 
     global flits, events, death_times
-    events, packet_dic, end_of_sim = find_events() 
-    # print events  
+    events, packet_dic, end_of_sim = find_events()  
     fig = plt.figure()
 
     ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
@@ -166,8 +165,7 @@ def viz_traffic(noc_size):
     
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
-    
-    #print packet_dic
+
     flits = {}
     colors =['red', 'green', 'blue']
     death_times = {}
