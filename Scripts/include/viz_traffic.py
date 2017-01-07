@@ -103,7 +103,7 @@ def init(noc_size):
 def func(i):
     global events, flits, time_stamp_view, death_times
 
-    time = i/5.0
+    time = i/10.0
     x={}
     y={}
     step = (time-int(time))
@@ -151,7 +151,7 @@ def func(i):
             #print event[2], colors[int(event[2])%len(colors)]
 
     time_stamp_view.remove()
-    time_stamp_view = plt.text(-0.35, -0.35, str(time), fontsize=10)
+    time_stamp_view = plt.text(-0.35, -0.35, "time:\t"+str(time)+"\tns", fontsize=10)
     return flits,
 
 def viz_traffic(noc_size):
@@ -184,7 +184,7 @@ def viz_traffic(noc_size):
         #flits[item].set_color(colors[int(item)%len(colors)]) 
         flits[item].set_color('#%02X%02X%02X' % (r(),r(),r())) 
 
-    ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim)*5, 
+    ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim)*10, 
                                   interval=1, blit=False, init_func=init(noc_size))
     plt.show()
     
