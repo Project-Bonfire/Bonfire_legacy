@@ -46,76 +46,29 @@ def find_events():
     #         print time,  dictionary_of_all[item][time]
     # print "-------------------------------------------"
     time_dic = {}
+    packet_dic = {}
     print "end of simulation:", end_of_sim 
     i = 0
     while i < end_of_sim:
         #print "-----"
         #print i
         time_dic[i] = []
+        
         for item in dictionary_of_all.keys():
             if i in dictionary_of_all[item].keys():
                 time_dic[i].append([int(re.search(r'\d+', item).group()), item[-5], dictionary_of_all[item][i]])
+                if dictionary_of_all[item][i] in packet_dic.keys():
+                    packet_dic[dictionary_of_all[item][i]].append([int(re.search(r'\d+', item).group()), item[-5], i])
+                else:
+                    packet_dic[dictionary_of_all[item][i]] = [[int(re.search(r'\d+', item).group()), item[-5], i]]
         #print time_dic[i]
         i += 0.5
     del dictionary_of_all
     print "sorted all the events... returning!"
-    return time_dic, end_of_sim
+    return time_dic, packet_dic, end_of_sim
 
 
-def init():
-    flits.set_data([], [], )
-    return flits,
-
-# animation function.  This is called sequentially
-def func(i):
-    global events
-    x = []
-    y = []
-    time = i/10.0
-    if time%0.5 == 0:
-        time = int(time)
-    else:
-        time = int(time) + 0.5
-    # print time
-    if time in events.keys():
-        for event in events[time]:
-            # print time, event[0], event[1]
-            current_x = event[0]%2
-            current_y = event[0]/2
-            if event[1] == "N":
-                current_x -= 0.03
-                current_y -= 0.12
-            if event[1] == "E":
-                current_x += 0.12
-                current_y -= 0.03
-            if event[1] == "W":
-                current_x -= 0.12
-                current_y += 0.03
-            if event[1] == "S":
-                current_x += 0.03
-                current_y += 0.12
-            if event[1] == "L":
-                current_x -= 0.08
-                current_y -= 0.1
-            x.append(current_x)
-            y.append(current_y)
-    flits.set_data(x, y, )
-    flits.set_color("red") 
-    return flits,
-
-def viz_traffic(noc_size):
-
-    global flits, events
-    events, end_of_sim = find_events() 
-    # print events  
-    fig = plt.figure()
-
-    ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
-                         xlim=(-0.5, (noc_size-1)+0.5), ylim=(-0.5, (noc_size-1)+0.5))
-    
-    ax.get_xaxis().set_visible(False)
-    ax.get_yaxis().set_visible(False)
-    
+def init(noc_size):
     # setting up the background!
     for item in range(0, noc_size**2):
         x = item%noc_size
@@ -141,12 +94,75 @@ def viz_traffic(noc_size):
     
         if y != noc_size-1:
             plt.gca().add_patch(patches.Arrow(x-0.03, y+0.1, 0, 0.8, width=0.05, color = "gray"))
+
+    return None
+
+# animation function.  This is called sequentially
+def func(i):
+    global events, flits
+    time = i/20.0
+    x={}
+    y={}
+    if time%0.5 == 0:
+        time = int(time)
+    else:
+        time = int(time) + 0.5
+    # print time
+    if time in events.keys():
+        for event in events[time]:
+            #print time, event[0], event[1], event[2]
+            current_x = event[0]%2
+            current_y = event[0]/2
+            if event[1] == "N":
+                current_x -= 0.03
+                current_y -= 0.12
+            if event[1] == "E":
+                current_x += 0.12
+                current_y -= 0.03
+            if event[1] == "W":
+                current_x -= 0.12
+                current_y += 0.03
+            if event[1] == "S":
+                current_x += 0.03
+                current_y += 0.12
+            if event[1] == "L":
+                current_x -= 0.08
+                current_y -= 0.1
+            if event[2] not in x.keys():
+                x[event[2]] = [current_x]
+                y[event[2]] = [current_y]
+            else:
+                x[event[2]].append(current_x)
+                y[event[2]].append(current_y)
+    if time in events.keys():
+        for event in events[time]:
+            flits[event[2]].set_data(x[event[2]], y[event[2]], )
+            #print event[2], colors[int(event[2])%len(colors)]
+
+    return flits,
+
+def viz_traffic(noc_size):
+
+    global flits, events
+    events, packet_dic, end_of_sim = find_events() 
+    # print events  
+    fig = plt.figure()
+
+    ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
+                         xlim=(-0.5, (noc_size-1)+0.5), ylim=(-0.5, (noc_size-1)+0.5))
     
-    flits, = ax.plot([], [], 'bo', ms=10)
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
     
-    
+    #print packet_dic
+    flits = {}
+    colors =['red', 'green', 'blue']
+    for item in packet_dic:
+        flits[item], = ax.plot([], [], 'bo', ms=10)
+        flits[item].set_color(colors[int(item)%len(colors)]) 
+
     ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim)*20, 
-                                  interval=1, blit=False, init_func=init)
+                                  interval=1, blit=False, init_func=init(noc_size))
     plt.show()
     
 
