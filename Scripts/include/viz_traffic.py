@@ -151,7 +151,7 @@ def func(i):
             #print event[2], colors[int(event[2])%len(colors)]
 
     time_stamp_view.remove()
-    time_stamp_view = plt.text(-0.35, -0.35, "time:\t"+str(time)+"\tns", fontsize=10)
+    time_stamp_view = plt.text(-0.35, -0.35, "time:\t"+str(i/10.0)+"\tns", fontsize=10)
     return flits,
 
 def viz_traffic(noc_size):
