@@ -69,6 +69,7 @@ def find_events():
 
 
 def init(noc_size):
+    global time_stamp_view
     # setting up the background!
     for item in range(0, noc_size**2):
         x = item%noc_size
@@ -94,13 +95,14 @@ def init(noc_size):
     
         if y != noc_size-1:
             plt.gca().add_patch(patches.Arrow(x-0.03, y+0.1, 0, 0.8, width=0.05, color = "gray"))
-
+    time_stamp_view = plt.text(-0.35, -0.35, str(0), fontsize=10)
     return None
 
 # animation function.  This is called sequentially
 def func(i):
-    global events, flits
-    time = i/20.0
+    global events, flits, time_stamp_view, death_times
+
+    time = i/5.0
     x={}
     y={}
     step = (time-int(time))
@@ -110,42 +112,50 @@ def func(i):
     else:
         time = int(time) + 0.5
     # print time
+
     if time in events.keys():
         for event in events[time]:
             #print time, event[0], event[1], event[2]
-            current_x = event[0]%2
-            current_y = event[0]/2
-            if event[1] == "N":
-                current_x -= 0.03
-                current_y -= 0.12 +0.8-step*0.8
-            if event[1] == "E":
-                current_x += 0.12-0.8+step*0.8
-                current_y -= 0.03
-            if event[1] == "W":
-                current_x -= 0.12+0.8-step*0.8
-                current_y += 0.03
-            if event[1] == "S":
-                current_x += 0.03
-                current_y += 0.12 +0.8-step*0.8
-            if event[1] == "L":
-                current_x -= 0.08 + 0.08 -step*0.08
-                current_y -= 0.1 + 0.1 -step*0.1
-            if event[2] not in x.keys():
-                x[event[2]] = [current_x]
-                y[event[2]] = [current_y]
+            if death_times[event[2]] > time:
+                current_x = event[0]%2
+                current_y = event[0]/2
+                if event[1] == "N":
+                    current_x -= 0.03
+                    current_y -= 0.12 +0.8-step*0.8
+                if event[1] == "E":
+                    current_x += 0.12+0.8-step*0.8
+                    current_y -= 0.03
+                if event[1] == "W":
+                    current_x -= 0.12+0.8-step*0.8
+                    current_y += 0.03
+                if event[1] == "S":
+                    current_x += 0.03
+                    current_y += 0.12 +0.8-step*0.8
+                if event[1] == "L":
+                    current_x -= 0.08 + 0.08 -step*0.08
+                    current_y -= 0.1 + 0.1 -step*0.1
+                if event[2] not in x.keys():
+                    x[event[2]] = [current_x]
+                    y[event[2]] = [current_y]
+                else:
+                    x[event[2]].append(current_x)
+                    y[event[2]].append(current_y)
             else:
-                x[event[2]].append(current_x)
-                y[event[2]].append(current_y)
+                x[event[2]] = []
+                y[event[2]] = []
+
     if time in events.keys():
         for event in events[time]:
             flits[event[2]].set_data(x[event[2]], y[event[2]], )
             #print event[2], colors[int(event[2])%len(colors)]
 
+    time_stamp_view.remove()
+    time_stamp_view = plt.text(-0.35, -0.35, str(time), fontsize=10)
     return flits,
 
 def viz_traffic(noc_size):
 
-    global flits, events
+    global flits, events, death_times
     events, packet_dic, end_of_sim = find_events() 
     # print events  
     fig = plt.figure()
@@ -159,11 +169,18 @@ def viz_traffic(noc_size):
     #print packet_dic
     flits = {}
     colors =['red', 'green', 'blue']
+    death_times = {}
+    for item in packet_dic:
+        death_times[item] = 0
+        for packet in packet_dic[item]:
+            if packet[2] > death_times[item]:
+                death_times[item] = packet[2]
+        
     for item in packet_dic:
         flits[item], = ax.plot([], [], 'bo', ms=10)
         flits[item].set_color(colors[int(item)%len(colors)]) 
 
-    ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim)*20, 
+    ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim)*5, 
                                   interval=1, blit=False, init_func=init(noc_size))
     plt.show()
     
