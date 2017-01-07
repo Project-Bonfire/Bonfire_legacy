@@ -2,6 +2,7 @@
 import package
 import os
 import re
+import random
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -178,7 +179,10 @@ def viz_traffic(noc_size):
         
     for item in packet_dic:
         flits[item], = ax.plot([], [], 'bo', ms=10)
-        flits[item].set_color(colors[int(item)%len(colors)]) 
+
+        r = lambda: random.randint(0,255)
+        #flits[item].set_color(colors[int(item)%len(colors)]) 
+        flits[item].set_color('#%02X%02X%02X' % (r(),r(),r())) 
 
     ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim)*5, 
                                   interval=1, blit=False, init_func=init(noc_size))
