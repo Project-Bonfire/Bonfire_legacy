@@ -68,6 +68,7 @@ def gen_network_and_tb(program_argv, flow_control_type):
         + (" -FI" if program_argv['add_FI'] else "") \
         + (" -SHMU" if program_argv['add_SHMU']  else "") \
         + (" -LV" if program_argv['add_LV'] else "") \
+        + (" -trace" if program_argv['trace'] else "") \
         + (" -Rand " + str(program_argv['rand']) if program_argv['rand'] != -1 else "") \
         + (" -BR " + str(program_argv['BR']) if program_argv['BR'] != -1 else "") \
         + (" -PS " + str(program_argv['PS'][0]) + " " + str(program_argv['PS'][1])) \

@@ -22,6 +22,7 @@ if '--help' in sys.argv[1:]:
   print "\t-LV: adds control for light weight network"
   print "\t-PE: adds procssing elements in each node"
   print "\t-SHMU: maps shmu on one of the nodes"
+  print "\t-trace: adds trackers to network outputs"
   print "\t-sim: specifies the length of simulation in clock cycles. which at this time the packet generators will stop sending packets."
   print "\t**Example: python network_tb_gen_parameterized.py -D 2"
   print "\t           generates a testbench for a 2X2 network that has fault injector controller and uses "
@@ -37,6 +38,7 @@ random_dest = False
 fi_addres_width = None
 add_FI = False
 add_lv = False
+add_tracker = False
 add_SHMU = False
 add_node = False
 got_finish_time = False
@@ -75,6 +77,8 @@ if '-SHMU'  in sys.argv[1:]:
 if "-PE" in sys.argv[1:]:
   add_node = True
 
+if "-trace" in sys.argv[1:]:
+  add_tracker = True
 
 if '-BR'  in sys.argv[1:]:
   bit_reversal = True
@@ -209,7 +213,20 @@ noc_file.write(string_to_print[:len(string_to_print)-3])
 noc_file.write("\n            ); \n")
 noc_file.write("end component; \n")
 
-print "here", add_SHMU, add_node
+
+if add_tracker:
+      noc_file.write("component flit_tracker is\n")
+      noc_file.write("    generic (\n")
+      noc_file.write("        DATA_WIDTH: integer := 32;\n")
+      noc_file.write("        tracker_file: string :=\"track.txt\"\n")
+      noc_file.write("    );\n")
+      noc_file.write("    port (\n")
+      noc_file.write("        clk: in std_logic;\n")
+      noc_file.write("        RX: in std_logic_vector (DATA_WIDTH-1 downto 0); \n")
+      noc_file.write("        valid_in : in std_logic \n")
+      noc_file.write("    );\n")
+      noc_file.write("end component;\n")
+
 if add_node and not add_SHMU:
   noc_file.write("component NoC_Node is\n")
   noc_file.write("generic( current_address : integer := 0; stim_file: string :=\"code.txt\";\n")
@@ -320,6 +337,18 @@ noc_file.write("reset <= '1' after 1 ns;\n")
 
 noc_file.write("-- instantiating the network\n")
 
+
+if add_tracker:
+    noc_file.write("-- instantiating the flit trackers\n")
+    for i in range(0, network_dime**2):
+        noc_file.write("F_T_"+str(i)+"_T: flit_tracker  generic map (\n")
+        noc_file.write("        DATA_WIDTH => DATA_WIDTH, \n")
+        noc_file.write("        tracker_file =>\"traces/track"+str(i)+"_T.txt\"\n")
+        noc_file.write("    )\n")
+        noc_file.write("    port map (\n")
+        noc_file.write("        clk => clk, RX => TX_L_"+str(i)+", \n")
+        noc_file.write("        valid_in => valid_out_L_"+str(i)+"\n")
+        noc_file.write("    );\n")
 
 
 string_to_print = ""

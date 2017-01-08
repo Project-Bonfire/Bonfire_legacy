@@ -136,6 +136,9 @@ def func(i):
                 if event[1] == "L":
                     current_x -= 0.08 + 0.08 -step*0.08
                     current_y -= 0.1 + 0.1 -step*0.1
+                if event[1] == "T":
+                    current_x -= 0.02 + 0.08 +step*0.08
+                    current_y -= 0.14 - 0.1 + step*0.1
                 if event[2] not in x.keys():
                     x[event[2]] = [current_x]
                     y[event[2]] = [current_y]
