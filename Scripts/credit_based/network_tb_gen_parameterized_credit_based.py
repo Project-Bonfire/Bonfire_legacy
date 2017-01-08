@@ -342,7 +342,7 @@ if add_tracker:
     noc_file.write("-- instantiating the flit trackers\n")
     for i in range(0, network_dime**2):
         noc_file.write("F_T_"+str(i)+"_T: flit_tracker  generic map (\n")
-        noc_file.write("        DATA_WIDTH => DATA_WIDTH, \n")
+        noc_file.write("        DATA_WIDTH => "+str(data_width)+", \n")
         noc_file.write("        tracker_file =>\"traces/track"+str(i)+"_T.txt\"\n")
         noc_file.write("    )\n")
         noc_file.write("    port map (\n")
