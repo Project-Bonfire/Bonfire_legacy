@@ -4,6 +4,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use std.textio.all;
 use IEEE.NUMERIC_STD.all;
+ use ieee.std_logic_misc.all;
 
 entity flit_tracker is
     generic (
@@ -22,7 +23,7 @@ begin
 process(clk)
 	variable source_id, destination_id, Packet_length, packet_id: integer;
 	variable LINEVARIABLE : line;
- 	 
+ 	variable xor_check : std_logic;
  	file trace_file : text is out tracker_file;
 	begin
 		Packet_length := 0;
@@ -36,13 +37,28 @@ process(clk)
 		            destination_id := to_integer(unsigned(RX(16 downto 13)));
 		            source_id := to_integer(unsigned(RX(12 downto 9)));
 		            packet_id := to_integer(unsigned(RX(8 downto 1)));
-					write(LINEVARIABLE, "H flit at " & time'image(now) & " From " & integer'image(source_id) & " to " & integer'image(destination_id) & " with length: " & integer'image(Packet_length) & " id: " & integer'image(packet_id));
+		            xor_check :=  XOR_REDUCE(RX(DATA_WIDTH-1 downto 1));
+		            if xor_check = RX(0) then
+		            	write(LINEVARIABLE, "H flit at " & time'image(now) & " From " & integer'image(source_id) & " to " & integer'image(destination_id) & " with length: " & integer'image(Packet_length) & " id: " & integer'image(packet_id));
+		            else
+		            	write(LINEVARIABLE, "H flit at " & time'image(now) & " From " & integer'image(source_id) & " to " & integer'image(destination_id) & " with length: " & integer'image(Packet_length) & " id: " & integer'image(packet_id) & " FAULTY ");
+		            end if;
 					writeline(trace_file, LINEVARIABLE);
 				elsif RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "010" then 
-					write(LINEVARIABLE, "B flit at " & time'image(now));
+					xor_check :=  XOR_REDUCE(RX(DATA_WIDTH-1 downto 1));
+		            if xor_check = RX(0) then
+						write(LINEVARIABLE, "B flit at " & time'image(now));
+					else
+						write(LINEVARIABLE, "B flit at " & time'image(now) & " FAULTY ");
+					end if;
 					writeline(trace_file, LINEVARIABLE);
 				elsif RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100" then 
-					write(LINEVARIABLE, "T flit at " & time'image(now));
+					xor_check :=  XOR_REDUCE(RX(DATA_WIDTH-1 downto 1));
+		            if xor_check = RX(0) then
+						write(LINEVARIABLE, "T flit at " & time'image(now));
+					else
+						write(LINEVARIABLE, "T flit at " & time'image(now) & " FAULTY ");
+					end if;
 					writeline(trace_file, LINEVARIABLE);
 				end if;
 			end if; 
