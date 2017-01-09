@@ -120,7 +120,6 @@ def func(i):
     Updates the positoons of the flits...
     """
     global events, flits, time_stamp_view, packet_dic
-
     time = i/10.0
     x={}
     y={}
@@ -136,32 +135,32 @@ def func(i):
     if time in events.keys():
         for event in events[time]:
             #if packet_dic[event[2]][1] >= time:
-                current_x = event[0]%2
-                current_y = event[0]/2
-                if event[1] == "N":
-                    current_x -= 0.03
-                    current_y -= 0.12 +0.8-step*0.8
-                if event[1] == "E":
-                    current_x += 0.12+0.8-step*0.8
-                    current_y -= 0.03
-                if event[1] == "W":
-                    current_x -= 0.12+0.8-step*0.8
-                    current_y += 0.03
-                if event[1] == "S":
-                    current_x += 0.03
-                    current_y += 0.12 +0.8-step*0.8
-                if event[1] == "L":
-                    current_x -= 0.08 + 0.08 -step*0.08
-                    current_y -= 0.1 + 0.1 -step*0.1
-                if event[1] == "T":
-                    current_x -= 0.02 + 0.08 +step*0.08
-                    current_y -= 0.14 - 0.1 + step*0.1
-                if event[2] not in x.keys():
-                    x[event[2]] = [current_x]
-                    y[event[2]] = [current_y]
-                else:
-                    x[event[2]].append(current_x)
-                    y[event[2]].append(current_y) 
+            current_x = event[0]%2
+            current_y = event[0]/2
+            if event[1] == "N":
+                current_x -= 0.03
+                current_y -= 0.12 +0.8-step*0.8
+            if event[1] == "E":
+                current_x += 0.12+0.8-step*0.8
+                current_y -= 0.03
+            if event[1] == "W":
+                current_x -= 0.12+0.8-step*0.8
+                current_y += 0.03
+            if event[1] == "S":
+                current_x += 0.03
+                current_y += 0.12 +0.8-step*0.8
+            if event[1] == "L":
+                current_x -= 0.08 + 0.08 -step*0.08
+                current_y -= 0.1 + 0.1 -step*0.1
+            if event[1] == "T":
+                current_x -= 0.02 + 0.08 +step*0.08
+                current_y -= 0.14 - 0.1 + step*0.1
+            if event[2] not in x.keys():
+                x[event[2]] = [current_x]
+                y[event[2]] = [current_y]
+            else:
+                x[event[2]].append(current_x)
+                y[event[2]].append(current_y) 
 
 
     for event in x.keys():
@@ -171,7 +170,6 @@ def func(i):
         if time > packet_dic[packet][1]+1 or time < packet_dic[packet][0]-1:
             flits[packet].set_data([], [], )
 
-
     time_stamp_view.remove()
     time_stamp_view = plt.text(-0.35, -0.35, "time:\t"+str(i/10.0)+"\tns", fontsize=10)
     return flits,
@@ -180,7 +178,6 @@ def viz_traffic(noc_size):
 
     global flits, events, packet_dic
     events, packet_dic, end_of_sim = find_events()  
-    print events
     fig = plt.figure()
 
     ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
