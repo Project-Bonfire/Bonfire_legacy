@@ -22,6 +22,7 @@ def find_events():
     traffic_dic = {}
     for f in os.listdir(package.TRACE_DIR): 
         if f.endswith('.txt'):
+            counter = 0
             traffic_dic = {}
             file = open(package.TRACE_DIR+"/"+str(f), 'r')
             line = file.readline()
@@ -36,8 +37,11 @@ def find_events():
                     packet_id = split_line[13]
                 if time_stamp > end_of_sim:
                     end_of_sim = time_stamp
-
-                packet_identifier = source+destination+packet_id
+                if "FAULTY" in split_line:
+                    packet_identifier = source+destination+packet_id+"F"+str(counter)
+                    counter += 1
+                else:
+                    packet_identifier = source+destination+packet_id+"H"
                 traffic_dic[time_stamp] =  packet_identifier
                  
                 line = file.readline()
@@ -48,17 +52,29 @@ def find_events():
     packet_dic = {}
     print "end of simulation:", end_of_sim 
     i = 0
-    while i < end_of_sim:
-        time_dic[i] = []
-        
+    while i < end_of_sim+1:
         for item in dictionary_of_all.keys():
             if i in dictionary_of_all[item].keys():
-                time_dic[i].append([int(re.search(r'\d+', item).group()), item[-5], dictionary_of_all[item][i]])
-                if dictionary_of_all[item][i] in packet_dic.keys():
-                    packet_dic[dictionary_of_all[item][i]].append([int(re.search(r'\d+', item).group()), item[-5], i])
+
+                if i in time_dic.keys():
+                    time_dic[i].append([int(re.search(r'\d+', item).group()), item[-5], dictionary_of_all[item][i]])
                 else:
-                    packet_dic[dictionary_of_all[item][i]] = [[int(re.search(r'\d+', item).group()), item[-5], i]]
+                    time_dic[i] = [[int(re.search(r'\d+', item).group()), item[-5], dictionary_of_all[item][i]]]
         i += 0.5
+
+    i = 0
+    while i < end_of_sim+1:
+        if i in time_dic.keys():
+            for itme in time_dic[i]:
+                if itme[2] in packet_dic.keys():
+                    if i < packet_dic[itme[2]][0]:
+                        packet_dic[itme[2]][0] = i
+                    if i > packet_dic[itme[2]][1]:
+                        packet_dic[itme[2]][1] = i
+                else:
+                    packet_dic[itme[2]] = [i, i]
+        i += 0.5
+        
     del dictionary_of_all
     print "sorted all the events... returning!"
     return time_dic, packet_dic, end_of_sim
@@ -95,14 +111,15 @@ def init(noc_size):
         if y != noc_size-1:
             plt.gca().add_patch(patches.Arrow(x-0.03, y+0.1, 0, 0.8, width=0.05, color = "gray"))
     time_stamp_view = plt.text(-0.35, -0.35, str(0), fontsize=10)
-    return None
+    
+    return None 
 
 
 def func(i):
     """
     Updates the positoons of the flits...
     """
-    global events, flits, time_stamp_view, death_times
+    global events, flits, time_stamp_view, packet_dic
 
     time = i/10.0
     x={}
@@ -118,7 +135,7 @@ def func(i):
 
     if time in events.keys():
         for event in events[time]:
-            if death_times[event[2]] > time:
+            #if packet_dic[event[2]][1] >= time:
                 current_x = event[0]%2
                 current_y = event[0]/2
                 if event[1] == "N":
@@ -144,14 +161,16 @@ def func(i):
                     y[event[2]] = [current_y]
                 else:
                     x[event[2]].append(current_x)
-                    y[event[2]].append(current_y)
-            else:
-                x[event[2]] = []
-                y[event[2]] = []
+                    y[event[2]].append(current_y) 
 
-    if time in events.keys():
-        for event in events[time]:
-            flits[event[2]].set_data(x[event[2]], y[event[2]], )
+
+    for event in x.keys():
+        flits[event].set_data(x[event], y[event], )
+
+    for packet in flits.keys():
+        if time > packet_dic[packet][1]+1 or time < packet_dic[packet][0]-1:
+            flits[packet].set_data([], [], )
+
 
     time_stamp_view.remove()
     time_stamp_view = plt.text(-0.35, -0.35, "time:\t"+str(i/10.0)+"\tns", fontsize=10)
@@ -159,8 +178,9 @@ def func(i):
 
 def viz_traffic(noc_size):
 
-    global flits, events, death_times
+    global flits, events, packet_dic
     events, packet_dic, end_of_sim = find_events()  
+    print events
     fig = plt.figure()
 
     ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
@@ -170,22 +190,17 @@ def viz_traffic(noc_size):
     ax.get_yaxis().set_visible(False)
 
     flits = {}
-    colors =['red', 'green', 'blue']
-    death_times = {}
-    for item in packet_dic:
-        death_times[item] = 0
-        for packet in packet_dic[item]:
-            if packet[2] > death_times[item]:
-                death_times[item] = packet[2]
-        
+    
     for item in packet_dic:
         flits[item], = ax.plot([], [], 'bo', ms=10)
 
-        r = lambda: random.randint(0,255)
-        #flits[item].set_color(colors[int(item)%len(colors)]) 
-        flits[item].set_color('#%02X%02X%02X' % (r(),r(),r())) 
+        if "F" in item:
+            flits[item].set_color('red')
+        else:
+            r = lambda: random.randint(0,255)
+            flits[item].set_color('#%02X%02X%02X' % (0,r(),r())) 
 
-    ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim)*10, 
+    ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim+2)*10, 
                                   interval=1, blit=False, init_func=init(noc_size))
     plt.show()
     
