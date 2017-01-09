@@ -26,7 +26,7 @@ entity Arbiter_out_one_hot_pseudo_checkers is
             err_East_credit_not_zero_req_X_E_grant_E, 
             err_East_credit_zero_or_not_req_X_E_not_grant_E, 
             err_West_req_X_W, 
-            err_West_credit_not_zero_req_X_E_grant_E, 
+            err_West_credit_not_zero_req_X_W_grant_W, 
             err_West_credit_zero_or_not_req_X_W_not_grant_W, 
             err_South_req_X_S, 
             err_South_credit_not_zero_req_X_S_grant_S, 
@@ -206,9 +206,9 @@ end process;
 process (state, credit, req_X_W, grant_Y_W)
 begin 
 	if ( state = West and credit /= "00" and req_X_W = '1' and grant_Y_W = '0') then
-		err_West_credit_not_zero_req_X_E_grant_E <= '1';
+		err_West_credit_not_zero_req_X_W_grant_W <= '1';
 	else 
-		err_West_credit_not_zero_req_X_E_grant_E <= '0';	
+		err_West_credit_not_zero_req_X_W_grant_W <= '0';	
 	end if;
 end process;
 
