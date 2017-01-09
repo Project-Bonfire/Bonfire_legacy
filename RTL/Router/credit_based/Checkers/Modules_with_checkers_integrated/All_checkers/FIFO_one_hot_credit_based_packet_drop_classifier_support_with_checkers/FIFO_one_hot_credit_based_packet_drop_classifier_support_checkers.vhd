@@ -164,13 +164,13 @@ CONSTANT Body_flit: std_logic_vector (4 downto 0) := "00100";
 CONSTANT Tail_flit: std_logic_vector (4 downto 0) := "01000";
 CONSTANT Packet_drop: std_logic_vector (4 downto 0) := "10000";
 
---signal read_en_signal: std_logic;
-
 begin 
 
---read_en_signal <= (read_en_N or read_en_E or read_en_W or read_en_S or read_en_L) and not empty_out;
-
--- Functional Checkers (Might cover or be covered by some of the structural checkers)
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+-- Functional Checkers (Might cover or be covered by some of the structural checkers) -------------------
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
 
 -- Empty and full cannot be high at the same time!
 process (empty_out, full_out)
@@ -234,8 +234,10 @@ end process;
 
 
 ---------------------------------------------------------------------------------------------------------
-
--- Structural Checkers
+---------------------------------------------------------------------------------------------------------
+-- Structural Checkers ----------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
 
 -- Write pointer and Read pointer checkers
 
