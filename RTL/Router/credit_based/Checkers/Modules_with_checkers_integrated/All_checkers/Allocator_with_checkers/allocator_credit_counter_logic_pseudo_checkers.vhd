@@ -15,7 +15,6 @@ entity allocator_credit_counter_logic_pseudo_checkers is
             credit_counter_N_in, credit_counter_E_in, credit_counter_W_in, credit_counter_S_in, credit_counter_L_in : in std_logic_vector(1 downto 0);
 
             -- Checker outputs
-            -- Not complete yet !
             err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal, 
             err_credit_in_N_credit_counter_N_out_increment, 
             err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change, 
