@@ -1,4 +1,0 @@
-v 4
-file / "/var/folders/tm/fh684lf54z38tw2pwqmw7txw0000gn/T/SublimeLinter3-bniazmand/Router_32_bit_credit_based_packet_drop_classifier_with_full_set_of_checkers.vhd" "321af909179868871e3c608b1a471d006a4c33de" "20170109182930.266":
-  entity router_credit_based_pd_c at 3( 45) + 0 on 11;
-  architecture behavior of router_credit_based_pd_c at 37( 1326) + 0 on 12;
