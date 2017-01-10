@@ -9,6 +9,7 @@ from matplotlib import pyplot as plt
 from matplotlib import animation
 import matplotlib.patches as patches
 
+
 def find_events():
     """
     goes through all the files in trace folder and generates info dictionaries 
@@ -17,6 +18,7 @@ def find_events():
     packet_dic: dictionary with packet identifier (source,destination,id) as key and list of flit info as value
     end_of_sim: largest time stamp found in the files
     """
+    print "starting reading the files and sorting the events"
     end_of_sim = 0
     dictionary_of_all = {}
     traffic_dic = {}
@@ -42,15 +44,15 @@ def find_events():
                     counter += 1
                 else:
                     packet_identifier = source+destination+packet_id+"H"
+
                 traffic_dic[time_stamp] =  packet_identifier
-                 
                 line = file.readline()
             if len(traffic_dic.keys())>0:
                 dictionary_of_all[f] = traffic_dic
     del traffic_dic
     time_dic = {}
     packet_dic = {}
-    print "end of simulation:", end_of_sim 
+    
     i = 0
     while i < end_of_sim+1:
         for item in dictionary_of_all.keys():
@@ -74,15 +76,21 @@ def find_events():
                 else:
                     packet_dic[itme[2]] = [i, i]
         i += 0.5
-        
+    
     del dictionary_of_all
+
+    print "number of Events: ", len(time_dic)
+    print "number of packets: ", len(packet_dic)
+    print "end of simulation:", end_of_sim 
     print "sorted all the events... returning!"
+    print "-----------------------------------"
     return time_dic, packet_dic, end_of_sim
 
 
 def init(noc_size):
     global time_stamp_view
     # setting up the background!
+    print "setting up the background..."
     for item in range(0, noc_size**2):
         x = item%noc_size
         y = item/noc_size
@@ -111,15 +119,16 @@ def init(noc_size):
         if y != noc_size-1:
             plt.gca().add_patch(patches.Arrow(x-0.03, y+0.1, 0, 0.8, width=0.05, color = "gray"))
     time_stamp_view = plt.text(-0.35, -0.35, str(0), fontsize=10)
-    
+    print "starting the preview..."
     return None 
 
 
 def func(i):
     """
-    Updates the positoons of the flits...
+    Updates the positions of the packets...
     """
-    global events, flits, time_stamp_view, packet_dic
+    global events, packets, time_stamp_view, packet_dic
+
     time = i/10.0
     x={}
     y={}
@@ -132,9 +141,10 @@ def func(i):
     else:
         time = int(time) + 0.5
 
+    events_to_be_removed = []
+    #processed_packets = []
     if time in events.keys():
         for event in events[time]:
-            #if packet_dic[event[2]][1] >= time:
             current_x = event[0]%2
             current_y = event[0]/2
             if event[1] == "N":
@@ -161,45 +171,62 @@ def func(i):
             else:
                 x[event[2]].append(current_x)
                 y[event[2]].append(current_y) 
-
-
+            
+            #processed_packets.append(event[2])
     for event in x.keys():
-        flits[event].set_data(x[event], y[event], )
+        packets[event].set_data(x[event], y[event], )
 
-    for packet in flits.keys():
-        if time > packet_dic[packet][1]+1 or time < packet_dic[packet][0]-1:
-            flits[packet].set_data([], [], )
+    if time-1 in events.keys():
+        del events[time-1]
+        print "removing all events of time:", time-1, "events left:", len(events)
+
+    packets_to_be_removed = []
+    for packet in packet_dic:
+        if time > packet_dic[packet][1]+1:
+            packets[packet].set_data([], [], )
+            packets_to_be_removed.append(packet)
+        if time < packet_dic[packet][0]-1:
+            packets[packet].set_data([], [], )
+
+    for packet in packets_to_be_removed:
+            print "removing packet with id:", packet
+            del packets[packet]
+            del packet_dic[packet]
+            print "time:", time, "packets left:", len(packets)
 
     time_stamp_view.remove()
     time_stamp_view = plt.text(-0.35, -0.35, "time:\t"+str(i/10.0)+"\tns", fontsize=10)
-    return flits,
+    return packets,
+
+
+
+
 
 def viz_traffic(noc_size):
 
-    global flits, events, packet_dic
+    global packets, events, packet_dic
     events, packet_dic, end_of_sim = find_events()  
-    fig = plt.figure()
 
+    print "generating the figure and axis for a "+str(noc_size)+" by "+str(noc_size)+ " network!"
+    fig = plt.figure()
     ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
                          xlim=(-0.5, (noc_size-1)+0.5), ylim=(-0.5, (noc_size-1)+0.5))
     
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
 
-    flits = {}
-    
-    for item in packet_dic:
-        flits[item], = ax.plot([], [], 'bo', ms=10)
-
-        if "F" in item:
-            flits[item].set_color('red')
+    print "generating packets..."
+    packets = {}
+    for packet in packet_dic:
+        packets[packet], = ax.plot([], [], 'bo', ms=10)
+        if "F" in packet:
+            packets[packet].set_color('red')
         else:
             r = lambda: random.randint(0,255)
-            flits[item].set_color('#%02X%02X%02X' % (0,r(),r())) 
+            packets[packet].set_color('#%02X%02X%02X' % (0,r(),r())) 
 
-    ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim+2)*10, 
+    ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim+5)*10, 
                                   interval=1, blit=False, init_func=init(noc_size))
     plt.show()
     
-
 viz_traffic(2)
