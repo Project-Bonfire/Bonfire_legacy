@@ -82,7 +82,7 @@ begin
       write_enable <= '0';
    end if;
    if rd_index = "101110" then  --reg_epc CP0 14
-      addr_write <= "01110";--"11010"; -- Reg $26 to save PC when interrupt occurs, but is it safe ??
+      addr_write <= "00000";--"01110" --"11010"; -- Reg $26 to save PC when interrupt occurs, but is it safe ??
    else
       addr_write <= rd_index(4 downto 0);
    end if;
@@ -101,7 +101,7 @@ begin
       --   intr_enable_reg <= '1';
       --end if;
       -- Added by Behrad
-      
+
    end if;
 
    intr_enable <= intr_enable_reg;

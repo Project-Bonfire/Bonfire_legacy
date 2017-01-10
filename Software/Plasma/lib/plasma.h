@@ -46,6 +46,9 @@ extern uint32 OS_AsmInterruptEnable(uint32 state);
 /* Interrupt handler called by the assmebly */
 void OS_InterruptServiceRoutine(uint32 status, uint32 *stack);
 
+/* SYSCALL assembly function declaration */
+extern void *OS_Syscall(uint32 value);
+
 /*********** Hardware addresses ***********/
 #define RAM_INTERNAL_BASE 0x00000000 //8KB
 #define RAM_EXTERNAL_BASE 0x10000000 //1MB or 64MB

@@ -2,7 +2,12 @@
 #include "plasma.h"
 #include "uart.h"
 
-unsigned int us_counter;
+volatile unsigned int us_counter;
+
+void int_counter()
+{
+    us_counter++;
+}
 
 int main()
 {
@@ -19,7 +24,7 @@ int main()
     {
         //uart_print_hex(us_counter);
         //uart_putchar('\n');
-        us_counter++;
+        int_counter();
     }
     return 0;
 }
