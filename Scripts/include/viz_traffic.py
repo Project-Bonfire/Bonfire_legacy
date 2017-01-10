@@ -1,4 +1,8 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
+
+# you can run it for example with the following:
+# python -c 'from viz_traffic import *; viz_traffic(2)'
+
 import package
 import os
 import re
@@ -105,6 +109,8 @@ def init():
 
         plt.gca().add_patch(patches.Arrow(-0.4, -0.4, 0.5, 0, width=0.03, color = "black"))
         plt.gca().add_patch(patches.Arrow(-0.4, -0.4, 0, 0.5, width=0.03, color = "black"))
+        plt.text(0.13, -0.4, "x", fontsize=10)
+        plt.text(-0.4, 0.13, "y", fontsize=10)
 
         if item < 10:
             plt.text(x-0.03, y-0.03, str(item), fontsize=10)
