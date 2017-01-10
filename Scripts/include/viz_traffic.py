@@ -99,7 +99,7 @@ def init():
     print "setting up the background..."
     for item in range(0, noc_size**2):
         x = item%noc_size
-        y = item/noc_size
+        y = (noc_size-1) - item/noc_size
         circle1 = plt.Circle((x, y), radius=0.1, color='#8ABDFF', fill=False, lw=2)
         circle2 = plt.Circle((x-0.2, y-0.2), radius=0.05, color='#8ABDFF', fill=False, lw=2)
         plt.gca().add_patch(circle1)
@@ -107,10 +107,10 @@ def init():
         plt.gca().add_patch(patches.Arrow(x-0.09, y-0.05, -0.1, -0.1, width=0.05, color = "gray"))
         plt.gca().add_patch(patches.Arrow(x-0.15, y-0.17, 0.09, 0.09, width=0.05, color = "gray"))
 
-        plt.gca().add_patch(patches.Arrow(-0.4, -0.4, 0.5, 0, width=0.03, color = "black"))
-        plt.gca().add_patch(patches.Arrow(-0.4, -0.4, 0, 0.5, width=0.03, color = "black"))
-        plt.text(0.13, -0.4, "x", fontsize=10)
-        plt.text(-0.4, 0.13, "y", fontsize=10)
+        plt.gca().add_patch(patches.Arrow(-0.4, (noc_size-1)+0.2, 0.5, 0, width=0.03, color = "black"))
+        plt.gca().add_patch(patches.Arrow(-0.4, (noc_size-1)+0.2, 0, -0.5, width=0.03, color = "black"))
+        plt.text(0.13, (noc_size-1)+0.2, "x", fontsize=10)
+        plt.text(-0.4, (noc_size-1) -0.4, "y", fontsize=10)
 
         if item < 10:
             plt.text(x-0.03, y-0.03, str(item), fontsize=10)
@@ -126,7 +126,7 @@ def init():
     
         if y != noc_size-1:
             plt.gca().add_patch(patches.Arrow(x-0.03, y+0.1, 0, 0.8, width=0.05, color = "gray"))
-    time_stamp_view = plt.text(-0.35, -0.35, str(0), fontsize=10)
+    time_stamp_view = plt.text(-0.35, (noc_size-1)+0.24, str(0), fontsize=10)
     print "starting the preview..."
     return None 
 
@@ -154,8 +154,8 @@ def func(i):
     if time in events.keys():
         for event in events[time]:
             current_x = event[0]%noc_size
-            current_y = event[0]/noc_size
-            if event[1] == "N":
+            current_y = (noc_size-1)-(event[0]/noc_size)
+            if event[1] == "S":
                 current_x -= 0.03
                 current_y -= 0.12 +0.8-step*0.8
             if event[1] == "E":
@@ -164,7 +164,7 @@ def func(i):
             if event[1] == "W":
                 current_x -= 0.12+0.8-step*0.8
                 current_y += 0.03
-            if event[1] == "S":
+            if event[1] == "N":
                 current_x += 0.03
                 current_y += 0.12 +0.8-step*0.8
             if event[1] == "L":
@@ -210,7 +210,7 @@ def func(i):
             print "time:", time, "packets left:", len(packet_dic)
 
     time_stamp_view.remove()
-    time_stamp_view = plt.text(-0.35, -0.35, "time:\t"+str(i/10.0)+"\tns", fontsize=10)
+    time_stamp_view = plt.text(-0.35, (noc_size-1)+0.24, "time:\t"+str(i/10.0)+"\tns", fontsize=10)
     return packets,
 
 
