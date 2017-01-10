@@ -89,8 +89,8 @@ def find_events():
     return time_dic, packet_dic, end_of_sim
 
 
-def init(noc_size):
-    global time_stamp_view
+def init():
+    global time_stamp_view, noc_size
     # setting up the background!
     print "setting up the background..."
     for item in range(0, noc_size**2):
@@ -129,7 +129,7 @@ def func(i):
     """
     Updates the positions of the packets...
     """
-    global events, packets, time_stamp_view, packet_dic
+    global events, packets, time_stamp_view, packet_dic, noc_size
 
     time = i/10.0
     x={}
@@ -147,8 +147,8 @@ def func(i):
     #processed_packets = []
     if time in events.keys():
         for event in events[time]:
-            current_x = event[0]%2
-            current_y = event[0]/2
+            current_x = event[0]%noc_size
+            current_y = event[0]/noc_size
             if event[1] == "N":
                 current_x -= 0.03
                 current_y -= 0.12 +0.8-step*0.8
@@ -185,8 +185,6 @@ def func(i):
                 packets[event].set_color('#%02X%02X%02X' % (0,r(),r())) 
         packets[event].set_data(x[event], y[event], )
             
-
-
     if time-1 in events.keys():
         del events[time-1]
         print "removing all events of time:", time-1, "events left:", len(events)
@@ -210,11 +208,11 @@ def func(i):
     return packets,
 
 
-def viz_traffic(noc_size):
+def viz_traffic(network_size):
 
-    global packets, ax, events, packet_dic
+    global packets, ax, events, packet_dic, noc_size
     events, packet_dic, end_of_sim = find_events()  
-
+    noc_size  = network_size
     print "generating the figure and axis for a "+str(noc_size)+" by "+str(noc_size)+ " network!"
     fig = plt.figure()
     ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
@@ -223,14 +221,11 @@ def viz_traffic(noc_size):
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
 
-    print "generating packets..."
     packets = {}
 
-        
-       
-
     ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim+5)*10, 
-                                  interval=1, blit=False, init_func=init(noc_size))
+                                  interval=1, blit=False, init_func=init())
     plt.show()
-    
-viz_traffic(2)
+
+
+viz_traffic(4)
