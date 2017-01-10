@@ -26,7 +26,7 @@ entity LBDR_packet_drop is
             flit_type: in std_logic_vector(2 downto 0);
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
             packet_drop_order: out std_logic;
-	          grant_N, grant_E, grant_W, grant_S, grant_L: in std_logic;
+	        grant_N, grant_E, grant_W, grant_S, grant_L: in std_logic;
             Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic;
 
             -- Checker outputs
