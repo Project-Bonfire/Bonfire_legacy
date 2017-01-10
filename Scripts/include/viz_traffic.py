@@ -50,9 +50,10 @@ def find_events():
             if len(traffic_dic.keys())>0:
                 dictionary_of_all[f] = traffic_dic
     del traffic_dic
+    
+    print "finished pasing the files... starting organizing the events..."
     time_dic = {}
     packet_dic = {}
-    
     i = 0
     while i < end_of_sim+1:
         for item in dictionary_of_all.keys():
@@ -64,6 +65,7 @@ def find_events():
                     time_dic[i] = [[int(re.search(r'\d+', item).group()), item[-5], dictionary_of_all[item][i]]]
         i += 0.5
 
+    print "calculating the life-span of each packet..."
     i = 0
     while i < end_of_sim+1:
         if i in time_dic.keys():
@@ -76,7 +78,7 @@ def find_events():
                 else:
                     packet_dic[itme[2]] = [i, i]
         i += 0.5
-    
+
     del dictionary_of_all
 
     print "number of Events: ", len(time_dic)
@@ -174,14 +176,23 @@ def func(i):
             
             #processed_packets.append(event[2])
     for event in x.keys():
+        if event not in packets.keys():
+            packets[event], = ax.plot([], [], 'bo', ms=10)
+            if "F" in event:
+                packets[event].set_color('red')
+            else:
+                r = lambda: random.randint(0,255)
+                packets[event].set_color('#%02X%02X%02X' % (0,r(),r())) 
         packets[event].set_data(x[event], y[event], )
+            
+
 
     if time-1 in events.keys():
         del events[time-1]
         print "removing all events of time:", time-1, "events left:", len(events)
 
     packets_to_be_removed = []
-    for packet in packet_dic:
+    for packet in packets.keys():
         if time > packet_dic[packet][1]+1:
             packets[packet].set_data([], [], )
             packets_to_be_removed.append(packet)
@@ -192,19 +203,16 @@ def func(i):
             print "removing packet with id:", packet
             del packets[packet]
             del packet_dic[packet]
-            print "time:", time, "packets left:", len(packets)
+            print "time:", time, "packets left:", len(packet_dic)
 
     time_stamp_view.remove()
     time_stamp_view = plt.text(-0.35, -0.35, "time:\t"+str(i/10.0)+"\tns", fontsize=10)
     return packets,
 
 
-
-
-
 def viz_traffic(noc_size):
 
-    global packets, events, packet_dic
+    global packets, ax, events, packet_dic
     events, packet_dic, end_of_sim = find_events()  
 
     print "generating the figure and axis for a "+str(noc_size)+" by "+str(noc_size)+ " network!"
@@ -217,13 +225,9 @@ def viz_traffic(noc_size):
 
     print "generating packets..."
     packets = {}
-    for packet in packet_dic:
-        packets[packet], = ax.plot([], [], 'bo', ms=10)
-        if "F" in packet:
-            packets[packet].set_color('red')
-        else:
-            r = lambda: random.randint(0,255)
-            packets[packet].set_color('#%02X%02X%02X' % (0,r(),r())) 
+
+        
+       
 
     ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim+5)*10, 
                                   interval=1, blit=False, init_func=init(noc_size))
