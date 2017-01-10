@@ -113,7 +113,6 @@ Grants   <= X_N & X_E & X_W & X_S & X_L;
 --checked
 process (state, Requests, state_in)
 begin 
-	 --if ( (state = North or state = East or state = West or state = South or state = Local or state = IDLE) and Requests = "00000" and state_in /= state ) then
 	if (Requests = "00000" and state_in /= state ) then
 		err_Requests_state_in_state_not_equal <= '1';
 	else
