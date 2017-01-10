@@ -226,6 +226,3 @@ def viz_traffic(network_size):
     ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim+5)*10, 
                                   interval=1, blit=False, init_func=init())
     plt.show()
-
-
-viz_traffic(4)

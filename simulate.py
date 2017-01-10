@@ -15,6 +15,7 @@ from Scripts.include.write_do_file import write_do_file
 from Scripts.include import package
 from Scripts.include.arg_parser import arg_parser, report_parogram_arguments
 from Scripts.include.stats import statistics
+from Scripts.include.viz_traffic import viz_traffic
 from Scripts.include.file_gen import gen_network_and_tb, gen_wave_do
 
 """
@@ -111,6 +112,10 @@ def main(argv):
             print_msg(MSG_INFO, "Latency calculation is not possible because fault injection switch is on!")
     else:
         statistics(False)
+
+    if package.program_argv["trace"]:
+        viz_traffic(package.program_argv["network_dime"])
+        
     logging.info('Logging finished...')
 
 if __name__ == "__main__":
