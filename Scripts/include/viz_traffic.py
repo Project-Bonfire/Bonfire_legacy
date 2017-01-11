@@ -7,8 +7,8 @@ import package
 import os
 import re
 import random
-#import matplotlib
-#matplotlib.use("Agg")
+import matplotlib
+matplotlib.use("Agg")
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import animation
@@ -221,8 +221,8 @@ def viz_traffic(network_size):
     noc_size  = network_size
     print "generating the figure and axis for a "+str(noc_size)+" by "+str(noc_size)+ " network!"
 
-    #Writer = animation.writers['ffmpeg']
-    #writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+    Writer = animation.writers['ffmpeg']
+    writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
 
     fig = plt.figure()
     ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
@@ -238,4 +238,4 @@ def viz_traffic(network_size):
                                   interval=1, blit=False, init_func=init())
  
     plt.show()
-    #ani.save(package.TMP_DIR+'/im.mp4', writer=writer)
+    ani.save(package.TMP_DIR+'/im.mp4', writer=writer)
