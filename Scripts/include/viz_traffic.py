@@ -1,7 +1,15 @@
-# Copyright (C) 2016 Siavoosh Payandeh Azad
+# Copyright (C) 2017 Siavoosh Payandeh Azad
 
 # you can run it for example with the following:
 # python -c 'from viz_traffic import *; viz_traffic(2)'
+# this should be added later to the simulate.py script
+
+# there are some things you should be carefull with:
+# 		- if you have different packets with the same source, destination, and packet id
+# 		  in your files, it will badly mess up the vizualization. Since the packet_id in 
+# 		  our system is 8 bits, after sending 256 packets from one node, you will face
+# 		  this problem. At the moment i dont have a solution for it! just reduce your
+#		  packet injection rate or reduce the simulation time (so you inject less packets!)
 
 import package
 import os
@@ -204,8 +212,8 @@ def func(i):
         if time > packet_dic[packet][1]+1:
             packets[packet].set_data([], [], )
             packets_to_be_removed.append(packet)
-        if packet_dic[packet][1] >  time+100:
-            raise ValueError("time:"+str(time)+"  "+str(packet)+" has a wrong end time:"+str(packet_dic[packet][1]))
+        #if packet_dic[packet][1] >  time+100:
+        #    raise ValueError("time:"+str(time)+"  "+str(packet)+" has a wrong end time:"+str(packet_dic[packet][1]))
         if time < packet_dic[packet][0]-1:
             packets[packet].set_data([], [], )
 
