@@ -198,6 +198,7 @@ end component;
 
 begin 
 
+packet_drop_order <= packet_drop_order_sig;
 
 -- LBDR packet drop routing part checkers instantiation
 LBDR_packet_drop_routing_part_checkers: LBDR_packet_drop_routing_part_pseudo_checkers  
@@ -432,6 +433,6 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
 end process;
    
  
-packet_drop_order <= packet_drop;
+packet_drop_order_sig <= packet_drop;
 
 END;
