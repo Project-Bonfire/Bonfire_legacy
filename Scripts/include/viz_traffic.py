@@ -27,8 +27,10 @@ def find_events():
     end_of_sim = 0
     dictionary_of_all = {}
     traffic_dic = {}
-    for f in os.listdir(package.TRACE_DIR): 
+    print "parsing file: "
+    for f in os.listdir(package.TRACE_DIR):
         if f.endswith('.txt'):
+            print "\t", f 
             counter = 0
             traffic_dic = {}
             file = open(package.TRACE_DIR+"/"+str(f), 'r')
@@ -38,6 +40,7 @@ def find_events():
                 flit_type = split_line[0]
                 time_stamp = float(split_line[3])/1000
                 if flit_type == "H":
+                    counter = 0
                     source = split_line[6]
                     destination = split_line[8]
                     length = split_line[11]
@@ -45,18 +48,19 @@ def find_events():
                 if time_stamp > end_of_sim:
                     end_of_sim = time_stamp
                 if "FAULTY" in split_line:
-                    packet_identifier = source+destination+packet_id+"F"+str(counter)
+                    health = "F_"+str(counter)
                     counter += 1
                 else:
-                    packet_identifier = source+destination+packet_id+"H"
+                    health = "H"
 
+                packet_identifier = source+"_"+destination+"_"+packet_id+"_"+health
                 traffic_dic[time_stamp] =  packet_identifier
+
                 line = file.readline()
             if len(traffic_dic.keys())>0:
                 dictionary_of_all[f] = traffic_dic
     del traffic_dic
-    
-    print "finished pasing the files... starting organizing the events..."
+    print "finished parsing the files... starting organizing the events..."
     time_dic = {}
     packet_dic = {}
     i = 0
@@ -74,14 +78,14 @@ def find_events():
     i = 0
     while i < end_of_sim+1:
         if i in time_dic.keys():
-            for itme in time_dic[i]:
-                if itme[2] in packet_dic.keys():
-                    if i < packet_dic[itme[2]][0]:
-                        packet_dic[itme[2]][0] = i
-                    if i > packet_dic[itme[2]][1]:
-                        packet_dic[itme[2]][1] = i
+            for item in time_dic[i]:
+                if item[2] in packet_dic.keys():
+                    if i < packet_dic[item[2]][0]:
+                        packet_dic[item[2]][0] = i
+                    if i > packet_dic[item[2]][1]:
+                        packet_dic[item[2]][1] = i
                 else:
-                    packet_dic[itme[2]] = [i, i]
+                    packet_dic[item[2]] = [i, i]
         i += 0.5
 
     del dictionary_of_all
@@ -136,7 +140,7 @@ def func(i):
     Updates the positions of the packets...
     """
     global events, packets, time_stamp_view, packet_dic, noc_size
-
+    
     time = i/10.0
     x={}
     y={}
@@ -200,6 +204,8 @@ def func(i):
         if time > packet_dic[packet][1]+1:
             packets[packet].set_data([], [], )
             packets_to_be_removed.append(packet)
+        if packet_dic[packet][1] >  time+100:
+            raise ValueError("time:"+str(time)+"  "+str(packet)+" has a wrong end time:"+str(packet_dic[packet][1]))
         if time < packet_dic[packet][0]-1:
             packets[packet].set_data([], [], )
 
@@ -217,7 +223,9 @@ def func(i):
 def viz_traffic(network_size):
 
     global packets, ax, events, packet_dic, noc_size
+
     events, packet_dic, end_of_sim = find_events()  
+    
     noc_size  = network_size
     print "generating the figure and axis for a "+str(noc_size)+" by "+str(noc_size)+ " network!"
 
@@ -237,5 +245,5 @@ def viz_traffic(network_size):
     ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim+5)*10, 
                                   interval=1, blit=False, init_func=init())
  
-    plt.show()
+    #plt.show()
     ani.save(package.TMP_DIR+'/im.mp4', writer=writer)
