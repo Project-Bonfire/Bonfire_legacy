@@ -7,8 +7,8 @@ import package
 import os
 import re
 import random
-import matplotlib
-matplotlib.use("Agg")
+#import matplotlib
+#matplotlib.use("Agg")
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import animation
@@ -127,7 +127,7 @@ def init():
     
         if y != noc_size-1:
             plt.gca().add_patch(patches.Arrow(x-0.03, y+0.1, 0, 0.8, width=0.05, color = "gray"))
-    time_stamp_view = plt.text(-0.35, (noc_size-1)+0.24, str(0), fontsize=10)
+    time_stamp_view = plt.text(-0.35, (noc_size-1)+0.24, "time: 0 ns", fontsize=10)
     return None 
 
 
@@ -210,7 +210,7 @@ def func(i):
             print "time:", time, "packets left:", len(packet_dic)
 
     time_stamp_view.remove()
-    time_stamp_view = plt.text(-0.35, (noc_size-1)+0.24, "time:\t"+str(i/10.0)+"\tns", fontsize=10)
+    time_stamp_view = plt.text(-0.35, (noc_size-1)+0.24, "time: "+str(i/10.0)+" ns", fontsize=10)
     return packets,
 
 
@@ -221,8 +221,8 @@ def viz_traffic(network_size):
     noc_size  = network_size
     print "generating the figure and axis for a "+str(noc_size)+" by "+str(noc_size)+ " network!"
 
-    Writer = animation.writers['ffmpeg']
-    writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+    #Writer = animation.writers['ffmpeg']
+    #writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
 
     fig = plt.figure()
     ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
@@ -238,4 +238,4 @@ def viz_traffic(network_size):
                                   interval=1, blit=False, init_func=init())
  
     plt.show()
-    ani.save(package.TMP_DIR+'/im.mp4', writer=writer)
+    #ani.save(package.TMP_DIR+'/im.mp4', writer=writer)
