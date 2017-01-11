@@ -73,7 +73,7 @@ architecture behavior of router_credit_based_PD_C_SHMU is
     port (  reset: in  std_logic;
             clk: in  std_logic;
             faulty_packet, Healthy_packet: in  std_logic;
-            Healthy, intermittent, Faulty:out std_logic
+            Healthy, intermittent, Faulty: out std_logic
             );
     end COMPONENT;
   
