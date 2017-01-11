@@ -4568,6 +4568,85 @@ L2W_fault <=                L_FIFO_checkers_ORed or
                             err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal;
 
                             -- FIFO
+L2S_fault <=                L_FIFO_checkers_ORed or
+
+                            -- LBDR
+                            L_err_header_empty_Requests_FF_Requests_in or
+                            L_err_tail_Requests_in_all_zero or
+                            L_err_tail_empty_Requests_FF_Requests_in or
+                            L_err_tail_not_empty_not_grants_Requests_FF_Requests_in or
+                            L_err_grants_onehot or
+                            L_err_grants_mismatch or
+                            L_err_header_tail_Requests_FF_Requests_in or
+                            L_err_dst_addr_cur_addr_S1 or
+                            L_err_dst_addr_cur_addr_not_S1 or
+                            L_err_header_not_empty_Req_S_in or
+                            L_err_header_not_empty_packet_drop_in or
+                            L_err_header_not_empty_dst_addr_cur_addr_equal_packet_drop_in_packet_drop_equal or
+                            L_err_header_empty_packet_drop_in_packet_drop_equal or
+                            L_err_tail_not_empty_packet_drop_not_packet_drop_in or
+                            L_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or
+                            L_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or
+                            L_err_packet_drop_order or
+                            L_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_reconf_equal or
+                            L_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in or
+                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal or
+                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_ReConf_FF_in or
+                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_ReConf_FF_in_ReConf_FF_out_equal or
+                            L_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal or
+                            L_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in or
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal or
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in or
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in or
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal or
+                            L_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal or
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal or
+
+                            -- Allocator
+                            L_err_Requests_state_in_state_not_equal or
+                            L_err_South_Req_S or
+                            L_err_South_grant_S or
+                            L_err_West_Req_S or
+                            L_err_West_grant_S or
+                            L_err_East_Req_S or
+                            L_err_East_grant_S or
+                            L_err_IDLE_Req_S or
+                            L_err_IDLE_grant_S or
+                            L_err_North_Req_S or
+                            L_err_North_grant_S or
+                            L_err_Local_Req_S or
+                            L_err_Local_grant_S or
+                            L_err_state_in_onehot or
+                            L_err_no_request_grants or
+                            L_err_request_no_grants or
+                            L_err_no_Req_S_grant_S or
+                            S_arbiter_out_err_Requests_state_in_state_not_equal or
+                            S_err_Local_req_X_L or
+                            S_err_Local_credit_not_zero_req_X_L_grant_L or
+                            S_err_Local_credit_zero_or_not_req_X_L_not_grant_L or
+                            S_err_South_req_X_L or
+                            S_err_West_req_X_L or
+                            S_err_East_req_X_L or
+                            S_err_IDLE_req_X_L or
+                            S_err_North_req_X_L or
+                            S_arbiter_out_err_state_in_onehot or
+                            S_arbiter_out_err_no_request_grants or
+                            S_err_request_IDLE_state or
+                            S_err_request_IDLE_not_Grants or
+                            S_err_Grants_onehot_or_all_zero or
+                            err_grant_S_L_sig_not_empty_L_grant_S_L or
+                            err_not_grant_S_L_sig_or_empty_L_not_grant_S_L or
+                            err_grant_signals_not_empty_grant_S or
+                            err_not_grant_signals_empty_not_grant_S or
+                            err_grants_valid_not_match or
+                            err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal or
+                            err_credit_in_S_credit_counter_S_out_increment or
+                            err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change or
+                            err_grant_S_credit_counter_S_out_decrement or
+                            err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change or
+                            err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal;
+
+                            -- FIFO
 N2L_fault <=                N_FIFO_checkers_ORed or
 
                             -- LBDR
