@@ -204,7 +204,7 @@ if add_SHMU:
   for i in range(0, network_dime**2):
       string_to_print +="\t--------------\n"
       string_to_print +="    link_faults_"+str(i) +": out std_logic_vector(4 downto 0);\n"
-      string_to_print +="    turn_faults_"+str(i) +": out std_logic_vector(19 downto 0);\n"
+      string_to_print +="    turn_faults_"+str(i) +": out std_logic_vector(7 downto 0);\n"
       string_to_print +="    Rxy_reconf_PE_"+str(i) +": in  std_logic_vector(7 downto 0);\n"
       string_to_print +="    Cx_reconf_PE_"+str(i) +": in  std_logic_vector(3 downto 0);\n"
       string_to_print +="    Reconfig_command_"+str(i) +" : in std_logic;\n\n"
@@ -262,7 +262,7 @@ elif add_node and add_SHMU:
   noc_file.write("        RX: in std_logic_vector(31 downto 0);\n")
   noc_file.write("\n")
   noc_file.write("        link_faults: in std_logic_vector(4 downto 0);\n")
-  noc_file.write("        turn_faults: in std_logic_vector(19 downto 0);\n")
+  noc_file.write("        turn_faults: in std_logic_vector(7 downto 0);\n")
   noc_file.write("\n")
   noc_file.write("        Rxy_reconf_PE: out  std_logic_vector(7 downto 0);\n")
   noc_file.write("        Cx_reconf_PE: out  std_logic_vector(3 downto 0);\n")
@@ -306,7 +306,7 @@ if add_FI:
 if add_SHMU:
   for i in range(0, network_dime*network_dime):
     noc_file.write("\tsignal link_faults_"+str(i)+ " : std_logic_vector(4 downto 0);\n")
-    noc_file.write("\tsignal turn_faults_"+str(i)+ " : std_logic_vector(19 downto 0);\n")
+    noc_file.write("\tsignal turn_faults_"+str(i)+ " : std_logic_vector(7 downto 0);\n")
     noc_file.write("\tsignal Rxy_reconf_PE_"+str(i)+ " : std_logic_vector(7 downto 0);\n")
     noc_file.write("\tsignal Cx_reconf_PE_"+str(i)+ " : std_logic_vector(3 downto 0);\n")
     noc_file.write("\tsignal Reconfig_command_"+str(i)+ " : std_logic;\n")

@@ -31,7 +31,7 @@ entity router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping
 
     -- should be connected to NI
     link_faults: out std_logic_vector(4 downto 0);
-    turn_faults: out std_logic_vector(19 downto 0); -- 8 bits for 90-degree turns, 4 bits for straight paths, 8 bits for turns from/to Local port
+    turn_faults: out std_logic_vector(7 downto 0);
 
     Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE: in  std_logic_vector(3 downto 0);
@@ -168,13 +168,13 @@ end COMPONENT;
 
     signal packet_drop_order_N, packet_drop_order_E, packet_drop_order_W, packet_drop_order_S, packet_drop_order_L:  std_logic;
 
-    signal healthy_link_N, healthy_link_E, healthy_link_W, healthy_link_S, healthy_link_L:  std_logic; -- For now, they are floating in the air, connected to nowhere. 
+    signal healthy_link_N, healthy_link_E, healthy_link_W, healthy_link_S, healthy_link_L:  std_logic;
     signal sig_Faulty_N_out, sig_Faulty_E_out, sig_Faulty_W_out, sig_Faulty_S_out, faulty_link_L:  std_logic;
-    signal intermittent_link_N, intermittent_link_E, intermittent_link_W, intermittent_link_S, intermittent_link_L:  std_logic; -- For now, they are floating in the air, connected to nowhere. 
+    signal intermittent_link_N, intermittent_link_E, intermittent_link_W, intermittent_link_S, intermittent_link_L:  std_logic;
 
 begin
 	
-turn_faults  <= "00000000000000000000";
+turn_faults  <= "00000000";
 --link_faults  <= sig_Faulty_N_out & sig_Faulty_E_out & sig_Faulty_W_out & sig_Faulty_S_out & faulty_link_L;
 link_faults  <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L;
 
