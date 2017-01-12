@@ -182,7 +182,7 @@ end process;
      fake_credit <= '0';
      state_in <= state_out;
      faulty_packet_in <= faulty_packet_out;
-      write_fake_flit <= '0';
+     write_fake_flit <= '0';
 
       case(state_out) is
       	  when Idle => 
@@ -202,27 +202,27 @@ end process;
       	  when Header_flit => 
       	  		if valid_in = '1' then 
 	              if fault_out = '0' then
-	                   
-	                    if flit_type = "010" then   
-	                       state_in <= Body_flit;
-	                    elsif flit_type ="100" then
-	                        state_in <= Tail_flit;
-	                    else
-	                        -- we should not be here!
-	                        state_in <= state_out;
-	                    end if; 
-	              else
-			        write_fake_flit <= '1';
-			        case( write_pointer ) is
-			            when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-			            when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= fake_tail;  FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-			            when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= fake_tail;  FIFO_MEM_4_in <= FIFO_MEM_4; 
-			            when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= fake_tail;                  
-			            when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
-			        end case ;
-			        state_in <= Packet_drop;
-              fault_info_in <= '1';
-			        faulty_packet_in <= '1';                
+
+                    if flit_type = "010" then   
+                       state_in <= Body_flit;
+                    elsif flit_type ="100" then
+                        state_in <= Tail_flit;
+                    else
+                        -- we should not be here!
+                        state_in <= state_out;
+                    end if; 
+	              else -- fault_out = '1'
+      			        write_fake_flit <= '1';
+      			        case( write_pointer ) is
+      			            when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+      			            when "0010" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= fake_tail;  FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+      			            when "0100" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= fake_tail;  FIFO_MEM_4_in <= FIFO_MEM_4; 
+      			            when "1000" => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= fake_tail;                  
+      			            when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
+      			        end case ;
+      			        state_in <= Packet_drop;
+                    fault_info_in <= '1';
+      			        faulty_packet_in <= '1';                
 	              end if;  
 	            else
 	                state_in <= state_out;   	       
@@ -240,7 +240,7 @@ end process;
 	                          -- we should not be here!
 	                          state_in <= state_out;
 	                      end if;
-	              else
+	              else -- fault_out = '1'
 	                  write_fake_flit <= '1';
 	                  case( write_pointer ) is
 	                      when "0001" => FIFO_MEM_1_in <= fake_tail;  FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
@@ -265,7 +265,7 @@ end process;
                       else 
                           state_in <= state_out;
                       end if;
-                  else
+                  else -- fault_out = '1'
                       fake_credit <= '1';
                       FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                       state_in <= Packet_drop;
@@ -295,7 +295,7 @@ end process;
                     faulty_packet_in <= '0';
                     state_in <= Idle;
                     fake_credit <= '1';
-               else
+               else -- fault_out might have been '1'
                   if valid_in = '1' then 
                       fake_credit <= '1';
                   end if;
