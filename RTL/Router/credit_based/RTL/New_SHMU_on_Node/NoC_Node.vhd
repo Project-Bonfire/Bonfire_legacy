@@ -31,7 +31,7 @@ port( reset        : in std_logic;
         RX: in std_logic_vector(31 downto 0);
 
         link_faults: in std_logic_vector(4 downto 0);
-        turn_faults: in std_logic_vector(7 downto 0);
+        turn_faults: in std_logic_vector(19 downto 0); -- 8 bits for 90-degree turns, 4 bits for straight paths, 8 bits for turns from/to Local port
 
         Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);
