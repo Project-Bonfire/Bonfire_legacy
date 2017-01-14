@@ -1,0 +1,4 @@
+v 4
+file / "/var/folders/tm/fh684lf54z38tw2pwqmw7txw0000gn/T/SublimeLinter3-bniazmand/arbiter_in.vhd" "84239374d8bba48611e28f3c63bfc2f4b5e149d2" "20170114164314.430":
+  entity arbiter_in at 3( 45) + 0 on 11;
+  architecture behavior of arbiter_in at 15( 461) + 0 on 12;
