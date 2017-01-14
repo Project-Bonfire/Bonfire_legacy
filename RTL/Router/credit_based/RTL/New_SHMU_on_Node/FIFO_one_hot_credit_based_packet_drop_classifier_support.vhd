@@ -36,14 +36,14 @@ architecture behavior of FIFO_credit_based is
    signal FIFO_MEM_2, FIFO_MEM_2_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_MEM_3, FIFO_MEM_3_in : std_logic_vector(DATA_WIDTH-1 downto 0);
    signal FIFO_MEM_4, FIFO_MEM_4_in : std_logic_vector(DATA_WIDTH-1 downto 0);
-    constant fake_tail :  std_logic_vector := "10000000000000000000000000000001";
+   constant fake_tail :  std_logic_vector := "10000000000000000000000000000001";
    
-   alias flit_type :  std_logic_vector(2 downto 0) is RX(DATA_WIDTH-1 downto DATA_WIDTH-3); 
+   alias  flit_type :  std_logic_vector(2 downto 0) is RX(DATA_WIDTH-1 downto DATA_WIDTH-3); 
    signal fault_info_in, fault_info_out: std_logic;
    signal faulty_packet_in, faulty_packet_out: std_logic;
    signal xor_all, fault_out: std_logic;
-   type state_type is (Idle, Header_flit, Body_flit, Tail_flit, Packet_drop);
-   signal  state_out, state_in : state_type;
+   type   state_type is (Idle, Header_flit, Body_flit, Tail_flit, Packet_drop);
+   signal state_out, state_in : state_type;
    signal fake_credit, credit_in, write_fake_flit: std_logic;
    signal fake_credit_counter, fake_credit_counter_in: std_logic_vector(1 downto 0);
 
