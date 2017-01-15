@@ -294,7 +294,7 @@ Cx_Reconf_checkers: Cx_Reconf_pseudo_checkers
 
 
 -- LBDR packet drop Rxy Reconfiguration checkers instantiation
-CHECKERS : Rxy_Reconf_pseudo_checkers 
+Rxy_Reconf_checkers : Rxy_Reconf_pseudo_checkers 
                             port map (  ReConf_FF_out => ReConf_FF_out, 
                                         flit_type => flit_type, 
                                         empty => empty, 
@@ -431,7 +431,6 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
     end if;
   end if;
 end process;
-   
  
 packet_drop_order_sig <= packet_drop;
 
