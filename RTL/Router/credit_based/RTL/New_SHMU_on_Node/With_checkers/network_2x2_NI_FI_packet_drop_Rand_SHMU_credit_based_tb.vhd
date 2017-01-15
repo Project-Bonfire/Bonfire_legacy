@@ -62,28 +62,28 @@ port (reset: in  std_logic;
 
 	--------------
     link_faults_0: out std_logic_vector(4 downto 0);
-    turn_faults_0: out std_logic_vector(7 downto 0);
+    turn_faults_0: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_0: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_0: in  std_logic_vector(3 downto 0);
     Reconfig_command_0 : in std_logic;
 
 	--------------
     link_faults_1: out std_logic_vector(4 downto 0);
-    turn_faults_1: out std_logic_vector(7 downto 0);
+    turn_faults_1: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_1: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_1: in  std_logic_vector(3 downto 0);
     Reconfig_command_1 : in std_logic;
 
 	--------------
     link_faults_2: out std_logic_vector(4 downto 0);
-    turn_faults_2: out std_logic_vector(7 downto 0);
+    turn_faults_2: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_2: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_2: in  std_logic_vector(3 downto 0);
     Reconfig_command_2 : in std_logic;
 
 	--------------
     link_faults_3: out std_logic_vector(4 downto 0);
-    turn_faults_3: out std_logic_vector(7 downto 0);
+    turn_faults_3: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_3: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_3: in  std_logic_vector(3 downto 0);
     Reconfig_command_3 : in std_logic
@@ -106,7 +106,7 @@ port( reset        : in std_logic;
         RX: in std_logic_vector(31 downto 0);
 
         link_faults: in std_logic_vector(4 downto 0);
-        turn_faults: in std_logic_vector(7 downto 0);
+        turn_faults: in std_logic_vector(19 downto 0);
 
         Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);
@@ -142,22 +142,22 @@ end component; --component NoC_Node
 	signal sta0_2_3, sta1_2_3, sta0_3_2, sta1_3_2: std_logic :='0';
 
 	signal link_faults_0 : std_logic_vector(4 downto 0);
-	signal turn_faults_0 : std_logic_vector(7 downto 0);
+	signal turn_faults_0 : std_logic_vector(19 downto 0);
 	signal Rxy_reconf_PE_0 : std_logic_vector(7 downto 0);
 	signal Cx_reconf_PE_0 : std_logic_vector(3 downto 0);
 	signal Reconfig_command_0 : std_logic;
 	signal link_faults_1 : std_logic_vector(4 downto 0);
-	signal turn_faults_1 : std_logic_vector(7 downto 0);
+	signal turn_faults_1 : std_logic_vector(19 downto 0);
 	signal Rxy_reconf_PE_1 : std_logic_vector(7 downto 0);
 	signal Cx_reconf_PE_1 : std_logic_vector(3 downto 0);
 	signal Reconfig_command_1 : std_logic;
 	signal link_faults_2 : std_logic_vector(4 downto 0);
-	signal turn_faults_2 : std_logic_vector(7 downto 0);
+	signal turn_faults_2 : std_logic_vector(19 downto 0);
 	signal Rxy_reconf_PE_2 : std_logic_vector(7 downto 0);
 	signal Cx_reconf_PE_2 : std_logic_vector(3 downto 0);
 	signal Reconfig_command_2 : std_logic;
 	signal link_faults_3 : std_logic_vector(4 downto 0);
-	signal turn_faults_3 : std_logic_vector(7 downto 0);
+	signal turn_faults_3 : std_logic_vector(19 downto 0);
 	signal Rxy_reconf_PE_3 : std_logic_vector(7 downto 0);
 	signal Cx_reconf_PE_3 : std_logic_vector(3 downto 0);
 	signal Reconfig_command_3 : std_logic;

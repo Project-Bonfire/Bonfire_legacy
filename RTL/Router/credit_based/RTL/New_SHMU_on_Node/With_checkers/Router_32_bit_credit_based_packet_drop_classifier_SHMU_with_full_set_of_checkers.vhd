@@ -6,7 +6,7 @@ use ieee.std_logic_1164.all;
 --use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping 
-	generic (
+    generic (
         DATA_WIDTH: integer := 32;
         current_address : integer := 5;
         Rxy_rst : integer := 60;
@@ -31,7 +31,7 @@ entity router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping
 
     -- should be connected to NI
     link_faults: out std_logic_vector(4 downto 0);
-    turn_faults: out std_logic_vector(7 downto 0);
+    turn_faults: out std_logic_vector(19 downto 0);
 
     Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE: in  std_logic_vector(3 downto 0);
@@ -1102,7 +1102,7 @@ COMPONENT LBDR_packet_drop is
             );
 end COMPONENT;
 
- 	COMPONENT XBAR is
+    COMPONENT XBAR is
     generic (
         DATA_WIDTH: integer := 32
     );
@@ -1115,27 +1115,27 @@ end COMPONENT;
         sel: in std_logic_vector (4 downto 0);
         Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0)
     );
-	end COMPONENT;
+    end COMPONENT;
 
-  	signal FIFO_D_out_N, FIFO_D_out_E, FIFO_D_out_W, FIFO_D_out_S, FIFO_D_out_L: std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal FIFO_D_out_N, FIFO_D_out_E, FIFO_D_out_W, FIFO_D_out_S, FIFO_D_out_L: std_logic_vector(DATA_WIDTH-1 downto 0);
 
     -- Grant_XY : Grant signal generated from Arbiter for output X connected to FIFO of input Y
 
- 	signal Grant_NN, Grant_NE, Grant_NW, Grant_NS, Grant_NL: std_logic;
- 	signal Grant_EN, Grant_EE, Grant_EW, Grant_ES, Grant_EL: std_logic;
- 	signal Grant_WN, Grant_WE, Grant_WW, Grant_WS, Grant_WL: std_logic;
- 	signal Grant_SN, Grant_SE, Grant_SW, Grant_SS, Grant_SL: std_logic;
- 	signal Grant_LN, Grant_LE, Grant_LW, Grant_LS, Grant_LL: std_logic;
+    signal Grant_NN, Grant_NE, Grant_NW, Grant_NS, Grant_NL: std_logic;
+    signal Grant_EN, Grant_EE, Grant_EW, Grant_ES, Grant_EL: std_logic;
+    signal Grant_WN, Grant_WE, Grant_WW, Grant_WS, Grant_WL: std_logic;
+    signal Grant_SN, Grant_SE, Grant_SW, Grant_SS, Grant_SL: std_logic;
+    signal Grant_LN, Grant_LE, Grant_LW, Grant_LS, Grant_LL: std_logic;
 
- 	signal Req_NN, Req_EN, Req_WN, Req_SN, Req_LN: std_logic;
- 	signal Req_NE, Req_EE, Req_WE, Req_SE, Req_LE: std_logic;
- 	signal Req_NW, Req_EW, Req_WW, Req_SW, Req_LW: std_logic;
- 	signal Req_NS, Req_ES, Req_WS, Req_SS, Req_LS: std_logic;
- 	signal Req_NL, Req_EL, Req_WL, Req_SL, Req_LL: std_logic;
+    signal Req_NN, Req_EN, Req_WN, Req_SN, Req_LN: std_logic;
+    signal Req_NE, Req_EE, Req_WE, Req_SE, Req_LE: std_logic;
+    signal Req_NW, Req_EW, Req_WW, Req_SW, Req_LW: std_logic;
+    signal Req_NS, Req_ES, Req_WS, Req_SS, Req_LS: std_logic;
+    signal Req_NL, Req_EL, Req_WL, Req_SL, Req_LL: std_logic;
 
     signal empty_N, empty_E, empty_W, empty_S, empty_L: std_logic; 
 
- 	signal Xbar_sel_N, Xbar_sel_E, Xbar_sel_W, Xbar_sel_S, Xbar_sel_L: std_logic_vector(4 downto 0);
+    signal Xbar_sel_N, Xbar_sel_E, Xbar_sel_W, Xbar_sel_S, Xbar_sel_L: std_logic_vector(4 downto 0);
 
     signal faulty_packet_N, faulty_packet_E, faulty_packet_W, faulty_packet_S, faulty_packet_L:  std_logic;
     signal healthy_packet_N, healthy_packet_E, healthy_packet_W, healthy_packet_S, healthy_packet_L:  std_logic;
@@ -5136,11 +5136,18 @@ S2L_fault <=                S_FIFO_checkers_ORed or
                             err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal;
 
 -- The order of the turns/paths from left to right (MSB to LSB) -> 20 bits
--- N2E, N2W, E2N, E2S, W2N, W2S, S2E, S2W, N2S, S2N, E2W, W2E, L2N, L2E, L2W, L2S, N2L, E2L, W2L, S2L
+-- N2E, N2W, E2N, E2S, 
+-- W2N, W2S, S2E, S2W, 
+-- N2S, S2N, E2W, W2E, 
+-- L2N, L2E, L2W, L2S, 
+-- N2L, E2L, W2L, S2L
 
---turn_faults  <= "00000000";
+--turn_faults  <= "00000000000000000000";
 turn_faults  <= N2E_turn_fault & N2W_turn_fault & E2N_turn_fault & E2S_turn_fault & 
-                W2N_turn_fault & W2S_turn_fault & S2E_turn_fault & S2W_turn_fault; -- temporary for testing purposes now, will be fixed later and extended to 20 bits!
+                W2N_turn_fault & W2S_turn_fault & S2E_turn_fault & S2W_turn_fault &
+                N2S_path_fault & S2N_path_fault & E2W_path_fault & W2E_path_fault &
+                L2N_fault      & L2E_fault      & L2W_fault      & L2S_fault      &
+                N2L_fault      & E2L_fault      & W2L_fault      & S2L_fault; -- 20 bits because of turn/path faults
 
 --link_faults  <= sig_Faulty_N_out & sig_Faulty_E_out & sig_Faulty_W_out & sig_Faulty_S_out & faulty_link_L;
 link_faults  <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L;

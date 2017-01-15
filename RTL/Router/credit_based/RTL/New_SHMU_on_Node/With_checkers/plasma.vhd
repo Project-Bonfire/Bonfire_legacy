@@ -75,7 +75,7 @@ entity plasma is
         RX: in std_logic_vector(31 downto 0);
 
         link_faults: in std_logic_vector(4 downto 0);
-        turn_faults: in std_logic_vector(7 downto 0);
+        turn_faults: in std_logic_vector(19 downto 0);
    
         Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);

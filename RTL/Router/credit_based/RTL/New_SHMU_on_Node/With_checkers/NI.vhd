@@ -55,7 +55,7 @@ entity NI is
 
         -- fault information signals from the router
         link_faults: in std_logic_vector(4 downto 0);
-        turn_faults: in std_logic_vector(7 downto 0);
+        turn_faults: in std_logic_vector(19 downto 0);
 
         Rxy_reconf_PE: out  std_logic_vector(7 downto 0);   
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
@@ -105,7 +105,7 @@ architecture logic of NI is
   signal N2P_read_en, N2P_read_en_in, N2P_write_en: std_logic;
   signal counter_register_in, counter_register : std_logic_vector(1 downto 0);
 
-  signal fault_info, fault_info_in: std_logic_vector(12 downto 0);
+  signal fault_info, fault_info_in: std_logic_vector(24 downto 0);
   signal sent_info, fault_info_ready, fault_info_ready_in: std_logic;
   signal self_diagnosis_reg_out, self_diagnosis_reg_in: std_logic_vector(31 downto 0);
   signal self_diagnosis_flag, self_diagnosis_flag_in: std_logic;
@@ -303,7 +303,7 @@ end process;
 
 -- flag setting and clearing for self diagnosis 
 process(link_faults, turn_faults, self_diagnosis_flag, old_address)begin
-  if (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address = current_address then
+  if (link_faults  /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address = current_address then
     self_diagnosis_flag_in <= '1';
   elsif old_address = self_diagnosis_address then
     self_diagnosis_flag_in <= '0';
@@ -317,11 +317,11 @@ process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
  
   self_diagnosis_reg_in <= self_diagnosis_reg_out;
 
-  if (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address /= current_address then
+  if (link_faults  /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address /= current_address then
     fault_info_in <= turn_faults & link_faults;
     fault_info_ready_in <= '1';
-  elsif (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address = current_address then
-      self_diagnosis_reg_in <= "0000000000000000000" & turn_faults & link_faults;
+  elsif (link_faults  /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address = current_address then
+      self_diagnosis_reg_in <= "0000000" & turn_faults & link_faults; -- turn_faults : 20 bits + link_faults : 5 bits => remaining : 7 bits (all zeros) 
   else
     fault_info_in <= fault_info;
     fault_info_ready_in <= fault_info_ready;
@@ -410,7 +410,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                 if credit_counter_out /= "00" then
                     grant <= '1';
                     --FD (Fault Diagnosis) : 01000110 01000100
-                    -- fault info is 13 bits 
+                    -- fault info is 25 bits 
                     TX <= "010" & "0100011001000100" & fault_info(11 downto 0) & XOR_REDUCE("010" & "0100011001000100" & fault_info(11 downto 0));
                     state_in <= DIAGNOSIS_TAIL;
                 else
@@ -420,7 +420,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
             when DIAGNOSIS_TAIL =>
                 if credit_counter_out /= "00" then
                     grant <= '1';
-                    TX <= "100" & fault_info(12) & "000000000000000000000000000" & XOR_REDUCE("100" & fault_info(12) & "000000000000000000000000000");
+                    TX <= "100" & fault_info(24 downto 12) & "000000000000000" & XOR_REDUCE("100" & fault_info(12) & "000000000000000000000000000");
                     state_in <= IDLE;
                     sent_info <= '1';
                     packet_counter_in <= packet_counter_out +1;

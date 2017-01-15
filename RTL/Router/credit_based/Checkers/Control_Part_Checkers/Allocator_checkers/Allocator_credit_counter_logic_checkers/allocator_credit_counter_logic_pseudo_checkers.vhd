@@ -15,7 +15,6 @@ entity allocator_credit_counter_logic_pseudo_checkers is
             credit_counter_N_in, credit_counter_E_in, credit_counter_W_in, credit_counter_S_in, credit_counter_L_in : in std_logic_vector(1 downto 0);
 
             -- Checker outputs
-            -- Not complete yet !
             err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal, 
             err_credit_in_N_credit_counter_N_out_increment, 
             err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change, 
@@ -100,9 +99,9 @@ begin
   end if;
 end process;
 
-process (valid_N, credit_counter_N_in, credit_counter_N_out)
+process (valid_N, credit_in_N, credit_counter_N_in, credit_counter_N_out)
 begin
-  if (valid_N = '1' and credit_counter_N_out = 0 and credit_counter_N_in /= credit_counter_N_out) then
+  if (valid_N = '1' and credit_in_N = '0' and credit_counter_N_out = 0 and credit_counter_N_in /= credit_counter_N_out) then
       err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change <= '1';
   else
       err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change <= '0';
@@ -156,9 +155,9 @@ begin
   end if;
 end process;
 
-process (valid_E, credit_counter_E_in, credit_counter_E_out)
+process (valid_E, credit_in_E, credit_counter_E_in, credit_counter_E_out)
 begin
-  if (valid_E = '1' and credit_counter_E_out = 0 and credit_counter_E_in /= credit_counter_E_out) then
+  if (valid_E = '1' and credit_in_E = '0' and credit_counter_E_out = 0 and credit_counter_E_in /= credit_counter_E_out) then
       err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change <= '1';
   else
       err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change <= '0';
@@ -203,18 +202,18 @@ begin
   end if;
 end process;
 
-process (valid_W, credit_in_E, credit_counter_W_in, credit_counter_W_out)
+process (valid_W, credit_in_W, credit_counter_W_in, credit_counter_W_out)
 begin
-  if (valid_W = '1' and credit_in_E = '0' and credit_counter_W_out > 0 and credit_counter_W_in /= credit_counter_W_out - 1) then
+  if (valid_W = '1' and credit_in_W = '0' and credit_counter_W_out > 0 and credit_counter_W_in /= credit_counter_W_out - 1) then
       err_grant_W_credit_counter_W_out_decrement <= '1';
   else
       err_grant_W_credit_counter_W_out_decrement <= '0';
   end if;
 end process;
 
-process (valid_W, credit_counter_W_in, credit_counter_W_out)
+process (valid_W, credit_in_W, credit_counter_W_in, credit_counter_W_out)
 begin
-  if ( (valid_W = '1' and credit_counter_W_in = 0) and credit_counter_W_in /= credit_counter_W_out) then
+  if ( valid_W = '1' and credit_in_W = '0' and credit_counter_W_out = 0 and credit_counter_W_in /= credit_counter_W_out) then
       err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change <= '1';
   else
       err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change <= '0';
@@ -268,9 +267,9 @@ begin
   end if;
 end process;
 
-process (valid_S, credit_counter_S_in, credit_counter_S_out)
+process (valid_S, credit_in_S, credit_counter_S_in, credit_counter_S_out)
 begin
-  if (valid_S = '1' and credit_counter_S_out = 0 and credit_counter_S_in /= credit_counter_S_out) then
+  if (valid_S = '1' and credit_in_S = '0' and credit_counter_S_out = 0 and credit_counter_S_in /= credit_counter_S_out) then
       err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change <= '1';
   else
       err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change <= '0';
@@ -324,9 +323,9 @@ begin
   end if;
 end process;
 
-process (valid_L, credit_counter_L_in, credit_counter_L_out)
+process (valid_L, credit_in_L, credit_counter_L_in, credit_counter_L_out)
 begin
-  if (valid_L = '1' and credit_counter_L_in = 0 and credit_counter_L_in /= credit_counter_L_out) then
+  if (valid_L = '1' and credit_in_L = '0' and credit_counter_L_out = 0 and credit_counter_L_in /= credit_counter_L_out) then
       err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change <= '1';
   else
       err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change <= '0';

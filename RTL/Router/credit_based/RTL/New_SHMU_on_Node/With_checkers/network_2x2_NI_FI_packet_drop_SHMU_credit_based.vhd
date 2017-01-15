@@ -56,28 +56,28 @@ port (reset: in  std_logic;
 
 	--------------
     link_faults_0: out std_logic_vector(4 downto 0);
-    turn_faults_0: out std_logic_vector(7 downto 0);
+    turn_faults_0: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_0: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_0: in  std_logic_vector(3 downto 0);
     Reconfig_command_0 : in std_logic;
 
 	--------------
     link_faults_1: out std_logic_vector(4 downto 0);
-    turn_faults_1: out std_logic_vector(7 downto 0);
+    turn_faults_1: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_1: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_1: in  std_logic_vector(3 downto 0);
     Reconfig_command_1 : in std_logic;
 
 	--------------
     link_faults_2: out std_logic_vector(4 downto 0);
-    turn_faults_2: out std_logic_vector(7 downto 0);
+    turn_faults_2: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_2: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_2: in  std_logic_vector(3 downto 0);
     Reconfig_command_2 : in std_logic;
 
 	--------------
     link_faults_3: out std_logic_vector(4 downto 0);
-    turn_faults_3: out std_logic_vector(7 downto 0);
+    turn_faults_3: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_3: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_3: in  std_logic_vector(3 downto 0);
     Reconfig_command_3 : in std_logic
@@ -113,7 +113,7 @@ component router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropp
 
     -- should be connected to NI
     link_faults: out std_logic_vector(4 downto 0);
-    turn_faults: out std_logic_vector(7 downto 0);
+    turn_faults: out std_logic_vector(19 downto 0);
 
     Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE: in  std_logic_vector(3 downto 0);
