@@ -122,7 +122,7 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_lv, add_packe
  
         noc_file.write("    -- should be connected to NI\n")
         noc_file.write("    link_faults: out std_logic_vector(4 downto 0);\n")
-        noc_file.write("    turn_faults: out std_logic_vector(7 downto 0);\n\n")
+        noc_file.write("    turn_faults: out std_logic_vector(19 downto 0);\n\n")
  
         noc_file.write("    Rxy_reconf_PE: in  std_logic_vector(7 downto 0);\n")
         noc_file.write("    Cx_reconf_PE: in  std_logic_vector(3 downto 0);\n")

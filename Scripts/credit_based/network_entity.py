@@ -55,7 +55,7 @@ def generate_entity(noc_file, network_dime, add_FI, add_SHMU, fi_addres_width, a
         for i in range(0, network_dime**2):
             string_to_print +="\t--------------\n"
             string_to_print +="    link_faults_"+str(i) +": out std_logic_vector(4 downto 0);\n"
-            string_to_print +="    turn_faults_"+str(i) +": out std_logic_vector(7 downto 0);\n"
+            string_to_print +="    turn_faults_"+str(i) +": out std_logic_vector(19 downto 0);\n"
             string_to_print +="    Rxy_reconf_PE_"+str(i) +": in  std_logic_vector(7 downto 0);\n"
             string_to_print +="    Cx_reconf_PE_"+str(i) +": in  std_logic_vector(3 downto 0);\n"
             string_to_print +="    Reconfig_command_"+str(i) +" : in std_logic;\n\n"
