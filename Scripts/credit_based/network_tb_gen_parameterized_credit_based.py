@@ -18,7 +18,6 @@ if '--help' in sys.argv[1:]:
   print "\t                   default case is repeatative packets being sent from source to same destination"
   print "\t-o: specifies the name and path of the output file. default path is current folder!"
   print "\t-PS [min packet size] [max packet size]: specifies packet size. default min value is 3 and defualt max value is 8."
-  print "\t-FI: adds control for fault injector units in the network"
   print "\t-LV: adds control for light weight network"
   print "\t-PE: adds procssing elements in each node"
   print "\t-SHMU: maps shmu on one of the nodes"
@@ -35,8 +34,6 @@ if '--help' in sys.argv[1:]:
 network_dime = 4
 data_width = 32
 random_dest = False
-fi_addres_width = None
-add_FI = False
 add_tracker = False
 add_SHMU = False
 add_node = False
@@ -61,10 +58,6 @@ if '-Rand'  in sys.argv[1:]:
   random_dest = True
   PIR = float(sys.argv[sys.argv.index('-Rand')+1])
   frame_size = int(ceil(1.0/PIR))
-
-if '-FI'  in sys.argv[1:]:
-  fi_addres_width = int(ceil(log(data_width,2)))
-  add_FI = True
 
 if '-SHMU'  in sys.argv[1:]:
     add_SHMU = True
@@ -101,8 +94,6 @@ if random_dest:
   file_name += '_rand'
 elif bit_reversal:
   file_name += '_br'
-if add_FI:
-  file_name += '_FI'
 
 if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
@@ -157,32 +148,11 @@ for i in range(network_dime**2):
     noc_file.write("\tRX_L_"+str(i)+": in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
     noc_file.write("\tcredit_out_L_"+str(i)+", valid_out_L_"+str(i)+": out std_logic;\n")
     noc_file.write("\tcredit_in_L_"+str(i)+", valid_in_L_"+str(i)+": in std_logic;\n")
-    if i == network_dime**2-1 and (add_FI or add_SHMU)== False:
+    if i == network_dime**2-1 and add_SHMU== False:
         noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
     else:
         noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0);\n")
 
-if add_FI:
-  string_to_print += "\t--fault injector signals\n"
-
-  for i in range(0, network_dime**2):
-    node_x = i % network_dime
-    node_y = i / network_dime
-    if node_y != network_dime-1:
-        string_to_print += "\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i) + \
-                           "_"+str(i+network_dime) + ": in std_logic_vector(" + \
-                           str(fi_addres_width-1) + " downto 0);\n"
-        string_to_print += "\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +\
-                           ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i) +\
-                           ": in std_logic;\n\n"
-  for i in range(0, network_dime**2):
-    node_x = i % network_dime
-    node_y = i / network_dime
-    if node_x != network_dime-1:
-        string_to_print += "\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) +\
-                           ": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n"
-        string_to_print += "\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
-                           ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic;\n\n"
 
 if add_SHMU:
   for i in range(0, network_dime**2):
@@ -264,24 +234,6 @@ for i in range(0, network_dime*network_dime):
 
 #noc_file.write("\n\nAlias buried_sig is <<signal .NoC.valid_in_E_11 :std_logic>>;\n\n")
 
-if add_FI:
-  noc_file.write("\t--fault injector signals\n")
-  for i in range(0, network_dime*network_dime):
-    node_x = i % network_dime
-    node_y = i / network_dime
-    if node_y != network_dime-1:
-      noc_file.write("\tsignal FI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i) +
-                     "_"+str(i+network_dime)+": std_logic_vector(integer(ceil(log2(real("+str(data_width-1)+"))))-1 downto 0) := (others=>'0');\n")
-      noc_file.write("\tsignal sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
-                         ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+": std_logic :='0';\n\n")
-  for i in range(0, network_dime*network_dime):
-      node_x = i % network_dime
-      node_y = i / network_dime
-      if node_x != network_dime -1 :
-          noc_file.write("\tsignal FI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) +
-                         ": std_logic_vector(integer(ceil(log2(real("+str(data_width-1)+"))))-1 downto 0):= (others=>'0');\n")
-          noc_file.write("\tsignal sta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +
-                          ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": std_logic :='0';\n\n")
 if add_SHMU:
   for i in range(0, network_dime*network_dime):
     noc_file.write("\tsignal link_faults_"+str(i)+ " : std_logic_vector(4 downto 0);\n")
@@ -339,27 +291,6 @@ else:
   
 for i in range(network_dime**2):
     string_to_print += "\tRX_L_"+str(i)+", credit_out_L_"+str(i)+", valid_out_L_"+str(i)+", credit_in_L_"+str(i)+", valid_in_L_"+str(i)+",  TX_L_"+str(i)+", \n"
-
-
-if add_FI:
-  string_to_print +="\t--fault injector signals\n"
-  string_to_print +="\t--FI vertical signals\n"
-  for i in range(0, network_dime*network_dime):
-    node_x = i % network_dime
-    node_y = i / network_dime
-    if node_y != network_dime-1:
-      string_to_print +="\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+network_dime)+", \n"
-      string_to_print +="\tsta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +\
-                       ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+", \n"
-
-  string_to_print +="\t--FI horizontal signals\n"
-  for i in range(0, network_dime*network_dime):
-      node_x = i % network_dime
-      node_y = i / network_dime
-      if node_x != network_dime -1 :
-        string_to_print +="\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) + ",\n"
-        string_to_print +="\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
-                          ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+", \n"
 
 if add_SHMU:
     string_to_print += "\t-- should be connected to NI\n"
@@ -452,41 +383,6 @@ if not add_node:
   noc_file.write("-- connecting the packet receivers\n")
   for i in range(0, network_dime*network_dime):
     noc_file.write("get_packet("+str(data_width)+", 5, "+str(i)+", clk, credit_in_L_"+str(i)+", valid_out_L_"+str(i)+", TX_L_"+str(i)+");\n")
-
-
-noc_file.write("\n")
-
-if add_FI:
-  noc_file.write("-- connecting the fault generators\n")
-  for i in range(0, network_dime*network_dime):
-    node_x = i % network_dime
-    node_y = i / network_dime
-    if node_x != network_dime -1 :
-      #random_delay = random.randint(100, 200)
-      random_delay = random.randint(40, 70)
-      seed_1 = random.randint(10, 2147483560)
-      seed_2 = random.randint(10, 2147483560)
-      noc_file.write("gen_fault(sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i) +\
-                     ", FI_Add_"+str(i+1)+"_"+str(i)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
-      #random_delay = random.randint(100, 200)
-      random_delay = random.randint(40, 70)
-      seed_1 = random.randint(10, 2147483560)
-      seed_2 = random.randint(10, 2147483560)
-      noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
-                     ", FI_Add_"+str(i)+"_"+str(i+1)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
-    if node_y != network_dime-1:
-      #random_delay = random.randint(100, 200)
-      random_delay = random.randint(40, 70)
-      seed_1 = random.randint(10, 2147483560)
-      seed_2 = random.randint(10, 2147483560)
-      noc_file.write("gen_fault(sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime) +\
-                     "_"+str(i)+", FI_Add_"+str(i+network_dime)+"_"+str(i)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
-      #random_delay = random.randint(100, 200)
-      random_delay = random.randint(40, 70)
-      seed_1 = random.randint(10, 2147483560)
-      seed_2 = random.randint(10, 2147483560)
-      noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
-                     ", FI_Add_"+str(i)+"_"+str(i+network_dime)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
 
 noc_file.write("\n\n")
 

@@ -15,9 +15,6 @@ class CreditBasedPackage():
         self.add_packet_drop = False
         self.add_FC = False
         self.add_SHMU = False
-        self.add_FO = False
-        self.fi_addres_width = None
-        self.add_FI = False
         self.add_tracker = False
 
     def sort_out_parameters(self, arguments_list):
@@ -54,10 +51,6 @@ class CreditBasedPackage():
         if '-FC' in arguments_list:
             self.add_FC = True
 
-        if '-FI' in arguments_list:
-            self.add_FI = True
-            self.fi_addres_width = int(ceil(log(self.data_width, 2)))
-
         if '-SHMU' in arguments_list:
             self.add_SHMU = True
 
@@ -72,8 +65,6 @@ class CreditBasedPackage():
         file_name= 'network'
         if self.add_parity:
             file_name += '_parity'
-        if self.add_FI:
-            file_name += '_FI'
         if self.add_SHMU:
             file_name += '_SHMU'
 

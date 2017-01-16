@@ -1,7 +1,7 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
-def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_packet_drop, add_FC, network_dime, 
-                       fi_addres_width, add_tracker):
+def declare_components(noc_file, add_parity, add_SHMU, add_packet_drop, add_FC, network_dime, 
+                       add_tracker):
     
     if add_packet_drop and add_FC and not add_SHMU:
         noc_file.write("component router_credit_based_PD_C is  --fault classifier plus packet-dropping  \n")
@@ -116,20 +116,6 @@ def declare_components(noc_file, add_parity, add_FI, add_SHMU, add_packet_drop, 
         noc_file.write("end component; \n")
 
     noc_file.write("\n\n")
-
-    if add_FI:
-        noc_file.write("component fault_injector is \n")
-        noc_file.write("  generic(DATA_WIDTH : integer := 32);\n")
-        noc_file.write("  port(\n")
-        noc_file.write("    data_in: in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
-        noc_file.write("    address: in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n")
-        noc_file.write("    sta_0: in std_logic;\n")
-        noc_file.write("    sta_1: in std_logic;\n")
-        noc_file.write("    data_out: out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
-        noc_file.write("    );\n")
-        noc_file.write("end component;\n")
-
-        noc_file.write("\n\n")
 
     if add_tracker:
         noc_file.write("component flit_tracker is\n")

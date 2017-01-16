@@ -11,7 +11,6 @@ def gen_network_and_tb(program_argv, flow_control_type):
         + str(program_argv['network_dime']) + "x" + str(program_argv['network_dime']) \
         + ("_parity" if program_argv['add_parity'] else "") \
         + ("_NI" if program_argv['add_NI'] != -1 else "") \
-        + ("_FI" if program_argv['add_FI'] else "") \
         + ("_packet_drop" if program_argv['packet_drop'] else "") \
         + ("_SHMU" if program_argv['add_SHMU'] else "") \
         + ("_credit_based" if program_argv['credit_based_FC'] else "_handshaking") \
@@ -25,7 +24,6 @@ def gen_network_and_tb(program_argv, flow_control_type):
         + (" -P" if program_argv['add_parity'] else "") \
         + (" -PD" if program_argv['packet_drop'] else "") \
         + (" -NI" if program_argv['add_NI'] != -1 else "") \
-        + (" -FI" if program_argv['add_FI'] else "") \
         + (" -FC" if program_argv['add_FC'] else "") \
         + (" -SHMU" if program_argv['add_SHMU'] else "") \
         + (" -trace" if program_argv['trace'] else "") \
@@ -42,7 +40,6 @@ def gen_network_and_tb(program_argv, flow_control_type):
     net_tb_file_name = "network_" + str(program_argv['network_dime']) + "x" + str(program_argv['network_dime']) \
         + ("_parity" if program_argv['add_parity'] else "") \
         + ("_NI" if program_argv['add_NI'] != -1 else "") \
-        + ("_FI" if program_argv['add_FI'] else "") \
         + ("_packet_drop" if program_argv['packet_drop'] else "") \
         + ("_Rand" if program_argv['rand'] != -1 else "") \
         + ("_SHMU" if program_argv['add_SHMU'] else "") \
@@ -63,7 +60,6 @@ def gen_network_and_tb(program_argv, flow_control_type):
         + " -D " + str(program_argv['network_dime']) \
         + (" -P" if program_argv['add_parity'] else "") \
         + str(NI_status) \
-        + (" -FI" if program_argv['add_FI'] else "") \
         + (" -SHMU" if program_argv['add_SHMU']  else "") \
         + (" -trace" if program_argv['trace'] else "") \
         + (" -Rand " + str(program_argv['rand']) if program_argv['rand'] != -1 else "") \
@@ -92,7 +88,6 @@ def gen_wave_do(program_argv, flow_control_type):
     wave_do_gen_command = "python " + SCRIPTS_DIR + "/" + flow_control_type + "/" \
         + WAVE_DO_GEN_SCRIPT + "_" + flow_control_type + ".py" \
         + (" -D " + str(program_argv['network_dime'])) \
-        + (" -FI " if program_argv['add_FI'] == True else "") \
         + (" -o " + SIMUL_DIR + "/" + wave_do_file_name)
 
 

@@ -4,9 +4,8 @@ from CB_functions import rxy_rst_calculator, cx_rst_calculator
  
 
 
-def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add_FC, add_SHMU, healthy_counter_threshold, faulty_counter_threshold, counter_depth):
-
-    
+def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add_FC, add_SHMU, 
+                        healthy_counter_threshold, faulty_counter_threshold, counter_depth):
 
     if add_packet_drop and add_FC and not add_SHMU:
         for i in range(0, network_dime**2):

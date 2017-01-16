@@ -5,11 +5,6 @@ if '-D'  in sys.argv[1:]:
 else:
 	network_dime = 4
 
-if '-FI'  in sys.argv[1:]:
-  	add_FI = True
-else:
-  	add_FI = False
-
 if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
   if ".do" not in file_path:
@@ -51,25 +46,6 @@ for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -group {LBDR CX} -color green :"+tb_name+":NoC:R_"+str(i)+":LBDR_W:Cx\n")
 	wave_file.write("add wave -noupdate -group {LBDR CX} -color green :"+tb_name+":NoC:R_"+str(i)+":LBDR_S:Cx\n")
 	wave_file.write("add wave -noupdate -group {LBDR CX} -color Gold :"+tb_name+":NoC:R_"+str(i)+":LBDR_L:Cx\n")
-
-
-if add_FI: 
-	for i in range (0 , network_dime-1):
-		for j in range (0 , network_dime):
-			current_node = i + network_dime*j
-			next_node = i +1 + network_dime*j
-			wave_file.write("add wave -noupdate -color Gold -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(current_node)+"_"+str(next_node)+":sta_0\n")
-			wave_file.write("add wave -noupdate -color Violet -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(current_node)+"_"+str(next_node)+":sta_1\n")
-			wave_file.write("add wave -noupdate -color Gold -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(next_node)+"_"+str(current_node)+":sta_0\n")
-			wave_file.write("add wave -noupdate -color Violet -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(next_node)+"_"+str(current_node)+":sta_1\n")
-	for j in range (0 , network_dime-1):
-		for i in range (0 , network_dime):	
-			current_node = i + network_dime*j
-			next_node = i + network_dime*(j+1)
-			wave_file.write("add wave -noupdate -color Gold -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(current_node)+"_"+str(next_node)+":sta_0\n")
-			wave_file.write("add wave -noupdate -color Violet -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(current_node)+"_"+str(next_node)+":sta_1\n")
-			wave_file.write("add wave -noupdate -color Gold -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(next_node)+"_"+str(current_node)+":sta_0\n")
-			wave_file.write("add wave -noupdate -color Violet -group {FI Detailed} :"+tb_name+":NoC:FI_"+str(next_node)+"_"+str(current_node)+":sta_1\n")
 
 wave_file.write("TreeUpdate [SetDefaultTree]\n")
 wave_file.write("WaveRestoreCursors\n")
