@@ -37,7 +37,6 @@ data_width = 32
 random_dest = False
 fi_addres_width = None
 add_FI = False
-add_lv = False
 add_tracker = False
 add_SHMU = False
 add_node = False
@@ -66,9 +65,6 @@ if '-Rand'  in sys.argv[1:]:
 if '-FI'  in sys.argv[1:]:
   fi_addres_width = int(ceil(log(data_width,2)))
   add_FI = True
-
-if '-LV'  in sys.argv[1:]:
-    add_lv = True
 
 if '-SHMU'  in sys.argv[1:]:
     add_SHMU = True
@@ -115,9 +111,6 @@ if '-o'  in sys.argv[1:]:
 else:
   file_path = file_name+'_'+str(network_dime)+"x"+str(network_dime)+'.vhd'
 
-if add_node and add_lv:
-  raise ValueError("You can not currently have LV and PE at the same time!")
-
 noc_file = open(file_path, 'w')
 
 
@@ -137,8 +130,6 @@ noc_file.write("use work.TB_Package.all;\n\n")
 noc_file.write("USE ieee.numeric_std.ALL; \n")
 noc_file.write("use IEEE.math_real.\"ceil\";\n")
 noc_file.write("use IEEE.math_real.\"log2\";\n\n")
-if add_lv and not add_node:
-  noc_file.write("use work.TB_Package_LV.all;\n\n")
 
 noc_file.write("entity tb_network_"+str(network_dime)+"x"+str(network_dime)+" is\n")
 
@@ -166,7 +157,7 @@ for i in range(network_dime**2):
     noc_file.write("\tRX_L_"+str(i)+": in std_logic_vector (DATA_WIDTH-1 downto 0);\n")
     noc_file.write("\tcredit_out_L_"+str(i)+", valid_out_L_"+str(i)+": out std_logic;\n")
     noc_file.write("\tcredit_in_L_"+str(i)+", valid_in_L_"+str(i)+": in std_logic;\n")
-    if i == network_dime**2-1 and (add_FI or add_lv or add_SHMU)== False:
+    if i == network_dime**2-1 and (add_FI or add_SHMU)== False:
         noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0)\n")
     else:
         noc_file.write("\tTX_L_"+str(i)+": out std_logic_vector (DATA_WIDTH-1 downto 0);\n")
@@ -192,13 +183,6 @@ if add_FI:
                            ": in std_logic_vector("+str(fi_addres_width-1)+" downto 0);\n"
         string_to_print += "\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
                            ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+": in std_logic;\n\n"
-
-if add_lv and not add_node:
-  for i in range(0, network_dime**2):
-    string_to_print +="\t--------------\n"
-    string_to_print +="    credit_in_LV_"+str(i) +": in std_logic;\n"
-    string_to_print +="    valid_out_LV_"+str(i) +" : out std_logic;\n"
-    string_to_print +="    TX_LV_"+str(i) +": out std_logic_vector (DATA_WIDTH_LV-1 downto 0);\n\n"
 
 if add_SHMU:
   for i in range(0, network_dime**2):
@@ -279,11 +263,6 @@ for i in range(0, network_dime*network_dime):
     noc_file.write("\tsignal credit_out_L_"+str(i)+", credit_in_L_"+str(i)+", valid_in_L_"+str(i)+", valid_out_L_"+str(i) + ": std_logic;\n")
 
 #noc_file.write("\n\nAlias buried_sig is <<signal .NoC.valid_in_E_11 :std_logic>>;\n\n")
-
-if add_lv and not add_node:
-  for i in range(0, network_dime*network_dime):
-      noc_file.write("\tsignal credit_in_LV_"+str(i)+", valid_out_LV_"+str(i)+ " : std_logic;\n")
-      noc_file.write("\tsignal TX_LV_"+str(i)+" : std_logic_vector (10 downto 0);\n")
 
 if add_FI:
   noc_file.write("\t--fault injector signals\n")
@@ -381,10 +360,6 @@ if add_FI:
         string_to_print +="\tFI_Add_"+str(i+1)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+1) + ",\n"
         string_to_print +="\tsta0_"+str(i)+"_"+str(i+1)+", sta1_"+str(i)+"_"+str(i+1) +\
                           ", sta0_"+str(i+1)+"_"+str(i)+", sta1_"+str(i+1)+"_"+str(i)+", \n"
-if add_lv and not add_node:
-    for i in range(0, network_dime**2):
-      string_to_print +="\t--------------\n"
-      string_to_print +="    credit_in_LV_"+str(i) +", valid_out_LV_"+str(i) +", TX_LV_"+str(i) +", \n"
 
 if add_SHMU:
     string_to_print += "\t-- should be connected to NI\n"
@@ -514,15 +489,5 @@ if add_FI:
                      ", FI_Add_"+str(i)+"_"+str(i+network_dime)+", "+str(random_delay)+","+ str(seed_1)+","+ str(seed_2)+");\n")
 
 noc_file.write("\n\n")
-
-
-if add_lv and not add_node:
-  for i in range(0, network_dime**2):
-    noc_file.write("get_packet_LV(11, 5, "+str(i)+", clk, credit_in_LV_"+str(i) +", valid_out_LV_"+str(i) +", TX_LV_"+str(i) +");\n");
-
-  noc_file.write("\n\n")
-
-  for i in range(0, network_dime**2):
-    noc_file.write("credit_in_LV_"+str(i)+" <= '1';\n")
 
 noc_file.write("end;\n")

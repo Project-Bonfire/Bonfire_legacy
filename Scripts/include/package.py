@@ -48,8 +48,6 @@ program_argv = {
         'add_FI':          False,
         'add_FC':          False,
         'add_FO':          False,
-        'add_LV':          False,
-        'lv_port':         4,
         'add_SHMU':        False,
         'rand':            -1,
         'BR':              -1,

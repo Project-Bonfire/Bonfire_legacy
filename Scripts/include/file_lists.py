@@ -28,9 +28,6 @@ credit_based_files_PD = ["arbiter_in.vhd", "arbiter_out.vhd", "allocator.vhd", "
 credit_based_files_PS = ["arbiter_in.vhd", "arbiter_out.vhd", "allocator.vhd", "LBDR_packet_drop.vhd", 
                          "xbar.vhd", "FIFO_one_hot_credit_based_packet_drop_flit_saving.vhd"]
 
-credit_based_files_LV = ["arbiter_in.vhd", "arbiter_out.vhd", "allocator.vhd", "LBDR_packet_drop.vhd", 
-                         "xbar.vhd", "counter_threshold.vhd"]
-
 credit_based_files_SHMU = ["allocator.vhd", "arbiter_in.vhd", "arbiter_out.vhd", "counter_threshold.vhd", "Fault_injector.vhd", 
 						   "FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd", "LBDR_packet_drop.vhd", "NI.vhd", 
 						   "Router_32_bit_credit_based_packet_drop_classifier_SHMU.vhd", "xbar.vhd"]
@@ -41,19 +38,6 @@ PE_files = ["mlite_pack.vhd", "alu.vhd", "bus_mux.vhd", "cache.vhd",
             "mult.vhd", "pc_next.vhd", "pipeline.vhd", "ram.vhd",
             "reg_bank.vhd", "shifter.vhd", "uart.vhd", "NI.vhd",
             "mlite_cpu.vhd", "plasma.vhd", "NoC_Node.vhd"]
-
-#---------------------------------------------------------
-#
-#        LV related files
-#
-#---------------------------------------------------------
-LV_common_files = ["packetizer_LV.vhd", "TB_Package_LV_CB_multi_flit.vhd"]
-
-LV_files_4 = ["arbiter_out.vhd", "allocator_LV.vhd", "FIFO_one_hot_LV_CB.vhd",
-              "LBDR_LV.vhd", "Router_LV_CB.vhd", "xbar_LV.vhd" ]
-
-LV_files_2 = ["arbiter_out.vhd", "allocator_LV.vhd", "FIFO_one_hot_LV_CB.vhd", 
-              "LBDR_LV.vhd", "Router_LV_CB_2_port.vhd", "xbar_LV.vhd"]
 
 
 #---------------------------------------------------------

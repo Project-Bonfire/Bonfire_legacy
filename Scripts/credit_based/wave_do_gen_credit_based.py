@@ -5,11 +5,6 @@ if '-D'  in sys.argv[1:]:
 else:
 	network_dime = 4
 
-if '-LV'  in sys.argv[1:]:
-  	add_lv = True
-else:
-  	add_lv = False
-
 if '-FI'  in sys.argv[1:]:
   	add_FI = True
 else:
@@ -57,22 +52,6 @@ for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -group {LBDR CX} -color green :"+tb_name+":NoC:R_"+str(i)+":LBDR_S:Cx\n")
 	wave_file.write("add wave -noupdate -group {LBDR CX} -color Gold :"+tb_name+":NoC:R_"+str(i)+":LBDR_L:Cx\n")
 
-if add_lv:
- 
-	for i in range(0 , network_dime*network_dime):
-		wave_file.write("add wave -noupdate -group {LV RX} -color green -radix decimal :"+tb_name+":NoC:R_lv_"+str(i)+":FIFO_L:RX\n")
- 
-	for i in range(0 , network_dime*network_dime):
-		wave_file.write("add wave -noupdate -group {LV TX} -color green -radix decimal :"+tb_name+":TX_LV_"+str(i)+"\n")
-
-	for i in range(0 , network_dime*network_dime):
-		wave_file.write("add wave -noupdate -group {LV Detailed} -color Gold -radix decimal :"+tb_name+":NoC:R_lv_"+str(i)+":FIFO_L:RX\n")
-		wave_file.write("add wave -noupdate -group {LV Detailed} -color Gold :"+tb_name+":NoC:R_lv_"+str(i)+":FIFO_L:valid_in\n")
-		wave_file.write("add wave -noupdate -group {LV Detailed} -color Gold :"+tb_name+":NoC:R_lv_"+str(i)+":FIFO_L:credit_out\n")
-		wave_file.write("add wave -noupdate -group {LV Detailed} -color Violet -radix decimal :"+tb_name+":TX_LV_"+str(i)+"\n")
-		wave_file.write("add wave -noupdate -group {LV Detailed} -color Violet :"+tb_name+":valid_out_LV_"+str(i)+"\n")
-		wave_file.write("add wave -noupdate -group {LV Detailed} -color Violet :"+tb_name+":credit_in_LV_"+str(i)+"\n")
-	 	wave_file.write("add wave -noupdate -group {LV Detailed} :"+tb_name+":clk\n")
 
 if add_FI: 
 	for i in range (0 , network_dime-1):

@@ -12,8 +12,6 @@ class CreditBasedPackage():
         self.faulty_counter_threshold = 3
         self.healthy_counter_threshold = 15
         self.counter_depth = 4
-        self.add_LV = False
-        self.lv_ports = 4
         self.add_packet_drop = False
         self.add_FC = False
         self.add_SHMU = False
@@ -32,7 +30,6 @@ class CreditBasedPackage():
             print "\t-FI: adds fault injector units to all the links (except the local) in the network"
             print "\t-FC: adds fault classifier units to all the links (except the local) in the network"
             print "\t-SHMU: uses different NI that can pass information to SHMU nodes"
-            print "\t-LV: adds light weight network to the network"
             print "\t-o: specifies the name and path of the output file. default path is current folder!"
             print "\t**Example: python network_gen_parameterized.py -D 2 -o ../output.vhd"
             print "\t           generates a 2X2 network that has network interface and parity checker and fault " \
@@ -64,17 +61,12 @@ class CreditBasedPackage():
         if '-SHMU' in arguments_list:
             self.add_SHMU = True
 
-        if "-LV" in arguments_list:
-            self.add_LV = True
-            self.lv_ports = int(arguments_list[arguments_list.index('-LV')+1])
         if "-trace" in arguments_list:
             self.add_tracker = True
         return 0
 
     def parameters_sanity_check(self):
-
-        if self.add_LV and self.add_SHMU:
-            raise ValueError("If you are using LV netwrok, then you should not use the SHMU!")
+        pass
 
     def generate_file_name(self, arguments_list):
         file_name= 'network'

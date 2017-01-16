@@ -32,12 +32,6 @@ def print_help(argv, program_argv):
     print "\tAdd fault classifier units to all the links (except the local) in the network. " \
         + "Default is " + str(program_argv['add_FC']) + "."
     print
-    print BOLD + "  -LV [number of ports]:" + ENDC
-    print "\tAdd light weight network to the system " \
-        + "Default is " + str(program_argv['add_LV']) + "."
-    print "\tnumber of ports determines the number of chennels in LV, can be 2 or 4" \
-        + "Default is " + str(program_argv['lv_port']) + "."
-    print
     print BOLD + "  -packet_drop:" + ENDC
     print "\tAdd packet dropping capability to FIFO in case of fault injection. " \
         + "Default is " + str(program_argv['packet_drop']) + "."
@@ -94,10 +88,9 @@ def print_help(argv, program_argv):
     print "\t\tand fixed packet size of 3 and sends packets until 10000 ns."
     print 
     print BOLD + "  Example 3:" + ENDC
-    print "\t " + argv[0] + " -D 4 -credit_based_FC -FC -LV 2 -FI -Rand 0.1 -PS 8 8 -sim 10000 -end 11000"
+    print "\t " + argv[0] + " -D 4 -credit_based_FC -FC -FI -Rand 0.1 -PS 8 8 -sim 10000 -end 11000"
     print "\t\tSimulates a 4X4 network "
     print "\t\tflow control mechanism is credit-based with fault classfiers support"
-    print "\t\tutlilizes LV network with 2 ports for fault information transport "        
     print "\t\twith Fault Injection(40-60 clock cycle injection, i.e approx. 16 million faults per second) "	
     print "\t\talso generates a testbench which uses random traffic pattern generator with Packet Injection Rate of 0.1"
     print "\t\tand fixed packet size of 8 and sends packets until 10000 ns and ends simulation at 11000 ns" 

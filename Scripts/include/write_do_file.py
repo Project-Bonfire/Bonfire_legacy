@@ -67,32 +67,12 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 List_of_files = file_lists.credit_based_files_PD
             elif program_argv['packet_saving']:
                 List_of_files = file_lists.credit_based_files_PS
-            elif program_argv['add_LV']:
-                List_of_files = file_lists.credit_based_files_LV
             else:
                 List_of_files = file_lists.credit_based_files
 
             for file in List_of_files:
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/"+file+"\"\n")
-
-            if program_argv['add_LV']:
-                for file in file_lists.LV_common_files:
-                        do_file.write("vcom \"" + FAULT_MANAGEMENT_RTL_DIR + "/Fault_management_network/"+file+"\"\n")
-
-                if program_argv['lv_port'] == 4:
-                    
-                    for file in file_lists.LV_files_4:
-                        do_file.write("vcom \"" + FAULT_MANAGEMENT_RTL_DIR + "/Fault_management_network/"+ file + "\"\n")
-
-                elif program_argv['lv_port'] == 2:
-                    for file in file_lists.LV_files_2:
-                        do_file.write("vcom \"" + FAULT_MANAGEMENT_RTL_DIR + "/Fault_management_network/LW_2_port/"\
-                        + file + "\"\n")
-
-                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd\"\n")
-
 
         # Add a network interface
         if program_argv['add_NI'] != -1:
@@ -109,19 +89,11 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based_parity.vhd\"\n")
 
-        elif program_argv['add_LV'] and program_argv['packet_drop'] and program_argv['add_FC'] and not program_argv['add_checkers']:
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/Router_32_bit_credit_based_packet_drop_LV_compatible.vhd\"\n")
-
-        elif program_argv['add_LV'] and not program_argv['packet_drop'] and program_argv['add_FC'] and not program_argv['add_checkers']:
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/Router_32_bit_credit_based_packet_drop_LV_compatible.vhd\"\n")
-
-        elif not program_argv['add_LV'] and program_argv['packet_drop'] and program_argv['add_FC'] and not program_argv['add_checkers']:
+        elif program_argv['packet_drop'] and program_argv['add_FC'] and not program_argv['add_checkers']:
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based_packet_drop_classifier.vhd\"\n")
 
-        elif not program_argv['add_LV'] and program_argv['add_checkers'] and program_argv['packet_drop'] and program_argv['add_FC']:
+        elif program_argv['add_checkers'] and program_argv['packet_drop'] and program_argv['add_FC']:
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based_packet_drop_classifier_with_full_set_of_checkers.vhd\"\n")
 

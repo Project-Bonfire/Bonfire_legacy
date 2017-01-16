@@ -37,8 +37,6 @@ def arg_parser(argv, program_argv, logging):
     program_argv['add_checkers'] = False
     program_argv['add_FI'] = False
     program_argv['add_FC'] = False
-    program_argv['add_LV'] = False
-    program_argv['lv_port'] = 4
     program_argv['packet_drop'] = False
     program_argv['packet_saving'] = False
     program_argv['lat'] = False
@@ -77,16 +75,8 @@ def arg_parser(argv, program_argv, logging):
     if '-FC' in argv[1:]:
         program_argv['add_FC'] = True
 
-    if '-LV' in argv[1:]:
-        program_argv['add_LV'] = True
-
-    if '-LV' in argv[1:]:
-        program_argv['lv_port'] = int(argv[argv.index('-LV')+1])
-
-
     if '-packet_drop' in argv[1:]:
         program_argv['packet_drop'] = True
-
 
     if '-packet_saving' in argv[1:]:
         program_argv['packet_saving'] = True

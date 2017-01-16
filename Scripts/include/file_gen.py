@@ -14,7 +14,6 @@ def gen_network_and_tb(program_argv, flow_control_type):
         + ("_FI" if program_argv['add_FI'] else "") \
         + ("_packet_drop" if program_argv['packet_drop'] else "") \
         + ("_SHMU" if program_argv['add_SHMU'] else "") \
-        + ("_LV" if program_argv['add_LV'] else "") \
         + ("_credit_based" if program_argv['credit_based_FC'] else "_handshaking") \
         + ("_with_checkers" if program_argv['add_checkers'] else "") \
         + ".vhd"
@@ -30,7 +29,6 @@ def gen_network_and_tb(program_argv, flow_control_type):
         + (" -FC" if program_argv['add_FC'] else "") \
         + (" -SHMU" if program_argv['add_SHMU'] else "") \
         + (" -trace" if program_argv['trace'] else "") \
-        + (" -LV " + str(program_argv['lv_port']) if program_argv['add_LV'] else "") \
         + " -o " + SIMUL_DIR + "/" + net_file_name
 
     if DEBUG: print_msg(MSG_DEBUG, "Running network generator:\n\t" + net_gen_command)
@@ -67,7 +65,6 @@ def gen_network_and_tb(program_argv, flow_control_type):
         + str(NI_status) \
         + (" -FI" if program_argv['add_FI'] else "") \
         + (" -SHMU" if program_argv['add_SHMU']  else "") \
-        + (" -LV" if program_argv['add_LV'] else "") \
         + (" -trace" if program_argv['trace'] else "") \
         + (" -Rand " + str(program_argv['rand']) if program_argv['rand'] != -1 else "") \
         + (" -BR " + str(program_argv['BR']) if program_argv['BR'] != -1 else "") \
@@ -90,13 +87,11 @@ def gen_network_and_tb(program_argv, flow_control_type):
 def gen_wave_do(program_argv, flow_control_type):
     wave_do_file_name = "wave_" \
     + (str(program_argv['network_dime']) + "x" + str(program_argv['network_dime'])) \
-    + ("_LV" if program_argv['add_LV'] else "") \
     + (".do")
 
     wave_do_gen_command = "python " + SCRIPTS_DIR + "/" + flow_control_type + "/" \
         + WAVE_DO_GEN_SCRIPT + "_" + flow_control_type + ".py" \
         + (" -D " + str(program_argv['network_dime'])) \
-        + (" -LV " if program_argv['add_LV'] == True else "") \
         + (" -FI " if program_argv['add_FI'] == True else "") \
         + (" -o " + SIMUL_DIR + "/" + wave_do_file_name)
 
