@@ -180,10 +180,9 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
     if program_argv['add_FI']:
 
-        FPS = 15000000
-        links = generate_links_dictionary(program_argv['network_dime'])
+        links = generate_links_dictionary(program_argv['network_dime'], program_argv['sim'])
 
-        generate_fault_injection_do(SIMUL_DIR, program_argv['end'], FPS, links)
+        generate_fault_injection_do(SIMUL_DIR, program_argv['sim'], links)
         do_file.write("do fault_inject.do")
     else:
         
