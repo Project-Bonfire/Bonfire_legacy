@@ -155,7 +155,7 @@ def generate_fault_injection_do(file_path, sim_time, fault_list):
 				string = "force -drive sim/:"+location+" " + str(random.choice(["0", "1"]))
 				random_start = random.randint(0, deviation)
 				string +=  " "+str(random_start)+"ns -cancel 1ns"
-				fault_inject_file.write(string+"#current time:"+str(i)+"\n")
+				fault_inject_file.write(string+" \t\t#current time:"+str(i)+"\n")
 		
 	fault_inject_file.write("stop")
 	fault_inject_file.close()
