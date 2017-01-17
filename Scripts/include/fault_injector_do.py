@@ -55,7 +55,9 @@ def generate_fault_injection_do(file_path, sim_time, FPS, fault_list):
 	"""
 	list_of_links = fault_list
 	delay = 1000000000/FPS
-	deviation = int(delay/100)
+	deviation = int(delay/10)
+	if deviation == 0:
+		deviation = 1
 	fault_inject_file = open(file_path+'/fault_inject.do', 'w')
 
 	fault_inject_file.write("#################################\n")
@@ -76,19 +78,14 @@ def generate_fault_injection_do(file_path, sim_time, FPS, fault_list):
 	fault_inject_file.write("#################################\n")
 	for i in range(0, sim_time/delay):
 		random.shuffle(list_of_links) 
-		sum_skew = 0
 		for item in list_of_links:
 			fault_type = item.type
 			if fault_type == "T": 
 				location = item.location
-				string = "force -drive sim/:"+location+" "
-				string +=  str(random.choice(["0", "1"]))
-				string +=  " 0ns -cancel 1ns"
+				string = "force -drive sim/:"+location+" " + str(random.choice(["0", "1"]))
+				random_start = random.randint(0, deviation)
+				string +=  " "+str(random_start)+"ns -cancel 1ns"
 				fault_inject_file.write(string+"\n")
-				skew = random.randint(0, deviation)
-				if skew > 0:
-					fault_inject_file.write( "run "+str(skew)+"ns"+"\n")
-					sum_skew += skew
-		fault_inject_file.write("run "+str(delay-sum_skew)+"ns"+"\n") 
+		fault_inject_file.write("run "+str(delay)+"ns"+"\n") 
 	fault_inject_file.write("stop")
 	fault_inject_file.close()
