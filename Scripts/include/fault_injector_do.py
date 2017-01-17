@@ -35,7 +35,7 @@ def generate_links_dictionary(network_size):
 			list_of_ports.append("tb_network_2x2:NoC:R_"+str(i)+":RX_E")
 		if i%network_size != network_size-1:
 			list_of_ports.append("tb_network_2x2:NoC:R_"+str(i)+":RX_W")
-
+	random.seed(1000)
 	fault_list = []
 	for item in list_of_ports:
 		fault_type = random.choice(["T", "P"])
@@ -66,7 +66,8 @@ def generate_fault_injection_do(file_path, sim_time, FPS, fault_list):
 		fault_type = item.type
 		if fault_type == "P":
 			location = item.location
-			string = "force -drive sim/:"+location+" U 1 "
+			random_start = random.randint(int(sim_time*0.1), int(sim_time*0.9))
+			string = "force -drive sim/:"+location+" U "+str(random_start)+"ns "
 			fault_inject_file.write(string+"\n")
 
 	fault_inject_file.write("#################################\n")
@@ -82,7 +83,7 @@ def generate_fault_injection_do(file_path, sim_time, FPS, fault_list):
 				location = item.location
 				string = "force -drive sim/:"+location+" "
 				string +=  str(random.choice(["0", "1"]))
-				string +=  " 0 -cancel 1ns"
+				string +=  " 0ns -cancel 1ns"
 				fault_inject_file.write(string+"\n")
 				skew = random.randint(0, deviation)
 				if skew > 0:
