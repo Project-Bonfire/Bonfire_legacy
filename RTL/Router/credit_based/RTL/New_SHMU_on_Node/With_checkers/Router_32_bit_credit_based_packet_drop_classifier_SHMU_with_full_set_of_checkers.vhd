@@ -184,7 +184,10 @@ COMPONENT FIFO_credit_based is
 
             err_fault_info_fault_info_out_equal, 
             err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-            err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal : out std_logic            
+            err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+            err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in : out std_logic
     );
 end COMPONENT;
 
@@ -1523,6 +1526,9 @@ signal      N_err_empty_full,
             N_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
             N_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
 
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in, 
+
             -- East
 
             -- Functional checkers
@@ -1646,6 +1652,9 @@ signal      N_err_empty_full,
             E_err_fault_info_fault_info_out_equal, 
             E_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
             E_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+            E_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+            E_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in, 
                   
             -- West
 
@@ -1770,6 +1779,9 @@ signal      N_err_empty_full,
             W_err_fault_info_fault_info_out_equal, 
             W_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
             W_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+            W_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+            W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in, 
                   
             -- South
 
@@ -1895,6 +1907,9 @@ signal      N_err_empty_full,
             S_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
             S_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
 
+            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in, 
+
             -- Local
 
             -- Functional checkers
@@ -2017,7 +2032,10 @@ signal      N_err_empty_full,
 
             L_err_fault_info_fault_info_out_equal, 
             L_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-            L_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal: std_logic;  
+            L_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+            L_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+            L_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in: std_logic;
                         
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
@@ -2962,7 +2980,10 @@ N_FIFO_checkers_ORed  <=    N_err_empty_full or
 
                             N_err_fault_info_fault_info_out_equal or 
                             N_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal or 
-                            N_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal;
+                            N_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal or 
+
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in or
+                            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in;
 
 -- East
 E_FIFO_checkers_ORed  <=    E_err_empty_full or 
@@ -3081,7 +3102,10 @@ E_FIFO_checkers_ORed  <=    E_err_empty_full or
 
                             E_err_fault_info_fault_info_out_equal or 
                             E_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal or 
-                            E_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal;
+                            E_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal or 
+
+                            E_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in or
+                            E_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in;
 
 -- West
 W_FIFO_checkers_ORed  <=    W_err_empty_full or 
@@ -3200,7 +3224,10 @@ W_FIFO_checkers_ORed  <=    W_err_empty_full or
 
                             W_err_fault_info_fault_info_out_equal or 
                             W_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal or 
-                            W_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal;
+                            W_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal or 
+
+                            W_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in or
+                            W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in;
 
 -- South
 S_FIFO_checkers_ORed  <=    S_err_empty_full or 
@@ -3319,7 +3346,10 @@ S_FIFO_checkers_ORed  <=    S_err_empty_full or
 
                             S_err_fault_info_fault_info_out_equal or 
                             S_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal or 
-                            S_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal;
+                            S_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal or 
+
+                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in or
+                            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in;
 
 -- Local
 L_FIFO_checkers_ORed  <=    L_err_empty_full or 
@@ -3438,7 +3468,10 @@ L_FIFO_checkers_ORed  <=    L_err_empty_full or
 
                             L_err_fault_info_fault_info_out_equal or 
                             L_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal or 
-                            L_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal;
+                            L_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal or 
+
+                            L_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in or
+                            L_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in;
 
 -- Turn fault checkers
 
@@ -5307,7 +5340,10 @@ FIFO_N: FIFO_credit_based
 
                err_fault_info_fault_info_out_equal => N_err_fault_info_fault_info_out_equal, 
                err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal => N_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => N_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal
+               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => N_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in => N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in
             );
 
 FIFO_E: FIFO_credit_based 
@@ -5437,7 +5473,10 @@ FIFO_E: FIFO_credit_based
 
                err_fault_info_fault_info_out_equal => E_err_fault_info_fault_info_out_equal, 
                err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal => E_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => E_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal
+               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => E_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in => E_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in => E_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in
             );
 
 FIFO_W: FIFO_credit_based 
@@ -5567,7 +5606,10 @@ FIFO_W: FIFO_credit_based
 
                err_fault_info_fault_info_out_equal => W_err_fault_info_fault_info_out_equal, 
                err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal => W_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => W_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal
+               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => W_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in => W_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in => W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in
             );
 
 
@@ -5698,7 +5740,10 @@ FIFO_S: FIFO_credit_based
 
                err_fault_info_fault_info_out_equal => S_err_fault_info_fault_info_out_equal, 
                err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal => S_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => S_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal
+               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => S_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in => S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in
             );
 
 
@@ -5829,7 +5874,10 @@ FIFO_L: FIFO_credit_based
 
                err_fault_info_fault_info_out_equal => L_err_fault_info_fault_info_out_equal, 
                err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal => L_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => L_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal
+               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => L_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in => L_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in => L_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in
             );
 
 ------------------------------------------------------------------------------------------------------------------------------

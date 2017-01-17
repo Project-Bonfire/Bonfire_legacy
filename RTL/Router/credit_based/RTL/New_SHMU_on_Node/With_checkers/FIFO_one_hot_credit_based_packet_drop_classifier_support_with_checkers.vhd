@@ -148,7 +148,10 @@ entity FIFO_credit_based is
 
             err_fault_info_fault_info_out_equal, 
             err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-            err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal : out std_logic            
+            err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+            err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in : out std_logic
     );
 end FIFO_credit_based;
 
@@ -305,8 +308,11 @@ component FIFO_credit_based_control_part_checkers is
 
             err_fault_info_fault_info_out_equal, 
             err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-            err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal : out std_logic
-            );
+            err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+            err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in : out std_logic
+           );
 end component;
 
 
@@ -537,7 +543,10 @@ FIFO_control_part_checkers: FIFO_credit_based_control_part_checkers
 
                                                             err_fault_info_fault_info_out_equal => err_fault_info_fault_info_out_equal, 
                                                             err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal => err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-                                                            err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal
+                                                            err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+                                                            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in => err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+                                                            err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in => err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in
                                                          );
 
    fault_info  <= fault_info_sig; -- Not sure yet ?!
@@ -676,7 +685,7 @@ end process;
       			            when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
       			        end case ;
       			        state_in <= Packet_drop;
-                    fault_info_in <= '1';
+                                fault_info_in <= '1';
       			        faulty_packet_in <= '1';                
 	              end if;  
 	            else
@@ -690,7 +699,7 @@ end process;
 	                          state_in <= state_out;
 	                      elsif RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100" then 
 	                          state_in <= Tail_flit;
-                            health_info_sig <= '1';
+                                health_info_sig <= '1';
 	                      else
 	                          -- we should not be here!
 	                          state_in <= state_out;
@@ -705,7 +714,7 @@ end process;
 	                      when others => FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
 	                  end case ;
 	                  state_in <= Packet_drop;
-                    fault_info_in <= '1';
+                        fault_info_in <= '1';
 	                  faulty_packet_in <= '1'; 
 	 				 
 	              end if;
@@ -751,6 +760,9 @@ end process;
                     state_in <= Idle;
                     fake_credit <= '1';
                else -- fault_out might have been '1'
+                  if valid_in = '1' and RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001" then 
+                      fault_info_in <= '1';
+                  end if;
                   if valid_in = '1' then 
                       fake_credit <= '1';
                   end if;

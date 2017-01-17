@@ -158,7 +158,10 @@ entity FIFO_credit_based_control_part_checkers is
 
 			err_fault_info_fault_info_out_equal, 
 			err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-			err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal : out std_logic
+			err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+			err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+			err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in : out std_logic
             );
 end FIFO_credit_based_control_part_checkers;
 
@@ -1258,6 +1261,26 @@ begin
 		err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal <= '1';
 	else
 		err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal <= '0';
+	end if;
+end process;
+
+-- Added after change of design !
+
+process (state_out, faulty_packet_out, valid_in, flit_type, fault_info_in)
+begin 
+	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '1' and flit_type = "001" and fault_info_in /= '1') then
+		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in <= '1';
+	else
+		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in <= '0';
+	end if;
+end process;
+
+process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, fault_info_in)
+begin 
+	if (state_out = Packet_drop and faulty_packet_out = '1' and (valid_in = '0' or flit_type /= "001") and fault_info_in /= '0') then
+		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in <= '1';
+	else
+		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in <= '0';
 	end if;
 end process;
 
