@@ -182,7 +182,7 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
         FPS = 10000000
         links = generate_links_dictionary(program_argv['network_dime'])
-        print links
+
         generate_fault_injection_do(SIMUL_DIR, program_argv['end'], FPS, links)
         do_file.write("do fault_inject.do")
     else:

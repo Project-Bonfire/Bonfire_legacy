@@ -292,6 +292,9 @@ end process;
                     state_in <= Idle;
                     fake_credit <= '1';
                else
+                  if valid_in = '1' and flit_type = "001" then 
+                      fault_info <= '1';
+                  end if; 
                   if valid_in = '1' then 
                       fake_credit <= '1';
                   end if;
