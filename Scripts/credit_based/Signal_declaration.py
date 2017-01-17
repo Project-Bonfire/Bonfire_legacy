@@ -1,7 +1,7 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
 
-def declare_signals(noc_file, network_dime, add_parity, add_packet_drop, add_FC, add_SHMU, lv_port):
+def declare_signals(noc_file, network_dime, add_parity, add_packet_drop, add_FC, add_SHMU):
     noc_file.write("\n\n")
     noc_file.write("-- generating bulk signals. not all of them are used in the design...\n")
 

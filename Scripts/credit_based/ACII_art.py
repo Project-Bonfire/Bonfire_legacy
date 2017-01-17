@@ -1,7 +1,7 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
 
-def generate_ascii_art(noc_file, network_dime, FI):
+def generate_ascii_art(noc_file, network_dime):
 
     noc_file.write("\n\n")
     noc_file.write("--        organizaiton of the network:\n")
@@ -18,8 +18,7 @@ def generate_ascii_art(noc_file, network_dime, FI):
         for i in range(0, network_dime):
             if i != network_dime-1:
                 link = "---"
-                if FI: 
-                    link = "-*-"
+                 
                 if (i+network_dime*j) >= 10:
                     noc_file.write(" | "+str(i+network_dime*j)+" | "+link)
                 else:
@@ -32,8 +31,7 @@ def generate_ascii_art(noc_file, network_dime, FI):
 
         noc_file.write("\n")
         link = "|"
-        if FI:
-            link = "*"
+         
         if j == network_dime-1:
             noc_file.write("--  v  ")
         else:
