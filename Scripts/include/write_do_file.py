@@ -1,6 +1,8 @@
 
 import file_lists
 from Scripts.include.package import *
+from math import ceil
+from fault_injector_do import generate_links_dictionary, generate_fault_injection_do
 
 def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_name, logging):
     """
@@ -151,12 +153,7 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                     + "/RTL/Router_32_bit_handshaking.vhd\"\n")
 
-        # End of handshaking based flow control
-
-    # Add fault injectors
-    if program_argv['add_FI']:
-        do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-            + "/RTL/Fault_injector.vhd\"\n")
+    # End of handshaking based flow control
 
     # Include file for the testbench
     do_file.write("vcom \"" + TEST_DIR + "/" + flow_control_type \
@@ -180,19 +177,29 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
     do_file.write("do " + wave_do_file_name + "\n")
 
     do_file.write("# Run the simulation\n")
-    if program_argv['sim'] == -1 and program_argv['end'] == -1:
-        do_file.write("run 15000 ns\n")
 
-    elif program_argv['sim'] != -1 and program_argv['end'] == -1:
+    if program_argv['add_FI']:
 
-        do_file.write("run " + str(int(ceil(program_argv['sim'] * 1.5))) + " ns\n")
-
+        FPS = 10000000
+        links = generate_links_dictionary(program_argv['network_dime'])
+        print links
+        generate_fault_injection_do(SIMUL_DIR, program_argv['end'], FPS, links)
+        do_file.write("do fault_inject.do")
     else:
-        do_file.write("run " + str(program_argv['end']) + " ns\n")
+        
+        if program_argv['sim'] == -1 and program_argv['end'] == -1:
+            do_file.write("run 15000 ns\n")
 
-    if program_argv['lat']:
-        do_file.write("\n# Exit Modelsim after simulation\n")
-        do_file.write("exit\n")
+        elif program_argv['sim'] != -1 and program_argv['end'] == -1:
+
+            do_file.write("run " + str(int(ceil(program_argv['sim'] * 1.5))) + " ns\n")
+
+        else:
+            do_file.write("run " + str(program_argv['end']) + " ns\n")
+
+        if program_argv['lat']:
+            do_file.write("\n# Exit Modelsim after simulation\n")
+            do_file.write("exit\n")
     do_file.close()
     logging.info("finished writing do file...")
 
