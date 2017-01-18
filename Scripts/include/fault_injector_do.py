@@ -35,15 +35,15 @@ def report_faults(fault_list):
 def generate_links_dictionary(network_size, sim_time):
 	list_of_ports = []
 	for i in range(0, network_size*2):
-		list_of_ports.append("tb_network_2x2:NoC:R_"+str(i)+":RX_L")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_L")
 		if i/network_size != 0:
-			list_of_ports.append("tb_network_2x2:NoC:R_"+str(i)+":RX_N")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_N")
 		if i/network_size != network_size-1:
-			list_of_ports.append("tb_network_2x2:NoC:R_"+str(i)+":RX_S")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_S")
 		if i%network_size != 0:
-			list_of_ports.append("tb_network_2x2:NoC:R_"+str(i)+":RX_E")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_E")
 		if i%network_size != network_size-1:
-			list_of_ports.append("tb_network_2x2:NoC:R_"+str(i)+":RX_W")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_W")
 	random.seed(FAULT_RANDOM_SEED)
 	fault_list = []
 	for item in list_of_ports:
