@@ -63,7 +63,7 @@ program_argv = {
 DEBUG = False
 
 # fault injection settings
-FAULT_RANDOM_SEED = 1000        # set to None if you want random randomness 
+FAULT_RANDOM_SEED = 2000        # set to None if you want random randomness 
 Fault_Per_Second = 15000000
 HIGH_FAULT_RATE = 1.1
 MEDIUM_FAULT_RATE = 1

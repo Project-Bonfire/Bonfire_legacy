@@ -145,17 +145,21 @@ def generate_fault_injection_do(file_path, sim_time, fault_list):
 		for permanent_fault_location in permanently_faulty_locations:
 			if i == permanent_fault_location.shut_down_time:
 				location  = permanent_fault_location.location
-				fault_inject_file.write("force -drive sim/:"+location+" U 1ns \t\t#shuting down!\n")
+				fault_inject_file.write("force -drive sim/:"+location+" U 1ns\n")
 		if i in temp_dict.keys():
 			last_time = current_time
 			current_time = i
 			fault_inject_file.write("run "+str(current_time-last_time)+"ns\n") 
 			for item in temp_dict[i]:
 				location = item.location
-				string = "force -drive sim/:"+location+" " + str(random.choice(["0", "1"]))
-				random_start = random.randint(0, deviation)
-				string +=  " "+str(random_start)+"ns -cancel 1ns"
-				fault_inject_file.write(string+" \t\t#current time:"+str(i)+"\n")
+				if item.Type == "I" or item.Type == "P":
+					string = "force -drive sim/:"+location+" " + str(random.choice(["0", "1"])) 
+					string +=  " 0 ns -cancel 1ns"
+				else:
+					string = "force -drive sim/:"+location+" " + str(random.choice(["0", "1"])) 
+					random_start = random.randint(0, deviation)
+					string +=  " "+str(random_start)+"ns -cancel "+str(random_start+1)+"ns"
+				fault_inject_file.write(string+"\n")
 		
 	fault_inject_file.write("stop")
 	fault_inject_file.close()
