@@ -69,7 +69,7 @@ HIGH_FAULT_RATE = 1.1
 MEDIUM_FAULT_RATE = 1
 LOW_FAULT_RATE = 0.9
 
-MTB_INTERMITTENT_BURST = 1000   # mean time between intermittent fault bursts
+MTB_INTERMITTENT_BURST = 100   # mean time between intermittent fault bursts
 EVENTS_PER_BURST = 10
 
 

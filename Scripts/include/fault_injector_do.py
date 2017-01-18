@@ -70,7 +70,7 @@ def generate_links_dictionary(network_size, sim_time):
 	return fault_list
 
 
-def generate_fault_injection_do(file_path, sim_time, fault_list):
+def generate_fault_injection_do(file_path, sim_time, sim_end, fault_list):
 	"""
 	sim_time: integer : How long do you want to run the simulation in ns
 	fault_list: list: list of fault objects for injection
@@ -160,6 +160,7 @@ def generate_fault_injection_do(file_path, sim_time, fault_list):
 					random_start = random.randint(0, deviation)
 					string +=  " "+str(random_start)+"ns -cancel "+str(random_start+1)+"ns"
 				fault_inject_file.write(string+"\n")
-		
+	
+	fault_inject_file.write("run "+str(sim_end-sim_time)+"ns\n") 
 	fault_inject_file.write("stop")
 	fault_inject_file.close()
