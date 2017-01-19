@@ -24,23 +24,24 @@ entity counter_threshold_classifier is
 end counter_threshold_classifier;
 
 architecture behavior of counter_threshold_classifier is
- signal faulty_counter_in, faulty_counter_out: std_logic_vector(counter_depth-1 downto 0);
- signal healthy_counter_in, healthy_counter_out: std_logic_vector(counter_depth-1 downto 0);
- signal NET: std_logic; --no error threshold
- signal DET: std_logic; --detected error threshold
- signal reset_counters: std_logic;
+
+signal faulty_counter_in, faulty_counter_out: std_logic_vector(counter_depth-1 downto 0); -- faulty counter register signals
+signal healthy_counter_in, healthy_counter_out: std_logic_vector(counter_depth-1 downto 0); -- Healthy counter register signals
+signal NET: std_logic; --no error threshold
+signal DET: std_logic; --detected error threshold
+signal reset_counters: std_logic; -- reset signal generated when a threshold is reached!
 
  TYPE STATE_TYPE IS (Healthy_state, Intermittent_state, Faulty_state);
 SIGNAL state, next_state   : STATE_TYPE := Healthy_state;
 
 begin 
 
-
+-- clock block
  process(clk, reset)begin
   if reset = '0' then
     faulty_counter_out <=  (others => '0');
     healthy_counter_out <=  (others => '0');
-    state <= Healthy_state;
+    state <= Healthy_state;   -- It is assumed that the link is always healthy in the beginning
   elsif clk'event and clk = '1' then 
     faulty_counter_out <= faulty_counter_in;
     healthy_counter_out <= healthy_counter_in;
@@ -48,7 +49,9 @@ begin
   end if;
  end process;
 
+--- everything below this line is pure combinatorial!
 
+-- updating the faulty counter
 process(faulty_packet, reset_counters, faulty_counter_out)begin
   if reset_counters  = '1' then 
       faulty_counter_in <=  (others => '0');
@@ -59,7 +62,7 @@ process(faulty_packet, reset_counters, faulty_counter_out)begin
   end if;
 end process;
 
-
+-- updating the healthy counter
 process(Healthy_packet, reset_counters, healthy_counter_out)begin
   if reset_counters  = '1' then 
       healthy_counter_in <=  (others => '0');
@@ -71,6 +74,8 @@ process(Healthy_packet, reset_counters, healthy_counter_out)begin
  
 end process;
 
+-- checking the counters against threshold values!
+-- if a counter reaches threshold value it resets both signals!
 process(healthy_counter_out, faulty_counter_out) begin
   reset_counters <= '0';
   DET <= '0';
@@ -87,11 +92,19 @@ process(healthy_counter_out, faulty_counter_out) begin
   end if;
 end process;  
 
+-- Counter threshold FSM 
+--      .__________.   DET/Intermittent .---------------.    DET/Faulty  .---------------.
+--      |  HEALTHY | -----------------> |  INTERMITTENT | -------------->|     FAULTY    | 
+--      |   STATE  | <----------------- |     STATE     |                |     STATE     |
+--      '----------'   NET/healthy      '---------------'                '---------------'
+--
 
 process (NET, DET, state)begin
+  -- Default values
   Healthy <= '0'; 
   Intermittent <= '0'; 
   Faulty <= '0';
+
   case state is 
       when Healthy_state => 
             if NET = '1' then 
@@ -114,11 +127,10 @@ process (NET, DET, state)begin
             end if;
       when Faulty_state => 
             next_state <= Faulty_state;
-      when others => 
+      when others =>  -- just for sysnthesis tools
             next_state <= Healthy_state;
             Healthy <= '1'; 
   end case;
-
 end process;
 
 END;
