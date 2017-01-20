@@ -21,18 +21,27 @@ class fault:
 		self.shut_down_time = shut_down_time
 
 	def report(self):
+		"""
+		The fault reports its location, signal width, type, MTBF, STD_Dev and shutdown time!
+		"""
 		print "Location: ", self.location, "\twidth: ", self.bitwidth,  "\tfault_type: ", self.Type,\
 			  "\tMTBF: ", self.mean_time, "\tstd deviation: ", self.std_dev , "\tshutdown time", \
 			  self.shut_down_time
 
 def report_faults(fault_list):
+	"""
+	Reports all the faults in the fault list
+	"""
 	print "---------------------------------------"
 	print "fault injection points:"
 	for fault in fault_list:
 		fault.report()
 	print "---------------------------------------"
 
-def generate_links_dictionary(network_size, sim_time):
+def list_all_the_links(network_size):
+	"""
+	takes the network size and returns a list of all the RX signals in the network
+	"""
 	list_of_ports = []
 	for i in range(0, network_size*2):
 		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_L")
@@ -44,6 +53,13 @@ def generate_links_dictionary(network_size, sim_time):
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_E")
 		if i%network_size != network_size-1:
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_W")
+	return list_of_ports
+
+def generate_links_dictionary(network_size, sim_time):
+	"""
+	This function generates random faults on all RX signals of the network
+	"""
+	list_of_ports = list_all_the_links(network_size)
 	random.seed(FAULT_RANDOM_SEED)
 	fault_list = []
 	for item in list_of_ports:
@@ -69,11 +85,53 @@ def generate_links_dictionary(network_size, sim_time):
 	report_faults(fault_list)
 	return fault_list
 
+def parse_fault_info_file(file_path):
+	"""
+	If you want to feed the fault info from a file...
+	the file lines should be organized like this:
+
+	fault_location:	signal_width  fault_type  MTBF  std_deviation  shutdown_time
+
+	fault_location: the signal bit that you want to inject the fault on. 
+	signal_width: 	The width of the signal that you intend to inject the bit-flip in
+	fault_type: 	should be chosen from the follwoing list:
+							* T : Transient
+							* I : Intermittent
+							* F : Faulty
+	MTBF: 			Mean time between the faults
+	std_deviation:	Standard deviation used for generating faults
+	shutdown_time:	Time in ns when the signal would be permanently faulty only used when 
+					you need permanent fault. otherwise "None".
+
+	Example:
+			tb_network_2x2:NoC:R_0:RX_L(21) 	32 	I 	1000 	101		None	
+	"""
+
+	fault_list = []
+	fault_info_file = open(file_path, 'r')
+	line = fault_info_file.readline()
+	while line != "":
+		split_line =  line.split()	
+		fault_location = split_line[0]
+		signal_width = int(split_line[1])
+		fault_type = split_line[2]
+		fault_MTBF = split_line[3]
+		fault_STD = split_line[4]
+		shut_down_time = split_line[5]
+
+		new_fault = fault(fault_location, signal_width, fault_type, fault_MTBF, fault_STD, shut_down_time)
+		fault_list.append(new_fault)
+		line = fault_info_file.readline()
+
+	return fault_list 
+
 
 def generate_fault_injection_do(file_path, sim_time, sim_end, fault_list):
 	"""
-	sim_time: integer : How long do you want to run the simulation in ns
-	fault_list: list: list of fault objects for injection
+	fault_path:	string	: path to the fault_inject.do
+	sim_time: integer 	: How long do you want to inject faults in the simulation ns
+	sim_end:  integer 	: end of simulation
+	fault_list: list  	: list of fault objects for injection
 	"""
 	list_of_links = fault_list
 	delay = 1000000000/Fault_Per_Second
@@ -81,10 +139,6 @@ def generate_fault_injection_do(file_path, sim_time, sim_end, fault_list):
 	if deviation == 0:
 		deviation = 1
 	fault_inject_file = open(file_path+'/fault_inject.do', 'w')
-
-			
-	#string = "force -drive sim/:"+location+" U "+str(random_start)+"ns "
-	#fault_inject_file.write(string+"\n")
 
 	permanently_faulty_locations = []
 	temp_dict = {}
