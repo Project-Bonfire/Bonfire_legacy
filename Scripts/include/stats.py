@@ -4,7 +4,10 @@ from Scripts.include.helper_func import *
 
 
 def statistics(verbal):
-
+    """ 
+        Calculates the amount of packets sent and recieved and prints statistics 
+        about flit and packet loss percentages!
+    """
     print
     if verbal:
         if DEBUG: print_msg(MSG_DEBUG, "Opening " + SENT_TXT_PATH)

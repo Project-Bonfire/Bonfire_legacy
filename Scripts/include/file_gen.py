@@ -4,7 +4,10 @@ import sys
 import os
 
 def gen_network_and_tb(program_argv, flow_control_type):
-    
+    """
+    Gets program arguments and flow control type and generates the Network and Testbench files 
+    by generating the correct name and then calling the related script
+    """
 
     # Generated network file name
     net_file_name = "network_" \
@@ -81,6 +84,10 @@ def gen_network_and_tb(program_argv, flow_control_type):
 
 
 def gen_wave_do(program_argv, flow_control_type):
+    """
+    Gets program arguments and flow-control type and generates the wave.do file
+    by calling the related script
+    """
     wave_do_file_name = "wave_" \
     + (str(program_argv['network_dime']) + "x" + str(program_argv['network_dime'])) \
     + (".do")

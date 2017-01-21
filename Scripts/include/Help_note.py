@@ -1,6 +1,9 @@
 from Scripts.include.helper_func import *
 
 def print_help(argv, program_argv):
+    """
+    Gets the program arguments and prints manual for the program.
+    """
     print BOLD + "Usage:" + ENDC
     print
     print BOLD + OKBLUE + "  Network parameters:" + ENDC

@@ -1,12 +1,13 @@
-"""
-    The idea here is to make some lists of the necesary files for each scenario 
-    in order to make the code a little more organized!
-"""
+
+#    The idea here is to make some lists of the necesary files for each scenario 
+#    in order to make the code a little more organized!
+
 #---------------------------------------------------------
 #
 #        Hand shaking related files  
 #
 #---------------------------------------------------------
+# Files for the base-line hand shaking router!
 handshaking_files = ["Arbiter.vhd", "FIFO_one_hot_handshaking.vhd", "LBDR.vhd", "xbar.vhd"]
 
 #---------------------------------------------------------
@@ -14,25 +15,30 @@ handshaking_files = ["Arbiter.vhd", "FIFO_one_hot_handshaking.vhd", "LBDR.vhd", 
 #        Credit based related files  
 #
 #---------------------------------------------------------
- 
+
+# Files for the base-line credit based router!
 credit_based_files = ["arbiter_in.vhd", "arbiter_out.vhd", "allocator.vhd", "LBDR.vhd", 
                       "xbar.vhd", "FIFO_one_hot_credit_based.vhd"]
 
+# Files for the credit based router equipped with packet-drop mechanism and Fault Classifier!
 credit_based_files_PD_FC = ["arbiter_in.vhd", "arbiter_out.vhd", "allocator.vhd", "LBDR_packet_drop.vhd", 
                             "xbar.vhd", "FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd",
 							              "counter_threshold.vhd"]
 
+# Files for the credit based router equipped with packet-drop mechanism!
 credit_based_files_PD = ["arbiter_in.vhd", "arbiter_out.vhd", "allocator.vhd", "LBDR_packet_drop.vhd", 
                          "xbar.vhd", "FIFO_one_hot_credit_based_packet_drop.vhd"]
 
+# Files for the credit based router equipped with packet-saving mechanism!
 credit_based_files_PS = ["arbiter_in.vhd", "arbiter_out.vhd", "allocator.vhd", "LBDR_packet_drop.vhd", 
                          "xbar.vhd", "FIFO_one_hot_credit_based_packet_drop_flit_saving.vhd"]
 
+#TODO: needs to be tested: 
 credit_based_files_SHMU = ["allocator.vhd", "arbiter_in.vhd", "arbiter_out.vhd", "counter_threshold.vhd", 
 						   "FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd", "LBDR_packet_drop.vhd", "NI.vhd", 
 						   "Router_32_bit_credit_based_packet_drop_classifier_SHMU.vhd", "xbar.vhd"]
 
-
+# plasma processor files along with the NI and NoC node wrapper!
 PE_files = ["mlite_pack.vhd", "alu.vhd", "bus_mux.vhd", "cache.vhd",
             "control.vhd", "ddr_ctrl.vhd", "eth_dma.vhd", "mem_ctrl.vhd",
             "mult.vhd", "pc_next.vhd", "pipeline.vhd", "ram.vhd",
