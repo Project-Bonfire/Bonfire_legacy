@@ -7,20 +7,9 @@ def arg_parser(argv, program_argv, logging):
     Arguments parser
         argv:           List of program arguments (sys.argv)
         program_argv:   Dictionary consisting of network configuration variables
+        logging:        logging object
     """
 
-    # MAN:
-    # you should run this as
-    # python network_gen_parameterized.py [options]
-    #       -D [size]:  allows you to set the size of the network. it can be powers of two.
-    #       -NI: adds NI to network
-    #       -P adds parity checker to the network
-    #       -FI adds fault injectors
-    #       [-Rand/-BR] [PIR] uses random, or bit reversal traffic pattern generator, respectevely, with
-    #                           packet injection rate of PIR. By default, repeatative packets being sent from source to same destination
-    #       -PS [min packet size] [max packet size]: specifies packet size. default min value is 3 and defualt max value is 8."
-    #       -sim: specifies the length of simulation in clock cycles. which at this time the packet generators will stop sending packets."
-    
     logging.info("starting parsing the progam arguments...")
     logging.debug("program_argv list is following:")
     logging.debug(argv[1:])
@@ -128,6 +117,10 @@ def arg_parser(argv, program_argv, logging):
     return program_argv
 
 def report_parogram_arguments(program_argv, DEBUG):
+    """
+    Gets program arguments and Debug and if Debug is True, prints the program 
+    arguments to the console!
+    """
     if DEBUG: 
         print_msg(MSG_DEBUG,  "Command line parameters:")
         for i in program_argv:
