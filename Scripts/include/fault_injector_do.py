@@ -231,7 +231,7 @@ def generate_fault_injection_do(file_path, sim_time, sim_end, fault_list):
 
 	*T->P:  ___|____________|____________|____________||||||||||______________________|''''''''''''''''''''
 
-		First it behaves as transient, then turns into intermittent and then permannet. For transient MTBF and 
+		First it behaves as transient, then turns into intermittent and then permanent. For transient MTBF and 
 		Std_Dev it uses the specified values in the fault object. for intermittent faults it uses the values 
 		specified in package file. for becomming permanent, it uses the shutdown time specified in the fault 
 		object.
