@@ -1,0 +1,30 @@
+ 
+****************************************
+Report : area
+Design : router_channel_DATA_WIDTH9_current_address5_Rxy_rst60_Cx_rst15_NoC_size4
+Version: J-2014.09-SP2
+Date   : Mon Aug  1 15:56:56 2016
+****************************************
+
+Library(s) Used:
+
+    c18_CORELIB_TYP (File: /cad/dk/s/v4.11/ams_corelib.db)
+
+Number of ports:                           56
+Number of nets:                           219
+Number of cells:                           48
+Number of combinational cells:             44
+Number of sequential cells:                 0
+Number of macros/black boxes:               0
+Number of buf/inv:                          2
+Number of references:                       8
+
+Combinational area:              11856.902565
+Buf/Inv area:                      620.928020
+Noncombinational area:           12204.057465
+Macro/Black Box area:                0.000000
+Net Interconnect area:           13526.437552
+
+Total cell area:                 24060.960030
+Total area:                      37587.397582
+1
