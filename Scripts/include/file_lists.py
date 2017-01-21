@@ -1,5 +1,5 @@
 
-#    The idea here is to make some lists of the necesary files for each scenario 
+#    The idea here is to make some lists of the necessary files for each scenario 
 #    in order to make the code a little more organized!
 
 #---------------------------------------------------------
