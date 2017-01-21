@@ -3,6 +3,12 @@ import sys
 import numpy
 from Scripts.include.package import *
 
+#----------------------------------------------------------------------------------------------
+#
+#											Fault Class 
+#
+#----------------------------------------------------------------------------------------------
+
 class fault:
 	location = None
 	bitwidth = None
@@ -28,6 +34,11 @@ class fault:
 			  "\tMTBF: ", self.mean_time, "\tstd deviation: ", self.std_dev , "\tshutdown time", \
 			  self.shut_down_time
 
+#----------------------------------------------------------------------------------------------
+#
+#											Other functions 
+#
+#----------------------------------------------------------------------------------------------
 def report_faults(fault_list):
 	"""
 	Reports all the faults in the fault list
@@ -183,13 +194,47 @@ def parse_fault_info_file(file_path):
 
 	return fault_list 
 
-
+#----------------------------------------------------------------------------------------------
+# 
+#									 Generating the actual do file.
+#
+#----------------------------------------------------------------------------------------------
 def generate_fault_injection_do(file_path, sim_time, sim_end, fault_list):
 	"""
+	Generates a do file for modelsim for injecting the faults
 	fault_path:	string	: path to the fault_inject.do
 	sim_time: integer 	: How long do you want to inject faults in the simulation ns
 	sim_end:  integer 	: end of simulation
 	fault_list: list  	: list of fault objects for injection
+
+
+	the generated faults would look like these:
+	*T: 	___|____________|____________|____________|____________|____________|____________|____________|
+
+		Transient faults happen periodically with a normal distribution with mean time between faults and a 
+		standard deviation  
+
+	*I:     ____________________________||||||||||______________________________________||||||||||_________
+
+		Intermittent faults happen in bursts periodically with a normal distribution with mean time between 
+		faults and a standard deviation. each burst injects 10 stuck at faults. 
+
+	*P:     __________________________________________________|''''''''''''''''''''''''''''''''''''''''''''
+
+		Permanent faults happen right after the specified shutdown time.
+
+	*T->I:  ___|____________|____________|____________||||||||||____________________________||||||||||_____
+
+		first it behaves as Transient, then becomes intermittent. For transient MTBF and Std_Dev it uses the
+		specified values in the fault object. for intermittent faults it uses the values specified in package 
+		file.
+
+	*T->P:  ___|____________|____________|____________||||||||||______________________|''''''''''''''''''''
+
+		First it behaves as transient, then turns into intermittent and then permannet. For transient MTBF and 
+		Std_Dev it uses the specified values in the fault object. for intermittent faults it uses the values 
+		specified in package file. for becomming permanent, it uses the shutdown time specified in the fault 
+		object.
 	"""
 	list_of_links = fault_list
 	delay = 1000000000/Fault_Per_Second
