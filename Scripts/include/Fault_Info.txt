@@ -1,0 +1,12 @@
+tb_network_2x2:NoC:R_0:RX_L(21) 	32 	I 	1000 	101		None
+tb_network_2x2:NoC:R_0:RX_S(14) 	32 	T 	73 		8 		None
+tb_network_2x2:NoC:R_0:RX_W(4) 		32 	P 	66 		7 		8827
+tb_network_2x2:NoC:R_1:RX_L(11) 	32 	I 	1000 	101		None
+tb_network_2x2:NoC:R_1:RX_S(21) 	32 	P 	66 		7 		2624
+tb_network_2x2:NoC:R_1:RX_E(1) 		32 	T 	73 		8 		None
+tb_network_2x2:NoC:R_2:RX_L(15) 	32 	I 	1000 	101		None
+tb_network_2x2:NoC:R_2:RX_N(13) 	32 	P 	66 		7 		6713
+tb_network_2x2:NoC:R_2:RX_W(0) 		32 	I 	1000 	101		None
+tb_network_2x2:NoC:R_3:RX_L(14) 	32 	I 	1000 	101		None
+tb_network_2x2:NoC:R_3:RX_N(30) 	32 	I 	1000 	101		None
+tb_network_2x2:NoC:R_3:RX_E(5) 		32 	I 	1000 	101		None

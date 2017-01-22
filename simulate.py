@@ -15,7 +15,14 @@ from Scripts.include.write_do_file import write_do_file
 from Scripts.include import package
 from Scripts.include.arg_parser import arg_parser, report_parogram_arguments
 from Scripts.include.stats import statistics
-#from Scripts.include.viz_traffic import viz_traffic
+
+try:
+    from Scripts.include.viz_traffic import viz_traffic
+    Viz = True
+except:
+    print_msg(MSG_INFO, "Can not include the visualizer! Some library is missing.")
+    Viz = False
+
 from Scripts.include.file_gen import gen_network_and_tb, gen_wave_do
 
 """
@@ -25,7 +32,6 @@ def main(argv):
  
 
     print "Project Root:", package.PROJECT_ROOT
- 
 
     # Check if the temporary folder exists. If it does, clear it, if not, create it.
     if os.path.exists(package.SIMUL_DIR):
@@ -113,8 +119,8 @@ def main(argv):
     else:
         statistics(False)
 
-    #if package.program_argv["trace"]:
-    #    viz_traffic(package.program_argv["network_dime"])
+    if package.program_argv["trace"] and Viz == True:
+        viz_traffic(package.program_argv["network_dime"])
 
     logging.info('Logging finished...')
 
