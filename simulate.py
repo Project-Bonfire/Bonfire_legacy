@@ -20,7 +20,7 @@ try:
     from Scripts.include.viz_traffic import viz_traffic
     Viz = True
 except:
-    print_msg(MSG_INFO, "Can not include the visualizer! Some library is missing.")
+    print_msg(MSG_INFO, "Can not include the visualizer! Some library is missing. Turning off the visualization!")
     Viz = False
 
 from Scripts.include.file_gen import gen_network_and_tb, gen_wave_do

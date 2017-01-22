@@ -1,7 +1,12 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
-def declare_components(noc_file, add_parity, add_SHMU, add_packet_drop, add_FC, network_dime, 
+def declare_components(noc_file, add_parity, add_SHMU, add_packet_drop, add_FC, 
                        add_tracker):
+    """
+    writes component deceleration into noc_file based on add_parity, add_SHMU, add_packet_drop, 
+    add_FC, and add_tracker
+    add_parity, add_SHMU, add_packet_drop, add_FC, add_tracker are all Boolean 
+    """
     
     if add_packet_drop and add_FC and not add_SHMU:
         noc_file.write("component router_credit_based_PD_C is  --fault classifier plus packet-dropping  \n")
@@ -117,7 +122,7 @@ def declare_components(noc_file, add_parity, add_SHMU, add_packet_drop, add_FC, 
 
     noc_file.write("\n\n")
 
-    if add_tracker:
+    if add_tracker: # this for tracking packets in the network
         noc_file.write("component flit_tracker is\n")
         noc_file.write("    generic (\n")
         noc_file.write("        DATA_WIDTH: integer := 32;\n")

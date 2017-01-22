@@ -6,6 +6,13 @@ from CB_functions import rxy_rst_calculator, cx_rst_calculator
 
 def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add_FC, add_SHMU, 
                         healthy_counter_threshold, faulty_counter_threshold, counter_depth):
+    """
+    Instantiates the different routers based on the specified configuration!
+    noc_file:      string   : destination file
+    network_dime:  integer  : network size
+    add_parity, add_packet_drop, add_FC, add_SHMU: boolean: configuration of the system!
+    healthy_counter_threshold, faulty_counter_threshold, counter_depth: integer:  for setting up counter-threshold unit
+    """
 
     if add_packet_drop and add_FC and not add_SHMU:
         for i in range(0, network_dime**2):

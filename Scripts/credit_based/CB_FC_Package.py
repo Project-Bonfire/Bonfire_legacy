@@ -2,7 +2,14 @@
 from math import ceil, log
 
 
+
 class CreditBasedPackage():
+    """
+    This class handles all the program arguments.
+    sort_out_parameters: function for setting up the argument list and also printing the manual if needed!
+    parameters_sanity_check: TODO 
+    generate_file_name: handles generating the file name for output file
+    """
 
     def __init__(self):
         self.network_dime = None
@@ -59,6 +66,7 @@ class CreditBasedPackage():
         return 0
 
     def parameters_sanity_check(self):
+        
         pass
 
     def generate_file_name(self, arguments_list):
@@ -71,7 +79,7 @@ class CreditBasedPackage():
         if '-o'  in arguments_list:
             file_path = arguments_list[arguments_list.index('-o')+1]
             if ".vhd" not in file_path:
-                raise ValueError("wrong file extention. only vhdl files are accepted!")
+                raise ValueError("wrong file extension. only vhdl files are accepted!")
         else:
             file_path = file_name+'_'+str(self.network_dime)+"x"+str(self.network_dime)+'.vhd'
         return file_path

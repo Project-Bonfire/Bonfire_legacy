@@ -44,8 +44,7 @@ noc_file.write("architecture behavior of network_"+str(CB_Package.network_dime)+
 
 # declaring components, signals and making ascii art!!!
 declare_components(noc_file, CB_Package.add_parity, CB_Package.add_SHMU,
-                   CB_Package.add_packet_drop, CB_Package.add_FC, CB_Package.network_dime, 
-                   CB_Package.add_tracker)
+                   CB_Package.add_packet_drop, CB_Package.add_FC, CB_Package.add_tracker)
 
 declare_signals(noc_file, CB_Package.network_dime, CB_Package.add_parity, CB_Package.add_packet_drop,
                 CB_Package.add_FC, CB_Package.add_SHMU)
