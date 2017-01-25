@@ -270,7 +270,7 @@ LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
    PORT MAP (reset =>  reset, clk => clk, empty => empty_S, Rxy_reconf => Rxy_reconf, Reconfig => Reconfig,
    			 Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,    
              flit_type => FIFO_D_out_S(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_S(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
-             pfaulty => LBDR_Fault_S, acket_drop_order => packet_drop_order_S,
+             faulty => LBDR_Fault_S, packet_drop_order => packet_drop_order_S,
              grant_N => Grant_NS, grant_E =>Grant_ES, grant_W =>Grant_WS ,grant_S=>'0', grant_L =>Grant_LS,
              Req_N=> Req_SN, Req_E=>Req_SE, Req_W=>Req_SW, Req_S=>Req_SS, Req_L=>Req_SL);
 
