@@ -75,6 +75,7 @@ architecture behavior of router_credit_based_PD_C is
     generic(DATA_WIDTH : integer := 32);
     port(
         RX: in std_logic_vector(DATA_WIDTH-1 downto 0);
+        empty: in std_logic;
         faulty: out std_logic
         );
     end COMPONENT;
@@ -234,11 +235,11 @@ FIFO_L: FIFO_credit_based
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
-parity_LBDR_N: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_N, LBDR_Fault_N);
-parity_LBDR_E: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_E, LBDR_Fault_E);
-parity_LBDR_W: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_W, LBDR_Fault_W);
-parity_LBDR_S: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_S, LBDR_Fault_S);
-parity_LBDR_L: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_L, LBDR_Fault_L);
+parity_LBDR_N: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_N, empty_N, LBDR_Fault_N);
+parity_LBDR_E: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_E, empty_E, LBDR_Fault_E);
+parity_LBDR_W: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_W, empty_W, LBDR_Fault_W);
+parity_LBDR_S: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_S, empty_S, LBDR_Fault_S);
+parity_LBDR_L: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_L, empty_L, LBDR_Fault_L);
 
 --- all the LBDRs
 LBDR_N: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, NoC_size => NoC_size)

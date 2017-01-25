@@ -8,6 +8,7 @@ entity parity_checker_for_LBDR is
 	generic(DATA_WIDTH : integer := 32);
 	port(
 		RX: in std_logic_vector(DATA_WIDTH-1 downto 0);
+		empty: in std_logic;
 		faulty: out std_logic
 		);
 end parity_checker_for_LBDR;
@@ -18,8 +19,8 @@ signal xor_all: std_logic;
 
 begin 
 
-process(valid_in, RX) begin
-	if valid_in = '1' then 
+process(empty, RX) begin
+	if empty = '0' then 
 		xor_all <= XOR_REDUCE(RX(DATA_WIDTH-1 downto 1));
 	else
 		xor_all <= '0';
