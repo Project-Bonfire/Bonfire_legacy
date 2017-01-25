@@ -139,7 +139,7 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
         Req_W_in <= ((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2);
         Req_S_in <= ((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3);
         Req_L_in <= not N1 and  not E1 and not W1 and not S1;
-        if faulty == '1' then
+        if faulty = '1' then
           packet_drop_in <= '1';
           Req_N_in <= '0';
           Req_E_in <= '0';
