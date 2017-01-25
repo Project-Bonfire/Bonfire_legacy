@@ -2,6 +2,12 @@
 
 
 def declare_signals(noc_file, network_dime, add_parity, add_packet_drop, add_FC, add_SHMU):
+    """
+    noc_file:       string  : path to the network file
+    network_dime:   integer : network size
+    dd_parity, add_packet_drop, add_FC, add_SHMU: boolean   : Configuration bits 
+    """
+    
     noc_file.write("\n\n")
     noc_file.write("-- generating bulk signals. not all of them are used in the design...\n")
 
