@@ -25,8 +25,6 @@ package TB_Package is
                       signal port_in: out std_logic_vector); 
   procedure get_packet(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; 
                      signal credit_out: out std_logic; signal valid_in: in std_logic; signal port_in: in std_logic_vector);
-  procedure gen_fault(signal sta_0, sta_1: out std_logic; signal address: out std_logic_vector; delay, seed_1, seed_2: in integer);
-
 end TB_Package;
 
 package body TB_Package is
@@ -256,7 +254,7 @@ procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_de
       destination_id := integer(rand*real((network_size**2)-1));
       while (destination_id = source) loop 
           uniform(seed1, seed2, rand);
-          destination_id := integer(rand*3.0);
+          destination_id := integer(rand*real((network_size**2)-1));
       end loop;
       --------------------------------------
       write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: " & integer'image(Packet_length) & " id: " & integer'image(id_counter));
@@ -359,34 +357,5 @@ procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_de
 
      end loop;
   end get_packet;
-
-procedure gen_fault(signal sta_0, sta_1: out std_logic; signal address: out std_logic_vector; delay, seed_1, seed_2: in integer) is
-  variable seed1 :positive := seed_1;
-   variable seed2 :positive := seed_2;
-   variable rand : real;
-   variable stuck: integer;
-begin 
-  sta_0 <= '0';
-  sta_1 <= '0';
-  while true loop
-      sta_0 <= '0';
-      sta_1 <= '0';
-      for I in 0 to delay loop 
-        wait for 1 ns;
-      end loop;
-      uniform(seed1, seed2, rand);
-      address <= std_logic_vector(to_unsigned(integer(rand*31.0), 5));
-      uniform(seed1, seed2, rand);
-      stuck := integer(rand*11.0);
-      if stuck > 5 then
-        sta_0 <= '1';
-        sta_1 <= '0';
-      else
-        sta_0 <= '0';
-        sta_1 <= '1';
-      end if; 
-      wait for 1 ns;
-  end loop;
-end gen_fault;
 
 end TB_Package;

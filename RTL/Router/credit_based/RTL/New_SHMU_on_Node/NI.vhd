@@ -194,14 +194,16 @@ end process;
 ---------------------------------------------------------------------------------------
 --below this is code for communication from PE 2 NoC
  
-process(write_byte_enable, address) begin
+process(enable, address, write_byte_enable) begin
   Reconfig_command <= '0';
   Rxy_reconf_PE <= (others =>'0');
   Cx_reconf_PE <= (others =>'0');
   if address = reconfiguration_address and enable = '1' then
-    Rxy_reconf_PE <= data_write(7 downto 0);
-    Cx_reconf_PE <= data_write(4 downto 8);
-    Reconfig_command <= '1';
+    if write_byte_enable /= "0000" then
+      Rxy_reconf_PE <= data_write(7 downto 0);
+      Cx_reconf_PE <= data_write(4 downto 8);
+      Reconfig_command <= '1';
+    end if;
   end if;
 end process;
 
