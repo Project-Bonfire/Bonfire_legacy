@@ -9,7 +9,21 @@ use IEEE.NUMERIC_STD.all;
  use ieee.std_logic_misc.all;
 
 package TB_Package is
-  
+   procedure NI_control(network_size, frame_length, current_address, initial_delay, min_packet_size, max_packet_size: in integer;
+                      finish_time: in time; 
+                      signal clk:                      in std_logic;
+                      -- NI configuration
+                      signal reserved_address :        in std_logic_vector(29 downto 0);
+                      signal flag_address :            in std_logic_vector(29 downto 0) ; -- reserved address for the memory mapped I/O
+                      signal counter_address :         in std_logic_vector(29 downto 0);
+                      signal reconfiguration_address : in std_logic_vector(29 downto 0);  -- reserved address for reconfiguration register
+                      signal self_diagnosis_address :  in std_logic_vector(29 downto 0);
+                      -- NI signals
+                      signal enable:                   out std_logic; 
+                      signal write_byte_enable:        out std_logic_vector(3 downto 0);
+                      signal address:                  out std_logic_vector(31 downto 2); 
+                      signal data_write:               out std_logic_vector(31 downto 0);
+                      signal data_read:                out std_logic_vector(31 downto 0));
  
 end TB_Package;
 

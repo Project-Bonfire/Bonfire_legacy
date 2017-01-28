@@ -45,6 +45,7 @@ program_argv = {
         'add_checkers':    False,
         'packet_drop':     False,
         'add_NI':          -1,
+        'add_NI_Test':     False,
         'add_FI':          False,
         'add_FC':          False,
         'add_FO':          False,

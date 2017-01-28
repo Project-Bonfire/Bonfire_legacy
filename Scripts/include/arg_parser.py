@@ -24,6 +24,7 @@ def arg_parser(argv, program_argv, logging):
     program_argv['network_dime'] = 4
     program_argv['add_parity'] = False
     program_argv['add_checkers'] = False
+    program_argv['add_NI_Test'] = False
     program_argv['add_FI'] = False
     program_argv['add_FC'] = False
     program_argv['packet_drop'] = False
@@ -45,10 +46,11 @@ def arg_parser(argv, program_argv, logging):
     if '-P' in argv[1:]:
         program_argv['add_parity'] = True
 
-
     if '-checkers' in argv[1:]:
         program_argv['add_checkers'] = True
 
+    if '-add_NI_Test' in argv[1:]:
+        program_argv['add_NI_Test'] = True
 
     if '-NI' in argv[1:]:
         if argv[argv.index('-NI')+1].isdigit():
