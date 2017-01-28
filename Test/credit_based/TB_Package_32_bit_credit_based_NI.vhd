@@ -84,7 +84,7 @@ package body TB_Package is
       
       -- read the flag status
       address <= flag_address;  
-      write_byte_enable <= '0000';
+      write_byte_enable <= '0000'; -- Is it fine to use ' instead of " ?
       wait until clk'event and clk ='0';
 
       --flag register is organized like this:
