@@ -113,8 +113,6 @@ package body TB_Package is
       --generating the frame initial delay
       uniform(seed1, seed2, rand);
       frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - Packet_length)))/100); 
-      -- Siavoosh:  the point about the 3 is very valid, i fixed it.. it was residue of the handshaking router, 
-      --            since each flit requires 3 clk for hand shaking 
       --generating the frame ending delay
       frame_ending_delay := frame_length - (Packet_length+frame_starting_delay);
 
@@ -152,15 +150,14 @@ package body TB_Package is
       --------------------------------------
       write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: " & integer'image(Packet_length) & " id: " & integer'image(id_counter));
       writeline(VEC_FILE, LINEVARIABLE);
-      wait until clk'event and clk ='0'; -- Why on negative edge of clk ? for syncing!
+      wait until clk'event and clk ='0'; -- On negative edge of clk (for syncing purposes)
       port_in <= Header_gen(Packet_length, source, destination_id, id_counter); -- Generating the header flit of the packet (All packets have a header flit)!
       valid_out <= '1';
       wait until clk'event and clk ='0';
 
-      for I in 0 to Packet_length-3 loop  -- Why (Packet_length-3) ? -- This is the loop in which Body flit(s) are generated
-            -- Siavoosh: the reason for -3 is that we have packet length of Packet_length, now if you exclude header and tail
+      for I in 0 to Packet_length-3 loop  
+            -- The reason for -3 is that we have packet length of Packet_length, now if you exclude header and tail
             -- it would be Packet_length-2 to enumerate them, you can count from 0 to Packet_length-3. 
-            -- please remove these comments if you get the point
             if credit_counter_in = "00" then 
              valid_out <= '0'; 
              -- Wait until next router/NI has at least enough space for one flit in its input FIFO
@@ -190,8 +187,7 @@ package body TB_Package is
       wait until clk'event and clk ='0';
 
       valid_out <= '0';
-      port_in <= "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" ; -- Why High Impedance ? 
-      -- Siavoosh: because i like it this way!
+      port_in <= "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" ; 
 
       for l in 0 to frame_ending_delay-1 loop 
          wait until clk'event and clk ='0';
@@ -201,7 +197,7 @@ package body TB_Package is
       if now > finish_time then 
           wait; 
       end if;
-    end loop; -- How do we exit the loop (as it is a while true loop) ? When now > finish_time ?
+    end loop; 
   end gen_random_packet;
 
 procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
