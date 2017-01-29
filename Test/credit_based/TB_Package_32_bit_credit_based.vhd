@@ -99,7 +99,7 @@ package body TB_Package is
     variable credit_counter: std_logic_vector (1 downto 0);
     begin
 
-    Packet_length := integer((integer(rand*100.0)*frame_length)/300);
+    Packet_length := integer((integer(rand*100.0)*frame_length)/100);
     valid_out <= '0';
     port_in <= "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" ;
     wait until clk'event and clk ='1';
@@ -112,9 +112,11 @@ package body TB_Package is
 
       --generating the frame initial delay
       uniform(seed1, seed2, rand);
-      frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - 3*Packet_length)))/100); -- Why using 3 in the formula ?
+      frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - Packet_length)))/100); 
+      -- Siavoosh:  the point about the 3 is very valid, i fixed it.. it was residue of the handshaking router, 
+      --            since each flit requires 3 clk for hand shaking 
       --generating the frame ending delay
-      frame_ending_delay := frame_length - (3*Packet_length+frame_starting_delay);
+      frame_ending_delay := frame_length - (Packet_length+frame_starting_delay);
 
       for k in 0 to frame_starting_delay-1 loop 
           wait until clk'event and clk ='0';
@@ -125,7 +127,6 @@ package body TB_Package is
         wait until clk'event and clk ='0';
       end loop;
 
-
       -- generating the packet 
       id_counter := id_counter + 1;
       if id_counter = 256 then
@@ -133,7 +134,7 @@ package body TB_Package is
       end if;
       --------------------------------------
       uniform(seed1, seed2, rand);
-      Packet_length := integer((integer(rand*100.0)*frame_length)/300);
+      Packet_length := integer((integer(rand*100.0)*frame_length)/100);
       if (Packet_length < min_packet_size) then 
           Packet_length:=min_packet_size;
       end if;
@@ -143,7 +144,7 @@ package body TB_Package is
       --------------------------------------
       uniform(seed1, seed2, rand);
       -- By random traffic pattern we mean the destination id is randomly generated 
-      destination_id := integer(rand*real((network_size**2)-1)); -- Assuming that we can only have NxN network for now (maybe because of LBDR's implementation limitation)
+      destination_id := integer(rand*real((network_size**2)-1)); 
       while (destination_id = source) loop 
           uniform(seed1, seed2, rand);
           destination_id := integer(rand*3.0);
@@ -151,38 +152,46 @@ package body TB_Package is
       --------------------------------------
       write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: " & integer'image(Packet_length) & " id: " & integer'image(id_counter));
       writeline(VEC_FILE, LINEVARIABLE);
-      wait until clk'event and clk ='0'; -- Why on negative edge of clk ?
+      wait until clk'event and clk ='0'; -- Why on negative edge of clk ? for syncing!
       port_in <= Header_gen(Packet_length, source, destination_id, id_counter); -- Generating the header flit of the packet (All packets have a header flit)!
       valid_out <= '1';
       wait until clk'event and clk ='0';
 
       for I in 0 to Packet_length-3 loop  -- Why (Packet_length-3) ? -- This is the loop in which Body flit(s) are generated
+            -- Siavoosh: the reason for -3 is that we have packet length of Packet_length, now if you exclude header and tail
+            -- it would be Packet_length-2 to enumerate them, you can count from 0 to Packet_length-3. 
+            -- please remove these comments if you get the point
             if credit_counter_in = "00" then 
              valid_out <= '0'; 
-             wait until credit_counter_in'event and credit_counter_in > 0; -- Wait until next router/NI has at least enough space for one flit in its input FIFO
+             -- Wait until next router/NI has at least enough space for one flit in its input FIFO
+             wait until credit_counter_in'event and credit_counter_in > 0; 
              wait until clk'event and clk ='0';
             end if;
 
             uniform(seed1, seed2, rand);
-            port_in <= Body_gen(Packet_length, integer(rand*1000.0)); -- Each packet can have no body flits or one or more than body flits.
+            -- Each packet can have no body flits or one or more than body flits.
+            port_in <= Body_gen(Packet_length, integer(rand*1000.0)); 
             valid_out <= '1';
              wait until clk'event and clk ='0';
       end loop;
 
       if credit_counter_in = "00" then 
              valid_out <= '0'; 
-             wait until credit_counter_in'event and credit_counter_in > 0; -- Wait until next router/NI has at least enough space for one flit in its input FIFO
+             -- Wait until next router/NI has at least enough space for one flit in its input FIFO
+             wait until credit_counter_in'event and credit_counter_in > 0; 
              wait until clk'event and clk ='0';
       end if;
 
  
       uniform(seed1, seed2, rand);
-      port_in <= Tail_gen(Packet_length, integer(rand*1000.0)); -- Close the packet with a tail flit (All packets have one tail flit)!
+      -- Close the packet with a tail flit (All packets have one tail flit)!
+      port_in <= Tail_gen(Packet_length, integer(rand*1000.0)); 
       valid_out <= '1';
       wait until clk'event and clk ='0';
 
       valid_out <= '0';
-      port_in <= "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" ; -- Why High Impedance ?
+      port_in <= "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" ; -- Why High Impedance ? 
+      -- Siavoosh: because i like it this way!
 
       for l in 0 to frame_ending_delay-1 loop 
          wait until clk'event and clk ='0';

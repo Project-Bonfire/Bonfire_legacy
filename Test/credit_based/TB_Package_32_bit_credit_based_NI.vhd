@@ -84,7 +84,11 @@ package body TB_Package is
       
       -- read the flag status
       address <= flag_address;  
-      write_byte_enable <= '0000'; -- Is it fine to use ' instead of " ?
+      write_byte_enable <= "0000"; -- Is it fine to use ' instead of " ?
+      -- Siavoosh: I seriously dont understand why do you do this, if you see a typo, fix it please, 
+      --          I have not compiled it, and its not in the official branch, and its not even added to the 
+      --          simulate.py, wouldnt it be nicer just to wait and give me some more time? or even fix it?
+      --          instead of rubbing it in my face?
       wait until clk'event and clk ='0';
 
       --flag register is organized like this:
