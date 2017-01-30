@@ -26,6 +26,10 @@ def print_help(argv, program_argv):
     print BOLD + "  -NI [depth]:" + ENDC
     print "\tAdd a network interface with size [depth] to each router's local port. " \
         + "Default is " + str(program_argv['add_NI']) + "."
+    print BOLD + "  -NI_Test" + ENDC
+    print "\tAdds a network interface with size to each router's local port and connects a traffic generator to it instead of a PE. " \
+        + "Default is " + str(program_argv['NI_Test']) + "."\
+        +"should be used with -SHMU"
     print
     print BOLD + "  -FI:" + ENDC
     print "\tAdd fault injector units to all the links (except the local) in the network. " \

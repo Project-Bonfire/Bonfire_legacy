@@ -43,6 +43,7 @@ def gen_network_and_tb(program_argv, flow_control_type):
     net_tb_file_name = "network_" + str(program_argv['network_dime']) + "x" + str(program_argv['network_dime']) \
         + ("_parity" if program_argv['add_parity'] else "") \
         + ("_NI" if program_argv['add_NI'] != -1 else "") \
+        + ("_NI_Test" if program_argv['NI_Test'] != -1 else "") \
         + ("_packet_drop" if program_argv['packet_drop'] else "") \
         + ("_Rand" if program_argv['rand'] != -1 else "") \
         + ("_SHMU" if program_argv['add_SHMU'] else "") \
@@ -64,6 +65,7 @@ def gen_network_and_tb(program_argv, flow_control_type):
         + (" -P" if program_argv['add_parity'] else "") \
         + str(NI_status) \
         + (" -SHMU" if program_argv['add_SHMU']  else "") \
+        + (" -NI_Test" if program_argv['NI_Test']  else "") \
         + (" -trace" if program_argv['trace'] else "") \
         + (" -Rand " + str(program_argv['rand']) if program_argv['rand'] != -1 else "") \
         + (" -BR " + str(program_argv['BR']) if program_argv['BR'] != -1 else "") \

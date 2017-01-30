@@ -38,6 +38,11 @@ credit_based_files_SHMU = ["allocator.vhd", "arbiter_in.vhd", "arbiter_out.vhd",
 						   "FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd", "LBDR_packet_drop.vhd", "NI.vhd", 
 						   "Router_32_bit_credit_based_packet_drop_classifier_SHMU.vhd", "xbar.vhd"]
 
+credit_based_files_NI_Test = ["allocator.vhd", "arbiter_in.vhd", "arbiter_out.vhd", "counter_threshold.vhd",
+                              "FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd", "LBDR_packet_drop.vhd", 
+                              "NI.vhd", "Router_32_bit_credit_based_packet_drop_classifier_SHMU.vhd", "xbar.vhd"]
+#TODO: should add to NI_Test the following file: "TB_Package_32_bit_credit_based_NI.vhd"
+
 # plasma processor files along with the NI and NoC node wrapper!
 PE_files = ["mlite_pack.vhd", "alu.vhd", "bus_mux.vhd", "cache.vhd",
             "control.vhd", "ddr_ctrl.vhd", "eth_dma.vhd", "mem_ctrl.vhd",

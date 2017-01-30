@@ -20,6 +20,7 @@ if '--help' in sys.argv[1:]:
   print "\t-PS [min packet size] [max packet size]: specifies packet size. default min value is 3 and default max value is 8."
   print "\t-PE: adds processing elements in each node"
   print "\t-SHMU: maps shmu on one of the nodes"
+  print "\t-NI_Test: adds an NI to the nodes and connects a traffic generator to it"
   print "\t-trace: adds trackers to network outputs"
   print "\t-sim: specifies the length of simulation in clock cycles. which at this time the packet generators will stop sending packets."
   print "\t-verbal: prints more details"

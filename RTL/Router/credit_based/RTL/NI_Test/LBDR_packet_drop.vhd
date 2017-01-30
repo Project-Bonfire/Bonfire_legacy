@@ -10,16 +10,13 @@ use IEEE.MATH_REAL.ALL;
 entity LBDR_packet_drop is
     generic (
         cur_addr_rst: integer := 8;
-
+        Rxy_rst: integer := 8;
         Cx_rst: integer := 8;
         NoC_size: integer := 4
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
             
-            Rxy_reconf: in  std_logic_vector(7 downto 0);
-            Reconfig : in std_logic;
-
             Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S: in std_logic;
 
             empty: in  std_logic;
@@ -28,7 +25,12 @@ entity LBDR_packet_drop is
             faulty: in std_logic;
             packet_drop_order: out std_logic;
 	          grant_N, grant_E, grant_W, grant_S, grant_L: in std_logic;
-            Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic
+            Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic;
+
+
+            Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
+            Cx_reconf_PE: in  std_logic_vector(3 downto 0);
+            Reconfig_command : in std_logic
             );
 end LBDR_packet_drop;
 
@@ -36,16 +38,20 @@ architecture behavior of LBDR_packet_drop is
 
   signal Cx, Cx_in:  std_logic_vector(3 downto 0);
   signal Temp_Cx, Temp_Cx_in:  std_logic_vector(3 downto 0);
+
   signal reconfig_cx, reconfig_cx_in: std_logic;
+  signal ReConf_FF_in, ReConf_FF_out: std_logic;
 
   signal Rxy, Rxy_in:  std_logic_vector(7 downto 0);
+  signal Rxy_tmp, Rxy_tmp_in:  std_logic_vector(7 downto 0);
+
   signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  
   signal N1, E1, W1, S1  :std_logic :='0';  
   signal Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: std_logic;
   signal Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: std_logic;
   signal grants: std_logic;
   signal packet_drop, packet_drop_in: std_logic;
-  signal ReConf_FF_in, ReConf_FF_out: std_logic;
+  
 begin 
 
  grants <= grant_N or grant_E or grant_W or grant_S or grant_L;
@@ -63,7 +69,9 @@ begin
 process(clk, reset)
 begin
 if reset = '0' then 
-  Rxy <= Rxy_reconf;
+  Rxy <= std_logic_vector(to_unsigned(Rxy_rst, Rxy'length));
+  Rxy_tmp <= (others => '0');
+
   Req_N_FF <= '0';
   Req_E_FF <= '0';
   Req_W_FF <= '0';
@@ -76,6 +84,8 @@ if reset = '0' then
   packet_drop <= '0';
 elsif clk'event and clk = '1' then
   Rxy <= Rxy_in;	
+  Rxy_tmp <=  Rxy_tmp_in;
+
   Req_N_FF <= Req_N_in;
   Req_E_FF <= Req_E_in;
   Req_W_FF <= Req_W_in;
@@ -91,25 +101,25 @@ end process;
  
 
 -- The combionational part
-
-
-process(Rxy_reconf, ReConf_FF_out, Rxy, Reconfig, flit_type, grants, empty)begin
+ 
+process(Reconfig_command, Rxy_reconf_PE, Rxy_tmp, ReConf_FF_out, Rxy, flit_type, grants, empty)begin
   if ReConf_FF_out= '1' and flit_type = "100" and empty = '0' and grants = '1' then
-	  	Rxy_in <= Rxy_reconf;
+	  	Rxy_in <= Rxy_tmp;
 	  	ReConf_FF_in <= '0';
   else
   	Rxy_in <= Rxy;
-  	if Reconfig = '1' then 
+    if Reconfig_command = '1'then 
+      Rxy_tmp_in <= Rxy_reconf_PE;
   		ReConf_FF_in <= '1';
   	else
+      Rxy_tmp_in <= Rxy_tmp;
   		ReConf_FF_in <= ReConf_FF_out;
   	end if;
   end if; 
 end process;
 
 
-process(Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Cx, Temp_Cx, flit_type, reconfig_cx, empty, grants) begin
-  
+process(Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Cx, Temp_Cx, flit_type, reconfig_cx, empty, grants, Cx_reconf_PE, Reconfig_command) begin
   Temp_Cx_in <= Temp_Cx;
   if reconfig_cx = '1' and flit_type = "100" and empty = '0' and grants = '1' then
     Cx_in <= Temp_Cx;
@@ -119,7 +129,12 @@ process(Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Cx, Temp_Cx, flit_type, 
     if (Faulty_C_N or Faulty_C_E or Faulty_C_W or Faulty_C_S) = '1' then 
       reconfig_cx_in <= '1';
       Temp_Cx_in <= not(Faulty_C_S & Faulty_C_W & Faulty_C_E & Faulty_C_N) and Cx;
-    else
+
+    elsif Reconfig_command = '1' then
+      reconfig_cx_in <= '1';
+      Temp_Cx_in <=  Cx_reconf_PE;
+
+    else 
       reconfig_cx_in <= reconfig_cx;
     end if;
   end if;

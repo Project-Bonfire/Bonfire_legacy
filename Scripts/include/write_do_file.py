@@ -98,7 +98,6 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
         elif program_argv['add_checkers'] and program_argv['packet_drop'] and program_argv['add_FC']:
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based_packet_drop_classifier_with_full_set_of_checkers.vhd\"\n")
-
         else:
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based.vhd\"\n")
