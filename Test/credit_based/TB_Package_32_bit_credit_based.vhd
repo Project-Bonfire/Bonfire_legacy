@@ -141,11 +141,10 @@ package body TB_Package is
       end if;
       --------------------------------------
       uniform(seed1, seed2, rand);
-      -- By random traffic pattern we mean the destination id is randomly generated 
-      destination_id := integer(rand*real((network_size**2)-1)); 
+      destination_id := integer(rand*real((network_size**2)-1));
       while (destination_id = source) loop 
           uniform(seed1, seed2, rand);
-          destination_id := integer(rand*3.0);
+          destination_id := integer(rand*real((network_size**2)-1));
       end loop;
       --------------------------------------
       write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: " & integer'image(Packet_length) & " id: " & integer'image(id_counter));
@@ -256,12 +255,10 @@ procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_de
           Packet_length:=max_packet_size;
       end if;
       --------------------------------------
-      uniform(seed1, seed2, rand);
-      destination_id := integer(rand*real((network_size**2)-1));
-      while (destination_id = source) loop 
-          uniform(seed1, seed2, rand);
-          destination_id := integer(rand*real((network_size**2)-1));
-      end loop;
+      destination_id := to_integer(unsigned(not std_logic_vector(to_unsigned(source, network_size))));
+      if destination_id = source then
+        wait;
+      end if;
       --------------------------------------
       write(LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(source) & " to " & integer'image(destination_id) & " with length: " & integer'image(Packet_length) & " id: " & integer'image(id_counter));
       writeline(VEC_FILE, LINEVARIABLE);
