@@ -101,3 +101,9 @@ def print_help(argv, program_argv):
     print "\t\twith Fault Injection(40-60 clock cycle injection, i.e approx. 16 million faults per second) "	
     print "\t\talso generates a testbench which uses random traffic pattern generator with Packet Injection Rate of 0.1"
     print "\t\tand fixed packet size of 8 and sends packets until 10000 ns and ends simulation at 11000 ns" 
+    print BOLD + "  Example 3:" + ENDC
+    print "\t " + argv[0] + " -D 2 -credit_based_FC -packet_drop -FC -NI_Test -SHMU -Rand 0.01 -PS 8 8 -sim 10000 -end 11000"
+    print "\t\tSimulates a 2X2 network "
+    print "\t\tflow control mechanism is credit-based with packet_drop based FIFO and LBDR and fault classfiers support"
+    print "\t\tAlso uses NI testers which mimic the behaviour of plasma but are much faster!"
+    print "\t\tIt will also have SHMU capabilities handled by the NI tester procedure"
