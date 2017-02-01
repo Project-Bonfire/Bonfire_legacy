@@ -342,7 +342,7 @@ process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
     fault_info_ready_in <= '1';
   -- If current node is SHMU, we handle it locally
   elsif (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address = current_address then
-      self_diagnosis_reg_in <= "0000000000000000000" & turn_faults & link_faults;
+      self_diagnosis_reg_in <= "0000000" & turn_faults & link_faults;
   else
     fault_info_in <= fault_info;
     fault_info_ready_in <= fault_info_ready;
