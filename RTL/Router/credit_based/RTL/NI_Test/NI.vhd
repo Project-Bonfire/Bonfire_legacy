@@ -23,7 +23,7 @@ use ieee.std_logic_misc.all;
 entity NI is
    generic(current_address : integer := 10; 	-- the current node's address
            SHMU_address : integer := 0;
-   		     reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
+   		     reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111"; -- Behrad: NI's reserved address ?
            flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";	-- reserved address for the memory mapped I/O
            counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001";
            reconfiguration_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000010";  -- reserved address for reconfiguration register
@@ -69,7 +69,7 @@ architecture logic of NI is
   signal storage, storage_in : std_logic_vector(31 downto 0);
   signal valid_data_in, valid_data: std_logic;
 
-  signal old_address: std_logic_vector(31 downto 2);
+  signal old_address: std_logic_vector(31 downto 2); -- Behrad: What is old address ?
   signal P2N_FIFO_read_pointer, P2N_FIFO_read_pointer_in,  P2N_FIFO_write_pointer, P2N_FIFO_write_pointer_in: std_logic_vector(3 downto 0);
   signal P2N_write_en: std_logic;
   signal P2N_FIFO_MEM_1, P2N_FIFO_MEM_1_in : std_logic_vector(31 downto 0);
@@ -194,14 +194,21 @@ end process;
 ---------------------------------------------------------------------------------------
 --below this is code for communication from PE 2 NoC
  
+
+-- Process used for sending reconfiguration command from PE to router (which is part of NoC)
+
 process(enable, address, write_byte_enable) begin
-  Reconfig_command <= '0';
+  -- Some initializations
+  Reconfig_command <= '0'; 
   Rxy_reconf_PE <= (others =>'0');
   Cx_reconf_PE <= (others =>'0');
+
   if address = reconfiguration_address and enable = '1' then
     if write_byte_enable /= "0000" then
-      Rxy_reconf_PE <= data_write(7 downto 0);
-      Cx_reconf_PE <= data_write(4 downto 8);
+      -- In this case, data_write definitely includes the connectivity bits and routing bits for 
+      -- reconfiguring LBDR logic.
+      Rxy_reconf_PE <= data_write(7 downto 0); -- Rxy is 8 bits long 
+      Cx_reconf_PE <= data_write(4 downto 8); -- Cx is 4 bits long
       Reconfig_command <= '1';
     end if;
   end if;
@@ -212,11 +219,14 @@ process(write_byte_enable, enable, address, storage, data_write, valid_data, P2N
    storage_in <= storage ;
    valid_data_in <= valid_data;
 
+   -- If PE wants to send data to NoC via NI (data is valid)
    if enable = '1' and address = reserved_address then
       if write_byte_enable /= "0000" then
         valid_data_in <= '1';
       end if;
 
+      -- Behrad: So according to Plasma, is write_byte_enable always one-hot ? 
+      --         (of course it can also be "0000")
       if write_byte_enable(0) = '1' then
          storage_in(7 downto 0) <= data_write(7 downto 0);
       end if;
@@ -237,6 +247,8 @@ process(write_byte_enable, enable, address, storage, data_write, valid_data, P2N
 
 end process;
 
+-- Process for storing in FIFO (based on the position write pointer is pointing to)
+-- Write pointer is encoded as one-hot!
 process(storage, P2N_FIFO_write_pointer, P2N_FIFO_MEM_1, P2N_FIFO_MEM_2, P2N_FIFO_MEM_3, P2N_FIFO_MEM_4)begin
       case(P2N_FIFO_write_pointer) is
           when "0001" => P2N_FIFO_MEM_1_in <= storage;    	  P2N_FIFO_MEM_2_in <= P2N_FIFO_MEM_2; P2N_FIFO_MEM_3_in <= P2N_FIFO_MEM_3; P2N_FIFO_MEM_4_in <= P2N_FIFO_MEM_4;
@@ -247,6 +259,8 @@ process(storage, P2N_FIFO_write_pointer, P2N_FIFO_MEM_1, P2N_FIFO_MEM_2, P2N_FIF
       end case ;
 end process;
 
+-- Process for reading from FIFO (based on the position read pointer is pointing to)
+-- read pointer is encoded as one-hot!
 process(P2N_FIFO_read_pointer, P2N_FIFO_MEM_1, P2N_FIFO_MEM_2, P2N_FIFO_MEM_3, P2N_FIFO_MEM_4)begin
     case( P2N_FIFO_read_pointer ) is
         when "0001" => FIFO_Data_out <= P2N_FIFO_MEM_1;
@@ -257,17 +271,19 @@ process(P2N_FIFO_read_pointer, P2N_FIFO_MEM_1, P2N_FIFO_MEM_2, P2N_FIFO_MEM_3, P
     end case ;
   end process;
 
+-- Write pointer update process (after each write operation, write pointer is rotated one bit to the left)
 process(P2N_write_en, P2N_FIFO_write_pointer)begin
-    if P2N_write_en = '1'then
+    if P2N_write_en = '1' then
        P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer(2 downto 0) & P2N_FIFO_write_pointer(3);
     else
        P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer;
     end if;
   end process;
 
+-- Read pointer update process (after each read operation, read pointer is rotated one bit to the left)
  process(P2N_FIFO_read_pointer, grant)begin
   P2N_FIFO_read_pointer_in <=  P2N_FIFO_read_pointer;
-  if grant  = '1' then
+  if grant  = '1' then -- Behrad: so grant here works somehow like read_en signal for FIFO ?
     P2N_FIFO_read_pointer_in <=  P2N_FIFO_read_pointer(2 downto 0) & P2N_FIFO_read_pointer(3);
   end if;
 end process;
@@ -280,6 +296,7 @@ process(P2N_full, valid_data) begin
      end if;
   end process;
 
+-- Process for updating full and empty signals
 process(P2N_FIFO_write_pointer, P2N_FIFO_read_pointer) begin
       P2N_empty <= '0';
       P2N_full <= '0';
@@ -319,9 +336,11 @@ process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
  
   self_diagnosis_reg_in <= self_diagnosis_reg_out;
 
+  -- If current node is not SHMU, we need to send fault information to SHMU
   if (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address /= current_address then
     fault_info_in <= turn_faults & link_faults;
     fault_info_ready_in <= '1';
+  -- If current node is SHMU, we handle it locally
   elsif (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address = current_address then
       self_diagnosis_reg_in <= "0000000000000000000" & turn_faults & link_faults;
   else
@@ -340,7 +359,8 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
     variable LINEVARIABLE : line;
     file VEC_FILE : text is out "sent.txt";
     begin
-    	sent_info <= '0';
+        -- Some initializations
+    	  sent_info <= '0';
         TX <= (others => '0');
         grant<= '0';
         packet_length_counter_in <= packet_length_counter_out;
@@ -537,7 +557,7 @@ process(N2P_write_en, N2P_read_en, RX, N2P_Data_out)begin
   end if;
 end process;
 
-flag_register_in <= N2P_empty & P2N_full & self_diagnosis_flag& "00000000000000000000000000000";
+flag_register_in <= N2P_empty & P2N_full & self_diagnosis_flag & "00000000000000000000000000000";
 --NI_read_flag <= N2P_empty;
 --NI_write_flag <= P2N_full;
 
