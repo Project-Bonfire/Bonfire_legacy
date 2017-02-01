@@ -55,7 +55,7 @@ entity NI is
 
         -- fault information signals from the router
         link_faults: in std_logic_vector(4 downto 0);
-        turn_faults: in std_logic_vector(7 downto 0);
+        turn_faults: in std_logic_vector(19 downto 0);
 
         Rxy_reconf_PE: out  std_logic_vector(7 downto 0);   
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
@@ -105,7 +105,7 @@ architecture logic of NI is
   signal N2P_read_en, N2P_read_en_in, N2P_write_en: std_logic;
   signal counter_register_in, counter_register : std_logic_vector(1 downto 0);
 
-  signal fault_info, fault_info_in: std_logic_vector(12 downto 0);
+  signal fault_info, fault_info_in: std_logic_vector(24 downto 0);
   signal sent_info, fault_info_ready, fault_info_ready_in: std_logic;
   signal self_diagnosis_reg_out, self_diagnosis_reg_in: std_logic_vector(31 downto 0);
   signal self_diagnosis_flag, self_diagnosis_flag_in: std_logic;
@@ -305,7 +305,7 @@ end process;
 
 -- flag setting and clearing for self diagnosis 
 process(link_faults, turn_faults, self_diagnosis_flag, old_address)begin
-  if (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address = current_address then
+  if (link_faults  /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address = current_address then
     self_diagnosis_flag_in <= '1';
   elsif old_address = self_diagnosis_address then
     self_diagnosis_flag_in <= '0';
@@ -319,11 +319,11 @@ process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
  
   self_diagnosis_reg_in <= self_diagnosis_reg_out;
 
-  if (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address /= current_address then
+  if (link_faults  /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address /= current_address then
     fault_info_in <= turn_faults & link_faults;
     fault_info_ready_in <= '1';
-  elsif (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address = current_address then
-      self_diagnosis_reg_in <= "0000000000000000000" & turn_faults & link_faults;
+  elsif (link_faults  /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address = current_address then
+      self_diagnosis_reg_in <= "0000000" & turn_faults & link_faults;
   else
     fault_info_in <= fault_info;
     fault_info_ready_in <= fault_info_ready;
@@ -357,7 +357,9 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                 end if;
 
             when HEADER_FLIT =>
-                if credit_counter_out /= "00" then
+                if credit_counter_out /= "00" and P2N_empty = '0' then
+                    
+                    packet_length_counter_in <=   ("0000" & FIFO_Data_out(23 downto 16))-1;
                     grant <= '1';
 
                     TX <= "001" &  "0000" & FIFO_Data_out(23 downto 16) & FIFO_Data_out(31 downto 28) &
@@ -366,7 +368,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                            std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out);
 
                     state_in <= BODY_FLIT;
-                    packet_length_counter_in <=   ("0000" & FIFO_Data_out(23 downto 16))-1;
+                    
                 else
                     state_in <= HEADER_FLIT;
                 end if;
@@ -375,11 +377,12 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                 if credit_counter_out /= "00" and P2N_empty = '0'then
                     grant <= '1';
                     TX <= "010" & FIFO_Data_out(27 downto 0) & XOR_REDUCE("010" & FIFO_Data_out(27 downto 0));
-                    packet_length_counter_in <= packet_length_counter_out - "000000000001";
-                    if packet_length_counter_out = "000000000010" then
-                      state_in <= TAIL_FLIT;
-                    else
+                    packet_length_counter_in <= packet_length_counter_out - 1;
+
+                    if packet_length_counter_out > 2 then
                       state_in <= BODY_FLIT;
+                    else
+                      state_in <= TAIL_FLIT;
                     end if;
                 else
                     state_in <= BODY_FLIT;
@@ -388,6 +391,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
             when TAIL_FLIT =>
                 if credit_counter_out /= "00" and P2N_empty = '0' then
                     grant <= '1';
+                    packet_length_counter_in <= packet_length_counter_out - 1;
                     TX <= "100" & FIFO_Data_out(27 downto 0) & XOR_REDUCE("100" & FIFO_Data_out(27 downto 0));
                     packet_counter_in <= packet_counter_out +1;
                     state_in <= IDLE;

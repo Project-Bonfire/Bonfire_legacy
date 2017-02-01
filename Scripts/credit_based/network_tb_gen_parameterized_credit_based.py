@@ -270,7 +270,7 @@ elif not add_node and add_SHMU and add_NI_Test:
   noc_file.write("        RX: in std_logic_vector(31 downto 0); -- data recieved form the NoC\n")
   noc_file.write("        -- fault information signals from the router\n")
   noc_file.write("        link_faults: in std_logic_vector(4 downto 0);\n")
-  noc_file.write("        turn_faults: in std_logic_vector(7 downto 0);\n")
+  noc_file.write("        turn_faults: in std_logic_vector(19 downto 0);\n")
   noc_file.write("\n")
   noc_file.write("        Rxy_reconf_PE: out  std_logic_vector(7 downto 0);\n")
   noc_file.write("        Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)\n")
@@ -297,6 +297,23 @@ if add_SHMU:
 
 noc_file.write("\t-- NI testing signals\n")
 if add_NI_Test:
+
+  noc_file.write("\tsignal reserved_address :        std_logic_vector(29 downto 0):= \"000000000000000001111111111111\";\n")
+  noc_file.write("\tsignal flag_address :            std_logic_vector(29 downto 0):= \"000000000000000010000000000000\" ; -- reserved address for the memory mapped I/O\n")
+  noc_file.write("\tsignal counter_address :         std_logic_vector(29 downto 0):= \"000000000000000010000000000001\";\n")
+  noc_file.write("\tsignal reconfiguration_address : std_logic_vector(29 downto 0):= \"000000000000000010000000000010\";  -- reserved address for reconfiguration register\n")
+  noc_file.write("\tsignal self_diagnosis_address :  std_logic_vector(29 downto 0):= \"000000000000000010000000000011\";\n")
+  
+  string_to_print = ""
+  for i in range(0, network_dime*network_dime):
+    string_to_print += "irq_out_"+str(i)+ ", "
+  noc_file.write("\tsignal "+string_to_print[:-2]+": std_logic;\n")
+
+  string_to_print = ""
+  for i in range(0, network_dime*network_dime):
+    string_to_print += "test_"+str(i)+ ", "
+  noc_file.write("\tsignal "+string_to_print[:-2]+": std_logic_vector(31 downto 0);\n")
+
   string_to_print = ""
   for i in range(0, network_dime*network_dime):
     string_to_print += "enable_"+str(i)+ ", "
@@ -439,7 +456,7 @@ elif add_NI_Test and add_SHMU:
       noc_file.write("NI_" + str(node_number) + ": NI \n")
       noc_file.write("   generic map(current_address => " + str(node_number) + "\n")
       noc_file.write("           ) \n")
-      noc_file.write("   port(clk => clk , reset => not_reset , enable => enable_" + str(node_number) + ", \n")
+      noc_file.write("   port map(clk => clk , reset => not_reset , enable => enable_" + str(node_number) + ", \n")
       noc_file.write("        write_byte_enable => write_byte_enable_" + str(node_number) + ", \n")
       noc_file.write("        address => address_" + str(node_number) + ", \n")
       noc_file.write("        data_write => data_write_" + str(node_number) + ", \n")
@@ -472,12 +489,11 @@ elif add_NI_Test and add_SHMU:
       else:
         random_end = random.randint(random_start, 200)
 
-      noc_file.write("NI_control("+str(network_dime)+", "+str(frame_size)+", "+str(i)+", "+str(random_start)+", " +str(packet_size_min)+", " +str(packet_size_max)+", "+str(random_end)+", clk,\n")
+      noc_file.write("NI_control("+str(network_dime)+", "+str(frame_size)+", "+str(node_number)+", "+str(random_start)+", " +str(packet_size_min)+", " +str(packet_size_max)+", "+str(random_end)+" ns, clk,\n")
       noc_file.write("           -- NI configuration\n")
-      noc_file.write("           \"000000000000000001111111111111\", \"000000000000000010000000000000\", \"000000000000000010000000000001\", \n")
-      noc_file.write("           \"000000000000000010000000000010\", \"000000000000000010000000000011\",\n")
+      noc_file.write("           reserved_address, flag_address, counter_address, reconfiguration_address, self_diagnosis_address,\n")
       noc_file.write("           -- NI signals\n")
-      noc_file.write("           enable_" + str(node_number) + ", write_byte_enable_" + str(node_number) + ", address_" + str(node_number) + ", data_write_" + str(node_number) + ", data_read_" + str(node_number) + "); \n")
+      noc_file.write("           enable_" + str(node_number) + ", write_byte_enable_" + str(node_number) + ", address_" + str(node_number) + ", data_write_" + str(node_number) + ", data_read_" + str(node_number) + ", test_"+str(node_number)+"); \n")
       noc_file.write("\n")
 else:
   noc_file.write("\n")

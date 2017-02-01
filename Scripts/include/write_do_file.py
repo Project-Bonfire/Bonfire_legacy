@@ -62,19 +62,24 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
         else:
             # Without checkers
-            
-            if (program_argv['packet_drop'] and program_argv['add_FC']):
-                List_of_files = file_lists.credit_based_files_PD_FC
-            elif program_argv['packet_drop'] and not program_argv['add_FC']:
-                List_of_files = file_lists.credit_based_files_PD
-            elif program_argv['packet_saving']:
-                List_of_files = file_lists.credit_based_files_PS
+            if (program_argv['NI_Test'] and program_argv['add_SHMU']):
+                List_of_files = file_lists.credit_based_files_NI_Test
+                for file in List_of_files:
+                   do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                       + "/RTL/NI_Test/"+file+"\"\n")
             else:
-                List_of_files = file_lists.credit_based_files
+                if (program_argv['packet_drop'] and program_argv['add_FC']):
+                    List_of_files = file_lists.credit_based_files_PD_FC
+                elif program_argv['packet_drop'] and not program_argv['add_FC']:
+                    List_of_files = file_lists.credit_based_files_PD
+                elif program_argv['packet_saving']:
+                    List_of_files = file_lists.credit_based_files_PS
+                else:
+                    List_of_files = file_lists.credit_based_files
 
-            for file in List_of_files:
-                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/"+file+"\"\n")
+                for file in List_of_files:
+                    do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                        + "/RTL/"+file+"\"\n")
 
         # Add a network interface
         if program_argv['add_NI'] != -1:
@@ -155,8 +160,12 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
     # End of handshaking based flow control
 
     # Include file for the testbench
-    do_file.write("vcom \"" + TEST_DIR + "/" + flow_control_type \
-        + "/TB_Package_32_bit_" + flow_control_type + ".vhd\"\n")
+    if program_argv['NI_Test']:
+        do_file.write("vcom \"" + TEST_DIR + "/credit_based" \
+            + "/TB_Package_32_bit_credit_based_NI.vhd\"\n")
+    else:
+        do_file.write("vcom \"" + TEST_DIR + "/" + flow_control_type \
+            + "/TB_Package_32_bit_" + flow_control_type + ".vhd\"\n")
 
     if program_argv['trace'] and flow_control_type == "credit_based":
         do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
