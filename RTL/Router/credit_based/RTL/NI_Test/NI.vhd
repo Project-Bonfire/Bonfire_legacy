@@ -446,7 +446,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
             when DIAGNOSIS_TAIL =>
                 if credit_counter_out /= "00" then
                     grant <= '1';
-                    TX <= "100" & fault_info(12) & "000000000000000000000000000" & XOR_REDUCE("100" & fault_info(12) & "000000000000000000000000000");
+                    TX <= "100" & fault_info(24 downto 12) & "000000000000000" & XOR_REDUCE("100" & fault_info(12) & "000000000000000000000000000");
                     state_in <= IDLE;
                     sent_info <= '1';
                     packet_counter_in <= packet_counter_out +1;
