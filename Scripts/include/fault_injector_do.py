@@ -193,7 +193,8 @@ def generate_links_dictionary(network_size, sim_time):
 	for item in list_of_ports:
 		item_index = list_of_ports.index(item)
 		width = list_of_widths[item_index]
-		fault_type = random.choice(["T", "P", "I", "T->P", "T->I"])
+		#fault_type = random.choice(["T", "P", "I", "T->P", "T->I"])
+		fault_type = random.choice(["T"])
 
 		shut_down_time = None
 		std_dev = None

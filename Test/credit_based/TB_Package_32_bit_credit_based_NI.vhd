@@ -69,7 +69,7 @@ package body TB_Package is
     variable diagnosis_source_node, diagnosis_destination_node, diagnosis_packet_id, diagnosis_counter, diagnosis_packet_length: integer;
     
     -- sending variables
-    variable send_destination_node, send_counter: integer:= 0;
+    variable send_destination_node, send_counter, send_id_counter: integer:= 0;
     variable send_packet_length: integer:= 8;
     type state_type is (Idle, Header_flit, Body_flit, Tail_flit);
     variable  state : state_type;
@@ -149,7 +149,7 @@ package body TB_Package is
                     address <= reserved_address;
                     write_byte_enable <= "1111";
                     data_write <= std_logic_vector(to_unsigned(send_destination_node, 4)) & "0000" & std_logic_vector(to_unsigned(send_packet_length, 8)) & "0000000000000000";
-                    write(SEND_LINEVARIABLE, "Packet sent at " & time'image(now) & " From: " & integer'image(current_address) & " to: " & integer'image(send_destination_node) & " length: "& integer'image(send_packet_length) );
+                    write(SEND_LINEVARIABLE, "Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(send_destination_node) & " with length: "& integer'image(send_packet_length)  & " id: " & integer'image(send_id_counter));
                     writeline(SEND_FILE, SEND_LINEVARIABLE);
                   else
                     state :=  Idle;
@@ -179,6 +179,7 @@ package body TB_Package is
                   data_write <= "0000" & std_logic_vector(to_unsigned(integer(rand*1000.0), 28));
                   send_counter := 0;
                   state :=  Idle;
+                  send_id_counter := send_id_counter + 1;
               end if;
             end if;
 
