@@ -86,6 +86,11 @@ package body TB_Package is
     frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - 2*max_packet_size)))/100);
 
     while true loop 
+      
+      if  state = Idle and now  > finish_time then 
+          wait; 
+      end if;
+
       -- read the flag status
       address <= flag_address;  
       write_byte_enable <= "0000";  
@@ -199,9 +204,7 @@ package body TB_Package is
    
       end if;
 
-      if now > finish_time then 
-          wait; 
-      end if;
+     
     end loop;
 
   end NI_control;
