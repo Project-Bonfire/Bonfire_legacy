@@ -18,8 +18,12 @@ class fault:
 	shut_down_time = None
 
 	def __init__(self, loc, width, fault_type, mean_time, std_dev, shut_down_time):
-		random_position = random.randint(0, width-1)
-		self.location = loc+"("+str(random_position)+")"
+		
+		if width > 1:
+			random_position = random.randint(0, width-1)
+			self.location = loc+"("+str(random_position)+")"
+		else:
+			self.location = loc
 		self.bitwidth = width
 		self.Type = fault_type
 		self.mean_time = mean_time
@@ -72,17 +76,24 @@ def list_all_the_links(network_size):
 	takes the network size and returns a list of all the RX signals in the network
 	"""
 	list_of_ports = []
+	list_of_widths = []
 	for i in range(0, network_size*2):
 		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_L")
+		list_of_widths.append(32)
 		if i/network_size != 0:
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_N")
+			list_of_widths.append(32)
 		if i/network_size != network_size-1:
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_S")
+			list_of_widths.append(32)
 		if i%network_size != 0:
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_E")
+			list_of_widths.append(32)
 		if i%network_size != network_size-1:
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_W")
-	return list_of_ports
+			list_of_widths.append(32)
+
+	return list_of_ports, list_of_widths
 
 def list_all_the_lbdr_signals(network_size):
 	"""
@@ -107,19 +118,83 @@ def list_all_the_fifo_signals(network_size):
 	takes the network size and returns a list of all the relevant FIFO signals in the network
 	"""
 	list_of_ports = []
+	list_of_widths = []
 	for i in range(0, network_size*2):
-		pass
-	return list_of_ports
+		if i/network_size != 0:
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_1")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_2")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_3")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_4")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:read_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:write_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:empty")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:full")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:read_en")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:write_en")
+			list_of_widths += [32, 32, 32, 32, 4, 4, 1, 1, 1, 1]
+		if i/network_size != network_size-1:
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_1")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_2")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_3")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_4")
+
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:read_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:write_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:empty")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:full")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:read_en")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:write_en")
+			list_of_widths += [32, 32, 32, 32, 4, 4, 1, 1, 1, 1]
+		if i%network_size != 0:
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_1")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_2")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_3")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_4")
+
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:read_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:write_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:empty")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:full")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:read_en")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:write_en")
+			list_of_widths += [32, 32, 32, 32, 4, 4, 1, 1, 1, 1]
+		if i%network_size != network_size-1:
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_1")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_2")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_3")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_4")
+
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:read_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:write_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:empty")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:full")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:read_en")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:write_en")
+			list_of_widths += [32, 32, 32, 32, 4, 4, 1, 1, 1, 1]
+
+	return list_of_ports, list_of_widths
 
 def generate_links_dictionary(network_size, sim_time):
 	"""
 	This function generates random faults on all RX signals of the network
 	"""
-	list_of_ports = list_all_the_links(network_size)
+
+	list_of_ports = []
+	list_of_widths = []
+	ports, widths = list_all_the_links(network_size)
+	list_of_ports += ports
+	list_of_widths += widths
+	#ports, widths = list_all_the_fifo_signals(network_size)
+	#list_of_ports += ports
+	#list_of_widths += widths
+
 	random.seed(FAULT_RANDOM_SEED)
 	fault_list = []
 	for item in list_of_ports:
+		item_index = list_of_ports.index(item)
+		width = list_of_widths[item_index]
 		fault_type = random.choice(["T", "P", "I", "T->P", "T->I"])
+
 		shut_down_time = None
 		std_dev = None
 		if fault_type == "T":		# Transient fault
@@ -146,7 +221,7 @@ def generate_links_dictionary(network_size, sim_time):
 			shut_down_time = random.randint(int(sim_time*0.1), int(sim_time*0.9))
 			std_dev = int(mean_time*0.1+1)
 
-		new_fault = fault(item, 32, fault_type, mean_time, std_dev, shut_down_time)
+		new_fault = fault(item, width, fault_type, mean_time, std_dev, shut_down_time)
 		fault_list.append(new_fault)
 
 	report_faults(fault_list)

@@ -33,9 +33,17 @@ for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -group {NoC Detailed} -color Violet :"+tb_name+":credit_in_L_"+str(i)+"\n")
  	wave_file.write("add wave -noupdate -group {NoC Detailed} :"+tb_name+":clk\n")
 for i in range(0 , network_dime*network_dime):
+ 	wave_file.write("add wave -noupdate -group {NoC Empty_Sigs} :"+tb_name+":NoC:R_"+str(i)+":FIFO_N:empty\n")
+ 	wave_file.write("add wave -noupdate -group {NoC Empty_Sigs} :"+tb_name+":NoC:R_"+str(i)+":FIFO_E:empty\n")
+ 	wave_file.write("add wave -noupdate -group {NoC Empty_Sigs} :"+tb_name+":NoC:R_"+str(i)+":FIFO_W:empty\n")
+ 	wave_file.write("add wave -noupdate -group {NoC Empty_Sigs} :"+tb_name+":NoC:R_"+str(i)+":FIFO_S:empty\n")
  	wave_file.write("add wave -noupdate -group {NoC Empty_Sigs} :"+tb_name+":NoC:R_"+str(i)+":FIFO_L:empty\n")
 wave_file.write("add wave -noupdate -group {NoC Empty_Sigs} :"+tb_name+":clk\n")
 for i in range(0 , network_dime*network_dime):
+ 	wave_file.write("add wave -noupdate -group {NoC Full_Sigs} :"+tb_name+":NoC:R_"+str(i)+":FIFO_N:full\n")
+ 	wave_file.write("add wave -noupdate -group {NoC Full_Sigs} :"+tb_name+":NoC:R_"+str(i)+":FIFO_E:full\n")
+ 	wave_file.write("add wave -noupdate -group {NoC Full_Sigs} :"+tb_name+":NoC:R_"+str(i)+":FIFO_W:full\n")
+ 	wave_file.write("add wave -noupdate -group {NoC Full_Sigs} :"+tb_name+":NoC:R_"+str(i)+":FIFO_S:full\n")
  	wave_file.write("add wave -noupdate -group {NoC Full_Sigs} :"+tb_name+":NoC:R_"+str(i)+":FIFO_L:full\n")
 wave_file.write("add wave -noupdate -group {NoC Full_Sigs} :"+tb_name+":clk\n")
 

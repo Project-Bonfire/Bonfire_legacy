@@ -335,15 +335,16 @@ if add_NI_Test:
     string_to_print += "data_read_"+str(i)+ ", "
   noc_file.write("\tsignal "+string_to_print[:-2]+": std_logic_vector(31 downto 0);\n")
 
+
+ 
 noc_file.write("\t--------------\n")
-noc_file.write("\n")
 if not add_SHMU:
-  noc_file.write("signal Rxy_reconf: std_logic_vector (7 downto 0) := \"01111101\";\n")
-  noc_file.write("signal Reconfig: std_logic := '0';\n")
+  noc_file.write("\tsignal Rxy_reconf: std_logic_vector (7 downto 0) := \"01111101\";\n")
+  noc_file.write("\tsignal Reconfig: std_logic := '0';\n")
 
-
-noc_file.write(" constant clk_period : time := 1 ns;\n")
-noc_file.write("signal reset, not_reset, clk: std_logic :='0';\n")
+noc_file.write("\t--------------\n")
+noc_file.write("\tconstant clk_period : time := 1 ns;\n")
+noc_file.write("\tsignal reset, not_reset, clk: std_logic :='0';\n")
 
 noc_file.write("\n")
 noc_file.write("begin\n\n")

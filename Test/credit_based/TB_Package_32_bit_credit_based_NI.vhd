@@ -120,7 +120,7 @@ package body TB_Package is
           end if;
 
       elsif data_read(30) = '0' then -- P2N is not full, can send flit
-          test <= std_logic_vector(to_unsigned(frame_starting_delay, test'length));
+          
           
           if frame_counter >= frame_starting_delay then
               
@@ -189,29 +189,13 @@ package body TB_Package is
             end if;
 
             wait until clk'event and clk ='0';
-      --elsif data_read(29) = '1' then  -- self diagnosis data is ready!
-      --        -- read the received self diagnosis data status
-      --        address <= self_diagnosis_address;
-      --        write_byte_enable <= "0000";
-      --        wait until clk'event and clk ='0';
-      --        
-      --        if (data_read(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001") then -- got header flit
-      --            diagnosis_packet_length := to_integer(unsigned(data_read(28 downto 17)));
-      --            diagnosis_destination_node := to_integer(unsigned(data_read(16 downto 13)));
-      --            diagnosis_source_node := to_integer(unsigned(data_read(12 downto 9)));
-      --            diagnosis_packet_id := to_integer(unsigned(data_read(8 downto 1)));
-      --            diagnosis_counter := 1; 
-      --        end if;  
-      --  
-      --        if  (data_read(DATA_WIDTH-1 downto DATA_WIDTH-3) = "010") then  -- got body flit
-      --            diagnosis_counter := diagnosis_counter+1; 
-      --        end if; 
-      --        
-      --        if (data_read(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100") then -- got tail flit
-      --            diagnosis_counter := diagnosis_counter+1; 
-      --            write(DIAGNOSIS_LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(diagnosis_source_node) & " to: " & integer'image(diagnosis_destination_node) & " length: "& integer'image(diagnosis_packet_length) & " actual length: "& integer'image(diagnosis_counter)  & " id: "& integer'image(diagnosis_packet_id));
-      --            writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
-      --        end if;
+      elsif data_read(29) = '1' then  -- self diagnosis data is ready!
+              -- read the received self diagnosis data status
+              address <= self_diagnosis_address;
+              write_byte_enable <= "0000";
+              wait until clk'event and clk ='0';
+              test <= data_read;
+   
       end if;
 
       if now > finish_time then 
