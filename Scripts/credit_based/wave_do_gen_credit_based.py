@@ -55,6 +55,27 @@ for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -group {LBDR CX} -color green :"+tb_name+":NoC:R_"+str(i)+":LBDR_S:Cx\n")
 	wave_file.write("add wave -noupdate -group {LBDR CX} -color Gold :"+tb_name+":NoC:R_"+str(i)+":LBDR_L:Cx\n")
 
+for i in range(0 , network_dime*network_dime):
+	wave_file.write("add wave -noupdate -group {Faulty Counters} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_N:faulty_counter_out\n")
+	wave_file.write("add wave -noupdate -group {Faulty Counters} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_E:faulty_counter_out\n")
+	wave_file.write("add wave -noupdate -group {Faulty Counters} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_W:faulty_counter_out\n")
+	wave_file.write("add wave -noupdate -group {Faulty Counters} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_S:faulty_counter_out\n")
+	wave_file.write("add wave -noupdate -group {Faulty Counters} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_L:faulty_counter_out\n")
+
+for i in range(0 , network_dime*network_dime):
+	wave_file.write("add wave -noupdate -group {Healthy Counters} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_N:healthy_counter_out\n")
+	wave_file.write("add wave -noupdate -group {Healthy Counters} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_E:healthy_counter_out\n")
+	wave_file.write("add wave -noupdate -group {Healthy Counters} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_W:healthy_counter_out\n")
+	wave_file.write("add wave -noupdate -group {Healthy Counters} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_S:healthy_counter_out\n")
+	wave_file.write("add wave -noupdate -group {Healthy Counters} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_L:healthy_counter_out\n")
+
+for i in range(0 , network_dime*network_dime):
+	wave_file.write("add wave -noupdate -group {CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_N:state\n")
+	wave_file.write("add wave -noupdate -group {CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_E:state\n")
+	wave_file.write("add wave -noupdate -group {CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_W:state\n")
+	wave_file.write("add wave -noupdate -group {CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_S:state\n")
+	wave_file.write("add wave -noupdate -group {CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_L:state\n")
+
 wave_file.write("TreeUpdate [SetDefaultTree]\n")
 wave_file.write("WaveRestoreCursors\n")
 wave_file.write("quietly wave cursor active 0\n")

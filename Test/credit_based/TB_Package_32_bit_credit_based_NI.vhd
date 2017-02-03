@@ -100,7 +100,15 @@ package body TB_Package is
       --       .-------------------------------------------------.
       --       | N2P_empty | P2N_full | self_diagnosis_flag | ...| 
       --       '-------------------------------------------------'
-      if data_read(31) = '0' then  -- N2P is not empty, can receive flit
+
+      if data_read(29) = '1' then  -- self diagnosis data is ready!
+              -- read the received self diagnosis data status
+              address <= self_diagnosis_address;
+              write_byte_enable <= "0000";
+              wait until clk'event and clk ='0';
+              test <= data_read;
+
+      elsif data_read(31) = '0' then  -- N2P is not empty, can receive flit
           -- read the received data status
           address <= reserved_address;
           write_byte_enable <= "0000";
@@ -195,12 +203,6 @@ package body TB_Package is
             end if;
 
             wait until clk'event and clk ='0';
-      elsif data_read(29) = '1' then  -- self diagnosis data is ready!
-              -- read the received self diagnosis data status
-              address <= self_diagnosis_address;
-              write_byte_enable <= "0000";
-              wait until clk'event and clk ='0';
-              test <= data_read;
    
       end if;
 
