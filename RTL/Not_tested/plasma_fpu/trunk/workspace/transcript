@@ -1,0 +1,33 @@
+# //  Questa Sim-64
+# //  Version 10.4c_1 linux_x86_64 Sep  4 2015
+# //
+# //  Copyright 1991-2015 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //  THIS DOCUMENT CONTAINS TRADE SECRETS AND COMMERCIAL OR FINANCIAL
+# //  INFORMATION THAT ARE PRIVILEGED, CONFIDENTIAL, AND EXEMPT FROM
+# //  DISCLOSURE UNDER THE FREEDOM OF INFORMATION ACT, 5 U.S.C. SECTION 552.
+# //  FURTHERMORE, THIS INFORMATION IS PROHIBITED FROM DISCLOSURE UNDER
+# //  THE TRADE SECRETS ACT, 18 U.S.C. SECTION 1905.
+# //
+# source run.tcl
+# QuestaSim-64 vcom 10.4c_1 Compiler 2015.09 Sep  4 2015
+# Start time: 17:23:21 on Feb 07,2017
+# vcom -reportprogress 300 -work work -explicit -93 -O5 ../test/vhdl/tb_plasma.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package std_logic_textio
+# -- Loading package mips_instruction_set
+# -- Loading package plasma_pack
+# -- Loading package plasma_memory_pack
+# -- Compiling entity tb_plasma
+# -- Compiling architecture behav_tb_plasma of tb_plasma
+# -- Loading entity plasma
+# -- Loading entity plasma_memory
+# End time: 17:23:21 on Feb 07,2017, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0

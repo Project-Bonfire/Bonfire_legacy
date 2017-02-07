@@ -1,0 +1,61 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/bniazmand/pc/plasma_fpu/trunk/workspace
+Etb_plasma
+Z1 w1436260057
+Z2 DPx6 memory 18 plasma_memory_pack 0 22 cCnkV>cTXMgaUdIeP`XG21
+Z3 DPx6 plasma 20 mips_instruction_set 0 22 Kek1H8^YCjLhzh^B[N`ZG0
+Z4 DPx4 ieee 16 std_logic_textio 0 22 V5TSK`;aJKC<l]CEg1>mz1
+Z5 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z6 DPx6 plasma 11 plasma_pack 0 22 <JdNFFndGP_NFZ;A3]>M33
+Z7 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z8 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+R0
+Z9 8../test/vhdl/tb_plasma.vhd
+Z10 F../test/vhdl/tb_plasma.vhd
+l0
+L43
+VYNNPcz97A<OCK0CUO[cN;1
+!s100 E_@<W9`9GhXe]Y@Zo:BA60
+Z11 OL;C;10.4c_1;61
+31
+Z12 !s110 1486481001
+!i10b 1
+Z13 !s108 1486481001.000000
+Z14 !s90 -reportprogress|300|-work|work|-explicit|-93|-O5|../test/vhdl/tb_plasma.vhd|
+Z15 !s107 ../test/vhdl/tb_plasma.vhd|
+!i113 1
+Z16 o-work work -explicit -93 -O5
+Z17 tExplicit 1 CreateSource 1
+Abehav_tb_plasma
+DEx6 memory 13 plasma_memory 0 22 N`7;FYbzkT5ck]IXY<z^X1
+DEx6 plasma 6 plasma 0 22 >lSFoWk[gCR5_1OASQjYW1
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+DEx4 work 9 tb_plasma 0 22 YNNPcz97A<OCK0CUO[cN;1
+l87
+L55
+VoOVk9:miOIa2UbFWW5i2L0
+!s100 9[bbj0bT25OSH<:1znFY93
+R11
+31
+R12
+!i10b 1
+R13
+R14
+R15
+!i113 1
+R16
+R17

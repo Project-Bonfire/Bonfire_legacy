@@ -1,0 +1,92 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/bniazmand/pc/plasma_fpu/trunk/workspace
+Ediv_core
+Z1 w1436260057
+Z2 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z3 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z4 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+R0
+Z5 8../src/cores/div_core.vhd
+Z6 F../src/cores/div_core.vhd
+l0
+L51
+V^PUgfQDImdm_<BoKES@Il0
+!s100 6fa@gGXd19WP?L6QDJP=k2
+Z7 OL;C;10.4c_1;61
+31
+Z8 !s110 1486481000
+!i10b 1
+Z9 !s108 1486481000.000000
+Z10 !s90 -reportprogress|300|-work|mul|-93|-O5|-quiet|../src/cores/div_core.vhd|
+Z11 !s107 ../src/cores/div_core.vhd|
+!i113 1
+Z12 o-quiet -work mul -93 -O5
+Z13 tExplicit 1 CreateSource 1
+Astructure_div_core
+R2
+R3
+R4
+DEx4 work 8 div_core 0 22 ^PUgfQDImdm_<BoKES@Il0
+l134
+L76
+Vi=?P;HWG1?]VKIWVK3WK42
+!s100 [5Lai]^8i_>?8GGDf1KE;3
+R7
+31
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+R13
+Emul_core
+R1
+R2
+R3
+R4
+R0
+Z14 8../src/cores/mul_core.vhd
+Z15 F../src/cores/mul_core.vhd
+l0
+L44
+V=<BE_A@_P`i:g[;W3L@9a3
+!s100 nkal6?zC=_mIo^@hjnjiN0
+R7
+31
+R8
+!i10b 1
+R9
+Z16 !s90 -reportprogress|300|-work|mul|-93|-O5|-quiet|../src/cores/mul_core.vhd|
+Z17 !s107 ../src/cores/mul_core.vhd|
+!i113 1
+R12
+R13
+Amul_core_structure
+R2
+R3
+R4
+DEx4 work 8 mul_core 0 22 =<BE_A@_P`i:g[;W3L@9a3
+l123
+L69
+Vi>L>HgMHcjRMzjGKl;^]f2
+!s100 B]8ob2`8Q5=<mb4Mo7WPh3
+R7
+31
+R8
+!i10b 1
+R9
+R16
+R17
+!i113 1
+R12
+R13
