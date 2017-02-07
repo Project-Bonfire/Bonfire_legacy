@@ -1,3 +1,6 @@
+# <Feb. 7th 2017> edit by Behrad Niazmand (bniazmand@ati.ttu.ee), disabled the optimization flags, since they were removed from the design and not accessible by the memory script.
+# <Feb. 7th 2017> edit by Behrad Niazmand (bniazmand@ati.ttu.ee), added logging output to the simulator.
+
 #
 # create environment libraries
 #
@@ -47,7 +50,7 @@ env
 c_src
 # start simulation
 
-vsim -t ps -l log1sec work.tb_plasma
+vsim -t ps -l log work.tb_plasma
 
 # vsim -t ps -vopt -voptargs="-G FPU_FLAG=OF" \
 #                  -voptargs="-G SIM_FLAG=OF" \

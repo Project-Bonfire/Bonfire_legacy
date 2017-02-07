@@ -1,3 +1,5 @@
+# <Feb. 7th 2017> edit by Behrad Niazmand (bniazmand@ati.ttu.ee), Fixed notation and representation of waves based on QuestaSim instead of ModelSim script.
+
 onerror {resume}
 quietly WaveActivateNextPane {} 0
 add wave -noupdate  -group GENERAL -radix sym -label clk {:tb_plasma:clk}
