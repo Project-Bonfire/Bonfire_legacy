@@ -1,0 +1,9 @@
+This folder contains files from the Plasma with FPU project
+(https://opencores.org/project,plasma_fpu)
+
+The Plasma with FPU CPU project was distributed under GPLv2.0 license
+by its original author Alex Schoenberger (Alex.Schoenberger@ies.tu-darmstadt.de).
+
+Any files in this directory (and its subdirectories), whether modified or not,
+are also distributed under the GPLv2 license.
+https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html

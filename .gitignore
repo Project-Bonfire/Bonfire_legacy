@@ -10,3 +10,5 @@ component.xml
 
 tmp
 Scripts/**/*.vhd
+
+RTL/Not_tested/plasma_fpu/workspace
