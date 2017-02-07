@@ -6,5 +6,4 @@ but not limited to, the implied warranties of merchantability and fitness for a
 particular purpose are disclaimed. 
 
 
-The code has been modified by Siavoosh Payandeh Azad in 2016. above mentioned license applies
-to this version as well. 
+The code has been modified by Siavoosh Payandeh Azad in 2016. above mentioned license applies to this version as well. 
