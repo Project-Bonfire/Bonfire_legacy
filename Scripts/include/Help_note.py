@@ -11,6 +11,9 @@ def print_help(argv, program_argv):
     print "\tChoose flow control mechanism (Handshaking or Credit-based). " \
         + "Default value is " + str(program_argv['credit_based_FC']) + "."
     print
+    print BOLD + "  -plasma_with_fpu:" + ENDC
+    print "\tUse Plasma with FPU, instead of normal Plasma "# + str(program_argv['plasma_with_fpu']) + "."
+    print
     print BOLD + "  -D [size]:" + ENDC
     print "\tMake a network of [size]X[size]. Size can be only multiples of two. " \
         + "Default value is " + str(program_argv['network_dime']) + "."
@@ -93,14 +96,14 @@ def print_help(argv, program_argv):
     print "\t\tBy default the flow control mechanism is handshaking-based."
     print "\t\talso generates a testbench which uses random traffic pattern generator with PIR of 0.005"
     print "\t\tand fixed packet size of 3 and sends packets until 10000 ns."
-    print 
+    print
     print BOLD + "  Example 3:" + ENDC
     print "\t " + argv[0] + " -D 4 -credit_based_FC -FC -FI -Rand 0.1 -PS 8 8 -sim 10000 -end 11000"
     print "\t\tSimulates a 4X4 network "
     print "\t\tflow control mechanism is credit-based with fault classfiers support"
-    print "\t\twith Fault Injection(40-60 clock cycle injection, i.e approx. 16 million faults per second) "	
+    print "\t\twith Fault Injection(40-60 clock cycle injection, i.e approx. 16 million faults per second) "
     print "\t\talso generates a testbench which uses random traffic pattern generator with Packet Injection Rate of 0.1"
-    print "\t\tand fixed packet size of 8 and sends packets until 10000 ns and ends simulation at 11000 ns" 
+    print "\t\tand fixed packet size of 8 and sends packets until 10000 ns and ends simulation at 11000 ns"
     print BOLD + "  Example 3:" + ENDC
     print "\t " + argv[0] + " -D 2 -credit_based_FC -packet_drop -FC -NI_Test -SHMU -Rand 0.01 -PS 8 8 -sim 10000 -end 11000"
     print "\t\tSimulates a 2X2 network "

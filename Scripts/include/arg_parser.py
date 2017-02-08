@@ -32,9 +32,13 @@ def arg_parser(argv, program_argv, logging):
     program_argv['lat'] = False
     program_argv['debug'] = False
     program_argv['trace'] = False
+    program_argv['plasma_with_fpu'] = False
 
     if '-credit_based_FC' in argv[1:]:
         program_argv['credit_based_FC'] = True
+
+    if '-plasma_with_fpu' in argv[1:]:
+        program_argv['plasma_with_fpu'] = True
 
     if '-D'	in argv[1:]:
         program_argv['network_dime'] = int(argv[argv.index('-D')+1])
@@ -120,10 +124,10 @@ def arg_parser(argv, program_argv, logging):
 
 def report_parogram_arguments(program_argv, DEBUG):
     """
-    Gets program arguments and Debug and if Debug is True, prints the program 
+    Gets program arguments and Debug and if Debug is True, prints the program
     arguments to the console!
     """
-    if DEBUG: 
+    if DEBUG:
         print_msg(MSG_DEBUG,  "Command line parameters:")
         for i in program_argv:
             print "\t" + i + ": " + str(program_argv[i])
