@@ -81,23 +81,10 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                     do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                         + "/RTL/"+file+"\"\n")
 
-        # Add a network interface and ordinary Plasma
-        if ((program_argv['add_NI'] != -1) and (program_argv['plasma_with_fpu'] == False)):
+        # Add a network interface and Plasma
+        if (program_argv['add_NI'] != -1):
             for file in file_lists.PE_files:
                 do_file.write("vcom \"" + PROJECT_ROOT + "/RTL/Processor_NI/"+file+"\"\n")
-
-        # Add a network interface and Plasma with NI
-        elif ((program_argv['add_NI'] != -1) and (program_argv['plasma_with_fpu'] == True)):
-            for file in file_lists.Plasma_FPU_mul_lib:
-                do_file.write("vcom -work mul \"" + PROJECT_ROOT + "/RTL/Not_tested/plasma_fpu/src/"+file+"\"\n")
-            for file in file_lists.Plasma_FPU_plasma_lib:
-                do_file.write("vcom -work plasma \"" + PROJECT_ROOT + "/RTL/Not_tested/plasma_fpu/src/"+file+"\"\n")
-            for file in file_lists.Plasma_FPU_memory_lib:
-                do_file.write("vcom -work memory \"" + PROJECT_ROOT + "/RTL/Not_tested/plasma_fpu/src/"+file+"\"\n")
-            for file in file_lists.Plasma_FPU_general:
-                do_file.write("vcom \"" + PROJECT_ROOT + "/RTL/Not_tested/plasma_fpu/src/"+file+"\"\n")
-        else:
-            raise ValueError ("Please specify NI depth")
 
         # Add parity checking
         if program_argv['add_parity']:

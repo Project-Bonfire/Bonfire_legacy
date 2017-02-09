@@ -32,13 +32,9 @@ def arg_parser(argv, program_argv, logging):
     program_argv['lat'] = False
     program_argv['debug'] = False
     program_argv['trace'] = False
-    program_argv['plasma_with_fpu'] = False
 
     if '-credit_based_FC' in argv[1:]:
         program_argv['credit_based_FC'] = True
-
-    if '-plasma_with_fpu' in argv[1:]:
-        program_argv['plasma_with_fpu'] = True
 
     if '-D'	in argv[1:]:
         program_argv['network_dime'] = int(argv[argv.index('-D')+1])

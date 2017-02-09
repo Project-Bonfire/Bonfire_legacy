@@ -50,23 +50,6 @@ PE_files = ["mlite_pack.vhd", "alu.vhd", "bus_mux.vhd", "cache.vhd",
             "reg_bank.vhd", "shifter.vhd", "uart.vhd", "NI.vhd",
             "mlite_cpu.vhd", "plasma.vhd", "NoC_Node.vhd"]
 
-# Plasma with NI processor files along with the NI and NoC node wrapper!
-Plasma_FPU_plasma_lib = ["mips_instruction_set.vhd", "plasma_pack.vhd",
-                        "subunits/plasma_alu.vhd", "subunits/plasma_comparator.vhd",
-                        "subunits/plasma_mult.vhd", "subunits/plasma_pc.vhd",
-                        "subunits/plasma_reg_bank.vhd", "subunits/plasma_shifter.vhd",
-                        "fpu/plasma_fpu_alu.vhd", "fpu/plasma_fpu_comparator.vhd",
-                        "fpu/plasma_fpu_reg_bank.vhd", "fpu/plasma_fpu.vhd",
-                        "datapaths/plasma_datapath_MIPSI_FPU.vhd",
-                        "datapaths/plasma_datapath_MIPSI.vhd",
-                        "controlunits/plasma_control_MIPSI_FPU.vhd",
-                        "controlunits/plasma_control_MIPSI.vhd",
-                        "plasma_mem_ctrl.vhd", "plasma.vhd"]
-
-Plasma_FPU_mul_lib = ["cores/div_core.vhd", "cores/mul_core.vhd"]
-Plasma_FPU_memory_lib = ["plasma_memory.vhd"]
-Plasma_FPU_general = ["tb_plasma.vhd"]
-
 
 #---------------------------------------------------------
 #

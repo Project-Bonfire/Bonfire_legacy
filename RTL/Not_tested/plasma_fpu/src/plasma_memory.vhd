@@ -15,7 +15,7 @@
 -- PROJECT:       Plasma CPU core with FPU
 -- FILENAME:      plasma_memory.vhd
 -- --------------------------------------------------------------------------
--- COPYRIGHT: 
+-- COPYRIGHT:
 --  This project is distributed by GPLv2.0
 --  Software placed into the public domain by the author.
 --  Software 'as is' without warranty.  Author liable for nothing.
@@ -69,7 +69,7 @@ package plasma_memory_pack is
   procedure read_instr( signal  instr   : out t_plasma_word;
                                 addr    : in  t_prog_addr;
                                 memory  :     t_plasma_memory );
-                               
+
 
   procedure read_heap( signal   data    : out t_plasma_word;
                        signal   data_in : in  t_plasma_word;
@@ -120,7 +120,7 @@ package body plasma_memory_pack is
         data(15 downto  8)  <= memory(i_addr  );
         data( 7 downto  0)  <= memory(i_addr  );
 
-      when PLASMA_MASK_READ16  =>  
+      when PLASMA_MASK_READ16  =>
         data(31 downto 24)  <= memory(i_addr  );
         data(23 downto 16)  <= memory(i_addr + 1);
         data(15 downto  8)  <= memory(i_addr  );
@@ -136,13 +136,13 @@ package body plasma_memory_pack is
         data(15 downto  8)  <= memory(i_addr + 2);
         data( 7 downto  0)  <= memory(i_addr + 3);
 
-      when PLASMA_MASK_READ32  =>  
+      when PLASMA_MASK_READ32  =>
         data(31 downto 24)  <= memory(i_addr  );
         data(23 downto 16)  <= memory(i_addr + 1);
         data(15 downto  8)  <= memory(i_addr + 2);
         data( 7 downto  0)  <= memory(i_addr + 3);
 
-      when others     => 
+      when others     =>
         data                <= (others => '0');
     end case;
   end procedure read_heap;
@@ -156,10 +156,10 @@ package body plasma_memory_pack is
     i_addr := to_integer(unsigned(addr));
 
     case mask is
-      when PLASMA_MASK_WRITE8   =>  
+      when PLASMA_MASK_WRITE8   =>
         memory(i_addr    ) := data( 7 downto  0);
 
-      when PLASMA_MASK_WRITE16  =>  
+      when PLASMA_MASK_WRITE16  =>
         memory(i_addr + 1) := data( 7 downto  0);
         memory(i_addr    ) := data(15 downto  8);
 
@@ -167,17 +167,17 @@ package body plasma_memory_pack is
         memory(i_addr + 1) := data(23 downto 16);
         memory(i_addr    ) := data(31 downto 24);
 
-      when PLASMA_MASK_WRITE32R =>  
+      when PLASMA_MASK_WRITE32R =>
         memory(i_addr + 3) := data( 7 downto  0);
         memory(i_addr + 2) := data(15 downto  8);
 
-      when PLASMA_MASK_WRITE32  =>  
+      when PLASMA_MASK_WRITE32  =>
         memory(i_addr + 3) := data( 7 downto  0);
         memory(i_addr + 2) := data(15 downto  8);
         memory(i_addr + 1) := data(23 downto 16);
         memory(i_addr    ) := data(31 downto 24);
 
-      when others               => 
+      when others               =>
     end case;
 
   end procedure write_heap;
@@ -316,7 +316,7 @@ package body plasma_memory_pack is
         when 122 => c := 'z';
         when 123 => c := '{';
         when 124 => c := '|';
-        when 125 => c := '}';        
+        when 125 => c := '}';
         when 126 => c := '~';
         when others => c := '?'; report "Could not decode this ASCII integer value " & integer'image(int);
       end case;
@@ -328,10 +328,10 @@ end package body plasma_memory_pack;
 
 --  _____  _                _____ __  __            __  __ ______ __  __  ____  _______     __
 -- |  __ \| |        /\    / ____|  \/  |   /\     |  \/  |  ____|  \/  |/ __ \|  __ \ \   / /
--- | |__) | |       /  \  | (___ | \  / |  /  \    | \  / | |__  | \  / | |  | | |__) \ \_/ / 
--- |  ___/| |      / /\ \  \___ \| |\/| | / /\ \   | |\/| |  __| | |\/| | |  | |  _  / \   /  
--- | |    | |____ / ____ \ ____) | |  | |/ ____ \  | |  | | |____| |  | | |__| | | \ \  | |   
--- |_|    |______/_/    \_\_____/|_|  |_/_/    \_\ |_|  |_|______|_|  |_|\____/|_|  \_\ |_| 
+-- | |__) | |       /  \  | (___ | \  / |  /  \    | \  / | |__  | \  / | |  | | |__) \ \_/ /
+-- |  ___/| |      / /\ \  \___ \| |\/| | / /\ \   | |\/| |  __| | |\/| | |  | |  _  / \   /
+-- | |    | |____ / ____ \ ____) | |  | |/ ____ \  | |  | | |____| |  | | |__| | | \ \  | |
+-- |_|    |______/_/    \_\_____/|_|  |_/_/    \_\ |_|  |_|______|_|  |_|\____/|_|  \_\ |_|
 library IEEE;
    use IEEE.std_logic_1164.ALL;
    use IEEE.numeric_std.ALL;
@@ -361,8 +361,8 @@ architecture behav_plasma_memory of plasma_memory is
 
   shared variable ram             : t_plasma_memory;
 
-  alias inst_addr                 : t_prog_addr is prog_addr(PLASMA_MEM_RANGE - 1 downto 0);
-  alias heap_addr                 : t_data_addr is data_addr(PLASMA_MEM_RANGE - 1 downto 0);
+  alias inst_addr                 : t_prog_addr is prog_addr(PLASMA_MEM_RANGE - 1 downto 0); --25 downto 0
+  alias heap_addr                 : t_data_addr is data_addr(PLASMA_MEM_RANGE - 1 downto 0); --25 downto 0
 
 begin
 
