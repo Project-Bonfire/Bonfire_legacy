@@ -24,6 +24,28 @@ for i in range(0 , network_dime*network_dime):
 for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -group {NoC TX} -color green -radix decimal :"+tb_name+":TX_L_"+str(i)+"\n")
  
+
+for i in range(0 , network_dime*network_dime):
+	if i/network_dime != 0:
+		wave_file.write("add wave -noupdate -group {Link NoC RX} -color green -radix decimal :"+tb_name+":NoC:R_"+str(i)+":RX_N\n")
+	if i % network_dime != network_dime-1:
+		wave_file.write("add wave -noupdate -group {Link NoC RX} -color green -radix decimal :"+tb_name+":NoC:R_"+str(i)+":RX_E\n")
+	if i % network_dime != 0:
+		wave_file.write("add wave -noupdate -group {Link NoC RX} -color green -radix decimal :"+tb_name+":NoC:R_"+str(i)+":RX_W\n")
+	if i/network_dime != network_dime-1:
+		wave_file.write("add wave -noupdate -group {Link NoC RX} -color green -radix decimal :"+tb_name+":NoC:R_"+str(i)+":RX_S\n")
+
+
+for i in range(0 , network_dime*network_dime):
+	if i/network_dime != 0:
+		wave_file.write("add wave -noupdate -group {Link NoC TX} -color green -radix decimal :"+tb_name+":NoC:R_"+str(i)+":TX_N\n")
+	if i % network_dime != network_dime-1:
+		wave_file.write("add wave -noupdate -group {Link NoC TX} -color green -radix decimal :"+tb_name+":NoC:R_"+str(i)+":TX_E\n")
+	if i % network_dime != 0:
+		wave_file.write("add wave -noupdate -group {Link NoC TX} -color green -radix decimal :"+tb_name+":NoC:R_"+str(i)+":TX_W\n")
+	if i/network_dime != network_dime-1:
+		wave_file.write("add wave -noupdate -group {Link NoC TX} -color green -radix decimal :"+tb_name+":NoC:R_"+str(i)+":TX_S\n")
+
 for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -group {NoC Detailed} -color Gold -radix decimal :"+tb_name+":RX_L_"+str(i)+"\n")
 	wave_file.write("add wave -noupdate -group {NoC Detailed} -color Gold :"+tb_name+":valid_in_L_"+str(i)+"\n")

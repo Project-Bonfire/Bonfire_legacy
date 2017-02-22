@@ -76,6 +76,8 @@ package body TB_Package is
 
     variable  frame_starting_delay : integer:= 0;
     variable frame_counter: integer:= 0;
+    variable diagnosis : std_logic := '0';
+    variable diagnosis_data: std_logic_vector(24 downto 0);
 
     begin
 
@@ -120,16 +122,30 @@ package body TB_Package is
               receive_source_node := to_integer(unsigned(data_read(12 downto 9)));
               receive_packet_id := to_integer(unsigned(data_read(8 downto 1)));
               receive_counter := 1; 
+              diagnosis :=  '0';
+              diagnosis_data := (others => '0');
           end if;  
           
           if  (data_read(DATA_WIDTH-1 downto DATA_WIDTH-3) = "010") then  -- got body flit
               receive_counter := receive_counter+1; 
+              if data_read(28 downto 13) =  "0100011001000100" then 
+                  diagnosis :=  '1';
+                  diagnosis_data(11 downto 0) := data_read(12 downto 1); 
+              end if;
           end if; 
           
           if (data_read(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100") then -- got tail flit
               receive_counter := receive_counter+1; 
-              write(RECEIVED_LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(receive_source_node) & " to: " & integer'image(receive_destination_node) & " length: "& integer'image(receive_packet_length) & " actual length: "& integer'image(receive_counter)  & " id: "& integer'image(receive_packet_id));
-              writeline(RECEIVED_FILE, RECEIVED_LINEVARIABLE);
+              diagnosis_data(24 downto 12) := data_read(28 downto 16); 
+              if diagnosis = '0' then 
+                write(RECEIVED_LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(receive_source_node) & " to: " & integer'image(receive_destination_node) & " length: "& integer'image(receive_packet_length) & " actual length: "& integer'image(receive_counter)  & " id: "& integer'image(receive_packet_id));
+                writeline(RECEIVED_FILE, RECEIVED_LINEVARIABLE);
+              else
+                write(DIAGNOSIS_LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(receive_source_node) & " to: " & integer'image(receive_destination_node) & " length: "& integer'image(receive_packet_length) & " actual length: "& integer'image(receive_counter)  & " id: "& integer'image(receive_packet_id) & " diagnosis: " );
+                writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                write(DIAGNOSIS_LINEVARIABLE, to_bitvector(diagnosis_data));
+                writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+              end if;
           end if;
 
       elsif data_read(30) = '0' then -- P2N is not full, can send flit

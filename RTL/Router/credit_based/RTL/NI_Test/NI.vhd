@@ -356,8 +356,7 @@ end process;
 
 
 process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_counter_out, FIFO_Data_out, fault_info_ready)
-    variable LINEVARIABLE : line;
-    file VEC_FILE : text is out "sent.txt";
+
     begin
         -- Some initializations
     	  sent_info <= '0';
