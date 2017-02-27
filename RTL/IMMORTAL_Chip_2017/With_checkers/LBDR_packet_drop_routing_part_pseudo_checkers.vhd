@@ -55,8 +55,6 @@ entity LBDR_packet_drop_routing_part_pseudo_checkers is
             err_header_not_empty_Req_E_in,
             err_header_not_empty_Req_W_in,
             err_header_not_empty_Req_S_in, 
-            err_header_not_empty_packet_drop_in, 
-            err_header_not_empty_dst_addr_cur_addr_equal_packet_drop_in_packet_drop_equal, 
             err_header_empty_packet_drop_in_packet_drop_equal, 
             err_tail_not_empty_packet_drop_not_packet_drop_in, 
             err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal, 
@@ -304,7 +302,7 @@ end process;
 
 -- Added (according to new design)!
 
-process (flit_type, empty, Req_S_in, E1_out, W1_out, S1_out, Rxy, Cx)
+process (flit_type, empty, Req_L_in, N1_out, E1_out, W1_out, S1_out)
 begin
     if ( flit_type = "001" and empty = '0' and Req_L_in /= (not N1_out and  not E1_out and not W1_out and not S1_out) ) then
         err_header_not_empty_Req_L_in <= '1';
@@ -358,42 +356,6 @@ begin
 end process;
 
 -- Updated !
-
-process (flit_type, empty, N1_out, E1_out, W1_out, S1_out, Rxy, Cx, dst_addr, cur_addr, packet_drop_in)
-begin
-    if (flit_type = "001" and empty = '0' and ( ((((N1_out and not E1_out and not W1_out) or 
-       (N1_out and E1_out and Rxy(0)) or (N1_out and W1_out and Rxy(1))) and Cx(0)) or 
-       (((E1_out and not N1_out and not S1_out) or (E1_out and N1_out and Rxy(2)) or 
-       (E1_out and S1_out and Rxy(3))) and Cx(1)) or (((W1_out and not N1_out and not S1_out) or 
-       (W1_out and N1_out and Rxy(4)) or (W1_out and S1_out and Rxy(5))) and Cx(2)) or 
-       (((S1_out and not E1_out and not W1_out) or (S1_out and E1_out and Rxy(6)) or 
-       (S1_out and W1_out and Rxy(7))) and Cx(3))) ='0' ) and dst_addr /= cur_addr and packet_drop_in <= '0' ) then
-
-        err_header_not_empty_packet_drop_in <= '1';
-    else 
-        err_header_not_empty_packet_drop_in <= '0';
-    end if;
-end process;
-
--- Added !
-
-process (flit_type, empty, N1_out, E1_out, W1_out, S1_out, Rxy, Cx, dst_addr, cur_addr, packet_drop_in, packet_drop)
-begin
-    if (flit_type = "001" and empty = '0' and ( ( ((((N1_out and not E1_out and not W1_out) or 
-       (N1_out and E1_out and Rxy(0)) or (N1_out and W1_out and Rxy(1))) and Cx(0)) or 
-       (((E1_out and not N1_out and not S1_out) or (E1_out and N1_out and Rxy(2)) or 
-       (E1_out and S1_out and Rxy(3))) and Cx(1)) or (((W1_out and not N1_out and not S1_out) or 
-       (W1_out and N1_out and Rxy(4)) or (W1_out and S1_out and Rxy(5))) and Cx(2)) or 
-       (((S1_out and not E1_out and not W1_out) or (S1_out and E1_out and Rxy(6)) or 
-       (S1_out and W1_out and Rxy(7))) and Cx(3))) ='1' ) or (dst_addr = cur_addr) ) and packet_drop_in /= packet_drop ) then
-
-        err_header_not_empty_dst_addr_cur_addr_equal_packet_drop_in_packet_drop_equal <= '1';
-    else 
-        err_header_not_empty_dst_addr_cur_addr_equal_packet_drop_in_packet_drop_equal <= '0';
-    end if;
-end process;
-
--- Added !
 
 process (flit_type, empty, packet_drop_in, packet_drop)
 begin

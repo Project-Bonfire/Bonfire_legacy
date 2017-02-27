@@ -74,7 +74,7 @@ end process;
 
 process (credit_in_N, valid_N, credit_counter_N_in, credit_counter_N_out)
 begin
-  if (credit_in_N = '1' and valid_N = '1' and credit_counter_N_out < 3 and credit_counter_N_in /= credit_counter_N_out + 1) then
+  if (credit_in_N = '1' and valid_N = '0' and credit_counter_N_out < 3 and credit_counter_N_in /= credit_counter_N_out + 1) then
       err_credit_in_N_credit_counter_N_out_increment <= '1';
   else
       err_credit_in_N_credit_counter_N_out_increment <= '0';
