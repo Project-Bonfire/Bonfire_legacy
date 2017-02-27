@@ -227,10 +227,10 @@ add wave -noupdate -group {R3: LBDR Checkers ORed} -color green :tb_network_2x2:
 add wave -noupdate -group {R3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:L_LBDR_checkers_ORed
 add wave -noupdate :tb_network_2x2:clk
 
-add wave -noupdate -color green :tb_network_2x2:NoC:R_0:Allocator_checkers_ORed
-add wave -noupdate -color green :tb_network_2x2:NoC:R_1:Allocator_checkers_ORed
-add wave -noupdate -color green :tb_network_2x2:NoC:R_2:Allocator_checkers_ORed
-add wave -noupdate -color green :tb_network_2x2:NoC:R_3:Allocator_checkers_ORed
+add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC:R_0:Allocator_checkers_ORed
+add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC:R_1:Allocator_checkers_ORed
+add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC:R_2:Allocator_checkers_ORed
+add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC:R_3:Allocator_checkers_ORed
 add wave -noupdate :tb_network_2x2:clk
 
 add wave -noupdate -color green :tb_network_2x2:NoC:R_0:link_faults
