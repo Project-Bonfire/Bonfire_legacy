@@ -245,57 +245,6 @@ add wave -noupdate -color green :tb_network_2x2:NoC:R_2:turn_faults
 add wave -noupdate -color green :tb_network_2x2:NoC:R_3:turn_faults
 add wave -noupdate :tb_network_2x2:clk
 
-add wave -noupdate -group {Router 3, W LBDR checker outputs} -color green \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_empty_Requests_FF_Requests_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_tail_Requests_in_all_zero \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_tail_empty_Requests_FF_Requests_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_tail_not_empty_not_grants_Requests_FF_Requests_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_grants_onehot \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_grants_mismatch \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_tail_Requests_FF_Requests_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_dst_addr_cur_addr_N1 \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_dst_addr_cur_addr_not_N1 \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_dst_addr_cur_addr_E1 \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_dst_addr_cur_addr_not_E1 \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_dst_addr_cur_addr_W1 \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_dst_addr_cur_addr_not_W1 \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_dst_addr_cur_addr_S1 \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_dst_addr_cur_addr_not_S1 \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_dst_addr_cur_addr_Req_L_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_dst_addr_cur_addr_not_Req_L_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_not_empty_faulty_drop_packet_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_not_empty_faulty_Req_in_all_zero \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_not_empty_Req_L_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_not_empty_Req_N_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_not_empty_Req_E_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_not_empty_Req_W_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_not_empty_Req_S_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_not_empty_packet_drop_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_not_empty_dst_addr_cur_addr_equal_packet_drop_in_packet_drop_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_header_empty_packet_drop_in_packet_drop_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_tail_not_empty_packet_drop_not_packet_drop_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_invalid_or_body_flit_packet_drop_in_packet_drop_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_packet_drop_order \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal \
-sim/:tb_network_2x2:NoC:R_3:LBDR_W:err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal
-
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors
 quietly wave cursor active 0
