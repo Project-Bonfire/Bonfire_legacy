@@ -149,7 +149,6 @@ entity FIFO_credit_based_control_part_checkers is
 			err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
 			err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
 			err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-			err_state_out_Packet_drop_not_fault_info_in, 
 			err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
 			err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
 			err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
@@ -1362,15 +1361,6 @@ begin
 		err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change <= '1';
 	else
 		err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change <= '0';
-	end if;
-end process;
-
-process (state_out, fault_info_in)
-begin 
-	if (state_out = Packet_drop and fault_info_in = '1') then
-		err_state_out_Packet_drop_not_fault_info_in <= '1';
-	else
-		err_state_out_Packet_drop_not_fault_info_in <= '0';
 	end if;
 end process;
 

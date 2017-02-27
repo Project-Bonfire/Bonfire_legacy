@@ -175,7 +175,6 @@ architecture behavior of router_credit_based_PD_C_SHMU is
                 err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
                 err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
                 err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-                err_state_out_Packet_drop_not_fault_info_in, 
                 err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
                 err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
                 err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
@@ -1540,7 +1539,6 @@ signal      N_err_empty_full,
             N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
             N_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
             N_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-            N_err_state_out_Packet_drop_not_fault_info_in, 
             N_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
             N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
             N_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
@@ -1667,7 +1665,6 @@ signal      N_err_empty_full,
             E_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
             E_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
             E_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-            E_err_state_out_Packet_drop_not_fault_info_in, 
             E_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
             E_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
             E_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
@@ -1794,7 +1791,6 @@ signal      N_err_empty_full,
             W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
             W_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
             W_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-            W_err_state_out_Packet_drop_not_fault_info_in, 
             W_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
             W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
             W_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
@@ -1921,7 +1917,6 @@ signal      N_err_empty_full,
             S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
             S_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
             S_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-            S_err_state_out_Packet_drop_not_fault_info_in, 
             S_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
             S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
             S_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
@@ -2048,7 +2043,6 @@ signal      N_err_empty_full,
             L_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
             L_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
             L_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-            L_err_state_out_Packet_drop_not_fault_info_in, 
             L_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
             L_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
             L_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
@@ -3001,7 +2995,6 @@ N_FIFO_checkers_ORed  <=    N_err_empty_full or
                             N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit or 
                             N_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change or 
                             N_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change or 
-                            N_err_state_out_Packet_drop_not_fault_info_in or 
                             N_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit or 
                             N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit or 
                             N_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit or 
@@ -3123,7 +3116,6 @@ E_FIFO_checkers_ORed  <=    E_err_empty_full or
                             E_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit or 
                             E_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change or 
                             E_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change or 
-                            E_err_state_out_Packet_drop_not_fault_info_in or 
                             E_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit or 
                             E_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit or 
                             E_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit or 
@@ -3245,7 +3237,6 @@ W_FIFO_checkers_ORed  <=    W_err_empty_full or
                             W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit or 
                             W_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change or 
                             W_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change or 
-                            W_err_state_out_Packet_drop_not_fault_info_in or 
                             W_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit or 
                             W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit or 
                             W_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit or 
@@ -3367,7 +3358,6 @@ S_FIFO_checkers_ORed  <=    S_err_empty_full or
                             S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit or 
                             S_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change or 
                             S_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change or 
-                            S_err_state_out_Packet_drop_not_fault_info_in or 
                             S_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit or 
                             S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit or 
                             S_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit or 
@@ -3489,7 +3479,6 @@ L_FIFO_checkers_ORed  <=    L_err_empty_full or
                             L_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit or 
                             L_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change or 
                             L_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change or 
-                            L_err_state_out_Packet_drop_not_fault_info_in or 
                             L_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit or 
                             L_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit or 
                             L_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit or 
@@ -6484,7 +6473,6 @@ FIFO_N: FIFO_credit_based
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit => N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
                err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change => N_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
                err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change => N_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Packet_drop_not_fault_info_in => N_err_state_out_Packet_drop_not_fault_info_in, 
                err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit => N_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit => N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
                err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit => N_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
@@ -6617,7 +6605,6 @@ FIFO_E: FIFO_credit_based
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit => E_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
                err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change => E_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
                err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change => E_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Packet_drop_not_fault_info_in => E_err_state_out_Packet_drop_not_fault_info_in, 
                err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit => E_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit => E_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
                err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit => E_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
@@ -6750,7 +6737,6 @@ FIFO_W: FIFO_credit_based
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit => W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
                err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change => W_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
                err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change => W_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Packet_drop_not_fault_info_in => W_err_state_out_Packet_drop_not_fault_info_in, 
                err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit => W_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit => W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
                err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit => W_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
@@ -6884,7 +6870,6 @@ FIFO_S: FIFO_credit_based
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit => S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
                err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change => S_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
                err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change => S_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Packet_drop_not_fault_info_in => S_err_state_out_Packet_drop_not_fault_info_in, 
                err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit => S_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit => S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
                err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit => S_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
@@ -7018,7 +7003,6 @@ FIFO_L: FIFO_credit_based
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit => L_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
                err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change => L_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
                err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change => L_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Packet_drop_not_fault_info_in => L_err_state_out_Packet_drop_not_fault_info_in, 
                err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit => L_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit => L_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
                err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit => L_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
