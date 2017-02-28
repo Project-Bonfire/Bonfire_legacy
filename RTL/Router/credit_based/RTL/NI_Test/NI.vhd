@@ -281,9 +281,9 @@ process(P2N_write_en, P2N_FIFO_write_pointer)begin
   end process;
 
 -- Read pointer update process (after each read operation, read pointer is rotated one bit to the left)
- process(P2N_FIFO_read_pointer, grant)begin
+ process(P2N_FIFO_read_pointer, grant, fault_info_ready)begin
   P2N_FIFO_read_pointer_in <=  P2N_FIFO_read_pointer;
-  if grant  = '1' then -- Behrad: so grant here works somehow like read_en signal for FIFO ?
+  if grant  = '1' and fault_info_ready = '0' then -- Behrad: so grant here works somehow like read_en signal for FIFO ?
     P2N_FIFO_read_pointer_in <=  P2N_FIFO_read_pointer(2 downto 0) & P2N_FIFO_read_pointer(3);
   end if;
 end process;
@@ -445,7 +445,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
             when DIAGNOSIS_TAIL =>
                 if credit_counter_out /= "00" then
                     grant <= '1';
-                    TX <= "100" & fault_info(24 downto 12) & "000000000000000" & XOR_REDUCE("100" & fault_info(12) & "000000000000000000000000000");
+                    TX <= "100" & fault_info(24 downto 12) & "000000000000000" & XOR_REDUCE("100" & fault_info(24 downto 12) & "000000000000000");
                     state_in <= IDLE;
                     sent_info <= '1';
                     packet_counter_in <= packet_counter_out +1;

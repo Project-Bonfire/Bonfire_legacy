@@ -140,11 +140,11 @@ package body TB_Package is
           
           if (data_read(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100") then -- got tail flit
               receive_counter := receive_counter+1; 
-              diagnosis_data(24 downto 12) := data_read(28 downto 16); 
               if diagnosis = '0' then 
                 write(RECEIVED_LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(receive_source_node) & " to: " & integer'image(receive_destination_node) & " length: "& integer'image(receive_packet_length) & " actual length: "& integer'image(receive_counter)  & " id: "& integer'image(receive_packet_id));
                 writeline(RECEIVED_FILE, RECEIVED_LINEVARIABLE);
               else
+                diagnosis_data(24 downto 12) := data_read(28 downto 16); 
                 write(DIAGNOSIS_LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(receive_source_node) & " to: " & integer'image(receive_destination_node) & " length: "& integer'image(receive_packet_length) & " actual length: "& integer'image(receive_counter)  & " id: "& integer'image(receive_packet_id) & " diagnosis: " );
                 writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
                 write(DIAGNOSIS_LINEVARIABLE, to_bitvector(diagnosis_data));

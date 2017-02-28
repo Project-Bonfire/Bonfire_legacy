@@ -66,7 +66,7 @@ def report_faults(fault_list):
 #                |             X            |
 #                |      .-------------.     |
 #                |      |   Module    |     |
-#           -----o--X-->|    under    |--X--o------->
+#           -----o----->|    under    |--X--o------->
 #                       |    check    |
 #                       '-------------'
 #
@@ -87,10 +87,10 @@ def list_all_the_links(network_size):
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_S")
 			list_of_widths.append(32)
 		if i%network_size != 0:
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_E")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_W")
 			list_of_widths.append(32)
 		if i%network_size != network_size-1:
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_W")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":RX_E")
 			list_of_widths.append(32)
 
 	return list_of_ports, list_of_widths
@@ -100,9 +100,18 @@ def list_all_the_lbdr_signals(network_size):
 	takes the network size and returns a list of all the relevant LBDR signals in the network
 	"""
 	list_of_ports = []
+	list_of_widths = []
 	for i in range(0, network_size*2):
-		pass
-	return list_of_ports
+		if i/network_size != 0:	# has port N
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_N:Req_N_in")
+			list_of_widths.append(1ß)
+		if i/network_size != network_size-1: # has port S
+			pass
+		if i%network_size != 0: # has port W
+			pass
+		if i%network_size != network_size-1: # has port E
+			pass
+	return list_of_ports, list_of_widths
 
 def list_all_the_arbiter_signals(network_size):
 	"""
@@ -181,19 +190,22 @@ def generate_links_dictionary(network_size, sim_time):
 
 	list_of_ports = []
 	list_of_widths = []
-	ports, widths = list_all_the_links(network_size)
-	list_of_ports += ports
-	list_of_widths += widths
-	#ports, widths = list_all_the_fifo_signals(network_size)
+
+	#ports, widths = list_all_the_links(network_size)
 	#list_of_ports += ports
 	#list_of_widths += widths
+
+	ports, widths = list_all_the_lbdr_signals(network_size)
+	list_of_ports += ports
+	list_of_widths += widths
 
 	random.seed(FAULT_RANDOM_SEED)
 	fault_list = []
 	for item in list_of_ports:
 		item_index = list_of_ports.index(item)
 		width = list_of_widths[item_index]
-		fault_type = random.choice(["T", "P", "I", "T->P", "T->I"])
+		#fault_type = random.choice(["T", "P", "I", "T->P", "T->I"])
+		fault_type = random.choice(["T"])
 		
 		shut_down_time = None
 		std_dev = None
