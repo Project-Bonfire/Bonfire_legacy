@@ -245,6 +245,94 @@ add wave -noupdate -color green :tb_network_2x2:NoC:R_2:turn_faults
 add wave -noupdate -color green :tb_network_2x2:NoC:R_3:turn_faults
 add wave -noupdate :tb_network_2x2:clk
 
+add wave -noupdate -group {Turn Faults for R0} \
+sim/:tb_network_2x2:NoC:R_0:N2E_turn_fault \
+sim/:tb_network_2x2:NoC:R_0:N2W_turn_fault \
+sim/:tb_network_2x2:NoC:R_0:E2N_turn_fault \
+sim/:tb_network_2x2:NoC:R_0:E2S_turn_fault \
+sim/:tb_network_2x2:NoC:R_0:W2N_turn_fault \
+sim/:tb_network_2x2:NoC:R_0:W2S_turn_fault \
+sim/:tb_network_2x2:NoC:R_0:S2E_turn_fault \
+sim/:tb_network_2x2:NoC:R_0:S2W_turn_fault \
+sim/:tb_network_2x2:NoC:R_0:N2S_path_fault \
+sim/:tb_network_2x2:NoC:R_0:S2N_path_fault \
+sim/:tb_network_2x2:NoC:R_0:E2W_path_fault \
+sim/:tb_network_2x2:NoC:R_0:W2E_path_fault \
+sim/:tb_network_2x2:NoC:R_0:L2N_fault \
+sim/:tb_network_2x2:NoC:R_0:L2E_fault \
+sim/:tb_network_2x2:NoC:R_0:L2W_fault \
+sim/:tb_network_2x2:NoC:R_0:L2S_fault \
+sim/:tb_network_2x2:NoC:R_0:N2L_fault \
+sim/:tb_network_2x2:NoC:R_0:E2L_fault \
+sim/:tb_network_2x2:NoC:R_0:W2L_fault \
+sim/:tb_network_2x2:NoC:R_0:S2L_fault
+
+add wave -noupdate -group {Turn Faults for R1} \
+sim/:tb_network_2x2:NoC:R_1:N2E_turn_fault \
+sim/:tb_network_2x2:NoC:R_1:N2W_turn_fault \
+sim/:tb_network_2x2:NoC:R_1:E2N_turn_fault \
+sim/:tb_network_2x2:NoC:R_1:E2S_turn_fault \
+sim/:tb_network_2x2:NoC:R_1:W2N_turn_fault \
+sim/:tb_network_2x2:NoC:R_1:W2S_turn_fault \
+sim/:tb_network_2x2:NoC:R_1:S2E_turn_fault \
+sim/:tb_network_2x2:NoC:R_1:S2W_turn_fault \
+sim/:tb_network_2x2:NoC:R_1:N2S_path_fault \
+sim/:tb_network_2x2:NoC:R_1:S2N_path_fault \
+sim/:tb_network_2x2:NoC:R_1:E2W_path_fault \
+sim/:tb_network_2x2:NoC:R_1:W2E_path_fault \
+sim/:tb_network_2x2:NoC:R_1:L2N_fault \
+sim/:tb_network_2x2:NoC:R_1:L2E_fault \
+sim/:tb_network_2x2:NoC:R_1:L2W_fault \
+sim/:tb_network_2x2:NoC:R_1:L2S_fault \
+sim/:tb_network_2x2:NoC:R_1:N2L_fault \
+sim/:tb_network_2x2:NoC:R_1:E2L_fault \
+sim/:tb_network_2x2:NoC:R_1:W2L_fault \
+sim/:tb_network_2x2:NoC:R_1:S2L_fault
+
+add wave -noupdate -group {Turn Faults for R2} \
+sim/:tb_network_2x2:NoC:R_2:N2E_turn_fault \
+sim/:tb_network_2x2:NoC:R_2:N2W_turn_fault \
+sim/:tb_network_2x2:NoC:R_2:E2N_turn_fault \
+sim/:tb_network_2x2:NoC:R_2:E2S_turn_fault \
+sim/:tb_network_2x2:NoC:R_2:W2N_turn_fault \
+sim/:tb_network_2x2:NoC:R_2:W2S_turn_fault \
+sim/:tb_network_2x2:NoC:R_2:S2E_turn_fault \
+sim/:tb_network_2x2:NoC:R_2:S2W_turn_fault \
+sim/:tb_network_2x2:NoC:R_2:N2S_path_fault \
+sim/:tb_network_2x2:NoC:R_2:S2N_path_fault \
+sim/:tb_network_2x2:NoC:R_2:E2W_path_fault \
+sim/:tb_network_2x2:NoC:R_2:W2E_path_fault \
+sim/:tb_network_2x2:NoC:R_2:L2N_fault \
+sim/:tb_network_2x2:NoC:R_2:L2E_fault \
+sim/:tb_network_2x2:NoC:R_2:L2W_fault \
+sim/:tb_network_2x2:NoC:R_2:L2S_fault \
+sim/:tb_network_2x2:NoC:R_2:N2L_fault \
+sim/:tb_network_2x2:NoC:R_2:E2L_fault \
+sim/:tb_network_2x2:NoC:R_2:W2L_fault \
+sim/:tb_network_2x2:NoC:R_2:S2L_fault
+
+add wave -noupdate -group {Turn Faults for R3} \
+sim/:tb_network_2x2:NoC:R_3:N2E_turn_fault \
+sim/:tb_network_2x2:NoC:R_3:N2W_turn_fault \
+sim/:tb_network_2x2:NoC:R_3:E2N_turn_fault \
+sim/:tb_network_2x2:NoC:R_3:E2S_turn_fault \
+sim/:tb_network_2x2:NoC:R_3:W2N_turn_fault \
+sim/:tb_network_2x2:NoC:R_3:W2S_turn_fault \
+sim/:tb_network_2x2:NoC:R_3:S2E_turn_fault \
+sim/:tb_network_2x2:NoC:R_3:S2W_turn_fault \
+sim/:tb_network_2x2:NoC:R_3:N2S_path_fault \
+sim/:tb_network_2x2:NoC:R_3:S2N_path_fault \
+sim/:tb_network_2x2:NoC:R_3:E2W_path_fault \
+sim/:tb_network_2x2:NoC:R_3:W2E_path_fault \
+sim/:tb_network_2x2:NoC:R_3:L2N_fault \
+sim/:tb_network_2x2:NoC:R_3:L2E_fault \
+sim/:tb_network_2x2:NoC:R_3:L2W_fault \
+sim/:tb_network_2x2:NoC:R_3:L2S_fault \
+sim/:tb_network_2x2:NoC:R_3:N2L_fault \
+sim/:tb_network_2x2:NoC:R_3:E2L_fault \
+sim/:tb_network_2x2:NoC:R_3:W2L_fault \
+sim/:tb_network_2x2:NoC:R_3:S2L_fault
+
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors
 quietly wave cursor active 0

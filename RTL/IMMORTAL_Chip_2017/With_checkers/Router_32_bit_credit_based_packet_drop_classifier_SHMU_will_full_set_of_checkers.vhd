@@ -2880,7 +2880,7 @@ signal      L2N_fault, L2E_fault, L2W_fault, L2S_fault, N2L_fault, E2L_fault, W2
 
 signal      N_LBDR_checkers_ORed, E_LBDR_checkers_ORed, W_LBDR_checkers_ORed, S_LBDR_checkers_ORed, L_LBDR_checkers_ORed : std_logic;
 signal      Allocator_checkers_ORed : std_logic;
-signal      turn_faults_sig : std_logic_vector(19 downto 0);
+--signal      turn_faults_sig : std_logic_vector(19 downto 0);
 
 
 begin

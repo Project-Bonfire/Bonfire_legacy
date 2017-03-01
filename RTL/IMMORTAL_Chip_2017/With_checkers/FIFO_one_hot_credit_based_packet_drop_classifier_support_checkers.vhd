@@ -14,11 +14,12 @@ entity FIFO_credit_based_control_part_checkers is
 			read_en_W : in std_logic;
 			read_en_S : in std_logic;
 			read_en_L : in std_logic;
+
 			read_pointer: in std_logic_vector(3 downto 0);
 			read_pointer_in: in std_logic_vector(3 downto 0);
 			write_pointer: in std_logic_vector(3 downto 0); 
 			write_pointer_in: in std_logic_vector(3 downto 0); 
-			credit_out: in std_logic;
+			credit_out: in std_logic; -- Behrad: In FIFO, this is actually an internal signal "named as credit_in", which I guess should keep the previous value of credit_out.
 			empty_out: in std_logic;
 			full_out: in std_logic;
 			read_en_out: in std_logic;
