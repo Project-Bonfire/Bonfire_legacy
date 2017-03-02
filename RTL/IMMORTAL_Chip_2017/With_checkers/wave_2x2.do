@@ -181,19 +181,19 @@ add wave -noupdate -group {R0: FIFO Checkers ORed} -color green :tb_network_2x2:
 add wave -noupdate -group {R0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:W_FIFO_checkers_ORed
 add wave -noupdate -group {R0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:S_FIFO_checkers_ORed
 add wave -noupdate -group {R0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:L_FIFO_checkers_ORed
-add wave -noupdate :tb_network_2x2:clk
+
 add wave -noupdate -group {R1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:N_FIFO_checkers_ORed
 add wave -noupdate -group {R1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:E_FIFO_checkers_ORed
 add wave -noupdate -group {R1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:W_FIFO_checkers_ORed
 add wave -noupdate -group {R1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:S_FIFO_checkers_ORed
 add wave -noupdate -group {R1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:L_FIFO_checkers_ORed
-add wave -noupdate :tb_network_2x2:clk
+
 add wave -noupdate -group {R2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:N_FIFO_checkers_ORed
 add wave -noupdate -group {R2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:E_FIFO_checkers_ORed
 add wave -noupdate -group {R2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:W_FIFO_checkers_ORed
 add wave -noupdate -group {R2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:S_FIFO_checkers_ORed
 add wave -noupdate -group {R2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:L_FIFO_checkers_ORed
-add wave -noupdate :tb_network_2x2:clk
+
 add wave -noupdate -group {R3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:N_FIFO_checkers_ORed
 add wave -noupdate -group {R3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:E_FIFO_checkers_ORed
 add wave -noupdate -group {R3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:W_FIFO_checkers_ORed
@@ -207,19 +207,19 @@ add wave -noupdate -group {R0: LBDR Checkers ORed} -color green :tb_network_2x2:
 add wave -noupdate -group {R0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:W_LBDR_checkers_ORed
 add wave -noupdate -group {R0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:S_LBDR_checkers_ORed
 add wave -noupdate -group {R0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:L_LBDR_checkers_ORed
-add wave -noupdate :tb_network_2x2:clk
+
 add wave -noupdate -group {R1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:N_LBDR_checkers_ORed
 add wave -noupdate -group {R1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:E_LBDR_checkers_ORed
 add wave -noupdate -group {R1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:W_LBDR_checkers_ORed
 add wave -noupdate -group {R1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:S_LBDR_checkers_ORed
 add wave -noupdate -group {R1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:L_LBDR_checkers_ORed
-add wave -noupdate :tb_network_2x2:clk
+
 add wave -noupdate -group {R2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:N_LBDR_checkers_ORed
 add wave -noupdate -group {R2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:E_LBDR_checkers_ORed
 add wave -noupdate -group {R2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:W_LBDR_checkers_ORed
 add wave -noupdate -group {R2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:S_LBDR_checkers_ORed
 add wave -noupdate -group {R2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:L_LBDR_checkers_ORed
-add wave -noupdate :tb_network_2x2:clk
+
 add wave -noupdate -group {R3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:N_LBDR_checkers_ORed
 add wave -noupdate -group {R3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:E_LBDR_checkers_ORed
 add wave -noupdate -group {R3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:W_LBDR_checkers_ORed
