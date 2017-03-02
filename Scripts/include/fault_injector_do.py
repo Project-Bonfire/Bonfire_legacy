@@ -326,47 +326,95 @@ def list_all_the_fifo_signals(network_size):
 
 			list_of_widths += [4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 2, 2, 5, 5, 1, 1, 1, 1, 1]
 
-		if i/network_size != network_size-1:
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_1")
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_2")
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_3")
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_4")
+		if i/network_size != network_size-1: # has port S
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:FIFO_MEM_1")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:FIFO_MEM_2")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:FIFO_MEM_3")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:FIFO_MEM_4")
 
+			# Internal signals of FIFO
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:read_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:read_pointer_in")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:write_pointer")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:empty")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:full")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:read_en")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:write_en")
-			list_of_widths += [4, 4, 1, 1, 1, 1]
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:write_pointer_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:credit_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:empty")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:full")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:read_en")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:write_en")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:fake_credit")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:fake_credit_counter")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:fake_credit_counter_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:state_out")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:state_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:fault_info_out")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:fault_info_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:faulty_packet_out")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:faulty_packet_in")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:flit_type") -- flit_type is an alias
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_S:write_fake_flit")
 
-		if i%network_size != 0:
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_1")
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_2")
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_3")
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_4")
+			list_of_widths += [4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 2, 2, 5, 5, 1, 1, 1, 1, 1]
 
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:read_pointer")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:write_pointer")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:empty")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:full")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:read_en")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:write_en")
-			list_of_widths += [4, 4, 1, 1, 1, 1]
-			
-		if i%network_size != network_size-1:
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_1")
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_2")
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_3")
-			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_4")
+		if i%network_size != 0: # has port W
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:FIFO_MEM_1")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:FIFO_MEM_2")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:FIFO_MEM_3")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:FIFO_MEM_4")
 
+			# Internal signals of FIFO
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:read_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:read_pointer_in")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:write_pointer")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:empty")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:full")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:read_en")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:write_en")
-			list_of_widths += [4, 4, 1, 1, 1, 1]
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:write_pointer_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:credit_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:empty")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:full")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:read_en")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:write_en")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:fake_credit")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:fake_credit_counter")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:fake_credit_counter_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:state_out")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:state_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:fault_info_out")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:fault_info_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:faulty_packet_out")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:faulty_packet_in")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:flit_type") -- flit_type is an alias
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:write_fake_flit")
+
+			list_of_widths += [4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 2, 2, 5, 5, 1, 1, 1, 1, 1]
+			
+		if i%network_size != network_size-1: # has port E
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:FIFO_MEM_1")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:FIFO_MEM_2")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:FIFO_MEM_3")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:FIFO_MEM_4")
+
+			# Internal signals of FIFO
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:read_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:read_pointer_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:write_pointer")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:write_pointer_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:credit_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:empty")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:full")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:read_en")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:write_en")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:fake_credit")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:fake_credit_counter")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:fake_credit_counter_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:state_out")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:state_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:fault_info_out")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:fault_info_in")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:faulty_packet_out")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:faulty_packet_in")
+			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:flit_type") -- flit_type is an alias
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:write_fake_flit")
+
+			list_of_widths += [4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 2, 2, 5, 5, 1, 1, 1, 1, 1]
 
 	return list_of_ports, list_of_widths
 
