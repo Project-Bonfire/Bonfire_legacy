@@ -333,6 +333,91 @@ sim/:tb_network_2x2:NoC:R_3:E2L_fault \
 sim/:tb_network_2x2:NoC:R_3:W2L_fault \
 sim/:tb_network_2x2:NoC:R_3:S2L_fault
 
+add wave -noupdate -group {CHK_CT:state}  \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_N2E_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_N2W_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_E2N_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_E2S_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_W2N_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_W2S_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_S2E_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_S2W_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_N2S_path_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_S2N_path_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_E2W_path_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_W2E_path_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_L2N_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_L2E_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_L2W_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_L2S_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_N2L_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_E2L_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_W2L_fault:state \
+sim/:tb_network_2x2:NoC:R_0:CHK_CT_S2L_fault:state \
+
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_N2E_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_N2W_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_E2N_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_E2S_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_W2N_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_W2S_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_S2E_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_S2W_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_N2S_path_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_S2N_path_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_E2W_path_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_W2E_path_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_L2N_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_L2E_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_L2W_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_L2S_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_N2L_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_E2L_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_W2L_fault:state \
+sim/:tb_network_2x2:NoC:R_1:CHK_CT_S2L_fault:state \
+
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_N2E_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_N2W_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_E2N_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_E2S_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_W2N_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_W2S_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_S2E_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_S2W_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_N2S_path_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_S2N_path_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_E2W_path_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_W2E_path_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_L2N_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_L2E_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_L2W_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_L2S_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_N2L_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_E2L_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_W2L_fault:state \
+sim/:tb_network_2x2:NoC:R_2:CHK_CT_S2L_fault:state \
+
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_N2E_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_N2W_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_E2N_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_E2S_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_W2N_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_W2S_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_S2E_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_S2W_turn_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_N2S_path_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_S2N_path_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_E2W_path_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_W2E_path_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_L2N_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_L2E_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_L2W_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_L2S_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_N2L_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_E2L_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_W2L_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_S2L_fault:state \
+
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors
 quietly wave cursor active 0

@@ -18,6 +18,11 @@ vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/IMMORTAL_Chip_2017/With_check
 vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/IMMORTAL_Chip_2017/With_checkers/allocator_logic_pseudo_checkers.vhd"
 vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/IMMORTAL_Chip_2017/With_checkers/allocator_with_checkers.vhd"
 vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/IMMORTAL_Chip_2017/With_checkers/counter_threshold.vhd"
+
+# Added by Behrad for checkers outputs classification (for now only for E2N turn fault)
+vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/IMMORTAL_Chip_2017/With_checkers/checkers_counter_threshold.vhd"
+# Added by Behrad
+
 vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/IMMORTAL_Chip_2017/With_checkers/FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd"
 vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/IMMORTAL_Chip_2017/With_checkers/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers.vhd"
 vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/IMMORTAL_Chip_2017/With_checkers/Cx_Reconf_pseudo_checkers.vhd"
