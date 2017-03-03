@@ -354,7 +354,7 @@ sim/:tb_network_2x2:NoC:R_0:CHK_CT_N2L_fault:state \
 sim/:tb_network_2x2:NoC:R_0:CHK_CT_E2L_fault:state \
 sim/:tb_network_2x2:NoC:R_0:CHK_CT_W2L_fault:state \
 sim/:tb_network_2x2:NoC:R_0:CHK_CT_S2L_fault:state \
-
+sim/:tb_network_2x2:clk \
 sim/:tb_network_2x2:NoC:R_1:CHK_CT_N2E_turn_fault:state \
 sim/:tb_network_2x2:NoC:R_1:CHK_CT_N2W_turn_fault:state \
 sim/:tb_network_2x2:NoC:R_1:CHK_CT_E2N_turn_fault:state \
@@ -375,7 +375,7 @@ sim/:tb_network_2x2:NoC:R_1:CHK_CT_N2L_fault:state \
 sim/:tb_network_2x2:NoC:R_1:CHK_CT_E2L_fault:state \
 sim/:tb_network_2x2:NoC:R_1:CHK_CT_W2L_fault:state \
 sim/:tb_network_2x2:NoC:R_1:CHK_CT_S2L_fault:state \
-
+sim/:tb_network_2x2:clk \
 sim/:tb_network_2x2:NoC:R_2:CHK_CT_N2E_turn_fault:state \
 sim/:tb_network_2x2:NoC:R_2:CHK_CT_N2W_turn_fault:state \
 sim/:tb_network_2x2:NoC:R_2:CHK_CT_E2N_turn_fault:state \
@@ -396,7 +396,7 @@ sim/:tb_network_2x2:NoC:R_2:CHK_CT_N2L_fault:state \
 sim/:tb_network_2x2:NoC:R_2:CHK_CT_E2L_fault:state \
 sim/:tb_network_2x2:NoC:R_2:CHK_CT_W2L_fault:state \
 sim/:tb_network_2x2:NoC:R_2:CHK_CT_S2L_fault:state \
-
+sim/:tb_network_2x2:clk \
 sim/:tb_network_2x2:NoC:R_3:CHK_CT_N2E_turn_fault:state \
 sim/:tb_network_2x2:NoC:R_3:CHK_CT_N2W_turn_fault:state \
 sim/:tb_network_2x2:NoC:R_3:CHK_CT_E2N_turn_fault:state \
@@ -416,7 +416,7 @@ sim/:tb_network_2x2:NoC:R_3:CHK_CT_L2S_fault:state \
 sim/:tb_network_2x2:NoC:R_3:CHK_CT_N2L_fault:state \
 sim/:tb_network_2x2:NoC:R_3:CHK_CT_E2L_fault:state \
 sim/:tb_network_2x2:NoC:R_3:CHK_CT_W2L_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_S2L_fault:state \
+sim/:tb_network_2x2:NoC:R_3:CHK_CT_S2L_fault:state
 
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors

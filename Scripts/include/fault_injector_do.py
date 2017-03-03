@@ -101,7 +101,26 @@ def list_all_the_lbdr_signals(network_size):
 	"""
 	list_of_ports = []
 	list_of_widths = []
+
+	# Every router has the Local port
 	for i in range(0, network_size*2):
+		# internal signals of LBDR with packet drop
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:N1")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:E1")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:W1")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:S1")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:Req_N_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:Req_E_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:Req_W_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:Req_S_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:Req_L_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:grants")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:packet_drop_in")
+		# output signal(s) of LBDR with packet drop
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_L:packet_drop_order")
+		list_of_widths += [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+	# for i in range(0, network_size*2):
 		if i/network_size != 0:	# has port N
 			# internal signals of LBDR with packet drop
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":LBDR_N:N1")
@@ -179,7 +198,34 @@ def list_all_the_arbiter_signals(network_size):
 	list_of_ports = []
 	list_of_widths = []
 
+	# Every router has the Local port
 	for i in range(0, network_size*2):
+		# Output signals of Allocator related to output N
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:valid_L")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L_N") # The _signal should have fault injected or the main one ? i.e. grant_N_N or grant_N_N_signal ?! Because checker is checking grant_N_N_sig.
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L_E")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L_W")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L_S")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L_L")
+
+		# Internal signals of Allocator related to output N
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_L_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_L_out")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_N_L") 
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_E_L") # Input E requesting Output L ?!
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_W_L")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_S_L")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_L_L")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L_N_sig") # ??
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L_E_sig")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L_W_sig")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L_S_sig")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L_L_sig")
+
+		list_of_widths += [1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+	# for i in range(0, network_size*2):
 		if i/network_size != 0: # has port N
 
 			# Output signals of Allocator related to output N
@@ -216,7 +262,7 @@ def list_all_the_arbiter_signals(network_size):
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_S_S")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_S_L")
 
-			# Internal signals of Allocator related to output S
+			# # Internal signals of Allocator related to output S
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_S_in")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_S_out")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_N")
@@ -242,7 +288,7 @@ def list_all_the_arbiter_signals(network_size):
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_W_S")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_W_L")
 
-			# Internal signals of Allocator related to output W
+			# # Internal signals of Allocator related to output W
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_W_in")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_W_out")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_W")
@@ -268,7 +314,7 @@ def list_all_the_arbiter_signals(network_size):
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_E_S")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_E_L")
 
-			# Internal signals of Allocator related to output E
+			# # Internal signals of Allocator related to output E
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_E_in")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_E_out")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_E")
@@ -294,7 +340,38 @@ def list_all_the_fifo_signals(network_size):
 	list_of_ports = []
 	list_of_widths = []
 
+	# Every router has the Local port
 	for i in range(0, network_size*2):
+		# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:FIFO_MEM_1")
+		# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:FIFO_MEM_2")
+		# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:FIFO_MEM_3")
+		# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:FIFO_MEM_4")
+
+		# Internal signals of FIFO
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:read_pointer")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:read_pointer_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:write_pointer")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:write_pointer_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:credit_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:empty")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:full")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:read_en")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:write_en")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:fake_credit")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:fake_credit_counter")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:fake_credit_counter_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:state_out")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:state_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:fault_info_out")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:fault_info_in")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:faulty_packet_out")
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:faulty_packet_in")
+		# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:flit_type") -- flit_type is an alias
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_L:write_fake_flit")
+
+		list_of_widths += [4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 2, 2, 5, 5, 1, 1, 1, 1, 1]
+
+	# for i in range(0, network_size*2):
 		if i/network_size != 0: # has port N
 			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_1")
 			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:FIFO_MEM_2")
@@ -322,7 +399,6 @@ def list_all_the_fifo_signals(network_size):
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:faulty_packet_in")
 			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:flit_type") -- flit_type is an alias
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_N:write_fake_flit")
-
 
 			list_of_widths += [4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 2, 2, 5, 5, 1, 1, 1, 1, 1]
 
@@ -447,8 +523,8 @@ def generate_links_dictionary(network_size, sim_time):
 	for item in list_of_ports:
 		item_index = list_of_ports.index(item)
 		width = list_of_widths[item_index]
-		#fault_type = random.choice(["T", "P", "I", "T->P", "T->I"])
-		fault_type = random.choice(["T"])
+		fault_type = random.choice(["T", "P", "I", "T->P", "T->I"])
+		# fault_type = random.choice(["T"])
 		
 		shut_down_time = None
 		std_dev = None
