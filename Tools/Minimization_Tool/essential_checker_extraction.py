@@ -31,6 +31,10 @@ def extract_checker_info(name_string):
 
 
 def find_essential_checker():
+    """
+    Essential checker is a checker that has absolute minimum of true misses while true detection value of that node is 
+    larger than 0. 
+    """
     print "------------------------------------------------------------------------------------------------"
     print "                     Extracting essential checkers"
     print "------------------------------------------------------------------------------------------------"
