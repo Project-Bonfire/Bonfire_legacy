@@ -21,8 +21,6 @@ end;
 
 architecture behavior of comparator is
 
-signal S0, S1, S2: std_logic_vector(DATA_WIDTH-1 downto 0);
-
 begin
 
 process (input0, input1) 
@@ -30,7 +28,7 @@ begin
 
 	error_out <= '0';
 
-	if (input0 = input1)
+	if (input0 = input1) then
 		error_out <= '0';
 	else 
 		error_out <= '1';

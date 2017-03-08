@@ -21,7 +21,7 @@ entity Arbiter_pseudo_DMR is
             state_in: out std_logic_vector (5 downto 0); -- 6 states for Arbiter's FSM
             next_state_out: out std_logic_vector (5 downto 0); -- 6 states for Arbiter's FSM
 
-            error_out: std_logic -- added for error detection (but not possible to localize the error)
+            error_out: out std_logic -- added for error detection (but not possible to localize the error)
            );
 end;
 
@@ -42,7 +42,7 @@ component Arbiter_pseudo is
            );
 end component;
 
-entity comparator is
+component comparator is
     generic (
         DATA_WIDTH: integer := 9
     );
@@ -52,10 +52,9 @@ entity comparator is
 
         error_out: out std_logic
     );
-end;
+end component;
 
 signal Comparator_input_0_sig, Comparator_input_1_sig: std_logic_vector(DATA_WIDTH-1 downto 0);
-signal error_out_sig: std_logic;
 
 begin 
 
@@ -105,8 +104,8 @@ ARBITER1: Arbiter_pseudo port map (
 -- Comparator instantiation
 DMR_comparator: comparator  generic map (DATA_WIDTH => DATA_WIDTH)
                   port map (
-                              input0 => Voter_input_0_sig,
-                              input1 => Voter_input_1_sig,
+                              input0 => Comparator_input_0_sig,
+                              input1 => Comparator_input_1_sig,
  
                               error_out => error_out
                            );
