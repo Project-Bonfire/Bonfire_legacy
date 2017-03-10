@@ -12,6 +12,12 @@ entity arbiter_out is
 
             grant_Y_N, grant_Y_E, grant_Y_W, grant_Y_S, grant_Y_L : out std_logic; -- Grants given to LBDR requests (encoded as one-hot)
 
+            -- fault injector signals
+            shift: in std_logic;
+            fault_clk: in std_logic;
+            data_in_serial: in std_logic;
+            data_out_serial: out std_logic;
+
             -- Checker outputs
             err_Requests_state_in_state_not_equal, 
        
@@ -146,6 +152,45 @@ component Arbiter_out_one_hot_pseudo_checkers is
          );
 end component;
 
+component fault_injector is 
+  generic ( DATA_WIDTH    : integer := 32; 
+            ADDRESS_WIDTH : integer := 5  );
+  port(
+    data_in: in std_logic_vector (DATA_WIDTH-1 downto 0);
+    address: in std_logic_vector(ADDRESS_WIDTH-1 downto 0);
+    sta_0: in std_logic;
+    sta_1: in std_logic;
+    data_out: out std_logic_vector (DATA_WIDTH-1 downto 0)
+    );
+end component;
+
+component shift_register_serial_in is
+    generic (
+        REG_WIDTH: integer := 35
+    );
+    port (
+        clk, reset : in std_logic;
+        shift: in std_logic;
+        data_in_serial: in std_logic;
+        data_out_parallel: out std_logic_vector(REG_WIDTH-1 downto 0);
+        data_out_serial: out std_logic
+    );
+end component;
+
+ ----------------------------------------
+ -- Signals related to fault injection --
+ ----------------------------------------
+ 
+ -- Total: 24 bits
+ signal FI_add_sta: std_logic_vector (23 downto 0); -- 17 bits for internal- and output-related signals
+                                                  -- 5 bits for fault injection location address (ceil of log2(17) = 5)
+                                                  -- 2 bits for type of fault (SA0 or SA1)
+ signal non_faulty_signals: std_logic_vector (16 downto 0); -- 17 bits for internal- and output-related signals (non-faulty)                                          
+ signal faulty_signals: std_logic_vector(16 downto 0); -- 17 bits for internal- and output-related signals (with single stuck-at fault injected in one of them)
+ 
+ ----------------------------------------
+ ----------------------------------------
+
 
   --TYPE STATE_TYPE IS (IDLE, North, East, West, South, Local);
   
@@ -157,9 +202,54 @@ end component;
   CONSTANT South: std_logic_vector (5 downto 0) := "100000";
 
   SIGNAL state, state_in : std_logic_vector (5 downto 0) := IDLE; -- : STATE_TYPE := IDLE;
-  SIGNAL grant_Y_N_sig, grant_Y_E_sig, grant_Y_W_sig, grant_Y_S_sig, grant_Y_L_sig : std_logic;
+  
+  SIGNAL grant_Y_N_sig, grant_Y_E_sig, grant_Y_W_sig, grant_Y_S_sig, grant_Y_L_sig : std_logic; -- needed for connecting output ports 
+                                                                                                -- of Arbiter_in to checker inputs
+
+   -- Signal(s) used for creating the chain of injected fault locations
+   -- Total: 17 bits ??!!
+   -- LBDR internal-related signals
+  signal state_faulty, state_in_faulty:  std_logic_vector(5 downto 0);
+
+   -- LBDR output-related signals
+  signal grant_Y_N_sig_faulty, grant_Y_E_sig_faulty, grant_Y_W_sig_faulty, grant_Y_S_sig_faulty, grant_Y_L_sig_faulty: std_logic;
+
 
 begin
+
+-------------------------------------      
+---- Related to fault injection -----
+-------------------------------------      
+
+-- Total: 17 bits
+-- for grant_Y_N, ... , grant_Y_L output signals, not sure whether to include them or the signals with _sig suffix in its name ??!!
+non_faulty_signals <= state & state_in & grant_Y_N_sig & grant_Y_E_sig & grant_Y_W_sig & grant_Y_S_sig & grant_Y_L_sig;
+
+-- Fault injector module instantiation
+FI: fault_injector generic map(DATA_WIDTH => 17, ADDRESS_WIDTH => 6) 
+           port map (data_in=> non_faulty_signals , address => FI_add_sta(7 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out=> faulty_signals
+            );
+
+-- Extracting faulty values for internal- and output-related signals
+-- Total: 17 bits
+
+state_faulty            <= faulty_signals (16 downto 11);
+state_in_faulty         <= faulty_signals (10 downto 5);
+grant_Y_N_sig_faulty    <= faulty_signals (4);
+grant_Y_E_sig_faulty    <= faulty_signals (3);
+grant_Y_W_sig_faulty    <= faulty_signals (2);
+grant_Y_S_sig_faulty    <= faulty_signals (1);
+grant_Y_L_sig_faulty    <= faulty_signals (0);
+
+
+-- Total: 24 bits
+SR: shift_register_serial_in generic map(REG_WIDTH => 24)
+          port map ( clk=> fault_clk, reset=>reset, shift=> shift,data_in_serial=> data_in_serial, 
+                     data_out_parallel=> FI_add_sta, data_out_serial=> data_out_serial
+                   );
+
+-------------------------------------      
+-------------------------------------      
 
 -- We did this because of the checker outputs!
 

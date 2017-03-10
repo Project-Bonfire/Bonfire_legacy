@@ -224,7 +224,7 @@ end component;
  ----------------------------------------
  
  -- Total: 24 bits
- signal FI_add_sta: std_logic_vector(23 downto 0); -- 17 bits for internal- and output-related signals
+ signal FI_add_sta: std_logic_vector (23 downto 0); -- 17 bits for internal- and output-related signals
                                                   -- 5 bits for fault injection location address (ceil of log2(17) = 5)
                                                   -- 2 bits for type of fault (SA0 or SA1)
  signal non_faulty_signals: std_logic_vector (16 downto 0); -- 17 bits for internal- and output-related signals (non-faulty)                                          
@@ -250,7 +250,7 @@ SIGNAL X_N_sig, X_E_sig, X_W_sig, X_S_sig, X_L_sig: std_logic; -- needed for con
 															   -- of Arbiter_in to checker inputs
 
    -- Signal(s) used for creating the chain of injected fault locations
-   -- Total: ?? bits ??!!
+   -- Total: 17 bits ??!!
    -- LBDR internal-related signals
   signal state_faulty, state_in_faulty:  std_logic_vector(5 downto 0);
 
