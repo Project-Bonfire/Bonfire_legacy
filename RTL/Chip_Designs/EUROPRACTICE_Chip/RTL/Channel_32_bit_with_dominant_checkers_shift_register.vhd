@@ -49,7 +49,6 @@ end router_channel;
 
 architecture behavior of router_channel is
   
- 
   COMPONENT FIFO is
     generic (
         DATA_WIDTH: integer := 32
@@ -194,7 +193,6 @@ architecture behavior of router_channel is
  
     -- Grant_XY : Grant signal generated from Arbiter for output X connected to FIFO of input Y
 
- 	 
   signal empty: std_logic; 
    
   signal combined_error_signals: std_logic_vector(58 downto 0);
@@ -239,10 +237,10 @@ begin
 
 
   -- OR of checker outputs
-  error_signal_sync <= OR_REDUCE(shift_parallel_data);
+  error_signal_sync  <= OR_REDUCE(shift_parallel_data);
   error_signal_async <= OR_REDUCE(combined_error_signals);
   -- making the shift register input signal
-  -- please keep this like this, i use this for counting the number of the signals.
+  -- please keep this like this, used this for counting the number of the signals.
   combined_error_signals <=   err_header_empty_Requests_FF_Requests_in &
                               err_tail_Requests_in_all_zero &
                               err_header_tail_Requests_FF_Requests_in &

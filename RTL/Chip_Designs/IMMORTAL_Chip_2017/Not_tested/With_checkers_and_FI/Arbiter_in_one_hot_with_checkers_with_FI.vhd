@@ -223,10 +223,9 @@ end component;
  -- Signals related to fault injection --
  ----------------------------------------
  
- -- Total: 24 bits
- signal FI_add_sta: std_logic_vector (23 downto 0); -- 17 bits for internal- and output-related signals
-                                                  -- 5 bits for fault injection location address (ceil of log2(17) = 5)
-                                                  -- 2 bits for type of fault (SA0 or SA1)
+ -- Total: 7 bits
+ signal FI_add_sta: std_logic_vector (6 downto 0); -- 5 bits for fault injection location address (ceil of log2(17) = 5)
+                                                   -- 2 bits for type of fault (SA0 or SA1)
  signal non_faulty_signals: std_logic_vector (16 downto 0); -- 17 bits for internal- and output-related signals (non-faulty)                                          
  signal faulty_signals: std_logic_vector(16 downto 0); -- 17 bits for internal- and output-related signals (with single stuck-at fault injected in one of them)
  
@@ -285,8 +284,8 @@ X_S_sig_faulty		<= faulty_signals (1);
 X_L_sig_faulty		<= faulty_signals (0);
 
 
--- Total: 24 bits
-SR: shift_register_serial_in generic map(REG_WIDTH => 24)
+-- Total: 7 bits
+SR: shift_register_serial_in generic map(REG_WIDTH => 7)
           port map ( clk=> fault_clk, reset=>reset, shift=> shift,data_in_serial=> data_in_serial, 
                      data_out_parallel=> FI_add_sta, data_out_serial=> data_out_serial
                    );
