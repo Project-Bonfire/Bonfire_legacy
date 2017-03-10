@@ -28,6 +28,12 @@ entity allocator is
            	grant_S_N, grant_S_E, grant_S_W, grant_S_S, grant_S_L: out std_logic;
            	grant_L_N, grant_L_E, grant_L_W, grant_L_S, grant_L_L: out std_logic;
 
+            -- fault injector signals
+            shift: in std_logic;
+            fault_clk: in std_logic;
+            data_in_serial: in std_logic;
+            data_out_serial: out std_logic;
+
             -- Allocator logic checker outputs
             err_grant_N_N_sig_not_empty_N_grant_N_N, 
             err_not_grant_N_N_sig_or_empty_N_not_grant_N_N, 
@@ -831,37 +837,6 @@ end allocator;
 
 architecture behavior of allocator is
 
--- so the idea is that we should have counters that keep track of credit!
-signal credit_counter_N_in, credit_counter_N_out: std_logic_vector(1 downto 0);
-signal credit_counter_E_in, credit_counter_E_out: std_logic_vector(1 downto 0);
-signal credit_counter_W_in, credit_counter_W_out: std_logic_vector(1 downto 0);
-signal credit_counter_S_in, credit_counter_S_out: std_logic_vector(1 downto 0);
-signal credit_counter_L_in, credit_counter_L_out: std_logic_vector(1 downto 0);
-
-signal grant_N, grant_E, grant_W, grant_S, grant_L: std_logic;
-
-signal X_N_N, X_N_E, X_N_W, X_N_S, X_N_L: std_logic;
-signal X_E_N, X_E_E, X_E_W, X_E_S, X_E_L: std_logic;
-signal X_W_N, X_W_E, X_W_W, X_W_S, X_W_L: std_logic;
-signal X_S_N, X_S_E, X_S_W, X_S_S, X_S_L: std_logic;
-signal X_L_N, X_L_E, X_L_W, X_L_S, X_L_L: std_logic;
-
--- These signals belong to Allocator
-signal grant_N_N_sig, grant_N_E_sig, grant_N_W_sig, grant_N_S_sig, grant_N_L_sig: std_logic;
-signal grant_E_N_sig, grant_E_E_sig, grant_E_W_sig, grant_E_S_sig, grant_E_L_sig: std_logic;
-signal grant_W_N_sig, grant_W_E_sig, grant_W_W_sig, grant_W_S_sig, grant_W_L_sig: std_logic;
-signal grant_S_N_sig, grant_S_E_sig, grant_S_W_sig, grant_S_S_sig, grant_S_L_sig: std_logic;
-signal grant_L_N_sig, grant_L_E_sig, grant_L_W_sig, grant_L_S_sig, grant_L_L_sig: std_logic;
-
-signal valid_N_sig, valid_E_sig, valid_W_sig, valid_S_sig, valid_L_sig : std_logic;
-
--- These signals are introduced when connecting output-related signals to the allocator checkers
-signal grant_N_N_signal, grant_N_E_signal, grant_N_W_signal, grant_N_S_signal, grant_N_L_signal: std_logic;
-signal grant_E_N_signal, grant_E_E_signal, grant_E_W_signal, grant_E_S_signal, grant_E_L_signal: std_logic;
-signal grant_W_N_signal, grant_W_E_signal, grant_W_W_signal, grant_W_S_signal, grant_W_L_signal: std_logic;
-signal grant_S_N_signal, grant_S_E_signal, grant_S_W_signal, grant_S_S_signal, grant_S_L_signal: std_logic;
-signal grant_L_N_signal, grant_L_E_signal, grant_L_W_signal, grant_L_S_signal, grant_L_L_signal: std_logic;
-
 -- Allocator logic checker outputs and allocator credit counter logic checker outputs go directly to the output interface of Allocator
 
 component Arbiter_in is
@@ -1162,30 +1137,213 @@ component allocator_credit_counter_logic_pseudo_checkers is
 end component;
 
 
+component fault_injector is 
+  generic ( DATA_WIDTH    : integer := 32; 
+            ADDRESS_WIDTH : integer := 5  );
+  port(
+    data_in: in std_logic_vector (DATA_WIDTH-1 downto 0);
+    address: in std_logic_vector(ADDRESS_WIDTH-1 downto 0);
+    sta_0: in std_logic;
+    sta_1: in std_logic;
+    data_out: out std_logic_vector (DATA_WIDTH-1 downto 0)
+    );
+end component;
+
+component shift_register_serial_in is
+    generic (
+        REG_WIDTH: integer := 35
+    );
+    port (
+        clk, reset : in std_logic;
+        shift: in std_logic;
+        data_in_serial: in std_logic;
+        data_out_parallel: out std_logic_vector(REG_WIDTH-1 downto 0);
+        data_out_serial: out std_logic
+    );
+end component;
+
+
+ ----------------------------------------
+ -- Signals related to fault injection --
+ ----------------------------------------
+ 
+ -- Total: 89 bits
+ signal FI_add_sta: std_logic_vector (88 downto 0); -- 80 bits for internal- and output-related signals
+                                                  -- 7 bits for fault injection location address (ceil of log2(80) = 7)
+                                                  -- 2 bits for type of fault (SA0 or SA1)
+ signal non_faulty_signals: std_logic_vector (79 downto 0); -- 80 bits for internal- and output-related signals (non-faulty)                                          
+ signal faulty_signals: std_logic_vector(79 downto 0); -- 80 bits for internal- and output-related signals (with single stuck-at fault injected in one of them)
+ 
+ ----------------------------------------
+ ----------------------------------------
+
+-- So the idea is that we should have counters that keep track of credit!
+signal credit_counter_N_in, credit_counter_N_out: std_logic_vector(1 downto 0);
+signal credit_counter_E_in, credit_counter_E_out: std_logic_vector(1 downto 0);
+signal credit_counter_W_in, credit_counter_W_out: std_logic_vector(1 downto 0);
+signal credit_counter_S_in, credit_counter_S_out: std_logic_vector(1 downto 0);
+signal credit_counter_L_in, credit_counter_L_out: std_logic_vector(1 downto 0);
+
+signal grant_N, grant_E, grant_W, grant_S, grant_L: std_logic;
+
+signal X_N_N, X_N_E, X_N_W, X_N_S, X_N_L: std_logic;
+signal X_E_N, X_E_E, X_E_W, X_E_S, X_E_L: std_logic;
+signal X_W_N, X_W_E, X_W_W, X_W_S, X_W_L: std_logic;
+signal X_S_N, X_S_E, X_S_W, X_S_S, X_S_L: std_logic;
+signal X_L_N, X_L_E, X_L_W, X_L_S, X_L_L: std_logic;
+
+-- These signals belong to Allocator
+signal grant_N_N_sig, grant_N_E_sig, grant_N_W_sig, grant_N_S_sig, grant_N_L_sig: std_logic;
+signal grant_E_N_sig, grant_E_E_sig, grant_E_W_sig, grant_E_S_sig, grant_E_L_sig: std_logic;
+signal grant_W_N_sig, grant_W_E_sig, grant_W_W_sig, grant_W_S_sig, grant_W_L_sig: std_logic;
+signal grant_S_N_sig, grant_S_E_sig, grant_S_W_sig, grant_S_S_sig, grant_S_L_sig: std_logic;
+signal grant_L_N_sig, grant_L_E_sig, grant_L_W_sig, grant_L_S_sig, grant_L_L_sig: std_logic;
+
+-- These signals are introduced when connecting output-related signals to the allocator checkers
+signal valid_N_sig, valid_E_sig, valid_W_sig, valid_S_sig, valid_L_sig : std_logic;
+
+signal grant_N_N_signal, grant_N_E_signal, grant_N_W_signal, grant_N_S_signal, grant_N_L_signal: std_logic;
+signal grant_E_N_signal, grant_E_E_signal, grant_E_W_signal, grant_E_S_signal, grant_E_L_signal: std_logic;
+signal grant_W_N_signal, grant_W_E_signal, grant_W_W_signal, grant_W_S_signal, grant_W_L_signal: std_logic;
+signal grant_S_N_signal, grant_S_E_signal, grant_S_W_signal, grant_S_S_signal, grant_S_L_signal: std_logic;
+signal grant_L_N_signal, grant_L_E_signal, grant_L_W_signal, grant_L_S_signal, grant_L_L_signal: std_logic;
+
+
+-- Signal(s) used for creating the chain of injected fault locations
+-- Total: ?? bits ??!!
+-- Allocator internal-related signals
+signal credit_counter_N_in_faulty, credit_counter_N_out_faulty: std_logic_vector(1 downto 0);
+signal credit_counter_E_in_faulty, credit_counter_E_out_faulty: std_logic_vector(1 downto 0);
+signal credit_counter_W_in_faulty, credit_counter_W_out_faulty: std_logic_vector(1 downto 0);
+signal credit_counter_S_in_faulty, credit_counter_S_out_faulty: std_logic_vector(1 downto 0);
+signal credit_counter_L_in_faulty, credit_counter_L_out_faulty: std_logic_vector(1 downto 0);
+signal grant_N_faulty, grant_E_faulty, grant_W_faulty, grant_S_faulty, grant_L_faulty: std_logic;
+signal grant_N_N_sig_faulty, grant_N_E_sig_faulty, grant_N_W_sig_faulty, grant_N_S_sig_faulty, grant_N_L_sig_faulty: std_logic;
+signal grant_E_N_sig_faulty, grant_E_E_sig_faulty, grant_E_W_sig_faulty, grant_E_S_sig_faulty, grant_E_L_sig_faulty: std_logic;
+signal grant_W_N_sig_faulty, grant_W_E_sig_faulty, grant_W_W_sig_faulty, grant_W_S_sig_faulty, grant_W_L_sig_faulty: std_logic;
+signal grant_S_N_sig_faulty, grant_S_E_sig_faulty, grant_S_W_sig_faulty, grant_S_S_sig_faulty, grant_S_L_sig_faulty: std_logic;
+signal grant_L_N_sig_faulty, grant_L_E_sig_faulty, grant_L_W_sig_faulty, grant_L_S_sig_faulty, grant_L_L_sig_faulty: std_logic;
+
+-- Allocator output-related signals
+signal valid_N_sig_faulty, valid_E_sig_faulty, valid_W_sig_faulty, valid_S_sig_faulty, valid_L_sig_faulty : std_logic;
+signal grant_N_N_signal_faulty, grant_N_E_signal_faulty, grant_N_W_signal_faulty, grant_N_S_signal_faulty, grant_N_L_signal_faulty: std_logic;
+signal grant_E_N_signal_faulty, grant_E_E_signal_faulty, grant_E_W_signal_faulty, grant_E_S_signal_faulty, grant_E_L_signal_faulty: std_logic;
+signal grant_W_N_signal_faulty, grant_W_E_signal_faulty, grant_W_W_signal_faulty, grant_W_S_signal_faulty, grant_W_L_signal_faulty: std_logic;
+signal grant_S_N_signal_faulty, grant_S_E_signal_faulty, grant_S_W_signal_faulty, grant_S_S_signal_faulty, grant_S_L_signal_faulty: std_logic;
+signal grant_L_N_signal_faulty, grant_L_E_signal_faulty, grant_L_W_signal_faulty, grant_L_S_signal_faulty, grant_L_L_signal_faulty: std_logic;
+
+
 begin 
   
--- sequential part
+-------------------------------------      
+---- Related to fault injection -----
+-------------------------------------      
 
-process(clk, reset)
-begin
-	if reset = '0' then 
-		-- we start with all full cradit
-	 	credit_counter_N_out <= (others=>'1');
-		credit_counter_E_out <= (others=>'1');
-		credit_counter_W_out <= (others=>'1');
-		credit_counter_S_out <= (others=>'1');
-		credit_counter_L_out <= (others=>'1');
-	elsif clk'event and clk = '1' then 
-		credit_counter_N_out <= credit_counter_N_in;
-		credit_counter_E_out <= credit_counter_E_in;
-		credit_counter_W_out <= credit_counter_W_in;
-		credit_counter_S_out <= credit_counter_S_in;
-		credit_counter_L_out <= credit_counter_L_in;
+-- Total: 80 bits
+-- for valid and grant output signals, not sure whether to include them or the signals with _sig and _signal suffix in their name ??!!
+non_faulty_signals <=  credit_counter_N_in & credit_counter_N_out & credit_counter_E_in & credit_counter_E_out &
+                       credit_counter_W_in & credit_counter_W_out & credit_counter_S_in & credit_counter_S_out &
+                       credit_counter_L_in & credit_counter_L_out & grant_N & grant_E & grant_W & grant_S & 
+                       grant_L & grant_N_N_sig & grant_N_E_sig & grant_N_W_sig & grant_N_S_sig & grant_N_L_sig &
+                       grant_E_N_sig & grant_E_E_sig & grant_E_W_sig & grant_E_S_sig & grant_E_L_sig &
+                       grant_W_N_sig & grant_W_E_sig & grant_W_W_sig & grant_W_S_sig & grant_W_L_sig &
+                       grant_S_N_sig & grant_S_E_sig & grant_S_W_sig & grant_S_S_sig & grant_S_L_sig &
+                       grant_L_N_sig & grant_L_E_sig & grant_L_W_sig & grant_L_S_sig & grant_L_L_sig &
+                       valid_N_sig & valid_E_sig & valid_W_sig & valid_S_sig & valid_L_sig &
+                       grant_N_N_signal & grant_N_E_signal & grant_N_W_signal & grant_N_S_signal & grant_N_L_signal &
+                       grant_E_N_signal & grant_E_E_signal & grant_E_W_signal & grant_E_S_signal & grant_E_L_signal &
+                       grant_W_N_signal & grant_W_E_signal & grant_W_W_signal & grant_W_S_signal & grant_W_L_signal &
+                       grant_S_N_signal & grant_S_E_signal & grant_S_W_signal & grant_S_S_signal & grant_S_L_signal &
+                       grant_L_N_signal & grant_L_E_signal & grant_L_W_signal & grant_L_S_signal & grant_L_L_signal;
 
-	end if;
-end process;
- 
--- The combionational part
+-- Fault injector module instantiation
+FI: fault_injector generic map(DATA_WIDTH => 80, ADDRESS_WIDTH => 7) 
+           port map (data_in=> non_faulty_signals , address => FI_add_sta(8 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out=> faulty_signals
+            );
+
+
+-- Extracting faulty values for internal- and output-related signals
+-- Total: 17 bits
+
+credit_counter_N_in_faulty           <= faulty_signals (79 downto 78);
+credit_counter_N_out_faulty          <= faulty_signals (77 downto 76);
+credit_counter_E_in_faulty           <= faulty_signals (75 downto 74);
+credit_counter_E_out_faulty          <= faulty_signals (73 downto 72);
+credit_counter_W_in_faulty           <= faulty_signals (71 downto 70);
+credit_counter_W_out_faulty          <= faulty_signals (69 downto 68);
+credit_counter_S_in_faulty           <= faulty_signals (67 downto 66);
+credit_counter_S_out_faulty          <= faulty_signals (65 downto 64);
+credit_counter_L_in_faulty           <= faulty_signals (63 downto 62);
+credit_counter_L_out_faulty          <= faulty_signals (61 downto 60);
+grant_N_faulty                       <= faulty_signals (59);
+grant_E_faulty                       <= faulty_signals (58);
+grant_W_faulty                       <= faulty_signals (57);
+grant_S_faulty                       <= faulty_signals (56);
+grant_L_faulty                       <= faulty_signals (55);
+grant_N_N_sig_faulty                 <= faulty_signals (54);
+grant_N_E_sig_faulty                 <= faulty_signals (53);
+grant_N_W_sig_faulty                 <= faulty_signals (52);
+grant_N_S_sig_faulty                 <= faulty_signals (51);
+grant_N_L_sig_faulty                 <= faulty_signals (50);
+grant_E_N_sig_faulty                 <= faulty_signals (49);
+grant_E_E_sig_faulty                 <= faulty_signals (48);
+grant_E_W_sig_faulty                 <= faulty_signals (47);
+grant_E_S_sig_faulty                 <= faulty_signals (46);
+grant_E_L_sig_faulty                 <= faulty_signals (45);
+grant_W_N_sig_faulty                 <= faulty_signals (44);
+grant_W_E_sig_faulty                 <= faulty_signals (43);
+grant_W_W_sig_faulty                 <= faulty_signals (42);
+grant_W_S_sig_faulty                 <= faulty_signals (41);
+grant_W_L_sig_faulty                 <= faulty_signals (40);
+grant_S_N_sig_faulty                 <= faulty_signals (39);
+grant_S_E_sig_faulty                 <= faulty_signals (38);
+grant_S_W_sig_faulty                 <= faulty_signals (37);
+grant_S_S_sig_faulty                 <= faulty_signals (36);
+grant_S_L_sig_faulty                 <= faulty_signals (35);
+grant_L_N_sig_faulty                 <= faulty_signals (34);
+grant_L_E_sig_faulty                 <= faulty_signals (33);
+grant_L_W_sig_faulty                 <= faulty_signals (32);
+grant_L_S_sig_faulty                 <= faulty_signals (31);
+grant_L_L_sig_faulty                 <= faulty_signals (30);                              
+valid_N_sig_faulty                   <= faulty_signals (29);
+valid_E_sig_faulty                   <= faulty_signals (28);
+valid_W_sig_faulty                   <= faulty_signals (27);
+valid_S_sig_faulty                   <= faulty_signals (26);
+valid_L_sig_faulty                   <= faulty_signals (25);
+grant_N_N_signal_faulty              <= faulty_signals (24);
+grant_N_E_signal_faulty              <= faulty_signals (23);
+grant_N_W_signal_faulty              <= faulty_signals (22);
+grant_N_S_signal_faulty              <= faulty_signals (21);
+grant_N_L_signal_faulty              <= faulty_signals (20);
+grant_E_N_signal_faulty              <= faulty_signals (19);
+grant_E_E_signal_faulty              <= faulty_signals (18);
+grant_E_W_signal_faulty              <= faulty_signals (17);
+grant_E_S_signal_faulty              <= faulty_signals (16);
+grant_E_L_signal_faulty              <= faulty_signals (15);
+grant_W_N_signal_faulty              <= faulty_signals (14);
+grant_W_E_signal_faulty              <= faulty_signals (13);
+grant_W_W_signal_faulty              <= faulty_signals (12);
+grant_W_S_signal_faulty              <= faulty_signals (11);
+grant_W_L_signal_faulty              <= faulty_signals (10);
+grant_S_N_signal_faulty              <= faulty_signals (9);
+grant_S_E_signal_faulty              <= faulty_signals (8);
+grant_S_W_signal_faulty              <= faulty_signals (7);
+grant_S_S_signal_faulty              <= faulty_signals (6);
+grant_S_L_signal_faulty              <= faulty_signals (5);
+grant_L_N_signal_faulty              <= faulty_signals (4);
+grant_L_E_signal_faulty              <= faulty_signals (3);
+grant_L_W_signal_faulty              <= faulty_signals (2);
+grant_L_S_signal_faulty              <= faulty_signals (1);
+grant_L_L_signal_faulty              <= faulty_signals (0);
+
+-- Total: 89 bits
+SR: shift_register_serial_in generic map(REG_WIDTH => 89)
+          port map ( clk=> fault_clk, reset=>reset, shift=> shift,data_in_serial=> data_in_serial, 
+                     data_out_parallel=> FI_add_sta, data_out_serial=> data_out_serial
+                   );
+
+-------------------------------------      
+-------------------------------------      
 
 -- We did this because of the checkers
 
@@ -1225,7 +1383,31 @@ grant_W_L <= grant_W_L_signal;
 grant_S_L <= grant_S_L_signal;
 grant_L_L <= grant_L_L_signal;
 
--- Taking Arbiter_in checker outputs to outputs of Allocator
+
+-- sequential part
+
+process(clk, reset)
+begin
+	if reset = '0' then 
+		-- we start with all full cradit
+	 	credit_counter_N_out <= (others=>'1');
+		credit_counter_E_out <= (others=>'1');
+		credit_counter_W_out <= (others=>'1');
+		credit_counter_S_out <= (others=>'1');
+		credit_counter_L_out <= (others=>'1');
+	elsif clk'event and clk = '1' then 
+		credit_counter_N_out <= credit_counter_N_in;
+		credit_counter_E_out <= credit_counter_E_in;
+		credit_counter_W_out <= credit_counter_W_in;
+		credit_counter_S_out <= credit_counter_S_in;
+		credit_counter_L_out <= credit_counter_L_in;
+
+	end if;
+end process;
+ 
+-- The combionational part
+
+-- Taking Arbiter_in checker outputs to outputs of Allocator ??!! (Behrad has written this :( )
 
 
     grant_N_N_signal <= grant_N_N_sig and not empty_N;

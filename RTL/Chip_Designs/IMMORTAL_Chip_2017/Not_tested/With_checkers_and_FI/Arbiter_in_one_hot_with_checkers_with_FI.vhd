@@ -251,10 +251,10 @@ SIGNAL X_N_sig, X_E_sig, X_W_sig, X_S_sig, X_L_sig: std_logic; -- needed for con
 
    -- Signal(s) used for creating the chain of injected fault locations
    -- Total: 17 bits ??!!
-   -- LBDR internal-related signals
+   -- Arbiter_in internal-related signals
   signal state_faulty, state_in_faulty:  std_logic_vector(5 downto 0);
 
-   -- LBDR output-related signals
+   -- Arbiter_in output-related signals
   signal X_N_sig_faulty, X_E_sig_faulty, X_W_sig_faulty, X_S_sig_faulty, X_L_sig_faulty: std_logic;
 
 
@@ -265,12 +265,12 @@ begin
 -------------------------------------      
 
 -- Total: 17 bits
--- for X_N, ... , X_L output signals, not sure whether to include them or the signals with _sig suffix in its name ??!!
+-- for X_N, ... , X_L output signals, not sure whether to include them or the signals with _sig suffix in their names ??!!
 non_faulty_signals <= state & state_in & X_N_sig & X_E_sig & X_W_sig & X_S_sig & X_L_sig;
 
 -- Fault injector module instantiation
-FI: fault_injector generic map(DATA_WIDTH => 17, ADDRESS_WIDTH => 6) 
-           port map (data_in=> non_faulty_signals , address => FI_add_sta(7 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out=> faulty_signals
+FI: fault_injector generic map(DATA_WIDTH => 17, ADDRESS_WIDTH => 5) 
+           port map (data_in=> non_faulty_signals , address => FI_add_sta(6 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out=> faulty_signals
             );
 
 -- Extracting faulty values for internal- and output-related signals

@@ -204,14 +204,14 @@ end component;
   SIGNAL state, state_in : std_logic_vector (5 downto 0) := IDLE; -- : STATE_TYPE := IDLE;
   
   SIGNAL grant_Y_N_sig, grant_Y_E_sig, grant_Y_W_sig, grant_Y_S_sig, grant_Y_L_sig : std_logic; -- needed for connecting output ports 
-                                                                                                -- of Arbiter_in to checker inputs
+                                                                                                -- of Arbiter_out to checker inputs
 
    -- Signal(s) used for creating the chain of injected fault locations
    -- Total: 17 bits ??!!
-   -- LBDR internal-related signals
+   -- Arbiter_out internal-related signals
   signal state_faulty, state_in_faulty:  std_logic_vector(5 downto 0);
 
-   -- LBDR output-related signals
+   -- Arbiter_out output-related signals
   signal grant_Y_N_sig_faulty, grant_Y_E_sig_faulty, grant_Y_W_sig_faulty, grant_Y_S_sig_faulty, grant_Y_L_sig_faulty: std_logic;
 
 
@@ -222,12 +222,12 @@ begin
 -------------------------------------      
 
 -- Total: 17 bits
--- for grant_Y_N, ... , grant_Y_L output signals, not sure whether to include them or the signals with _sig suffix in its name ??!!
+-- for grant_Y_N, ... , grant_Y_L output signals, not sure whether to include them or the signals with _sig suffix in their names ??!!
 non_faulty_signals <= state & state_in & grant_Y_N_sig & grant_Y_E_sig & grant_Y_W_sig & grant_Y_S_sig & grant_Y_L_sig;
 
 -- Fault injector module instantiation
-FI: fault_injector generic map(DATA_WIDTH => 17, ADDRESS_WIDTH => 6) 
-           port map (data_in=> non_faulty_signals , address => FI_add_sta(7 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out=> faulty_signals
+FI: fault_injector generic map(DATA_WIDTH => 17, ADDRESS_WIDTH => 5) 
+           port map (data_in=> non_faulty_signals , address => FI_add_sta(6 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out=> faulty_signals
             );
 
 -- Extracting faulty values for internal- and output-related signals
