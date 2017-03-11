@@ -1162,7 +1162,7 @@ end COMPONENT;
     -- Added because of Checkers --
     -------------------------------
 
-    --signal combined_error_signals: std_logic_vector(19 downto 0); -- Shall we only consider this for the 20 bits showing the turn faults or individual checkers ?!
+    signal combined_error_signals: std_logic_vector(19 downto 0); -- Shall we only consider this for the 20 bits showing the turn faults or individual checkers ?!
     signal shift_parallel_data: std_logic_vector(19 downto 0);
 
     -------------------------------
@@ -2938,30 +2938,30 @@ begin
 ------------------------------------------------------------------
 
   -- OR of checker outputs
-  --error_signal_sync  <= OR_REDUCE(shift_parallel_data);
-  --error_signal_async <= OR_REDUCE(combined_error_signals);
+  error_signal_sync  <= OR_REDUCE(shift_parallel_data);
+  error_signal_async <= OR_REDUCE(combined_error_signals);
    --making the shift register input signal
   -- please keep this like this, used for counting the number of the signals.
-  --combined_error_signals <=  N2E_turn_fault & 
-  --                           N2W_turn_fault & 
-  --                           E2N_turn_fault &
-  --                           E2S_turn_fault &
-  --                           W2N_turn_fault &
-  --                           W2S_turn_fault &
-  --                           S2E_turn_fault &
-  --                           S2W_turn_fault &
-  --                           N2S_path_fault &
-  --                           S2N_path_fault &
-  --                           E2W_path_fault &
-  --                           W2E_path_fault &
-  --                           L2N_fault &
-  --                           L2E_fault &
-  --                           L2W_fault &
-  --                           L2S_fault &
-  --                           N2L_fault &
-  --                           E2L_fault &
-  --                           W2L_fault &
-  --                           S2L_fault;
+  combined_error_signals <=  N2E_turn_fault & 
+                             N2W_turn_fault & 
+                             E2N_turn_fault &
+                             E2S_turn_fault &
+                             W2N_turn_fault &
+                             W2S_turn_fault &
+                             S2E_turn_fault &
+                             S2W_turn_fault &
+                             N2S_path_fault &
+                             S2N_path_fault &
+                             E2W_path_fault &
+                             W2E_path_fault &
+                             L2N_fault &
+                             L2E_fault &
+                             L2W_fault &
+                             L2S_fault &
+                             N2L_fault &
+                             E2L_fault &
+                             W2L_fault &
+                             S2L_fault;
 
 
 ------------------------------------------------------------------
@@ -8302,6 +8302,14 @@ XBAR_L: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
 
 -------------------------------------
 -------------------------------------
+
+ checker_shifter: shift_register generic map (REG_WIDTH => 20)
+    port map (
+        clk => checker_clk, reset => reset,
+        shift => shift,
+        data_in => combined_error_signals, 
+        data_out_parallel => shift_parallel_data,
+        data_out_serial => shift_serial_data
 
 
 end;
