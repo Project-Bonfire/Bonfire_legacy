@@ -277,14 +277,14 @@ ARBITER_OUT_ONE_HOT_CHECKERS: Arbiter_out_one_hot_pseudo_checkers
                                                               req_X_W  => X_W_Y, 
                                                               req_X_S  => X_S_Y, 
                                                               req_X_L  => X_L_Y,
-                                                              state    => state,
+                                                              state    => state_faulty,
                                                                           
-                                                              grant_Y_N => grant_Y_N_sig, 
-                                                              grant_Y_E => grant_Y_E_sig, 
-                                                              grant_Y_W => grant_Y_W_sig, 
-                                                              grant_Y_S => grant_Y_S_sig, 
-                                                              grant_Y_L => grant_Y_L_sig, 
-                                                              state_in  => state_in, 
+                                                              grant_Y_N => grant_Y_N_sig_faulty, 
+                                                              grant_Y_E => grant_Y_E_sig_faulty, 
+                                                              grant_Y_W => grant_Y_W_sig_faulty, 
+                                                              grant_Y_S => grant_Y_S_sig_faulty, 
+                                                              grant_Y_L => grant_Y_L_sig_faulty, 
+                                                              state_in  => state_in_faulty, 
 
                                                               -- Checker outputs
                                                               err_Requests_state_in_state_not_equal => err_Requests_state_in_state_not_equal, 

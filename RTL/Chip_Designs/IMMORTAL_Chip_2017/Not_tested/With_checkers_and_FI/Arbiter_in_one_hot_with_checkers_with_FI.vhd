@@ -308,14 +308,14 @@ ARBITER_IN_CHECKERS: Arbiter_in_one_hot_checkers port map (
                                       req_X_W => req_X_W, -- _sig not needed, because it is an input port
                                       req_X_S => req_X_S, -- _sig not needed, because it is an input port
                                       req_X_L => req_X_L, -- _sig not needed, because it is an input port
-                                      state => state,     -- _sig not needed, because it is an input port
+                                      state => state_faulty,     -- _sig not needed, because it is an input port
 
-                                      state_in => state_in, -- _sig not needed, because it is an internal signal
-                                      X_N => X_N_sig, 
-                                      X_E => X_E_sig, 
-                                      X_W => X_W_sig, 
-                                      X_S => X_S_sig, 
-                                      X_L => X_L_sig, 
+                                      state_in => state_in_faulty, -- _sig not needed, because it is an internal signal
+                                      X_N => X_N_sig_faulty, 
+                                      X_E => X_E_sig_faulty, 
+                                      X_W => X_W_sig_faulty, 
+                                      X_S => X_S_sig_faulty, 
+                                      X_L => X_L_sig_faulty, 
 
                                       -- Checker outputs
 									  err_Requests_state_in_state_not_equal => err_Requests_state_in_state_not_equal,

@@ -24,7 +24,7 @@ entity LBDR_packet_drop is
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
             faulty: in std_logic;
             packet_drop_order: out std_logic;
-	        grant_N, grant_E, grant_W, grant_S, grant_L: in std_logic;
+	          grant_N, grant_E, grant_W, grant_S, grant_L: in std_logic;
             Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic;
 
             Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
@@ -357,11 +357,11 @@ LBDR_packet_drop_routing_part_checkers: LBDR_packet_drop_routing_part_pseudo_che
                           port map (
                                     empty       => empty,        
                                     flit_type   => flit_type,        
-                                    Req_N_FF    => Req_N_FF, 
-                                    Req_E_FF    => Req_E_FF, 
-                                    Req_W_FF    => Req_W_FF, 
-                                    Req_S_FF    => Req_S_FF, 
-                                    Req_L_FF    => Req_L_FF,        
+                                    Req_N_FF    => Req_N_FF_faulty, 
+                                    Req_E_FF    => Req_E_FF_faulty, 
+                                    Req_W_FF    => Req_W_FF_faulty, 
+                                    Req_S_FF    => Req_S_FF_faulty, 
+                                    Req_L_FF    => Req_L_FF_faulty,        
                                     grant_N     => grant_N, 
                                     grant_E     => grant_E, 
                                     grant_W     => grant_W, 
@@ -369,22 +369,22 @@ LBDR_packet_drop_routing_part_checkers: LBDR_packet_drop_routing_part_pseudo_che
                                     grant_L     => grant_L,        
                                     dst_addr    => dst_addr,
                                     faulty      => faulty,         
-                                    Cx          => Cx,        
-                                    Rxy         => Rxy,        
-                                    packet_drop => packet_drop,        
+                                    Cx          => Cx_faulty,        
+                                    Rxy         => Rxy_faulty,        
+                                    packet_drop => packet_drop_faulty,        
 
-                                    N1_out            => N1, 
-                                    E1_out            => E1, 
-                                    W1_out            => W1, 
-                                    S1_out            => S1, 
-                                    Req_N_in          => Req_N_in, 
-                                    Req_E_in          => Req_E_in, 
-                                    Req_W_in          => Req_W_in, 
-                                    Req_S_in          => Req_S_in, 
-                                    Req_L_in          => Req_L_in, 
-                                    grants            => grants, 
-                                    packet_drop_order => packet_drop_order_sig, 
-                                    packet_drop_in    => packet_drop_in, 
+                                    N1_out            => N1_faulty, 
+                                    E1_out            => E1_faulty, 
+                                    W1_out            => W1_faulty, 
+                                    S1_out            => S1_faulty, 
+                                    Req_N_in          => Req_N_in_faulty, 
+                                    Req_E_in          => Req_E_in_faulty, 
+                                    Req_W_in          => Req_W_in_faulty, 
+                                    Req_S_in          => Req_S_in_faulty, 
+                                    Req_L_in          => Req_L_in_faulty, 
+                                    grants            => grants_faulty, 
+                                    packet_drop_order => packet_drop_order_sig_faulty, 
+                                    packet_drop_in    => packet_drop_in_faulty, 
 
                                     -- Checker outputs
                                     err_header_empty_Requests_FF_Requests_in => err_header_empty_Requests_FF_Requests_in, 
@@ -421,21 +421,21 @@ LBDR_packet_drop_routing_part_checkers: LBDR_packet_drop_routing_part_pseudo_che
 
 -- LBDR packet drop Cx Reconfiguration module checkers instantiation
 Cx_Reconf_checkers: Cx_Reconf_pseudo_checkers port map (
-                                               reconfig_cx => reconfig_cx, 
+                                               reconfig_cx => reconfig_cx_faulty, 
                                                flit_type => flit_type, 
                                                empty => empty, 
-                                               grants => grants, 
-                                               Cx_in => Cx_in, 
-                                               Temp_Cx => Temp_Cx, 
-                                               reconfig_cx_in => reconfig_cx_in, 
-                                               Cx => Cx, 
+                                               grants => grants_faulty, 
+                                               Cx_in => Cx_in_faulty, 
+                                               Temp_Cx => Temp_Cx_faulty, 
+                                               reconfig_cx_in => reconfig_cx_in_faulty, 
+                                               Cx => Cx_faulty, 
                                                Cx_reconf_PE => Cx_reconf_PE, 
                                                Reconfig_command => Reconfig_command,                                                
                                                Faulty_C_N => Faulty_C_N, 
                                                Faulty_C_E => Faulty_C_E, 
                                                Faulty_C_W => Faulty_C_W, 
                                                Faulty_C_S => Faulty_C_S, 
-                                               Temp_Cx_in => Temp_Cx_in, 
+                                               Temp_Cx_in => Temp_Cx_in_faulty, 
    
                                                -- Checker Outputs
                                                err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal => err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal, 
@@ -453,17 +453,17 @@ Cx_Reconf_checkers: Cx_Reconf_pseudo_checkers port map (
 -- LBDR packet drop Rxy Reconfiguration checkers instantiation
 Rxy_Reconf_checkers : Rxy_Reconf_pseudo_checkers 
                              port map (
-                                        ReConf_FF_out => ReConf_FF_out, 
-                                        Rxy => Rxy,                                                        
-                                        Rxy_tmp => Rxy_tmp,
+                                        ReConf_FF_out => ReConf_FF_out_faulty, 
+                                        Rxy => Rxy_faulty,                                                        
+                                        Rxy_tmp => Rxy_tmp_faulty,
                                         Reconfig_command => Reconfig_command,                                                                                                 
                                         flit_type => flit_type, 
-                                        grants => grants, 
+                                        grants => grants_faulty, 
                                         empty => empty, 
                                         Rxy_reconf_PE => Rxy_reconf_PE,                                         
-                                        Rxy_in => Rxy_in, 
-                                        Rxy_tmp_in => Rxy_tmp_in, 
-                                        ReConf_FF_in => ReConf_FF_in, 
+                                        Rxy_in => Rxy_in_faulty, 
+                                        Rxy_tmp_in => Rxy_tmp_in_faulty, 
+                                        ReConf_FF_in => ReConf_FF_in_faulty, 
 
                                         err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp => err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp, 
                                         err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in => err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in, 
