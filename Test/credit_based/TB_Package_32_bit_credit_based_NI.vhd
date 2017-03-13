@@ -114,6 +114,39 @@ package body TB_Package is
               wait until clk'event and clk ='0';
               test <= data_read;
 
+              write(DIAGNOSIS_LINEVARIABLE, string'("Self diagnosis data:!"));
+              writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+
+              if data_read(0) = '1' then 
+                  write(DIAGNOSIS_LINEVARIABLE, string'("Local input is link broken!"));
+                  writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                end if;            
+                
+                if data_read(1) = '1' then 
+                  write(DIAGNOSIS_LINEVARIABLE, string'("South input is link broken!"));
+                  writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                end if;  
+
+                if data_read(2) = '1' then 
+                  write(DIAGNOSIS_LINEVARIABLE, string'("West input is link broken!"));
+                  writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                end if;  
+
+                if data_read(3) = '1' then 
+                  write(DIAGNOSIS_LINEVARIABLE, string'("East input is link broken!"));
+                  writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                end if;  
+
+                if data_read(4) = '1' then 
+                  write(DIAGNOSIS_LINEVARIABLE, string'("North input is link broken!"));
+                  writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                end if;  
+
+              write(DIAGNOSIS_LINEVARIABLE, string'("--------------------------------"));
+              writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+
+              wait until clk'event and clk ='0';
+              
       elsif data_read(31) = '0' then  -- N2P is not empty, can receive flit
           -- read the received data status
           address <= reserved_address;
@@ -145,9 +178,38 @@ package body TB_Package is
                 writeline(RECEIVED_FILE, RECEIVED_LINEVARIABLE);
               else
                 diagnosis_data(24 downto 12) := data_read(28 downto 16); 
+
                 write(DIAGNOSIS_LINEVARIABLE, "Packet received at " & time'image(now) & " From: " & integer'image(receive_source_node) & " to: " & integer'image(receive_destination_node) & " length: "& integer'image(receive_packet_length) & " actual length: "& integer'image(receive_counter)  & " id: "& integer'image(receive_packet_id) & " diagnosis: " );
                 writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                
                 write(DIAGNOSIS_LINEVARIABLE, to_bitvector(diagnosis_data));
+                writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+
+                if diagnosis_data(0) = '1' then 
+                  write(DIAGNOSIS_LINEVARIABLE, string'("Local input is link broken!"));
+                  writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                end if;            
+                
+                if diagnosis_data(1) = '1' then 
+                  write(DIAGNOSIS_LINEVARIABLE, string'("South input is link broken!"));
+                  writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                end if;  
+
+                if diagnosis_data(2) = '1' then 
+                  write(DIAGNOSIS_LINEVARIABLE, string'("West input is link broken!"));
+                  writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                end if;  
+
+                if diagnosis_data(3) = '1' then 
+                  write(DIAGNOSIS_LINEVARIABLE, string'("East input is link broken!"));
+                  writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                end if;  
+
+                if diagnosis_data(4) = '1' then 
+                  write(DIAGNOSIS_LINEVARIABLE, string'("North input is link broken!"));
+                  writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
+                end if;  
+                write(DIAGNOSIS_LINEVARIABLE, string'("--------------------------------"));
                 writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
               end if;
           end if;
