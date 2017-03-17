@@ -1341,8 +1341,8 @@ grant_L_W_signal_faulty              <= faulty_signals (2);
 grant_L_S_signal_faulty              <= faulty_signals (1);
 grant_L_L_signal_faulty              <= faulty_signals (0);
 
--- Total: 89 bits
-SR: shift_register_serial_in generic map(REG_WIDTH => 89)
+-- Total: 9 bits
+SR: shift_register_serial_in generic map(REG_WIDTH => 9)
           port map ( clk=> fault_clk, reset=>reset, shift=> shift,data_in_serial=> data_in_serial, 
                      data_out_parallel=> FI_add_sta, data_out_serial=> data_out_serial
                    );
@@ -1515,11 +1515,11 @@ ALLOCATOR_LOGIC_CHECKERS: allocator_logic_pseudo_checkers  PORT MAP (
                                                        empty_W => empty_W,  
                                                        empty_S => empty_S,  
                                                        empty_L => empty_L, 
-                                                       grant_N_N_sig => grant_N_N_sig, grant_N_E_sig => grant_N_E_sig, grant_N_W_sig => grant_N_W_sig, grant_N_S_sig => grant_N_S_sig, grant_N_L_sig => grant_N_L_sig, 
-                                                       grant_E_N_sig => grant_E_N_sig, grant_E_E_sig => grant_E_E_sig, grant_E_W_sig => grant_E_W_sig, grant_E_S_sig => grant_E_S_sig, grant_E_L_sig => grant_E_L_sig,
-                                                       grant_W_N_sig => grant_W_N_sig, grant_W_E_sig => grant_W_E_sig, grant_W_W_sig => grant_W_W_sig, grant_W_S_sig => grant_W_S_sig, grant_W_L_sig => grant_W_L_sig,
-                                                       grant_S_N_sig => grant_S_N_sig, grant_S_E_sig => grant_S_E_sig, grant_S_W_sig => grant_S_W_sig, grant_S_S_sig => grant_S_S_sig, grant_S_L_sig => grant_S_L_sig,
-                                                       grant_L_N_sig => grant_L_N_sig, grant_L_E_sig => grant_L_E_sig, grant_L_W_sig => grant_L_W_sig, grant_L_S_sig => grant_L_S_sig, grant_L_L_sig => grant_L_L_sig,
+                                                       grant_N_N_sig => grant_N_N_sig_faulty, grant_N_E_sig => grant_N_E_sig_faulty, grant_N_W_sig => grant_N_W_sig_faulty, grant_N_S_sig => grant_N_S_sig_faulty, grant_N_L_sig => grant_N_L_sig_faulty, 
+                                                       grant_E_N_sig => grant_E_N_sig_faulty, grant_E_E_sig => grant_E_E_sig_faulty, grant_E_W_sig => grant_E_W_sig_faulty, grant_E_S_sig => grant_E_S_sig_faulty, grant_E_L_sig => grant_E_L_sig_faulty,
+                                                       grant_W_N_sig => grant_W_N_sig_faulty, grant_W_E_sig => grant_W_E_sig_faulty, grant_W_W_sig => grant_W_W_sig_faulty, grant_W_S_sig => grant_W_S_sig_faulty, grant_W_L_sig => grant_W_L_sig_faulty,
+                                                       grant_S_N_sig => grant_S_N_sig_faulty, grant_S_E_sig => grant_S_E_sig_faulty, grant_S_W_sig => grant_S_W_sig_faulty, grant_S_S_sig => grant_S_S_sig_faulty, grant_S_L_sig => grant_S_L_sig_faulty,
+                                                       grant_L_N_sig => grant_L_N_sig_faulty, grant_L_E_sig => grant_L_E_sig_faulty, grant_L_W_sig => grant_L_W_sig_faulty, grant_L_S_sig => grant_L_S_sig_faulty, grant_L_L_sig => grant_L_L_sig_faulty,
 
                                                        valid_N => valid_N_sig_faulty, 
                                                        valid_E => valid_E_sig_faulty, 
