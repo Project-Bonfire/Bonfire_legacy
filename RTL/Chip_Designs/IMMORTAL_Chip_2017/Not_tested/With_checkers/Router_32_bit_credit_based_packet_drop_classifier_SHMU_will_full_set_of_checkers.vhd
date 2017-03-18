@@ -6391,81 +6391,81 @@ CT_L:  counter_threshold_classifier  generic map(counter_depth => counter_depth,
 
 -- all the Checker Counter Threshold modules
 -- Turn faults
-CHK_CT_N2E_turn_fault:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_N2E_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => N2E_turn_fault, Healthy => Healthy_N2E_turn_fault, 
              Intermittent => intermittent_N2E_turn_fault, Faulty => faulty_N2E_turn_fault);
 
-CHK_CT_N2W_turn_fault:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_N2W_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => N2W_turn_fault, Healthy => Healthy_N2W_turn_fault, 
              Intermittent => intermittent_N2W_turn_fault, Faulty => faulty_N2W_turn_fault);
 
-CHK_CT_E2N_turn_fault:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_E2N_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => E2N_turn_fault, Healthy => Healthy_E2N_turn_fault, 
              Intermittent => intermittent_E2N_turn_fault, Faulty => faulty_E2N_turn_fault);
 
-CHK_CT_E2S_turn_fault:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_E2S_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => E2S_turn_fault, Healthy => Healthy_E2S_turn_fault, 
              Intermittent => intermittent_E2S_turn_fault, Faulty => faulty_E2S_turn_fault);
 
-CHK_CT_W2N_turn_fault:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_W2N_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => W2N_turn_fault, Healthy => Healthy_W2N_turn_fault, 
              Intermittent => intermittent_W2N_turn_fault, Faulty => faulty_W2N_turn_fault);
 
-CHK_CT_S2E_turn_fault:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_S2E_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => S2E_turn_fault, Healthy => Healthy_S2E_turn_fault, 
              Intermittent => intermittent_S2E_turn_fault, Faulty => faulty_S2E_turn_fault);
 
-CHK_CT_S2W_turn_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_S2W_turn_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => S2W_turn_fault, Healthy => Healthy_S2W_turn_fault, 
              Intermittent => intermittent_S2W_turn_fault, Faulty => faulty_S2W_turn_fault);
 
 --Path faults
-CHK_CT_N2S_path_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_N2S_path_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => N2S_path_fault, Healthy => Healthy_N2S_path_fault, 
              Intermittent => intermittent_N2S_path_fault, Faulty => faulty_N2S_path_fault);
 
-CHK_CT_S2N_path_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_S2N_path_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => S2N_path_fault, Healthy => Healthy_S2N_path_fault, 
              Intermittent => intermittent_S2N_path_fault, Faulty => faulty_S2N_path_fault);
 
-CHK_CT_E2W_path_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_E2W_path_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => E2W_path_fault, Healthy => Healthy_E2W_path_fault, 
              Intermittent => intermittent_E2W_path_fault, Faulty => faulty_E2W_path_fault);
 
-CHK_CT_W2E_path_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_W2E_path_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => W2E_path_fault, Healthy => Healthy_W2E_path_fault, 
              Intermittent => intermittent_W2E_path_fault, Faulty => faulty_W2E_path_fault);
 
 -- Local port related faults (to/from local port)
-CHK_CT_L2N_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_L2N_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => L2N_fault, Healthy => Healthy_L2N_fault, 
              Intermittent => intermittent_L2N_fault, Faulty => faulty_L2N_fault);
 
-CHK_CT_L2E_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_L2E_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => L2E_fault, Healthy => Healthy_L2E_fault, 
              Intermittent => intermittent_L2E_fault, Faulty => faulty_L2E_fault);
 
-CHK_CT_L2W_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_L2W_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => L2W_fault, Healthy => Healthy_L2W_fault, 
              Intermittent => intermittent_L2W_fault, Faulty => faulty_L2W_fault);
 
-CHK_CT_L2S_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_L2S_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => L2S_fault, Healthy => Healthy_L2S_fault, 
              Intermittent => intermittent_L2S_fault, Faulty => faulty_L2S_fault);
 
-CHK_CT_N2L_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_N2L_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => N2L_fault, Healthy => Healthy_N2L_fault, 
              Intermittent => intermittent_N2L_fault, Faulty => faulty_N2L_fault);
 
-CHK_CT_E2L_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_E2L_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => E2L_fault, Healthy => Healthy_E2L_fault, 
              Intermittent => intermittent_E2L_fault, Faulty => faulty_E2L_fault);
 
-CHK_CT_W2L_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_W2L_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => W2L_fault, Healthy => Healthy_W2L_fault, 
              Intermittent => intermittent_W2L_fault, Faulty => faulty_W2L_fault);
 
-CHK_CT_S2L_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_S2L_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => S2L_fault, Healthy => Healthy_S2L_fault, 
              Intermittent => intermittent_S2L_fault, Faulty => faulty_S2L_fault);
 
