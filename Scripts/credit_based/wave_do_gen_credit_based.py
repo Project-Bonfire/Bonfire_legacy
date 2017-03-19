@@ -97,6 +97,86 @@ for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -group {CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_W:state\n")
 	wave_file.write("add wave -noupdate -group {CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_S:state\n")
 	wave_file.write("add wave -noupdate -group {CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CT_L:state\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
+
+for i in range(0 , network_dime*network_dime):
+	wave_file.write("add wave -noupdate -group {R_"+str(i)+": FIFO Checkers ORed} -color green :" +tb_name+":NoC:R_"+str(i)+":N_FIFO_checkers_ORed\n")
+	wave_file.write("add wave -noupdate -group {R_"+str(i)+": FIFO Checkers ORed} -color green :" +tb_name+":NoC:R_"+str(i)+":E_FIFO_checkers_ORed\n")
+	wave_file.write("add wave -noupdate -group {R_"+str(i)+": FIFO Checkers ORed} -color green :" +tb_name+":NoC:R_"+str(i)+":W_FIFO_checkers_ORed\n")
+	wave_file.write("add wave -noupdate -group {R_"+str(i)+": FIFO Checkers ORed} -color green :" +tb_name+":NoC:R_"+str(i)+":S_FIFO_checkers_ORed\n")
+	wave_file.write("add wave -noupdate -group {R_"+str(i)+": FIFO Checkers ORed} -color green :" +tb_name+":NoC:R_"+str(i)+":L_FIFO_checkers_ORed\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
+
+for i in range(0 , network_dime*network_dime):
+	wave_file.write("add wave -noupdate -group {R_"+str(i)+": LBDR Checkers ORed} -color green :" +tb_name+":NoC:R_"+str(i)+":N_LBDR_checkers_ORed\n")
+	wave_file.write("add wave -noupdate -group {R_"+str(i)+": LBDR Checkers ORed} -color green :" +tb_name+":NoC:R_"+str(i)+":E_LBDR_checkers_ORed\n")
+	wave_file.write("add wave -noupdate -group {R_"+str(i)+": LBDR Checkers ORed} -color green :" +tb_name+":NoC:R_"+str(i)+":W_LBDR_checkers_ORed\n")
+	wave_file.write("add wave -noupdate -group {R_"+str(i)+": LBDR Checkers ORed} -color green :" +tb_name+":NoC:R_"+str(i)+":S_LBDR_checkers_ORed\n")
+	wave_file.write("add wave -noupdate -group {R_"+str(i)+": LBDR Checkers ORed} -color green :" +tb_name+":NoC:R_"+str(i)+":L_LBDR_checkers_ORed\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
+
+for i in range(0 , network_dime*network_dime):
+	wave_file.write("add wave -noupdate -group {Allocator Checkers ORed} -color green :"+tb_name+":NoC:R_"+str(i)+":Allocator_checkers_ORed\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
+
+for i in range(0 , network_dime*network_dime):
+	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":link_faults\n")
+	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":link_faults\n")
+	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":link_faults\n")
+	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":link_faults\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
+
+for i in range(0 , network_dime*network_dime):
+	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":turn_faults\n")
+	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":turn_faults\n")
+	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":turn_faults\n")
+	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":turn_faults\n")
+wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
+
+for i in range(0 , network_dime*network_dime):
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":N2E_turn_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":N2W_turn_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":E2N_turn_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":E2S_turn_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":W2N_turn_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":W2S_turn_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":S2E_turn_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":S2W_turn_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":N2S_path_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":S2N_path_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":E2W_path_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":W2E_path_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":L2N_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":L2E_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":L2W_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":L2S_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":N2L_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":E2L_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":W2L_fault\n")
+	wave_file.write("add wave -noupdate -group {Turn Faults for R_"+str(i)+"} -color green :"+tb_name+":NoC:R_"+str(i)+":S2L_fault\n")
+
+for i in range(0 , network_dime*network_dime):
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_N2E_turn_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_N2W_turn_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_E2N_turn_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_E2S_turn_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_W2N_turn_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_W2S_turn_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_S2E_turn_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_S2W_turn_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_N2S_path_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_S2N_path_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_E2W_path_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_W2E_path_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_L2N_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_L2E_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_L2W_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_L2S_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_N2L_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_E2L_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_W2L_fault:state\n")
+	wave_file.write("add wave -noupdate -group {CHK_CT:state} -color green :"+tb_name+":NoC:R_"+str(i)+":CHK_CT_S2L_fault:state\n")
+
 
 wave_file.write("TreeUpdate [SetDefaultTree]\n")
 wave_file.write("WaveRestoreCursors\n")
