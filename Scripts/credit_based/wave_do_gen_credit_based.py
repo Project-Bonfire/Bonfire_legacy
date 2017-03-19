@@ -121,15 +121,9 @@ wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 
 for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":link_faults\n")
-	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":link_faults\n")
-	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":link_faults\n")
-	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":link_faults\n")
 wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 
 for i in range(0 , network_dime*network_dime):
-	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":turn_faults\n")
-	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":turn_faults\n")
-	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":turn_faults\n")
 	wave_file.write("add wave -noupdate -color green :"+tb_name+":NoC:R_"+str(i)+":turn_faults\n")
 wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 
