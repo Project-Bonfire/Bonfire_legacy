@@ -2,9 +2,8 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
-use ieee.std_logic_misc.all;
+--use IEEE.STD_LOGIC_ARITH.ALL;
+--use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping 
     generic (
@@ -75,8 +74,13 @@ architecture behavior of router_credit_based_PD_C_SHMU is
 
                 fault_info, health_info: out  std_logic;
 
-                -- Checker outputs
+                -- fault injector signals
+                shift: in std_logic;
+                fault_clk: in std_logic;
+                data_in_serial: in std_logic;
+                data_out_serial: out std_logic;
 
+                -- Checker outputs
                 -- Functional checkers
                 err_empty_full, 
                 err_empty_read_en, 
@@ -203,19 +207,32 @@ architecture behavior of router_credit_based_PD_C_SHMU is
     );
     end COMPONENT;
 
-COMPONENT counter_threshold_classifier is
-generic (
-    counter_depth: integer := 8;
-    healthy_counter_threshold: integer := 4;
-    faulty_counter_threshold: integer := 4
- );
-port (  reset: in  std_logic;
-        clk: in  std_logic;
-        faulty_packet, Healthy_packet: in  std_logic;
-        Healthy, intermittent, Faulty: out std_logic
-        );
-end COMPONENT;
+    COMPONENT counter_threshold_classifier is
+    generic (
+        counter_depth: integer := 8;
+        healthy_counter_threshold: integer := 4;
+        faulty_counter_threshold: integer := 4
+     );
+    port (  reset: in  std_logic;
+            clk: in  std_logic;
+            faulty_packet, Healthy_packet: in  std_logic;
+            Healthy, intermittent, Faulty: out std_logic
+            );
+    end COMPONENT;
   
+    COMPONENT checkers_counter_threshold_classifier is
+        generic (
+            counter_depth: integer := 8;
+            healthy_counter_threshold: integer := 4;
+            faulty_counter_threshold: integer := 4
+         );
+        port (  reset: in  std_logic;
+                clk: in  std_logic;
+                data_input: in  std_logic;
+                Healthy, Intermittent, Faulty: out std_logic
+                );
+    end COMPONENT;
+
 COMPONENT allocator is      
     port (  reset: in  std_logic;
             clk: in  std_logic;
@@ -238,6 +255,12 @@ COMPONENT allocator is
             grant_W_N, grant_W_E, grant_W_W, grant_W_S, grant_W_L: out std_logic;
             grant_S_N, grant_S_E, grant_S_W, grant_S_S, grant_S_L: out std_logic;
             grant_L_N, grant_L_E, grant_L_W, grant_L_S, grant_L_L: out std_logic;
+
+            -- fault injector signals
+            shift: in std_logic;
+            fault_clk: in std_logic;
+            data_in_serial: in std_logic;
+            data_out_serial: out std_logic;
 
             -- Allocator logic checker outputs
             err_grant_N_N_sig_not_empty_N_grant_N_N, 
@@ -1040,7 +1063,6 @@ COMPONENT allocator is
             );
 end COMPONENT;
 
-    
     COMPONENT parity_checker_for_LBDR is 
     generic(DATA_WIDTH : integer := 32);
     port(
@@ -1067,12 +1089,18 @@ COMPONENT LBDR_packet_drop is
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
             faulty: in std_logic;
             packet_drop_order: out std_logic;
-              grant_N, grant_E, grant_W, grant_S, grant_L: in std_logic;
+            grant_N, grant_E, grant_W, grant_S, grant_L: in std_logic;
             Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic;
 
             Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
             Cx_reconf_PE: in  std_logic_vector(3 downto 0);
             Reconfig_command : in std_logic; 
+
+            -- fault injector signals
+            shift: in std_logic;
+            fault_clk: in std_logic;
+            data_in_serial: in std_logic;
+            data_out_serial: out std_logic;
 
             -- Checker outputs
             -- Routing part checkers            
@@ -1147,7 +1175,7 @@ end COMPONENT;
 
   COMPONENT shift_register is
     generic (
-        REG_WIDTH: integer := 8
+        REG_WIDTH: integer := 8 -- ?!
     );
     port (
         clk, reset : in std_logic;
@@ -1195,9 +1223,31 @@ end COMPONENT;
 
     signal packet_drop_order_N, packet_drop_order_E, packet_drop_order_W, packet_drop_order_S, packet_drop_order_L:  std_logic;
 
+    -- Signals related to link fault classification modules
     signal healthy_link_N, healthy_link_E, healthy_link_W, healthy_link_S, healthy_link_L:  std_logic;
     signal sig_Faulty_N_out, sig_Faulty_E_out, sig_Faulty_W_out, sig_Faulty_S_out, faulty_link_L:  std_logic;
     signal intermittent_link_N, intermittent_link_E, intermittent_link_W, intermittent_link_S, intermittent_link_L:  std_logic;
+
+    -- Signals related to Control part checkers fault classification modules
+    signal Healthy_N2E_turn_fault, intermittent_N2E_turn_fault, faulty_N2E_turn_fault: std_logic;
+    signal Healthy_N2W_turn_fault, intermittent_N2W_turn_fault, faulty_N2W_turn_fault: std_logic;
+    signal Healthy_E2N_turn_fault, intermittent_E2N_turn_fault, faulty_E2N_turn_fault: std_logic;
+    signal Healthy_E2S_turn_fault, intermittent_E2S_turn_fault, faulty_E2S_turn_fault: std_logic;
+    signal Healthy_W2N_turn_fault, intermittent_W2N_turn_fault, faulty_W2N_turn_fault: std_logic;
+    signal Healthy_S2E_turn_fault, intermittent_S2E_turn_fault, faulty_S2E_turn_fault: std_logic;
+    signal Healthy_S2W_turn_fault, intermittent_S2W_turn_fault, faulty_S2W_turn_fault: std_logic;
+    signal Healthy_N2S_path_fault, intermittent_N2S_path_fault, faulty_N2S_path_fault: std_logic;
+    signal Healthy_S2N_path_fault, intermittent_S2N_path_fault, faulty_S2N_path_fault: std_logic;
+    signal Healthy_E2W_path_fault, intermittent_E2W_path_fault, faulty_E2W_path_fault: std_logic;
+    signal Healthy_W2E_path_fault, intermittent_W2E_path_fault, faulty_W2E_path_fault: std_logic; 
+    signal Healthy_L2N_fault, intermittent_L2N_fault, faulty_L2N_fault: std_logic; 
+    signal Healthy_L2E_fault, intermittent_L2E_fault, faulty_L2E_fault: std_logic; 
+    signal Healthy_L2W_fault, intermittent_L2W_fault, faulty_L2W_fault: std_logic; 
+    signal Healthy_L2S_fault, intermittent_L2S_fault, faulty_L2S_fault: std_logic; 
+    signal Healthy_N2L_fault, intermittent_N2L_fault, faulty_N2L_fault: std_logic; 
+    signal Healthy_E2L_fault, intermittent_E2L_fault, faulty_E2L_fault: std_logic; 
+    signal Healthy_W2L_fault, intermittent_W2L_fault, faulty_W2L_fault: std_logic; 
+    signal Healthy_S2L_fault, intermittent_S2L_fault, faulty_S2L_fault: std_logic; 
 
     -- Signals needed for control part checkers
 
@@ -2962,7 +3012,6 @@ begin
                              E2L_fault &
                              W2L_fault &
                              S2L_fault;
-
 
 ------------------------------------------------------------------
 ------------------------------------------------------------------
@@ -6436,6 +6485,90 @@ CT_L:  counter_threshold_classifier  generic map(counter_depth => counter_depth,
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 
+-- all the Checker Counter Threshold modules
+-- Turn faults
+CHK_CT_N2E_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => N2E_turn_fault, Healthy => Healthy_N2E_turn_fault, 
+             Intermittent => intermittent_N2E_turn_fault, Faulty => faulty_N2E_turn_fault);
+
+CHK_CT_N2W_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => N2W_turn_fault, Healthy => Healthy_N2W_turn_fault, 
+             Intermittent => intermittent_N2W_turn_fault, Faulty => faulty_N2W_turn_fault);
+
+CHK_CT_E2N_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => E2N_turn_fault, Healthy => Healthy_E2N_turn_fault, 
+             Intermittent => intermittent_E2N_turn_fault, Faulty => faulty_E2N_turn_fault);
+
+CHK_CT_E2S_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => E2S_turn_fault, Healthy => Healthy_E2S_turn_fault, 
+             Intermittent => intermittent_E2S_turn_fault, Faulty => faulty_E2S_turn_fault);
+
+CHK_CT_W2N_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => W2N_turn_fault, Healthy => Healthy_W2N_turn_fault, 
+             Intermittent => intermittent_W2N_turn_fault, Faulty => faulty_W2N_turn_fault);
+
+CHK_CT_S2E_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => S2E_turn_fault, Healthy => Healthy_S2E_turn_fault, 
+             Intermittent => intermittent_S2E_turn_fault, Faulty => faulty_S2E_turn_fault);
+
+CHK_CT_S2W_turn_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => S2W_turn_fault, Healthy => Healthy_S2W_turn_fault, 
+             Intermittent => intermittent_S2W_turn_fault, Faulty => faulty_S2W_turn_fault);
+
+--Path faults
+CHK_CT_N2S_path_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => N2S_path_fault, Healthy => Healthy_N2S_path_fault, 
+             Intermittent => intermittent_N2S_path_fault, Faulty => faulty_N2S_path_fault);
+
+CHK_CT_S2N_path_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => S2N_path_fault, Healthy => Healthy_S2N_path_fault, 
+             Intermittent => intermittent_S2N_path_fault, Faulty => faulty_S2N_path_fault);
+
+CHK_CT_E2W_path_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => E2W_path_fault, Healthy => Healthy_E2W_path_fault, 
+             Intermittent => intermittent_E2W_path_fault, Faulty => faulty_E2W_path_fault);
+
+CHK_CT_W2E_path_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => W2E_path_fault, Healthy => Healthy_W2E_path_fault, 
+             Intermittent => intermittent_W2E_path_fault, Faulty => faulty_W2E_path_fault);
+
+-- Local port related faults (to/from local port)
+CHK_CT_L2N_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => L2N_fault, Healthy => Healthy_L2N_fault, 
+             Intermittent => intermittent_L2N_fault, Faulty => faulty_L2N_fault);
+
+CHK_CT_L2E_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => L2E_fault, Healthy => Healthy_L2E_fault, 
+             Intermittent => intermittent_L2E_fault, Faulty => faulty_L2E_fault);
+
+CHK_CT_L2W_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => L2W_fault, Healthy => Healthy_L2W_fault, 
+             Intermittent => intermittent_L2W_fault, Faulty => faulty_L2W_fault);
+
+CHK_CT_L2S_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => L2S_fault, Healthy => Healthy_L2S_fault, 
+             Intermittent => intermittent_L2S_fault, Faulty => faulty_L2S_fault);
+
+CHK_CT_N2L_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => N2L_fault, Healthy => Healthy_N2L_fault, 
+             Intermittent => intermittent_N2L_fault, Faulty => faulty_N2L_fault);
+
+CHK_CT_E2L_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => E2L_fault, Healthy => Healthy_E2L_fault, 
+             Intermittent => intermittent_E2L_fault, Faulty => faulty_E2L_fault);
+
+CHK_CT_W2L_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => W2L_fault, Healthy => Healthy_W2L_fault, 
+             Intermittent => intermittent_W2L_fault, Faulty => faulty_W2L_fault);
+
+CHK_CT_S2L_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => S2L_fault, Healthy => Healthy_S2L_fault, 
+             Intermittent => intermittent_S2L_fault, Faulty => faulty_S2L_fault);
+
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+
 -- All the FIFOs
 FIFO_N: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
@@ -6980,7 +7113,7 @@ FIFO_L: FIFO_credit_based
     port map ( reset => reset, clk => clk, RX => RX_L, valid_in => valid_in_L,  
             read_en_N => Grant_NL, read_en_E =>Grant_EL, read_en_W =>Grant_WL, read_en_S => Grant_SL, read_en_L =>packet_drop_order_L,
             credit_out => credit_out_L, empty_out => empty_L, Data_out => FIFO_D_out_L, fault_info=> faulty_packet_L, health_info=>healthy_packet_L, 
-               
+
                shift=>fault_shift, fault_clk=>fault_clk, data_in_serial=> fault_data_in_serial, data_out_serial=>fault_DO_serial_L_FIFO_to_N_FIFO,
 
                -- Checker outputs
@@ -8300,9 +8433,11 @@ XBAR_L: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
         sel => Xbar_sel_L,  Data_out=> TX_L);
 
--------------------------------------
--------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
 
+ -- Behrad: Needed ?!
  checker_shifter: shift_register generic map (REG_WIDTH => 20)
     port map (
         clk => checker_clk, reset => reset,
@@ -8310,6 +8445,5 @@ XBAR_L: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
         data_in => combined_error_signals, 
         data_out_parallel => shift_parallel_data,
         data_out_serial => shift_serial_data
-
 
 end;
