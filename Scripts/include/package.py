@@ -21,6 +21,7 @@ TRACE_DIR = SIMUL_DIR+ "/traces"
 SCRIPTS_DIR = PROJECT_ROOT + "/Scripts"
 TEST_DIR = PROJECT_ROOT + "/Test"
 ROUTER_RTL_DIR = PROJECT_ROOT + "/RTL/Router"
+IMMORTAL_CHIP_DIR = PROJECT_ROOT + "/RTL/Chip_Designs/IMMORTAL_Chip_2017/not_tested/With_checkers"
 FAULT_MANAGEMENT_RTL_DIR = PROJECT_ROOT + "/RTL/Fault_Management"
 CHECKERS_DIR = "/Checkers/Modules_with_checkers_integrated/All_checkers"
 
