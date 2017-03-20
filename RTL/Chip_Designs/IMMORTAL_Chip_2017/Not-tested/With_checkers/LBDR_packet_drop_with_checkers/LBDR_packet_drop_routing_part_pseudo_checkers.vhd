@@ -269,12 +269,12 @@ end process;
 
 -- Checked !
 
-process (flit_type, empty, faulty, packet_drop_in)
+process (flit_type, empty, faulty, N1_out, E1_out, W1_out, S1_out, Rxy, Cx, dst_addr, cur_addr, packet_drop_in)
 begin
-    if ( flit_type = "001" and empty = '0' and (faulty = '1' or (((((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0)) = '0') and 
-                            ((((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1)) = '0') and 
-                            ((((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2)) = '0') and 
-                            ((((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3)) = '0') and
+    if ( flit_type = "001" and empty = '0' and (faulty = '1' or (((((N1_out and not E1_out and not W1_out) or (N1_out and E1_out and Rxy(0)) or (N1_out and W1_out and Rxy(1))) and Cx(0)) = '0') and 
+                            ((((E1_out and not N1_out and not S1_out) or (E1_out and N1_out and Rxy(2)) or (E1_out and S1_out and Rxy(3))) and Cx(1)) = '0') and 
+                            ((((W1_out and not N1_out and not S1_out) or (W1_out and N1_out and Rxy(4)) or (W1_out and S1_out and Rxy(5))) and Cx(2)) = '0') and 
+                            ((((S1_out and not E1_out and not W1_out) or (S1_out and E1_out and Rxy(6)) or (S1_out and W1_out and Rxy(7))) and Cx(3)) = '0') and
                             (dst_addr /= cur_addr))) and packet_drop_in = '0') then
         err_header_not_empty_faulty_drop_packet_in <= '1';
     else 
@@ -284,12 +284,12 @@ end process;
 
 -- Added (according to new design)!
 
-process (flit_type, empty, faulty, packet_drop_in, packet_drop)
+process (flit_type, empty, faulty, N1_out, E1_out, W1_out, S1_out, Rxy, Cx, dst_addr, cur_addr, packet_drop_in, packet_drop)
 begin
-    if ( flit_type = "001" and empty = '0' and (faulty = '0' and not (((((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0)) = '0') and 
-                            ((((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1)) = '0') and 
-                            ((((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2)) = '0') and 
-                            ((((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3)) = '0') and
+    if ( flit_type = "001" and empty = '0' and (faulty = '0' and not (((((N1_out and not E1_out and not W1_out) or (N1_out and E1_out and Rxy(0)) or (N1_out and W1_out and Rxy(1))) and Cx(0)) = '0') and 
+                            ((((E1_out and not N1_out and not S1_out) or (E1_out and N1_out and Rxy(2)) or (E1_out and S1_out and Rxy(3))) and Cx(1)) = '0') and 
+                            ((((W1_out and not N1_out and not S1_out) or (W1_out and N1_out and Rxy(4)) or (W1_out and S1_out and Rxy(5))) and Cx(2)) = '0') and 
+                            ((((S1_out and not E1_out and not W1_out) or (S1_out and E1_out and Rxy(6)) or (S1_out and W1_out and Rxy(7))) and Cx(3)) = '0') and
                             (dst_addr /= cur_addr))) and packet_drop_in /= packet_drop) then
         err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change <= '1';
     else 
@@ -299,12 +299,12 @@ end process;
 
 -- Added (according to new design)!
 
-process (flit_type, empty, faulty, Requests_in)
+process (flit_type, empty, faulty, N1_out, E1_out, W1_out, S1_out, Rxy, Cx, dst_addr, cur_addr, Requests_in)
 begin
-    if ( flit_type = "001" and empty = '0' and (faulty = '1' or (((((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0)) = '0') and 
-                            ((((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1)) = '0') and 
-                            ((((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2)) = '0') and 
-                            ((((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3)) = '0') and
+    if ( flit_type = "001" and empty = '0' and (faulty = '1' or (((((N1_out and not E1_out and not W1_out) or (N1_out and E1_out and Rxy(0)) or (N1_out and W1_out and Rxy(1))) and Cx(0)) = '0') and 
+                            ((((E1_out and not N1_out and not S1_out) or (E1_out and N1_out and Rxy(2)) or (E1_out and S1_out and Rxy(3))) and Cx(1)) = '0') and 
+                            ((((W1_out and not N1_out and not S1_out) or (W1_out and N1_out and Rxy(4)) or (W1_out and S1_out and Rxy(5))) and Cx(2)) = '0') and 
+                            ((((S1_out and not E1_out and not W1_out) or (S1_out and E1_out and Rxy(6)) or (S1_out and W1_out and Rxy(7))) and Cx(3)) = '0') and
                             (dst_addr /= cur_addr))) and Requests_in /= "00000") then
         err_header_not_empty_faulty_Req_in_all_zero <= '1';
     else 
