@@ -445,21 +445,31 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
         Req_E_in <= ((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1);
         Req_W_in <= ((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2);
         Req_S_in <= ((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3);
-        Req_L_in <= not N1 and  not E1 and not W1 and not S1;
-        if faulty = '1' then
-          packet_drop_in <= '1';
-          Req_N_in <= '0';
-          Req_E_in <= '0';
-          Req_W_in <= '0';
-          Req_S_in <= '0';
+        if dst_addr = cur_addr then
+          Req_L_in <= '1';
+        else
           Req_L_in <= '0';
         end if;
+        if faulty = '1' or (((((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0)) = '0') and 
+                            ((((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1)) = '0') and 
+                            ((((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2)) = '0') and 
+                            ((((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3)) = '0') and
+                            (dst_addr /= cur_addr)) then
+            packet_drop_in <= '1';
+            Req_N_in <= '0';
+            Req_E_in <= '0';
+            Req_W_in <= '0';
+            Req_S_in <= '0';
+            Req_L_in <= '0';
+        end if;
+
   elsif flit_type = "100" and empty = '0' and grants = '1' then
         Req_N_in <= '0';
         Req_E_in <= '0';
         Req_W_in <= '0';
         Req_S_in <= '0';
         Req_L_in <= '0';
+
   else
         Req_N_in <= Req_N_FF;
         Req_E_in <= Req_E_FF;
