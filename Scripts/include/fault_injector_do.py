@@ -502,9 +502,9 @@ def generate_links_dictionary(network_size, sim_time):
 	list_of_ports = []
 	list_of_widths = []
 
-	#ports, widths = list_all_the_links(network_size)
-	#list_of_ports += ports
-	#list_of_widths += widths
+	ports, widths = list_all_the_links(network_size)
+	list_of_ports += ports
+	list_of_widths += widths
 
 	# ports, widths = list_all_the_lbdr_signals(network_size)
 	# list_of_ports += ports
@@ -514,9 +514,9 @@ def generate_links_dictionary(network_size, sim_time):
 	# list_of_ports += ports
 	# list_of_widths += widths
 
-	ports, widths = list_all_the_arbiter_signals(network_size)
-	list_of_ports += ports
-	list_of_widths += widths
+	# ports, widths = list_all_the_arbiter_signals(network_size)
+	# list_of_ports += ports
+	# list_of_widths += widths
 
 	random.seed(FAULT_RANDOM_SEED)
 	fault_list = []

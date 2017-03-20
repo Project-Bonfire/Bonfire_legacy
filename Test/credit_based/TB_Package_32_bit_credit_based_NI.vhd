@@ -114,7 +114,7 @@ package body TB_Package is
               wait until clk'event and clk ='0';
               test <= data_read;
 
-              write(DIAGNOSIS_LINEVARIABLE, string'("Self diagnosis data:!"));
+              write(DIAGNOSIS_LINEVARIABLE, string'("Self diagnosis of SHMU Node:"));
               writeline(DIAGNOSIS_FILE, DIAGNOSIS_LINEVARIABLE);
 
               if data_read(0) = '1' then 
