@@ -7,7 +7,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use ieee.std_logic_misc.all;
 
 entity router_channel is
-	generic (
+  generic (
         DATA_WIDTH: integer := 32;
         current_address : integer := 5;
         Rxy_rst : integer := 60;
@@ -89,7 +89,7 @@ architecture behavior of router_channel is
 
 
     COMPONENT Arbiter   
- 	 
+   
     port (reset: in  std_logic;
           clk: in  std_logic;
           Req_N, Req_E, Req_W, Req_S, Req_L:in std_logic; -- From LBDR modules
@@ -136,9 +136,9 @@ architecture behavior of router_channel is
           err_state_west_xbar_sel, 
           err_state_south_xbar_sel : out std_logic 
           );
-	end COMPONENT;
+  end COMPONENT;
 
-	COMPONENT LBDR is
+  COMPONENT LBDR is
     generic (
         cur_addr_rst: integer := 5;
         Rxy_rst: integer := 60;
@@ -176,7 +176,7 @@ architecture behavior of router_channel is
           err_header_not_empty_Req_W_in,
           err_header_not_empty_Req_S_in : out std_logic
           );
-	end COMPONENT;
+  end COMPONENT;
 
   COMPONENT shift_register is
     generic (
@@ -304,8 +304,8 @@ begin
 
  FIFO_unit: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (reset => reset, clk => clk, DRTS => DRTS, 
-   			read_en_N => Grant_N_in, read_en_E =>Grant_E_in, read_en_W =>Grant_W_in, read_en_S =>Grant_S_in, read_en_L =>Grant_L_in, 
-   			CTS => CTS, empty_out => empty,  
+        read_en_N => Grant_N_in, read_en_E =>Grant_E_in, read_en_W =>Grant_W_in, read_en_S =>Grant_S_in, read_en_L =>Grant_L_in, 
+        CTS => CTS, empty_out => empty,  
 
             read_pointer_out => read_pointer_out, write_pointer_out => write_pointer_out,
             write_en_out => write_en_out, 
@@ -329,10 +329,10 @@ begin
 ------------------------------------------------------------------------------------------------------------------------------
 
 LBDR_unit: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
-	   PORT MAP (reset => reset, clk => clk, empty => empty, flit_type => flit_type, dst_addr=> destination_address,
-   		 	 Req_N=> Req_N_out, Req_E=>Req_E_out, Req_W=>Req_W_out, Req_S=>Req_S_out, Req_L=>Req_L_out, 
+     PORT MAP (reset => reset, clk => clk, empty => empty, flit_type => flit_type, dst_addr=> destination_address,
+         Req_N=> Req_N_out, Req_E=>Req_E_out, Req_W=>Req_W_out, Req_S=>Req_S_out, Req_L=>Req_L_out, 
 
-         shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_FIFO_2_LBDR, data_out_serial=>fault_DO_serial_LBDR_2_Arbiter,
+         shift=>fault_shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_FIFO_2_LBDR, data_out_serial=>fault_DO_serial_LBDR_2_Arbiter,
 
          err_header_empty_Requests_FF_Requests_in => err_header_empty_Requests_FF_Requests_in,
          err_tail_Requests_in_all_zero => err_tail_Requests_in_all_zero,
@@ -364,7 +364,7 @@ Arbiter_unit: Arbiter
           Xbar_sel => Xbar_sel, 
           RTS =>  RTS, 
 
-          shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_LBDR_2_Arbiter, data_out_serial=> fault_data_out_serial,
+          shift=>fault_shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_LBDR_2_Arbiter, data_out_serial=> fault_data_out_serial,
 
           err_state_IDLE_xbar => err_state_IDLE_xbar ,
           err_state_not_IDLE_xbar => err_state_not_IDLE_xbar ,

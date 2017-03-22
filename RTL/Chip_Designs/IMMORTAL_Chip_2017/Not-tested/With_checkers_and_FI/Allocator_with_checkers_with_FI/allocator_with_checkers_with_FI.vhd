@@ -2051,7 +2051,7 @@ arb_L_X: Arbiter_in  PORT MAP (reset => reset, clk => clk,
                                Req_X_N=>req_L_N, Req_X_E=> req_L_E, Req_X_W=>req_L_W, Req_X_S=>req_L_S, Req_X_L=>req_L_L,
                                X_N=>X_L_N, X_E=>X_L_E, X_W=>X_L_W, X_S=>X_L_S, X_L=>X_L_L, 
 
-                              shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_data_in_serial, data_out_serial=>fault_DO_serial_L_Arbiter_in_N_Arbiter_in,
+                              shift=>shift, fault_clk=>fault_clk, data_in_serial=> data_in_serial, data_out_serial=>fault_DO_serial_L_Arbiter_in_N_Arbiter_in,
 
                                -- Local Arbiter_in Checker outputs
                               err_Requests_state_in_state_not_equal => L_err_Requests_state_in_state_not_equal,

@@ -401,7 +401,7 @@ end component;
    signal fault_out_faulty, write_fake_flit_faulty : std_logic;
 
    -- FIFO's control part output-related signals
-   signal credit_out_faulty : std_logic; -- ??!! (Actually, it is credit_in, which is the previous value of credit_out in FIFO)
+   signal credit_in_faulty : std_logic; -- ??!! (Actually, it is credit_in, which is the previous value of credit_out in FIFO)
    signal empty_faulty : std_logic;
    signal fault_info_sig_faulty : std_logic; -- ??!! (which goes to the fault_info output of FIFO)
    signal health_info_sig_faulty : std_logic; -- ??!! (which goes to the health_info output of FIFO)

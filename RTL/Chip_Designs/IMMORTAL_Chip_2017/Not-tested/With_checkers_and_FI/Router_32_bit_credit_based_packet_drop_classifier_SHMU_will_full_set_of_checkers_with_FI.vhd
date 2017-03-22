@@ -2,8 +2,9 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
---use IEEE.STD_LOGIC_ARITH.ALL;
---use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use ieee.std_logic_misc.all;
 
 entity router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping 
     generic (
@@ -8440,10 +8441,11 @@ XBAR_L: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
  -- Behrad: Needed ?!
  checker_shifter: shift_register generic map (REG_WIDTH => 20)
     port map (
-        clk => checker_clk, reset => reset,
-        shift => shift,
-        data_in => combined_error_signals, 
-        data_out_parallel => shift_parallel_data,
-        data_out_serial => shift_serial_data
+                clk => checker_clk, reset => reset,
+                shift => shift,
+                data_in => combined_error_signals, 
+                data_out_parallel => shift_parallel_data,
+                data_out_serial => shift_serial_data
+            );
 
 end;
