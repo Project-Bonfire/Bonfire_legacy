@@ -1124,7 +1124,7 @@ COMPONENT LBDR_packet_drop is
             err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            err_header_not_empty_Req_L_in, -- added according to new design
+            --err_header_not_empty_Req_L_in, -- added according to new design
             err_header_not_empty_Req_N_in,
             err_header_not_empty_Req_E_in,
             err_header_not_empty_Req_W_in,
@@ -1273,7 +1273,7 @@ end COMPONENT;
             N_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             N_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            N_err_header_not_empty_Req_L_in, -- added according to new design
+            --N_err_header_not_empty_Req_L_in, -- added according to new design
             N_err_header_not_empty_Req_N_in,
             N_err_header_not_empty_Req_E_in,
             N_err_header_not_empty_Req_W_in,
@@ -1324,7 +1324,7 @@ end COMPONENT;
             E_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             E_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             E_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            E_err_header_not_empty_Req_L_in, -- added according to new design
+            --E_err_header_not_empty_Req_L_in, -- added according to new design
             E_err_header_not_empty_Req_N_in,
             E_err_header_not_empty_Req_E_in,
             E_err_header_not_empty_Req_W_in,
@@ -1375,7 +1375,7 @@ end COMPONENT;
             W_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             W_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             W_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            W_err_header_not_empty_Req_L_in, -- added according to new design
+            --W_err_header_not_empty_Req_L_in, -- added according to new design
             W_err_header_not_empty_Req_N_in,
             W_err_header_not_empty_Req_E_in,
             W_err_header_not_empty_Req_W_in,
@@ -1426,7 +1426,7 @@ end COMPONENT;
             S_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             S_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            S_err_header_not_empty_Req_L_in, -- added according to new design
+            --S_err_header_not_empty_Req_L_in, -- added according to new design
             S_err_header_not_empty_Req_N_in,
             S_err_header_not_empty_Req_E_in,
             S_err_header_not_empty_Req_W_in,
@@ -1477,7 +1477,7 @@ end COMPONENT;
             L_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             L_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             L_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            L_err_header_not_empty_Req_L_in, -- added according to new design
+            --L_err_header_not_empty_Req_L_in, -- added according to new design
             L_err_header_not_empty_Req_N_in,
             L_err_header_not_empty_Req_E_in,
             L_err_header_not_empty_Req_W_in,
@@ -3653,7 +3653,7 @@ N_LBDR_checkers_ORed <=     N_err_header_empty_Requests_FF_Requests_in or
                             N_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
                             N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or  -- added according to new design
                             N_err_header_not_empty_faulty_Req_in_all_zero or  -- added according to new design
-                            N_err_header_not_empty_Req_L_in or  -- added according to new design
+                            --N_err_header_not_empty_Req_L_in or  -- added according to new design
                             N_err_header_not_empty_Req_N_in or 
                             N_err_header_not_empty_Req_E_in or 
                             N_err_header_not_empty_Req_W_in or 
@@ -3707,7 +3707,7 @@ E_LBDR_checkers_ORed <=     E_err_header_empty_Requests_FF_Requests_in or
                             E_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
                             E_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or  -- added according to new design
                             E_err_header_not_empty_faulty_Req_in_all_zero or  -- added according to new design
-                            E_err_header_not_empty_Req_L_in or  -- added according to new design
+                            --E_err_header_not_empty_Req_L_in or  -- added according to new design
                             E_err_header_not_empty_Req_N_in or 
                             E_err_header_not_empty_Req_E_in or 
                             E_err_header_not_empty_Req_W_in or 
@@ -3761,7 +3761,7 @@ W_LBDR_checkers_ORed <=     W_err_header_empty_Requests_FF_Requests_in or
                             W_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
                             W_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or  -- added according to new design
                             W_err_header_not_empty_faulty_Req_in_all_zero or  -- added according to new design
-                            W_err_header_not_empty_Req_L_in or  -- added according to new design
+                            --W_err_header_not_empty_Req_L_in or  -- added according to new design
                             W_err_header_not_empty_Req_N_in or 
                             W_err_header_not_empty_Req_E_in or 
                             W_err_header_not_empty_Req_W_in or 
@@ -3815,7 +3815,7 @@ S_LBDR_checkers_ORed <=     S_err_header_empty_Requests_FF_Requests_in or
                             S_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
                             S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or  -- added according to new design
                             S_err_header_not_empty_faulty_Req_in_all_zero or  -- added according to new design
-                            S_err_header_not_empty_Req_L_in or  -- added according to new design
+                            --S_err_header_not_empty_Req_L_in or  -- added according to new design
                             S_err_header_not_empty_Req_N_in or 
                             S_err_header_not_empty_Req_E_in or 
                             S_err_header_not_empty_Req_W_in or 
@@ -3869,7 +3869,7 @@ L_LBDR_checkers_ORed <=     L_err_header_empty_Requests_FF_Requests_in or
                             L_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
                             L_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or  -- added according to new design
                             L_err_header_not_empty_faulty_Req_in_all_zero or  -- added according to new design
-                            L_err_header_not_empty_Req_L_in or  -- added according to new design
+                            --L_err_header_not_empty_Req_L_in or  -- added according to new design
                             L_err_header_not_empty_Req_N_in or 
                             L_err_header_not_empty_Req_E_in or 
                             L_err_header_not_empty_Req_W_in or 
@@ -6104,7 +6104,7 @@ N2L_fault <=                N_FIFO_checkers_ORed or
                             N_err_header_not_empty_faulty_drop_packet_in or
                             N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
                             N_err_header_not_empty_faulty_Req_in_all_zero or 
-                            N_err_header_not_empty_Req_L_in or                                  
+                            --N_err_header_not_empty_Req_L_in or                                  
                             N_err_header_empty_packet_drop_in_packet_drop_equal or
                             N_err_tail_not_empty_packet_drop_not_packet_drop_in or
                             N_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or
@@ -6190,7 +6190,7 @@ E2L_fault <=                E_FIFO_checkers_ORed or
                             E_err_header_not_empty_faulty_drop_packet_in or
                             E_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
                             E_err_header_not_empty_faulty_Req_in_all_zero or 
-                            E_err_header_not_empty_Req_L_in or                                  
+                            --E_err_header_not_empty_Req_L_in or                                  
                             E_err_header_empty_packet_drop_in_packet_drop_equal or
                             E_err_tail_not_empty_packet_drop_not_packet_drop_in or
                             E_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or
@@ -6276,7 +6276,7 @@ W2L_fault <=                W_FIFO_checkers_ORed or
                             W_err_header_not_empty_faulty_drop_packet_in or
                             W_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
                             W_err_header_not_empty_faulty_Req_in_all_zero or 
-                            W_err_header_not_empty_Req_L_in or                                  
+                            --W_err_header_not_empty_Req_L_in or                                  
                             W_err_header_empty_packet_drop_in_packet_drop_equal or
                             W_err_tail_not_empty_packet_drop_not_packet_drop_in or
                             W_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or
@@ -6359,7 +6359,7 @@ S2L_fault <=                S_FIFO_checkers_ORed or
                             S_err_header_not_empty_faulty_drop_packet_in or
                             S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
                             S_err_header_not_empty_faulty_Req_in_all_zero or 
-                            S_err_header_not_empty_Req_L_in or                                  
+                            --S_err_header_not_empty_Req_L_in or                                  
                             S_err_header_empty_packet_drop_in_packet_drop_equal or
                             S_err_tail_not_empty_packet_drop_not_packet_drop_in or
                             S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or
@@ -7291,7 +7291,7 @@ LBDR_N: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
             err_header_not_empty_faulty_drop_packet_in => N_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change => N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             err_header_not_empty_faulty_Req_in_all_zero => N_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            err_header_not_empty_Req_L_in => N_err_header_not_empty_Req_L_in, -- added according to new design
+            --err_header_not_empty_Req_L_in => N_err_header_not_empty_Req_L_in, -- added according to new design
             err_header_not_empty_Req_N_in => N_err_header_not_empty_Req_N_in, 
             err_header_not_empty_Req_E_in => N_err_header_not_empty_Req_E_in, 
             err_header_not_empty_Req_W_in => N_err_header_not_empty_Req_W_in, 
@@ -7354,7 +7354,7 @@ LBDR_E: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
             err_header_not_empty_faulty_drop_packet_in => E_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change => E_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             err_header_not_empty_faulty_Req_in_all_zero => E_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            err_header_not_empty_Req_L_in => E_err_header_not_empty_Req_L_in, -- added according to new design
+            --err_header_not_empty_Req_L_in => E_err_header_not_empty_Req_L_in, -- added according to new design
             err_header_not_empty_Req_N_in => E_err_header_not_empty_Req_N_in, 
             err_header_not_empty_Req_E_in => E_err_header_not_empty_Req_E_in, 
             err_header_not_empty_Req_W_in => E_err_header_not_empty_Req_W_in, 
@@ -7417,7 +7417,7 @@ LBDR_W: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
             err_header_not_empty_faulty_drop_packet_in => W_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change => W_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             err_header_not_empty_faulty_Req_in_all_zero => W_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            err_header_not_empty_Req_L_in => W_err_header_not_empty_Req_L_in, -- added according to new design
+            --err_header_not_empty_Req_L_in => W_err_header_not_empty_Req_L_in, -- added according to new design
             err_header_not_empty_Req_N_in => W_err_header_not_empty_Req_N_in, 
             err_header_not_empty_Req_E_in => W_err_header_not_empty_Req_E_in, 
             err_header_not_empty_Req_W_in => W_err_header_not_empty_Req_W_in, 
@@ -7480,7 +7480,7 @@ LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
             err_header_not_empty_faulty_drop_packet_in => S_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change => S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             err_header_not_empty_faulty_Req_in_all_zero => S_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            err_header_not_empty_Req_L_in => S_err_header_not_empty_Req_L_in, -- added according to new design
+            --err_header_not_empty_Req_L_in => S_err_header_not_empty_Req_L_in, -- added according to new design
             err_header_not_empty_Req_N_in => S_err_header_not_empty_Req_N_in, 
             err_header_not_empty_Req_E_in => S_err_header_not_empty_Req_E_in, 
             err_header_not_empty_Req_W_in => S_err_header_not_empty_Req_W_in, 
@@ -7543,7 +7543,7 @@ LBDR_L: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
             err_header_not_empty_faulty_drop_packet_in => L_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change => L_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             err_header_not_empty_faulty_Req_in_all_zero => L_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            err_header_not_empty_Req_L_in => L_err_header_not_empty_Req_L_in, -- added according to new design
+            --err_header_not_empty_Req_L_in => L_err_header_not_empty_Req_L_in, -- added according to new design
             err_header_not_empty_Req_N_in => L_err_header_not_empty_Req_N_in, 
             err_header_not_empty_Req_E_in => L_err_header_not_empty_Req_E_in, 
             err_header_not_empty_Req_W_in => L_err_header_not_empty_Req_W_in, 

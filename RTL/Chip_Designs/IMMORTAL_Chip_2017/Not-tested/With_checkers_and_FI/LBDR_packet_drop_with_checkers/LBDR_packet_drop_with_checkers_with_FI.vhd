@@ -59,7 +59,7 @@ entity LBDR_packet_drop is
             err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            err_header_not_empty_Req_L_in, -- added according to new design
+            --err_header_not_empty_Req_L_in, -- added according to new design
             err_header_not_empty_Req_N_in,
             err_header_not_empty_Req_E_in,
             err_header_not_empty_Req_W_in,
@@ -140,7 +140,7 @@ component LBDR_packet_drop_routing_part_pseudo_checkers is
             err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            err_header_not_empty_Req_L_in, -- added according to new design
+            --err_header_not_empty_Req_L_in, -- added according to new design
             err_header_not_empty_Req_N_in,
             err_header_not_empty_Req_E_in,
             err_header_not_empty_Req_W_in,
@@ -407,7 +407,7 @@ LBDR_packet_drop_routing_part_checkers: LBDR_packet_drop_routing_part_pseudo_che
                                     err_header_not_empty_faulty_drop_packet_in => err_header_not_empty_faulty_drop_packet_in, -- added according to new design
                                     err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change => err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
                                     err_header_not_empty_faulty_Req_in_all_zero => err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-                                    err_header_not_empty_Req_L_in => err_header_not_empty_Req_L_in, -- added according to new design
+                                    --err_header_not_empty_Req_L_in => err_header_not_empty_Req_L_in, -- added according to new design
                                     err_header_not_empty_Req_N_in => err_header_not_empty_Req_N_in, 
                                     err_header_not_empty_Req_E_in => err_header_not_empty_Req_E_in, 
                                     err_header_not_empty_Req_W_in => err_header_not_empty_Req_W_in, 
