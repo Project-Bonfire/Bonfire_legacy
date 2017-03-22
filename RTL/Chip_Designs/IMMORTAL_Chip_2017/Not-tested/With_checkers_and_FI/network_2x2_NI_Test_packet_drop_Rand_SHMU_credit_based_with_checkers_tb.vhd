@@ -302,25 +302,25 @@ NI_3: NI
 
 
 -- connecting the packet generators
-NI_control(2, 100, 0, 12, 8, 8, 10000 ns, clk,
+NI_control(2, 100, 0, 41, 8, 8, 10000 ns, clk,
            -- NI configuration
            reserved_address, flag_address, counter_address, reconfiguration_address, self_diagnosis_address,
            -- NI signals
            enable_0, write_byte_enable_0, address_0, data_write_0, data_read_0, test_0); 
 
-NI_control(2, 100, 1, 3, 8, 8, 10000 ns, clk,
+NI_control(2, 100, 1, 19, 8, 8, 10000 ns, clk,
            -- NI configuration
            reserved_address, flag_address, counter_address, reconfiguration_address, self_diagnosis_address,
            -- NI signals
            enable_1, write_byte_enable_1, address_1, data_write_1, data_read_1, test_1); 
 
-NI_control(2, 100, 2, 13, 8, 8, 10000 ns, clk,
+NI_control(2, 100, 2, 29, 8, 8, 10000 ns, clk,
            -- NI configuration
            reserved_address, flag_address, counter_address, reconfiguration_address, self_diagnosis_address,
            -- NI signals
            enable_2, write_byte_enable_2, address_2, data_write_2, data_read_2, test_2); 
 
-NI_control(2, 100, 3, 14, 8, 8, 10000 ns, clk,
+NI_control(2, 100, 3, 30, 8, 8, 10000 ns, clk,
            -- NI configuration
            reserved_address, flag_address, counter_address, reconfiguration_address, self_diagnosis_address,
            -- NI signals
