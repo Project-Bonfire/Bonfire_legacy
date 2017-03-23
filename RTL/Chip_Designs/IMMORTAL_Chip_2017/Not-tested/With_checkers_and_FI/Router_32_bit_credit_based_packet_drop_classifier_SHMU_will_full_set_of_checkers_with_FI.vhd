@@ -1235,6 +1235,7 @@ end COMPONENT;
     signal Healthy_E2N_turn_fault, intermittent_E2N_turn_fault, faulty_E2N_turn_fault: std_logic;
     signal Healthy_E2S_turn_fault, intermittent_E2S_turn_fault, faulty_E2S_turn_fault: std_logic;
     signal Healthy_W2N_turn_fault, intermittent_W2N_turn_fault, faulty_W2N_turn_fault: std_logic;
+    signal Healthy_W2S_turn_fault, intermittent_W2S_turn_fault, faulty_W2S_turn_fault: std_logic;
     signal Healthy_S2E_turn_fault, intermittent_S2E_turn_fault, faulty_S2E_turn_fault: std_logic;
     signal Healthy_S2W_turn_fault, intermittent_S2W_turn_fault, faulty_S2W_turn_fault: std_logic;
     signal Healthy_N2S_path_fault, intermittent_N2S_path_fault, faulty_N2S_path_fault: std_logic;
@@ -6507,6 +6508,10 @@ CHK_CT_E2S_turn_fault:  checkers_counter_threshold_classifier  generic map(count
 CHK_CT_W2N_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => W2N_turn_fault, Healthy => Healthy_W2N_turn_fault, 
              Intermittent => intermittent_W2N_turn_fault, Faulty => faulty_W2N_turn_fault);
+
+CHK_CT_W2S_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => W2S_turn_fault, Healthy => Healthy_W2S_turn_fault, 
+             Intermittent => intermittent_W2S_turn_fault, Faulty => faulty_W2S_turn_fault);
 
 CHK_CT_S2E_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => S2E_turn_fault, Healthy => Healthy_S2E_turn_fault, 
