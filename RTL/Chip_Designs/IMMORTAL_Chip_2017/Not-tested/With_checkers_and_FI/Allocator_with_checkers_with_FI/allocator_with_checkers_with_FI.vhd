@@ -1161,18 +1161,18 @@ component fault_injector is
     );
 end component;
 
-component shift_register_serial_in is
-    generic (
-        REG_WIDTH: integer := 35
-    );
-    port (
-        clk, reset : in std_logic;
-        shift: in std_logic;
-        data_in_serial: in std_logic;
-        data_out_parallel: out std_logic_vector(REG_WIDTH-1 downto 0);
-        data_out_serial: out std_logic
-    );
-end component;
+--component shift_register_serial_in is
+--    generic (
+--        REG_WIDTH: integer := 35
+--    );
+--    port (
+--        clk, reset : in std_logic;
+--        shift: in std_logic;
+--        data_in_serial: in std_logic;
+--        data_out_parallel: out std_logic_vector(REG_WIDTH-1 downto 0);
+--        data_out_serial: out std_logic
+--    );
+--end component;
 
 
  ----------------------------------------
@@ -1354,10 +1354,10 @@ grant_L_S_signal_faulty              <= faulty_signals (1);
 grant_L_L_signal_faulty              <= faulty_signals (0);
 
 -- Total: 9 bits
-SR: shift_register_serial_in generic map(REG_WIDTH => 9) -- What about Arbiter_in and Arbiter_out ?!
-          port map ( clk=> fault_clk, reset=>reset, shift=> shift,data_in_serial=> data_in_serial, 
-                     data_out_parallel=> FI_add_sta, data_out_serial=> data_out_serial
-                   );
+--SR: shift_register_serial_in generic map(REG_WIDTH => 9) -- What about Arbiter_in and Arbiter_out ?!
+--          port map ( clk=> fault_clk, reset=>reset, shift=> shift,data_in_serial=> data_in_serial, 
+--                     data_out_parallel=> FI_add_sta, data_out_serial=> data_out_serial
+--                   );
 
 -------------------------------------      
 -------------------------------------      
@@ -1647,18 +1647,18 @@ ALLOCATOR_CREDIT_COUNTER_LOGIC_CHECKERS: allocator_credit_counter_logic_pseudo_c
                                                                        credit_in_W => credit_in_W, 
                                                                        credit_in_S => credit_in_S, 
                                                                        credit_in_L => credit_in_L, 
-                                                                       credit_counter_N_out => credit_counter_N_out, credit_counter_E_out => credit_counter_E_out, credit_counter_W_out => credit_counter_W_out, credit_counter_S_out => credit_counter_S_out, credit_counter_L_out => credit_counter_L_out,
-                                                                       valid_N => grant_N, -- Must be connected to grant signals!
-                                                                       valid_E => grant_E, -- Must be connected to grant signals!
-                                                                       valid_W => grant_W, -- Must be connected to grant signals!
-                                                                       valid_S => grant_S, -- Must be connected to grant signals!
-                                                                       valid_L => grant_L, -- Must be connected to grant signals!
+                                                                       credit_counter_N_out => credit_counter_N_out_faulty, credit_counter_E_out => credit_counter_E_out_faulty, credit_counter_W_out => credit_counter_W_out_faulty, credit_counter_S_out => credit_counter_S_out_faulty, credit_counter_L_out => credit_counter_L_out_faulty,
+                                                                       valid_N => grant_N_faulty, -- Must be connected to grant signals!
+                                                                       valid_E => grant_E_faulty, -- Must be connected to grant signals!
+                                                                       valid_W => grant_W_faulty, -- Must be connected to grant signals!
+                                                                       valid_S => grant_S_faulty, -- Must be connected to grant signals!
+                                                                       valid_L => grant_L_faulty, -- Must be connected to grant signals!
 
-                                                                       credit_counter_N_in => credit_counter_N_in, 
-                                                                       credit_counter_E_in => credit_counter_E_in, 
-                                                                       credit_counter_W_in => credit_counter_W_in, 
-                                                                       credit_counter_S_in => credit_counter_S_in, 
-                                                                       credit_counter_L_in => credit_counter_L_in, 
+                                                                       credit_counter_N_in => credit_counter_N_in_faulty, 
+                                                                       credit_counter_E_in => credit_counter_E_in_faulty, 
+                                                                       credit_counter_W_in => credit_counter_W_in_faulty, 
+                                                                       credit_counter_S_in => credit_counter_S_in_faulty, 
+                                                                       credit_counter_L_in => credit_counter_L_in_faulty, 
 
                                                                        -- Checker Outputs
                                                                        err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal => err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal, 

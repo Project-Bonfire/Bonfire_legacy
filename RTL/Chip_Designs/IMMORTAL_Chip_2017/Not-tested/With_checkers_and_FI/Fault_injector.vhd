@@ -3,14 +3,17 @@
 library ieee;
 use ieee.std_logic_1164.all;
 USE ieee.numeric_std.ALL; 
-use IEEE.math_real."ceil";
-use IEEE.math_real."log2";
+--use IEEE.math_real."ceil";
+--use IEEE.math_real."log2";
 
 entity fault_injector is 
-	generic(DATA_WIDTH : integer := 32);
+	generic(
+		DATA_WIDTH : integer := 32; 
+		ADDRESS_WIDTH : integer := 5
+		);
 	port(
 		data_in: in std_logic_vector (DATA_WIDTH-1 downto 0);
-		address: in std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);
+		address: in std_logic_vector (ADDRESS_WIDTH-1 downto 0);
 		sta_0: in std_logic;
 		sta_1: in std_logic;
 		data_out: out std_logic_vector (DATA_WIDTH-1 downto 0)
