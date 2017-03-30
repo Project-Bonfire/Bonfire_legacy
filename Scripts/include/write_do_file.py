@@ -179,7 +179,7 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
         # For IMMORTAL chip with checkers and FI
         elif program_argv['add_checkers'] and program_argv['add_SHMU'] and program_argv['NI_Test'] and program_argv['packet_drop'] and program_argv['add_FC'] and program_argv['add_FI']:
-            do_file.write("vcom \"" + IMMORTAL_CHIP_DIR \
+            do_file.write("vcom \"" + IMMORTAL_CHIP_FI_DIR \
                 + "/Router_32_bit_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd\"\n")
 
         else:
