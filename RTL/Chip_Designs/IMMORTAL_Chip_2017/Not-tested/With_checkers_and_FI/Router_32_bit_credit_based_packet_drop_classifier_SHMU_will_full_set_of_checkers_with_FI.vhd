@@ -30,7 +30,7 @@ entity router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping
     Faulty_N_in, Faulty_E_in, Faulty_W_in, Faulty_S_in: in std_logic;
     Faulty_N_out, Faulty_E_out, Faulty_W_out, Faulty_S_out: out std_logic;
 
-    -- should be connected to NI
+    -- should be connected to NI (Outputs for classified fault information)
     link_faults: out std_logic_vector(4 downto 0);
     turn_faults: out std_logic_vector(19 downto 0);
 
@@ -42,14 +42,11 @@ entity router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping
     fault_shift: in std_logic;
     fault_clk: in std_logic;
     fault_data_in_serial: in std_logic;
-    fault_data_out_serial: out std_logic
+    fault_data_out_serial: out std_logic;
 
-    ---- the checker output shift register
-    --shift : in std_logic;
-    --checker_clk: in std_logic;
-    --error_signal_sync: out std_logic;     -- this is the or of all outputs of the shift register
-    --error_signal_async: out std_logic;    -- this is the or of all outputs of the checkers 
-    --shift_serial_data: out std_logic
+    ---- Outputs for non-classified fault information
+    link_faults_async: out std_logic_vector(4 downto 0);
+    turn_faults_async: out std_logic_vector(19 downto 0)
  ); 
 end router_credit_based_PD_C_SHMU; 
 
@@ -2614,38 +2611,6 @@ signal      fault_DO_serial_W_LBDR_to_S_LBDR, fault_DO_serial_S_LBDR_to_Allocato
 ------------------------------------------------------------------
 
 begin
-
-------------------------------------------------------------------
-------------------------------------------------------------------
-
-  -- OR of checker outputs
-  --error_signal_sync  <= OR_REDUCE(shift_parallel_data);
-  --error_signal_async <= OR_REDUCE(combined_error_signals);
-   --making the shift register input signal
-  -- please keep this like this, used for counting the number of the signals.
-  --combined_error_signals <=  N2E_turn_fault & 
-  --                           N2W_turn_fault & 
-  --                           E2N_turn_fault &
-  --                           E2S_turn_fault &
-  --                           W2N_turn_fault &
-  --                           W2S_turn_fault &
-  --                           S2E_turn_fault &
-  --                           S2W_turn_fault &
-  --                           N2S_path_fault &
-  --                           S2N_path_fault &
-  --                           E2W_path_fault &
-  --                           W2E_path_fault &
-  --                           L2N_fault &
-  --                           L2E_fault &
-  --                           L2W_fault &
-  --                           L2S_fault &
-  --                           N2L_fault &
-  --                           E2L_fault &
-  --                           W2L_fault &
-  --                           S2L_fault;
-
-------------------------------------------------------------------
-------------------------------------------------------------------
 
 -- FIFO contributes to all turns and paths, therefore, for each turn or path (for the input direction), all the outputs of FIFO checkers
 -- corresponding to that input are ORed together. 
@@ -6073,15 +6038,29 @@ S2L_fault <=                S_FIFO_checkers_ORed or
 -- L2N, L2E, L2W, L2S, 
 -- N2L, E2L, W2L, S2L
 
---turn_faults  <= "00000000000000000000";
-turn_faults  <= N2E_turn_fault & N2W_turn_fault & E2N_turn_fault & E2S_turn_fault & 
-                W2N_turn_fault & W2S_turn_fault & S2E_turn_fault & S2W_turn_fault &
-                N2S_path_fault & S2N_path_fault & E2W_path_fault & W2E_path_fault &
-                L2N_fault      & L2E_fault      & L2W_fault      & L2S_fault      &
-                N2L_fault      & E2L_fault      & W2L_fault      & S2L_fault; -- 20 bits because of turn/path faults
+------------------------------------------------------------------------------------------------------------------------------
+-- Taking classified fault information to output
+------------------------------------------------------------------------------------------------------------------------------
+turn_faults  <= faulty_N2E_turn_fault & faulty_N2W_turn_fault & faulty_E2N_turn_fault & faulty_E2S_turn_fault & 
+                faulty_W2N_turn_fault & faulty_W2S_turn_fault & faulty_S2E_turn_fault & faulty_S2W_turn_fault &
+                faulty_N2S_path_fault & faulty_S2N_path_fault & faulty_E2W_path_fault & faulty_W2E_path_fault &
+                faulty_L2N_fault      & faulty_L2E_fault      & faulty_L2W_fault      & faulty_L2S_fault      &
+                faulty_N2L_fault      & faulty_E2L_fault      & faulty_W2L_fault      & faulty_S2L_fault; -- 20 bits because of turn/path faults
 
 link_faults  <= sig_Faulty_N_out & sig_Faulty_E_out & sig_Faulty_W_out & sig_Faulty_S_out & faulty_link_L;
---link_faults  <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L;
+
+------------------------------------------------------------------------------------------------------------------------------
+-- Taking non-classified fault information to output
+------------------------------------------------------------------------------------------------------------------------------
+turn_faults_async  <= N2E_turn_fault & N2W_turn_fault & E2N_turn_fault & E2S_turn_fault & 
+                      W2N_turn_fault & W2S_turn_fault & S2E_turn_fault & S2W_turn_fault &
+                      N2S_path_fault & S2N_path_fault & E2W_path_fault & W2E_path_fault &
+                      L2N_fault      & L2E_fault      & L2W_fault      & L2S_fault      &
+                      N2L_fault      & E2L_fault      & W2L_fault      & S2L_fault; -- 20 bits because of turn/path faults
+
+link_faults_async  <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L;
+------------------------------------------------------------------------------------------------------------------------------
+
 
 Faulty_N_out <= sig_Faulty_N_out;
 Faulty_E_out <= sig_Faulty_E_out;
@@ -8051,6 +8030,7 @@ Xbar_sel_L <= Grant_LN & Grant_LE & Grant_LW & Grant_LS & '0';
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
+
  -- all the Xbars
 XBAR_N: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
@@ -8068,4 +8048,8 @@ XBAR_L: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
         sel => Xbar_sel_L,  Data_out=> TX_L);
  
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+
 end;
