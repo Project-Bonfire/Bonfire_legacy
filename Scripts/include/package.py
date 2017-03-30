@@ -22,6 +22,7 @@ SCRIPTS_DIR = PROJECT_ROOT + "/Scripts"
 TEST_DIR = PROJECT_ROOT + "/Test"
 ROUTER_RTL_DIR = PROJECT_ROOT + "/RTL/Router"
 IMMORTAL_CHIP_DIR = PROJECT_ROOT + "/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers"
+IMMORTAL_CHIP_FI_DIR = PROJECT_ROOT + "/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI"
 FAULT_MANAGEMENT_RTL_DIR = PROJECT_ROOT + "/RTL/Fault_Management"
 CHECKERS_DIR = "/Checkers/Modules_with_checkers_integrated/All_checkers"
 

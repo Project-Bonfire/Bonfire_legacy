@@ -42,8 +42,8 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
             # With checkers
             # Currently being tested (but still a TODO)
 
-            # For IMMORTAL Chip
-            if program_argv['NI_Test']:
+            # For IMMORTAL Chip with checkers
+            if program_argv['NI_Test'] and not program_argv['add_FI']:
                 do_file.write("vcom \"" + IMMORTAL_CHIP_DIR \
                         + "/mlite_pack.vhd"+"\"\n")
 
@@ -69,6 +69,38 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                         + "/checkers_counter_threshold.vhd"+"\"\n")
 
                 do_file.write("vcom \"" + IMMORTAL_CHIP_DIR \
+                        + "/NI.vhd"+"\"\n")
+
+            # For IMMORTAL Chip with FI and checkers
+            elif program_argv['NI_Test'] and program_argv['add_FI']:
+                do_file.write("vcom \"" + IMMORTAL_CHIP_FI_DIR \
+                        + "/mlite_pack.vhd"+"\"\n")
+
+                for file in file_lists.CB_Allocator_with_checkers_with_FI_files:
+                    do_file.write("vcom \"" + IMMORTAL_CHIP_FI_DIR \
+                        + "/Allocator_with_checkers_with_FI/"+file+"\"\n")
+
+                for file in file_lists.CB_FIFO_one_hot_CB_PD_FC_with_checkers_with_FI_files:
+                    do_file.write("vcom \"" + IMMORTAL_CHIP_FI_DIR \
+                        + "/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI/"+file+"\"\n")
+
+                for file in file_lists.CB_LBDR_PD_with_checkers_with_FI_files:
+                    do_file.write("vcom \"" + IMMORTAL_CHIP_FI_DIR \
+                        + "/LBDR_packet_drop_with_checkers_with_FI/"+file+"\"\n")
+
+                do_file.write("vcom \"" + IMMORTAL_CHIP_FI_DIR \
+                        + "/ParityChecker_for_LBDR.vhd"+"\"\n")
+
+                do_file.write("vcom \"" + IMMORTAL_CHIP_FI_DIR \
+                        + "/counter_threshold.vhd"+"\"\n")
+
+                do_file.write("vcom \"" + IMMORTAL_CHIP_FI_DIR \
+                        + "/checkers_counter_threshold.vhd"+"\"\n")
+
+                do_file.write("vcom \"" + IMMORTAL_CHIP_FI_DIR \
+                        + "/shift_register_serial_in.vhd"+"\"\n")
+
+                do_file.write("vcom \"" + IMMORTAL_CHIP_FI_DIR \
                         + "/NI.vhd"+"\"\n")
 
             # For other designs
@@ -137,10 +169,15 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
                 + "/RTL/Router_32_bit_credit_based_packet_drop_classifier_with_full_set_of_checkers.vhd\"\n")
 
-        # For IMMORTAL chip
-        elif program_argv['add_checkers'] and program_argv['add_SHMU'] and program_argv['NI_Test'] and program_argv['packet_drop'] and program_argv['add_FC']:
+        # For IMMORTAL chip with checkers
+        elif program_argv['add_checkers'] and program_argv['add_SHMU'] and program_argv['NI_Test'] and program_argv['packet_drop'] and program_argv['add_FC'] and not program_argv['add_FI']:
             do_file.write("vcom \"" + IMMORTAL_CHIP_DIR \
                 + "/Router_32_bit_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers.vhd\"\n")
+
+        # For IMMORTAL chip with checkers and FI
+        elif program_argv['add_checkers'] and program_argv['add_SHMU'] and program_argv['NI_Test'] and program_argv['packet_drop'] and program_argv['add_FC'] and program_argv['add_FI']:
+            do_file.write("vcom \"" + IMMORTAL_CHIP_DIR \
+                + "/Router_32_bit_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd\"\n")
 
         else:
             do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
