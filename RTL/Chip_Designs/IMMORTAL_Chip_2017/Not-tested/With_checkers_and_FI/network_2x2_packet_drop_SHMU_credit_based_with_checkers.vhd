@@ -108,14 +108,11 @@ COMPONENT router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropp
     fault_shift: in std_logic;
     fault_clk: in std_logic;
     fault_data_in_serial: in std_logic;
-    fault_data_out_serial: out std_logic
+    fault_data_out_serial: out std_logic;
 
-    ---- the checker output shift register
-    --shift : in std_logic;
-    --checker_clk: in std_logic;
-    --error_signal_sync: out std_logic;     -- this is the or of all outputs of the shift register
-    --error_signal_async: out std_logic;    -- this is the or of all outputs of the checkers 
-    --shift_serial_data: out std_logic
+    ---- Outputs for non-classified fault information
+    link_faults_async: out std_logic_vector(4 downto 0);
+    turn_faults_async: out std_logic_vector(19 downto 0)
  ); 
 end COMPONENT; 
 
@@ -184,34 +181,23 @@ end COMPONENT;
     signal fault_data_out_serial_3: std_logic;
 
     --------------
-    -- the checker output shift register
-    signal shift_0 : std_logic:= '0';
-    signal checker_clk_0: std_logic:= '0';
-    signal error_signal_sync_0: std_logic;     -- this is the or of all outputs of the shift register
-    signal error_signal_async_0: std_logic;    -- this is the or of all outputs of the checkers 
-    signal shift_serial_data_0: std_logic;
+
+    -- the checker output related ports (for unclassified fault information)
+    signal link_faults_async_0 : std_logic_vector(4 downto 0);
+    signal turn_faults_async_0: std_logic_vector(19 downto 0);
 
     --------------
-    signal shift_1 : std_logic:= '0';
-    signal checker_clk_1: std_logic:= '0';
-    signal error_signal_sync_1: std_logic;     -- this is the or of all outputs of the shift register
-    signal error_signal_async_1: std_logic;    -- this is the or of all outputs of the checkers 
-    signal shift_serial_data_1: std_logic;
+    signal link_faults_async_1 : std_logic_vector(4 downto 0);
+    signal turn_faults_async_1: std_logic_vector(19 downto 0);
 
     --------------
-    signal shift_2 : std_logic:= '0';
-    signal checker_clk_2: std_logic:= '0';
-    signal error_signal_sync_2: std_logic;     -- this is the or of all outputs of the shift register
-    signal error_signal_async_2: std_logic;    -- this is the or of all outputs of the checkers 
-    signal shift_serial_data_2: std_logic;
+    signal link_faults_async_2 : std_logic_vector(4 downto 0);
+    signal turn_faults_async_2: std_logic_vector(19 downto 0);
 
     --------------
-    signal shift_3 : std_logic:= '0';
-    signal checker_clk_3: std_logic:= '0';
-    signal error_signal_sync_3: std_logic;     -- this is the or of all outputs of the shift register
-    signal error_signal_async_3: std_logic;    -- this is the or of all outputs of the checkers 
-    signal shift_serial_data_3: std_logic;
-
+    signal link_faults_async_3 : std_logic_vector(4 downto 0);
+    signal turn_faults_async_3: std_logic_vector(19 downto 0);
+    --------------
 
 --        organizaiton of the network:
 --     x --------------->
@@ -243,9 +229,9 @@ R_0: router_credit_based_PD_C_SHMU
 	link_faults_0, turn_faults_0,
 	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0, 
 	-- fault injector signals
-	fault_shift_0, fault_clk_0, fault_data_in_serial_0, fault_data_out_serial_0 
-    -- the checker output shift register
-    --shift_0, checker_clk_0, error_signal_sync_0, error_signal_async_0, shift_serial_data_0
+	fault_shift_0, fault_clk_0, fault_data_in_serial_0, fault_data_out_serial_0, 
+    -- the non-classified fault information
+    link_faults_async_0, turn_faults_async_0
  ); 
 
 R_1: router_credit_based_PD_C_SHMU 
@@ -265,9 +251,9 @@ R_1: router_credit_based_PD_C_SHMU
 	link_faults_1, turn_faults_1,
 	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1, 
 	-- fault injector signals
-	fault_shift_1, fault_clk_1, fault_data_in_serial_1, fault_data_out_serial_1
-    -- the checker output shift register
-    --shift_1, checker_clk_1, error_signal_sync_1, error_signal_async_1, shift_serial_data_1
+	fault_shift_1, fault_clk_1, fault_data_in_serial_1, fault_data_out_serial_1, 
+    -- the non-classified fault information
+    link_faults_async_1, turn_faults_async_1
  ); 
 R_2: router_credit_based_PD_C_SHMU 
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 2, Rxy_rst => 60,
@@ -286,9 +272,9 @@ R_2: router_credit_based_PD_C_SHMU
 	link_faults_2, turn_faults_2,
 	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2, 
 	-- fault injector signals
-	fault_shift_2, fault_clk_2, fault_data_in_serial_2, fault_data_out_serial_2 
-    -- the checker output shift register
-    --shift_2, checker_clk_2, error_signal_sync_2, error_signal_async_2, shift_serial_data_2	
+	fault_shift_2, fault_clk_2, fault_data_in_serial_2, fault_data_out_serial_2, 
+    -- the non-classified fault information
+    link_faults_async_2, turn_faults_async_2
  ); 
 R_3: router_credit_based_PD_C_SHMU 
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 3, Rxy_rst => 60,
@@ -307,9 +293,9 @@ R_3: router_credit_based_PD_C_SHMU
 	link_faults_3, turn_faults_3,
 	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3, 
 	-- fault injector signals
-	fault_shift_3, fault_clk_3, fault_data_in_serial_3, fault_data_out_serial_3 
-    -- the checker output shift register
-    --shift_3, checker_clk_3, error_signal_sync_3, error_signal_async_3, shift_serial_data_3	
+	fault_shift_3, fault_clk_3, fault_data_in_serial_3, fault_data_out_serial_3, 
+    -- the non-classified fault information
+    link_faults_async_3, turn_faults_async_3
  ); 
 
 ---------------------------------------------------------------

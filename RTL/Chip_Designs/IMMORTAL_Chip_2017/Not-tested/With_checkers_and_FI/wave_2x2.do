@@ -175,249 +175,233 @@ add wave -noupdate -group {CT:state} -color green :tb_network_2x2:NoC:R_3:CT_W:s
 add wave -noupdate -group {CT:state} -color green :tb_network_2x2:NoC:R_3:CT_S:state
 add wave -noupdate -group {CT:state} -color green :tb_network_2x2:NoC:R_3:CT_L:state
 add wave -noupdate :tb_network_2x2:clk
-
-add wave -noupdate -group {R0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:N_FIFO_checkers_ORed
-add wave -noupdate -group {R0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:E_FIFO_checkers_ORed
-add wave -noupdate -group {R0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:W_FIFO_checkers_ORed
-add wave -noupdate -group {R0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:S_FIFO_checkers_ORed
-add wave -noupdate -group {R0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:L_FIFO_checkers_ORed
-
-add wave -noupdate -group {R1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:N_FIFO_checkers_ORed
-add wave -noupdate -group {R1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:E_FIFO_checkers_ORed
-add wave -noupdate -group {R1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:W_FIFO_checkers_ORed
-add wave -noupdate -group {R1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:S_FIFO_checkers_ORed
-add wave -noupdate -group {R1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:L_FIFO_checkers_ORed
-
-add wave -noupdate -group {R2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:N_FIFO_checkers_ORed
-add wave -noupdate -group {R2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:E_FIFO_checkers_ORed
-add wave -noupdate -group {R2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:W_FIFO_checkers_ORed
-add wave -noupdate -group {R2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:S_FIFO_checkers_ORed
-add wave -noupdate -group {R2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:L_FIFO_checkers_ORed
-
-add wave -noupdate -group {R3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:N_FIFO_checkers_ORed
-add wave -noupdate -group {R3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:E_FIFO_checkers_ORed
-add wave -noupdate -group {R3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:W_FIFO_checkers_ORed
-add wave -noupdate -group {R3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:L_FIFO_checkers_ORed
-add wave -noupdate -group {R3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:S_FIFO_checkers_ORed
-add wave -noupdate -group {R3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:L_FIFO_checkers_ORed
+add wave -noupdate -group {R_0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:N_FIFO_checkers_ORed
+add wave -noupdate -group {R_0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:E_FIFO_checkers_ORed
+add wave -noupdate -group {R_0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:W_FIFO_checkers_ORed
+add wave -noupdate -group {R_0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:S_FIFO_checkers_ORed
+add wave -noupdate -group {R_0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_0:L_FIFO_checkers_ORed
+add wave -noupdate -group {R_1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:N_FIFO_checkers_ORed
+add wave -noupdate -group {R_1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:E_FIFO_checkers_ORed
+add wave -noupdate -group {R_1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:W_FIFO_checkers_ORed
+add wave -noupdate -group {R_1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:S_FIFO_checkers_ORed
+add wave -noupdate -group {R_1: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_1:L_FIFO_checkers_ORed
+add wave -noupdate -group {R_2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:N_FIFO_checkers_ORed
+add wave -noupdate -group {R_2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:E_FIFO_checkers_ORed
+add wave -noupdate -group {R_2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:W_FIFO_checkers_ORed
+add wave -noupdate -group {R_2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:S_FIFO_checkers_ORed
+add wave -noupdate -group {R_2: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_2:L_FIFO_checkers_ORed
+add wave -noupdate -group {R_3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:N_FIFO_checkers_ORed
+add wave -noupdate -group {R_3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:E_FIFO_checkers_ORed
+add wave -noupdate -group {R_3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:W_FIFO_checkers_ORed
+add wave -noupdate -group {R_3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:S_FIFO_checkers_ORed
+add wave -noupdate -group {R_3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC:R_3:L_FIFO_checkers_ORed
 add wave -noupdate :tb_network_2x2:clk
-
-add wave -noupdate -group {R0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:N_LBDR_checkers_ORed
-add wave -noupdate -group {R0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:E_LBDR_checkers_ORed
-add wave -noupdate -group {R0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:W_LBDR_checkers_ORed
-add wave -noupdate -group {R0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:S_LBDR_checkers_ORed
-add wave -noupdate -group {R0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:L_LBDR_checkers_ORed
-
-add wave -noupdate -group {R1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:N_LBDR_checkers_ORed
-add wave -noupdate -group {R1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:E_LBDR_checkers_ORed
-add wave -noupdate -group {R1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:W_LBDR_checkers_ORed
-add wave -noupdate -group {R1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:S_LBDR_checkers_ORed
-add wave -noupdate -group {R1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:L_LBDR_checkers_ORed
-
-add wave -noupdate -group {R2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:N_LBDR_checkers_ORed
-add wave -noupdate -group {R2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:E_LBDR_checkers_ORed
-add wave -noupdate -group {R2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:W_LBDR_checkers_ORed
-add wave -noupdate -group {R2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:S_LBDR_checkers_ORed
-add wave -noupdate -group {R2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:L_LBDR_checkers_ORed
-
-add wave -noupdate -group {R3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:N_LBDR_checkers_ORed
-add wave -noupdate -group {R3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:E_LBDR_checkers_ORed
-add wave -noupdate -group {R3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:W_LBDR_checkers_ORed
-add wave -noupdate -group {R3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:S_LBDR_checkers_ORed
-add wave -noupdate -group {R3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:L_LBDR_checkers_ORed
+add wave -noupdate -group {R_0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:N_LBDR_checkers_ORed
+add wave -noupdate -group {R_0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:E_LBDR_checkers_ORed
+add wave -noupdate -group {R_0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:W_LBDR_checkers_ORed
+add wave -noupdate -group {R_0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:S_LBDR_checkers_ORed
+add wave -noupdate -group {R_0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_0:L_LBDR_checkers_ORed
+add wave -noupdate -group {R_1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:N_LBDR_checkers_ORed
+add wave -noupdate -group {R_1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:E_LBDR_checkers_ORed
+add wave -noupdate -group {R_1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:W_LBDR_checkers_ORed
+add wave -noupdate -group {R_1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:S_LBDR_checkers_ORed
+add wave -noupdate -group {R_1: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_1:L_LBDR_checkers_ORed
+add wave -noupdate -group {R_2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:N_LBDR_checkers_ORed
+add wave -noupdate -group {R_2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:E_LBDR_checkers_ORed
+add wave -noupdate -group {R_2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:W_LBDR_checkers_ORed
+add wave -noupdate -group {R_2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:S_LBDR_checkers_ORed
+add wave -noupdate -group {R_2: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_2:L_LBDR_checkers_ORed
+add wave -noupdate -group {R_3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:N_LBDR_checkers_ORed
+add wave -noupdate -group {R_3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:E_LBDR_checkers_ORed
+add wave -noupdate -group {R_3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:W_LBDR_checkers_ORed
+add wave -noupdate -group {R_3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:S_LBDR_checkers_ORed
+add wave -noupdate -group {R_3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC:R_3:L_LBDR_checkers_ORed
 add wave -noupdate :tb_network_2x2:clk
-
 add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC:R_0:Allocator_checkers_ORed
 add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC:R_1:Allocator_checkers_ORed
 add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC:R_2:Allocator_checkers_ORed
 add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC:R_3:Allocator_checkers_ORed
 add wave -noupdate :tb_network_2x2:clk
-
 add wave -noupdate -color green :tb_network_2x2:NoC:R_0:link_faults
 add wave -noupdate -color green :tb_network_2x2:NoC:R_1:link_faults
 add wave -noupdate -color green :tb_network_2x2:NoC:R_2:link_faults
 add wave -noupdate -color green :tb_network_2x2:NoC:R_3:link_faults
 add wave -noupdate :tb_network_2x2:clk
-
+add wave -noupdate -group {Non-classified link faults} -color green :tb_network_2x2:NoC:R_0:link_faults_async
+add wave -noupdate -group {Non-classified link faults} -color green :tb_network_2x2:NoC:R_1:link_faults_async
+add wave -noupdate -group {Non-classified link faults} -color green :tb_network_2x2:NoC:R_2:link_faults_async
+add wave -noupdate -group {Non-classified link faults} -color green :tb_network_2x2:NoC:R_3:link_faults_async
+add wave -noupdate :tb_network_2x2:clk
 add wave -noupdate -color green :tb_network_2x2:NoC:R_0:turn_faults
 add wave -noupdate -color green :tb_network_2x2:NoC:R_1:turn_faults
 add wave -noupdate -color green :tb_network_2x2:NoC:R_2:turn_faults
 add wave -noupdate -color green :tb_network_2x2:NoC:R_3:turn_faults
 add wave -noupdate :tb_network_2x2:clk
-
-add wave -noupdate -group {Turn Faults for R0} \
-sim/:tb_network_2x2:NoC:R_0:N2E_turn_fault \
-sim/:tb_network_2x2:NoC:R_0:N2W_turn_fault \
-sim/:tb_network_2x2:NoC:R_0:E2N_turn_fault \
-sim/:tb_network_2x2:NoC:R_0:E2S_turn_fault \
-sim/:tb_network_2x2:NoC:R_0:W2N_turn_fault \
-sim/:tb_network_2x2:NoC:R_0:W2S_turn_fault \
-sim/:tb_network_2x2:NoC:R_0:S2E_turn_fault \
-sim/:tb_network_2x2:NoC:R_0:S2W_turn_fault \
-sim/:tb_network_2x2:NoC:R_0:N2S_path_fault \
-sim/:tb_network_2x2:NoC:R_0:S2N_path_fault \
-sim/:tb_network_2x2:NoC:R_0:E2W_path_fault \
-sim/:tb_network_2x2:NoC:R_0:W2E_path_fault \
-sim/:tb_network_2x2:NoC:R_0:L2N_fault \
-sim/:tb_network_2x2:NoC:R_0:L2E_fault \
-sim/:tb_network_2x2:NoC:R_0:L2W_fault \
-sim/:tb_network_2x2:NoC:R_0:L2S_fault \
-sim/:tb_network_2x2:NoC:R_0:N2L_fault \
-sim/:tb_network_2x2:NoC:R_0:E2L_fault \
-sim/:tb_network_2x2:NoC:R_0:W2L_fault \
-sim/:tb_network_2x2:NoC:R_0:S2L_fault
-
-add wave -noupdate -group {Turn Faults for R1} \
-sim/:tb_network_2x2:NoC:R_1:N2E_turn_fault \
-sim/:tb_network_2x2:NoC:R_1:N2W_turn_fault \
-sim/:tb_network_2x2:NoC:R_1:E2N_turn_fault \
-sim/:tb_network_2x2:NoC:R_1:E2S_turn_fault \
-sim/:tb_network_2x2:NoC:R_1:W2N_turn_fault \
-sim/:tb_network_2x2:NoC:R_1:W2S_turn_fault \
-sim/:tb_network_2x2:NoC:R_1:S2E_turn_fault \
-sim/:tb_network_2x2:NoC:R_1:S2W_turn_fault \
-sim/:tb_network_2x2:NoC:R_1:N2S_path_fault \
-sim/:tb_network_2x2:NoC:R_1:S2N_path_fault \
-sim/:tb_network_2x2:NoC:R_1:E2W_path_fault \
-sim/:tb_network_2x2:NoC:R_1:W2E_path_fault \
-sim/:tb_network_2x2:NoC:R_1:L2N_fault \
-sim/:tb_network_2x2:NoC:R_1:L2E_fault \
-sim/:tb_network_2x2:NoC:R_1:L2W_fault \
-sim/:tb_network_2x2:NoC:R_1:L2S_fault \
-sim/:tb_network_2x2:NoC:R_1:N2L_fault \
-sim/:tb_network_2x2:NoC:R_1:E2L_fault \
-sim/:tb_network_2x2:NoC:R_1:W2L_fault \
-sim/:tb_network_2x2:NoC:R_1:S2L_fault
-
-add wave -noupdate -group {Turn Faults for R2} \
-sim/:tb_network_2x2:NoC:R_2:N2E_turn_fault \
-sim/:tb_network_2x2:NoC:R_2:N2W_turn_fault \
-sim/:tb_network_2x2:NoC:R_2:E2N_turn_fault \
-sim/:tb_network_2x2:NoC:R_2:E2S_turn_fault \
-sim/:tb_network_2x2:NoC:R_2:W2N_turn_fault \
-sim/:tb_network_2x2:NoC:R_2:W2S_turn_fault \
-sim/:tb_network_2x2:NoC:R_2:S2E_turn_fault \
-sim/:tb_network_2x2:NoC:R_2:S2W_turn_fault \
-sim/:tb_network_2x2:NoC:R_2:N2S_path_fault \
-sim/:tb_network_2x2:NoC:R_2:S2N_path_fault \
-sim/:tb_network_2x2:NoC:R_2:E2W_path_fault \
-sim/:tb_network_2x2:NoC:R_2:W2E_path_fault \
-sim/:tb_network_2x2:NoC:R_2:L2N_fault \
-sim/:tb_network_2x2:NoC:R_2:L2E_fault \
-sim/:tb_network_2x2:NoC:R_2:L2W_fault \
-sim/:tb_network_2x2:NoC:R_2:L2S_fault \
-sim/:tb_network_2x2:NoC:R_2:N2L_fault \
-sim/:tb_network_2x2:NoC:R_2:E2L_fault \
-sim/:tb_network_2x2:NoC:R_2:W2L_fault \
-sim/:tb_network_2x2:NoC:R_2:S2L_fault
-
-add wave -noupdate -group {Turn Faults for R3} \
-sim/:tb_network_2x2:NoC:R_3:N2E_turn_fault \
-sim/:tb_network_2x2:NoC:R_3:N2W_turn_fault \
-sim/:tb_network_2x2:NoC:R_3:E2N_turn_fault \
-sim/:tb_network_2x2:NoC:R_3:E2S_turn_fault \
-sim/:tb_network_2x2:NoC:R_3:W2N_turn_fault \
-sim/:tb_network_2x2:NoC:R_3:W2S_turn_fault \
-sim/:tb_network_2x2:NoC:R_3:S2E_turn_fault \
-sim/:tb_network_2x2:NoC:R_3:S2W_turn_fault \
-sim/:tb_network_2x2:NoC:R_3:N2S_path_fault \
-sim/:tb_network_2x2:NoC:R_3:S2N_path_fault \
-sim/:tb_network_2x2:NoC:R_3:E2W_path_fault \
-sim/:tb_network_2x2:NoC:R_3:W2E_path_fault \
-sim/:tb_network_2x2:NoC:R_3:L2N_fault \
-sim/:tb_network_2x2:NoC:R_3:L2E_fault \
-sim/:tb_network_2x2:NoC:R_3:L2W_fault \
-sim/:tb_network_2x2:NoC:R_3:L2S_fault \
-sim/:tb_network_2x2:NoC:R_3:N2L_fault \
-sim/:tb_network_2x2:NoC:R_3:E2L_fault \
-sim/:tb_network_2x2:NoC:R_3:W2L_fault \
-sim/:tb_network_2x2:NoC:R_3:S2L_fault
-
-add wave -noupdate -group {CHK_CT:state}  \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_N2E_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_N2W_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_E2N_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_E2S_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_W2N_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_W2S_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_S2E_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_S2W_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_N2S_path_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_S2N_path_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_E2W_path_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_W2E_path_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_L2N_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_L2E_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_L2W_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_L2S_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_N2L_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_E2L_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_W2L_fault:state \
-sim/:tb_network_2x2:NoC:R_0:CHK_CT_S2L_fault:state \
-sim/:tb_network_2x2:clk \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_N2E_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_N2W_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_E2N_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_E2S_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_W2N_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_W2S_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_S2E_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_S2W_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_N2S_path_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_S2N_path_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_E2W_path_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_W2E_path_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_L2N_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_L2E_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_L2W_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_L2S_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_N2L_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_E2L_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_W2L_fault:state \
-sim/:tb_network_2x2:NoC:R_1:CHK_CT_S2L_fault:state \
-sim/:tb_network_2x2:clk \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_N2E_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_N2W_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_E2N_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_E2S_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_W2N_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_W2S_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_S2E_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_S2W_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_N2S_path_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_S2N_path_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_E2W_path_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_W2E_path_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_L2N_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_L2E_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_L2W_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_L2S_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_N2L_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_E2L_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_W2L_fault:state \
-sim/:tb_network_2x2:NoC:R_2:CHK_CT_S2L_fault:state \
-sim/:tb_network_2x2:clk \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_N2E_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_N2W_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_E2N_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_E2S_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_W2N_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_W2S_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_S2E_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_S2W_turn_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_N2S_path_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_S2N_path_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_E2W_path_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_W2E_path_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_L2N_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_L2E_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_L2W_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_L2S_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_N2L_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_E2L_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_W2L_fault:state \
-sim/:tb_network_2x2:NoC:R_3:CHK_CT_S2L_fault:state
-
+add wave -noupdate -group {Non-classified turn faults} -color green :tb_network_2x2:NoC:R_0:turn_faults_async
+add wave -noupdate -group {Non-classified turn faults} -color green :tb_network_2x2:NoC:R_1:turn_faults_async
+add wave -noupdate -group {Non-classified turn faults} -color green :tb_network_2x2:NoC:R_2:turn_faults_async
+add wave -noupdate -group {Non-classified turn faults} -color green :tb_network_2x2:NoC:R_3:turn_faults_async
+add wave -noupdate :tb_network_2x2:clk
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:N2E_turn_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:N2W_turn_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:E2N_turn_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:E2S_turn_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:W2N_turn_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:W2S_turn_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:S2E_turn_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:S2W_turn_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:N2S_path_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:S2N_path_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:E2W_path_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:W2E_path_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:L2N_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:L2E_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:L2W_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:L2S_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:N2L_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:E2L_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:W2L_fault
+add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC:R_0:S2L_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:N2E_turn_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:N2W_turn_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:E2N_turn_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:E2S_turn_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:W2N_turn_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:W2S_turn_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:S2E_turn_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:S2W_turn_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:N2S_path_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:S2N_path_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:E2W_path_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:W2E_path_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:L2N_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:L2E_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:L2W_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:L2S_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:N2L_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:E2L_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:W2L_fault
+add wave -noupdate -group {Turn Faults for R_1} -color green :tb_network_2x2:NoC:R_1:S2L_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:N2E_turn_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:N2W_turn_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:E2N_turn_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:E2S_turn_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:W2N_turn_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:W2S_turn_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:S2E_turn_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:S2W_turn_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:N2S_path_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:S2N_path_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:E2W_path_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:W2E_path_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:L2N_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:L2E_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:L2W_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:L2S_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:N2L_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:E2L_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:W2L_fault
+add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC:R_2:S2L_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:N2E_turn_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:N2W_turn_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:E2N_turn_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:E2S_turn_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:W2N_turn_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:W2S_turn_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:S2E_turn_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:S2W_turn_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:N2S_path_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:S2N_path_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:E2W_path_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:W2E_path_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:L2N_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:L2E_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:L2W_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:L2S_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:N2L_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:E2L_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:W2L_fault
+add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:S2L_fault
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_N2E_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_N2W_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_E2N_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_E2S_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_W2N_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_W2S_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_S2E_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_S2W_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_N2S_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_S2N_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_E2W_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_W2E_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_L2N_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_L2E_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_L2W_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_L2S_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_N2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_E2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_W2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_0:CHK_CT_S2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_N2E_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_N2W_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_E2N_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_E2S_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_W2N_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_W2S_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_S2E_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_S2W_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_N2S_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_S2N_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_E2W_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_W2E_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_L2N_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_L2E_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_L2W_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_L2S_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_N2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_E2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_W2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_1:CHK_CT_S2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_N2E_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_N2W_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_E2N_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_E2S_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_W2N_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_W2S_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_S2E_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_S2W_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_N2S_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_S2N_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_E2W_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_W2E_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_L2N_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_L2E_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_L2W_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_L2S_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_N2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_E2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_W2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_2:CHK_CT_S2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_N2E_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_N2W_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_E2N_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_E2S_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_W2N_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_W2S_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_S2E_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_S2W_turn_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_N2S_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_S2N_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_E2W_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_W2E_path_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_L2N_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_L2E_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_L2W_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_L2S_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_N2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_E2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_W2L_fault:state
+add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_S2L_fault:state
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors
 quietly wave cursor active 0
