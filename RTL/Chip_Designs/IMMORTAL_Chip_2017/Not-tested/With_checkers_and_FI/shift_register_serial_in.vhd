@@ -8,11 +8,11 @@ entity shift_register_serial_in is
         REG_WIDTH: integer := 32
     );
     port (
-        TCK, reset : in std_logic;
-        SE: in std_logic;
-        UE: in std_logic;
-        SI: in std_logic;
-        SO: out std_logic;
+        TCK, reset : in std_logic;  
+        SE: in std_logic;       -- shift enable 
+        UE: in std_logic;       -- update enable
+        SI: in std_logic;       -- serial Input
+        SO: out std_logic;      -- serial output
         data_out_parallel: out std_logic_vector(REG_WIDTH-1 downto 0)
     );
 end;
