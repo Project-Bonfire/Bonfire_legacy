@@ -847,11 +847,12 @@ component Arbiter_in is
 
             X_N, X_E, X_W, X_S, X_L: out std_logic; -- Grants given to LBDR requests (encoded as one-hot)
 
-            -- fault injector signals
-            shift: in std_logic;
-            fault_clk: in std_logic;
-            data_in_serial: in std_logic;
-            data_out_serial: out std_logic;
+            -- fault injector shift register with serial input signals
+            TCK: in std_logic;  
+            SE: in std_logic;       -- shift enable 
+            UE: in std_logic;       -- update enable
+            SI: in std_logic;       -- serial Input
+            SO: out std_logic;      -- serial output
 
             -- Checker outputs
             err_Requests_state_in_state_not_equal, 
@@ -941,11 +942,12 @@ component arbiter_out is
 
             grant_Y_N, grant_Y_E, grant_Y_W, grant_Y_S, grant_Y_L :out std_logic; -- Grants given to LBDR requests (encoded as one-hot)
 
-            -- fault injector signals
-            shift: in std_logic;
-            fault_clk: in std_logic;
-            data_in_serial: in std_logic;
-            data_out_serial: out std_logic;
+            -- fault injector shift register with serial input signals
+            TCK: in std_logic;  
+            SE: in std_logic;       -- shift enable 
+            UE: in std_logic;       -- update enable
+            SI: in std_logic;       -- serial Input
+            SO: out std_logic;      -- serial output
 
             -- Checker outputs
             err_Requests_state_in_state_not_equal, 
@@ -1708,8 +1710,7 @@ arb_N_X: Arbiter_in  PORT MAP (reset => reset, clk => clk,
 				       Req_X_N=>req_N_N, Req_X_E=> req_N_E, Req_X_W=>req_N_W, Req_X_S=>req_N_S, Req_X_L=>req_N_L,
                                X_N=>X_N_N, X_E=>X_N_E, X_W=>X_N_W, X_S=>X_N_S, X_L=>X_N_L, 
 
-                              shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_L_Arbiter_in_N_Arbiter_in, 
-                              data_out_serial=>fault_DO_serial_N_Arbiter_in_E_Arbiter_in,
+                              TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_L_Arbiter_in_N_Arbiter_in, SO=> fault_DO_serial_N_Arbiter_in_E_Arbiter_in,
                                       
                                -- North Arbiter_in Checker outputs
                               err_Requests_state_in_state_not_equal => N_err_Requests_state_in_state_not_equal,
@@ -1794,9 +1795,8 @@ arb_E_X: Arbiter_in  PORT MAP (reset => reset, clk => clk,
 				                       Req_X_N=>req_E_N, Req_X_E=> req_E_E, Req_X_W=>req_E_W, Req_X_S=>req_E_S, Req_X_L=>req_E_L,
                                X_N=>X_E_N, X_E=>X_E_E, X_W=>X_E_W, X_S=>X_E_S, X_L=>X_E_L, 
 
-                              shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_N_Arbiter_in_E_Arbiter_in, 
-                              data_out_serial=>fault_DO_serial_E_Arbiter_in_W_Arbiter_in,
-                                      
+                              TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_N_Arbiter_in_E_Arbiter_in, SO=> fault_DO_serial_E_Arbiter_in_W_Arbiter_in,
+
                                -- East Arbiter_in Checker outputs
                               err_Requests_state_in_state_not_equal => E_err_Requests_state_in_state_not_equal,
             
@@ -1880,8 +1880,7 @@ arb_W_X: Arbiter_in  PORT MAP (reset => reset, clk => clk,
                                Req_X_N=>req_W_N, Req_X_E=> req_W_E, Req_X_W=>req_W_W, Req_X_S=>req_W_S, Req_X_L=>req_W_L,
                                X_N=>X_W_N, X_E=>X_W_E, X_W=>X_W_W, X_S=>X_W_S, X_L=>X_W_L, 
 
-                              shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_E_Arbiter_in_W_Arbiter_in, 
-                              data_out_serial=>fault_DO_serial_W_Arbiter_in_S_Arbiter_in,
+                              TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_E_Arbiter_in_W_Arbiter_in, SO=> fault_DO_serial_W_Arbiter_in_S_Arbiter_in,
                                       
                                -- West Arbiter_in Checker outputs
                               err_Requests_state_in_state_not_equal => W_err_Requests_state_in_state_not_equal,
@@ -1966,8 +1965,7 @@ arb_S_X: Arbiter_in  PORT MAP (reset => reset, clk => clk,
                                Req_X_N=>req_S_N, Req_X_E=> req_S_E, Req_X_W=>req_S_W, Req_X_S=>req_S_S, Req_X_L=>req_S_L,
                                X_N=>X_S_N, X_E=>X_S_E, X_W=>X_S_W, X_S=>X_S_S, X_L=>X_S_L, 
 
-                              shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_W_Arbiter_in_S_Arbiter_in, 
-                              data_out_serial=>fault_DO_serial_S_Arbiter_in_L_Arbiter_out,
+                              TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_W_Arbiter_in_S_Arbiter_in, SO=> fault_DO_serial_S_Arbiter_in_L_Arbiter_out,
 
                                -- South Arbiter_in Checker outputs
                               err_Requests_state_in_state_not_equal => S_err_Requests_state_in_state_not_equal,
@@ -2052,7 +2050,7 @@ arb_L_X: Arbiter_in  PORT MAP (reset => reset, clk => clk,
                                Req_X_N=>req_L_N, Req_X_E=> req_L_E, Req_X_W=>req_L_W, Req_X_S=>req_L_S, Req_X_L=>req_L_L,
                                X_N=>X_L_N, X_E=>X_L_E, X_W=>X_L_W, X_S=>X_L_S, X_L=>X_L_L, 
 
-                              shift=>shift, fault_clk=>fault_clk, data_in_serial=> data_in_serial, data_out_serial=>fault_DO_serial_L_Arbiter_in_N_Arbiter_in,
+                              TCK=> TCK, SE=> SE, UE=> UE, SI=> SI, SO=> fault_DO_serial_L_Arbiter_in_N_Arbiter_in,
 
                                -- Local Arbiter_in Checker outputs
                               err_Requests_state_in_state_not_equal => L_err_Requests_state_in_state_not_equal,
@@ -2150,8 +2148,7 @@ arb_X_N: arbiter_out port map (reset => reset, clk => clk,
                                grant_Y_S => grant_N_S_sig, 
                                grant_Y_L => grant_N_L_sig, 
 
-                               shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_L_Arbiter_out_N_Arbiter_out, 
-                               data_out_serial=>fault_DO_serial_N_Arbiter_out_E_Arbiter_out,
+                               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_L_Arbiter_out_N_Arbiter_out, SO=> fault_DO_serial_N_Arbiter_out_E_Arbiter_out,
 
                                -- Checker outputs
                                err_Requests_state_in_state_not_equal => N_arbiter_out_err_Requests_state_in_state_not_equal, 
@@ -2226,8 +2223,7 @@ arb_X_E: arbiter_out port map (reset => reset, clk => clk,
                                grant_Y_S => grant_E_S_sig, 
                                grant_Y_L => grant_E_L_sig, 
 
-                               shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_N_Arbiter_out_E_Arbiter_out, 
-                               data_out_serial=>fault_DO_serial_E_Arbiter_out_W_Arbiter_out,
+                               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_N_Arbiter_out_E_Arbiter_out, SO=> fault_DO_serial_E_Arbiter_out_W_Arbiter_out,
 
                                -- Checker outputs
                                err_Requests_state_in_state_not_equal => E_arbiter_out_err_Requests_state_in_state_not_equal, 
@@ -2302,8 +2298,7 @@ arb_X_W: arbiter_out port map (reset => reset, clk => clk,
                                grant_Y_S => grant_W_S_sig, 
                                grant_Y_L => grant_W_L_sig, 
 
-                               shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_E_Arbiter_out_W_Arbiter_out, 
-                               data_out_serial=>fault_DO_serial_W_Arbiter_out_S_Arbiter_out,
+                               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_E_Arbiter_out_W_Arbiter_out, SO=> fault_DO_serial_W_Arbiter_out_S_Arbiter_out,
 
                                -- Checker outputs
                                err_Requests_state_in_state_not_equal => W_arbiter_out_err_Requests_state_in_state_not_equal, 
@@ -2378,8 +2373,7 @@ arb_X_S: arbiter_out port map (reset => reset, clk => clk,
                                grant_Y_S => grant_S_S_sig, 
                                grant_Y_L => grant_S_L_sig,
 
-                               shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_W_Arbiter_out_S_Arbiter_out, 
-                               data_out_serial=>data_out_serial,
+                               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_W_Arbiter_out_S_Arbiter_out, SO=> SO,
 
                                -- Checker outputs
                                err_Requests_state_in_state_not_equal => S_arbiter_out_err_Requests_state_in_state_not_equal, 
@@ -2454,8 +2448,7 @@ arb_X_L: arbiter_out port map (reset => reset, clk => clk,
                                grant_Y_S => grant_L_S_sig, 
                                grant_Y_L => grant_L_L_sig,
 
-                               shift=>shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_S_Arbiter_in_L_Arbiter_out, 
-                               data_out_serial=>fault_DO_serial_L_Arbiter_out_N_Arbiter_out,
+                               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_S_Arbiter_in_L_Arbiter_out, SO=> fault_DO_serial_L_Arbiter_out_N_Arbiter_out,
 
                                -- Checker outputs
                                err_Requests_state_in_state_not_equal => L_arbiter_out_err_Requests_state_in_state_not_equal, 

@@ -104,11 +104,12 @@ COMPONENT router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropp
     Cx_reconf_PE: in  std_logic_vector(3 downto 0);
     Reconfig_command : in std_logic;
 
-    -- fault injector signals
-    fault_shift: in std_logic;
-    fault_clk: in std_logic;
-    fault_data_in_serial: in std_logic;
-    fault_data_out_serial: out std_logic;
+    -- fault injector shift register with serial input signals
+    TCK: in std_logic;  
+    SE: in std_logic;       -- shift enable 
+    UE: in std_logic;       -- update enable
+    SI: in std_logic;       -- serial Input
+    SO: out std_logic;      -- serial output
 
     ---- Outputs for non-classified fault information
     link_faults_async: out std_logic_vector(4 downto 0);
@@ -157,28 +158,32 @@ end COMPONENT;
 	signal Faulty_N_in3,Faulty_E_in3,Faulty_W_in3,Faulty_S_in3: std_logic;
 
     -- fault injector signals
-    signal fault_shift_0: std_logic := '0';
-    signal fault_clk_0: std_logic:= '0';
-    signal fault_data_in_serial_0: std_logic:= '0';
-    signal fault_data_out_serial_0: std_logic;
+    signal TCK_0: std_logic:= '0';
+    signal SE_0:  std_logic:= '0';
+    signal UE_0:  std_logic:= '0';
+    signal SI_0:  std_logic:= '0';
+    signal SO_0:  std_logic;
 
     --------------
-    signal fault_shift_1: std_logic:= '0';
-    signal fault_clk_1: std_logic:= '0';
-    signal fault_data_in_serial_1: std_logic:= '0';
-    signal fault_data_out_serial_1: std_logic;
+    signal TCK_1: std_logic:= '0';
+    signal SE_1:  std_logic:= '0';
+    signal UE_1:  std_logic:= '0';    
+    signal SI_1:  std_logic:= '0';
+    signal SO_1:  std_logic;
 
     --------------
-    signal fault_shift_2: std_logic:= '0';
-    signal fault_clk_2: std_logic:= '0';
-    signal fault_data_in_serial_2: std_logic:= '0';
-    signal fault_data_out_serial_2: std_logic;
+    signal TCK_2: std_logic:= '0';
+    signal SE_2:  std_logic:= '0';
+    signal UE_2:  std_logic:= '0';    
+    signal SI_2:  std_logic:= '0';
+    signal SO_2:  std_logic;
 
     --------------
-    signal fault_shift_3: std_logic:= '0';
-    signal fault_clk_3: std_logic:= '0';
-    signal fault_data_in_serial_3: std_logic:= '0';
-    signal fault_data_out_serial_3: std_logic;
+    signal TCK_3: std_logic:= '0';
+    signal SE_3:  std_logic:= '0';
+    signal UE_3:  std_logic:= '0';    
+    signal SI_3:  std_logic:= '0';
+    signal SO_3:  std_logic;
 
     --------------
 
@@ -228,8 +233,8 @@ R_0: router_credit_based_PD_C_SHMU
 	-- should be connected to NI
 	link_faults_0, turn_faults_0,
 	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0, 
-	-- fault injector signals
-	fault_shift_0, fault_clk_0, fault_data_in_serial_0, fault_data_out_serial_0, 
+	-- fault injector shift register with serial input signals
+	TCK_0, SE_0, UE_0, SI_0, SO_0, 
     -- the non-classified fault information
     link_faults_async_0, turn_faults_async_0
  ); 
@@ -250,8 +255,8 @@ R_1: router_credit_based_PD_C_SHMU
 	-- should be connected to NI
 	link_faults_1, turn_faults_1,
 	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1, 
-	-- fault injector signals
-	fault_shift_1, fault_clk_1, fault_data_in_serial_1, fault_data_out_serial_1, 
+    -- fault injector shift register with serial input signals
+    TCK_1, SE_1, UE_1, SI_1, SO_1, 
     -- the non-classified fault information
     link_faults_async_1, turn_faults_async_1
  ); 
@@ -271,8 +276,8 @@ R_2: router_credit_based_PD_C_SHMU
 	-- should be connected to NI
 	link_faults_2, turn_faults_2,
 	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2, 
-	-- fault injector signals
-	fault_shift_2, fault_clk_2, fault_data_in_serial_2, fault_data_out_serial_2, 
+    -- fault injector shift register with serial input signals
+    TCK_2, SE_2, UE_2, SI_2, SO_2, 
     -- the non-classified fault information
     link_faults_async_2, turn_faults_async_2
  ); 
@@ -292,8 +297,8 @@ R_3: router_credit_based_PD_C_SHMU
 	-- should be connected to NI
 	link_faults_3, turn_faults_3,
 	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3, 
-	-- fault injector signals
-	fault_shift_3, fault_clk_3, fault_data_in_serial_3, fault_data_out_serial_3, 
+    -- fault injector shift register with serial input signals
+    TCK_3, SE_3, UE_3, SI_3, SO_3, 
     -- the non-classified fault information
     link_faults_async_3, turn_faults_async_3
  ); 
