@@ -31,11 +31,12 @@ entity LBDR_packet_drop is
             Cx_reconf_PE: in  std_logic_vector(3 downto 0);
             Reconfig_command : in std_logic; 
 
-            -- fault injector signals
-            shift: in std_logic;
-            fault_clk: in std_logic;
-            data_in_serial: in std_logic;
-            data_out_serial: out std_logic;
+            -- fault injector shift register with serial input signals
+            TCK: in std_logic;  
+            SE: in std_logic;       -- shift enable 
+            UE: in std_logic;       -- update enable
+            SI: in std_logic;       -- serial Input
+            SO: out std_logic;      -- serial output
 
             -- Checker outputs
             -- Routing part checkers            
@@ -221,14 +222,15 @@ end component;
 
 component shift_register_serial_in is
     generic (
-        REG_WIDTH: integer := 35
+        REG_WIDTH: integer := 32
     );
     port (
-        clk, reset : in std_logic;
-        shift: in std_logic;
-        data_in_serial: in std_logic;
-        data_out_parallel: out std_logic_vector(REG_WIDTH-1 downto 0);
-        data_out_serial: out std_logic
+        TCK, reset : in std_logic;  
+        SE: in std_logic;       -- shift enable 
+        UE: in std_logic;       -- update enable
+        SI: in std_logic;       -- serial Input
+        SO: out std_logic;      -- serial output
+        data_out_parallel: out std_logic_vector(REG_WIDTH-1 downto 0)
     );
 end component;
 
@@ -340,8 +342,7 @@ packet_drop_order_sig_faulty      <= faulty_signals (0);
 
 -- Total: 9 bits
 SR: shift_register_serial_in generic map(REG_WIDTH => 9)
-          port map ( clk=> fault_clk, reset=>reset, shift=> shift,data_in_serial=> data_in_serial, 
-                     data_out_parallel=> FI_add_sta, data_out_serial=> data_out_serial
+          port map ( TCK=> TCK, reset=>reset, SE=> SE, UE=> UE, SI=> SI, SO=> SO, data_out_parallel=> FI_add_sta
                    );
 
 -------------------------------------      

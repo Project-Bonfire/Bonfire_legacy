@@ -38,11 +38,12 @@ entity router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping
     Cx_reconf_PE: in  std_logic_vector(3 downto 0);
     Reconfig_command : in std_logic;
 
-    -- fault injector signals
-    fault_shift: in std_logic;
-    fault_clk: in std_logic;
-    fault_data_in_serial: in std_logic;
-    fault_data_out_serial: out std_logic;
+    -- fault injector shift register with serial input signals
+    TCK: in std_logic;  
+    SE: in std_logic;       -- shift enable 
+    UE: in std_logic;       -- update enable
+    SI: in std_logic;       -- serial Input
+    SO: out std_logic;      -- serial output
 
     ---- Outputs for non-classified fault information
     link_faults_async: out std_logic_vector(4 downto 0);
@@ -72,11 +73,12 @@ architecture behavior of router_credit_based_PD_C_SHMU is
 
                 fault_info, health_info: out  std_logic;
 
-                -- fault injector signals
-                shift: in std_logic;
-                fault_clk: in std_logic;
-                data_in_serial: in std_logic;
-                data_out_serial: out std_logic;
+                -- fault injector shift register with serial input signals
+                TCK: in std_logic;  
+                SE: in std_logic;       -- shift enable 
+                UE: in std_logic;       -- update enable
+                SI: in std_logic;       -- serial Input
+                SO: out std_logic;      -- serial output
 
                 -- Checker outputs
                 -- Functional checkers
@@ -254,11 +256,12 @@ COMPONENT allocator is
             grant_S_N, grant_S_E, grant_S_W, grant_S_S, grant_S_L: out std_logic;
             grant_L_N, grant_L_E, grant_L_W, grant_L_S, grant_L_L: out std_logic;
 
-            ---- fault injector signals
-            shift: in std_logic;
-            fault_clk: in std_logic;
-            data_in_serial: in std_logic;
-            data_out_serial: out std_logic;
+            -- fault injector shift register with serial input signals
+            TCK: in std_logic;  
+            SE: in std_logic;       -- shift enable 
+            UE: in std_logic;       -- update enable
+            SI: in std_logic;       -- serial Input
+            SO: out std_logic;      -- serial output
 
             -- Allocator logic checker outputs
             err_grant_N_N_sig_not_empty_N_grant_N_N, 
@@ -723,11 +726,12 @@ COMPONENT LBDR_packet_drop is
             Cx_reconf_PE: in  std_logic_vector(3 downto 0);
             Reconfig_command : in std_logic; 
 
-            -- fault injector signals
-            shift: in std_logic;
-            fault_clk: in std_logic;
-            data_in_serial: in std_logic;
-            data_out_serial: out std_logic;
+            -- fault injector shift register with serial input signals
+            TCK: in std_logic;  
+            SE: in std_logic;       -- shift enable 
+            UE: in std_logic;       -- update enable
+            SI: in std_logic;       -- serial Input
+            SO: out std_logic;      -- serial output
 
             -- Checker outputs
             -- Routing part checkers            
@@ -799,19 +803,6 @@ end COMPONENT;
         Data_out: out std_logic_vector(DATA_WIDTH-1 downto 0)
     );
     end COMPONENT;
-
-  --COMPONENT shift_register is
-  --  generic (
-  --      REG_WIDTH: integer := 8 -- ?!
-  --  );
-  --  port (
-  --      clk, reset : in std_logic;
-  --      shift: in std_logic;
-  --      data_in: in std_logic_vector(REG_WIDTH-1 downto 0);
-  --      data_out_parallel: in std_logic_vector(REG_WIDTH-1 downto 0);
-  --      data_out_serial: out std_logic
-  --  );
-  --end COMPONENT;
 
     -------------------------------
     -- Added because of Checkers --
@@ -6187,10 +6178,10 @@ CHK_CT_S2L_fault:   checkers_counter_threshold_classifier  generic map(counter_d
 FIFO_N: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_N, valid_in => valid_in_N,  
-            read_en_N => packet_drop_order_N, read_en_E =>Grant_EN, read_en_W =>Grant_WN, read_en_S =>Grant_SN, read_en_L =>Grant_LN, 
-            credit_out => credit_out_N, empty_out => empty_N, Data_out => FIFO_D_out_N, fault_info=> faulty_packet_N, health_info=>healthy_packet_N, 
+               read_en_N => packet_drop_order_N, read_en_E =>Grant_EN, read_en_W =>Grant_WN, read_en_S =>Grant_SN, read_en_L =>Grant_LN, 
+               credit_out => credit_out_N, empty_out => empty_N, Data_out => FIFO_D_out_N, fault_info=> faulty_packet_N, health_info=>healthy_packet_N, 
 
-               shift=>fault_shift, fault_clk=>fault_clk, data_in_serial=> fault_DO_serial_L_FIFO_to_N_FIFO, data_out_serial=>fault_DO_serial_N_FIFO_to_E_FIFO,
+               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_L_FIFO_to_N_FIFO, SO=> fault_DO_serial_N_FIFO_to_E_FIFO,
 
                -- Checker outputs
                -- Functional checkers
@@ -6321,10 +6312,10 @@ FIFO_N: FIFO_credit_based
 FIFO_E: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_E, valid_in => valid_in_E,  
-            read_en_N => Grant_NE, read_en_E =>packet_drop_order_E, read_en_W =>Grant_WE, read_en_S =>Grant_SE, read_en_L =>Grant_LE, 
-            credit_out => credit_out_E, empty_out => empty_E, Data_out => FIFO_D_out_E, fault_info=> faulty_packet_E, health_info=>healthy_packet_E, 
+               read_en_N => Grant_NE, read_en_E =>packet_drop_order_E, read_en_W =>Grant_WE, read_en_S =>Grant_SE, read_en_L =>Grant_LE, 
+               credit_out => credit_out_E, empty_out => empty_E, Data_out => FIFO_D_out_E, fault_info=> faulty_packet_E, health_info=>healthy_packet_E, 
 
-               shift=>fault_shift, fault_clk=>fault_clk, data_in_serial => fault_DO_serial_N_FIFO_to_E_FIFO, data_out_serial => fault_DO_serial_E_FIFO_to_W_FIFO,
+               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_N_FIFO_to_E_FIFO, SO=> fault_DO_serial_E_FIFO_to_W_FIFO,
 
                -- Checker outputs
                -- Functional checkers
@@ -6455,10 +6446,10 @@ FIFO_E: FIFO_credit_based
 FIFO_W: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_W, valid_in => valid_in_W,  
-            read_en_N => Grant_NW, read_en_E =>Grant_EW, read_en_W =>packet_drop_order_W, read_en_S =>Grant_SW, read_en_L =>Grant_LW, 
-            credit_out => credit_out_W, empty_out => empty_W, Data_out => FIFO_D_out_W, fault_info=> faulty_packet_W, health_info=>healthy_packet_W, 
+               read_en_N => Grant_NW, read_en_E =>Grant_EW, read_en_W =>packet_drop_order_W, read_en_S =>Grant_SW, read_en_L =>Grant_LW, 
+               credit_out => credit_out_W, empty_out => empty_W, Data_out => FIFO_D_out_W, fault_info=> faulty_packet_W, health_info=>healthy_packet_W, 
 
-               shift=>fault_shift, fault_clk=>fault_clk, data_in_serial => fault_DO_serial_E_FIFO_to_W_FIFO, data_out_serial => fault_DO_serial_W_FIFO_to_S_FIFO,
+               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_E_FIFO_to_W_FIFO, SO=> fault_DO_serial_W_FIFO_to_S_FIFO,
 
                -- Checker outputs
                -- Functional checkers
@@ -6590,10 +6581,10 @@ FIFO_W: FIFO_credit_based
 FIFO_S: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_S, valid_in => valid_in_S,  
-            read_en_N => Grant_NS, read_en_E =>Grant_ES, read_en_W =>Grant_WS, read_en_S =>packet_drop_order_S, read_en_L =>Grant_LS,  
-            credit_out => credit_out_S, empty_out => empty_S, Data_out => FIFO_D_out_S, fault_info=> faulty_packet_S, health_info=>healthy_packet_S, 
+               read_en_N => Grant_NS, read_en_E =>Grant_ES, read_en_W =>Grant_WS, read_en_S =>packet_drop_order_S, read_en_L =>Grant_LS,  
+               credit_out => credit_out_S, empty_out => empty_S, Data_out => FIFO_D_out_S, fault_info=> faulty_packet_S, health_info=>healthy_packet_S, 
 
-               shift=>fault_shift, fault_clk=>fault_clk, data_in_serial => fault_DO_serial_W_FIFO_to_S_FIFO, data_out_serial => fault_DO_serial_S_FIFO_to_L_LBDR,
+               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_W_FIFO_to_S_FIFO, SO=> fault_DO_serial_S_FIFO_to_L_LBDR,
 
                -- Checker outputs
                -- Functional checkers
@@ -6725,10 +6716,10 @@ FIFO_S: FIFO_credit_based
 FIFO_L: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_L, valid_in => valid_in_L,  
-            read_en_N => Grant_NL, read_en_E =>Grant_EL, read_en_W =>Grant_WL, read_en_S => Grant_SL, read_en_L =>packet_drop_order_L,
-            credit_out => credit_out_L, empty_out => empty_L, Data_out => FIFO_D_out_L, fault_info=> faulty_packet_L, health_info=>healthy_packet_L, 
+               read_en_N => Grant_NL, read_en_E =>Grant_EL, read_en_W =>Grant_WL, read_en_S => Grant_SL, read_en_L =>packet_drop_order_L,
+               credit_out => credit_out_L, empty_out => empty_L, Data_out => FIFO_D_out_L, fault_info=> faulty_packet_L, health_info=>healthy_packet_L, 
 
-               shift=>fault_shift, fault_clk=>fault_clk, data_in_serial=> fault_data_in_serial, data_out_serial=>fault_DO_serial_L_FIFO_to_N_FIFO,
+               TCK=> TCK, SE=> SE, UE=> UE, SI=> SI, SO=> fault_DO_serial_L_FIFO_to_N_FIFO,
 
                -- Checker outputs
                -- Functional checkers
@@ -6882,7 +6873,7 @@ LBDR_N: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Req_N=> Req_NN, Req_E=>Req_NE, Req_W=>Req_NW, Req_S=>Req_NS, Req_L=>Req_NL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
 
-             shift=>fault_shift, fault_clk=>fault_clk, data_in_serial => fault_DO_serial_L_LBDR_to_N_LBDR, data_out_serial => fault_DO_serial_N_LBDR_to_E_LBDR,
+             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_L_LBDR_to_N_LBDR, SO=> fault_DO_serial_N_LBDR_to_E_LBDR,
 
              -- Checker outputs
             err_header_empty_Requests_FF_Requests_in => N_err_header_empty_Requests_FF_Requests_in, 
@@ -6945,7 +6936,7 @@ LBDR_E: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Req_N=> Req_EN, Req_E=>Req_EE, Req_W=>Req_EW, Req_S=>Req_ES, Req_L=>Req_EL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
 
-             shift=>fault_shift, fault_clk=>fault_clk, data_in_serial => fault_DO_serial_N_LBDR_to_E_LBDR, data_out_serial => fault_DO_serial_E_LBDR_to_W_LBDR,
+             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_N_LBDR_to_E_LBDR, SO=> fault_DO_serial_E_LBDR_to_W_LBDR,
 
              -- Checker outputs
             err_header_empty_Requests_FF_Requests_in => E_err_header_empty_Requests_FF_Requests_in, 
@@ -7008,7 +6999,7 @@ LBDR_W: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Req_N=> Req_WN, Req_E=>Req_WE, Req_W=>Req_WW, Req_S=>Req_WS, Req_L=>Req_WL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
 
-             shift=>fault_shift, fault_clk=>fault_clk, data_in_serial => fault_DO_serial_E_LBDR_to_W_LBDR, data_out_serial => fault_DO_serial_W_LBDR_to_S_LBDR,
+             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_E_LBDR_to_W_LBDR, SO=> fault_DO_serial_W_LBDR_to_S_LBDR,
 
              -- Checker outputs
             err_header_empty_Requests_FF_Requests_in => W_err_header_empty_Requests_FF_Requests_in, 
@@ -7071,7 +7062,7 @@ LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Req_N=> Req_SN, Req_E=>Req_SE, Req_W=>Req_SW, Req_S=>Req_SS, Req_L=>Req_SL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
 
-             shift=>fault_shift, fault_clk=>fault_clk, data_in_serial => fault_DO_serial_W_LBDR_to_S_LBDR, data_out_serial => fault_DO_serial_S_LBDR_to_Allocator,
+             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_W_LBDR_to_S_LBDR, SO=> fault_DO_serial_S_LBDR_to_Allocator,
 
              -- Checker outputs
             err_header_empty_Requests_FF_Requests_in => S_err_header_empty_Requests_FF_Requests_in, 
@@ -7134,7 +7125,7 @@ LBDR_L: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Req_N=> Req_LN, Req_E=>Req_LE, Req_W=>Req_LW, Req_S=>Req_LS, Req_L=>Req_LL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
 
-             shift=>fault_shift, fault_clk=>fault_clk, data_in_serial => fault_DO_serial_S_FIFO_to_L_LBDR, data_out_serial => fault_DO_serial_L_LBDR_to_N_LBDR,
+             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_S_FIFO_to_L_LBDR, SO=> fault_DO_serial_L_LBDR_to_N_LBDR,
 
              -- Checker outputs
             err_header_empty_Requests_FF_Requests_in => L_err_header_empty_Requests_FF_Requests_in, 
@@ -7214,7 +7205,7 @@ allocator_unit: allocator port map ( reset => reset, clk => clk,
             grant_S_N => Grant_SN, grant_S_E => Grant_SE, grant_S_W => Grant_SW, grant_S_S => Grant_SS, grant_S_L => Grant_SL,
             grant_L_N => Grant_LN, grant_L_E => Grant_LE, grant_L_W => Grant_LW, grant_L_S => Grant_LS, grant_L_L => Grant_LL, 
 
-            shift=>fault_shift, fault_clk=>fault_clk, data_in_serial => fault_DO_serial_S_LBDR_to_Allocator, data_out_serial => fault_data_out_serial,
+            TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_S_LBDR_to_Allocator, SO=> SO,
 
             -- Checker outputs
             -- Allocator logic checker outputs

@@ -28,11 +28,12 @@ entity allocator is
            	grant_S_N, grant_S_E, grant_S_W, grant_S_S, grant_S_L: out std_logic;
            	grant_L_N, grant_L_E, grant_L_W, grant_L_S, grant_L_L: out std_logic;
 
-            -- fault injector signals
-            shift: in std_logic;
-            fault_clk: in std_logic;
-            data_in_serial: in std_logic;
-            data_out_serial: out std_logic;
+            -- fault injector shift register with serial input signals
+            TCK: in std_logic;  
+            SE: in std_logic;       -- shift enable 
+            UE: in std_logic;       -- update enable
+            SI: in std_logic;       -- serial Input
+            SO: out std_logic;      -- serial output
 
             -- Allocator logic checker outputs
             err_grant_N_N_sig_not_empty_N_grant_N_N, 
