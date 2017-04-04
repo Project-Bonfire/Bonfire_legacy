@@ -375,8 +375,8 @@ begin  --architecture
  
 
 u4_ni: NI  
-     generic(current_address =>  current_address)
-     port(clk               => clk,
+     generic map(current_address =>  current_address)
+     port map (clk               => clk,
           reset             => reset,
           enable            => ram_enable,
           write_byte_enable => ram_byte_we,
