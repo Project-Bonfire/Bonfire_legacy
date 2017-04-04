@@ -405,29 +405,50 @@ package mlite_pack is
            data_read         : out std_logic_vector(31 downto 0));
    end component; --ram
    
-   component NI
+
+  component NI  
      generic(current_address : integer := 10;   -- the current node's address
-         reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
-         flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";  -- reserved address for the memory mapped I/O
-         counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001");  -- reserved address for the counter
-      port(clk               : in std_logic;
-           reset            : in std_logic;
-           enable            : in std_logic;
-           write_byte_enable : in std_logic_vector(3 downto 0);
-           address           : in std_logic_vector(31 downto 2);
-           data_write        : in std_logic_vector(31 downto 0);
-           data_read         : out std_logic_vector(31 downto 0);
-           --NI_read_flag      : out  std_logic;
-           --NI_write_flag      : out  std_logic;
-           irq_out           : out std_logic;
-           credit_in : in std_logic;
-           valid_out: out std_logic;
-           TX: out std_logic_vector(31 downto 0);
-           credit_out : out std_logic;
-           valid_in: in std_logic;
-           RX: in std_logic_vector(31 downto 0)
-        );
-   end component; --network interface
+             SHMU_address : integer := 0;
+             reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111"; -- Behrad: NI's reserved address ?
+             flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";  -- reserved address for the memory mapped I/O
+             counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001";
+             reconfiguration_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000010";  -- reserved address for reconfiguration register
+             self_diagnosis_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000011"); -- reserved address for self diagnosis register
+     port(clk               : in std_logic;
+          reset             : in std_logic;
+          enable            : in std_logic;
+          write_byte_enable : in std_logic_vector(3 downto 0);
+          address           : in std_logic_vector(31 downto 2);
+          data_write        : in std_logic_vector(31 downto 0);
+          data_read         : out std_logic_vector(31 downto 0);
+  
+          -- Flags used by JNIFR and JNIFW instructions
+          --NI_read_flag      : out  std_logic;   -- One if the N2P fifo is empty. No read should be performed if one.
+          --NI_write_flag      : out  std_logic;  -- One if P2N fifo is full. no write should be performed if one.
+  
+          -- interrupt signal: generated evertime a packet is recieved!
+          irq_out           : out std_logic;
+  
+          -- signals for sending packets to network
+          credit_in : in std_logic;
+          valid_out: out std_logic;
+          TX: out std_logic_vector(31 downto 0);  -- data sent to the NoC
+  
+          -- signals for reciving packets from the network
+          credit_out : out std_logic;
+          valid_in: in std_logic;
+          RX: in std_logic_vector(31 downto 0); -- data recieved form the NoC
+  
+          -- fault information signals from the router
+          link_faults: in std_logic_vector(4 downto 0);
+          turn_faults: in std_logic_vector(19 downto 0);
+  
+          Rxy_reconf_PE: out  std_logic_vector(7 downto 0);   
+          Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
+          Reconfig_command : out std_logic
+    );
+  end component; --entity NI
+
 
    component uart
       generic(log_file : string := "UNUSED");
@@ -499,7 +520,15 @@ package mlite_pack is
    
            credit_out : out std_logic;
            valid_in: in std_logic;
-           RX: in std_logic_vector(31 downto 0)
+           RX: in std_logic_vector(31 downto 0);
+
+           link_faults: in std_logic_vector(4 downto 0);
+           turn_faults: in std_logic_vector(19 downto 0);
+     
+           Rxy_reconf_PE: out  std_logic_vector(7 downto 0);   
+           Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
+           Reconfig_command : out std_logic
+
            );
    end component; --plasma
 
