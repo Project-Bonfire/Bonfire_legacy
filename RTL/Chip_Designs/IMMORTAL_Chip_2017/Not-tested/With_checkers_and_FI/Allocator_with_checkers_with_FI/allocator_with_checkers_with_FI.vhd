@@ -723,7 +723,7 @@ grant_L_L_signal_faulty              <= faulty_signals (0);
 
 -- Total: 9 bits
 SR: shift_register_serial_in generic map(REG_WIDTH => 9) -- What about Arbiter_in and Arbiter_out ?!
-          port map ( TCK=> fault_clk, reset=>reset, SE=> SE, SI=> fault_DO_serial_S_Arbiter_out_Allocator_logic, 
+          port map ( TCK=> TCK, reset=>reset, SE=> SE, UE => UE, SI=> fault_DO_serial_S_Arbiter_out_Allocator_logic, 
                      data_out_parallel=> FI_add_sta, SO=> SO
                    );
 -------------------------------------      
