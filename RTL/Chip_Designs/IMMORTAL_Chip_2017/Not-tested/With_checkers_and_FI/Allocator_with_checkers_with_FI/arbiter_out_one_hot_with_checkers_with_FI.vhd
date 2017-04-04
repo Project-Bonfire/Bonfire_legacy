@@ -39,44 +39,15 @@ entity arbiter_out is
             err_Local_credit_not_zero_req_X_L_grant_L, 
             err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
 
-            err_IDLE_req_X_E, 
-            err_North_req_X_E, 
-            err_East_req_X_W, 
-            err_West_req_X_S, 
-            err_South_req_X_L, 
-            err_Local_req_X_N, 
+            err_IDLE_req_X_E, err_North_req_X_E, err_East_req_X_W, err_West_req_X_S, err_South_req_X_L, err_Local_req_X_N, 
+            err_IDLE_req_X_W, err_North_req_X_W, err_East_req_X_S, err_West_req_X_L, err_South_req_X_N, err_Local_req_X_E, 
+            err_IDLE_req_X_S, err_North_req_X_S, err_East_req_X_L, err_West_req_X_N, err_South_req_X_E, err_Local_req_X_W, 
+            err_IDLE_req_X_L, err_North_req_X_L, err_East_req_X_N, err_West_req_X_E, err_South_req_X_W, err_Local_req_X_S, 
        
-            err_IDLE_req_X_W, 
-            err_North_req_X_W, 
-            err_East_req_X_S, 
-            err_West_req_X_L, 
-            err_South_req_X_N, 
-            err_Local_req_X_E, 
-       
-            err_IDLE_req_X_S, 
-            err_North_req_X_S, 
-            err_East_req_X_L, 
-            err_West_req_X_N, 
-            err_South_req_X_E, 
-            err_Local_req_X_W, 
-       
-            err_IDLE_req_X_L, 
-            err_North_req_X_L, 
-            err_East_req_X_N, 
-            err_West_req_X_E, 
-            err_South_req_X_W, 
-            err_Local_req_X_S, 
-       
-            err_state_in_onehot, 
-            err_no_request_grants, 
-            err_request_IDLE_state, 
+            err_state_in_onehot, err_no_request_grants, err_request_IDLE_state, 
 
-            err_request_IDLE_not_Grants, 
-            err_state_North_Invalid_Grant, 
-            err_state_East_Invalid_Grant, 
-            err_state_West_Invalid_Grant, 
-            err_state_South_Invalid_Grant, 
-            err_state_Local_Invalid_Grant, 
+            err_request_IDLE_not_Grants, err_state_North_Invalid_Grant, err_state_East_Invalid_Grant, 
+            err_state_West_Invalid_Grant, err_state_South_Invalid_Grant, err_state_Local_Invalid_Grant, 
             err_Grants_onehot_or_all_zero : out std_logic             
             );
 end;
@@ -111,44 +82,15 @@ component Arbiter_out_one_hot_pseudo_checkers is
             err_Local_credit_not_zero_req_X_L_grant_L, 
             err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
 
-            err_IDLE_req_X_E, 
-            err_North_req_X_E, 
-            err_East_req_X_W, 
-            err_West_req_X_S, 
-            err_South_req_X_L, 
-            err_Local_req_X_N, 
+            err_IDLE_req_X_E, err_North_req_X_E, err_East_req_X_W, err_West_req_X_S, err_South_req_X_L, err_Local_req_X_N, 
+            err_IDLE_req_X_W, err_North_req_X_W, err_East_req_X_S, err_West_req_X_L, err_South_req_X_N, err_Local_req_X_E, 
+            err_IDLE_req_X_S, err_North_req_X_S, err_East_req_X_L, err_West_req_X_N, err_South_req_X_E, err_Local_req_X_W, 
+            err_IDLE_req_X_L, err_North_req_X_L, err_East_req_X_N, err_West_req_X_E, err_South_req_X_W, err_Local_req_X_S, 
        
-            err_IDLE_req_X_W, 
-            err_North_req_X_W, 
-            err_East_req_X_S, 
-            err_West_req_X_L, 
-            err_South_req_X_N, 
-            err_Local_req_X_E, 
-       
-            err_IDLE_req_X_S, 
-            err_North_req_X_S, 
-            err_East_req_X_L, 
-            err_West_req_X_N, 
-            err_South_req_X_E, 
-            err_Local_req_X_W, 
-       
-            err_IDLE_req_X_L, 
-            err_North_req_X_L, 
-            err_East_req_X_N, 
-            err_West_req_X_E, 
-            err_South_req_X_W, 
-            err_Local_req_X_S, 
-       
-            err_state_in_onehot, 
-            err_no_request_grants, 
-            err_request_IDLE_state, 
+            err_state_in_onehot, err_no_request_grants, err_request_IDLE_state, 
 
-            err_request_IDLE_not_Grants, 
-            err_state_North_Invalid_Grant, 
-            err_state_East_Invalid_Grant, 
-            err_state_West_Invalid_Grant, 
-            err_state_South_Invalid_Grant, 
-            err_state_Local_Invalid_Grant, 
+            err_request_IDLE_not_Grants, err_state_North_Invalid_Grant, err_state_East_Invalid_Grant, 
+            err_state_West_Invalid_Grant, err_state_South_Invalid_Grant, err_state_Local_Invalid_Grant, 
             err_Grants_onehot_or_all_zero : out std_logic             
          );
 end component;
