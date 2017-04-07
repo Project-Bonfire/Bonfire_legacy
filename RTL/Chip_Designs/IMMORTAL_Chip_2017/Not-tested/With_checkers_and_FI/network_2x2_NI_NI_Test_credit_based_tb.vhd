@@ -74,7 +74,19 @@ port (reset: in  std_logic;
     turn_faults_3: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_3: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_3: in  std_logic_vector(3 downto 0);
-    Reconfig_command_3 : in std_logic
+    Reconfig_command_3 : in std_logic;
+    
+    -- IJTAG network for fault injection and checker status monitoring
+    TCK         : in std_logic;
+    RST         : in std_logic;
+    SEL         : in std_logic;
+    SI          : in std_logic;
+    SE          : in std_logic;
+    UE          : in std_logic;
+    CE          : in std_logic;
+    SO          : out std_logic;
+    toF         : out std_logic;
+    toC         : out std_logic
     ); 
 end component; 
 
@@ -121,6 +133,10 @@ end component; --entity NoC_Node
 	signal Reconfig: std_logic := '0';
 	--------------
 	constant clk_period : time := 1 ns;
+	constant tck_period : time := 10 ns;
+    constant HALF_SEPARATOR : time := 2*tck_period;
+    constant FULL_SEPARATOR : time := 8*tck_period;   
+     
 	signal reset, not_reset, clk: std_logic :='0';
 
 	signal link_faults_0, link_faults_1, link_faults_2, link_faults_3   : std_logic_vector(4 downto 0); 
@@ -128,6 +144,8 @@ end component; --entity NoC_Node
 	signal Rxy_reconf_PE_0, Rxy_reconf_PE_1,Rxy_reconf_PE_2, Rxy_reconf_PE_3   : std_logic_vector(7 downto 0);
 	signal Cx_reconf_PE_0, Cx_reconf_PE_1, Cx_reconf_PE_2, Cx_reconf_PE_3 : std_logic_vector(3 downto 0);
 	signal Reconfig_command_0, Reconfig_command_1, Reconfig_command_2, Reconfig_command_3 : std_logic;
+	
+	signal TCK, RST, SEL, SI, SE, UE, CE, SO, toF, toC : std_logic := '0';
 
 begin
 
@@ -137,6 +155,71 @@ begin
         wait for clk_period/2;   
         clk <= '1';
         wait for clk_period/2; 
+   end process;
+   
+   ijtag_shift_proc: process
+   
+         -- Generate a number of TCK ticks
+      procedure tck_tick (number_of_tick : in positive) is
+      begin
+           for i in 1 to number_of_tick loop
+             TCK <= '1';
+              wait for TCK_period/2;
+              TCK <= '0';
+              wait for TCK_period/2;
+            end loop;
+      end procedure tck_tick;
+  
+         -- Shifts in specified data (Capture -> Shift -> Update)
+        procedure shift_data (data : in std_logic_vector) is
+        begin
+           -- Capture phase
+            CE <= '1';
+           tck_tick(1);
+            CE <= '0';
+            -- Shift phase
+          SE <= '1';
+           for i in data'range loop
+               SI <= data(i);
+             tck_tick(1);
+            end loop;
+          SE <= '0';
+            -- Update phase
+            UE <= '1';
+           tck_tick(1);
+            UE <= '0';
+        end procedure shift_data;
+        
+        	-- Returns all zeroes std_logic_vector of specified size
+       function all_zeroes (number_of_zeroes : in positive) return std_logic_vector is
+          variable zero_array : std_logic_vector(0 to number_of_zeroes-1);
+       begin
+          for i in zero_array'range loop
+           zero_array(i) := '0';
+          end loop;
+          return zero_array;
+       end function all_zeroes;    
+       
+        begin
+        
+        		-- Reset iJTAG chain and Instruments
+       RST <= '1';
+        wait for tck_period;
+       RST <= '0';
+       SEL <= '1';
+       tck_tick(4);
+       
+       --shift_data(all_zeroes(16));
+       --tck_tick(4);
+       
+       shift_data("0001000000000000"); -- open sib3
+       tck_tick(4);
+       
+       shift_data("0000"&all_zeroes(156)&"00000001"&all_zeroes(12)); --close sib3, shift 1 into the last bit of fault injection register, close other sibs.
+       tck_tick(4);
+      
+       wait;
+      
    end process;
 
 reset <= '1' after 1 ns;
@@ -150,7 +233,8 @@ port map (reset, clk,
 	link_faults_0, turn_faults_0, Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0,
 	link_faults_1, turn_faults_1, Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1,
 	link_faults_2, turn_faults_2, Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2,
-	link_faults_3, turn_faults_3, Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3
+	link_faults_3, turn_faults_3, Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3,
+    TCK, RST, SEL, SI, SE, UE, CE, SO, toF, toC
             ); 
 not_reset <= not reset; 
 
