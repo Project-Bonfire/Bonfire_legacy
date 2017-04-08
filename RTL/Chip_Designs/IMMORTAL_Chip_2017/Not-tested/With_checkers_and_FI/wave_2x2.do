@@ -402,6 +402,28 @@ add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CH
 add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_E2L_fault:state
 add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_W2L_fault:state
 add wave -noupdate -group {CHK_CT:state} -color green :tb_network_2x2:NoC:R_3:CHK_CT_S2L_fault:state
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:FIFO_L:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:FIFO_N:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:FIFO_E:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:FIFO_W:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:FIFO_S:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:LBDR_L:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:LBDR_N:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:LBDR_E:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:LBDR_W:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:LBDR_S:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:allocator_unit:arb_L_X:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:allocator_unit:arb_N_X:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:allocator_unit:arb_E_X:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:allocator_unit:arb_W_X:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:allocator_unit:arb_S_X:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:allocator_unit:arb_X_L:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:allocator_unit:arb_X_N:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:allocator_unit:arb_X_E:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:allocator_unit:arb_X_W:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:allocator_unit:arb_X_S:FI_add_sta
+add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_0:allocator_unit:FI_add_sta
+
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors
 quietly wave cursor active 0

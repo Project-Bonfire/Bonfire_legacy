@@ -8,6 +8,7 @@
 vlib work
 
 # Include files and compile them
+vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/component_pack.vhd"
 vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/mlite_pack.vhd"
 vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Allocator_with_checkers_with_FI/Arbiter_in_one_hot_checkers.vhd"
 vcom "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Allocator_with_checkers_with_FI/Arbiter_in_one_hot_with_checkers_with_FI.vhd"
@@ -40,4 +41,5 @@ vsim work.tb_network_2x2
 # Draw waves
 do wave_2x2.do
 # Run the simulation
-do fault_inject.do
+# do fault_inject.do
+run 12000 ns
