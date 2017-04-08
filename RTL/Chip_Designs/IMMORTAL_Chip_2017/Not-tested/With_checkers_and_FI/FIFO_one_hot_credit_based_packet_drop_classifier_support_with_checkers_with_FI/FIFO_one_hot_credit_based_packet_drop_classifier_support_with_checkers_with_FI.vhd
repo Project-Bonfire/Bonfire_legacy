@@ -36,28 +36,14 @@ entity FIFO_credit_based is
 
             -- Checker outputs
             -- Functional checkers
-            err_empty_full, 
-            err_empty_read_en, 
-            err_full_write_en, 
-            err_state_in_onehot, 
-            err_read_pointer_in_onehot, 
-            err_write_pointer_in_onehot, 
+            err_empty_full, err_empty_read_en, err_full_write_en, err_state_in_onehot, 
+            err_read_pointer_in_onehot, err_write_pointer_in_onehot, 
 
             -- Structural checkers
-            err_write_en_write_pointer, 
-            err_not_write_en_write_pointer, 
-            err_read_pointer_write_pointer_not_empty, 
-            err_read_pointer_write_pointer_empty, 
-            err_read_pointer_write_pointer_not_full, 
-            err_read_pointer_write_pointer_full, 
-            err_read_pointer_increment, 
-            err_read_pointer_not_increment, 
-            err_write_en, 
-            err_not_write_en, 
-            err_not_write_en1, 
-            err_not_write_en2, 
-            err_read_en_mismatch, 
-            err_read_en_mismatch1, 
+            err_write_en_write_pointer, err_not_write_en_write_pointer, err_read_pointer_write_pointer_not_empty, 
+            err_read_pointer_write_pointer_empty, err_read_pointer_write_pointer_not_full, err_read_pointer_write_pointer_full, 
+            err_read_pointer_increment, err_read_pointer_not_increment, err_write_en, err_not_write_en, err_not_write_en1, 
+            err_not_write_en2, err_read_en_mismatch, err_read_en_mismatch1, 
 
             -- Newly added checkers for FIFO with packet drop and fault classifier support!
             err_fake_credit_read_en_fake_credit_counter_in_increment, 
@@ -75,12 +61,9 @@ entity FIFO_credit_based is
             err_state_out_Idle_not_fault_out_not_fake_credit, 
             err_state_out_Idle_not_fault_out_not_fault_info_in, 
             err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal, 
-            err_state_out_Idle_fault_out_fake_credit, 
-            err_state_out_Idle_fault_out_state_in_Packet_drop, 
-            err_state_out_Idle_fault_out_fault_info_in, 
-            err_state_out_Idle_fault_out_faulty_packet_in, 
-            err_state_out_Idle_not_health_info, 
-            err_state_out_Idle_not_write_fake_flit, 
+            err_state_out_Idle_fault_out_fake_credit, err_state_out_Idle_fault_out_state_in_Packet_drop, 
+            err_state_out_Idle_fault_out_fault_info_in, err_state_out_Idle_fault_out_faulty_packet_in, 
+            err_state_out_Idle_not_health_info, err_state_out_Idle_not_write_fake_flit, 
 
             err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Body_state_in_Body_flit, 
             err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Tail_state_in_Tail_flit, 
@@ -113,21 +96,17 @@ entity FIFO_credit_based is
             err_state_out_Body_flit_valid_in_not_fault_out_flit_type_not_tail_not_health_info, 
             err_state_out_Body_flit_valid_in_fault_out_not_health_info, 
             err_state_out_Body_flit_valid_in_not_health_info, 
-            err_state_out_Body_flit_not_fake_credit, 
-            err_state_out_Body_flit_not_valid_in_not_write_fake_flit, 
+            err_state_out_Body_flit_not_fake_credit, err_state_out_Body_flit_not_valid_in_not_write_fake_flit, 
 
             err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_Header_state_in_Header_flit, 
             err_state_out_Tail_flit_valid_in_not_fault_out_not_fake_credit, 
             err_state_out_Tail_flit_valid_in_not_fault_out_not_fault_info_in, 
             err_state_out_Tail_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
-            err_state_out_Tail_flit_valid_in_fault_out_fake_credit, 
-            err_state_out_Tail_flit_valid_in_fault_out_state_in_Packet_drop, 
-            err_state_out_Tail_flit_valid_in_fault_out_fault_info_in, 
-            err_state_out_Tail_flit_valid_in_fault_out_faulty_packet_in, 
+            err_state_out_Tail_flit_valid_in_fault_out_fake_credit, err_state_out_Tail_flit_valid_in_fault_out_state_in_Packet_drop, 
+            err_state_out_Tail_flit_valid_in_fault_out_fault_info_in, err_state_out_Tail_flit_valid_in_fault_out_faulty_packet_in, 
             err_state_out_Tail_flit_not_valid_in_state_in_Idle, 
             err_state_out_Tail_flit_not_valid_in_faulty_packet_in_faulty_packet_in_not_change, 
-            err_state_out_Tail_flit_not_valid_in_not_fault_info_in, 
-            err_state_out_Tail_flit_not_valid_in_not_fake_credit, 
+            err_state_out_Tail_flit_not_valid_in_not_fault_info_in, err_state_out_Tail_flit_not_valid_in_not_fake_credit, 
             err_state_out_Tail_flit_not_write_fake_flit, 
 
             err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_fake_credit, 
@@ -152,8 +131,7 @@ entity FIFO_credit_based is
             err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change, 
             err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change, 
 
-            err_fault_info_fault_info_out_equal, 
-            err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
+            err_fault_info_fault_info_out_equal, err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
             err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
 
             err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
@@ -329,44 +307,31 @@ FIFO_control_part_checkers:
       port map (
             valid_in => valid_in, 
             read_en_N => read_en_N, read_en_E => read_en_E, read_en_W => read_en_W, read_en_S => read_en_S, read_en_L => read_en_L, 
-            read_pointer => read_pointer_faulty, 
-            read_pointer_in => read_pointer_in_faulty, 
-            write_pointer => write_pointer_faulty, 
-            write_pointer_in => write_pointer_in_faulty, 
+            read_pointer => read_pointer_faulty, read_pointer_in => read_pointer_in_faulty, 
+            write_pointer => write_pointer_faulty, write_pointer_in => write_pointer_in_faulty, 
             credit_out => credit_in_faulty, -- correct ?! (credit_in in FIFO is actually the previous value of credit_out, going to the input of a register)
-            empty_out => empty_faulty, full_out => full_faulty, 
-            read_en_out => read_en_faulty, write_en_out => write_en_faulty, 
-            fake_credit => fake_credit_faulty, 
-            fake_credit_counter => fake_credit_counter_faulty, 
-            fake_credit_counter_in => fake_credit_counter_in_faulty, 
-            state_out => state_out_faulty, state_in => state_in_faulty, 
+            empty_out => empty_faulty, full_out => full_faulty, read_en_out => read_en_faulty, write_en_out => write_en_faulty, 
+            fake_credit => fake_credit_faulty, fake_credit_counter => fake_credit_counter_faulty, 
+            fake_credit_counter_in => fake_credit_counter_in_faulty, state_out => state_out_faulty, state_in => state_in_faulty, 
             fault_info => fault_info_sig_faulty, -- connected to signal   
-            fault_info_out => fault_info_out_faulty, 
-            fault_info_in => fault_info_in_faulty,
+            fault_info_out => fault_info_out_faulty, fault_info_in => fault_info_in_faulty,
             health_info => health_info_sig_faulty, -- connected to signal
-            faulty_packet_out => faulty_packet_out_faulty, 
-            faulty_packet_in => faulty_packet_in_faulty, 
+            faulty_packet_out => faulty_packet_out_faulty, faulty_packet_in => faulty_packet_in_faulty, 
             flit_type => RX(DATA_WIDTH-1 downto DATA_WIDTH-3), -- Behrad: Not sure about this yet ?!
-            fault_out => fault_out_faulty, 
-            write_fake_flit => write_fake_flit_faulty, 
+            fault_out => fault_out_faulty, write_fake_flit => write_fake_flit_faulty, 
 
             -- Functional checkers
-            err_empty_full => err_empty_full, 
-            err_empty_read_en => err_empty_read_en, 
-            err_full_write_en => err_full_write_en, 
-            err_state_in_onehot => err_state_in_onehot, 
-            err_read_pointer_in_onehot => err_read_pointer_in_onehot, 
+            err_empty_full => err_empty_full, err_empty_read_en => err_empty_read_en, err_full_write_en => err_full_write_en, 
+            err_state_in_onehot => err_state_in_onehot, err_read_pointer_in_onehot => err_read_pointer_in_onehot, 
             err_write_pointer_in_onehot => err_write_pointer_in_onehot, 
 
             -- Structural checkers
-            err_write_en_write_pointer => err_write_en_write_pointer, 
-            err_not_write_en_write_pointer => err_not_write_en_write_pointer, 
+            err_write_en_write_pointer => err_write_en_write_pointer, err_not_write_en_write_pointer => err_not_write_en_write_pointer, 
             err_read_pointer_write_pointer_not_empty => err_read_pointer_write_pointer_not_empty, 
             err_read_pointer_write_pointer_empty => err_read_pointer_write_pointer_empty, 
             err_read_pointer_write_pointer_not_full => err_read_pointer_write_pointer_not_full, 
             err_read_pointer_write_pointer_full => err_read_pointer_write_pointer_full, 
-            err_read_pointer_increment => err_read_pointer_increment, 
-            err_read_pointer_not_increment => err_read_pointer_not_increment, 
+            err_read_pointer_increment => err_read_pointer_increment, err_read_pointer_not_increment => err_read_pointer_not_increment, 
             err_write_en => err_write_en, err_not_write_en => err_not_write_en, err_not_write_en1 => err_not_write_en1, 
             err_not_write_en2 => err_not_write_en2, err_read_en_mismatch => err_read_en_mismatch, 
             err_read_en_mismatch1 => err_read_en_mismatch1, 
@@ -484,10 +449,7 @@ FIFO_control_part_checkers:
             read_pointer  <= "0001";
             write_pointer <= "0001";
 
-            FIFO_MEM_1 <= (others=>'0');
-            FIFO_MEM_2 <= (others=>'0');
-            FIFO_MEM_3 <= (others=>'0');
-            FIFO_MEM_4 <= (others=>'0');
+            FIFO_MEM_1 <= (others=>'0'); FIFO_MEM_2 <= (others=>'0'); FIFO_MEM_3 <= (others=>'0'); FIFO_MEM_4 <= (others=>'0');
 
             fake_credit_counter <= (others=>'0');
             faulty_packet_out <= '0';
@@ -504,15 +466,10 @@ FIFO_control_part_checkers:
             fake_credit_counter <= fake_credit_counter_in;   
 
             if write_en = '1' then 
-                --write into the memory
-                  FIFO_MEM_1 <= FIFO_MEM_1_in;
-                  FIFO_MEM_2 <= FIFO_MEM_2_in;
-                  FIFO_MEM_3 <= FIFO_MEM_3_in;
-                  FIFO_MEM_4 <= FIFO_MEM_4_in;                   
+               --write into the memory
+               FIFO_MEM_1 <= FIFO_MEM_1_in; FIFO_MEM_2 <= FIFO_MEM_2_in; FIFO_MEM_3 <= FIFO_MEM_3_in; FIFO_MEM_4 <= FIFO_MEM_4_in;                   
             end if;
-
             fault_info_out <= fault_info_in;
-
         end if;
     end process;
 
