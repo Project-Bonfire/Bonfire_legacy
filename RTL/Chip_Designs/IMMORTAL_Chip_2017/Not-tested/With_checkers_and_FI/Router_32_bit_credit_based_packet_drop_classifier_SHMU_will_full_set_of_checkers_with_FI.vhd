@@ -2452,18 +2452,9 @@ Allocator_checkers_ORed <=          err_grant_N_N_sig_not_empty_N_grant_N_N or
                             W_err_East_Req_S or W_err_East_grant_S or W_err_West_Req_L or W_err_West_grant_L or 
                             W_err_South_Req_N or  W_err_South_grant_N or W_err_Local_Req_E or W_err_Local_grant_E or  
 
-                                    W_err_IDLE_Req_S or  
-                                    W_err_IDLE_grant_S or  
-                                    W_err_North_Req_S or  
-                                    W_err_North_grant_S or  
-                                    W_err_East_Req_L or  
-                                    W_err_East_grant_L or  
-                                    W_err_West_Req_N or  
-                                    W_err_West_grant_N or  
-                                    W_err_South_Req_E or  
-                                    W_err_South_grant_E or  
-                                    W_err_Local_Req_W or  
-                                    W_err_Local_grant_W or  
+                            W_err_IDLE_Req_S or  W_err_IDLE_grant_S or  W_err_North_Req_S or  W_err_North_grant_S or  
+                            W_err_East_Req_L or  W_err_East_grant_L or  W_err_West_Req_N or  W_err_West_grant_N or  
+                            W_err_South_Req_E or  W_err_South_grant_E or  W_err_Local_Req_W or  W_err_Local_grant_W or  
 
                                     W_err_IDLE_Req_L or  
                                     W_err_IDLE_grant_L or  
