@@ -2,6 +2,7 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use work.component_pack.all;
 
 entity arbiter_out is
     port (  
@@ -54,73 +55,6 @@ end;
 
 architecture behavior of arbiter_out is
 
-component Arbiter_out_one_hot_pseudo_checkers is
-    port (  credit: in std_logic_vector(1 downto 0);
-            req_X_N, req_X_E, req_X_W, req_X_S, req_X_L :in std_logic; -- From LBDR modules
-            state: in std_logic_vector (5 downto 0); -- 6 states for Arbiter_out's FSM
-
-            grant_Y_N, grant_Y_E, grant_Y_W, grant_Y_S, grant_Y_L : in std_logic; -- Grants given to LBDR requests (encoded as one-hot)
-            state_in: in std_logic_vector (5 downto 0); -- 6 states for Arbiter's FSM
-
-            -- Checker outputs
-            err_Requests_state_in_state_not_equal, 
-       
-            err_IDLE_req_X_N, 
-            err_North_req_X_N, 
-            err_North_credit_not_zero_req_X_N_grant_N, 
-            err_North_credit_zero_or_not_req_X_N_not_grant_N, 
-            err_East_req_X_E, 
-            err_East_credit_not_zero_req_X_E_grant_E, 
-            err_East_credit_zero_or_not_req_X_E_not_grant_E, 
-            err_West_req_X_W, 
-            err_West_credit_not_zero_req_X_W_grant_W, 
-            err_West_credit_zero_or_not_req_X_W_not_grant_W, 
-            err_South_req_X_S, 
-            err_South_credit_not_zero_req_X_S_grant_S, 
-            err_South_credit_zero_or_not_req_X_S_not_grant_S, 
-            err_Local_req_X_L, 
-            err_Local_credit_not_zero_req_X_L_grant_L, 
-            err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
-
-            err_IDLE_req_X_E, err_North_req_X_E, err_East_req_X_W, err_West_req_X_S, err_South_req_X_L, err_Local_req_X_N, 
-            err_IDLE_req_X_W, err_North_req_X_W, err_East_req_X_S, err_West_req_X_L, err_South_req_X_N, err_Local_req_X_E, 
-            err_IDLE_req_X_S, err_North_req_X_S, err_East_req_X_L, err_West_req_X_N, err_South_req_X_E, err_Local_req_X_W, 
-            err_IDLE_req_X_L, err_North_req_X_L, err_East_req_X_N, err_West_req_X_E, err_South_req_X_W, err_Local_req_X_S, 
-       
-            err_state_in_onehot, err_no_request_grants, err_request_IDLE_state, 
-
-            err_request_IDLE_not_Grants, err_state_North_Invalid_Grant, err_state_East_Invalid_Grant, 
-            err_state_West_Invalid_Grant, err_state_South_Invalid_Grant, err_state_Local_Invalid_Grant, 
-            err_Grants_onehot_or_all_zero : out std_logic             
-         );
-end component;
-
-component fault_injector is 
-  generic ( DATA_WIDTH    : integer := 32; 
-            ADDRESS_WIDTH : integer := 5  );
-  port(
-    data_in: in std_logic_vector (DATA_WIDTH-1 downto 0);
-    address: in std_logic_vector(ADDRESS_WIDTH-1 downto 0);
-    sta_0: in std_logic;
-    sta_1: in std_logic;
-    data_out: out std_logic_vector (DATA_WIDTH-1 downto 0)
-    );
-end component;
-
-component shift_register_serial_in is
-    generic (
-        REG_WIDTH: integer := 32
-    );
-    port (
-        TCK, reset : in std_logic;  
-        SE: in std_logic;       -- shift enable 
-        UE: in std_logic;       -- update enable
-        SI: in std_logic;       -- serial Input
-        SO: out std_logic;      -- serial output
-        data_out_parallel: out std_logic_vector(REG_WIDTH-1 downto 0)
-    );
-end component;
-
  ----------------------------------------
  -- Signals related to fault injection --
  ----------------------------------------
@@ -137,12 +71,6 @@ end component;
 
   --TYPE STATE_TYPE IS (IDLE, North, East, West, South, Local);
   
-  CONSTANT IDLE:  std_logic_vector (5 downto 0) := "000001";
-  CONSTANT Local: std_logic_vector (5 downto 0) := "000010";
-  CONSTANT North: std_logic_vector (5 downto 0) := "000100";
-  CONSTANT East:  std_logic_vector (5 downto 0) := "001000";
-  CONSTANT West:  std_logic_vector (5 downto 0) := "010000";
-  CONSTANT South: std_logic_vector (5 downto 0) := "100000";
 
   SIGNAL state, state_in : std_logic_vector (5 downto 0) := IDLE; -- : STATE_TYPE := IDLE;
   

@@ -4,6 +4,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.NUMERIC_STD.all;
 use IEEE.MATH_REAL.ALL;
+use work.component_pack.all;
 
 entity Arbiter_in_one_hot_checkers is
     port (  
@@ -37,12 +38,7 @@ end Arbiter_in_one_hot_checkers;
 
 architecture behavior of Arbiter_in_one_hot_checkers is
 
-CONSTANT IDLE: std_logic_vector (5 downto 0) := "000001";
-CONSTANT Local: std_logic_vector (5 downto 0) := "000010";
-CONSTANT North: std_logic_vector (5 downto 0) := "000100";
-CONSTANT East: std_logic_vector (5 downto 0) := "001000";
-CONSTANT West: std_logic_vector (5 downto 0) := "010000";
-CONSTANT South: std_logic_vector (5 downto 0) := "100000";
+
 SIGNAL   Requests: std_logic_vector (4 downto 0);
 SIGNAL   Grants: std_logic_vector (4 downto 0);
 
