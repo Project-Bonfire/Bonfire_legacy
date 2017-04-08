@@ -1138,79 +1138,29 @@ signal      N_err_empty_full, N_err_empty_read_en, N_err_full_write_en, N_err_st
             -- Local Arbiter_in checker outputs
             L_err_Requests_state_in_state_not_equal, 
 
-            L_err_IDLE_Req_N, 
-            L_err_IDLE_grant_N,
-            L_err_North_Req_N, 
-            L_err_North_grant_N, 
-            L_err_East_Req_E, 
-            L_err_East_grant_E, 
-            L_err_West_Req_W, 
-            L_err_West_grant_W, 
-            L_err_South_Req_S,
-            L_err_South_grant_S,
-            L_err_Local_Req_L, 
-            L_err_Local_grant_L,
+            L_err_IDLE_Req_N, L_err_IDLE_grant_N,L_err_North_Req_N, L_err_North_grant_N, L_err_East_Req_E, 
+            L_err_East_grant_E, L_err_West_Req_W, L_err_West_grant_W, L_err_South_Req_S,L_err_South_grant_S,
+            L_err_Local_Req_L, L_err_Local_grant_L,
 
-            L_err_IDLE_Req_E,
-            L_err_IDLE_grant_E,
-            L_err_North_Req_E,
-            L_err_North_grant_E,
-            L_err_East_Req_W,
-            L_err_East_grant_W,
-            L_err_West_Req_S,
-            L_err_West_grant_S,
-            L_err_South_Req_L,
-            L_err_South_grant_L,
-            L_err_Local_Req_N,
-            L_err_Local_grant_N,
+            L_err_IDLE_Req_E, L_err_IDLE_grant_E, L_err_North_Req_E, L_err_North_grant_E, L_err_East_Req_W, 
+            L_err_East_grant_W, L_err_West_Req_S, L_err_West_grant_S, L_err_South_Req_L, L_err_South_grant_L, 
+            L_err_Local_Req_N, L_err_Local_grant_N,
 
-            L_err_IDLE_Req_W,
-            L_err_IDLE_grant_W,
-            L_err_North_Req_W,
-            L_err_North_grant_W,
-            L_err_East_Req_S,
-            L_err_East_grant_S,
-            L_err_West_Req_L,
-            L_err_West_grant_L,
-            L_err_South_Req_N, 
-            L_err_South_grant_N,
-            L_err_Local_Req_E,
-            L_err_Local_grant_E, 
+            L_err_IDLE_Req_W, L_err_IDLE_grant_W, L_err_North_Req_W, L_err_North_grant_W, L_err_East_Req_S, 
+            L_err_East_grant_S, L_err_West_Req_L, L_err_West_grant_L, L_err_South_Req_N,  L_err_South_grant_N, 
+            L_err_Local_Req_E, L_err_Local_grant_E, 
 
-            L_err_IDLE_Req_S, 
-            L_err_IDLE_grant_S, 
-            L_err_North_Req_S, 
-            L_err_North_grant_S, 
-            L_err_East_Req_L, 
-            L_err_East_grant_L, 
-            L_err_West_Req_N, 
-            L_err_West_grant_N, 
-            L_err_South_Req_E, 
-            L_err_South_grant_E, 
-            L_err_Local_Req_W, 
-            L_err_Local_grant_W, 
+            L_err_IDLE_Req_S, L_err_IDLE_grant_S, L_err_North_Req_S, L_err_North_grant_S, L_err_East_Req_L, 
+            L_err_East_grant_L, L_err_West_Req_N, L_err_West_grant_N, L_err_South_Req_E, L_err_South_grant_E, 
+            L_err_Local_Req_W, L_err_Local_grant_W, 
 
-            L_err_IDLE_Req_L, 
-            L_err_IDLE_grant_L, 
-            L_err_North_Req_L, 
-            L_err_North_grant_L, 
-            L_err_East_Req_N, 
-            L_err_East_grant_N, 
-            L_err_West_Req_E, 
-            L_err_West_grant_E, 
-            L_err_South_Req_W, 
-            L_err_South_grant_W, 
-            L_err_Local_Req_S, 
-            L_err_Local_grant_S, 
+            L_err_IDLE_Req_L, L_err_IDLE_grant_L, L_err_North_Req_L, L_err_North_grant_L, L_err_East_Req_N, 
+            L_err_East_grant_N, L_err_West_Req_E, L_err_West_grant_E, L_err_South_Req_W, L_err_South_grant_W, 
+            L_err_Local_Req_S, L_err_Local_grant_S, 
 
-            L_err_arbiter_state_in_onehot, 
-            L_err_no_request_grants, 
-            L_err_request_no_grants, 
+            L_err_arbiter_state_in_onehot, L_err_no_request_grants, L_err_request_no_grants, 
 
-            L_err_no_Req_N_grant_N,
-            L_err_no_Req_E_grant_E, 
-            L_err_no_Req_W_grant_W, 
-            L_err_no_Req_S_grant_S, 
+            L_err_no_Req_N_grant_N, L_err_no_Req_E_grant_E,  L_err_no_Req_W_grant_W,  L_err_no_Req_S_grant_S,  
             L_err_no_Req_L_grant_L : std_logic;
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1238,33 +1188,17 @@ signal      N_err_empty_full, N_err_empty_read_en, N_err_full_write_en, N_err_st
             N_err_Local_credit_not_zero_req_X_L_grant_L, 
             N_err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
 
-            N_err_IDLE_req_X_E, 
-            N_err_North_req_X_E, 
-            N_err_East_req_X_W, 
-            N_err_West_req_X_S, 
-            N_err_South_req_X_L, 
-            N_err_Local_req_X_N, 
+            N_err_IDLE_req_X_E, N_err_North_req_X_E, N_err_East_req_X_W, N_err_West_req_X_S, 
+            N_err_South_req_X_L, N_err_Local_req_X_N, 
        
-            N_err_IDLE_req_X_W, 
-            N_err_North_req_X_W, 
-            N_err_East_req_X_S, 
-            N_err_West_req_X_L, 
-            N_err_South_req_X_N, 
-            N_err_Local_req_X_E, 
+            N_err_IDLE_req_X_W, N_err_North_req_X_W, N_err_East_req_X_S, N_err_West_req_X_L, 
+            N_err_South_req_X_N, N_err_Local_req_X_E, 
        
-            N_err_IDLE_req_X_S, 
-            N_err_North_req_X_S, 
-            N_err_East_req_X_L, 
-            N_err_West_req_X_N, 
-            N_err_South_req_X_E, 
-            N_err_Local_req_X_W, 
+            N_err_IDLE_req_X_S, N_err_North_req_X_S, N_err_East_req_X_L, N_err_West_req_X_N, 
+            N_err_South_req_X_E, N_err_Local_req_X_W, 
        
-            N_err_IDLE_req_X_L, 
-            N_err_North_req_X_L, 
-            N_err_East_req_X_N, 
-            N_err_West_req_X_E, 
-            N_err_South_req_X_W, 
-            N_err_Local_req_X_S, 
+            N_err_IDLE_req_X_L, N_err_North_req_X_L, N_err_East_req_X_N, N_err_West_req_X_E, 
+            N_err_South_req_X_W, N_err_Local_req_X_S, 
        
             N_arbiter_out_err_state_in_onehot, 
             N_arbiter_out_err_no_request_grants, 
@@ -1358,64 +1292,34 @@ signal      N_err_empty_full, N_err_empty_read_en, N_err_full_write_en, N_err_st
             W_err_Local_credit_not_zero_req_X_L_grant_L, 
             W_err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
 
-            W_err_IDLE_req_X_E, 
-            W_err_North_req_X_E, 
-            W_err_East_req_X_W, 
-            W_err_West_req_X_S, 
-            W_err_South_req_X_L, 
-            W_err_Local_req_X_N, 
+            W_err_IDLE_req_X_E, W_err_North_req_X_E, W_err_East_req_X_W, W_err_West_req_X_S, 
+            W_err_South_req_X_L, W_err_Local_req_X_N, 
        
-            W_err_IDLE_req_X_W, 
-            W_err_North_req_X_W, 
-            W_err_East_req_X_S, 
-            W_err_West_req_X_L, 
-            W_err_South_req_X_N, 
-            W_err_Local_req_X_E, 
+            W_err_IDLE_req_X_W, W_err_North_req_X_W, W_err_East_req_X_S, W_err_West_req_X_L, 
+            W_err_South_req_X_N, W_err_Local_req_X_E, 
        
-            W_err_IDLE_req_X_S, 
-            W_err_North_req_X_S, 
-            W_err_East_req_X_L, 
-            W_err_West_req_X_N, 
-            W_err_South_req_X_E, 
-            W_err_Local_req_X_W, 
+            W_err_IDLE_req_X_S, W_err_North_req_X_S, W_err_East_req_X_L, W_err_West_req_X_N, 
+            W_err_South_req_X_E, W_err_Local_req_X_W, 
        
-            W_err_IDLE_req_X_L, 
-            W_err_North_req_X_L, 
-            W_err_East_req_X_N, 
-            W_err_West_req_X_E, 
-            W_err_South_req_X_W, 
-            W_err_Local_req_X_S, 
+            W_err_IDLE_req_X_L, W_err_North_req_X_L, W_err_East_req_X_N, W_err_West_req_X_E, 
+            W_err_South_req_X_W, W_err_Local_req_X_S, 
        
             W_arbiter_out_err_state_in_onehot, 
             W_arbiter_out_err_no_request_grants, 
             W_err_request_IDLE_state, 
 
-            W_err_request_IDLE_not_Grants, 
-            W_err_state_North_Invalid_Grant,
-            W_err_state_East_Invalid_Grant, 
-            W_err_state_West_Invalid_Grant, 
-            W_err_state_South_Invalid_Grant,
-            W_err_state_Local_Invalid_Grant,
+            W_err_request_IDLE_not_Grants, W_err_state_North_Invalid_Grant,W_err_state_East_Invalid_Grant, 
+            W_err_state_West_Invalid_Grant, W_err_state_South_Invalid_Grant,W_err_state_Local_Invalid_Grant,
             W_err_Grants_onehot_or_all_zero, 
 
             -- South Arbiter_out checker outputs
             S_arbiter_out_err_Requests_state_in_state_not_equal, 
        
-            S_err_IDLE_req_X_N, 
-            S_err_North_req_X_N, 
-            S_err_North_credit_not_zero_req_X_N_grant_N, 
-            S_err_North_credit_zero_or_not_req_X_N_not_grant_N, 
-            S_err_East_req_X_E, 
-            S_err_East_credit_not_zero_req_X_E_grant_E, 
-            S_err_East_credit_zero_or_not_req_X_E_not_grant_E, 
-            S_err_West_req_X_W, 
-            S_err_West_credit_not_zero_req_X_W_grant_W, 
-            S_err_West_credit_zero_or_not_req_X_W_not_grant_W, 
-            S_err_South_req_X_S, 
-            S_err_South_credit_not_zero_req_X_S_grant_S, 
-            S_err_South_credit_zero_or_not_req_X_S_not_grant_S, 
-            S_err_Local_req_X_L, 
-            S_err_Local_credit_not_zero_req_X_L_grant_L, 
+            S_err_IDLE_req_X_N, S_err_North_req_X_N, S_err_North_credit_not_zero_req_X_N_grant_N, 
+            S_err_North_credit_zero_or_not_req_X_N_not_grant_N, S_err_East_req_X_E, S_err_East_credit_not_zero_req_X_E_grant_E, 
+            S_err_East_credit_zero_or_not_req_X_E_not_grant_E, S_err_West_req_X_W, S_err_West_credit_not_zero_req_X_W_grant_W, 
+            S_err_West_credit_zero_or_not_req_X_W_not_grant_W, S_err_South_req_X_S, S_err_South_credit_not_zero_req_X_S_grant_S, 
+            S_err_South_credit_zero_or_not_req_X_S_not_grant_S, S_err_Local_req_X_L, S_err_Local_credit_not_zero_req_X_L_grant_L, 
             S_err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
 
             S_err_IDLE_req_X_E, S_err_North_req_X_E, S_err_East_req_X_W, S_err_West_req_X_S, S_err_South_req_X_L, S_err_Local_req_X_N, 
@@ -1423,9 +1327,7 @@ signal      N_err_empty_full, N_err_empty_read_en, N_err_full_write_en, N_err_st
             S_err_IDLE_req_X_S, S_err_North_req_X_S, S_err_East_req_X_L, S_err_West_req_X_N, S_err_South_req_X_E, S_err_Local_req_X_W, 
             S_err_IDLE_req_X_L, S_err_North_req_X_L, S_err_East_req_X_N, S_err_West_req_X_E, S_err_South_req_X_W, S_err_Local_req_X_S, 
        
-            S_arbiter_out_err_state_in_onehot, 
-            S_arbiter_out_err_no_request_grants, 
-            S_err_request_IDLE_state, 
+            S_arbiter_out_err_state_in_onehot, S_arbiter_out_err_no_request_grants, S_err_request_IDLE_state, 
 
             S_err_request_IDLE_not_Grants, S_err_state_North_Invalid_Grant, S_err_state_East_Invalid_Grant, S_err_state_West_Invalid_Grant, 
             S_err_state_South_Invalid_Grant, S_err_state_Local_Invalid_Grant, S_err_Grants_onehot_or_all_zero, 
@@ -1433,21 +1335,15 @@ signal      N_err_empty_full, N_err_empty_read_en, N_err_full_write_en, N_err_st
             -- Local Arbiter_out checker outputs
             L_arbiter_out_err_Requests_state_in_state_not_equal, 
        
-            L_err_IDLE_req_X_N, 
-            L_err_North_req_X_N, 
-            L_err_North_credit_not_zero_req_X_N_grant_N, 
+            L_err_IDLE_req_X_N, L_err_North_req_X_N, L_err_North_credit_not_zero_req_X_N_grant_N, 
             L_err_North_credit_zero_or_not_req_X_N_not_grant_N, 
-            L_err_East_req_X_E, 
-            L_err_East_credit_not_zero_req_X_E_grant_E, 
+            L_err_East_req_X_E, L_err_East_credit_not_zero_req_X_E_grant_E, 
             L_err_East_credit_zero_or_not_req_X_E_not_grant_E, 
-            L_err_West_req_X_W, 
-            L_err_West_credit_not_zero_req_X_W_grant_W, 
+            L_err_West_req_X_W, L_err_West_credit_not_zero_req_X_W_grant_W, 
             L_err_West_credit_zero_or_not_req_X_W_not_grant_W, 
-            L_err_South_req_X_S, 
-            L_err_South_credit_not_zero_req_X_S_grant_S, 
+            L_err_South_req_X_S, L_err_South_credit_not_zero_req_X_S_grant_S, 
             L_err_South_credit_zero_or_not_req_X_S_not_grant_S, 
-            L_err_Local_req_X_L, 
-            L_err_Local_credit_not_zero_req_X_L_grant_L, 
+            L_err_Local_req_X_L, L_err_Local_credit_not_zero_req_X_L_grant_L, 
             L_err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
 
             L_err_IDLE_req_X_E, L_err_North_req_X_E, L_err_East_req_X_W, L_err_West_req_X_S, L_err_South_req_X_L, L_err_Local_req_X_N, 
@@ -1459,12 +1355,8 @@ signal      N_err_empty_full, N_err_empty_read_en, N_err_full_write_en, N_err_st
             L_arbiter_out_err_no_request_grants, 
             L_err_request_IDLE_state, 
 
-            L_err_request_IDLE_not_Grants, 
-            L_err_state_North_Invalid_Grant,
-            L_err_state_East_Invalid_Grant, 
-            L_err_state_West_Invalid_Grant, 
-            L_err_state_South_Invalid_Grant,
-            L_err_state_Local_Invalid_Grant,
+            L_err_request_IDLE_not_Grants, L_err_state_North_Invalid_Grant,L_err_state_East_Invalid_Grant, 
+            L_err_state_West_Invalid_Grant, L_err_state_South_Invalid_Grant, L_err_state_Local_Invalid_Grant,
             L_err_Grants_onehot_or_all_zero : std_logic; 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1986,12 +1878,8 @@ S_FIFO_checkers_ORed  <=    S_err_empty_full or
                             S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in;
 
 -- Local
-L_FIFO_checkers_ORed  <=    L_err_empty_full or 
-                            L_err_empty_read_en or 
-                            L_err_full_write_en or 
-                            L_err_state_in_onehot or 
-                            L_err_read_pointer_in_onehot or 
-                            L_err_write_pointer_in_onehot or 
+L_FIFO_checkers_ORed  <=    L_err_empty_full or L_err_empty_read_en or L_err_full_write_en or L_err_state_in_onehot or 
+                            L_err_read_pointer_in_onehot or L_err_write_pointer_in_onehot or 
 
                             L_err_write_en_write_pointer or 
                             L_err_not_write_en_write_pointer or 
@@ -2001,12 +1889,8 @@ L_FIFO_checkers_ORed  <=    L_err_empty_full or
                             L_err_read_pointer_write_pointer_full or 
                             L_err_read_pointer_increment or 
                             L_err_read_pointer_not_increment or 
-                            L_err_write_en or 
-                            L_err_not_write_en or 
-                            L_err_not_write_en1 or 
-                            L_err_not_write_en2 or 
-                            L_err_read_en_mismatch or 
-                            L_err_read_en_mismatch1 or 
+                            L_err_write_en or L_err_not_write_en or L_err_not_write_en1 or L_err_not_write_en2 or 
+                            L_err_read_en_mismatch or L_err_read_en_mismatch1 or 
 
                             L_err_fake_credit_read_en_fake_credit_counter_in_increment or 
                             L_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_fake_credit_counter_in_decrement or 
@@ -2497,203 +2381,76 @@ Allocator_checkers_ORed <=          err_grant_N_N_sig_not_empty_N_grant_N_N or
 
                                     -- Arbiter_in checker outputs
 
-                                    -- North Arbiter_in checker outputs
-                                    N_err_Requests_state_in_state_not_equal or  
+                            -- North Arbiter_in checker outputs
+                            N_err_Requests_state_in_state_not_equal or  
 
-                                    N_err_IDLE_Req_N or  
-                                    N_err_IDLE_grant_N or 
-                                    N_err_North_Req_N or  
-                                    N_err_North_grant_N or  
-                                    N_err_East_Req_E or  
-                                    N_err_East_grant_E or  
-                                    N_err_West_Req_W or  
-                                    N_err_West_grant_W or  
-                                    N_err_South_Req_S or 
-                                    N_err_South_grant_S or 
-                                    N_err_Local_Req_L or  
-                                    N_err_Local_grant_L or 
+                            N_err_IDLE_Req_N or  N_err_IDLE_grant_N or N_err_North_Req_N or  N_err_North_grant_N or  
+                            N_err_East_Req_E or  N_err_East_grant_E or  N_err_West_Req_W or  N_err_West_grant_W or  
+                            N_err_South_Req_S or N_err_South_grant_S or N_err_Local_Req_L or  N_err_Local_grant_L or 
 
-                                    N_err_IDLE_Req_E or 
-                                    N_err_IDLE_grant_E or 
-                                    N_err_North_Req_E or 
-                                    N_err_North_grant_E or 
-                                    N_err_East_Req_W or 
-                                    N_err_East_grant_W or 
-                                    N_err_West_Req_S or 
-                                    N_err_West_grant_S or 
-                                    N_err_South_Req_L or 
-                                    N_err_South_grant_L or 
-                                    N_err_Local_Req_N or 
-                                    N_err_Local_grant_N or 
+                            N_err_IDLE_Req_E or N_err_IDLE_grant_E or N_err_North_Req_E or N_err_North_grant_E or 
+                            N_err_East_Req_W or N_err_East_grant_W or N_err_West_Req_S or N_err_West_grant_S or 
+                            N_err_South_Req_L or N_err_South_grant_L or N_err_Local_Req_N or N_err_Local_grant_N or 
 
-                                    N_err_IDLE_Req_W or 
-                                    N_err_IDLE_grant_W or 
-                                    N_err_North_Req_W or 
-                                    N_err_North_grant_W or 
-                                    N_err_East_Req_S or 
-                                    N_err_East_grant_S or 
-                                    N_err_West_Req_L or 
-                                    N_err_West_grant_L or 
-                                    N_err_South_Req_N or  
-                                    N_err_South_grant_N or 
-                                    N_err_Local_Req_E or 
-                                    N_err_Local_grant_E or  
+                            N_err_IDLE_Req_W or N_err_IDLE_grant_W or N_err_North_Req_W or N_err_North_grant_W or 
+                            N_err_East_Req_S or N_err_East_grant_S or N_err_West_Req_L or N_err_West_grant_L or 
+                            N_err_South_Req_N or  N_err_South_grant_N or N_err_Local_Req_E or N_err_Local_grant_E or  
 
-                                    N_err_IDLE_Req_S or  
-                                    N_err_IDLE_grant_S or  
-                                    N_err_North_Req_S or  
-                                    N_err_North_grant_S or  
-                                    N_err_East_Req_L or  
-                                    N_err_East_grant_L or  
-                                    N_err_West_Req_N or  
-                                    N_err_West_grant_N or  
-                                    N_err_South_Req_E or  
-                                    N_err_South_grant_E or  
-                                    N_err_Local_Req_W or  
-                                    N_err_Local_grant_W or  
+                            N_err_IDLE_Req_S or  N_err_IDLE_grant_S or  N_err_North_Req_S or  N_err_North_grant_S or  
+                            N_err_East_Req_L or  N_err_East_grant_L or  N_err_West_Req_N or  N_err_West_grant_N or  
+                            N_err_South_Req_E or  N_err_South_grant_E or  N_err_Local_Req_W or  N_err_Local_grant_W or  
 
-                                    N_err_IDLE_Req_L or  
-                                    N_err_IDLE_grant_L or  
-                                    N_err_North_Req_L or  
-                                    N_err_North_grant_L or  
-                                    N_err_East_Req_N or  
-                                    N_err_East_grant_N or  
-                                    N_err_West_Req_E or  
-                                    N_err_West_grant_E or  
-                                    N_err_South_Req_W or  
-                                    N_err_South_grant_W or  
-                                    N_err_Local_Req_S or  
-                                    N_err_Local_grant_S or  
+                            N_err_IDLE_Req_L or  N_err_IDLE_grant_L or  N_err_North_Req_L or  N_err_North_grant_L or  
+                            N_err_East_Req_N or  N_err_East_grant_N or  N_err_West_Req_E or  N_err_West_grant_E or  
+                            N_err_South_Req_W or  N_err_South_grant_W or  N_err_Local_Req_S or  N_err_Local_grant_S or  
 
-                                    N_err_state_in_onehot or  
-                                    N_err_no_request_grants or  
-                                    N_err_request_no_grants or  
+                            N_err_state_in_onehot or  N_err_no_request_grants or  N_err_request_no_grants or  
 
-                                    N_err_no_Req_N_grant_N or 
-                                    N_err_no_Req_E_grant_E or  
-                                    N_err_no_Req_W_grant_W or  
-                                    N_err_no_Req_S_grant_S or  
-                                    N_err_no_Req_L_grant_L or  
+                            N_err_no_Req_N_grant_N or N_err_no_Req_E_grant_E or  N_err_no_Req_W_grant_W or  
+                            N_err_no_Req_S_grant_S or  N_err_no_Req_L_grant_L or  
 
-                                    -- East Arbiter_in checker outputs
-                                    E_err_Requests_state_in_state_not_equal or  
+                            -- East Arbiter_in checker outputs
+                            E_err_Requests_state_in_state_not_equal or  
 
-                                    E_err_IDLE_Req_N or  
-                                    E_err_IDLE_grant_N or 
-                                    E_err_North_Req_N or  
-                                    E_err_North_grant_N or  
-                                    E_err_East_Req_E or  
-                                    E_err_East_grant_E or  
-                                    E_err_West_Req_W or  
-                                    E_err_West_grant_W or  
-                                    E_err_South_Req_S or 
-                                    E_err_South_grant_S or 
-                                    E_err_Local_Req_L or  
-                                    E_err_Local_grant_L or 
+                            E_err_IDLE_Req_N or  E_err_IDLE_grant_N or E_err_North_Req_N or  E_err_North_grant_N or  
+                            E_err_East_Req_E or  E_err_East_grant_E or  E_err_West_Req_W or  E_err_West_grant_W or  
+                            E_err_South_Req_S or E_err_South_grant_S or E_err_Local_Req_L or  E_err_Local_grant_L or 
 
-                                    E_err_IDLE_Req_E or 
-                                    E_err_IDLE_grant_E or 
-                                    E_err_North_Req_E or 
-                                    E_err_North_grant_E or 
-                                    E_err_East_Req_W or 
-                                    E_err_East_grant_W or 
-                                    E_err_West_Req_S or 
-                                    E_err_West_grant_S or 
-                                    E_err_South_Req_L or 
-                                    E_err_South_grant_L or 
-                                    E_err_Local_Req_N or 
-                                    E_err_Local_grant_N or 
+                            E_err_IDLE_Req_E or E_err_IDLE_grant_E or E_err_North_Req_E or E_err_North_grant_E or 
+                            E_err_East_Req_W or E_err_East_grant_W or E_err_West_Req_S or E_err_West_grant_S or 
+                            E_err_South_Req_L or E_err_South_grant_L or E_err_Local_Req_N or E_err_Local_grant_N or 
 
-                                    E_err_IDLE_Req_W or 
-                                    E_err_IDLE_grant_W or 
-                                    E_err_North_Req_W or 
-                                    E_err_North_grant_W or 
-                                    E_err_East_Req_S or 
-                                    E_err_East_grant_S or 
-                                    E_err_West_Req_L or 
-                                    E_err_West_grant_L or 
-                                    E_err_South_Req_N or  
-                                    E_err_South_grant_N or 
-                                    E_err_Local_Req_E or 
-                                    E_err_Local_grant_E or  
+                            E_err_IDLE_Req_W or E_err_IDLE_grant_W or E_err_North_Req_W or E_err_North_grant_W or 
+                            E_err_East_Req_S or E_err_East_grant_S or E_err_West_Req_L or E_err_West_grant_L or 
+                            E_err_South_Req_N or  E_err_South_grant_N or E_err_Local_Req_E or E_err_Local_grant_E or  
 
-                                    E_err_IDLE_Req_S or  
-                                    E_err_IDLE_grant_S or  
-                                    E_err_North_Req_S or  
-                                    E_err_North_grant_S or  
-                                    E_err_East_Req_L or  
-                                    E_err_East_grant_L or  
-                                    E_err_West_Req_N or  
-                                    E_err_West_grant_N or  
-                                    E_err_South_Req_E or  
-                                    E_err_South_grant_E or  
-                                    E_err_Local_Req_W or  
-                                    E_err_Local_grant_W or  
+                            E_err_IDLE_Req_S or  E_err_IDLE_grant_S or  E_err_North_Req_S or  E_err_North_grant_S or  
+                            E_err_East_Req_L or  E_err_East_grant_L or  E_err_West_Req_N or  E_err_West_grant_N or  
+                            E_err_South_Req_E or  E_err_South_grant_E or  E_err_Local_Req_W or  E_err_Local_grant_W or  
 
-                                    E_err_IDLE_Req_L or  
-                                    E_err_IDLE_grant_L or  
-                                    E_err_North_Req_L or  
-                                    E_err_North_grant_L or  
-                                    E_err_East_Req_N or  
-                                    E_err_East_grant_N or  
-                                    E_err_West_Req_E or  
-                                    E_err_West_grant_E or  
-                                    E_err_South_Req_W or  
-                                    E_err_South_grant_W or  
-                                    E_err_Local_Req_S or  
-                                    E_err_Local_grant_S or  
+                            E_err_IDLE_Req_L or  E_err_IDLE_grant_L or  E_err_North_Req_L or  E_err_North_grant_L or  
+                            E_err_East_Req_N or  E_err_East_grant_N or  E_err_West_Req_E or  E_err_West_grant_E or  
+                            E_err_South_Req_W or  E_err_South_grant_W or  E_err_Local_Req_S or  E_err_Local_grant_S or  
 
-                                    E_err_state_in_onehot or  
-                                    E_err_no_request_grants or  
-                                    E_err_request_no_grants or  
+                            E_err_state_in_onehot or  E_err_no_request_grants or  E_err_request_no_grants or  
 
-                                    E_err_no_Req_N_grant_N or 
-                                    E_err_no_Req_E_grant_E or  
-                                    E_err_no_Req_W_grant_W or  
-                                    E_err_no_Req_S_grant_S or  
-                                    E_err_no_Req_L_grant_L or  
+                            E_err_no_Req_N_grant_N or E_err_no_Req_E_grant_E or  E_err_no_Req_W_grant_W or  
+                            E_err_no_Req_S_grant_S or  E_err_no_Req_L_grant_L or  
 
-                                    -- West Arbiter_in checker outputs
-                                    W_err_Requests_state_in_state_not_equal or  
+                            -- West Arbiter_in checker outputs
+                            W_err_Requests_state_in_state_not_equal or  
 
-                                    W_err_IDLE_Req_N or  
-                                    W_err_IDLE_grant_N or 
-                                    W_err_North_Req_N or  
-                                    W_err_North_grant_N or  
-                                    W_err_East_Req_E or  
-                                    W_err_East_grant_E or  
-                                    W_err_West_Req_W or  
-                                    W_err_West_grant_W or  
-                                    W_err_South_Req_S or 
-                                    W_err_South_grant_S or 
-                                    W_err_Local_Req_L or  
-                                    W_err_Local_grant_L or 
+                            W_err_IDLE_Req_N or  W_err_IDLE_grant_N or W_err_North_Req_N or  W_err_North_grant_N or  
+                            W_err_East_Req_E or  W_err_East_grant_E or  W_err_West_Req_W or  W_err_West_grant_W or  
+                            W_err_South_Req_S or W_err_South_grant_S or W_err_Local_Req_L or  W_err_Local_grant_L or 
 
-                                    W_err_IDLE_Req_E or 
-                                    W_err_IDLE_grant_E or 
-                                    W_err_North_Req_E or 
-                                    W_err_North_grant_E or 
-                                    W_err_East_Req_W or 
-                                    W_err_East_grant_W or 
-                                    W_err_West_Req_S or 
-                                    W_err_West_grant_S or 
-                                    W_err_South_Req_L or 
-                                    W_err_South_grant_L or 
-                                    W_err_Local_Req_N or 
-                                    W_err_Local_grant_N or 
+                            W_err_IDLE_Req_E or W_err_IDLE_grant_E or W_err_North_Req_E or W_err_North_grant_E or 
+                            W_err_East_Req_W or W_err_East_grant_W or W_err_West_Req_S or W_err_West_grant_S or 
+                            W_err_South_Req_L or W_err_South_grant_L or W_err_Local_Req_N or W_err_Local_grant_N or 
 
-                                    W_err_IDLE_Req_W or 
-                                    W_err_IDLE_grant_W or 
-                                    W_err_North_Req_W or 
-                                    W_err_North_grant_W or 
-                                    W_err_East_Req_S or 
-                                    W_err_East_grant_S or 
-                                    W_err_West_Req_L or 
-                                    W_err_West_grant_L or 
-                                    W_err_South_Req_N or  
-                                    W_err_South_grant_N or 
-                                    W_err_Local_Req_E or 
-                                    W_err_Local_grant_E or  
+                            W_err_IDLE_Req_W or W_err_IDLE_grant_W or W_err_North_Req_W or W_err_North_grant_W or 
+                            W_err_East_Req_S or W_err_East_grant_S or W_err_West_Req_L or W_err_West_grant_L or 
+                            W_err_South_Req_N or  W_err_South_grant_N or W_err_Local_Req_E or W_err_Local_grant_E or  
 
                                     W_err_IDLE_Req_S or  
                                     W_err_IDLE_grant_S or  
@@ -3049,21 +2806,19 @@ Allocator_checkers_ORed <=          err_grant_N_N_sig_not_empty_N_grant_N_N or
                                     S_err_Local_credit_not_zero_req_X_L_grant_L or  
                                     S_err_Local_credit_zero_or_not_req_X_L_not_grant_L or  
 
-                                    S_err_IDLE_req_X_E or  S_err_North_req_X_E or  S_err_East_req_X_W or  S_err_West_req_X_S or  S_err_South_req_X_L or  
-                                    S_err_Local_req_X_N or  
+                                    S_err_IDLE_req_X_E or  S_err_North_req_X_E or  S_err_East_req_X_W or  
+                                    S_err_West_req_X_S or  S_err_South_req_X_L or  S_err_Local_req_X_N or  
                                
-                                    S_err_IDLE_req_X_W or  S_err_North_req_X_W or  S_err_East_req_X_S or  S_err_West_req_X_L or  S_err_South_req_X_N or  
-                                    S_err_Local_req_X_E or  
+                                    S_err_IDLE_req_X_W or  S_err_North_req_X_W or  S_err_East_req_X_S or  
+                                    S_err_West_req_X_L or  S_err_South_req_X_N or  S_err_Local_req_X_E or  
                                
-                                    S_err_IDLE_req_X_S or  S_err_North_req_X_S or  S_err_East_req_X_L or  S_err_West_req_X_N or  S_err_South_req_X_E or  
-                                    S_err_Local_req_X_W or  
+                                    S_err_IDLE_req_X_S or  S_err_North_req_X_S or  S_err_East_req_X_L or  
+                                    S_err_West_req_X_N or  S_err_South_req_X_E or  S_err_Local_req_X_W or  
                                
-                                    S_err_IDLE_req_X_L or  S_err_North_req_X_L or  S_err_East_req_X_N or  S_err_West_req_X_E or  S_err_South_req_X_W or  
-                                    S_err_Local_req_X_S or  
+                                    S_err_IDLE_req_X_L or  S_err_North_req_X_L or  S_err_East_req_X_N or  
+                                    S_err_West_req_X_E or  S_err_South_req_X_W or  S_err_Local_req_X_S or  
                                
-                                    S_arbiter_out_err_state_in_onehot or  
-                                    S_arbiter_out_err_no_request_grants or  
-                                    S_err_request_IDLE_state or  
+                                    S_arbiter_out_err_state_in_onehot or  S_arbiter_out_err_no_request_grants or  S_err_request_IDLE_state or  
 
                                     S_err_request_IDLE_not_Grants or  S_err_state_North_Invalid_Grant or S_err_state_East_Invalid_Grant or 
                                     S_err_state_West_Invalid_Grant or S_err_state_South_Invalid_Grant or S_err_state_Local_Invalid_Grant or 
