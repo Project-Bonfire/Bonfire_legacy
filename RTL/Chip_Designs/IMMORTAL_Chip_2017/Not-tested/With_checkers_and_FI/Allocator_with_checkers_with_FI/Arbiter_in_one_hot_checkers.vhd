@@ -19,19 +19,14 @@ entity Arbiter_in_one_hot_checkers is
 
 			err_IDLE_Req_N, err_IDLE_grant_N,err_North_Req_N, err_North_grant_N, err_East_Req_E, err_East_grant_E, 
 			err_West_Req_W, err_West_grant_W, err_South_Req_S,err_South_grant_S,err_Local_Req_L, err_Local_grant_L,
-
 			err_IDLE_Req_E, err_IDLE_grant_E, err_North_Req_E, err_North_grant_E, err_East_Req_W, err_East_grant_W,
 			err_West_Req_S,	err_West_grant_S, err_South_Req_L, err_South_grant_L, err_Local_Req_N, err_Local_grant_N,
-
 			err_IDLE_Req_W, err_IDLE_grant_W, err_North_Req_W, err_North_grant_W, err_East_Req_S, err_East_grant_S,
 			err_West_Req_L, err_West_grant_L, err_South_Req_N,  err_South_grant_N, err_Local_Req_E, err_Local_grant_E, 
-
 			err_IDLE_Req_S, err_IDLE_grant_S, err_North_Req_S, err_North_grant_S, err_East_Req_L, err_East_grant_L, 
 			err_West_Req_N, err_West_grant_N, err_South_Req_E, err_South_grant_E, err_Local_Req_W, err_Local_grant_W, 
-
 			err_IDLE_Req_L, err_IDLE_grant_L, err_North_Req_L, err_North_grant_L, err_East_Req_N, err_East_grant_N, 
 			err_West_Req_E, err_West_grant_E, err_South_Req_W, err_South_grant_W, err_Local_Req_S, err_Local_grant_S, 
-
 			err_state_in_onehot, err_no_request_grants, err_request_no_grants, err_no_Req_N_grant_N,
 			err_no_Req_E_grant_E, err_no_Req_W_grant_W, err_no_Req_S_grant_S, err_no_Req_L_grant_L : out std_logic
             );
@@ -72,93 +67,83 @@ end process;
 
 process (state, req_X_N, state_in)
 begin 
+	err_IDLE_Req_N <= '0';	
 	if ( state = IDLE and req_X_N = '1' and state_in /= North ) then
 		err_IDLE_Req_N <= '1';
-	else 
-		err_IDLE_Req_N <= '0';	
 	end if;
 end process;
 
 process (state, req_X_N, X_N)
 begin 
+	err_IDLE_grant_N <= '0';
 	if ( state = IDLE and req_X_N = '1' and X_N = '0' ) then
 		err_IDLE_grant_N <= '1';
-	else 
-		err_IDLE_grant_N <= '0';	
 	end if;
 end process;
 
 process (state, req_X_N, state_in)
 begin 
+	err_North_Req_N <= '0';
 	if (state = North and req_X_N = '1' and state_in /= North) then
-		err_North_Req_N <= '1';
-	else 
-		err_North_Req_N <= '0';	
+		err_North_Req_N <= '1';	
 	end if;
 end process;
 
 process (state, req_X_N, X_N)
 begin 
+	err_North_grant_N <= '0';
 	if ( state = North and req_X_N = '1' and X_N = '0' ) then
 		err_North_grant_N <= '1';
-	else 
-		err_North_grant_N <= '0';	
 	end if;
 end process;
 
 process (state, req_X_E, state_in)
 begin 
+	err_East_Req_E <= '0';
 	if (state = East and req_X_E = '1' and state_in /= East) then
-		err_East_Req_E <= '1';
-	else 
-		err_East_Req_E <= '0';	
+		err_East_Req_E <= '1';	
 	end if;
 end process;
 
 process (state, req_X_E, X_E)
 begin 
+	err_East_grant_E <= '0';
 	if ( state = East and req_X_E = '1' and X_E = '0' ) then
-		err_East_grant_E <= '1';
-	else 
-		err_East_grant_E <= '0';	
+		err_East_grant_E <= '1';	
 	end if;
 end process;
 
 
 process (state, req_X_W, state_in)
 begin 
+	err_West_Req_W <= '0';
 	if (state = West and req_X_W = '1' and state_in /= West) then
-		err_West_Req_W <= '1';
-	else 
-		err_West_Req_W <= '0';	
+		err_West_Req_W <= '1';	
 	end if;
 end process;
 
 process (state, req_X_W, X_W)
 begin 
+	err_West_grant_W <= '0';
 	if ( state = West and req_X_W = '1' and X_W = '0' ) then
-		err_West_grant_W <= '1';
-	else 
-		err_West_grant_W <= '0';	
+		err_West_grant_W <= '1';	
 	end if;
 end process;
 
 
 process (state, req_X_S, state_in)
 begin 
+	err_South_Req_S <= '0';	
 	if (state = South and req_X_S = '1' and state_in /= South) then
 		err_South_Req_S <= '1';
-	else 
-		err_South_Req_S <= '0';	
 	end if;
 end process;
 
 process (state, req_X_S, X_S)
 begin 
+	err_South_grant_S <= '0';
 	if ( state = South and req_X_S = '1' and X_S = '0' ) then
 		err_South_grant_S <= '1';
-	else 
-		err_South_grant_S <= '0';	
 	end if;
 end process;
 
@@ -166,21 +151,19 @@ end process;
 -- Local is a bit different (including others case)
 process (state, req_X_L, state_in)
 begin 
+	err_Local_Req_L <= '0';
 	if ( state /= IDLE and state /= North and state /=East and state /= West and state /= South and 
 		 req_X_L = '1' and state_in /= Local) then
 		err_Local_Req_L <= '1';
-	else 
-		err_Local_Req_L <= '0';	
 	end if;
 end process;
 
 process (state, req_X_L, X_L)
 begin 
+	err_Local_grant_L <= '0';	
 	if ( state /= IDLE and state /= North and state /=East and state /= West and state /= South and 
 		 req_X_L = '1' and X_L = '0' ) then
 		err_Local_grant_L <= '1';
-	else 
-		err_Local_grant_L <= '0';	
 	end if;
 end process;
 
@@ -194,76 +177,68 @@ end process;
 
 process (state, req_X_N, req_X_E, state_in)
 begin 
+	err_IDLE_Req_E <= '0';
 	if ( state = IDLE and req_X_N = '0' and req_X_E = '1' and state_in /= East) then
-		err_IDLE_Req_E <= '1';
-	else 
-		err_IDLE_Req_E <= '0';	
+		err_IDLE_Req_E <= '1';			
 	end if;
 end process;
 
 process (state, req_X_N, req_X_E, X_E)
 begin 
+	err_IDLE_grant_E <= '0';
 	if ( state = IDLE and req_X_N = '0' and req_X_E = '1' and X_E = '0' ) then
 		err_IDLE_grant_E <= '1';
-	else 
-		err_IDLE_grant_E <= '0';	
 	end if;
 end process;
 
 
 process (state, req_X_N, req_X_E, state_in)
 begin 
+	err_North_Req_E <= '0';
 	if ( state = North and req_X_N = '0' and req_X_E = '1' and state_in /= East) then
 		err_North_Req_E <= '1';
-	else 
-		err_North_Req_E <= '0';	
 	end if;
 end process;
 
 process (state, req_X_N, req_X_E, X_E)
 begin 
+	err_North_grant_E <= '0';
 	if ( state = North and req_X_N = '0' and req_X_E = '1' and X_E = '0' ) then
 		err_North_grant_E <= '1';
-	else 
-		err_North_grant_E <= '0';	
 	end if;
 end process;
 
 
 process (state, req_X_E, req_X_W, state_in)
 begin 
+	err_East_Req_W <= '0';
 	if ( state = East and req_X_E = '0' and req_X_W = '1' and state_in /= West) then
 		err_East_Req_W <= '1';
-	else 
-		err_East_Req_W <= '0';	
 	end if;
 end process;
 
 process (state, req_X_E, req_X_W, X_W)
 begin 
+	err_East_grant_W <= '0';
 	if ( state = East and req_X_E = '0' and req_X_W = '1' and X_W = '0' ) then
 		err_East_grant_W <= '1';
-	else 
-		err_East_grant_W <= '0';	
 	end if;
 end process;
 
 
 process (state, req_X_W, req_X_S, state_in)
 begin 
+	err_West_Req_S <= '0';	
 	if ( state = West and req_X_W = '0' and req_X_S = '1' and state_in /= South) then
 		err_West_Req_S <= '1';
-	else 
-		err_West_Req_S <= '0';	
 	end if;
 end process;
 
 process (state, req_X_W, req_X_S, X_S)
 begin 
+	err_West_grant_S <= '0';
 	if ( state = West and req_X_W = '0' and req_X_S = '1' and X_S = '0' ) then
 		err_West_grant_S <= '1';
-	else 
-		err_West_grant_S <= '0';	
 	end if;
 end process;
 
@@ -271,19 +246,17 @@ end process;
 -- for the router with CTS/RTS handshaking Flow Control
 process (state, req_X_S, req_X_L, state_in)
 begin 
+	err_South_Req_L <= '0';
 	if ( state = South and req_X_S = '0' and req_X_L = '1' and state_in /= Local) then
-		err_South_Req_L <= '1';
-	else 
-		err_South_Req_L <= '0';	
+		err_South_Req_L <= '1';	
 	end if;
 end process;
 
 process (state, req_X_S, req_X_L, X_L)
 begin 
+	err_South_grant_L <= '0';
 	if ( state = South and req_X_S = '0' and req_X_L = '1' and X_L = '0' ) then
 		err_South_grant_L <= '1';
-	else 
-		err_South_grant_L <= '0';	
 	end if;
 end process;
 
@@ -291,21 +264,19 @@ end process;
 
 process (state, req_X_L, req_X_N, state_in)
 begin 
+	err_Local_Req_N <= '0';	
 	if ( state /= IDLE and state /= North and state /=East and state /=West and state /= South and 
 		 req_X_L = '0' and req_X_N = '1' and state_in /= North) then
 		err_Local_Req_N <= '1';
-	else 
-		err_Local_Req_N <= '0';	
 	end if;
 end process;
 
 process (state, req_X_L, req_X_N, X_N)
 begin 
+	err_Local_grant_N <= '0';
 	if ( state /= IDLE and state /= North and state /=East and state /=West and state /= South and 
 		 req_X_L = '0' and req_X_N = '1' and X_N = '0' ) then
-		err_Local_grant_N <= '1';
-	else 
-		err_Local_grant_N <= '0';	
+		err_Local_grant_N <= '1';	
 	end if;
 end process;
 
@@ -318,95 +289,85 @@ end process;
 
 process (state, req_X_N, req_X_E, req_X_W, state_in)
 begin 
+	err_IDLE_Req_W <= '0';
 	if (state = IDLE and req_X_N = '0' and req_X_E = '0' and req_X_W = '1' and state_in /= West) then
 		err_IDLE_Req_W <= '1';
-	else 
-		err_IDLE_Req_W <= '0';	
 	end if;
 end process;
 
 process (state, req_X_N, req_X_E, req_X_W, X_W)
 begin 
+	err_IDLE_grant_W <= '0';
 	if ( state = IDLE and req_X_N = '0' and req_X_E = '0' and req_X_W = '1' and X_W = '0' ) then
-		err_IDLE_grant_W <= '1';
-	else 
-		err_IDLE_grant_W <= '0';	
+		err_IDLE_grant_W <= '1';	
 	end if;
 end process;
 
 
 process (state, req_X_N, req_X_E, req_X_W, state_in)
 begin 
+	err_North_Req_W <= '0';	
 	if (state = North and req_X_N = '0' and req_X_E = '0' and req_X_W = '1' and state_in /= West) then
 		err_North_Req_W <= '1';
-	else 
-		err_North_Req_W <= '0';	
 	end if;
 end process;
 
 process (state, req_X_N, req_X_E, req_X_W, X_W)
 begin 
+	err_North_grant_W <= '0';
 	if ( state = North and req_X_N = '0' and req_X_E = '0' and req_X_W = '1' and X_W = '0' ) then
-		err_North_grant_W <= '1';
-	else 
-		err_North_grant_W <= '0';	
+		err_North_grant_W <= '1';	
 	end if;
 end process;
 
 
 process (state, req_X_E, req_X_W, req_X_S, state_in)
 begin 
+	err_East_Req_S <= '0';
 	if (state = East and req_X_E = '0' and req_X_W = '0' and req_X_S = '1' and state_in /= South) then
 		err_East_Req_S <= '1';
-	else 
-		err_East_Req_S <= '0';	
 	end if;
 end process;
 
 process (state, req_X_E, req_X_W, req_X_S, X_S)
 begin 
+	err_East_grant_S <= '0';
 	if ( state = East and req_X_E = '0' and req_X_W = '0' and req_X_S = '1' and X_S = '0' ) then
-		err_East_grant_S <= '1';
-	else 
-		err_East_grant_S <= '0';	
+		err_East_grant_S <= '1';	
 	end if;
 end process;
 
 
 process (state, req_X_W, req_X_S, req_X_L, state_in)
 begin 
+	err_West_Req_L <= '0';
 	if (state = West and req_X_W = '0' and req_X_S = '0' and req_X_L = '1' and state_in /= Local) then
 		err_West_Req_L <= '1';
-	else 
-		err_West_Req_L <= '0';	
 	end if;
 end process;
 
 process (state, req_X_W, req_X_S, req_X_L, X_L)
 begin 
+	err_West_grant_L <= '0';
 	if ( state = West and req_X_W = '0' and req_X_S = '0' and req_X_L = '1' and X_L = '0' ) then
 		err_West_grant_L <= '1';
-	else 
-		err_West_grant_L <= '0';	
 	end if;
 end process;
 
 
 process (state, req_X_S, req_X_L, req_X_N, state_in)
 begin 
+	err_South_Req_N <= '0';	
 	if (state = South and req_X_S = '0' and req_X_L = '0' and req_X_N = '1' and state_in /= North) then
 		err_South_Req_N <= '1';
-	else 
-		err_South_Req_N <= '0';	
 	end if;
 end process;
 
 process (state, req_X_S, req_X_L, req_X_N, X_N)
 begin 
+	err_South_grant_N <= '0';
 	if ( state = South and req_X_S = '0' and req_X_L = '0' and req_X_N = '1' and X_N = '0' ) then
 		err_South_grant_N <= '1';
-	else 
-		err_South_grant_N <= '0';	
 	end if;
 end process;
 
@@ -414,21 +375,19 @@ end process;
 -- Local and invalid state(s) (others case)
 process (state, req_X_L, req_X_N, req_X_E, state_in)
 begin 
+	err_Local_Req_E <= '0';
 	if (state /= IDLE and state /= North and state /=East and state /=West and state /= South and 
 		req_X_L = '0' and req_X_N = '0' and req_X_E = '1' and state_in /= East) then
 		err_Local_Req_E <= '1';
-	else 
-		err_Local_Req_E <= '0';	
 	end if;
 end process;
 
 process (state, req_X_L, req_X_N, req_X_E, X_E)
 begin 
+	err_Local_grant_E <= '0';
 	if ( state /= IDLE and state /= North and state /=East and state /=West and state /= South and 
 		 req_X_L = '0' and req_X_N = '0' and req_X_E = '1' and X_E = '0' ) then
 		err_Local_grant_E <= '1';
-	else 
-		err_Local_grant_E <= '0';	
 	end if;
 end process;
 
@@ -441,104 +400,94 @@ end process;
 
 process (state, req_X_N, req_X_E, req_X_W, req_X_S, state_in)
 begin 
+	err_IDLE_Req_S <= '0';
 	if ( state = IDLE and req_X_N = '0' and req_X_E = '0' and req_X_W = '0' and req_X_S = '1' and 
 		 state_in /= South) then
 		err_IDLE_Req_S <= '1';
-	else 
-		err_IDLE_Req_S <= '0';	
 	end if;
 end process;
 
 process (state, req_X_N, req_X_E, req_X_W, req_X_S, X_S)
 begin 
+	err_IDLE_grant_S <= '0';
 	if ( state = IDLE and req_X_N = '0' and req_X_E = '0' and req_X_W = '0' and req_X_S = '1' and 
 		 X_S = '0') then
 		err_IDLE_grant_S <= '1';
-	else 
-		err_IDLE_grant_S <= '0';	
 	end if;
 end process;
 
 
 process (state, req_X_N, req_X_E, req_X_W, req_X_S, state_in)
 begin 
+	err_North_Req_S <= '0';
 	if ( state = North and req_X_N = '0' and req_X_E = '0' and req_X_W = '0' and req_X_S = '1' and 
 		 state_in /= South) then
 		err_North_Req_S <= '1';
-	else 
-		err_North_Req_S <= '0';	
 	end if;
 end process;
 
 process (state, req_X_N, req_X_E, req_X_W, req_X_S, X_S)
 begin 
+	err_North_grant_S <= '0';
 	if ( state = North and req_X_N = '0' and req_X_E = '0' and req_X_W = '0' and req_X_S = '1' and 
 		 X_S = '0') then
 		err_North_grant_S <= '1';
-	else 
-		err_North_grant_S <= '0';	
 	end if;
 end process;
 
 
 process (state, req_X_E, req_X_W, req_X_S, req_X_L, state_in)
 begin 
+	err_East_Req_L <= '0';	
 	if ( state = East and req_X_E = '0' and req_X_W = '0' and req_X_S = '0' and req_X_L = '1' and 
 		 state_in /= Local) then
 		err_East_Req_L <= '1';
-	else 
-		err_East_Req_L <= '0';	
 	end if;
 end process;
 
 process (state, req_X_E, req_X_W, req_X_S, req_X_L, X_L)
 begin 
+	err_East_grant_L <= '0';
 	if ( state = East and req_X_E = '0' and req_X_W = '0' and req_X_S = '0' and req_X_L = '1' and 
 		 X_L = '0') then
 		err_East_grant_L <= '1';
-	else 
-		err_East_grant_L <= '0';	
 	end if;
 end process;
 
 
 process (state, req_X_W, req_X_S, req_X_L, req_X_N, state_in)
 begin 
+	err_West_Req_N <= '0';
 	if ( state = West and req_X_W = '0' and req_X_S = '0' and req_X_L = '0' and req_X_N = '1' and 
 		 state_in /= North) then
 		err_West_Req_N <= '1';
-	else 
-		err_West_Req_N <= '0';	
 	end if;
 end process;
 
 process (state, req_X_W, req_X_S, req_X_L, req_X_N, X_N)
 begin 
+	err_West_grant_N <= '0';
 	if ( state = West and req_X_W = '0' and req_X_S = '0' and req_X_L = '0' and req_X_N = '1' and 
 		 X_N = '0') then
 		err_West_grant_N <= '1';
-	else 
-		err_West_grant_N <= '0';	
 	end if;
 end process;
 
 process (state, req_X_S, req_X_L, req_X_N, req_X_E, state_in)
 begin 
+	err_South_Req_E <= '0';
 	if ( state = South and req_X_S = '0' and req_X_L = '0' and req_X_N = '0' and req_X_E = '1' and 
 		 state_in /= East) then
 		err_South_Req_E <= '1';
-	else 
-		err_South_Req_E <= '0';	
 	end if;
 end process;
 
 process (state, req_X_S, req_X_L, req_X_N, req_X_E, X_E)
 begin 
+	err_South_grant_E <= '0';
 	if ( state = South and req_X_S = '0' and req_X_L = '0' and req_X_N = '0' and req_X_E = '1' and 
 		 X_E = '0') then
 		err_South_grant_E <= '1';
-	else 
-		err_South_grant_E <= '0';	
 	end if;
 end process;
 
@@ -546,23 +495,21 @@ end process;
 -- Local state or invalid state(s) (others case)
 process (state, req_X_L, req_X_N, req_X_E, req_X_W, state_in)
 begin 
+	err_Local_Req_W <= '0';
 	if ( state /= IDLE and state /= North and state /=East and state /=West and state /= South and 
 		 req_X_L = '0' and req_X_N = '0' and req_X_E = '0' and req_X_W = '1' and 
 		 state_in /= West) then
 		err_Local_Req_W <= '1';
-	else 
-		err_Local_Req_W <= '0';	
 	end if;
 end process;
 
 process (state, req_X_L, req_X_N, req_X_E, req_X_W, X_W)
 begin 
+	err_Local_grant_W <= '0';
 	if ( state /= IDLE and state /= North and state /=East and state /=West and state /= South and 
 		 req_X_L = '0' and req_X_N = '0' and req_X_E = '0' and req_X_W = '1' and 
 		 X_W = '0') then
 		err_Local_grant_W <= '1';
-	else 
-		err_Local_grant_W <= '0';	
 	end if;
 end process;
 
@@ -575,105 +522,95 @@ end process;
 
 process (state, req_X_N, req_X_E, req_X_W, req_X_S, req_X_L, state_in)
 begin 
+	err_IDLE_Req_L <= '0';	
 	if ( state = IDLE and req_X_N = '0' and req_X_E = '0' and req_X_W = '0' and req_X_S = '0' and req_X_L = '1' 
 		and state_in /= Local) then
 		err_IDLE_Req_L <= '1';
-	else 
-		err_IDLE_Req_L <= '0';	
 	end if;
 end process;
 
 process (state, req_X_N, req_X_E, req_X_W, req_X_S, req_X_L, X_L)
 begin 
+	err_IDLE_grant_L <= '0';
 	if ( state = IDLE and req_X_N = '0' and req_X_E = '0' and req_X_W = '0' and req_X_S = '0' and req_X_L = '1' and 
 		 X_L = '0' ) then
 		err_IDLE_grant_L <= '1';
-	else 
-		err_IDLE_grant_L <= '0';	
 	end if;
 end process;
 
 
 process (state, req_X_N, req_X_E, req_X_W, req_X_S, req_X_L, state_in)
 begin 
+	err_North_Req_L <= '0';
 	if ( state = North and req_X_N = '0' and req_X_E = '0' and req_X_W = '0' and req_X_S = '0' and req_X_L = '1' 
 		and state_in /= Local) then
 		err_North_Req_L <= '1';
-	else 
-		err_North_Req_L <= '0';	
 	end if;
 end process;
 
 process (state, req_X_N, req_X_E, req_X_W, req_X_S, req_X_L, X_L)
 begin 
+	err_North_grant_L <= '0';
 	if ( state = North and req_X_N = '0' and req_X_E = '0' and req_X_W = '0' and req_X_S = '0' and req_X_L = '1' and 
 		 X_L = '0' ) then
 		err_North_grant_L <= '1';
-	else 
-		err_North_grant_L <= '0';	
 	end if;
 end process;
 
 
 process (state, req_X_E, req_X_W, req_X_S, req_X_L, req_X_N, state_in)
 begin 
+	err_East_Req_N <= '0';	
 	if ( state = East and req_X_E = '0' and req_X_W = '0' and req_X_S = '0' and req_X_L = '0' and req_X_N = '1' and 
 		 state_in /= North) then
 		err_East_Req_N <= '1';
-	else 
-		err_East_Req_N <= '0';	
 	end if;
 end process;
 
 process (state, req_X_E, req_X_W, req_X_S, req_X_L, req_X_N, X_N)
 begin 
+	err_East_grant_N <= '0';
 	if ( state = East and req_X_E = '0' and req_X_W = '0' and req_X_S = '0' and req_X_L = '0' and req_X_N = '1' and 
 		 X_N = '0' ) then
 		err_East_grant_N <= '1';
-	else 
-		err_East_grant_N <= '0';	
 	end if;
 end process;
 
 
 process (state, req_X_W, req_X_S, req_X_L, req_X_N, req_X_E, state_in)
 begin 
+	err_West_Req_E <= '0';
 	if ( state = West and req_X_W = '0' and req_X_S = '0' and req_X_L = '0' and req_X_N = '0' and req_X_E = '1' and 
 		 state_in /= East) then
 		err_West_Req_E <= '1';
-	else 
-		err_West_Req_E <= '0';	
 	end if;
 end process;
 
 process (state, req_X_W, req_X_S, req_X_L, req_X_N, req_X_E, X_E)
 begin 
+	err_West_grant_E <= '0';
 	if ( state = West and req_X_W = '0' and req_X_S = '0' and req_X_L = '0' and req_X_N = '0' and req_X_E = '1' and 
 		 X_E = '0' ) then
 		err_West_grant_E <= '1';
-	else 
-		err_West_grant_E <= '0';	
 	end if;
 end process;
 
 
 process (state, req_X_S, req_X_L, req_X_N, req_X_E, req_X_W, state_in)
 begin 
+	err_South_Req_W <= '0';
 	if ( state = South and req_X_S = '0' and req_X_L = '0' and req_X_N = '0' and req_X_E = '0' and req_X_W = '1' and 
 		 state_in /= West) then
 		err_South_Req_W <= '1';
-	else 
-		err_South_Req_W <= '0';	
 	end if;
 end process;
 
 process (state, req_X_S, req_X_L, req_X_N, req_X_E, req_X_W, X_W)
 begin 
+	err_South_grant_W <= '0';
 	if ( state = South and req_X_S = '0' and req_X_L = '0' and req_X_N = '0' and req_X_E = '0' and req_X_W = '1' and 
 		 X_W = '0' ) then
 		err_South_grant_W <= '1';
-	else 
-		err_South_grant_W <= '0';
 	end if;
 end process;
 
@@ -681,23 +618,21 @@ end process;
 
 process (state, req_X_L, req_X_N, req_X_E, req_X_W, req_X_S, state_in)
 begin 
+	err_Local_Req_S <= '0';
 	if ( state /= IDLE and state /= North and state /=East and state /=West and state /= South and 
 		 req_X_L = '0' and req_X_N = '0' and req_X_E = '0' and req_X_W = '0' and req_X_S = '1' and 
 		 state_in /= South) then
 		err_Local_Req_S <= '1';
-	else 
-		err_Local_Req_S <= '0';	
 	end if;
 end process;
 
 process (state, req_X_L, req_X_N, req_X_E, req_X_W, req_X_S, X_S)
 begin 
+	err_Local_grant_S <= '0';
 	if ( state /= IDLE and state /= North and state /=East and state /=West and state /= South and 
 		 req_X_L = '0' and req_X_N = '0' and req_X_E = '0' and req_X_W = '0' and req_X_S = '1' and 
 		 X_S = '0' ) then
 		err_Local_grant_S <= '1';
-	else 
-		err_Local_grant_S <= '0';
 	end if;
 end process;
 
@@ -709,74 +644,66 @@ end process;
 
 process (state_in)
 begin
+	err_state_in_onehot <= '0';
 	if (state_in /= IDLE and state_in /= North and state_in /= East and state_in /= West and 
 		state_in /= South and state_in /= Local) then
 		err_state_in_onehot <= '1';
-	else 
-		err_state_in_onehot <= '0';
 	end if;
 end process;
 
 process (Requests, Grants)
 begin
+	err_no_request_grants <= '0';
 	if ( Requests = "00000" and Grants /= "00000") then
 		err_no_request_grants <= '1';
-	else 
-		err_no_request_grants <= '0';
 	end if;
 end process;
 
 process (Requests, Grants)
 begin
+	err_request_no_grants <= '0';
 	if ( Requests /= "00000" and Grants = "00000") then
 		err_request_no_grants <= '1';
-	else 
-		err_request_no_grants <= '0';
 	end if;
 end process;
 
 process (req_X_N, X_N)
 begin
+	err_no_Req_N_grant_N <= '0';
 	if (req_X_N = '0' and X_N = '1') then
 		err_no_Req_N_grant_N <= '1';
-	else 
-		err_no_Req_N_grant_N <= '0';
 	end if;
 end process;
 
 process (req_X_E, X_E)
 begin
+	err_no_Req_E_grant_E <= '0';
 	if (req_X_E = '0' and X_E = '1') then
 		err_no_Req_E_grant_E <= '1';
-	else 
-		err_no_Req_E_grant_E <= '0';
 	end if;
 end process;
 
 process (req_X_W, X_W)
 begin
+	err_no_Req_W_grant_W <= '0';
 	if (req_X_W = '0' and X_W = '1') then
 		err_no_Req_W_grant_W <= '1';
-	else 
-		err_no_Req_W_grant_W <= '0';
 	end if;
 end process;
 
 process (req_X_S, X_S)
 begin
+	err_no_Req_S_grant_S <= '0';
 	if (req_X_S = '0' and X_S = '1') then
 		err_no_Req_S_grant_S <= '1';
-	else 
-		err_no_Req_S_grant_S <= '0';
 	end if;
 end process;
 
 process (req_X_L, X_L)
 begin
+	err_no_Req_L_grant_L <= '0';
 	if (req_X_L = '0' and X_L = '1') then
 		err_no_Req_L_grant_L <= '1';
-	else 
-		err_no_Req_L_grant_L <= '0';
 	end if;
 end process;
 
