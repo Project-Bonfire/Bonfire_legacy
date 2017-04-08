@@ -1229,118 +1229,105 @@ end process;
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, write_fake_flit)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '1' and flit_type = "001" and fault_out = '0' and write_fake_flit = '0') then
 		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, state_in, state_out)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '1' and flit_type = "001" and fault_out = '1' and state_in /= state_out) then
 		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, faulty_packet_in)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '1' and flit_type = "100" and fault_out = '0' and faulty_packet_in /= '0') then
-		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in <= '0';
+		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in <= '1';		
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, state_in, state_out)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '1' and flit_type = "100" and fault_out = '1' and state_in /= state_out) then
 		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, state_in)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '1' and flit_type = "100" and fault_out = '0' and state_in /= Idle) then
 		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, fake_credit)
-begin 
+begin
+	err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '1' and flit_type = "100" and fault_out = '0' and fake_credit = '0') then
 		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, fake_credit)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '1' and ((flit_type /= "001" and flit_type /= "100") or fault_out = '1') and fake_credit = '0') then
 		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, faulty_packet_in, faulty_packet_out)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and ( valid_in = '0' or (flit_type /= "001" and flit_type /= "100") or fault_out = '1' ) and faulty_packet_in /= faulty_packet_out) then
 		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, state_in, state_out)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and ((flit_type /= "001" and flit_type /= "100") or fault_out = '1') and state_in /= state_out) then
 		err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, faulty_packet_in, faulty_packet_out)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '0' and faulty_packet_in /= faulty_packet_out) then
 		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, state_in, state_out)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '0' and state_in /= state_out) then
 		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, write_fake_flit)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '0' and write_fake_flit = '1') then
-		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit <= '0';
+		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit <= '1';		
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, fake_credit)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '0' and fake_credit = '1') then
 		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit <= '0';
 	end if;
 end process;
 
@@ -1349,93 +1336,82 @@ end process;
 
 process (state_out, faulty_packet_out, state_in, state_out)
 begin 
+	err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '0' and state_in /= state_out) then
 		err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change <= '1';
-	else
-		err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, faulty_packet_in, faulty_packet_out)
 begin 
+	err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '0' and faulty_packet_in /= faulty_packet_out) then
 		err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change <= '1';
-	else
-		err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, fake_credit)
 begin 
+	err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '0' and fake_credit = '1') then
 		err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit <= '1';
-	else
-		err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, write_fake_flit)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and (valid_in = '0' or flit_type /= "001" or fault_out = '1') and write_fake_flit = '1') then
 		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, write_fake_flit)
 begin 
+	err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '0' and write_fake_flit = '1') then
 		err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit <= '1';
-	else
-		err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit <= '0';
 	end if;
 end process;
 
 process (fault_info, fault_info_out)
 begin 
+	err_fault_info_fault_info_out_equal <= '0';
 	if (fault_info /= fault_info_out) then
 		err_fault_info_fault_info_out_equal <= '1';
-	else
-		err_fault_info_fault_info_out_equal <= '0';
 	end if;
 end process;
 
 process (state_out, valid_in, state_in, state_out)
 begin 
+	err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal <= '0';
 	if (state_out = Packet_drop and valid_in = '0' and state_in /= state_out) then
 		err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal <= '1';
-	else
-		err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal <= '0';
 	end if;
 end process;
 
 process (state_out, valid_in, fault_out, flit_type, state_in, state_out)
 begin 
+	err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal <= '0';
 	if (state_out = Tail_flit and valid_in = '1' and fault_out = '0' and flit_type /= "001" and state_in /= state_out) then
 		err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal <= '1';
-	else
-		err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal <= '0';
 	end if;
 end process;
 
--- Added after change of design !
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_info_in)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '1' and flit_type = "001" and fault_info_in /= '1') then
 		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in <= '0';
 	end if;
 end process;
 
 process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, fault_info_in)
 begin 
+	err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and (valid_in = '0' or flit_type /= "001") and fault_info_in /= '0') then
 		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in <= '1';
-	else
-		err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in <= '0';
 	end if;
 end process;
 
