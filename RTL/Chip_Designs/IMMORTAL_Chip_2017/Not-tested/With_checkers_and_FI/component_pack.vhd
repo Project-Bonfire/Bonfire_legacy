@@ -37,6 +37,256 @@ package component_pack is
                 );
   end COMPONENT;
 
+  component LBDR_packet_drop_routing_part_pseudo_checkers is
+  generic (
+        cur_addr_rst: integer := 8;
+        Rxy_rst: integer := 8;
+        Cx_rst: integer := 8;
+        NoC_size: integer := 4
+            );
+    port (  
+            empty: in  std_logic;
+            flit_type: in std_logic_vector(2 downto 0);
+            Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: in std_logic;
+            grant_N, grant_E, grant_W, grant_S, grant_L: in std_logic;            
+            dst_addr: in std_logic_vector(NoC_size-1 downto 0);
+            faulty: in std_logic;
+            Cx: in std_logic_vector(3 downto 0);
+            Rxy: in std_logic_vector(7 downto 0);
+            packet_drop: in std_logic;
+
+            N1_out, E1_out, W1_out, S1_out: in std_logic;
+            Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: in std_logic;
+            grants: in std_logic;
+            packet_drop_order: in std_logic;
+            packet_drop_in: in std_logic;
+
+            -- Checker outputs
+            err_header_empty_Requests_FF_Requests_in, 
+            err_tail_Requests_in_all_zero, 
+            err_tail_empty_Requests_FF_Requests_in, 
+            err_tail_not_empty_not_grants_Requests_FF_Requests_in,
+            err_grants_onehot,
+            err_grants_mismatch, 
+            err_header_tail_Requests_FF_Requests_in, 
+            err_dst_addr_cur_addr_N1,
+            err_dst_addr_cur_addr_not_N1,
+            err_dst_addr_cur_addr_E1,
+            err_dst_addr_cur_addr_not_E1,
+            err_dst_addr_cur_addr_W1,
+            err_dst_addr_cur_addr_not_W1,
+            err_dst_addr_cur_addr_S1,
+            err_dst_addr_cur_addr_not_S1, 
+            err_dst_addr_cur_addr_Req_L_in, 
+            err_dst_addr_cur_addr_not_Req_L_in, 
+            err_header_not_empty_faulty_drop_packet_in, -- added according to new design
+            err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
+            err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
+            --err_header_not_empty_Req_L_in, -- added according to new design
+            err_header_not_empty_Req_N_in, err_header_not_empty_Req_E_in, err_header_not_empty_Req_W_in, 
+            err_header_not_empty_Req_S_in,  err_header_empty_packet_drop_in_packet_drop_equal,  
+            err_tail_not_empty_packet_drop_not_packet_drop_in, err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal, 
+            err_invalid_or_body_flit_packet_drop_in_packet_drop_equal,  err_packet_drop_order : out std_logic
+            );
+    end component;
+
+    component Cx_Reconf_pseudo_checkers is
+    port (  reconfig_cx: in  std_logic; -- *
+            flit_type: in std_logic_vector(2 downto 0); -- *
+            empty: in std_logic; -- *
+            grants: in std_logic;  -- *
+            Cx_in: in std_logic_vector(3 downto 0); -- * 
+            Temp_Cx: in std_logic_vector(3 downto 0); -- *
+            reconfig_cx_in: in std_logic; -- *
+            Cx: in std_logic_vector(3 downto 0); -- *
+            Cx_reconf_PE: in  std_logic_vector(3 downto 0); -- newly added
+            Reconfig_command : in std_logic; -- newly added
+            Faulty_C_N: in std_logic; -- *
+            Faulty_C_E: in std_logic; -- *
+            Faulty_C_W: in std_logic; -- *
+            Faulty_C_S: in std_logic; -- *
+            Temp_Cx_in: in std_logic_vector(3 downto 0); -- *
+
+            -- Checker Outputs
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal, 
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in, 
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal, -- Added 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal : out std_logic -- Added
+            );
+    end component;
+
+    component Rxy_Reconf_pseudo_checkers is
+    port (  ReConf_FF_out: in std_logic;
+            Rxy: in  std_logic_vector(7 downto 0);   
+            Rxy_tmp: in std_logic_vector(7 downto 0);
+            Reconfig_command : in std_logic;
+            flit_type: in std_logic_vector(2 downto 0);
+            grants: in std_logic;
+            empty: in  std_logic;
+            Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
+            Rxy_in: in std_logic_vector(7 downto 0);
+            Rxy_tmp_in: in std_logic_vector(7 downto 0);            
+            ReConf_FF_in: in std_logic;
+
+            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp, 
+            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in, 
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal, 
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in, 
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal, 
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal, 
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal : out std_logic
+         );
+    end component;
+
+  component FIFO_credit_based_control_part_checkers is
+    port (  valid_in: in std_logic;
+            read_en_N : in std_logic;
+            read_en_E : in std_logic;            
+            read_en_W : in std_logic;
+            read_en_S : in std_logic;
+            read_en_L : in std_logic;
+            read_pointer: in std_logic_vector(3 downto 0);
+            read_pointer_in: in std_logic_vector(3 downto 0);
+            write_pointer: in std_logic_vector(3 downto 0); 
+            write_pointer_in: in std_logic_vector(3 downto 0); 
+            credit_out: in std_logic;
+            empty_out: in std_logic;
+            full_out: in std_logic;
+            read_en_out: in std_logic;
+            write_en_out: in std_logic; 
+            fake_credit: in std_logic;
+            fake_credit_counter: in std_logic_vector(1 downto 0);
+            fake_credit_counter_in: in std_logic_vector(1 downto 0);  
+            state_out: in std_logic_vector(4 downto 0);
+            state_in: in std_logic_vector(4 downto 0);
+            fault_info: in std_logic;                             
+            fault_info_out: in std_logic;                         
+            fault_info_in: in std_logic;     
+            health_info: in std_logic;
+            faulty_packet_out: in std_logic;                      
+            faulty_packet_in: in std_logic;
+            flit_type: in std_logic_vector(2 downto 0);
+            fault_out: in std_logic;
+            write_fake_flit: in std_logic;
+
+            -- Functional checkers
+            err_empty_full, err_empty_read_en, err_full_write_en, err_state_in_onehot, 
+            err_read_pointer_in_onehot, err_write_pointer_in_onehot, 
+
+            -- Structural checkers
+            err_write_en_write_pointer, err_not_write_en_write_pointer, err_read_pointer_write_pointer_not_empty, 
+            err_read_pointer_write_pointer_empty, err_read_pointer_write_pointer_not_full, err_read_pointer_write_pointer_full, 
+            err_read_pointer_increment, err_read_pointer_not_increment, err_write_en, err_not_write_en, 
+            err_not_write_en1, err_not_write_en2, err_read_en_mismatch, err_read_en_mismatch1, 
+
+            -- Newly added checkers for FIFO with packet drop and fault classifier support!
+            err_fake_credit_read_en_fake_credit_counter_in_increment, 
+            err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_fake_credit_counter_in_decrement, 
+            err_not_fake_credit_read_en_fake_credit_counter_in_not_change, 
+            err_fake_credit_not_read_en_fake_credit_counter_in_not_change, 
+            err_not_fake_credit_not_read_en_fake_credit_counter_zero_fake_credit_counter_in_not_change, 
+            err_fake_credit_read_en_credit_out, 
+            err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_credit_out, 
+            err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out, 
+
+            -- Checkers for Packet Dropping FSM of FIFO
+            err_state_out_Idle_not_fault_out_valid_in_state_in_Header_flit, 
+            err_state_out_Idle_not_fault_out_valid_in_state_in_not_change, 
+            err_state_out_Idle_not_fault_out_not_fake_credit, 
+            err_state_out_Idle_not_fault_out_not_fault_info_in, 
+            err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal, 
+            err_state_out_Idle_fault_out_fake_credit, 
+            err_state_out_Idle_fault_out_state_in_Packet_drop, 
+            err_state_out_Idle_fault_out_fault_info_in, 
+            err_state_out_Idle_fault_out_faulty_packet_in, 
+            err_state_out_Idle_not_health_info, 
+            err_state_out_Idle_not_write_fake_flit, 
+
+            err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Body_state_in_Body_flit, 
+            err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Tail_state_in_Tail_flit, 
+            err_state_out_Header_flit_valid_in_not_fault_out_not_write_fake_flit, 
+            err_state_out_Header_flit_valid_in_not_fault_out_not_fault_info_in, 
+            err_state_out_Header_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+            err_state_out_Header_flit_valid_in_fault_out_write_fake_flit, 
+            err_state_out_Header_flit_valid_in_fault_out_state_in_Packet_drop, 
+            err_state_out_Header_flit_valid_in_fault_out_fault_info_in, 
+            err_state_out_Header_flit_valid_in_fault_out_faulty_packet_in, 
+            err_state_out_Header_flit_not_valid_in_state_in_state_out_not_change, 
+            err_state_out_Header_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change, 
+            err_state_out_Header_flit_not_valid_in_not_fault_info_in, 
+            err_state_out_Header_flit_not_valid_in_not_write_fake_flit, 
+            err_state_out_Header_flit_or_Body_flit_not_fake_credit, 
+
+            err_state_out_Body_flit_valid_in_not_fault_out_state_in_state_out_not_change, 
+            err_state_out_Body_flit_valid_in_not_fault_out_state_in_Tail_flit, 
+            err_state_out_Body_flit_valid_in_not_fault_out_health_info, 
+            err_state_out_Body_flit_valid_in_not_fault_out_not_write_fake_flit, 
+            err_state_out_Body_flit_valid_in_not_fault_out_fault_info_in, 
+            err_state_out_Body_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+            err_state_out_Body_flit_valid_in_fault_out_write_fake_flit, 
+            err_state_out_Body_flit_valid_in_fault_out_state_in_Packet_drop, 
+            err_state_out_Body_flit_valid_in_fault_out_fault_info_in, 
+            err_state_out_Body_flit_valid_in_fault_out_faulty_packet_in, 
+            err_state_out_Body_flit_not_valid_in_state_in_state_out_not_change, 
+            err_state_out_Body_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change, 
+            err_state_out_Body_flit_not_valid_in_not_fault_info_in, 
+            err_state_out_Body_flit_valid_in_not_fault_out_flit_type_not_tail_not_health_info, 
+            err_state_out_Body_flit_valid_in_fault_out_not_health_info, 
+            err_state_out_Body_flit_valid_in_not_health_info, 
+            err_state_out_Body_flit_not_fake_credit, 
+            err_state_out_Body_flit_not_valid_in_not_write_fake_flit, 
+
+            err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_Header_state_in_Header_flit, 
+            err_state_out_Tail_flit_valid_in_not_fault_out_not_fake_credit, 
+            err_state_out_Tail_flit_valid_in_not_fault_out_not_fault_info_in, 
+            err_state_out_Tail_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+            err_state_out_Tail_flit_valid_in_fault_out_fake_credit, 
+            err_state_out_Tail_flit_valid_in_fault_out_state_in_Packet_drop, 
+            err_state_out_Tail_flit_valid_in_fault_out_fault_info_in, 
+            err_state_out_Tail_flit_valid_in_fault_out_faulty_packet_in, 
+            err_state_out_Tail_flit_not_valid_in_state_in_Idle, 
+            err_state_out_Tail_flit_not_valid_in_faulty_packet_in_faulty_packet_in_not_change, 
+            err_state_out_Tail_flit_not_valid_in_not_fault_info_in, 
+            err_state_out_Tail_flit_not_valid_in_not_fake_credit, 
+            err_state_out_Tail_flit_not_write_fake_flit, 
+
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_fake_credit, 
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_faulty_packet_in, 
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_state_in_Header_flit, 
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit, 
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in, 
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle, 
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit, 
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit, 
+            err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+            err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change, 
+            err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal, 
+            err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change, 
+            err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit, 
+            err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
+            err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
+            err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
+            err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
+            err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
+            err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change, 
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change, 
+
+            err_fault_info_fault_info_out_equal, 
+            err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
+            err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+            err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+            err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in : out std_logic
+           );
+    end component;
+
   COMPONENT FIFO_credit_based is
         generic (
             DATA_WIDTH: integer := 32
