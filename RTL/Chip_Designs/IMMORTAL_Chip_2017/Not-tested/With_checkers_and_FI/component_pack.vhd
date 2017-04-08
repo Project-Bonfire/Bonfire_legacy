@@ -1,9 +1,9 @@
-
+--Copyright (C) 2016 Siavoosh Payandeh Azad
 library ieee;
 use ieee.std_logic_1164.all;
 
 package component_pack is
-  
+  -- constant definitions
   CONSTANT IDLE: std_logic_vector (5 downto 0) := "000001";
   CONSTANT Local: std_logic_vector (5 downto 0) := "000010";
   CONSTANT North: std_logic_vector (5 downto 0) := "000100";
@@ -11,6 +11,9 @@ package component_pack is
   CONSTANT West: std_logic_vector (5 downto 0) := "010000";
   CONSTANT South: std_logic_vector (5 downto 0) := "100000";
 
+  constant fake_tail :  std_logic_vector := "10000000000000000000000000000001";
+
+  -- component declarations
   COMPONENT counter_threshold_classifier is
     generic (
         counter_depth: integer := 8;
