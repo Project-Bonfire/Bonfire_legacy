@@ -939,7 +939,7 @@ signal      -- Functional checkers
 -- Signals needed for grouping checkers to model turn/path faults
 
 signal      E_FIFO_checkers_ORed, S_FIFO_checkers_ORed, L_FIFO_checkers_ORed : std_logic;
-signal      E2S_turn_fault, S2E_turn_fault, : std_logic;
+signal      E2S_turn_fault, S2E_turn_fault : std_logic;
 signal      L2E_fault, L2S_fault, E2L_fault, S2L_fault : std_logic;
 
 -- Just used temporarily for debugging purposes!
