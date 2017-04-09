@@ -305,7 +305,12 @@ if reset = '0' then
   Rxy <= std_logic_vector(to_unsigned(Rxy_rst, Rxy'length));
   Rxy_tmp <= (others => '0');
 
-  Req_N_FF <= '0'; Req_E_FF <= '0'; Req_W_FF <= '0'; Req_S_FF <= '0'; Req_L_FF <= '0';
+  Req_N_FF <= '0'; 
+  Req_E_FF <= '0'; 
+  Req_W_FF <= '0'; 
+  Req_S_FF <= '0'; 
+  Req_L_FF <= '0';
+  
   Cx <= std_logic_vector(to_unsigned(Cx_rst, Cx'length));
   Temp_Cx <= (others => '0');
   ReConf_FF_out <= '0';
@@ -315,7 +320,13 @@ if reset = '0' then
 elsif clk'event and clk = '1' then
   Rxy <= Rxy_in;	
   Rxy_tmp <=  Rxy_tmp_in;
-  Req_N_FF <= Req_N_in; Req_E_FF <= Req_E_in; Req_W_FF <= Req_W_in; Req_S_FF <= Req_S_in; Req_L_FF <= Req_L_in;
+
+  Req_N_FF <= Req_N_in; 
+  Req_E_FF <= Req_E_in; 
+  Req_W_FF <= Req_W_in; 
+  Req_S_FF <= Req_S_in; 
+  Req_L_FF <= Req_L_in;
+
   ReConf_FF_out <= ReConf_FF_in;
   Cx <= Cx_in;
   reconfig_cx <= reconfig_cx_in;
@@ -355,11 +366,9 @@ process(Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Cx, Temp_Cx, flit_type, 
     if (Faulty_C_N or Faulty_C_E or Faulty_C_W or Faulty_C_S) = '1' then 
       reconfig_cx_in <= '1';
       Temp_Cx_in <= not(Faulty_C_S & Faulty_C_W & Faulty_C_E & Faulty_C_N) and Cx;
-
     elsif Reconfig_command = '1' then
       reconfig_cx_in <= '1';
       Temp_Cx_in <=  Cx_reconf_PE;
-
     else 
       reconfig_cx_in <= reconfig_cx;
     end if;
@@ -395,6 +404,13 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
           Req_W_in <= '0';
           Req_S_in <= '0';
           Req_L_in <= '0';
+          -- start of logging block... 
+          if faulty = '1' then
+            report "LBDR recieved faulty packet! dropping packet..." severity note;
+          else:
+            report "LBDR can not generate request! dropping packet..." severity note;
+          end if;
+          -- end of logging block...
         end if;
 
   elsif flit_type = "100" and empty = '0' and grants = '1' then
