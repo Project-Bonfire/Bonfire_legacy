@@ -383,7 +383,7 @@ Req_L <= Req_L_FF;
 
 process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF, grants, packet_drop, faulty) begin
  packet_drop_in <= packet_drop;
- if flit_type = "001" and empty = '0' then
+  if flit_type = "001" and empty = '0' then
         Req_N_in <= ((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0);
         Req_E_in <= ((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1);
         Req_W_in <= ((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2);
@@ -404,14 +404,14 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
           Req_W_in <= '0';
           Req_S_in <= '0';
           Req_L_in <= '0';
-          -- start of logging block... 
-          if faulty = '1' then
-            report "Node "&integer'image(cur_addr_rst)&": LBDR recieved faulty packet at" & time'image(now) &"! dropping packet..." severity note;
-          else:
-            report "Node "&integer'image(cur_addr_rst)&": LBDR can not generate request at" & time'image(now) &"! dropping packet..." severity note;
-          end if;
-          -- end of logging block...
         end if;
+          -- start of logging block... 
+        if faulty = '1' then
+          report "Node "&integer'image(cur_addr_rst)&": LBDR recieved faulty packet at" & time'image(now) &"! dropping packet..." severity note;
+        else
+          report "Node "&integer'image(cur_addr_rst)&": LBDR can not generate request at" & time'image(now) &"! dropping packet..." severity note;
+        end if;
+          -- end of logging block...
 
   elsif flit_type = "100" and empty = '0' and grants = '1' then
     Req_N_in <= '0';
