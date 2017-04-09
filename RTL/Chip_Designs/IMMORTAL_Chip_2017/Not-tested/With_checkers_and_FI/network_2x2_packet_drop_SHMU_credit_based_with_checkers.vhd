@@ -65,21 +65,7 @@ port (reset: in  std_logic;
     turn_faults_3: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_3: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_3: in  std_logic_vector(3 downto 0);
-    Reconfig_command_3 : in std_logic;
-
-    --------------
-    -- IJTAG network for fault injection and checker status monitoring
-    TCK         : in std_logic;
-    RST         : in std_logic;
-    SEL         : in std_logic;
-    SI          : in std_logic;
-    SE          : in std_logic;
-    UE          : in std_logic;
-    CE          : in std_logic;
-    SO          : out std_logic;
-    toF         : out std_logic;
-    toC         : out std_logic
-
+    Reconfig_command_3 : in std_logic
     ); 
 end network_2x2; 
 
@@ -131,31 +117,6 @@ COMPONENT router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropp
  ); 
 end COMPONENT; 
 
-component SIB_mux_pre_FCX_SELgate is
-    Port ( -- Scan Interface  client --------------
-           SI : in STD_LOGIC; -- ScanInPort 
-           CE : in STD_LOGIC; -- CaptureEnPort
-           SE : in STD_LOGIC; -- ShiftEnPort
-           UE : in STD_LOGIC; -- UpdateEnPort
-           SEL : in STD_LOGIC; -- SelectPort
-           RST : in STD_LOGIC; -- ResetPort
-           TCK : in STD_LOGIC; -- TCKPort
-           SO : out STD_LOGIC; -- ScanOutPort
-           toF : out STD_LOGIC; -- To F flag of the upper hierarchical level
-           toC : out STD_LOGIC; -- To C flag of the upper hierarchical level
-       -- Scan Interface  host ----------------
-           fromSO : in  STD_LOGIC; -- ScanInPort
-           toCE : out  STD_LOGIC; -- ToCaptureEnPort
-           toSE : out  STD_LOGIC; -- ToShiftEnPort
-           toUE : out  STD_LOGIC; -- ToUpdateEnPort
-           toSEL : out  STD_LOGIC; -- ToSelectPort
-           toRST : out  STD_LOGIC; -- ToResetPort
-           toTCK : out  STD_LOGIC; -- ToTCKPort
-           toSI : out  STD_LOGIC; -- ScanOutPort
-           fromF : in STD_LOGIC; -- From an OR of all F flags in the underlying network segment
-           fromC : in STD_LOGIC);  -- From an AND of all C flags in the underlying network segment
-end component;
-
 
 -- generating bulk signals. not all of them are used in the design...
 	signal credit_out_N_0, credit_out_E_0, credit_out_W_0, credit_out_S_0: std_logic;
@@ -197,28 +158,35 @@ end component;
 	signal Faulty_N_in3,Faulty_E_in3,Faulty_W_in3,Faulty_S_in3: std_logic;
 
     -- fault injector signals
-    signal TCK_0, TCK_1, TCK_2, TCK_3: std_logic;
-    signal SE_0,  SE_1,  SE_2,  SE_3:  std_logic;
-    signal UE_0,  UE_1,  UE_2,  UE_3:  std_logic;
-    signal SI_0,  SI_1,  SI_2,  SI_3:  std_logic;
-    signal SO_0,  SO_1,  SO_2,  SO_3:  std_logic;
+    signal TCK_0: std_logic;
+    signal SE_0:  std_logic;
+    signal UE_0:  std_logic;
+    signal SI_0:  std_logic;
+    signal SO_0:  std_logic;
 
     --------------
-    -- IJTAG network signals
-    signal SIB_0_toSEL, SIB_1_toSEL, SIB_2_toSEL, SIB_3_toSEL : std_logic;
-    signal SIB_0_toCE,  SIB_1_toCE,  SIB_2_toCE,  SIB_3_toCE  : std_logic;
-    signal SIB_0_toRST, SIB_1_toRST, SIB_2_toRST, SIB_3_toRST : std_logic;
-    signal SIB_0_so,    SIB_1_so,    SIB_2_so,    SIB_3_so    : std_logic;
-    -- flags from checkers
-    signal F_R0, F_R1, F_R2, F_R3 : std_logic := '0';
-    signal C_R0, C_R1, C_R2, C_R3 : std_logic := '1';
-    -- flags top level
-    signal F_segtop_fromSIB_0, C_segtop_fromSIB_0 : std_logic;
-    signal F_segtop_fromSIB_1, C_segtop_fromSIB_1 : std_logic;
-    signal F_segtop_fromSIB_2, C_segtop_fromSIB_2 : std_logic;
-    signal F_segtop_fromSIB_3, C_segtop_fromSIB_3 : std_logic;
+    signal TCK_1: std_logic:= '0';
+    signal SE_1:  std_logic:= '0';
+    signal UE_1:  std_logic:= '0';    
+    signal SI_1:  std_logic:= '0';
+    signal SO_1:  std_logic;
 
     --------------
+    signal TCK_2: std_logic:= '0';
+    signal SE_2:  std_logic:= '0';
+    signal UE_2:  std_logic:= '0';    
+    signal SI_2:  std_logic:= '0';
+    signal SO_2:  std_logic;
+
+    --------------
+    signal TCK_3: std_logic:= '0';
+    signal SE_3:  std_logic:= '0';
+    signal UE_3:  std_logic:= '0';    
+    signal SI_3:  std_logic:= '0';
+    signal SO_3:  std_logic;
+
+    --------------
+
     -- the checker output related ports (for unclassified fault information)
     signal link_faults_async_0 : std_logic_vector(4 downto 0);
     signal turn_faults_async_0: std_logic_vector(19 downto 0);
@@ -236,6 +204,10 @@ end component;
     signal turn_faults_async_3: std_logic_vector(19 downto 0);
     --------------
 
+    -- Fault injection related signals and constants
+    constant fault_clk_period : time := 1 ns;
+
+
 --        organizaiton of the network:
 --     x --------------->
 --  y         ----       ----
@@ -248,107 +220,416 @@ end component;
 --                         
 begin
 
--- flags top level
-toF <= F_segtop_fromSIB_0 or  F_segtop_fromSIB_1 or  F_segtop_fromSIB_2 or  F_segtop_fromSIB_3;
-toC <= C_segtop_fromSIB_0 and C_segtop_fromSIB_1 and C_segtop_fromSIB_2 and C_segtop_fromSIB_3;
-SO <= SIB_3_so;
+   -- Fault injection clock process (IJTAG-related)
+   fault_clk_process :process
+   begin
+        TCK_0 <= '0';
+        wait for fault_clk_period/2;   
+        TCK_0 <= '1';
+        wait for fault_clk_period/2; 
+   end process;
 
-SIB_0 : SIB_mux_pre_FCX_SELgate
-    port map ( -- Scan Interface  client --------------
-    SI => SI,
-    CE => CE,
-    SE => SE,
-    UE => UE,
-    SEL => SEL,
-    RST => RST,
-    TCK => TCK,
-    SO => SIB_0_so,
-    toF => F_segtop_fromSIB_0,
-    toC => C_segtop_fromSIB_0,
-     -- Scan Interface  host ----------------
-    fromSO => SO_0,
-    toCE => SIB_0_toCE,
-    toSE => SE_0,
-    toUE => UE_0,
-    toSEL => SIB_0_toSEL,
-    toRST => SIB_0_toRST,
-    toTCK => TCK_0,
-    toSI => SI_0,
-    fromF => F_R0,
-    fromC => C_R0
-);
-SIB_1 : SIB_mux_pre_FCX_SELgate
-    port map ( -- Scan Interface  client --------------
-    SI => SIB_0_so,
-    CE => CE,
-    SE => SE,
-    UE => UE,
-    SEL => SEL,
-    RST => RST,
-    TCK => TCK,
-    SO => SIB_1_so,
-    toF => F_segtop_fromSIB_1,
-    toC => C_segtop_fromSIB_1,
-     -- Scan Interface  host ----------------
-    fromSO => SO_1,
-    toCE => SIB_1_toCE,
-    toSE => SE_1,
-    toUE => UE_1,
-    toSEL => SIB_1_toSEL,
-    toRST => SIB_1_toRST,
-    toTCK => TCK_1,
-    toSI => SI_1,
-    fromF => F_R1,
-    fromC => C_R1
-);
-SIB_2 : SIB_mux_pre_FCX_SELgate
-    port map ( -- Scan Interface  client --------------
-    SI => SIB_1_so,
-    CE => CE,
-    SE => SE,
-    UE => UE,
-    SEL => SEL,
-    RST => RST,
-    TCK => TCK,
-    SO => SIB_2_so,
-    toF => F_segtop_fromSIB_2,
-    toC => C_segtop_fromSIB_2,
-     -- Scan Interface  host ----------------
-    fromSO => SO_2,
-    toCE => SIB_2_toCE,
-    toSE => SE_2,
-    toUE => UE_2,
-    toSEL => SIB_2_toSEL,
-    toRST => SIB_2_toRST,
-    toTCK => TCK_2,
-    toSI => SI_2,
-    fromF => F_R2,
-    fromC => C_R2
-);
-SIB_3 : SIB_mux_pre_FCX_SELgate
-    port map ( -- Scan Interface  client --------------
-    SI => SIB_2_so,
-    CE => CE,
-    SE => SE,
-    UE => UE,
-    SEL => SEL,
-    RST => RST,
-    TCK => TCK,
-    SO => SIB_3_so,
-    toF => F_segtop_fromSIB_3,
-    toC => C_segtop_fromSIB_3,
-     -- Scan Interface  host ----------------
-    fromSO => SO_3,
-    toCE => SIB_3_toCE,
-    toSE => SE_3,
-    toUE => UE_3,
-    toSEL => SIB_3_toSEL,
-    toRST => SIB_3_toRST,
-    toTCK => TCK_3,
-    toSI => SI_3,
-    fromF => F_R3,
-    fromC => C_R3
-);
+   -- Fault Injection Stimulus process (shifting in single SA0 fault at a location in L FIFO in Router 0)
+   fault_injection_stim_proc: process
+   begin        
+      wait for 3000 ns;
+
+      UE_0 <= '0';
+      SE_0 <= '1';
+
+      -- Not Injecting fault to Allocator logic
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to S Arbiter_out
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to W Arbiter_out
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to E Arbiter_out
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to N Arbiter_out
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to L Arbiter_out
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to S Arbiter_in
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to W Arbiter_in
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to E Arbiter_in
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to N Arbiter_in
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to L Arbiter_in
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to S LBDR
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to W LBDR
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to E LBDR
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to N LBDR
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to L LBDR
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to S FIFO
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
+
+      -- Not Injecting fault to W FIFO
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA1 fault injection at bit 0 (LSB)
+
+      -- Injecting fault to E FIFO
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA1 fault injection at bit 0 (LSB)
+
+      -- Not Injecting fault to N FIFO
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA1 fault injection at bit 0 (LSB)
+
+      -- Injecting fault to L FIFO
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
+      wait until TCK_0'event and TCK_0 ='0';
+        SI_0 <= '1'; -- SA1 fault injection at bit 0 (LSB)
+
+      wait until TCK_0'event and TCK_0 ='0'; -- Actually affect the signal(s) with fault information
+        UE_0 <= '1';
+        SE_0 <= '0';
+        SI_0 <= '0'; 
+      --wait until TCK_0'event and TCK_0 ='0'; -- No fault injection anymore and no shifting
+
+      --wait until TCK_0'event and TCK_0 ='0'; -- No fault injection anymore and no shifting
+      --wait until TCK_0'event and TCK_0 ='0'; -- No fault injection anymore and no shifting
+      --wait until TCK_0'event and TCK_0 ='0'; -- No fault injection anymore and no shifting
+      --wait until TCK_0'event and TCK_0 ='0'; -- No fault injection anymore and no shifting
+      --wait until TCK_0'event and TCK_0 ='0'; -- No fault injection anymore and no shifting
+
+      wait until TCK_0'event and TCK_0 ='0'; -- No fault injection anymore and no shifting
+        UE_0 <= '0';
+        SE_0 <= '0';
+        SI_0 <= '0';         
+      --wait until TCK_0'event and TCK_0 ='0'; 
+
+      wait; --??
+
+   end process;
+
+
 
 R_0: router_credit_based_PD_C_SHMU 
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 0, Rxy_rst => 60,
@@ -371,6 +652,7 @@ R_0: router_credit_based_PD_C_SHMU
     -- the non-classified fault information
     link_faults_async_0, turn_faults_async_0
  ); 
+
 R_1: router_credit_based_PD_C_SHMU 
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 1, Rxy_rst => 60,
         Cx_rst =>  12, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
@@ -388,7 +670,7 @@ R_1: router_credit_based_PD_C_SHMU
 	link_faults_1, turn_faults_1,
 	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1, 
     -- fault injector shift register with serial input signals
-    TCK, SE_1, UE_1, SI_1, SO_1, 
+    TCK_1, SE_1, UE_1, SI_1, SO_1, 
     -- the non-classified fault information
     link_faults_async_1, turn_faults_async_1
  ); 
@@ -409,7 +691,7 @@ R_2: router_credit_based_PD_C_SHMU
 	link_faults_2, turn_faults_2,
 	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2, 
     -- fault injector shift register with serial input signals
-    TCK, SE_2, UE_2, SI_2, SO_2, 
+    TCK_2, SE_2, UE_2, SI_2, SO_2, 
     -- the non-classified fault information
     link_faults_async_2, turn_faults_async_2
  ); 
@@ -430,7 +712,7 @@ R_3: router_credit_based_PD_C_SHMU
 	link_faults_3, turn_faults_3,
 	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3, 
     -- fault injector shift register with serial input signals
-    TCK, SE_3, UE_3, SI_3, SO_3, 
+    TCK_3, SE_3, UE_3, SI_3, SO_3, 
     -- the non-classified fault information
     link_faults_async_3, turn_faults_async_3
  ); 
