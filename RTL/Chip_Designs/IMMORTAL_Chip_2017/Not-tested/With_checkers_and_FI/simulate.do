@@ -33,6 +33,11 @@ vcom -cover bcesfx "shift_register_serial_in.vhd"
 vcom -cover bcesfx "NI.vhd"
 vcom -cover bcesfx "xbar.vhd"
 
+# IJTAG-related components
+vcom -cover bcesfx "SIB_mux_pre_FCX_SELgate.vhd"
+vcom -cover bcesfx "ScanMux.vhd"
+vcom -cover bcesfx "ScanRegister.vhd"
+
 vcom -cover bcesfx "plasma_RTL/alu.vhd"
 vcom -cover bcesfx "plasma_RTL/bus_mux.vhd"
 vcom -cover bcesfx "plasma_RTL/cache.vhd"
