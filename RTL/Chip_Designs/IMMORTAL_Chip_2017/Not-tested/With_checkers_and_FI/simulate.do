@@ -8,7 +8,8 @@
 vlib work
 
 # Include files and compile them
-vcom -cover bcesfx "TB_Package_32_bit_credit_based_NI.vhd"
+
+
 vcom -cover bcesfx "component_pack.vhd"
 vcom -cover bcesfx "plasma_RTL/mlite_pack.vhd"
 vcom -cover bcesfx "Allocator_with_checkers_with_FI/Arbiter_in_one_hot_checkers.vhd"
