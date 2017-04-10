@@ -93,9 +93,7 @@ package body TB_Package is
 
     while true loop 
       
-      if  state = Idle and now  > finish_time then 
-          wait; 
-      end if;
+
 
       -- read the flag status
       address <= flag_address;  
@@ -217,9 +215,9 @@ package body TB_Package is
       elsif data_read(30) = '0' then -- P2N is not full, can send flit
           
           
-          if frame_counter >= frame_starting_delay then
+          if frame_counter >= frame_starting_delay  then
               
-              if state = Idle then
+              if state = Idle and now  < finish_time then
                   if frame_counter < frame_starting_delay+1 then
                     
                     state :=  Header_flit;
