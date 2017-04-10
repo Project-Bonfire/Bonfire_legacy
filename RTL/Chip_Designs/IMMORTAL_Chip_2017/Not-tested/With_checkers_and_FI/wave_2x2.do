@@ -241,7 +241,6 @@ add wave -noupdate -group {Turn Faults for R_2} -color green :tb_network_2x2:NoC
 
 add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:N2W_turn_fault
 add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:W2N_turn_fault
-add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:S2W_turn_fault
 add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:L2N_fault
 add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:L2W_fault
 add wave -noupdate -group {Turn Faults for R_3} -color green :tb_network_2x2:NoC:R_3:N2L_fault
