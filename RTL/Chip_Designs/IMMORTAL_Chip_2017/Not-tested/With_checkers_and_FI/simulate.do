@@ -41,5 +41,5 @@ vsim -coverage -voptargs="+cover=bcestfx" work.tb_network_2x2
 # Draw waves
 do wave_2x2.do
 # Run the simulation
-do fault_inject_links.do
+# do fault_inject_links.do
 run 12000 ns

@@ -426,7 +426,7 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
   end if;
 end process;
    
-assert (packet_drop = '0') report "Node "&integer'image(cur_addr_rst)&": LBDR dropping packet at" & time'image(now) &"! dropping packet.." severity note;
+assert (packet_drop = '0') report "Node "&integer'image(cur_addr_rst)&": LBDR dropping packet at" & time'image(now) &"!" severity note;
 packet_drop_order_sig <= packet_drop;
 
 END;

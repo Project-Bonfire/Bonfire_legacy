@@ -546,14 +546,14 @@ process(RX, faulty_packet_out, fault_out, write_pointer, FIFO_MEM_1, FIFO_MEM_2,
                   end if;           
       	when Header_flit => 
       	  	if valid_in = '1' then 
-                        if fault_out = '0' then
+                     if fault_out = '0' then
                               if RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "010" then   
-                                    state_in <= Body_flit;
+                                 state_in <= Body_flit;
                               elsif RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "100" then
-                                    state_in <= Tail_flit;
+                                 state_in <= Tail_flit;
                               else
-                                     -- we should not be here!
-                                    state_in <= state_out;
+                                  -- we should not be here!
+                                 state_in <= state_out;
                               end if; 
       	           else -- fault_out = '1'
                               write_fake_flit <= '1';
@@ -622,6 +622,7 @@ process(RX, faulty_packet_out, fault_out, write_pointer, FIFO_MEM_1, FIFO_MEM_2,
 
             when Packet_drop => 
                   if faulty_packet_out = '1' then
+                        report "FIFO dropping packet at" & time'image(now) &"!" severity note;
                         if valid_in = '1' and RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001"  and fault_out = '0' then
                               faulty_packet_in <= '0';
                               state_in <= Header_flit;
@@ -651,6 +652,7 @@ process(RX, faulty_packet_out, fault_out, write_pointer, FIFO_MEM_1, FIFO_MEM_2,
                         end if;
                   else
                     -- we should not be here!
+                    assert (False) report "FIFO got to packet dropping state but faulty_packet_out is ZERO!" severity failure;
                     state_in <= state_out;
                   end if;
 	     when others => state_in <= state_out;
