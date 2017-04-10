@@ -122,7 +122,7 @@ begin
 end process;
 
 
-process(reconfig_cx, flit_type, empty, grants, Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Reconfig_command, reconfig_cx_in, reconfig_cx) 
+process(reconfig_cx, flit_type, empty, grants, Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Reconfig_command, reconfig_cx_in) 
 begin
   err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal <= '0';
   if ( (reconfig_cx = '0' or flit_type /= "100" or empty = '1' or grants = '0') and 

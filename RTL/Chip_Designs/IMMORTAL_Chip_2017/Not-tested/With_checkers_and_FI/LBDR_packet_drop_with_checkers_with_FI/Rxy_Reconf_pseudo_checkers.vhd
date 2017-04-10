@@ -100,7 +100,7 @@ end process;
 
 -- Checked (Added)!
 
-process(ReConf_FF_out, flit_type, empty, grants, Reconfig_command, ReConf_FF_in, ReConf_FF_out)
+process(ReConf_FF_out, flit_type, empty, grants, Reconfig_command, ReConf_FF_in)
 begin
     if ( (ReConf_FF_out = '0' or flit_type /= "100" or empty = '1' or grants = '0') and Reconfig_command = '0' and ReConf_FF_in /= ReConf_FF_out) then
         err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal <= '1';

@@ -124,7 +124,7 @@ begin
 end process;
 
 
-process (flit_type, Requests_FF, Requests_FF, Requests_in)
+process (flit_type, Requests_FF, Requests_in)
 begin
     err_header_tail_Requests_FF_Requests_in <= '0';
     if (flit_type /= "001" and flit_type /= "100" and Requests_FF /= Requests_in) then
