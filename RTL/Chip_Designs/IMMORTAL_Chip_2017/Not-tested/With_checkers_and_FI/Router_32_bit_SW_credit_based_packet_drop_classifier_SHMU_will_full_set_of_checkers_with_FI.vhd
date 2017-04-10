@@ -1600,7 +1600,7 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
                             N_err_East_Req_N or  N_err_East_grant_N or  N_err_West_Req_E or  N_err_West_grant_E or  
                             N_err_South_Req_W or  N_err_South_grant_W or  N_err_Local_Req_S or  N_err_Local_grant_S or  
 
-                            N_err_state_in_onehot or  N_err_no_request_grants or  N_err_request_no_grants or  
+                            N_err_arbiter_state_in_onehot or  N_err_no_request_grants or  N_err_request_no_grants or  
 
                             N_err_no_Req_N_grant_N or N_err_no_Req_E_grant_E or  N_err_no_Req_W_grant_W or  
                             N_err_no_Req_S_grant_S or  N_err_no_Req_L_grant_L or  
@@ -1628,7 +1628,7 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
                             E_err_East_Req_N or  E_err_East_grant_N or  E_err_West_Req_E or  E_err_West_grant_E or  
                             E_err_South_Req_W or  E_err_South_grant_W or  E_err_Local_Req_S or  E_err_Local_grant_S or  
 
-                            E_err_state_in_onehot or  E_err_no_request_grants or  E_err_request_no_grants or  
+                            E_err_arbiter_state_in_onehot or  E_err_no_request_grants or  E_err_request_no_grants or  
 
                             E_err_no_Req_N_grant_N or E_err_no_Req_E_grant_E or  E_err_no_Req_W_grant_W or  
                             E_err_no_Req_S_grant_S or  E_err_no_Req_L_grant_L or  
@@ -1656,7 +1656,7 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
                             W_err_East_Req_N or  W_err_East_grant_N or  W_err_West_Req_E or  W_err_West_grant_E or  
                             W_err_South_Req_W or  W_err_South_grant_W or  W_err_Local_Req_S or  W_err_Local_grant_S or  
 
-                            W_err_state_in_onehot or  W_err_no_request_grants or  W_err_request_no_grants or  
+                            W_err_arbiter_state_in_onehot or  W_err_no_request_grants or  W_err_request_no_grants or  
 
                             W_err_no_Req_N_grant_N or W_err_no_Req_E_grant_E or  W_err_no_Req_W_grant_W or  
                             W_err_no_Req_S_grant_S or  W_err_no_Req_L_grant_L or  
@@ -1684,7 +1684,7 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
                             S_err_East_Req_N or  S_err_East_grant_N or  S_err_West_Req_E or  S_err_West_grant_E or  
                             S_err_South_Req_W or  S_err_South_grant_W or  S_err_Local_Req_S or  S_err_Local_grant_S or  
 
-                            S_err_state_in_onehot or  S_err_no_request_grants or  S_err_request_no_grants or  
+                            S_err_arbiter_state_in_onehot or  S_err_no_request_grants or  S_err_request_no_grants or  
 
                             S_err_no_Req_N_grant_N or S_err_no_Req_E_grant_E or  S_err_no_Req_W_grant_W or  
                             S_err_no_Req_S_grant_S or  S_err_no_Req_L_grant_L or  
@@ -1708,28 +1708,14 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
                             L_err_East_Req_L or  L_err_East_grant_L or  L_err_West_Req_N or  L_err_West_grant_N or  
                             L_err_South_Req_E or  L_err_South_grant_E or  L_err_Local_Req_W or  L_err_Local_grant_W or  
 
-                                    L_err_IDLE_Req_L or  
-                                    L_err_IDLE_grant_L or  
-                                    L_err_North_Req_L or  
-                                    L_err_North_grant_L or  
-                                    L_err_East_Req_N or  
-                                    L_err_East_grant_N or  
-                                    L_err_West_Req_E or  
-                                    L_err_West_grant_E or  
-                                    L_err_South_Req_W or  
-                                    L_err_South_grant_W or  
-                                    L_err_Local_Req_S or  
-                                    L_err_Local_grant_S or  
+                            L_err_IDLE_Req_L or L_err_IDLE_grant_L or L_err_North_Req_L or L_err_North_grant_L or  
+                            L_err_East_Req_N or L_err_East_grant_N or L_err_West_Req_E or L_err_West_grant_E or  
+                            L_err_South_Req_W or L_err_South_grant_W or L_err_Local_Req_S or L_err_Local_grant_S or  
 
-                                    L_err_state_in_onehot or  
-                                    L_err_no_request_grants or  
-                                    L_err_request_no_grants or  
+                            L_err_arbiter_state_in_onehot or L_err_no_request_grants or L_err_request_no_grants or  
 
-                                    L_err_no_Req_N_grant_N or 
-                                    L_err_no_Req_E_grant_E or  
-                                    L_err_no_Req_W_grant_W or  
-                                    L_err_no_Req_S_grant_S or  
-                                    L_err_no_Req_L_grant_L or  
+                            L_err_no_Req_N_grant_N or L_err_no_Req_E_grant_E or  L_err_no_Req_W_grant_W or  
+                            L_err_no_Req_S_grant_S or L_err_no_Req_L_grant_L or  
 
                                     -- Arbiter_out checker outputs
 
@@ -1950,6 +1936,7 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
                                     L_err_request_IDLE_not_Grants or  L_err_state_North_Invalid_Grant or L_err_state_East_Invalid_Grant or 
                                     L_err_state_West_Invalid_Grant or L_err_state_South_Invalid_Grant or L_err_state_Local_Invalid_Grant or 
                                     L_err_Grants_onehot_or_all_zero; 
+
 
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
