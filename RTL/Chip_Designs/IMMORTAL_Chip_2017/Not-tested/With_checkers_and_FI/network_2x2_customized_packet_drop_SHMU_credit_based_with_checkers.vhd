@@ -293,7 +293,7 @@ end component;
 	signal Faulty_N_in3,Faulty_E_in3,Faulty_W_in3,Faulty_S_in3: std_logic;
 
     -- fault injector signals
-    signal TCK_0: std_logic;
+    signal TCK_0: std_logic; 
     signal SE_0:  std_logic;
     signal UE_0:  std_logic;
     signal SI_0:  std_logic;
@@ -572,47 +572,7 @@ begin
       wait until TCK_0'event and TCK_0 ='0';
         SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
 
-      -- Not Injecting fault to W LBDR
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
-
       -- Not Injecting fault to E LBDR
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
-
-      -- Not Injecting fault to N LBDR
       wait until TCK_0'event and TCK_0 ='0';
         SI_0 <= '0'; -- SA0 fault injection at bit 40 (read_pointer(0))
       wait until TCK_0'event and TCK_0 ='0';
@@ -670,43 +630,7 @@ begin
       wait until TCK_0'event and TCK_0 ='0';
         SI_0 <= '1'; -- SA0 fault injection at bit 40 (read_pointer(0))
 
-      -- Not Injecting fault to W FIFO
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '1'; -- SA1 fault injection at bit 0 (LSB)
-
       -- Injecting fault to E FIFO
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
-      wait until TCK_0'event and TCK_0 ='0';
-        SI_0 <= '1'; -- SA1 fault injection at bit 0 (LSB)
-
-      -- Not Injecting fault to N FIFO
       wait until TCK_0'event and TCK_0 ='0';
         SI_0 <= '0'; -- SA1 fault injection at bit 0 (LSB)
       wait until TCK_0'event and TCK_0 ='0';
@@ -771,14 +695,14 @@ R_0: router_NW_credit_based_PD_C_SHMU
         Cx_rst =>  10, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
     reset, clk,
-	RX_N_0, RX_E_0, RX_W_0, RX_S_0, RX_L_0,
-	credit_in_N_0, credit_in_E_0, credit_in_W_0, credit_in_S_0, credit_in_L_0,
-	valid_in_N_0, valid_in_E_0, valid_in_W_0, valid_in_S_0, valid_in_L_0,
-	valid_out_N_0, valid_out_E_0, valid_out_W_0, valid_out_S_0, valid_out_L_0,
-	credit_out_N_0, credit_out_E_0, credit_out_W_0, credit_out_S_0, credit_out_L_0,
-	TX_N_0, TX_E_0, TX_W_0, TX_S_0, TX_L_0,
-	Faulty_N_in0,Faulty_E_in0,Faulty_W_in0,Faulty_S_in0,
-	Faulty_N_out0,Faulty_E_out0,Faulty_W_out0,Faulty_S_out0,
+	RX_E_0, RX_S_0, RX_L_0,
+	credit_in_E_0, credit_in_S_0, credit_in_L_0,
+	valid_in_E_0, valid_in_S_0, valid_in_L_0,
+	valid_out_E_0, valid_out_S_0, valid_out_L_0,
+	credit_out_E_0, credit_out_S_0, credit_out_L_0,
+	TX_E_0, TX_S_0, TX_L_0,
+	Faulty_E_in0,Faulty_S_in0,
+	Faulty_E_out0,Faulty_S_out0,
 	-- should be connected to NI
 	link_faults_0, turn_faults_0,
 	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0, 
@@ -793,14 +717,14 @@ R_1: router_NE_credit_based_PD_C_SHMU
         Cx_rst =>  12, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
     reset, clk,
-	RX_N_1, RX_E_1, RX_W_1, RX_S_1, RX_L_1,
-	credit_in_N_1, credit_in_E_1, credit_in_W_1, credit_in_S_1, credit_in_L_1,
-	valid_in_N_1, valid_in_E_1, valid_in_W_1, valid_in_S_1, valid_in_L_1,
-	valid_out_N_1, valid_out_E_1, valid_out_W_1, valid_out_S_1, valid_out_L_1,
-	credit_out_N_1, credit_out_E_1, credit_out_W_1, credit_out_S_1, credit_out_L_1,
-	TX_N_1, TX_E_1, TX_W_1, TX_S_1, TX_L_1,
-	Faulty_N_in1,Faulty_E_in1,Faulty_W_in1,Faulty_S_in1,
-	Faulty_N_out1,Faulty_E_out1,Faulty_W_out1,Faulty_S_out1,
+	RX_W_1, RX_S_1, RX_L_1,
+	credit_in_W_1, credit_in_S_1, credit_in_L_1,
+	valid_in_W_1, valid_in_S_1, valid_in_L_1,
+	valid_out_W_1, valid_out_S_1, valid_out_L_1,
+	credit_out_W_1, credit_out_S_1, credit_out_L_1,
+	TX_W_1, TX_S_1, TX_L_1,
+	Faulty_W_in1,Faulty_S_in1,
+	Faulty_W_out1,Faulty_S_out1,
 	-- should be connected to NI
 	link_faults_1, turn_faults_1,
 	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1, 
@@ -815,14 +739,14 @@ R_2: router_SW_credit_based_PD_C_SHMU
         Cx_rst =>  3, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
     reset, clk,
-	RX_N_2, RX_E_2, RX_W_2, RX_S_2, RX_L_2,
-	credit_in_N_2, credit_in_E_2, credit_in_W_2, credit_in_S_2, credit_in_L_2,
-	valid_in_N_2, valid_in_E_2, valid_in_W_2, valid_in_S_2, valid_in_L_2,
-	valid_out_N_2, valid_out_E_2, valid_out_W_2, valid_out_S_2, valid_out_L_2,
-	credit_out_N_2, credit_out_E_2, credit_out_W_2, credit_out_S_2, credit_out_L_2,
-	TX_N_2, TX_E_2, TX_W_2, TX_S_2, TX_L_2,
-	Faulty_N_in2,Faulty_E_in2,Faulty_W_in2,Faulty_S_in2,
-	Faulty_N_out2,Faulty_E_out2,Faulty_W_out2,Faulty_S_out2,
+	RX_N_2, RX_E_2, RX_L_2,
+	credit_in_N_2, credit_in_E_2, credit_in_L_2,
+	valid_in_N_2, valid_in_E_2, valid_in_L_2,
+	valid_out_N_2, valid_out_E_2, valid_out_L_2,
+	credit_out_N_2, credit_out_E_2, credit_out_L_2,
+	TX_N_2, TX_E_2, TX_L_2,
+	Faulty_N_in2,Faulty_E_in2,
+	Faulty_N_out2,Faulty_E_out2,
 	-- should be connected to NI
 	link_faults_2, turn_faults_2,
 	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2, 
@@ -837,14 +761,14 @@ R_3: router_SE_credit_based_PD_C_SHMU
         Cx_rst =>  5, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
     reset, clk,
-	RX_N_3, RX_E_3, RX_W_3, RX_S_3, RX_L_3,
-	credit_in_N_3, credit_in_E_3, credit_in_W_3, credit_in_S_3, credit_in_L_3,
-	valid_in_N_3, valid_in_E_3, valid_in_W_3, valid_in_S_3, valid_in_L_3,
-	valid_out_N_3, valid_out_E_3, valid_out_W_3, valid_out_S_3, valid_out_L_3,
-	credit_out_N_3, credit_out_E_3, credit_out_W_3, credit_out_S_3, credit_out_L_3,
-	TX_N_3, TX_E_3, TX_W_3, TX_S_3, TX_L_3,
-	Faulty_N_in3,Faulty_E_in3,Faulty_W_in3,Faulty_S_in3,
-	Faulty_N_out3,Faulty_E_out3,Faulty_W_out3,Faulty_S_out3,
+	RX_N_3, RX_W_3, RX_L_3,
+	credit_in_N_3, credit_in_W_3, credit_in_L_3,
+	valid_in_N_3, valid_in_W_3, valid_in_L_3,
+	valid_out_N_3, valid_out_W_3, valid_out_L_3,
+	credit_out_N_3, credit_out_W_3, credit_out_L_3,
+	TX_N_3, TX_W_3, TX_L_3,
+	Faulty_N_in3,Faulty_W_in3,
+	Faulty_N_out3,Faulty_W_out3,
 	-- should be connected to NI
 	link_faults_3, turn_faults_3,
 	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3, 

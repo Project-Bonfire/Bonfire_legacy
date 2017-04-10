@@ -629,17 +629,7 @@ begin
 
    end process;
 
-Faulty_N_in0 <= '0';
-Faulty_W_in0 <= '0';
 
-Faulty_N_in1 <= '0';
-Faulty_E_in1 <= '0';
-
-Faulty_S_in2 <= '0';
-Faulty_W_in2 <= '0';
-
-Faulty_S_in3 <= '0';
-Faulty_E_in3 <= '0';
 
 R_0: router_credit_based_PD_C_SHMU 
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 0, Rxy_rst => 60,

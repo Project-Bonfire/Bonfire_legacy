@@ -1933,8 +1933,8 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
 
 -- Turn fault checkers
 
-
-E2S_turn_fault <=           E_FIFO_checkers_ORed or -- FIFO
+                            -- FIFO
+E2S_turn_fault <=           E_FIFO_checkers_ORed or 
 
                             -- LBDR
                             E_err_header_empty_Requests_FF_Requests_in or
@@ -1946,9 +1946,9 @@ E2S_turn_fault <=           E_FIFO_checkers_ORed or -- FIFO
                             E_err_header_tail_Requests_FF_Requests_in or
                             E_err_dst_addr_cur_addr_S1 or
                             E_err_dst_addr_cur_addr_not_S1 or
-                            N_err_header_not_empty_faulty_drop_packet_in or
-                            N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
-                            N_err_header_not_empty_faulty_Req_in_all_zero or                                   
+                            E_err_header_not_empty_faulty_drop_packet_in or
+                            E_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
+                            E_err_header_not_empty_faulty_Req_in_all_zero or                                   
                             E_err_header_not_empty_Req_S_in or
                             E_err_header_empty_packet_drop_in_packet_drop_equal or
                             E_err_tail_not_empty_packet_drop_not_packet_drop_in or
@@ -1997,8 +1997,8 @@ S2E_turn_fault <=           S_FIFO_checkers_ORed or
                             S_err_header_empty_Requests_FF_Requests_in or S_err_tail_Requests_in_all_zero or S_err_tail_empty_Requests_FF_Requests_in or 
                             S_err_tail_not_empty_not_grants_Requests_FF_Requests_in or S_err_grants_onehot or S_err_grants_mismatch or 
                             S_err_header_tail_Requests_FF_Requests_in or S_err_dst_addr_cur_addr_E1 or S_err_dst_addr_cur_addr_not_E1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or S_err_header_not_empty_Req_E_in or 
+                            S_err_header_not_empty_faulty_drop_packet_in or S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            S_err_header_not_empty_faulty_Req_in_all_zero or S_err_header_not_empty_Req_E_in or 
                             S_err_header_empty_packet_drop_in_packet_drop_equal or S_err_tail_not_empty_packet_drop_not_packet_drop_in or 
                             S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or S_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or 
                             S_err_packet_drop_order or
@@ -2037,7 +2037,6 @@ S2E_turn_fault <=           S_FIFO_checkers_ORed or
                             err_grant_E_credit_counter_E_out_decrement or err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change or 
                             err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal;
 
-
                             -- FIFO
 L2E_fault <=                L_FIFO_checkers_ORed or
 
@@ -2045,8 +2044,8 @@ L2E_fault <=                L_FIFO_checkers_ORed or
                             L_err_header_empty_Requests_FF_Requests_in or L_err_tail_Requests_in_all_zero or L_err_tail_empty_Requests_FF_Requests_in or 
                             L_err_tail_not_empty_not_grants_Requests_FF_Requests_in or L_err_grants_onehot or L_err_grants_mismatch or 
                             L_err_header_tail_Requests_FF_Requests_in or L_err_dst_addr_cur_addr_E1 or L_err_dst_addr_cur_addr_not_E1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_E_in or L_err_header_empty_packet_drop_in_packet_drop_equal or 
+                            L_err_header_not_empty_faulty_drop_packet_in or L_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            L_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_E_in or L_err_header_empty_packet_drop_in_packet_drop_equal or 
                             L_err_tail_not_empty_packet_drop_not_packet_drop_in or L_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or 
                             L_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or L_err_packet_drop_order or
 
@@ -2084,7 +2083,6 @@ L2E_fault <=                L_FIFO_checkers_ORed or
                             err_not_grant_E_or_credit_counter_E_out_zero_credit_counter_E_in_not_change or
                             err_not_credit_in_E_not_grant_E_credit_counter_E_in_credit_counter_E_out_equal;
 
-
                             -- FIFO
 L2S_fault <=                L_FIFO_checkers_ORed or
 
@@ -2092,8 +2090,8 @@ L2S_fault <=                L_FIFO_checkers_ORed or
                             L_err_header_empty_Requests_FF_Requests_in or L_err_tail_Requests_in_all_zero or L_err_tail_empty_Requests_FF_Requests_in or 
                             L_err_tail_not_empty_not_grants_Requests_FF_Requests_in or L_err_grants_onehot or L_err_grants_mismatch or 
                             L_err_header_tail_Requests_FF_Requests_in or L_err_dst_addr_cur_addr_S1 or L_err_dst_addr_cur_addr_not_S1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_S_in or 
+                            L_err_header_not_empty_faulty_drop_packet_in or L_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            L_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_S_in or 
                             L_err_header_empty_packet_drop_in_packet_drop_equal or L_err_tail_not_empty_packet_drop_not_packet_drop_in or 
                             L_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or L_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or 
                             L_err_packet_drop_order or
@@ -2344,10 +2342,10 @@ CHK_CT_S2L_fault:   checkers_counter_threshold_classifier  generic map(counter_d
 FIFO_E: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_E, valid_in => valid_in_E,  
-               read_en_N => Grant_NE, read_en_E =>packet_drop_order_E, read_en_W =>Grant_WE, read_en_S =>Grant_SE, read_en_L =>Grant_LE, 
+               read_en_N => '0', read_en_E =>packet_drop_order_E, read_en_W =>'0', read_en_S =>Grant_SE, read_en_L =>Grant_LE, 
                credit_out => credit_out_E, empty_out => empty_E, Data_out => FIFO_D_out_E, fault_info=> faulty_packet_E, health_info=>healthy_packet_E, 
 
-               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_N_FIFO_to_E_FIFO, SO=> fault_DO_serial_E_FIFO_to_W_FIFO,
+               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_L_FIFO_to_E_FIFO, SO=> fault_DO_serial_E_FIFO_to_S_FIFO,
 
                -- Checker outputs
                -- Functional checkers
@@ -2477,10 +2475,10 @@ FIFO_E: FIFO_credit_based
 FIFO_S: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_S, valid_in => valid_in_S,  
-               read_en_N => Grant_NS, read_en_E =>Grant_ES, read_en_W =>Grant_WS, read_en_S =>packet_drop_order_S, read_en_L =>Grant_LS,  
+               read_en_N => '0', read_en_E =>Grant_ES, read_en_W =>'0', read_en_S =>packet_drop_order_S, read_en_L =>Grant_LS,  
                credit_out => credit_out_S, empty_out => empty_S, Data_out => FIFO_D_out_S, fault_info=> faulty_packet_S, health_info=>healthy_packet_S, 
 
-               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_W_FIFO_to_S_FIFO, SO=> fault_DO_serial_S_FIFO_to_L_LBDR,
+               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_E_FIFO_to_S_FIFO, SO=> fault_DO_serial_S_FIFO_to_L_LBDR,
 
                -- Checker outputs
                -- Functional checkers
@@ -2612,10 +2610,10 @@ FIFO_S: FIFO_credit_based
 FIFO_L: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_L, valid_in => valid_in_L,  
-               read_en_N => Grant_NL, read_en_E =>Grant_EL, read_en_W =>Grant_WL, read_en_S => Grant_SL, read_en_L =>packet_drop_order_L,
+               read_en_N => '0', read_en_E =>Grant_EL, read_en_W =>'0', read_en_S => Grant_SL, read_en_L =>packet_drop_order_L,
                credit_out => credit_out_L, empty_out => empty_L, Data_out => FIFO_D_out_L, fault_info=> faulty_packet_L, health_info=>healthy_packet_L, 
 
-               TCK=> TCK, SE=> SE, UE=> UE, SI=> SI, SO=> fault_DO_serial_L_FIFO_to_N_FIFO,
+               TCK=> TCK, SE=> SE, UE=> UE, SI=> SI, SO=> fault_DO_serial_L_FIFO_to_E_FIFO,
 
                -- Checker outputs
                -- Functional checkers
@@ -2756,14 +2754,14 @@ parity_LBDR_L: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) por
 
 LBDR_E: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_E, 
-             Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,  
+             Faulty_C_N => '0', Faulty_C_E => Faulty_E_in, Faulty_C_W => '0', Faulty_C_S => Faulty_S_in,  
              flit_type => FIFO_D_out_E(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_E(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              faulty => LBDR_Fault_E, packet_drop_order => packet_drop_order_E,
-             grant_N => Grant_NE, grant_E =>'0', grant_W => Grant_WE, grant_S=>Grant_SE, grant_L =>Grant_LE,
-             Req_N=> Req_EN, Req_E=>Req_EE, Req_W=>Req_EW, Req_S=>Req_ES, Req_L=>Req_EL,
+             grant_N => '0', grant_E =>'0', grant_W => '0', grant_S=>Grant_SE, grant_L =>Grant_LE,
+             Req_N=> open, Req_E=>Req_EE, Req_W=>open, Req_S=>Req_ES, Req_L=>Req_EL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
 
-             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_N_LBDR_to_E_LBDR, SO=> fault_DO_serial_E_LBDR_to_W_LBDR,
+             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_L_LBDR_to_E_LBDR, SO=> fault_DO_serial_E_LBDR_to_S_LBDR,
 
              -- Checker outputs
             err_header_empty_Requests_FF_Requests_in => E_err_header_empty_Requests_FF_Requests_in, 
@@ -2820,14 +2818,14 @@ LBDR_E: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
 
 LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_S, 
-             Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,    
+             Faulty_C_N => '0', Faulty_C_E => Faulty_E_in, Faulty_C_W => '0', Faulty_C_S => Faulty_S_in,    
              flit_type => FIFO_D_out_S(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_S(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              faulty => LBDR_Fault_S, packet_drop_order => packet_drop_order_S,
-             grant_N => Grant_NS, grant_E =>Grant_ES, grant_W =>Grant_WS ,grant_S=>'0', grant_L =>Grant_LS,
-             Req_N=> Req_SN, Req_E=>Req_SE, Req_W=>Req_SW, Req_S=>Req_SS, Req_L=>Req_SL,
+             grant_N => '0', grant_E =>Grant_ES, grant_W =>'0' ,grant_S=>'0', grant_L =>Grant_LS,
+             Req_N=> open, Req_E=>Req_SE, Req_W=>open, Req_S=>Req_SS, Req_L=>Req_SL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
 
-             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_W_LBDR_to_S_LBDR, SO=> fault_DO_serial_S_LBDR_to_Allocator,
+             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_E_LBDR_to_S_LBDR, SO=> fault_DO_serial_S_LBDR_to_Allocator,
 
              -- Checker outputs
             err_header_empty_Requests_FF_Requests_in => S_err_header_empty_Requests_FF_Requests_in, 
@@ -2883,14 +2881,14 @@ LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
 
 LBDR_L: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_L, 
-             Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,  
+             Faulty_C_N => '0', Faulty_C_E => Faulty_E_in, Faulty_C_W => '0', Faulty_C_S => Faulty_S_in,  
              flit_type => FIFO_D_out_L(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_L(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              faulty => LBDR_Fault_L, packet_drop_order => packet_drop_order_L,
-             grant_N => Grant_NL, grant_E =>Grant_EL, grant_W => Grant_WL,grant_S=>Grant_SL, grant_L =>'0',
-             Req_N=> Req_LN, Req_E=>Req_LE, Req_W=>Req_LW, Req_S=>Req_LS, Req_L=>Req_LL,
+             grant_N => '0', grant_E =>Grant_EL, grant_W => '0', grant_S=>Grant_SL, grant_L =>'0',
+             Req_N=> open, Req_E=>Req_LE, Req_W=>open, Req_S=>Req_LS, Req_L=>Req_LL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
 
-             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_S_FIFO_to_L_LBDR, SO=> fault_DO_serial_L_LBDR_to_N_LBDR,
+             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_S_FIFO_to_L_LBDR, SO=> fault_DO_serial_L_LBDR_to_E_LBDR,
 
              -- Checker outputs
             err_header_empty_Requests_FF_Requests_in => L_err_header_empty_Requests_FF_Requests_in, 
@@ -2961,7 +2959,7 @@ allocator_unit: allocator port map ( reset => reset, clk => clk,
             req_S_N => '0', req_S_E => Req_SE,  req_S_W => '0', req_S_S => '0',     req_S_L => Req_SL,
             req_L_N => '0', req_L_E => Req_LE,  req_L_W => '0', req_L_S => Req_LS,  req_L_L => '0',
             empty_N => '0', empty_E => empty_E, empty_W => '0', empty_S => empty_S, empty_L => empty_L, 
-            valid_N => valid_out_N, valid_E => valid_out_E, valid_W => valid_out_W, valid_S => valid_out_S, valid_L => valid_out_L,
+            valid_N => open, valid_E => valid_out_E, valid_W => open, valid_S => valid_out_S, valid_L => valid_out_L,
             -- grant_X_Y means the grant for X output port towards Y input port
             -- this means for any X in [N, E, W, S, L] then set grant_X_Y is one hot!
             grant_N_N => open, grant_N_E => open,     grant_N_W => open, grant_N_S => open,     grant_N_L => open,
@@ -3473,9 +3471,9 @@ allocator_unit: allocator port map ( reset => reset, clk => clk,
 ------------------------------------------------------------------------------------------------------------------------------
 -- all the Xbar select_signals
 
-Xbar_sel_E <= Grant_EN & '0' & Grant_EW & Grant_ES & Grant_EL;
-Xbar_sel_S <= Grant_SN & Grant_SE & Grant_SW & '0' & Grant_SL;
-Xbar_sel_L <= Grant_LN & Grant_LE & Grant_LW & Grant_LS & '0';
+Xbar_sel_E <= '0' & '0' & '0' & Grant_ES & Grant_EL;
+Xbar_sel_S <= '0' & Grant_SE & '0' & '0' & Grant_SL;
+Xbar_sel_L <= '0' & Grant_LE & '0' & Grant_LS & '0';
 
 
 ------------------------------------------------------------------------------------------------------------------------------
@@ -3483,15 +3481,16 @@ Xbar_sel_L <= Grant_LN & Grant_LE & Grant_LW & Grant_LS & '0';
 ------------------------------------------------------------------------------------------------------------------------------
 
  -- all the Xbars
+-- Correct ?!
 
 XBAR_E: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
+   PORT MAP (North_in => (others =>'0'), East_in => FIFO_D_out_E, West_in => (others =>'0'), South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
         sel => Xbar_sel_E,  Data_out=> TX_E);
 XBAR_S: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
+   PORT MAP (North_in => (others =>'0'), East_in => FIFO_D_out_E, West_in => (others =>'0'), South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
         sel => Xbar_sel_S,  Data_out=> TX_S);
 XBAR_L: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
+   PORT MAP (North_in => (others =>'0'), East_in => FIFO_D_out_E, West_in => (others =>'0'), South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
         sel => Xbar_sel_L,  Data_out=> TX_L);
  
 ------------------------------------------------------------------------------------------------------------------------------

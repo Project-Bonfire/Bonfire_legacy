@@ -8,31 +8,40 @@
 vlib work
 
 # Include files and compile them
-vcom -cover bcesfx "component_pack.vhd"
-vcom -cover bcesfx "mlite_pack.vhd"
-vcom -cover bcesfx "Allocator_with_checkers_with_FI/Arbiter_in_one_hot_checkers.vhd"
-vcom -cover bcesfx "Allocator_with_checkers_with_FI/Arbiter_in_one_hot_with_checkers_with_FI.vhd"
-vcom -cover bcesfx "Allocator_with_checkers_with_FI/Arbiter_out_one_hot_pseudo_checkers.vhd"
-vcom -cover bcesfx "Allocator_with_checkers_with_FI/arbiter_out_one_hot_with_checkers_with_FI.vhd"
-vcom -cover bcesfx "Allocator_with_checkers_with_FI/allocator_logic_pseudo_checkers.vhd"
-vcom -cover bcesfx "Allocator_with_checkers_with_FI/allocator_credit_counter_logic_pseudo_checkers.vhd"
-vcom -cover bcesfx "Allocator_with_checkers_with_FI/allocator_with_checkers_with_FI.vhd"
-vcom -cover bcesfx "FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI/FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd"
-vcom -cover bcesfx "FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI.vhd"
-vcom -cover bcesfx "LBDR_packet_drop_with_checkers_with_FI/Cx_Reconf_pseudo_checkers.vhd"
-vcom -cover bcesfx "LBDR_packet_drop_with_checkers_with_FI/Rxy_Reconf_pseudo_checkers.vhd"
-vcom -cover bcesfx "LBDR_packet_drop_with_checkers_with_FI/LBDR_packet_drop_routing_part_pseudo_checkers.vhd"
-vcom -cover bcesfx "LBDR_packet_drop_with_checkers_with_FI/LBDR_packet_drop_with_checkers_with_FI.vhd"
-vcom -cover bcesfx "ParityChecker_for_LBDR.vhd"
-vcom -cover bcesfx "counter_threshold.vhd"
-vcom -cover bcesfx "checkers_counter_threshold.vhd"
-vcom -cover bcesfx "Fault_injector.vhd"
-vcom -cover bcesfx "shift_register_serial_in.vhd"
-vcom -cover bcesfx "NI.vhd"
-vcom -cover bcesfx "xbar.vhd"
-vcom -cover bcesfx "Router_32_bit_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd"
-vcom -cover bcesfx "TB_Package_32_bit_credit_based_NI.vhd"
-vcom -cover bcesfx "network_2x2_packet_drop_SHMU_credit_based_with_checkers.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/component_pack.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/mlite_pack.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Allocator_with_checkers_with_FI/Arbiter_in_one_hot_checkers.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Allocator_with_checkers_with_FI/Arbiter_in_one_hot_with_checkers_with_FI.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Allocator_with_checkers_with_FI/Arbiter_out_one_hot_pseudo_checkers.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Allocator_with_checkers_with_FI/arbiter_out_one_hot_with_checkers_with_FI.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Allocator_with_checkers_with_FI/allocator_logic_pseudo_checkers.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Allocator_with_checkers_with_FI/allocator_credit_counter_logic_pseudo_checkers.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Allocator_with_checkers_with_FI/allocator_with_checkers_with_FI.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI/FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/LBDR_packet_drop_with_checkers_with_FI/Cx_Reconf_pseudo_checkers.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/LBDR_packet_drop_with_checkers_with_FI/Rxy_Reconf_pseudo_checkers.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/LBDR_packet_drop_with_checkers_with_FI/LBDR_packet_drop_routing_part_pseudo_checkers.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/LBDR_packet_drop_with_checkers_with_FI/LBDR_packet_drop_with_checkers_with_FI.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/ParityChecker_for_LBDR.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/counter_threshold.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/checkers_counter_threshold.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Fault_injector.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/shift_register_serial_in.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/NI.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Router/credit_based/RTL/xbar.vhd"
+
+# vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Router_32_bit_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd"
+
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Router_32_bit_NW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Router_32_bit_NE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Router_32_bit_SW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Not-tested/With_checkers_and_FI/Router_32_bit_SE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd"
+vcom -cover bcesfx "/home/bniazmand/pc/clean_Bonfire/Bonfire/Test/credit_based/TB_Package_32_bit_credit_based_NI.vhd"
+
+# vcom -cover bcesfx "network_2x2_packet_drop_SHMU_credit_based_with_checkers.vhd"
+
+vcom -cover bcesfx "network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers.vhd"
 vcom -cover bcesfx "network_2x2_NI_Test_packet_drop_Rand_SHMU_credit_based_with_checkers_tb.vhd"
 
 # Start the simulation
@@ -41,5 +50,5 @@ vsim -coverage -voptargs="+cover=bcestfx" work.tb_network_2x2
 # Draw waves
 do wave_2x2.do
 # Run the simulation
-# do fault_inject_links.do
+# do fault_inject.do
 run 12000 ns
