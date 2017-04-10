@@ -110,4 +110,22 @@ unsigned int build_flit (int flitType, unsigned int payload);
 
 unsigned int header_decode(unsigned int header, int *packetID, int *srcAddr, int *dstAddr, int *packetLength, int noc_size);
 
+/*
+* Returns the flit type
+*
+* flit: The flit to be analyzed
+*
+* return:   flit type
+ */
+unsigned int get_flit_type(unsigned int flit);
+
+/*
+* Returns flit payload
+*
+* flit: The flit to be analyzed
+*
+* return:   flit payload
+ */
+unsigned int get_flit_payload(unsigned int flit);
+
 #endif //__PACKETS_H__

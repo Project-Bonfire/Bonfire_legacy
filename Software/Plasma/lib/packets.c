@@ -9,7 +9,7 @@
  * DESCRIPTION:
  *    NoC packetization / de-packetization related functions
  *--------------------------------------------------------------------*/
- 
+
 #include "packets.h"
 
 /*
@@ -117,4 +117,28 @@ unsigned int header_decode(unsigned int header, int *packetID, int *srcAddr, int
 		return HEADER_OK;
 	}
 
+}
+
+/*
+* Returns the flit type
+*
+* flit: The flit to be analyzed
+*
+* return:   flit type
+ */
+unsigned int get_flit_type(unsigned int flit)
+{
+    return (flit & FLIT_TYPE_MASK) >> FLIT_TYPE_OFFSET;
+}
+
+/*
+* Returns flit payload
+*
+* flit: The flit to be analyzed
+*
+* return:   flit payload
+ */
+unsigned int get_flit_payload(unsigned int flit)
+{
+    return (flit & FLIT_PAYLOAD_MASK) >> PAYLOAD_OFFSET;
 }
