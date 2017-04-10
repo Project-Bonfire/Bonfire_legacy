@@ -2756,9 +2756,9 @@ E2N_turn_fault <=   E_FIFO_checkers_ORed or -- FIFO
                     E_err_header_tail_Requests_FF_Requests_in or
                     E_err_dst_addr_cur_addr_N1 or
                     E_err_dst_addr_cur_addr_not_N1 or
-                    N_err_header_not_empty_faulty_drop_packet_in or
-                    N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
-                    N_err_header_not_empty_faulty_Req_in_all_zero or                                   
+                    E_err_header_not_empty_faulty_drop_packet_in or
+                    E_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
+                    E_err_header_not_empty_faulty_Req_in_all_zero or                                   
                     E_err_header_not_empty_Req_N_in or
                     E_err_header_empty_packet_drop_in_packet_drop_equal or
                     E_err_tail_not_empty_packet_drop_not_packet_drop_in or
@@ -2816,9 +2816,9 @@ E2S_turn_fault <=           E_FIFO_checkers_ORed or -- FIFO
                             E_err_header_tail_Requests_FF_Requests_in or
                             E_err_dst_addr_cur_addr_S1 or
                             E_err_dst_addr_cur_addr_not_S1 or
-                            N_err_header_not_empty_faulty_drop_packet_in or
-                            N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
-                            N_err_header_not_empty_faulty_Req_in_all_zero or                                   
+                            E_err_header_not_empty_faulty_drop_packet_in or
+                            E_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
+                            E_err_header_not_empty_faulty_Req_in_all_zero or                                   
                             E_err_header_not_empty_Req_S_in or
                             E_err_header_empty_packet_drop_in_packet_drop_equal or
                             E_err_tail_not_empty_packet_drop_not_packet_drop_in or
@@ -2873,9 +2873,9 @@ W2N_turn_fault <=           W_FIFO_checkers_ORed or
                             W_err_header_tail_Requests_FF_Requests_in or
                             W_err_dst_addr_cur_addr_N1 or
                             W_err_dst_addr_cur_addr_not_N1 or
-                            N_err_header_not_empty_faulty_drop_packet_in or
-                            N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
-                            N_err_header_not_empty_faulty_Req_in_all_zero or
+                            W_err_header_not_empty_faulty_drop_packet_in or
+                            W_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
+                            W_err_header_not_empty_faulty_Req_in_all_zero or
                             W_err_header_not_empty_Req_N_in or
                             W_err_header_empty_packet_drop_in_packet_drop_equal or
                             W_err_tail_not_empty_packet_drop_not_packet_drop_in or
@@ -2924,8 +2924,8 @@ W2S_turn_fault <=           W_FIFO_checkers_ORed or
                             W_err_header_empty_Requests_FF_Requests_in or W_err_tail_Requests_in_all_zero or W_err_tail_empty_Requests_FF_Requests_in or 
                             W_err_tail_not_empty_not_grants_Requests_FF_Requests_in or W_err_grants_onehot or W_err_grants_mismatch or 
                             W_err_header_tail_Requests_FF_Requests_in or W_err_dst_addr_cur_addr_S1 or W_err_dst_addr_cur_addr_not_S1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or W_err_header_not_empty_Req_S_in or 
+                            W_err_header_not_empty_faulty_drop_packet_in or W_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            W_err_header_not_empty_faulty_Req_in_all_zero or W_err_header_not_empty_Req_S_in or 
                             W_err_header_empty_packet_drop_in_packet_drop_equal or W_err_tail_not_empty_packet_drop_not_packet_drop_in or 
                             W_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or W_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or 
                             W_err_packet_drop_order or
@@ -2971,8 +2971,8 @@ S2E_turn_fault <=           S_FIFO_checkers_ORed or
                             S_err_header_empty_Requests_FF_Requests_in or S_err_tail_Requests_in_all_zero or S_err_tail_empty_Requests_FF_Requests_in or 
                             S_err_tail_not_empty_not_grants_Requests_FF_Requests_in or S_err_grants_onehot or S_err_grants_mismatch or 
                             S_err_header_tail_Requests_FF_Requests_in or S_err_dst_addr_cur_addr_E1 or S_err_dst_addr_cur_addr_not_E1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or S_err_header_not_empty_Req_E_in or 
+                            S_err_header_not_empty_faulty_drop_packet_in or S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            S_err_header_not_empty_faulty_Req_in_all_zero or S_err_header_not_empty_Req_E_in or 
                             S_err_header_empty_packet_drop_in_packet_drop_equal or S_err_tail_not_empty_packet_drop_not_packet_drop_in or 
                             S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or S_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or 
                             S_err_packet_drop_order or
@@ -3024,9 +3024,9 @@ S2W_turn_fault <=           S_FIFO_checkers_ORed or
                             S_err_header_tail_Requests_FF_Requests_in or
                             S_err_dst_addr_cur_addr_W1 or
                             S_err_dst_addr_cur_addr_not_W1 or
-                            N_err_header_not_empty_faulty_drop_packet_in or
-                            N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
-                            N_err_header_not_empty_faulty_Req_in_all_zero or                                   
+                            S_err_header_not_empty_faulty_drop_packet_in or
+                            S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
+                            S_err_header_not_empty_faulty_Req_in_all_zero or                                   
                             S_err_header_not_empty_Req_W_in or
                             S_err_header_empty_packet_drop_in_packet_drop_equal or
                             S_err_tail_not_empty_packet_drop_not_packet_drop_in or
@@ -3134,8 +3134,8 @@ S2N_path_fault <=           S_FIFO_checkers_ORed or
                             S_err_header_empty_Requests_FF_Requests_in or S_err_tail_Requests_in_all_zero or S_err_tail_empty_Requests_FF_Requests_in or 
                             S_err_tail_not_empty_not_grants_Requests_FF_Requests_in or S_err_grants_onehot or S_err_grants_mismatch or 
                             S_err_header_tail_Requests_FF_Requests_in or S_err_dst_addr_cur_addr_N1 or S_err_dst_addr_cur_addr_not_N1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or S_err_header_not_empty_Req_N_in or 
+                            S_err_header_not_empty_faulty_drop_packet_in or S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            S_err_header_not_empty_faulty_Req_in_all_zero or S_err_header_not_empty_Req_N_in or 
                             S_err_header_empty_packet_drop_in_packet_drop_equal or S_err_tail_not_empty_packet_drop_not_packet_drop_in or 
                             S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or S_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or 
                             S_err_packet_drop_order or
@@ -3181,8 +3181,8 @@ E2W_path_fault <=           E_FIFO_checkers_ORed or
                             E_err_header_empty_Requests_FF_Requests_in or E_err_tail_Requests_in_all_zero or E_err_tail_empty_Requests_FF_Requests_in or 
                             E_err_tail_not_empty_not_grants_Requests_FF_Requests_in or E_err_grants_onehot or E_err_grants_mismatch or 
                             E_err_header_tail_Requests_FF_Requests_in or E_err_dst_addr_cur_addr_W1 or E_err_dst_addr_cur_addr_not_W1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or E_err_header_not_empty_Req_W_in or 
+                            E_err_header_not_empty_faulty_drop_packet_in or E_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            E_err_header_not_empty_faulty_Req_in_all_zero or E_err_header_not_empty_Req_W_in or 
                             E_err_header_empty_packet_drop_in_packet_drop_equal or E_err_tail_not_empty_packet_drop_not_packet_drop_in or 
                             E_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or E_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or 
                             E_err_packet_drop_order or
@@ -3228,8 +3228,8 @@ W2E_path_fault <=           W_FIFO_checkers_ORed or
                             W_err_header_empty_Requests_FF_Requests_in or W_err_tail_Requests_in_all_zero or W_err_tail_empty_Requests_FF_Requests_in or 
                             W_err_tail_not_empty_not_grants_Requests_FF_Requests_in or W_err_grants_onehot or W_err_grants_mismatch or 
                             W_err_header_tail_Requests_FF_Requests_in or W_err_dst_addr_cur_addr_E1 or W_err_dst_addr_cur_addr_not_E1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or  W_err_header_not_empty_Req_E_in or 
+                            W_err_header_not_empty_faulty_drop_packet_in or W_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            W_err_header_not_empty_faulty_Req_in_all_zero or  W_err_header_not_empty_Req_E_in or 
                             W_err_header_empty_packet_drop_in_packet_drop_equal or W_err_tail_not_empty_packet_drop_not_packet_drop_in or 
                             W_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or 
                             W_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or W_err_packet_drop_order or
@@ -3277,8 +3277,8 @@ L2N_fault <=                L_FIFO_checkers_ORed or
                             L_err_header_empty_Requests_FF_Requests_in or L_err_tail_Requests_in_all_zero or L_err_tail_empty_Requests_FF_Requests_in or 
                             L_err_tail_not_empty_not_grants_Requests_FF_Requests_in or L_err_grants_onehot or L_err_grants_mismatch or 
                             L_err_header_tail_Requests_FF_Requests_in or L_err_dst_addr_cur_addr_N1 or L_err_dst_addr_cur_addr_not_N1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_N_in or 
+                            L_err_header_not_empty_faulty_drop_packet_in or L_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            L_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_N_in or 
                             L_err_header_empty_packet_drop_in_packet_drop_equal or L_err_tail_not_empty_packet_drop_not_packet_drop_in or 
                             L_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or L_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or 
                             L_err_packet_drop_order or
@@ -3324,8 +3324,8 @@ L2E_fault <=                L_FIFO_checkers_ORed or
                             L_err_header_empty_Requests_FF_Requests_in or L_err_tail_Requests_in_all_zero or L_err_tail_empty_Requests_FF_Requests_in or 
                             L_err_tail_not_empty_not_grants_Requests_FF_Requests_in or L_err_grants_onehot or L_err_grants_mismatch or 
                             L_err_header_tail_Requests_FF_Requests_in or L_err_dst_addr_cur_addr_E1 or L_err_dst_addr_cur_addr_not_E1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_E_in or L_err_header_empty_packet_drop_in_packet_drop_equal or 
+                            L_err_header_not_empty_faulty_drop_packet_in or L_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            L_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_E_in or L_err_header_empty_packet_drop_in_packet_drop_equal or 
                             L_err_tail_not_empty_packet_drop_not_packet_drop_in or L_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or 
                             L_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or L_err_packet_drop_order or
 
@@ -3370,8 +3370,8 @@ L2W_fault <=                L_FIFO_checkers_ORed or
                             L_err_header_empty_Requests_FF_Requests_in or L_err_tail_Requests_in_all_zero or L_err_tail_empty_Requests_FF_Requests_in or 
                             L_err_tail_not_empty_not_grants_Requests_FF_Requests_in or L_err_grants_onehot or L_err_grants_mismatch or 
                             L_err_header_tail_Requests_FF_Requests_in or L_err_dst_addr_cur_addr_W1 or L_err_dst_addr_cur_addr_not_W1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_W_in or L_err_header_empty_packet_drop_in_packet_drop_equal or 
+                            L_err_header_not_empty_faulty_drop_packet_in or L_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            L_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_W_in or L_err_header_empty_packet_drop_in_packet_drop_equal or 
                             L_err_tail_not_empty_packet_drop_not_packet_drop_in or L_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or 
                             L_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or L_err_packet_drop_order or
 
@@ -3416,8 +3416,8 @@ L2S_fault <=                L_FIFO_checkers_ORed or
                             L_err_header_empty_Requests_FF_Requests_in or L_err_tail_Requests_in_all_zero or L_err_tail_empty_Requests_FF_Requests_in or 
                             L_err_tail_not_empty_not_grants_Requests_FF_Requests_in or L_err_grants_onehot or L_err_grants_mismatch or 
                             L_err_header_tail_Requests_FF_Requests_in or L_err_dst_addr_cur_addr_S1 or L_err_dst_addr_cur_addr_not_S1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_S_in or 
+                            L_err_header_not_empty_faulty_drop_packet_in or L_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            L_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_S_in or 
                             L_err_header_empty_packet_drop_in_packet_drop_equal or L_err_tail_not_empty_packet_drop_not_packet_drop_in or 
                             L_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or L_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or 
                             L_err_packet_drop_order or
