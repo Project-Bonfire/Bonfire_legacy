@@ -2953,20 +2953,20 @@ allocator_unit: allocator port map ( reset => reset, clk => clk,
             credit_in_N => '0', credit_in_E => credit_in_E, credit_in_W => '0', credit_in_S => credit_in_S, credit_in_L => credit_in_L,
 
             -- requests from the LBDRS
-            req_N_N => '0', req_N_E => '0',     req_N_W => '0', req_N_S => '0',     req_N_L => '0',
-            req_E_N => '0', req_E_E => '0',     req_E_W => '0', req_E_S => Req_ES,  req_E_L => Req_EL,
-            req_W_N => '0', req_W_E => '0',     req_W_W => '0', req_W_S => '0',     req_W_L => Req_WL,
-            req_S_N => '0', req_S_E => Req_SE,  req_S_W => '0', req_S_S => '0',     req_S_L => Req_SL,
-            req_L_N => '0', req_L_E => Req_LE,  req_L_W => '0', req_L_S => Req_LS,  req_L_L => '0',
-            empty_N => '0', empty_E => empty_E, empty_w => '0', empty_S => empty_S, empty_L => empty_L, 
+            req_N_N => '0', req_N_E => '0', req_N_W => '0',     req_N_S => '0',     req_N_L => '0',
+            req_E_N => '0', req_E_E => '0', req_E_W => '0',     req_E_S => '0',     req_E_L => '0',
+            req_W_N => '0', req_W_E => '0', req_W_W => '0',     req_W_S => Req_WS,  req_W_L => Req_WL,
+            req_S_N => '0', req_S_E => '0', req_S_W => Req_SW,  req_S_S => '0',     req_S_L => Req_SL,
+            req_L_N => '0', req_L_E => '0', req_L_W => Req_LW,  req_L_S => Req_LS,  req_L_L => '0',
+            empty_N => '0', empty_E => '0', empty_W => empty_W, empty_S => empty_S, empty_L => empty_L, 
             valid_N => valid_out_N, valid_E => valid_out_E, valid_W => valid_out_W, valid_S => valid_out_S, valid_L => valid_out_L,
             -- grant_X_Y means the grant for X output port towards Y input port
             -- this means for any X in [N, E, W, S, L] then set grant_X_Y is one hot!
-            grant_N_N => open, grant_N_E => open,     grant_N_W => open, grant_N_S => open,     grant_N_L => open,
-            grant_E_N => open, grant_E_E => Grant_EE, grant_E_W => open, grant_E_S => Grant_ES, grant_E_L => Grant_EL,
-            grant_W_N => open, grant_W_E => open,     grant_W_W => open, grant_W_S => open,     grant_W_L => open,
-            grant_S_N => open, grant_S_E => Grant_SE, grant_S_W => open, grant_S_S => Grant_SS, grant_S_L => Grant_SL,
-            grant_L_N => open, grant_L_E => Grant_LE, grant_L_W => open, grant_L_S => Grant_LS, grant_L_L => Grant_LL, 
+            grant_N_N => open,   grant_N_E => open,  grant_N_W => open,     grant_N_S => open,       grant_N_L => open,
+            grant_E_N => open,   grant_E_E => open,  grant_E_W => open,     grant_E_S => open,       grant_E_L => open,
+            grant_W_N => open,   grant_W_E => open,  grant_W_W => open,     grant_W_S => Grant_WS,   grant_W_L => Grant_WL,
+            grant_S_N => open,   grant_S_E => open,  grant_S_W => Grant_SW, grant_S_S => open,       grant_S_L => Grant_SL,
+            grant_L_N => open,   grant_L_E => open,  grant_L_W => Grant_LW, grant_L_S => Grant_LS,   grant_L_L => open, 
 
             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_S_LBDR_to_Allocator, SO=> SO,
 
