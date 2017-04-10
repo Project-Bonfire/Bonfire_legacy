@@ -79,7 +79,6 @@ port (reset: in  std_logic;
     SO          : out std_logic;
     toF         : out std_logic;
     toC         : out std_logic
-
     ); 
 end network_2x2; 
 
