@@ -7,7 +7,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use ieee.std_logic_misc.all;
 use work.component_pack.all;
 
-entity router_NE_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping 
+entity router_SE_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping 
     generic (
         DATA_WIDTH: integer := 32;
         current_address : integer := 0;
@@ -21,15 +21,15 @@ entity router_NE_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropp
     port (
     reset, clk: in std_logic;
 
-    RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
-    credit_in_W,  credit_in_S,  credit_in_L: in std_logic;
-    valid_in_W,   valid_in_S,   valid_in_L : in std_logic;
-    valid_out_W,  valid_out_S,  valid_out_L : out std_logic;
-    credit_out_W, credit_out_S, credit_out_L: out std_logic;
-    TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);
+    RX_N, RX_W, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
+    credit_in_N, credit_in_W, credit_in_L: in std_logic;
+    valid_in_N, valid_in_W, valid_in_L : in std_logic;
+    valid_out_N, valid_out_W, valid_out_L : out std_logic;
+    credit_out_N, credit_out_W, credit_out_L: out std_logic;
+    TX_N, TX_W, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);
 
-    Faulty_W_in, Faulty_S_in: in std_logic;
-    Faulty_W_out, Faulty_S_out: out std_logic;
+    Faulty_N_in, Faulty_W_in : in std_logic;
+    Faulty_N_out, Faulty_W_out : out std_logic;
 
     -- should be connected to NI (Outputs for classified fault information)
     link_faults: out std_logic_vector(4 downto 0);
@@ -50,9 +50,9 @@ entity router_NE_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropp
     link_faults_async: out std_logic_vector(4 downto 0);
     turn_faults_async: out std_logic_vector(19 downto 0)
  ); 
-end router_NE_credit_based_PD_C_SHMU; 
+end router_SE_credit_based_PD_C_SHMU; 
 
-architecture behavior of router_NE_credit_based_PD_C_SHMU is
+architecture behavior of router_SE_credit_based_PD_C_SHMU is
 
     -------------------------------
     -- Added because of Checkers --
@@ -64,48 +64,99 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
     -------------------------------
     -------------------------------
 
-    signal FIFO_D_out_W, FIFO_D_out_S, FIFO_D_out_L: std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal FIFO_D_out_N, FIFO_D_out_W, FIFO_D_out_L: std_logic_vector(DATA_WIDTH-1 downto 0);
 
     -- Grant_XY : Grant signal generated from Arbiter for output X connected to FIFO of input Y
 
-    signal Grant_WW, Grant_WS, Grant_WL: std_logic;
-    signal Grant_SW, Grant_SS, Grant_SL: std_logic;
-    signal Grant_LW, Grant_LS, Grant_LL: std_logic;
+    signal Grant_WW, Grant_WN, Grant_WL: std_logic;
+    signal Grant_NW, Grant_NN, Grant_NL: std_logic;
+    signal Grant_LW, Grant_LN, Grant_LL: std_logic;
 
-    signal Req_WW, Req_SW, Req_LW: std_logic;
-    signal Req_WS, Req_SS, Req_LS: std_logic;
-    signal Req_WL, Req_SL, Req_LL: std_logic;
+    signal Req_WW, Req_NW, Req_LW: std_logic;
+    signal Req_WN, Req_NN, Req_LN: std_logic;
+    signal Req_WL, Req_NL, Req_LL: std_logic;
 
-    signal empty_W, empty_S, empty_L: std_logic; 
+    signal empty_N, empty_W, empty_L: std_logic; 
 
-    signal Xbar_sel_W, Xbar_sel_S, Xbar_sel_L: std_logic_vector(4 downto 0);
+    signal Xbar_sel_N, Xbar_sel_W, Xbar_sel_L: std_logic_vector(4 downto 0);
 
-    signal LBDR_Fault_W, LBDR_Fault_S, LBDR_Fault_L: std_logic;
+    signal LBDR_Fault_N, LBDR_Fault_W, LBDR_Fault_L: std_logic;
     
-    signal faulty_packet_W, faulty_packet_S, faulty_packet_L:  std_logic;
-    signal healthy_packet_W, healthy_packet_S, healthy_packet_L:  std_logic;
+    signal faulty_packet_N, faulty_packet_W, faulty_packet_L:  std_logic;
+    signal healthy_packet_N, healthy_packet_W, healthy_packet_L:  std_logic;
 
-    signal packet_drop_order_W, packet_drop_order_S, packet_drop_order_L:  std_logic;
+    signal packet_drop_order_N, packet_drop_order_W, packet_drop_order_L:  std_logic;
 
     -- Signals related to link fault classification modules
-    signal healthy_link_W, healthy_link_S, healthy_link_L:  std_logic;
-    signal sig_Faulty_W_out, sig_Faulty_S_out, faulty_link_L:  std_logic;
-    signal intermittent_link_W, intermittent_link_S, intermittent_link_L:  std_logic;
+    signal healthy_link_N, healthy_link_W, healthy_link_L:  std_logic;
+    signal sig_Faulty_N_out, sig_Faulty_W_out, faulty_link_L:  std_logic;
+    signal intermittent_link_N, intermittent_link_W, intermittent_link_L:  std_logic;
 
     -- Signals related to Control part checkers fault classification modules
-    signal Healthy_W2S_turn_fault, intermittent_W2S_turn_fault, faulty_W2S_turn_fault: std_logic;
-    signal Healthy_S2W_turn_fault, intermittent_S2W_turn_fault, faulty_S2W_turn_fault: std_logic;
+    signal Healthy_W2N_turn_fault, intermittent_W2N_turn_fault, faulty_W2N_turn_fault: std_logic;
+    signal Healthy_N2W_turn_fault, intermittent_N2W_turn_fault, faulty_N2W_turn_fault: std_logic;
     signal Healthy_L2W_fault, intermittent_L2W_fault, faulty_L2W_fault: std_logic; 
-    signal Healthy_L2S_fault, intermittent_L2S_fault, faulty_L2S_fault: std_logic; 
+    signal Healthy_L2N_fault, intermittent_L2N_fault, faulty_L2N_fault: std_logic; 
     signal Healthy_W2L_fault, intermittent_W2L_fault, faulty_W2L_fault: std_logic; 
-    signal Healthy_S2L_fault, intermittent_S2L_fault, faulty_S2L_fault: std_logic; 
+    signal Healthy_N2L_fault, intermittent_N2L_fault, faulty_N2L_fault: std_logic; 
 
     -- Signals needed for control part checkers
 
     -- Signals needed for LBDR packet drop checkers
 
+    -- North
+    signal  N_err_header_empty_Requests_FF_Requests_in, 
+            N_err_tail_Requests_in_all_zero, 
+            N_err_tail_empty_Requests_FF_Requests_in, 
+            N_err_tail_not_empty_not_grants_Requests_FF_Requests_in,
+            N_err_grants_onehot,
+            N_err_grants_mismatch, 
+            N_err_header_tail_Requests_FF_Requests_in, 
+            N_err_dst_addr_cur_addr_N1,
+            N_err_dst_addr_cur_addr_not_N1,
+            N_err_dst_addr_cur_addr_E1,
+            N_err_dst_addr_cur_addr_not_E1,
+            N_err_dst_addr_cur_addr_W1,
+            N_err_dst_addr_cur_addr_not_W1,
+            N_err_dst_addr_cur_addr_S1,
+            N_err_dst_addr_cur_addr_not_S1, 
+            N_err_dst_addr_cur_addr_Req_L_in, 
+            N_err_dst_addr_cur_addr_not_Req_L_in, 
+            N_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
+            N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
+            N_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
+            --N_err_header_not_empty_Req_L_in, -- added according to new design
+            N_err_header_not_empty_Req_N_in,
+            N_err_header_not_empty_Req_E_in,
+            N_err_header_not_empty_Req_W_in,
+            N_err_header_not_empty_Req_S_in, 
+            N_err_header_empty_packet_drop_in_packet_drop_equal, 
+            N_err_tail_not_empty_packet_drop_not_packet_drop_in, 
+            N_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal, 
+            N_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal, 
+            N_err_packet_drop_order, 
+
+            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal, 
+            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in, 
+            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal, 
+            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in, 
+            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in, 
+            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in, 
+            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal, 
+            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal, 
+            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal, -- Added 
+            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal, -- Added
+
+            N_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp, 
+            N_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in, 
+            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal, 
+            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in, 
+            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal, 
+            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal, 
+            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal, 
+
     -- West
-    signal  W_err_header_empty_Requests_FF_Requests_in, 
+            W_err_header_empty_Requests_FF_Requests_in, 
             W_err_tail_Requests_in_all_zero, 
             W_err_tail_empty_Requests_FF_Requests_in, 
             W_err_tail_not_empty_not_grants_Requests_FF_Requests_in,
@@ -154,57 +205,6 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
             W_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal, 
             W_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal, 
             W_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal, 
-
-    -- South
-            S_err_header_empty_Requests_FF_Requests_in, 
-            S_err_tail_Requests_in_all_zero, 
-            S_err_tail_empty_Requests_FF_Requests_in, 
-            S_err_tail_not_empty_not_grants_Requests_FF_Requests_in,
-            S_err_grants_onehot,
-            S_err_grants_mismatch, 
-            S_err_header_tail_Requests_FF_Requests_in, 
-            S_err_dst_addr_cur_addr_N1,
-            S_err_dst_addr_cur_addr_not_N1,
-            S_err_dst_addr_cur_addr_E1,
-            S_err_dst_addr_cur_addr_not_E1,
-            S_err_dst_addr_cur_addr_W1,
-            S_err_dst_addr_cur_addr_not_W1,
-            S_err_dst_addr_cur_addr_S1,
-            S_err_dst_addr_cur_addr_not_S1, 
-            S_err_dst_addr_cur_addr_Req_L_in, 
-            S_err_dst_addr_cur_addr_not_Req_L_in, 
-            S_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
-            S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
-            S_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            --S_err_header_not_empty_Req_L_in, -- added according to new design
-            S_err_header_not_empty_Req_N_in,
-            S_err_header_not_empty_Req_E_in,
-            S_err_header_not_empty_Req_W_in,
-            S_err_header_not_empty_Req_S_in, 
-            S_err_header_empty_packet_drop_in_packet_drop_equal, 
-            S_err_tail_not_empty_packet_drop_not_packet_drop_in, 
-            S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal, 
-            S_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal, 
-            S_err_packet_drop_order, 
-
-            S_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal, 
-            S_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in, 
-            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal, 
-            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in, 
-            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in, 
-            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in, 
-            S_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal, 
-            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal, 
-            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal, -- Added 
-            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal, -- Added
-
-            S_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp, 
-            S_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in, 
-            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal, 
-            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in, 
-            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal, 
-            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal, 
-            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal, 
 
     -- Local
             L_err_header_empty_Requests_FF_Requests_in, 
@@ -262,10 +262,120 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
 
     -- Signals needed for FIFO packet drop with fault classifier support checkers
 
+            -- North
+
+            -- Functional checkers
+signal      N_err_empty_full, N_err_empty_read_en, N_err_full_write_en, N_err_state_in_onehot, N_err_read_pointer_in_onehot, N_err_write_pointer_in_onehot, 
+
+            -- Structural checkers
+            N_err_write_en_write_pointer, N_err_not_write_en_write_pointer, N_err_read_pointer_write_pointer_not_empty, N_err_read_pointer_write_pointer_empty, 
+            N_err_read_pointer_write_pointer_not_full, N_err_read_pointer_write_pointer_full, N_err_read_pointer_increment, N_err_read_pointer_not_increment, 
+            N_err_write_en, N_err_not_write_en, N_err_not_write_en1, N_err_not_write_en2, N_err_read_en_mismatch, N_err_read_en_mismatch1, 
+
+            -- Newly added checkers for FIFO with packet drop and fault classifier support!
+            N_err_fake_credit_read_en_fake_credit_counter_in_increment, 
+            N_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_fake_credit_counter_in_decrement, 
+            N_err_not_fake_credit_read_en_fake_credit_counter_in_not_change, 
+            N_err_fake_credit_not_read_en_fake_credit_counter_in_not_change, 
+            N_err_not_fake_credit_not_read_en_fake_credit_counter_zero_fake_credit_counter_in_not_change, 
+            N_err_fake_credit_read_en_credit_out, 
+            N_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_credit_out, 
+            N_err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out, 
+
+            -- Checkers for Packet Dropping FSM of FIFO
+            N_err_state_out_Idle_not_fault_out_valid_in_state_in_Header_flit, 
+            N_err_state_out_Idle_not_fault_out_valid_in_state_in_not_change, 
+            N_err_state_out_Idle_not_fault_out_not_fake_credit, 
+            N_err_state_out_Idle_not_fault_out_not_fault_info_in, 
+            N_err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal, 
+            N_err_state_out_Idle_fault_out_fake_credit, 
+            N_err_state_out_Idle_fault_out_state_in_Packet_drop, 
+            N_err_state_out_Idle_fault_out_fault_info_in, 
+            N_err_state_out_Idle_fault_out_faulty_packet_in, 
+            N_err_state_out_Idle_not_health_info, 
+            N_err_state_out_Idle_not_write_fake_flit, 
+
+            N_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Body_state_in_Body_flit, 
+            N_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Tail_state_in_Tail_flit, 
+            N_err_state_out_Header_flit_valid_in_not_fault_out_not_write_fake_flit, 
+            N_err_state_out_Header_flit_valid_in_not_fault_out_not_fault_info_in, 
+            N_err_state_out_Header_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+            N_err_state_out_Header_flit_valid_in_fault_out_write_fake_flit, 
+            N_err_state_out_Header_flit_valid_in_fault_out_state_in_Packet_drop, 
+            N_err_state_out_Header_flit_valid_in_fault_out_fault_info_in, 
+            N_err_state_out_Header_flit_valid_in_fault_out_faulty_packet_in, 
+            N_err_state_out_Header_flit_not_valid_in_state_in_state_out_not_change, 
+            N_err_state_out_Header_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change, 
+            N_err_state_out_Header_flit_not_valid_in_not_fault_info_in, 
+            N_err_state_out_Header_flit_not_valid_in_not_write_fake_flit, 
+            N_err_state_out_Header_flit_or_Body_flit_not_fake_credit, 
+
+            N_err_state_out_Body_flit_valid_in_not_fault_out_state_in_state_out_not_change, 
+            N_err_state_out_Body_flit_valid_in_not_fault_out_state_in_Tail_flit, 
+            N_err_state_out_Body_flit_valid_in_not_fault_out_health_info, 
+            N_err_state_out_Body_flit_valid_in_not_fault_out_not_write_fake_flit, 
+            N_err_state_out_Body_flit_valid_in_not_fault_out_fault_info_in, 
+            N_err_state_out_Body_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+            N_err_state_out_Body_flit_valid_in_fault_out_write_fake_flit, 
+            N_err_state_out_Body_flit_valid_in_fault_out_state_in_Packet_drop, 
+            N_err_state_out_Body_flit_valid_in_fault_out_fault_info_in, 
+            N_err_state_out_Body_flit_valid_in_fault_out_faulty_packet_in, 
+            N_err_state_out_Body_flit_not_valid_in_state_in_state_out_not_change, 
+            N_err_state_out_Body_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change, 
+            N_err_state_out_Body_flit_not_valid_in_not_fault_info_in, 
+            N_err_state_out_Body_flit_valid_in_not_fault_out_flit_type_not_tail_not_health_info, 
+            N_err_state_out_Body_flit_valid_in_fault_out_not_health_info, 
+            N_err_state_out_Body_flit_valid_in_not_health_info, 
+            N_err_state_out_Body_flit_not_fake_credit, 
+            N_err_state_out_Body_flit_not_valid_in_not_write_fake_flit, 
+
+            N_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_Header_state_in_Header_flit, 
+            N_err_state_out_Tail_flit_valid_in_not_fault_out_not_fake_credit, 
+            N_err_state_out_Tail_flit_valid_in_not_fault_out_not_fault_info_in, 
+            N_err_state_out_Tail_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+            N_err_state_out_Tail_flit_valid_in_fault_out_fake_credit, 
+            N_err_state_out_Tail_flit_valid_in_fault_out_state_in_Packet_drop, 
+            N_err_state_out_Tail_flit_valid_in_fault_out_fault_info_in, 
+            N_err_state_out_Tail_flit_valid_in_fault_out_faulty_packet_in, 
+            N_err_state_out_Tail_flit_not_valid_in_state_in_Idle, 
+            N_err_state_out_Tail_flit_not_valid_in_faulty_packet_in_faulty_packet_in_not_change, 
+            N_err_state_out_Tail_flit_not_valid_in_not_fault_info_in, 
+            N_err_state_out_Tail_flit_not_valid_in_not_fake_credit, 
+            N_err_state_out_Tail_flit_not_write_fake_flit, 
+
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_fake_credit, 
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_faulty_packet_in, 
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_state_in_Header_flit, 
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit, 
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in, 
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle, 
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit, 
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit, 
+            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+            N_err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change, 
+            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal, 
+            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change, 
+            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit, 
+            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
+            N_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
+            N_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
+            N_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
+            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
+            N_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change, 
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change, 
+
+            N_err_fault_info_fault_info_out_equal, 
+            N_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
+            N_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in, 
+
             -- West
 
             -- Functional checkers
- signal     W_err_empty_full, W_err_empty_read_en, W_err_full_write_en, W_err_state_in_onehot, W_err_read_pointer_in_onehot, W_err_write_pointer_in_onehot, 
+            W_err_empty_full, W_err_empty_read_en, W_err_full_write_en, W_err_state_in_onehot, W_err_read_pointer_in_onehot, W_err_write_pointer_in_onehot, 
 
             -- Structural checkers
             W_err_write_en_write_pointer, W_err_not_write_en_write_pointer, W_err_read_pointer_write_pointer_not_empty, W_err_read_pointer_write_pointer_empty, 
@@ -371,116 +481,6 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
 
             W_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
             W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in, 
-                  
-            -- South
-
-            -- Functional checkers
-            S_err_empty_full, S_err_empty_read_en, S_err_full_write_en, S_err_state_in_onehot, S_err_read_pointer_in_onehot, S_err_write_pointer_in_onehot, 
-
-            -- Structural checkers
-            S_err_write_en_write_pointer, S_err_not_write_en_write_pointer, S_err_read_pointer_write_pointer_not_empty, S_err_read_pointer_write_pointer_empty, 
-            S_err_read_pointer_write_pointer_not_full, S_err_read_pointer_write_pointer_full, S_err_read_pointer_increment, S_err_read_pointer_not_increment, 
-            S_err_write_en, S_err_not_write_en, S_err_not_write_en1, S_err_not_write_en2, S_err_read_en_mismatch, S_err_read_en_mismatch1, 
-
-            -- Newly added checkers for FIFO with packet drop and fault classifier support!
-            S_err_fake_credit_read_en_fake_credit_counter_in_increment, 
-            S_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_fake_credit_counter_in_decrement, 
-            S_err_not_fake_credit_read_en_fake_credit_counter_in_not_change, 
-            S_err_fake_credit_not_read_en_fake_credit_counter_in_not_change, 
-            S_err_not_fake_credit_not_read_en_fake_credit_counter_zero_fake_credit_counter_in_not_change, 
-            S_err_fake_credit_read_en_credit_out, 
-            S_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_credit_out, 
-            S_err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out, 
-
-            -- Checkers for Packet Dropping FSM of FIFO
-            S_err_state_out_Idle_not_fault_out_valid_in_state_in_Header_flit, 
-            S_err_state_out_Idle_not_fault_out_valid_in_state_in_not_change, 
-            S_err_state_out_Idle_not_fault_out_not_fake_credit, 
-            S_err_state_out_Idle_not_fault_out_not_fault_info_in, 
-            S_err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal, 
-            S_err_state_out_Idle_fault_out_fake_credit, 
-            S_err_state_out_Idle_fault_out_state_in_Packet_drop, 
-            S_err_state_out_Idle_fault_out_fault_info_in, 
-            S_err_state_out_Idle_fault_out_faulty_packet_in, 
-            S_err_state_out_Idle_not_health_info, 
-            S_err_state_out_Idle_not_write_fake_flit, 
-
-            S_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Body_state_in_Body_flit, 
-            S_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Tail_state_in_Tail_flit, 
-            S_err_state_out_Header_flit_valid_in_not_fault_out_not_write_fake_flit, 
-            S_err_state_out_Header_flit_valid_in_not_fault_out_not_fault_info_in, 
-            S_err_state_out_Header_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
-            S_err_state_out_Header_flit_valid_in_fault_out_write_fake_flit, 
-            S_err_state_out_Header_flit_valid_in_fault_out_state_in_Packet_drop, 
-            S_err_state_out_Header_flit_valid_in_fault_out_fault_info_in, 
-            S_err_state_out_Header_flit_valid_in_fault_out_faulty_packet_in, 
-            S_err_state_out_Header_flit_not_valid_in_state_in_state_out_not_change, 
-            S_err_state_out_Header_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change, 
-            S_err_state_out_Header_flit_not_valid_in_not_fault_info_in, 
-            S_err_state_out_Header_flit_not_valid_in_not_write_fake_flit, 
-            S_err_state_out_Header_flit_or_Body_flit_not_fake_credit, 
-
-            S_err_state_out_Body_flit_valid_in_not_fault_out_state_in_state_out_not_change, 
-            S_err_state_out_Body_flit_valid_in_not_fault_out_state_in_Tail_flit, 
-            S_err_state_out_Body_flit_valid_in_not_fault_out_health_info, 
-            S_err_state_out_Body_flit_valid_in_not_fault_out_not_write_fake_flit, 
-            S_err_state_out_Body_flit_valid_in_not_fault_out_fault_info_in, 
-            S_err_state_out_Body_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
-            S_err_state_out_Body_flit_valid_in_fault_out_write_fake_flit, 
-            S_err_state_out_Body_flit_valid_in_fault_out_state_in_Packet_drop, 
-            S_err_state_out_Body_flit_valid_in_fault_out_fault_info_in, 
-            S_err_state_out_Body_flit_valid_in_fault_out_faulty_packet_in, 
-            S_err_state_out_Body_flit_not_valid_in_state_in_state_out_not_change, 
-            S_err_state_out_Body_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change, 
-            S_err_state_out_Body_flit_not_valid_in_not_fault_info_in, 
-            S_err_state_out_Body_flit_valid_in_not_fault_out_flit_type_not_tail_not_health_info, 
-            S_err_state_out_Body_flit_valid_in_fault_out_not_health_info, 
-            S_err_state_out_Body_flit_valid_in_not_health_info, 
-            S_err_state_out_Body_flit_not_fake_credit, 
-            S_err_state_out_Body_flit_not_valid_in_not_write_fake_flit, 
-
-            S_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_Header_state_in_Header_flit, 
-            S_err_state_out_Tail_flit_valid_in_not_fault_out_not_fake_credit, 
-            S_err_state_out_Tail_flit_valid_in_not_fault_out_not_fault_info_in, 
-            S_err_state_out_Tail_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
-            S_err_state_out_Tail_flit_valid_in_fault_out_fake_credit, 
-            S_err_state_out_Tail_flit_valid_in_fault_out_state_in_Packet_drop, 
-            S_err_state_out_Tail_flit_valid_in_fault_out_fault_info_in, 
-            S_err_state_out_Tail_flit_valid_in_fault_out_faulty_packet_in, 
-            S_err_state_out_Tail_flit_not_valid_in_state_in_Idle, 
-            S_err_state_out_Tail_flit_not_valid_in_faulty_packet_in_faulty_packet_in_not_change, 
-            S_err_state_out_Tail_flit_not_valid_in_not_fault_info_in, 
-            S_err_state_out_Tail_flit_not_valid_in_not_fake_credit, 
-            S_err_state_out_Tail_flit_not_write_fake_flit, 
-
-            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_fake_credit, 
-            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_faulty_packet_in, 
-            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_state_in_Header_flit, 
-            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit, 
-            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in, 
-            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle, 
-            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit, 
-            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit, 
-            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
-            S_err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change, 
-            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal, 
-            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change, 
-            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit, 
-            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
-            S_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
-            S_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-            S_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
-            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
-            S_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
-            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change, 
-            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change, 
-
-            S_err_fault_info_fault_info_out_equal, 
-            S_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-            S_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
-
-            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
-            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in, 
 
             -- Local
 
@@ -939,13 +939,13 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
 
 -- Signals needed for grouping checkers to model turn/path faults
 
-signal      W_FIFO_checkers_ORed, S_FIFO_checkers_ORed, L_FIFO_checkers_ORed : std_logic;
-signal      W2S_turn_fault, S2W_turn_fault : std_logic;
-signal      L2W_fault, L2S_fault, W2L_fault, S2L_fault : std_logic;
+signal      N_FIFO_checkers_ORed, W_FIFO_checkers_ORed, L_FIFO_checkers_ORed : std_logic;
+signal      W2N_turn_fault, N2W_turn_fault : std_logic;
+signal      L2W_fault, L2N_fault, W2L_fault, N2L_fault : std_logic;
 
 -- Just used temporarily for debugging purposes!
 
-signal      W_LBDR_checkers_ORed, S_LBDR_checkers_ORed, L_LBDR_checkers_ORed : std_logic;
+signal      N_LBDR_checkers_ORed, W_LBDR_checkers_ORed, L_LBDR_checkers_ORed : std_logic;
 signal      Allocator_checkers_ORed : std_logic;
 --signal      turn_faults_sig : std_logic_vector(19 downto 0);
 
@@ -957,9 +957,9 @@ signal      Allocator_checkers_ORed : std_logic;
 -------------------------------------------------------------------------------------------------
 --TODO: the chains should be fixed!
 --Fixed!
-signal      fault_DO_serial_L_FIFO_to_W_FIFO, fault_DO_serial_W_FIFO_to_S_FIFO: std_logic;
-signal      fault_DO_serial_S_FIFO_to_L_LBDR, fault_DO_serial_L_LBDR_to_W_LBDR: std_logic;
-signal      fault_DO_serial_W_LBDR_to_S_LBDR, fault_DO_serial_S_LBDR_to_Allocator: std_logic;
+signal      fault_DO_serial_L_FIFO_to_N_FIFO, fault_DO_serial_N_FIFO_to_W_FIFO: std_logic;
+signal      fault_DO_serial_W_FIFO_to_L_LBDR, fault_DO_serial_L_LBDR_to_N_LBDR: std_logic;
+signal 		fault_DO_serial_N_LBDR_to_W_LBDR, fault_DO_serial_W_LBDR_to_Allocator: std_logic;
 
 ------------------------------------------------------------------
 ------------------------------------------------------------------
@@ -969,6 +969,126 @@ begin
 -- FIFO contributes to all turns and paths, therefore, for each turn or path (for the input direction), all the outputs of FIFO checkers
 -- corresponding to that input are ORed together. 
 
+-- North
+N_FIFO_checkers_ORed  <=    N_err_empty_full or 
+                            N_err_empty_read_en or 
+                            N_err_full_write_en or 
+                            N_err_state_in_onehot or 
+                            N_err_read_pointer_in_onehot or 
+                            N_err_write_pointer_in_onehot or 
+
+                            N_err_write_en_write_pointer or 
+                            N_err_not_write_en_write_pointer or 
+                            N_err_read_pointer_write_pointer_not_empty or 
+                            N_err_read_pointer_write_pointer_empty or 
+                            N_err_read_pointer_write_pointer_not_full or 
+                            N_err_read_pointer_write_pointer_full or 
+                            N_err_read_pointer_increment or 
+                            N_err_read_pointer_not_increment or 
+                            N_err_write_en or 
+                            N_err_not_write_en or 
+                            N_err_not_write_en1 or 
+                            N_err_not_write_en2 or 
+                            N_err_read_en_mismatch or 
+                            N_err_read_en_mismatch1 or 
+
+                            N_err_fake_credit_read_en_fake_credit_counter_in_increment or 
+                            N_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_fake_credit_counter_in_decrement or 
+                            N_err_not_fake_credit_read_en_fake_credit_counter_in_not_change or 
+                            N_err_fake_credit_not_read_en_fake_credit_counter_in_not_change or 
+                            N_err_not_fake_credit_not_read_en_fake_credit_counter_zero_fake_credit_counter_in_not_change or 
+                            N_err_fake_credit_read_en_credit_out or 
+                            N_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_credit_out or 
+                            N_err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out or 
+
+                            N_err_state_out_Idle_not_fault_out_valid_in_state_in_Header_flit or 
+                            N_err_state_out_Idle_not_fault_out_valid_in_state_in_not_change or 
+                            N_err_state_out_Idle_not_fault_out_not_fake_credit or 
+                            N_err_state_out_Idle_not_fault_out_not_fault_info_in or 
+                            N_err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal or 
+                            N_err_state_out_Idle_fault_out_fake_credit or 
+                            N_err_state_out_Idle_fault_out_state_in_Packet_drop or 
+                            N_err_state_out_Idle_fault_out_fault_info_in or 
+                            N_err_state_out_Idle_fault_out_faulty_packet_in or 
+                            N_err_state_out_Idle_not_health_info or 
+                            N_err_state_out_Idle_not_write_fake_flit or 
+
+                            N_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Body_state_in_Body_flit or 
+                            N_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Tail_state_in_Tail_flit or 
+                            N_err_state_out_Header_flit_valid_in_not_fault_out_not_write_fake_flit or 
+                            N_err_state_out_Header_flit_valid_in_not_fault_out_not_fault_info_in or 
+                            N_err_state_out_Header_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change or 
+                            N_err_state_out_Header_flit_valid_in_fault_out_write_fake_flit or 
+                            N_err_state_out_Header_flit_valid_in_fault_out_state_in_Packet_drop or 
+                            N_err_state_out_Header_flit_valid_in_fault_out_fault_info_in or 
+                            N_err_state_out_Header_flit_valid_in_fault_out_faulty_packet_in or 
+                            N_err_state_out_Header_flit_not_valid_in_state_in_state_out_not_change or 
+                            N_err_state_out_Header_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change or 
+                            N_err_state_out_Header_flit_not_valid_in_not_fault_info_in or 
+                            N_err_state_out_Header_flit_not_valid_in_not_write_fake_flit or 
+                            N_err_state_out_Header_flit_or_Body_flit_not_fake_credit or 
+
+                            N_err_state_out_Body_flit_valid_in_not_fault_out_state_in_state_out_not_change or 
+                            N_err_state_out_Body_flit_valid_in_not_fault_out_state_in_Tail_flit or 
+                            N_err_state_out_Body_flit_valid_in_not_fault_out_health_info or 
+                            N_err_state_out_Body_flit_valid_in_not_fault_out_not_write_fake_flit or 
+                            N_err_state_out_Body_flit_valid_in_not_fault_out_fault_info_in or 
+                            N_err_state_out_Body_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change or 
+                            N_err_state_out_Body_flit_valid_in_fault_out_write_fake_flit or 
+                            N_err_state_out_Body_flit_valid_in_fault_out_state_in_Packet_drop or 
+                            N_err_state_out_Body_flit_valid_in_fault_out_fault_info_in or 
+                            N_err_state_out_Body_flit_valid_in_fault_out_faulty_packet_in or 
+                            N_err_state_out_Body_flit_not_valid_in_state_in_state_out_not_change or 
+                            N_err_state_out_Body_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change or 
+                            N_err_state_out_Body_flit_not_valid_in_not_fault_info_in or 
+                            N_err_state_out_Body_flit_valid_in_not_fault_out_flit_type_not_tail_not_health_info or 
+                            N_err_state_out_Body_flit_valid_in_fault_out_not_health_info or 
+                            N_err_state_out_Body_flit_valid_in_not_health_info or 
+                            N_err_state_out_Body_flit_not_fake_credit or 
+                            N_err_state_out_Body_flit_not_valid_in_not_write_fake_flit or 
+
+                            N_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_Header_state_in_Header_flit or 
+                            N_err_state_out_Tail_flit_valid_in_not_fault_out_not_fake_credit or 
+                            N_err_state_out_Tail_flit_valid_in_not_fault_out_not_fault_info_in or 
+                            N_err_state_out_Tail_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change or 
+                            N_err_state_out_Tail_flit_valid_in_fault_out_fake_credit or 
+                            N_err_state_out_Tail_flit_valid_in_fault_out_state_in_Packet_drop or 
+                            N_err_state_out_Tail_flit_valid_in_fault_out_fault_info_in or 
+                            N_err_state_out_Tail_flit_valid_in_fault_out_faulty_packet_in or 
+                            N_err_state_out_Tail_flit_not_valid_in_state_in_Idle or 
+                            N_err_state_out_Tail_flit_not_valid_in_faulty_packet_in_faulty_packet_in_not_change or 
+                            N_err_state_out_Tail_flit_not_valid_in_not_fault_info_in or 
+                            N_err_state_out_Tail_flit_not_valid_in_not_fake_credit or 
+                            N_err_state_out_Tail_flit_not_write_fake_flit or 
+
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_fake_credit or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_faulty_packet_in or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_state_in_Header_flit or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit or 
+                            N_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change or 
+                            N_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change or 
+                            N_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit or 
+                            N_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change or 
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change or 
+
+                            N_err_fault_info_fault_info_out_equal or 
+                            N_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal or 
+                            N_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal or 
+
+                            N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in or
+                            N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in;
 
 -- West
 W_FIFO_checkers_ORed  <=    W_err_empty_full or W_err_empty_read_en or W_err_full_write_en or W_err_state_in_onehot or 
@@ -1077,115 +1197,6 @@ W_FIFO_checkers_ORed  <=    W_err_empty_full or W_err_empty_read_en or W_err_ful
 
                             W_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in or
                             W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in;
-
--- South
-S_FIFO_checkers_ORed  <=    S_err_empty_full or S_err_empty_read_en or S_err_full_write_en or S_err_state_in_onehot or 
-                            S_err_read_pointer_in_onehot or S_err_write_pointer_in_onehot or 
-
-                            S_err_write_en_write_pointer or S_err_not_write_en_write_pointer or 
-                            S_err_read_pointer_write_pointer_not_empty or S_err_read_pointer_write_pointer_empty or 
-                            S_err_read_pointer_write_pointer_not_full or S_err_read_pointer_write_pointer_full or 
-                            S_err_read_pointer_increment or S_err_read_pointer_not_increment or S_err_write_en or 
-                            S_err_not_write_en or S_err_not_write_en1 or S_err_not_write_en2 or S_err_read_en_mismatch or 
-                            S_err_read_en_mismatch1 or 
-
-                            S_err_fake_credit_read_en_fake_credit_counter_in_increment or 
-                            S_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_fake_credit_counter_in_decrement or 
-                            S_err_not_fake_credit_read_en_fake_credit_counter_in_not_change or 
-                            S_err_fake_credit_not_read_en_fake_credit_counter_in_not_change or 
-                            S_err_not_fake_credit_not_read_en_fake_credit_counter_zero_fake_credit_counter_in_not_change or 
-                            S_err_fake_credit_read_en_credit_out or 
-                            S_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_credit_out or 
-                            S_err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out or 
-
-                            S_err_state_out_Idle_not_fault_out_valid_in_state_in_Header_flit or 
-                            S_err_state_out_Idle_not_fault_out_valid_in_state_in_not_change or 
-                            S_err_state_out_Idle_not_fault_out_not_fake_credit or 
-                            S_err_state_out_Idle_not_fault_out_not_fault_info_in or 
-                            S_err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal or 
-                            S_err_state_out_Idle_fault_out_fake_credit or 
-                            S_err_state_out_Idle_fault_out_state_in_Packet_drop or 
-                            S_err_state_out_Idle_fault_out_fault_info_in or 
-                            S_err_state_out_Idle_fault_out_faulty_packet_in or 
-                            S_err_state_out_Idle_not_health_info or 
-                            S_err_state_out_Idle_not_write_fake_flit or 
-
-                            S_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Body_state_in_Body_flit or 
-                            S_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Tail_state_in_Tail_flit or 
-                            S_err_state_out_Header_flit_valid_in_not_fault_out_not_write_fake_flit or 
-                            S_err_state_out_Header_flit_valid_in_not_fault_out_not_fault_info_in or 
-                            S_err_state_out_Header_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change or 
-                            S_err_state_out_Header_flit_valid_in_fault_out_write_fake_flit or 
-                            S_err_state_out_Header_flit_valid_in_fault_out_state_in_Packet_drop or 
-                            S_err_state_out_Header_flit_valid_in_fault_out_fault_info_in or 
-                            S_err_state_out_Header_flit_valid_in_fault_out_faulty_packet_in or 
-                            S_err_state_out_Header_flit_not_valid_in_state_in_state_out_not_change or 
-                            S_err_state_out_Header_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change or 
-                            S_err_state_out_Header_flit_not_valid_in_not_fault_info_in or 
-                            S_err_state_out_Header_flit_not_valid_in_not_write_fake_flit or 
-                            S_err_state_out_Header_flit_or_Body_flit_not_fake_credit or 
-
-                            S_err_state_out_Body_flit_valid_in_not_fault_out_state_in_state_out_not_change or 
-                            S_err_state_out_Body_flit_valid_in_not_fault_out_state_in_Tail_flit or 
-                            S_err_state_out_Body_flit_valid_in_not_fault_out_health_info or 
-                            S_err_state_out_Body_flit_valid_in_not_fault_out_not_write_fake_flit or 
-                            S_err_state_out_Body_flit_valid_in_not_fault_out_fault_info_in or 
-                            S_err_state_out_Body_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change or 
-                            S_err_state_out_Body_flit_valid_in_fault_out_write_fake_flit or 
-                            S_err_state_out_Body_flit_valid_in_fault_out_state_in_Packet_drop or 
-                            S_err_state_out_Body_flit_valid_in_fault_out_fault_info_in or 
-                            S_err_state_out_Body_flit_valid_in_fault_out_faulty_packet_in or 
-                            S_err_state_out_Body_flit_not_valid_in_state_in_state_out_not_change or 
-                            S_err_state_out_Body_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change or 
-                            S_err_state_out_Body_flit_not_valid_in_not_fault_info_in or 
-                            S_err_state_out_Body_flit_valid_in_not_fault_out_flit_type_not_tail_not_health_info or 
-                            S_err_state_out_Body_flit_valid_in_fault_out_not_health_info or 
-                            S_err_state_out_Body_flit_valid_in_not_health_info or 
-                            S_err_state_out_Body_flit_not_fake_credit or 
-                            S_err_state_out_Body_flit_not_valid_in_not_write_fake_flit or 
-
-                            S_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_Header_state_in_Header_flit or 
-                            S_err_state_out_Tail_flit_valid_in_not_fault_out_not_fake_credit or 
-                            S_err_state_out_Tail_flit_valid_in_not_fault_out_not_fault_info_in or 
-                            S_err_state_out_Tail_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change or 
-                            S_err_state_out_Tail_flit_valid_in_fault_out_fake_credit or 
-                            S_err_state_out_Tail_flit_valid_in_fault_out_state_in_Packet_drop or 
-                            S_err_state_out_Tail_flit_valid_in_fault_out_fault_info_in or 
-                            S_err_state_out_Tail_flit_valid_in_fault_out_faulty_packet_in or 
-                            S_err_state_out_Tail_flit_not_valid_in_state_in_Idle or 
-                            S_err_state_out_Tail_flit_not_valid_in_faulty_packet_in_faulty_packet_in_not_change or 
-                            S_err_state_out_Tail_flit_not_valid_in_not_fault_info_in or 
-                            S_err_state_out_Tail_flit_not_valid_in_not_fake_credit or 
-                            S_err_state_out_Tail_flit_not_write_fake_flit or 
-
-                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_fake_credit or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_faulty_packet_in or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_state_in_Header_flit or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit or 
-                            S_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change or 
-                            S_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change or 
-                            S_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit or 
-                            S_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change or 
-                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change or 
-
-                            S_err_fault_info_fault_info_out_equal or 
-                            S_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal or 
-                            S_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal or 
-
-                            S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in or
-                            S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in;
 
 -- Local
 L_FIFO_checkers_ORed  <=    L_err_empty_full or L_err_empty_read_en or L_err_full_write_en or L_err_state_in_onehot or 
@@ -1308,6 +1319,60 @@ L_FIFO_checkers_ORed  <=    L_err_empty_full or L_err_empty_read_en or L_err_ful
 
 -- LBDR checker outputs ORed
 
+-- North
+                            -- Routing part checkers            
+N_LBDR_checkers_ORed <=     N_err_header_empty_Requests_FF_Requests_in or  
+                            N_err_tail_Requests_in_all_zero or  
+                            N_err_tail_empty_Requests_FF_Requests_in or  
+                            N_err_tail_not_empty_not_grants_Requests_FF_Requests_in or 
+                            N_err_grants_onehot or 
+                            N_err_grants_mismatch or  
+                            N_err_header_tail_Requests_FF_Requests_in or  
+                            N_err_dst_addr_cur_addr_N1 or 
+                            N_err_dst_addr_cur_addr_not_N1 or 
+                            N_err_dst_addr_cur_addr_E1 or 
+                            N_err_dst_addr_cur_addr_not_E1 or 
+                            N_err_dst_addr_cur_addr_W1 or 
+                            N_err_dst_addr_cur_addr_not_W1 or 
+                            N_err_dst_addr_cur_addr_S1 or 
+                            N_err_dst_addr_cur_addr_not_S1 or  
+                            N_err_dst_addr_cur_addr_Req_L_in or  
+                            N_err_dst_addr_cur_addr_not_Req_L_in or  
+                            N_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
+                            N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or  -- added according to new design
+                            N_err_header_not_empty_faulty_Req_in_all_zero or  -- added according to new design
+                            --N_err_header_not_empty_Req_L_in or  -- added according to new design
+                            N_err_header_not_empty_Req_N_in or 
+                            N_err_header_not_empty_Req_E_in or 
+                            N_err_header_not_empty_Req_W_in or 
+                            N_err_header_not_empty_Req_S_in or  
+                            N_err_header_empty_packet_drop_in_packet_drop_equal or  
+                            N_err_tail_not_empty_packet_drop_not_packet_drop_in or  
+                            N_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or  
+                            N_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or  
+                            N_err_packet_drop_order or  
+
+                            -- Cx_Reconf checkers
+                            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal or  
+                            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in or  
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal or  
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in or  
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in or  
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in or  
+                            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal or  
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal or  
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal or  -- Added 
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal or  -- Added
+
+                            -- Rxy_Reconf checkers
+                            N_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp or  
+                            N_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in or  
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal or  
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in or  
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal or  
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal or  
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal;
+
 -- West
                             -- Routing part checkers            
 W_LBDR_checkers_ORed <=     W_err_header_empty_Requests_FF_Requests_in or  
@@ -1361,60 +1426,6 @@ W_LBDR_checkers_ORed <=     W_err_header_empty_Requests_FF_Requests_in or
                             W_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal or  
                             W_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal or  
                             W_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal;
-
--- South
-                            -- Routing part checkers            
-S_LBDR_checkers_ORed <=     S_err_header_empty_Requests_FF_Requests_in or  
-                            S_err_tail_Requests_in_all_zero or  
-                            S_err_tail_empty_Requests_FF_Requests_in or  
-                            S_err_tail_not_empty_not_grants_Requests_FF_Requests_in or 
-                            S_err_grants_onehot or 
-                            S_err_grants_mismatch or  
-                            S_err_header_tail_Requests_FF_Requests_in or  
-                            S_err_dst_addr_cur_addr_N1 or 
-                            S_err_dst_addr_cur_addr_not_N1 or 
-                            S_err_dst_addr_cur_addr_E1 or 
-                            S_err_dst_addr_cur_addr_not_E1 or 
-                            S_err_dst_addr_cur_addr_W1 or 
-                            S_err_dst_addr_cur_addr_not_W1 or 
-                            S_err_dst_addr_cur_addr_S1 or 
-                            S_err_dst_addr_cur_addr_not_S1 or  
-                            S_err_dst_addr_cur_addr_Req_L_in or  
-                            S_err_dst_addr_cur_addr_not_Req_L_in or  
-                            S_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
-                            S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or  -- added according to new design
-                            S_err_header_not_empty_faulty_Req_in_all_zero or  -- added according to new design
-                            --S_err_header_not_empty_Req_L_in or  -- added according to new design
-                            S_err_header_not_empty_Req_N_in or 
-                            S_err_header_not_empty_Req_E_in or 
-                            S_err_header_not_empty_Req_W_in or 
-                            S_err_header_not_empty_Req_S_in or  
-                            S_err_header_empty_packet_drop_in_packet_drop_equal or  
-                            S_err_tail_not_empty_packet_drop_not_packet_drop_in or  
-                            S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or  
-                            S_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or  
-                            S_err_packet_drop_order or  
-
-                            -- Cx_Reconf checkers
-                            S_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal or  
-                            S_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in or  
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal or  
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in or  
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in or  
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in or  
-                            S_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal or  
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal or  
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal or  -- Added 
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal or  -- Added
-
-                            -- Rxy_Reconf checkers
-                            S_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp or  
-                            S_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in or  
-                            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal or  
-                            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in or  
-                            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal or  
-                            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal or  
-                            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal;
 
 -- Local
                             -- Routing part checkers            
@@ -1919,18 +1930,109 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
 
 -- Turn fault checkers
 
-
                             -- FIFO
-W2S_turn_fault <=           W_FIFO_checkers_ORed or
+N2W_turn_fault <=           N_FIFO_checkers_ORed or
 
                             -- LBDR
-                            W_err_header_empty_Requests_FF_Requests_in or W_err_tail_Requests_in_all_zero or W_err_tail_empty_Requests_FF_Requests_in or 
-                            W_err_tail_not_empty_not_grants_Requests_FF_Requests_in or W_err_grants_onehot or W_err_grants_mismatch or 
-                            W_err_header_tail_Requests_FF_Requests_in or W_err_dst_addr_cur_addr_S1 or W_err_dst_addr_cur_addr_not_S1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or W_err_header_not_empty_Req_S_in or 
-                            W_err_header_empty_packet_drop_in_packet_drop_equal or W_err_tail_not_empty_packet_drop_not_packet_drop_in or 
-                            W_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or W_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or 
+                            N_err_header_empty_Requests_FF_Requests_in or
+                            N_err_tail_Requests_in_all_zero or
+                            N_err_tail_empty_Requests_FF_Requests_in or
+                            N_err_tail_not_empty_not_grants_Requests_FF_Requests_in or
+                            N_err_grants_onehot or
+                            N_err_grants_mismatch or
+                            N_err_header_tail_Requests_FF_Requests_in or
+                            N_err_dst_addr_cur_addr_W1 or
+                            N_err_dst_addr_cur_addr_not_W1 or
+                            N_err_header_not_empty_faulty_drop_packet_in or
+                            N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
+                            N_err_header_not_empty_faulty_Req_in_all_zero or                                   
+                            N_err_header_not_empty_Req_W_in or
+                            N_err_header_empty_packet_drop_in_packet_drop_equal or
+                            N_err_tail_not_empty_packet_drop_not_packet_drop_in or
+                            N_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or
+                            N_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or
+                            N_err_packet_drop_order or
+
+                            N_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp or
+                            N_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in or
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal or
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in or 
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal or 
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal or 
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal or
+
+                            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal or
+                            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in or
+                            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal or -- Added 
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal or -- Added
+
+                            -- Allocator
+                            N_err_Requests_state_in_state_not_equal or
+                            N_err_West_Req_W or
+                            N_err_West_grant_W or
+                            N_err_East_Req_W or
+                            N_err_East_grant_W or
+                            N_err_IDLE_Req_W or
+                            N_err_IDLE_grant_W or
+                            N_err_North_Req_W or
+                            N_err_North_grant_W or
+                            N_err_Local_Req_W or
+                            N_err_Local_grant_W or
+                            N_err_South_Req_W or
+                            N_err_South_grant_W or
+                            N_err_state_in_onehot or
+                            N_err_no_request_grants or
+                            N_err_request_no_grants or
+                            N_err_no_Req_W_grant_W or
+                            W_arbiter_out_err_Requests_state_in_state_not_equal or
+                            W_err_IDLE_req_X_N or
+                            W_err_North_req_X_N or
+                            W_err_North_credit_not_zero_req_X_N_grant_N or
+                            W_err_North_credit_zero_or_not_req_X_N_not_grant_N or
+                            W_err_Local_req_X_N or
+                            W_arbiter_out_err_state_in_onehot or
+                            W_arbiter_out_err_no_request_grants or
+                            W_err_request_IDLE_state or
+                            W_err_request_IDLE_not_Grants or
+                            W_err_Grants_onehot_or_all_zero or
+                            err_grant_W_N_sig_not_empty_N_grant_W_N or
+                            err_not_grant_W_N_sig_or_empty_N_not_grant_W_N or
+                            err_grant_signals_not_empty_grant_W or
+                            err_not_grant_signals_empty_not_grant_W or
+                            err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal or
+                            err_credit_in_W_credit_counter_W_out_increment or
+                            err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change or
+                            err_grant_W_credit_counter_W_out_decrement or
+                            err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change or
+                            err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal;
+
+                            -- FIFO
+W2N_turn_fault <=           W_FIFO_checkers_ORed or
+
+                            -- LBDR
+                            W_err_header_empty_Requests_FF_Requests_in or
+                            W_err_tail_Requests_in_all_zero or
+                            W_err_tail_empty_Requests_FF_Requests_in or
+                            W_err_tail_not_empty_not_grants_Requests_FF_Requests_in or
+                            W_err_grants_onehot or
+                            W_err_grants_mismatch or
+                            W_err_header_tail_Requests_FF_Requests_in or
+                            W_err_dst_addr_cur_addr_N1 or
+                            W_err_dst_addr_cur_addr_not_N1 or
+                            N_err_header_not_empty_faulty_drop_packet_in or
+                            N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
+                            N_err_header_not_empty_faulty_Req_in_all_zero or
+                            W_err_header_not_empty_Req_N_in or
+                            W_err_header_empty_packet_drop_in_packet_drop_equal or
+                            W_err_tail_not_empty_packet_drop_not_packet_drop_in or
+                            W_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or
+                            W_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or
                             W_err_packet_drop_order or
 
                             W_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp or
@@ -1953,78 +2055,68 @@ W2S_turn_fault <=           W_FIFO_checkers_ORed or
                             W_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal or -- Added
 
                             -- Allocator
-                            W_err_Requests_state_in_state_not_equal or W_err_South_Req_S or W_err_South_grant_S or W_err_West_Req_S or W_err_West_grant_S or 
-                            W_err_East_Req_S or W_err_East_grant_S or W_err_IDLE_Req_S or W_err_IDLE_grant_S or W_err_North_Req_S or W_err_North_grant_S or 
-                            W_err_Local_Req_S or W_err_Local_grant_S or W_err_state_in_onehot or W_err_no_request_grants or W_err_request_no_grants or 
-                            W_err_no_Req_S_grant_S or S_arbiter_out_err_Requests_state_in_state_not_equal or S_err_West_req_X_W or 
-                            S_err_West_credit_not_zero_req_X_W_grant_W or S_err_West_credit_zero_or_not_req_X_W_not_grant_W or S_err_East_req_X_W or 
-                            S_err_IDLE_req_X_W or S_err_North_req_X_W or S_err_Local_req_X_W or S_err_South_req_X_W or S_arbiter_out_err_state_in_onehot or 
-                            S_arbiter_out_err_no_request_grants or S_err_request_IDLE_state or S_err_request_IDLE_not_Grants or S_err_Grants_onehot_or_all_zero or 
-                            err_grant_S_W_sig_not_empty_W_grant_S_W or err_not_grant_S_W_sig_or_empty_W_not_grant_S_W or err_grant_signals_not_empty_grant_S or 
-                            err_not_grant_signals_empty_not_grant_S or err_grants_valid_not_match or 
-                            err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal or err_credit_in_S_credit_counter_S_out_increment or 
-                            err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change or err_grant_S_credit_counter_S_out_decrement or 
-                            err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change or 
-                            err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal;
-
-                            -- FIFO
-S2W_turn_fault <=           S_FIFO_checkers_ORed or
-
-                            -- LBDR
-                            S_err_header_empty_Requests_FF_Requests_in or
-                            S_err_tail_Requests_in_all_zero or
-                            S_err_tail_empty_Requests_FF_Requests_in or
-                            S_err_tail_not_empty_not_grants_Requests_FF_Requests_in or
-                            S_err_grants_onehot or
-                            S_err_grants_mismatch or
-                            S_err_header_tail_Requests_FF_Requests_in or
-                            S_err_dst_addr_cur_addr_W1 or
-                            S_err_dst_addr_cur_addr_not_W1 or
-                            N_err_header_not_empty_faulty_drop_packet_in or
-                            N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
-                            N_err_header_not_empty_faulty_Req_in_all_zero or                                   
-                            S_err_header_not_empty_Req_W_in or
-                            S_err_header_empty_packet_drop_in_packet_drop_equal or
-                            S_err_tail_not_empty_packet_drop_not_packet_drop_in or
-                            S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or
-                            S_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or
-                            S_err_packet_drop_order or
-
-                            S_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp or
-                            S_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in or
-                            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal or
-                            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in or 
-                            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal or 
-                            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal or 
-                            S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal or
-
-                            S_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal or
-                            S_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in or
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal or
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in or
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in or
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in or
-                            S_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal or
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal or
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal or -- Added 
-                            S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal or -- Added
-
-                            -- Allocator
-                            S_err_Requests_state_in_state_not_equal or S_err_West_Req_W or S_err_West_grant_W or S_err_East_Req_W or S_err_East_grant_W or 
-                            S_err_IDLE_Req_W or S_err_IDLE_grant_W or S_err_North_Req_W or S_err_North_grant_W or S_err_Local_Req_W or S_err_Local_grant_W or 
-                            S_err_South_Req_W or S_err_South_grant_W or S_err_state_in_onehot or S_err_no_request_grants or S_err_request_no_grants or 
-                            S_err_no_Req_W_grant_W or W_arbiter_out_err_Requests_state_in_state_not_equal or W_err_South_req_X_S or 
-                            W_err_South_credit_not_zero_req_X_S_grant_S or W_err_South_credit_zero_or_not_req_X_S_not_grant_S or W_err_West_req_X_S or 
-                            W_err_East_req_X_S or W_err_IDLE_req_X_S or W_err_North_req_X_S or W_err_Local_req_X_S or W_arbiter_out_err_state_in_onehot or 
-                            W_arbiter_out_err_no_request_grants or W_err_request_IDLE_state or W_err_request_IDLE_not_Grants or W_err_Grants_onehot_or_all_zero or 
-                            err_grant_W_S_sig_not_empty_S_grant_W_S or err_not_grant_W_S_sig_or_empty_S_not_grant_W_S or err_grant_signals_not_empty_grant_W or 
-                            err_not_grant_signals_empty_not_grant_W or err_grants_valid_not_match or 
-                            err_credit_in_W_grant_W_credit_counter_W_in_credit_counter_W_out_equal or err_credit_in_W_credit_counter_W_out_increment or 
-                            err_not_credit_in_W_credit_counter_W_out_max_credit_counter_W_in_not_change or err_grant_W_credit_counter_W_out_decrement or 
-                            err_not_grant_W_or_credit_counter_W_out_zero_credit_counter_W_in_not_change or
-                            err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal;
+                            W_err_Requests_state_in_state_not_equal or W_err_IDLE_Req_N or W_err_IDLE_grant_N or W_err_North_Req_N or W_err_North_grant_N or 
+                            W_err_Local_Req_N or W_err_Local_grant_N or W_err_South_Req_N or W_err_South_grant_N or W_err_West_Req_N or W_err_West_grant_N or 
+                            W_err_East_Req_N or W_err_East_grant_N or W_err_state_in_onehot or W_err_no_request_grants or W_err_request_no_grants or 
+                            W_err_no_Req_N_grant_N or N_arbiter_out_err_Requests_state_in_state_not_equal or N_err_West_req_X_W or 
+                            N_err_West_credit_not_zero_req_X_W_grant_W or N_err_West_credit_zero_or_not_req_X_W_not_grant_W or N_err_East_req_X_W or 
+                            N_err_IDLE_req_X_W or N_err_North_req_X_W or N_err_Local_req_X_W or N_err_South_req_X_W or N_arbiter_out_err_state_in_onehot or
+                            N_arbiter_out_err_no_request_grants or N_err_request_IDLE_state or N_err_request_IDLE_not_Grants or N_err_Grants_onehot_or_all_zero or 
+                            err_grant_N_W_sig_not_empty_W_grant_N_W or err_not_grant_N_W_sig_or_empty_W_not_grant_N_W or err_grant_signals_not_empty_grant_N or 
+                            err_not_grant_signals_empty_not_grant_N or err_grants_valid_not_match or 
+                            err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal or err_credit_in_N_credit_counter_N_out_increment or 
+                            err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change or err_grant_N_credit_counter_N_out_decrement or 
+                            err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change or 
+                            err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal;
 
 -- Checkers for Paths/turns from/to Local port
+
+                            -- FIFO
+L2N_fault <=                L_FIFO_checkers_ORed or 
+
+                            -- LBDR
+                            L_err_header_empty_Requests_FF_Requests_in or L_err_tail_Requests_in_all_zero or L_err_tail_empty_Requests_FF_Requests_in or 
+                            L_err_tail_not_empty_not_grants_Requests_FF_Requests_in or L_err_grants_onehot or L_err_grants_mismatch or 
+                            L_err_header_tail_Requests_FF_Requests_in or L_err_dst_addr_cur_addr_N1 or L_err_dst_addr_cur_addr_not_N1 or 
+                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                            N_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_N_in or 
+                            L_err_header_empty_packet_drop_in_packet_drop_equal or L_err_tail_not_empty_packet_drop_not_packet_drop_in or 
+                            L_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or L_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or 
+                            L_err_packet_drop_order or
+
+                            L_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp or
+                            L_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in or
+                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal or
+                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in or 
+                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal or 
+                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal or 
+                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal or
+
+                            L_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal or
+                            L_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in or
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal or
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in or
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in or
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in or
+                            L_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal or
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal or
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal or -- Added 
+                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal or -- Added
+
+                            -- Allocator
+                            L_err_Requests_state_in_state_not_equal or L_err_IDLE_Req_N or L_err_IDLE_grant_N or L_err_North_Req_N or L_err_North_grant_N or 
+                            L_err_Local_Req_N or L_err_Local_grant_N or L_err_South_Req_N or L_err_South_grant_N or L_err_West_Req_N or L_err_West_grant_N or 
+                            L_err_East_Req_N or L_err_East_grant_N or L_err_state_in_onehot or L_err_no_request_grants or L_err_request_no_grants or 
+                            L_err_no_Req_N_grant_N or N_arbiter_out_err_Requests_state_in_state_not_equal or N_err_Local_req_X_L or 
+                            N_err_Local_credit_not_zero_req_X_L_grant_L or N_err_Local_credit_zero_or_not_req_X_L_not_grant_L or N_err_South_req_X_L or 
+                            N_err_West_req_X_L or N_err_East_req_X_L or N_err_IDLE_req_X_L or N_err_North_req_X_L or N_arbiter_out_err_state_in_onehot or 
+                            N_arbiter_out_err_no_request_grants or N_err_request_IDLE_state or N_err_request_IDLE_not_Grants or N_err_Grants_onehot_or_all_zero or 
+                            err_grant_N_L_sig_not_empty_L_grant_N_L or err_not_grant_N_L_sig_or_empty_L_not_grant_N_L or err_grant_signals_not_empty_grant_N or 
+                            err_not_grant_signals_empty_not_grant_N or err_grants_valid_not_match or 
+                            err_credit_in_N_grant_N_credit_counter_N_in_credit_counter_N_out_equal or err_credit_in_N_credit_counter_N_out_increment or 
+                            err_not_credit_in_N_credit_counter_N_out_max_credit_counter_N_in_not_change or err_grant_N_credit_counter_N_out_decrement or
+                            err_not_grant_N_or_credit_counter_N_out_zero_credit_counter_N_in_not_change or
+                            err_not_credit_in_N_not_grant_N_credit_counter_N_in_credit_counter_N_out_equal;
 
                             -- FIFO
 L2W_fault <=                L_FIFO_checkers_ORed or
@@ -2073,51 +2165,69 @@ L2W_fault <=                L_FIFO_checkers_ORed or
                             err_not_credit_in_W_not_grant_W_credit_counter_W_in_credit_counter_W_out_equal;
 
                             -- FIFO
-L2S_fault <=                L_FIFO_checkers_ORed or
+N2L_fault <=                N_FIFO_checkers_ORed or
 
                             -- LBDR
-                            L_err_header_empty_Requests_FF_Requests_in or L_err_tail_Requests_in_all_zero or L_err_tail_empty_Requests_FF_Requests_in or 
-                            L_err_tail_not_empty_not_grants_Requests_FF_Requests_in or L_err_grants_onehot or L_err_grants_mismatch or 
-                            L_err_header_tail_Requests_FF_Requests_in or L_err_dst_addr_cur_addr_S1 or L_err_dst_addr_cur_addr_not_S1 or 
-                            N_err_header_not_empty_faulty_drop_packet_in or N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
-                            N_err_header_not_empty_faulty_Req_in_all_zero or L_err_header_not_empty_Req_S_in or 
-                            L_err_header_empty_packet_drop_in_packet_drop_equal or L_err_tail_not_empty_packet_drop_not_packet_drop_in or 
-                            L_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or L_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or 
-                            L_err_packet_drop_order or
+                            N_err_header_empty_Requests_FF_Requests_in or
+                            N_err_tail_Requests_in_all_zero or
+                            N_err_tail_empty_Requests_FF_Requests_in or
+                            N_err_tail_not_empty_not_grants_Requests_FF_Requests_in or
+                            N_err_grants_onehot or
+                            N_err_grants_mismatch or
+                            N_err_header_tail_Requests_FF_Requests_in or
+                            N_err_dst_addr_cur_addr_Req_L_in or
+                            N_err_dst_addr_cur_addr_not_Req_L_in or
+                            N_err_header_not_empty_faulty_drop_packet_in or
+                            N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
+                            N_err_header_not_empty_faulty_Req_in_all_zero or 
+                            --N_err_header_not_empty_Req_L_in or                                  
+                            N_err_header_empty_packet_drop_in_packet_drop_equal or
+                            N_err_tail_not_empty_packet_drop_not_packet_drop_in or
+                            N_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or
+                            N_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or
+                            N_err_packet_drop_order or
 
-                            L_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp or
-                            L_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in or
-                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal or
-                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in or 
-                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal or 
-                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal or 
-                            L_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal or
+                            N_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp or
+                            N_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in or
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal or
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in or 
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal or 
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal or 
+                            N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal or
 
-                            L_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal or
-                            L_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in or
-                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal or
-                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in or
-                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in or
-                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in or
-                            L_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal or
-                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal or
-                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal or -- Added 
-                            L_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal or -- Added
+                            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal or
+                            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in or
+                            N_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal or
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal or -- Added 
+                            N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal or -- Added
 
                             -- Allocator
-                            L_err_Requests_state_in_state_not_equal or L_err_South_Req_S or L_err_South_grant_S or L_err_West_Req_S or L_err_West_grant_S or 
-                            L_err_East_Req_S or L_err_East_grant_S or L_err_IDLE_Req_S or L_err_IDLE_grant_S or L_err_North_Req_S or L_err_North_grant_S or 
-                            L_err_Local_Req_S or L_err_Local_grant_S or L_err_state_in_onehot or L_err_no_request_grants or L_err_request_no_grants or 
-                            L_err_no_Req_S_grant_S or S_arbiter_out_err_Requests_state_in_state_not_equal or S_err_Local_req_X_L or 
-                            S_err_Local_credit_not_zero_req_X_L_grant_L or S_err_Local_credit_zero_or_not_req_X_L_not_grant_L or S_err_South_req_X_L or 
-                            S_err_West_req_X_L or S_err_East_req_X_L or S_err_IDLE_req_X_L or S_err_North_req_X_L or S_arbiter_out_err_state_in_onehot or 
-                            S_arbiter_out_err_no_request_grants or S_err_request_IDLE_state or S_err_request_IDLE_not_Grants or S_err_Grants_onehot_or_all_zero or 
-                            err_grant_S_L_sig_not_empty_L_grant_S_L or err_not_grant_S_L_sig_or_empty_L_not_grant_S_L or err_grant_signals_not_empty_grant_S or 
-                            err_not_grant_signals_empty_not_grant_S or err_grants_valid_not_match or 
-                            err_credit_in_S_grant_S_credit_counter_S_in_credit_counter_S_out_equal or err_credit_in_S_credit_counter_S_out_increment or 
-                            err_not_credit_in_S_credit_counter_S_out_max_credit_counter_S_in_not_change or err_grant_S_credit_counter_S_out_decrement or 
-                            err_not_grant_S_or_credit_counter_S_out_zero_credit_counter_S_in_not_change or 
-                            err_not_credit_in_S_not_grant_S_credit_counter_S_in_credit_counter_S_out_equal;
+                            N_err_Requests_state_in_state_not_equal or N_err_Local_Req_L or N_err_Local_grant_L or N_err_South_Req_L or N_err_South_grant_L or 
+                            N_err_West_Req_L or N_err_West_grant_L or N_err_East_Req_L or N_err_East_grant_L or N_err_IDLE_Req_L or N_err_IDLE_grant_L or 
+                            N_err_North_Req_L or N_err_North_grant_L or N_err_state_in_onehot or N_err_no_request_grants or N_err_request_no_grants or 
+                            N_err_no_Req_L_grant_L or L_arbiter_out_err_Requests_state_in_state_not_equal or L_err_IDLE_req_X_N or L_err_North_req_X_N or 
+                            L_err_North_credit_not_zero_req_X_N_grant_N or L_err_North_credit_zero_or_not_req_X_N_not_grant_N or L_err_Local_req_X_N or 
+                            L_err_South_req_X_N or L_err_West_req_X_N or L_err_East_req_X_N or L_arbiter_out_err_state_in_onehot or
+                            L_arbiter_out_err_no_request_grants or
+                            L_err_request_IDLE_state or
+                            L_err_request_IDLE_not_Grants or
+                            L_err_Grants_onehot_or_all_zero or
+                            err_grant_L_N_sig_not_empty_N_grant_L_N or
+                            err_not_grant_L_N_sig_or_empty_N_not_grant_L_N or
+                            err_grant_signals_not_empty_grant_L or
+                            err_not_grant_signals_empty_not_grant_L or
+                            err_grants_valid_not_match or
+                            err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal or
+                            err_credit_in_L_credit_counter_L_out_increment or
+                            err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change or
+                            err_grant_L_credit_counter_L_out_decrement or
+                            err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change or
+                            err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal;
 
                 -- FIFO
 W2L_fault <=    W_FIFO_checkers_ORed or
@@ -2176,64 +2286,6 @@ W2L_fault <=    W_FIFO_checkers_ORed or
                 err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change or
                 err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal;
 
-                -- FIFO
-S2L_fault <=    S_FIFO_checkers_ORed or
-
-                -- LBDR
-                S_err_header_empty_Requests_FF_Requests_in or
-                S_err_tail_Requests_in_all_zero or
-                S_err_tail_empty_Requests_FF_Requests_in or
-                S_err_tail_not_empty_not_grants_Requests_FF_Requests_in or
-                S_err_grants_onehot or
-                S_err_grants_mismatch or
-                S_err_header_tail_Requests_FF_Requests_in or
-                S_err_dst_addr_cur_addr_Req_L_in or
-                S_err_dst_addr_cur_addr_not_Req_L_in or
-                S_err_header_not_empty_faulty_drop_packet_in or
-                S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
-                S_err_header_not_empty_faulty_Req_in_all_zero or 
-                --S_err_header_not_empty_Req_L_in or                                  
-                S_err_header_empty_packet_drop_in_packet_drop_equal or
-                S_err_tail_not_empty_packet_drop_not_packet_drop_in or
-                S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or
-                S_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or
-                S_err_packet_drop_order or
-
-                S_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp or
-                S_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in or
-                S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal or
-                S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in or 
-                S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal or 
-                S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal or 
-                S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal or
-
-                S_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal or
-                S_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in or
-                S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal or
-                S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in or
-                S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in or
-                S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in or
-                S_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal or
-                S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal or
-                S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal or -- Added 
-                S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal or -- Added
-
-                -- Allocator
-                S_err_Requests_state_in_state_not_equal or S_err_Local_Req_L or S_err_Local_grant_L or S_err_South_Req_L or 
-                S_err_South_grant_L or S_err_West_Req_L or S_err_West_grant_L or S_err_East_Req_L or S_err_East_grant_L or 
-                S_err_IDLE_Req_L or S_err_IDLE_grant_L or S_err_North_Req_L or S_err_North_grant_L or S_err_state_in_onehot or 
-                S_err_no_request_grants or S_err_request_no_grants or S_err_no_Req_L_grant_L or 
-                L_arbiter_out_err_Requests_state_in_state_not_equal or L_err_South_req_X_S or L_err_South_credit_not_zero_req_X_S_grant_S or 
-                L_err_South_credit_zero_or_not_req_X_S_not_grant_S or L_err_West_req_X_S or L_err_East_req_X_S or L_err_IDLE_req_X_S or 
-                L_err_North_req_X_S or L_err_Local_req_X_S or L_arbiter_out_err_state_in_onehot or L_arbiter_out_err_no_request_grants or 
-                L_err_request_IDLE_state or L_err_request_IDLE_not_Grants or L_err_Grants_onehot_or_all_zero or 
-                err_grant_L_S_sig_not_empty_S_grant_L_S or err_not_grant_L_S_sig_or_empty_S_not_grant_L_S or err_grant_signals_not_empty_grant_L or 
-                err_not_grant_signals_empty_not_grant_L or err_grants_valid_not_match or 
-                err_credit_in_L_grant_L_credit_counter_L_in_credit_counter_L_out_equal or err_credit_in_L_credit_counter_L_out_increment or
-                err_not_credit_in_L_credit_counter_L_out_max_credit_counter_L_in_not_change or
-                err_grant_L_credit_counter_L_out_decrement or err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change or
-                err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal;
-
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
@@ -2250,43 +2302,42 @@ S2L_fault <=    S_FIFO_checkers_ORed or
 ------------------------------------------------------------------------------------------------------------------------------
 -- Taking classified fault information to output
 ------------------------------------------------------------------------------------------------------------------------------
-turn_faults  <= '0'     & '0'                   & '0'                   & '0'                    & 
-                '0'     & faulty_W2S_turn_fault & '0'                   & faulty_S2W_turn_fault  & 
-                '0'     & '0'                   & '0'                   & '0'                    & 
-                '0'     & '0'                   & faulty_L2W_fault      & faulty_L2S_fault       & 
-                '0'     & '0'                   & faulty_W2L_fault      & faulty_S2L_fault;      -- 20 bits because of turn/path faults
+turn_faults  <= '0'                     & faulty_N2W_turn_fault      & '0'                 & '0'       & 
+                faulty_W2N_turn_fault   & '0'                        & '0'                 & '0'       &
+                '0'                     & '0'                        & '0'                 & '0'       &
+                faulty_L2N_fault        & '0'                        & faulty_L2W_fault    & '0'       &
+                faulty_N2L_fault        & '0'                        & faulty_W2L_fault    & '0';    -- 20 bits because of turn/path faults
 
-link_faults  <= '0' & '0' & sig_Faulty_W_out & sig_Faulty_S_out & faulty_link_L;  -- sig_Faulty_N_out & sig_Faulty_E_out & sig_Faulty_W_out & sig_Faulty_S_out & faulty_link_L;
+link_faults  <= sig_Faulty_N_out & '0' & sig_Faulty_W_out & '0' & faulty_link_L;  -- sig_Faulty_N_out & sig_Faulty_E_out & sig_Faulty_W_out & sig_Faulty_S_out & faulty_link_L;
 
 ------------------------------------------------------------------------------------------------------------------------------
 -- Taking non-classified fault information to output
 ------------------------------------------------------------------------------------------------------------------------------
-turn_faults  <= '0'     & '0'            & '0'            & '0'                    & 
-                '0'     & W2S_turn_fault & '0'            & S2W_turn_fault         & 
-                '0'     & '0'            & '0'            & '0'                    & 
-                '0'     & '0'            & L2W_fault      & L2S_fault              & 
-                '0'     & '0'            & W2L_fault      & S2L_fault;               -- 20 bits because of turn/path faults
+turn_faults  <= '0'              & N2W_turn_fault      & '0'          & '0'  & 
+                W2N_turn_fault   & '0'                 & '0'          & '0'  &
+                '0'              & '0'                 & '0'          & '0'  &
+                L2N_fault        & '0'                 & L2W_fault    & '0'  &
+                N2L_fault        & '0'                 & W2L_fault    & '0';    -- 20 bits because of turn/path faults
 
-link_faults_async  <= '0' & faulty_packet_E & '0' & faulty_packet_S & faulty_packet_L;  -- faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L;
+link_faults_async  <= faulty_packet_N & '0' & faulty_packet_W & '0' & faulty_packet_L;  -- faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L;
 ------------------------------------------------------------------------------------------------------------------------------
 
 
-Faulty_W_out <= sig_Faulty_W_out;   --sig_Faulty_W_out;
-Faulty_S_out <= sig_Faulty_S_out;   --sig_Faulty_S_out;
+Faulty_N_out <= sig_Faulty_N_out; 
+Faulty_W_out <= sig_Faulty_W_out; 
 
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 
 -- all the counter_threshold modules
+CT_N:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, faulty_packet => faulty_packet_N, Healthy_packet => healthy_packet_N,
+             Healthy => healthy_link_N, intermittent=> intermittent_link_N, Faulty => sig_Faulty_N_out);
 
 CT_W:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_W, Healthy_packet => healthy_packet_W,
              Healthy => healthy_link_W, intermittent=> intermittent_link_W, Faulty => sig_Faulty_W_out);
-
-CT_S:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, faulty_packet => faulty_packet_S, Healthy_packet => healthy_packet_S,
-             Healthy => healthy_link_S, intermittent=> intermittent_link_S, Faulty => sig_Faulty_S_out);
 
 CT_L:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => faulty_packet_L, Healthy_packet => healthy_packet_L,
@@ -2296,37 +2347,167 @@ CT_L:  counter_threshold_classifier  generic map(counter_depth => counter_depth,
 ------------------------------------------------------------------------------------------------------------------------------
 
 -- all the Checker Counter Threshold modules
-
 -- Turn faults
-CHK_CT_W2S_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, data_input => W2S_turn_fault, Healthy => Healthy_W2S_turn_fault, 
-             Intermittent => intermittent_W2S_turn_fault, Faulty => faulty_W2S_turn_fault);
+CHK_CT_N2W_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => N2W_turn_fault, Healthy => Healthy_N2W_turn_fault, 
+             Intermittent => intermittent_N2W_turn_fault, Faulty => faulty_N2W_turn_fault);
 
-CHK_CT_S2W_turn_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, data_input => S2W_turn_fault, Healthy => Healthy_S2W_turn_fault, 
-             Intermittent => intermittent_S2W_turn_fault, Faulty => faulty_S2W_turn_fault);
+CHK_CT_W2N_turn_fault:  checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => W2N_turn_fault, Healthy => Healthy_W2N_turn_fault, 
+             Intermittent => intermittent_W2N_turn_fault, Faulty => faulty_W2N_turn_fault);
+
+-- Local port related faults (to/from local port)
+CHK_CT_L2N_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => L2N_fault, Healthy => Healthy_L2N_fault, 
+             Intermittent => intermittent_L2N_fault, Faulty => faulty_L2N_fault);
 
 CHK_CT_L2W_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => L2W_fault, Healthy => Healthy_L2W_fault, 
              Intermittent => intermittent_L2W_fault, Faulty => faulty_L2W_fault);
 
+CHK_CT_N2L_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+    port map(reset => reset, clk => clk, data_input => N2L_fault, Healthy => Healthy_N2L_fault, 
+             Intermittent => intermittent_N2L_fault, Faulty => faulty_N2L_fault);
 
-CHK_CT_L2S_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, data_input => L2S_fault, Healthy => Healthy_L2S_fault, 
-             Intermittent => intermittent_L2S_fault, Faulty => faulty_L2S_fault);
-
--- Local port related faults (to/from local port)
 CHK_CT_W2L_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, data_input => W2L_fault, Healthy => Healthy_W2L_fault, 
              Intermittent => intermittent_W2L_fault, Faulty => faulty_W2L_fault);
 
-CHK_CT_S2L_fault:   checkers_counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, data_input => S2L_fault, Healthy => Healthy_S2L_fault, 
-             Intermittent => intermittent_S2L_fault, Faulty => faulty_S2L_fault);
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
+-- All the FIFOs (North, East and Local)
+FIFO_N: FIFO_credit_based 
+    generic map ( DATA_WIDTH => DATA_WIDTH)
+    port map ( reset => reset, clk => clk, RX => RX_N, valid_in => valid_in_N,  
+               read_en_N => packet_drop_order_N, read_en_E =>Grant_EN, read_en_W =>Grant_WN, read_en_S =>Grant_SN, read_en_L =>Grant_LN, 
+               credit_out => credit_out_N, empty_out => empty_N, Data_out => FIFO_D_out_N, fault_info=> faulty_packet_N, health_info=>healthy_packet_N, 
+
+               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_L_FIFO_to_N_FIFO, SO=> fault_DO_serial_N_FIFO_to_E_FIFO,
+
+               -- Checker outputs
+               -- Functional checkers
+               err_empty_full => N_err_empty_full, err_empty_read_en => N_err_empty_read_en, err_full_write_en => N_err_full_write_en, 
+               err_state_in_onehot => N_err_state_in_onehot, err_read_pointer_in_onehot => N_err_read_pointer_in_onehot, 
+               err_write_pointer_in_onehot => N_err_write_pointer_in_onehot, 
+
+               -- Structural checkers
+               err_write_en_write_pointer => N_err_write_en_write_pointer, 
+               err_not_write_en_write_pointer => N_err_not_write_en_write_pointer, 
+               err_read_pointer_write_pointer_not_empty => N_err_read_pointer_write_pointer_not_empty, 
+               err_read_pointer_write_pointer_empty => N_err_read_pointer_write_pointer_empty, 
+               err_read_pointer_write_pointer_not_full => N_err_read_pointer_write_pointer_not_full, 
+               err_read_pointer_write_pointer_full => N_err_read_pointer_write_pointer_full, 
+               err_read_pointer_increment => N_err_read_pointer_increment, 
+               err_read_pointer_not_increment => N_err_read_pointer_not_increment, 
+               err_write_en => N_err_write_en, 
+               err_not_write_en => N_err_not_write_en, 
+               err_not_write_en1 => N_err_not_write_en1, 
+               err_not_write_en2 => N_err_not_write_en2, 
+               err_read_en_mismatch => N_err_read_en_mismatch, 
+               err_read_en_mismatch1 => N_err_read_en_mismatch1, 
+
+               -- Newly added checkers for FIFO with packet drop and fault classifier support!
+               err_fake_credit_read_en_fake_credit_counter_in_increment => N_err_fake_credit_read_en_fake_credit_counter_in_increment, 
+               err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_fake_credit_counter_in_decrement => N_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_fake_credit_counter_in_decrement, 
+               err_not_fake_credit_read_en_fake_credit_counter_in_not_change => N_err_not_fake_credit_read_en_fake_credit_counter_in_not_change, 
+               err_fake_credit_not_read_en_fake_credit_counter_in_not_change => N_err_fake_credit_not_read_en_fake_credit_counter_in_not_change, 
+               err_not_fake_credit_not_read_en_fake_credit_counter_zero_fake_credit_counter_in_not_change => N_err_not_fake_credit_not_read_en_fake_credit_counter_zero_fake_credit_counter_in_not_change, 
+               err_fake_credit_read_en_credit_out => N_err_fake_credit_read_en_credit_out, 
+               err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_credit_out => N_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_credit_out, 
+               err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out => N_err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out, 
+
+               -- Checkers for Packet Dropping FSM of FIFO
+               err_state_out_Idle_not_fault_out_valid_in_state_in_Header_flit => N_err_state_out_Idle_not_fault_out_valid_in_state_in_Header_flit, 
+               err_state_out_Idle_not_fault_out_valid_in_state_in_not_change => N_err_state_out_Idle_not_fault_out_valid_in_state_in_not_change, 
+               err_state_out_Idle_not_fault_out_not_fake_credit => N_err_state_out_Idle_not_fault_out_not_fake_credit, 
+               err_state_out_Idle_not_fault_out_not_fault_info_in => N_err_state_out_Idle_not_fault_out_not_fault_info_in, 
+               err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal => N_err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal, 
+               err_state_out_Idle_fault_out_fake_credit => N_err_state_out_Idle_fault_out_fake_credit, 
+               err_state_out_Idle_fault_out_state_in_Packet_drop => N_err_state_out_Idle_fault_out_state_in_Packet_drop, 
+               err_state_out_Idle_fault_out_fault_info_in => N_err_state_out_Idle_fault_out_fault_info_in, 
+               err_state_out_Idle_fault_out_faulty_packet_in => N_err_state_out_Idle_fault_out_faulty_packet_in, 
+               err_state_out_Idle_not_health_info => N_err_state_out_Idle_not_health_info, 
+               err_state_out_Idle_not_write_fake_flit => N_err_state_out_Idle_not_write_fake_flit, 
+
+               err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Body_state_in_Body_flit => N_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Body_state_in_Body_flit, 
+               err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Tail_state_in_Tail_flit => N_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Tail_state_in_Tail_flit, 
+               err_state_out_Header_flit_valid_in_not_fault_out_not_write_fake_flit => N_err_state_out_Header_flit_valid_in_not_fault_out_not_write_fake_flit, 
+               err_state_out_Header_flit_valid_in_not_fault_out_not_fault_info_in => N_err_state_out_Header_flit_valid_in_not_fault_out_not_fault_info_in, 
+               err_state_out_Header_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change => N_err_state_out_Header_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+               err_state_out_Header_flit_valid_in_fault_out_write_fake_flit => N_err_state_out_Header_flit_valid_in_fault_out_write_fake_flit, 
+               err_state_out_Header_flit_valid_in_fault_out_state_in_Packet_drop => N_err_state_out_Header_flit_valid_in_fault_out_state_in_Packet_drop, 
+               err_state_out_Header_flit_valid_in_fault_out_fault_info_in => N_err_state_out_Header_flit_valid_in_fault_out_fault_info_in, 
+               err_state_out_Header_flit_valid_in_fault_out_faulty_packet_in => N_err_state_out_Header_flit_valid_in_fault_out_faulty_packet_in, 
+               err_state_out_Header_flit_not_valid_in_state_in_state_out_not_change => N_err_state_out_Header_flit_not_valid_in_state_in_state_out_not_change, 
+               err_state_out_Header_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change => N_err_state_out_Header_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change, 
+               err_state_out_Header_flit_not_valid_in_not_fault_info_in => N_err_state_out_Header_flit_not_valid_in_not_fault_info_in, 
+               err_state_out_Header_flit_not_valid_in_not_write_fake_flit => N_err_state_out_Header_flit_not_valid_in_not_write_fake_flit, 
+               err_state_out_Header_flit_or_Body_flit_not_fake_credit => N_err_state_out_Header_flit_or_Body_flit_not_fake_credit, 
+
+               err_state_out_Body_flit_valid_in_not_fault_out_state_in_state_out_not_change => N_err_state_out_Body_flit_valid_in_not_fault_out_state_in_state_out_not_change, 
+               err_state_out_Body_flit_valid_in_not_fault_out_state_in_Tail_flit => N_err_state_out_Body_flit_valid_in_not_fault_out_state_in_Tail_flit, 
+               err_state_out_Body_flit_valid_in_not_fault_out_health_info => N_err_state_out_Body_flit_valid_in_not_fault_out_health_info, 
+               err_state_out_Body_flit_valid_in_not_fault_out_not_write_fake_flit => N_err_state_out_Body_flit_valid_in_not_fault_out_not_write_fake_flit, 
+               err_state_out_Body_flit_valid_in_not_fault_out_fault_info_in => N_err_state_out_Body_flit_valid_in_not_fault_out_fault_info_in, 
+               err_state_out_Body_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change => N_err_state_out_Body_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+               err_state_out_Body_flit_valid_in_fault_out_write_fake_flit => N_err_state_out_Body_flit_valid_in_fault_out_write_fake_flit, 
+               err_state_out_Body_flit_valid_in_fault_out_state_in_Packet_drop => N_err_state_out_Body_flit_valid_in_fault_out_state_in_Packet_drop, 
+               err_state_out_Body_flit_valid_in_fault_out_fault_info_in => N_err_state_out_Body_flit_valid_in_fault_out_fault_info_in, 
+               err_state_out_Body_flit_valid_in_fault_out_faulty_packet_in => N_err_state_out_Body_flit_valid_in_fault_out_faulty_packet_in, 
+               err_state_out_Body_flit_not_valid_in_state_in_state_out_not_change => N_err_state_out_Body_flit_not_valid_in_state_in_state_out_not_change, 
+               err_state_out_Body_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change => N_err_state_out_Body_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change, 
+               err_state_out_Body_flit_not_valid_in_not_fault_info_in => N_err_state_out_Body_flit_not_valid_in_not_fault_info_in, 
+               err_state_out_Body_flit_valid_in_not_fault_out_flit_type_not_tail_not_health_info => N_err_state_out_Body_flit_valid_in_not_fault_out_flit_type_not_tail_not_health_info, 
+               err_state_out_Body_flit_valid_in_fault_out_not_health_info => N_err_state_out_Body_flit_valid_in_fault_out_not_health_info, 
+               err_state_out_Body_flit_valid_in_not_health_info => N_err_state_out_Body_flit_valid_in_not_health_info, 
+               err_state_out_Body_flit_not_fake_credit => N_err_state_out_Body_flit_not_fake_credit, 
+               err_state_out_Body_flit_not_valid_in_not_write_fake_flit => N_err_state_out_Body_flit_not_valid_in_not_write_fake_flit, 
+
+               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_Header_state_in_Header_flit => N_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_Header_state_in_Header_flit, 
+               err_state_out_Tail_flit_valid_in_not_fault_out_not_fake_credit => N_err_state_out_Tail_flit_valid_in_not_fault_out_not_fake_credit, 
+               err_state_out_Tail_flit_valid_in_not_fault_out_not_fault_info_in => N_err_state_out_Tail_flit_valid_in_not_fault_out_not_fault_info_in, 
+               err_state_out_Tail_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change => N_err_state_out_Tail_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+               err_state_out_Tail_flit_valid_in_fault_out_fake_credit => N_err_state_out_Tail_flit_valid_in_fault_out_fake_credit, 
+               err_state_out_Tail_flit_valid_in_fault_out_state_in_Packet_drop => N_err_state_out_Tail_flit_valid_in_fault_out_state_in_Packet_drop, 
+               err_state_out_Tail_flit_valid_in_fault_out_fault_info_in => N_err_state_out_Tail_flit_valid_in_fault_out_fault_info_in, 
+               err_state_out_Tail_flit_valid_in_fault_out_faulty_packet_in => N_err_state_out_Tail_flit_valid_in_fault_out_faulty_packet_in, 
+               err_state_out_Tail_flit_not_valid_in_state_in_Idle => N_err_state_out_Tail_flit_not_valid_in_state_in_Idle, 
+               err_state_out_Tail_flit_not_valid_in_faulty_packet_in_faulty_packet_in_not_change => N_err_state_out_Tail_flit_not_valid_in_faulty_packet_in_faulty_packet_in_not_change, 
+               err_state_out_Tail_flit_not_valid_in_not_fault_info_in => N_err_state_out_Tail_flit_not_valid_in_not_fault_info_in, 
+               err_state_out_Tail_flit_not_valid_in_not_fake_credit => N_err_state_out_Tail_flit_not_valid_in_not_fake_credit, 
+               err_state_out_Tail_flit_not_write_fake_flit => N_err_state_out_Tail_flit_not_write_fake_flit, 
+               
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_fake_credit => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_fake_credit, 
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_faulty_packet_in => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_faulty_packet_in, 
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_state_in_Header_flit => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_state_in_Header_flit, 
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit, 
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in, 
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle, 
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit, 
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change => N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
+               err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change => N_err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal => N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change => N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit => N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit => N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
+               err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change => N_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
+               err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change => N_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
+               err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit => N_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit => N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
+               err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit => N_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change, 
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change, 
+
+               err_fault_info_fault_info_out_equal => N_err_fault_info_fault_info_out_equal, 
+               err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal => N_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
+               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => N_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
+
+               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in => N_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
+               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in => N_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in
+            );
 
 FIFO_W: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
@@ -2459,141 +2640,6 @@ FIFO_W: FIFO_credit_based
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in => W_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in
             );
 
-FIFO_S: FIFO_credit_based 
-    generic map ( DATA_WIDTH => DATA_WIDTH)
-    port map ( reset => reset, clk => clk, RX => RX_S, valid_in => valid_in_S,  
-               read_en_N => Grant_NS, read_en_E =>Grant_ES, read_en_W =>Grant_WS, read_en_S =>packet_drop_order_S, read_en_L =>Grant_LS,  
-               credit_out => credit_out_S, empty_out => empty_S, Data_out => FIFO_D_out_S, fault_info=> faulty_packet_S, health_info=>healthy_packet_S, 
-
-               TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_W_FIFO_to_S_FIFO, SO=> fault_DO_serial_S_FIFO_to_L_LBDR,
-
-               -- Checker outputs
-               -- Functional checkers
-               err_empty_full => S_err_empty_full, 
-               err_empty_read_en => S_err_empty_read_en, 
-               err_full_write_en => S_err_full_write_en, 
-               err_state_in_onehot => S_err_state_in_onehot, 
-               err_read_pointer_in_onehot => S_err_read_pointer_in_onehot, 
-               err_write_pointer_in_onehot => S_err_write_pointer_in_onehot, 
-
-               -- Structural checkers
-               err_write_en_write_pointer => S_err_write_en_write_pointer, 
-               err_not_write_en_write_pointer => S_err_not_write_en_write_pointer, 
-               err_read_pointer_write_pointer_not_empty => S_err_read_pointer_write_pointer_not_empty, 
-               err_read_pointer_write_pointer_empty => S_err_read_pointer_write_pointer_empty, 
-               err_read_pointer_write_pointer_not_full => S_err_read_pointer_write_pointer_not_full, 
-               err_read_pointer_write_pointer_full => S_err_read_pointer_write_pointer_full, 
-               err_read_pointer_increment => S_err_read_pointer_increment, 
-               err_read_pointer_not_increment => S_err_read_pointer_not_increment, 
-               err_write_en => S_err_write_en, 
-               err_not_write_en => S_err_not_write_en, 
-               err_not_write_en1 => S_err_not_write_en1, 
-               err_not_write_en2 => S_err_not_write_en2, 
-               err_read_en_mismatch => S_err_read_en_mismatch, 
-               err_read_en_mismatch1 => S_err_read_en_mismatch1, 
-
-               -- Newly added checkers for FIFO with packet drop and fault classifier support!
-               err_fake_credit_read_en_fake_credit_counter_in_increment => S_err_fake_credit_read_en_fake_credit_counter_in_increment, 
-               err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_fake_credit_counter_in_decrement => S_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_fake_credit_counter_in_decrement, 
-               err_not_fake_credit_read_en_fake_credit_counter_in_not_change => S_err_not_fake_credit_read_en_fake_credit_counter_in_not_change, 
-               err_fake_credit_not_read_en_fake_credit_counter_in_not_change => S_err_fake_credit_not_read_en_fake_credit_counter_in_not_change, 
-               err_not_fake_credit_not_read_en_fake_credit_counter_zero_fake_credit_counter_in_not_change => S_err_not_fake_credit_not_read_en_fake_credit_counter_zero_fake_credit_counter_in_not_change, 
-               err_fake_credit_read_en_credit_out => S_err_fake_credit_read_en_credit_out, 
-               err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_credit_out => S_err_not_fake_credit_not_read_en_fake_credit_counter_not_zero_credit_out, 
-               err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out => S_err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out, 
-
-               -- Checkers for Packet Dropping FSM of FIFO
-               err_state_out_Idle_not_fault_out_valid_in_state_in_Header_flit => S_err_state_out_Idle_not_fault_out_valid_in_state_in_Header_flit, 
-               err_state_out_Idle_not_fault_out_valid_in_state_in_not_change => S_err_state_out_Idle_not_fault_out_valid_in_state_in_not_change, 
-               err_state_out_Idle_not_fault_out_not_fake_credit => S_err_state_out_Idle_not_fault_out_not_fake_credit, 
-               err_state_out_Idle_not_fault_out_not_fault_info_in => S_err_state_out_Idle_not_fault_out_not_fault_info_in, 
-               err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal => S_err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal, 
-               err_state_out_Idle_fault_out_fake_credit => S_err_state_out_Idle_fault_out_fake_credit, 
-               err_state_out_Idle_fault_out_state_in_Packet_drop => S_err_state_out_Idle_fault_out_state_in_Packet_drop, 
-               err_state_out_Idle_fault_out_fault_info_in => S_err_state_out_Idle_fault_out_fault_info_in, 
-               err_state_out_Idle_fault_out_faulty_packet_in => S_err_state_out_Idle_fault_out_faulty_packet_in, 
-               err_state_out_Idle_not_health_info => S_err_state_out_Idle_not_health_info, 
-               err_state_out_Idle_not_write_fake_flit => S_err_state_out_Idle_not_write_fake_flit, 
-
-               err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Body_state_in_Body_flit => S_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Body_state_in_Body_flit, 
-               err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Tail_state_in_Tail_flit => S_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Tail_state_in_Tail_flit, 
-               err_state_out_Header_flit_valid_in_not_fault_out_not_write_fake_flit => S_err_state_out_Header_flit_valid_in_not_fault_out_not_write_fake_flit, 
-               err_state_out_Header_flit_valid_in_not_fault_out_not_fault_info_in => S_err_state_out_Header_flit_valid_in_not_fault_out_not_fault_info_in, 
-               err_state_out_Header_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change => S_err_state_out_Header_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Header_flit_valid_in_fault_out_write_fake_flit => S_err_state_out_Header_flit_valid_in_fault_out_write_fake_flit, 
-               err_state_out_Header_flit_valid_in_fault_out_state_in_Packet_drop => S_err_state_out_Header_flit_valid_in_fault_out_state_in_Packet_drop, 
-               err_state_out_Header_flit_valid_in_fault_out_fault_info_in => S_err_state_out_Header_flit_valid_in_fault_out_fault_info_in, 
-               err_state_out_Header_flit_valid_in_fault_out_faulty_packet_in => S_err_state_out_Header_flit_valid_in_fault_out_faulty_packet_in, 
-               err_state_out_Header_flit_not_valid_in_state_in_state_out_not_change => S_err_state_out_Header_flit_not_valid_in_state_in_state_out_not_change, 
-               err_state_out_Header_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change => S_err_state_out_Header_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Header_flit_not_valid_in_not_fault_info_in => S_err_state_out_Header_flit_not_valid_in_not_fault_info_in, 
-               err_state_out_Header_flit_not_valid_in_not_write_fake_flit => S_err_state_out_Header_flit_not_valid_in_not_write_fake_flit, 
-               err_state_out_Header_flit_or_Body_flit_not_fake_credit => S_err_state_out_Header_flit_or_Body_flit_not_fake_credit, 
-
-               err_state_out_Body_flit_valid_in_not_fault_out_state_in_state_out_not_change => S_err_state_out_Body_flit_valid_in_not_fault_out_state_in_state_out_not_change, 
-               err_state_out_Body_flit_valid_in_not_fault_out_state_in_Tail_flit => S_err_state_out_Body_flit_valid_in_not_fault_out_state_in_Tail_flit, 
-               err_state_out_Body_flit_valid_in_not_fault_out_health_info => S_err_state_out_Body_flit_valid_in_not_fault_out_health_info, 
-               err_state_out_Body_flit_valid_in_not_fault_out_not_write_fake_flit => S_err_state_out_Body_flit_valid_in_not_fault_out_not_write_fake_flit, 
-               err_state_out_Body_flit_valid_in_not_fault_out_fault_info_in => S_err_state_out_Body_flit_valid_in_not_fault_out_fault_info_in, 
-               err_state_out_Body_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change => S_err_state_out_Body_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Body_flit_valid_in_fault_out_write_fake_flit => S_err_state_out_Body_flit_valid_in_fault_out_write_fake_flit, 
-               err_state_out_Body_flit_valid_in_fault_out_state_in_Packet_drop => S_err_state_out_Body_flit_valid_in_fault_out_state_in_Packet_drop, 
-               err_state_out_Body_flit_valid_in_fault_out_fault_info_in => S_err_state_out_Body_flit_valid_in_fault_out_fault_info_in, 
-               err_state_out_Body_flit_valid_in_fault_out_faulty_packet_in => S_err_state_out_Body_flit_valid_in_fault_out_faulty_packet_in, 
-               err_state_out_Body_flit_not_valid_in_state_in_state_out_not_change => S_err_state_out_Body_flit_not_valid_in_state_in_state_out_not_change, 
-               err_state_out_Body_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change => S_err_state_out_Body_flit_not_valid_in_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Body_flit_not_valid_in_not_fault_info_in => S_err_state_out_Body_flit_not_valid_in_not_fault_info_in, 
-               err_state_out_Body_flit_valid_in_not_fault_out_flit_type_not_tail_not_health_info => S_err_state_out_Body_flit_valid_in_not_fault_out_flit_type_not_tail_not_health_info, 
-               err_state_out_Body_flit_valid_in_fault_out_not_health_info => S_err_state_out_Body_flit_valid_in_fault_out_not_health_info, 
-               err_state_out_Body_flit_valid_in_not_health_info => S_err_state_out_Body_flit_valid_in_not_health_info, 
-               err_state_out_Body_flit_not_fake_credit => S_err_state_out_Body_flit_not_fake_credit, 
-               err_state_out_Body_flit_not_valid_in_not_write_fake_flit => S_err_state_out_Body_flit_not_valid_in_not_write_fake_flit, 
-
-               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_Header_state_in_Header_flit => S_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_Header_state_in_Header_flit, 
-               err_state_out_Tail_flit_valid_in_not_fault_out_not_fake_credit => S_err_state_out_Tail_flit_valid_in_not_fault_out_not_fake_credit, 
-               err_state_out_Tail_flit_valid_in_not_fault_out_not_fault_info_in => S_err_state_out_Tail_flit_valid_in_not_fault_out_not_fault_info_in, 
-               err_state_out_Tail_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change => S_err_state_out_Tail_flit_valid_in_not_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Tail_flit_valid_in_fault_out_fake_credit => S_err_state_out_Tail_flit_valid_in_fault_out_fake_credit, 
-               err_state_out_Tail_flit_valid_in_fault_out_state_in_Packet_drop => S_err_state_out_Tail_flit_valid_in_fault_out_state_in_Packet_drop, 
-               err_state_out_Tail_flit_valid_in_fault_out_fault_info_in => S_err_state_out_Tail_flit_valid_in_fault_out_fault_info_in, 
-               err_state_out_Tail_flit_valid_in_fault_out_faulty_packet_in => S_err_state_out_Tail_flit_valid_in_fault_out_faulty_packet_in, 
-               err_state_out_Tail_flit_not_valid_in_state_in_Idle => S_err_state_out_Tail_flit_not_valid_in_state_in_Idle, 
-               err_state_out_Tail_flit_not_valid_in_faulty_packet_in_faulty_packet_in_not_change => S_err_state_out_Tail_flit_not_valid_in_faulty_packet_in_faulty_packet_in_not_change, 
-               err_state_out_Tail_flit_not_valid_in_not_fault_info_in => S_err_state_out_Tail_flit_not_valid_in_not_fault_info_in, 
-               err_state_out_Tail_flit_not_valid_in_not_fake_credit => S_err_state_out_Tail_flit_not_valid_in_not_fake_credit, 
-               err_state_out_Tail_flit_not_write_fake_flit => S_err_state_out_Tail_flit_not_write_fake_flit, 
-               
-               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_fake_credit => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_fake_credit, 
-               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_faulty_packet_in => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_not_faulty_packet_in, 
-               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_state_in_Header_flit => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_state_in_Header_flit, 
-               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_out_write_fake_flit, 
-               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_faulty_packet_in, 
-               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_not_state_in_Idle, 
-               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_not_fault_out_fake_credit, 
-               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_invalid_fault_out_fake_credit, 
-               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change => S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change => S_err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change, 
-               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal => S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal, 
-               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change => S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change, 
-               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit => S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_write_fake_flit, 
-               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit => S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_not_fake_credit, 
-               err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change => S_err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change, 
-               err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change => S_err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change, 
-               err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit => S_err_state_out_Packet_drop_not_faulty_packet_out_not_fake_credit, 
-               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit => S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_header_or_fault_out_not_write_fake_flit, 
-               err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit => S_err_state_out_Packet_drop_not_faulty_packet_out_not_write_fake_flit, 
-               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change, 
-               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change, 
-
-               err_fault_info_fault_info_out_equal => S_err_fault_info_fault_info_out_equal, 
-               err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal => S_err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal, 
-               err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal => S_err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal, 
-
-               err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in => S_err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_not_fault_info_in, 
-               err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in => S_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in
-            );
-
-
 FIFO_L: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_L, valid_in => valid_in_L,  
@@ -2725,19 +2771,80 @@ FIFO_L: FIFO_credit_based
                err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in => L_err_state_out_Packet_drop_faulty_packet_out_not_valid_in_or_flit_type_not_Header_not_not_fault_info_in
             );
 
-
-
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 
+parity_LBDR_N: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_N, empty_N, LBDR_Fault_N);
 parity_LBDR_W: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_W, empty_W, LBDR_Fault_W);
-parity_LBDR_S: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_S, empty_S, LBDR_Fault_S);
 parity_LBDR_L: parity_checker_for_LBDR generic map(DATA_WIDTH => DATA_WIDTH) port map(FIFO_D_out_L, empty_L, LBDR_Fault_L);
 
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
+
+LBDR_N: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
+       PORT MAP (reset => reset, clk => clk, empty => empty_N, 
+             Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,  
+             flit_type => FIFO_D_out_N(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_N(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
+             faulty => LBDR_Fault_N, packet_drop_order => packet_drop_order_N,
+             grant_N => '0', grant_E =>Grant_EN, grant_W => Grant_WN, grant_S=>Grant_SN, grant_L =>Grant_LN,
+             Req_N=> Req_NN, Req_E=>Req_NE, Req_W=>Req_NW, Req_S=>Req_NS, Req_L=>Req_NL,
+             Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
+
+             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_L_LBDR_to_N_LBDR, SO=> fault_DO_serial_N_LBDR_to_E_LBDR,
+
+             -- Checker outputs
+            err_header_empty_Requests_FF_Requests_in => N_err_header_empty_Requests_FF_Requests_in, 
+            err_tail_Requests_in_all_zero => N_err_tail_Requests_in_all_zero, 
+            err_tail_empty_Requests_FF_Requests_in => N_err_tail_empty_Requests_FF_Requests_in, 
+            err_tail_not_empty_not_grants_Requests_FF_Requests_in => N_err_tail_not_empty_not_grants_Requests_FF_Requests_in, 
+            err_grants_onehot => N_err_grants_onehot, 
+            err_grants_mismatch => N_err_grants_mismatch, 
+            err_header_tail_Requests_FF_Requests_in => N_err_header_tail_Requests_FF_Requests_in, 
+            err_dst_addr_cur_addr_N1 => N_err_dst_addr_cur_addr_N1, 
+            err_dst_addr_cur_addr_not_N1 => N_err_dst_addr_cur_addr_not_N1, 
+            err_dst_addr_cur_addr_E1 => N_err_dst_addr_cur_addr_E1, 
+            err_dst_addr_cur_addr_not_E1 => N_err_dst_addr_cur_addr_not_E1, 
+            err_dst_addr_cur_addr_W1 => N_err_dst_addr_cur_addr_W1, 
+            err_dst_addr_cur_addr_not_W1 => N_err_dst_addr_cur_addr_not_W1, 
+            err_dst_addr_cur_addr_S1 => N_err_dst_addr_cur_addr_S1, 
+            err_dst_addr_cur_addr_not_S1 => N_err_dst_addr_cur_addr_not_S1, 
+            err_dst_addr_cur_addr_Req_L_in => N_err_dst_addr_cur_addr_Req_L_in, 
+            err_dst_addr_cur_addr_not_Req_L_in => N_err_dst_addr_cur_addr_not_Req_L_in, 
+            err_header_not_empty_faulty_drop_packet_in => N_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
+            err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change => N_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
+            err_header_not_empty_faulty_Req_in_all_zero => N_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
+            --err_header_not_empty_Req_L_in => N_err_header_not_empty_Req_L_in, -- added according to new design
+            err_header_not_empty_Req_N_in => N_err_header_not_empty_Req_N_in, 
+            err_header_not_empty_Req_E_in => N_err_header_not_empty_Req_E_in, 
+            err_header_not_empty_Req_W_in => N_err_header_not_empty_Req_W_in, 
+            err_header_not_empty_Req_S_in => N_err_header_not_empty_Req_S_in, 
+            err_header_empty_packet_drop_in_packet_drop_equal => N_err_header_empty_packet_drop_in_packet_drop_equal, 
+            err_tail_not_empty_packet_drop_not_packet_drop_in => N_err_tail_not_empty_packet_drop_not_packet_drop_in, 
+            err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal => N_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal, 
+            err_invalid_or_body_flit_packet_drop_in_packet_drop_equal => N_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal, 
+            err_packet_drop_order => N_err_packet_drop_order, 
+
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal => N_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal, 
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in => N_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal => N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in => N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in => N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in => N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in, 
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal => N_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal => N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal => N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal, 
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal => N_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal, 
+
+            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp => N_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp, 
+            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in => N_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in, 
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal => N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal, 
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in => N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in, 
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal => N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal, 
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal => N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal, 
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal => N_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal
+          );
 
 LBDR_W: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
    PORT MAP (reset =>  reset, clk => clk, empty => empty_W,  
@@ -2800,69 +2907,6 @@ LBDR_W: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
             err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal => W_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal, 
             err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal => W_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal, 
             err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal => W_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal
-           );
-
-LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
-   PORT MAP (reset =>  reset, clk => clk, empty => empty_S, 
-             Faulty_C_N => Faulty_N_in, Faulty_C_E => Faulty_E_in, Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,    
-             flit_type => FIFO_D_out_S(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_S(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
-             faulty => LBDR_Fault_S, packet_drop_order => packet_drop_order_S,
-             grant_N => Grant_NS, grant_E =>Grant_ES, grant_W =>Grant_WS ,grant_S=>'0', grant_L =>Grant_LS,
-             Req_N=> Req_SN, Req_E=>Req_SE, Req_W=>Req_SW, Req_S=>Req_SS, Req_L=>Req_SL,
-             Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
-
-             TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_W_LBDR_to_S_LBDR, SO=> fault_DO_serial_S_LBDR_to_Allocator,
-
-             -- Checker outputs
-            err_header_empty_Requests_FF_Requests_in => S_err_header_empty_Requests_FF_Requests_in, 
-            err_tail_Requests_in_all_zero => S_err_tail_Requests_in_all_zero, 
-            err_tail_empty_Requests_FF_Requests_in => S_err_tail_empty_Requests_FF_Requests_in, 
-            err_tail_not_empty_not_grants_Requests_FF_Requests_in => S_err_tail_not_empty_not_grants_Requests_FF_Requests_in, 
-            err_grants_onehot => S_err_grants_onehot, 
-            err_grants_mismatch => S_err_grants_mismatch, 
-            err_header_tail_Requests_FF_Requests_in => S_err_header_tail_Requests_FF_Requests_in, 
-            err_dst_addr_cur_addr_N1 => S_err_dst_addr_cur_addr_N1, 
-            err_dst_addr_cur_addr_not_N1 => S_err_dst_addr_cur_addr_not_N1, 
-            err_dst_addr_cur_addr_E1 => S_err_dst_addr_cur_addr_E1, 
-            err_dst_addr_cur_addr_not_E1 => S_err_dst_addr_cur_addr_not_E1, 
-            err_dst_addr_cur_addr_W1 => S_err_dst_addr_cur_addr_W1, 
-            err_dst_addr_cur_addr_not_W1 => S_err_dst_addr_cur_addr_not_W1, 
-            err_dst_addr_cur_addr_S1 => S_err_dst_addr_cur_addr_S1, 
-            err_dst_addr_cur_addr_not_S1 => S_err_dst_addr_cur_addr_not_S1, 
-            err_dst_addr_cur_addr_Req_L_in => S_err_dst_addr_cur_addr_Req_L_in, 
-            err_dst_addr_cur_addr_not_Req_L_in => S_err_dst_addr_cur_addr_not_Req_L_in, 
-            err_header_not_empty_faulty_drop_packet_in => S_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
-            err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change => S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
-            err_header_not_empty_faulty_Req_in_all_zero => S_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
-            --err_header_not_empty_Req_L_in => S_err_header_not_empty_Req_L_in, -- added according to new design
-            err_header_not_empty_Req_N_in => S_err_header_not_empty_Req_N_in, 
-            err_header_not_empty_Req_E_in => S_err_header_not_empty_Req_E_in, 
-            err_header_not_empty_Req_W_in => S_err_header_not_empty_Req_W_in, 
-            err_header_not_empty_Req_S_in => S_err_header_not_empty_Req_S_in, 
-            err_header_empty_packet_drop_in_packet_drop_equal => S_err_header_empty_packet_drop_in_packet_drop_equal, 
-            err_tail_not_empty_packet_drop_not_packet_drop_in => S_err_tail_not_empty_packet_drop_not_packet_drop_in, 
-            err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal => S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal, 
-            err_invalid_or_body_flit_packet_drop_in_packet_drop_equal => S_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal, 
-            err_packet_drop_order => S_err_packet_drop_order, 
-
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal => S_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal, 
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in => S_err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal => S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in => S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in => S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in => S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in, 
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal => S_err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal => S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal => S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal => S_err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal, 
-
-            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp => S_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp, 
-            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in => S_err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal => S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in => S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal => S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal => S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal => S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal
            );
 
 LBDR_L: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
@@ -2938,23 +2982,23 @@ allocator_unit: allocator port map ( reset => reset, clk => clk,
             -- flow control
             credit_in_N => '0', credit_in_E => credit_in_E, credit_in_W => '0', credit_in_S => credit_in_S, credit_in_L => credit_in_L,
 
-            -- requests from the LBDRS
-            req_N_N => '0', req_N_E => '0', req_N_W => '0',     req_N_S => '0',     req_N_L => '0',
-            req_E_N => '0', req_E_E => '0', req_E_W => '0',     req_E_S => '0',     req_E_L => '0',
-            req_W_N => '0', req_W_E => '0', req_W_W => '0',     req_W_S => Req_WS,  req_W_L => Req_WL,
-            req_S_N => '0', req_S_E => '0', req_S_W => Req_SW,  req_S_S => '0',     req_S_L => Req_SL,
-            req_L_N => '0', req_L_E => '0', req_L_W => Req_LW,  req_L_S => Req_LS,  req_L_L => '0',
-            empty_N => '0', empty_E => '0', empty_W => empty_W, empty_S => empty_S, empty_L => empty_L, 
+            -- requests from the LBDRs
+            req_N_N => '0',     req_N_E => '0',    req_N_W => Req_NW,   req_N_S => '0',     req_N_L => Req_NL,
+            req_E_N => '0',     req_E_E => '0',    req_E_W => '0',      req_E_S => '0',     req_E_L => '0',
+            req_W_N => Req_WN,  req_W_E => '0',    req_W_W => '0',      req_W_S => '0',     req_W_L => Req_WL,
+            req_S_N => '0',     req_S_E => '0',    req_S_W => '0',      req_S_S => '0',     req_S_L => '0',
+            req_L_N => Req_LN,  req_L_E => '0',    req_L_W => Req_LW,   req_L_S => '0',     req_L_L => '0',
+            empty_N => empty_N, empty_E => '0',    empty_W => empty_W,  empty_S => '0',     empty_L => empty_L, 
             valid_N => valid_out_N, valid_E => valid_out_E, valid_W => valid_out_W, valid_S => valid_out_S, valid_L => valid_out_L,
             -- grant_X_Y means the grant for X output port towards Y input port
             -- this means for any X in [N, E, W, S, L] then set grant_X_Y is one hot!
-            grant_N_N => open,   grant_N_E => open,  grant_N_W => open,     grant_N_S => open,       grant_N_L => open,
-            grant_E_N => open,   grant_E_E => open,  grant_E_W => open,     grant_E_S => open,       grant_E_L => open,
-            grant_W_N => open,   grant_W_E => open,  grant_W_W => open,     grant_W_S => Grant_WS,   grant_W_L => Grant_WL,
-            grant_S_N => open,   grant_S_E => open,  grant_S_W => Grant_SW, grant_S_S => open,       grant_S_L => Grant_SL,
-            grant_L_N => open,   grant_L_E => open,  grant_L_W => Grant_LW, grant_L_S => Grant_LS,   grant_L_L => open, 
+            grant_N_N => open,          grant_N_E => open,      grant_N_W => Grant_NW,      grant_N_S => open,     grant_N_L => Grant_NL,
+            grant_E_N => open,          grant_E_E => open,      grant_E_W => open,          grant_E_S => open,     grant_E_L => open,
+            grant_W_N => Grant_WN,      grant_W_E => open,      grant_W_W => open,          grant_W_S => open,     grant_W_L => Grant_WL,
+            grant_S_N => open,          grant_S_E => open,      grant_S_W => open,          grant_S_S => open,     grant_S_L => open,
+            grant_L_N => Grant_LN,      grant_L_E => open,      grant_L_W => Grant_LW,      grant_L_S => open,     grant_L_L => open, 
 
-            TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_S_LBDR_to_Allocator, SO=> SO,
+            TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_E_LBDR_to_Allocator, SO=> SO,
 
             -- Checker outputs
             -- Allocator logic checker outputs
@@ -3457,8 +3501,8 @@ allocator_unit: allocator port map ( reset => reset, clk => clk,
 ------------------------------------------------------------------------------------------------------------------------------
 -- all the Xbar select_signals
 
+Xbar_sel_N <= '0' & Grant_NE & Grant_NW & Grant_NS & Grant_NL;
 Xbar_sel_W <= Grant_WN & Grant_WE & '0' & Grant_WS & Grant_WL;
-Xbar_sel_S <= Grant_SN & Grant_SE & Grant_SW & '0' & Grant_SL;
 Xbar_sel_L <= Grant_LN & Grant_LE & Grant_LW & Grant_LS & '0';
 
 
@@ -3468,12 +3512,12 @@ Xbar_sel_L <= Grant_LN & Grant_LE & Grant_LW & Grant_LS & '0';
 
  -- all the Xbars
 
+XBAR_N: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
+   PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
+        sel => Xbar_sel_N,  Data_out=> TX_N);
 XBAR_W: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
         sel => Xbar_sel_W,  Data_out=> TX_W);
-XBAR_S: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
-        sel => Xbar_sel_S,  Data_out=> TX_S);
 XBAR_L: XBAR generic map (DATA_WIDTH  => DATA_WIDTH)
    PORT MAP (North_in => FIFO_D_out_N, East_in => FIFO_D_out_E, West_in => FIFO_D_out_W, South_in => FIFO_D_out_S, Local_in => FIFO_D_out_L,
         sel => Xbar_sel_L,  Data_out=> TX_L);
