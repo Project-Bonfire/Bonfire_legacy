@@ -477,7 +477,7 @@ begin
 end process;
 
 
-process (state_out, fault_out, valid_in, state_in, state_out)
+process (state_out, fault_out, valid_in, state_in)
 begin
 	err_state_out_Idle_not_fault_out_valid_in_state_in_not_change <= '0';
 	if (state_out = Idle and fault_out = '0' and valid_in = '0' and state_in /= state_out) then
@@ -660,7 +660,7 @@ end process;
 
 --------------------------------------------------------------------------------------------------
 
-process (state_out, valid_in, state_in, state_out)
+process (state_out, valid_in, state_in)
 begin 
 	err_state_out_Header_flit_not_valid_in_state_in_state_out_not_change <= '0';
 	if (state_out = Header_flit and valid_in = '0' and state_in /= state_out) then
@@ -709,7 +709,7 @@ end process;
 -- Body_flit state
 --------------------------------------------------------------------------------------------------
 
-process (state_out, valid_in, fault_out, flit_type, state_in, state_out)
+process (state_out, valid_in, fault_out, flit_type, state_in)
 begin 
 	err_state_out_Body_flit_valid_in_not_fault_out_state_in_state_out_not_change <= '0';
 	if (state_out = Body_flit and valid_in = '1' and fault_out = '0' and flit_type = "010" and state_in /= state_out) then
@@ -1027,7 +1027,7 @@ begin
 	end if;
 end process;
 
-process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, state_in, state_out)
+process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, state_in)
 begin 
 	err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Header_fault_out_state_in_state_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '1' and flit_type = "001" and fault_out = '1' and state_in /= state_out) then
@@ -1043,7 +1043,7 @@ begin
 	end if;
 end process;
 
-process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, state_in, state_out)
+process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, state_in)
 begin 
 	err_state_out_Packet_drop_faulty_packet_out_valid_in_flit_type_Tail_fault_out_state_in_state_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '1' and flit_type = "100" and fault_out = '1' and state_in /= state_out) then
@@ -1075,7 +1075,7 @@ begin
 	end if;
 end process;
 
-process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, faulty_packet_in, faulty_packet_out)
+process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, faulty_packet_in)
 begin 
 	err_state_out_Packet_drop_faulty_packet_out_not_valid_in_flit_type_body_or_invalid_fault_out_faulty_packet_in_faulty_packet_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and ( valid_in = '0' or (flit_type /= "001" and flit_type /= "100") or fault_out = '1' ) and faulty_packet_in /= faulty_packet_out) then
@@ -1083,7 +1083,7 @@ begin
 	end if;
 end process;
 
-process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, state_in, state_out)
+process (state_out, faulty_packet_out, valid_in, flit_type, fault_out, state_in)
 begin 
 	err_state_out_Packet_drop_faulty_packet_out_flit_type_invalid_fault_out_state_in_state_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and ((flit_type /= "001" and flit_type /= "100") or fault_out = '1') and state_in /= state_out) then
@@ -1091,7 +1091,7 @@ begin
 	end if;
 end process;
 
-process (state_out, faulty_packet_out, valid_in, faulty_packet_in, faulty_packet_out)
+process (state_out, faulty_packet_out, valid_in, faulty_packet_in)
 begin 
 	err_state_out_Packet_drop_faulty_packet_out_not_valid_in_faulty_packet_in_faulty_packet_out_equal <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '0' and faulty_packet_in /= faulty_packet_out) then
@@ -1099,7 +1099,7 @@ begin
 	end if;
 end process;
 
-process (state_out, faulty_packet_out, valid_in, state_in, state_out)
+process (state_out, faulty_packet_out, valid_in, state_in)
 begin 
 	err_state_out_Packet_drop_faulty_packet_out_not_valid_in_state_in_state_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '1' and valid_in = '0' and state_in /= state_out) then
@@ -1126,7 +1126,7 @@ end process;
 -- faulty_packet_out = '0'
 --------------------------------------------------------------------------------------------------
 
-process (state_out, faulty_packet_out, state_in, state_out)
+process (state_out, faulty_packet_out, state_in)
 begin 
 	err_state_out_Packet_drop_not_faulty_packet_out_state_in_state_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '0' and state_in /= state_out) then
@@ -1134,7 +1134,7 @@ begin
 	end if;
 end process;
 
-process (state_out, faulty_packet_out, faulty_packet_in, faulty_packet_out)
+process (state_out, faulty_packet_out, faulty_packet_in)
 begin 
 	err_state_out_Packet_drop_not_faulty_packet_out_faulty_packet_in_faulty_packet_out_not_change <= '0';
 	if (state_out = Packet_drop and faulty_packet_out = '0' and faulty_packet_in /= faulty_packet_out) then
@@ -1174,7 +1174,7 @@ begin
 	end if;
 end process;
 
-process (state_out, valid_in, state_in, state_out)
+process (state_out, valid_in, state_in)
 begin 
 	err_state_out_Packet_drop_not_valid_in_state_in_state_out_equal <= '0';
 	if (state_out = Packet_drop and valid_in = '0' and state_in /= state_out) then
@@ -1182,7 +1182,7 @@ begin
 	end if;
 end process;
 
-process (state_out, valid_in, fault_out, flit_type, state_in, state_out)
+process (state_out, valid_in, fault_out, flit_type, state_in)
 begin 
 	err_state_out_Tail_flit_valid_in_not_fault_out_flit_type_not_Header_state_in_state_out_equal <= '0';
 	if (state_out = Tail_flit and valid_in = '1' and fault_out = '0' and flit_type /= "001" and state_in /= state_out) then
