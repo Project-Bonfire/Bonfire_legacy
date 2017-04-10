@@ -273,10 +273,9 @@ process(P2N_FIFO_read_pointer, P2N_FIFO_MEM_1, P2N_FIFO_MEM_2, P2N_FIFO_MEM_3, P
 
 -- Write pointer update process (after each write operation, write pointer is rotated one bit to the left)
 process(P2N_write_en, P2N_FIFO_write_pointer)begin
+    P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer;
     if P2N_write_en = '1' then
        P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer(2 downto 0) & P2N_FIFO_write_pointer(3);
-    else
-       P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer;
     end if;
   end process;
 
@@ -289,10 +288,9 @@ process(P2N_write_en, P2N_FIFO_write_pointer)begin
 end process;
 
 process(P2N_full, valid_data) begin
+    P2N_write_en <= '0';
      if valid_data = '1' and P2N_full ='0' then
          P2N_write_en <= '1';
-     else
-         P2N_write_en <= '0';
      end if;
   end process;
 
@@ -322,7 +320,7 @@ end process;
 
 -- flag setting and clearing for self diagnosis 
 process(link_faults, turn_faults, self_diagnosis_flag, old_address)begin
-  if (link_faults  /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address = current_address then
+  if (link_faults /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address = current_address then
     self_diagnosis_flag_in <= '1';
   elsif old_address = self_diagnosis_address then
     self_diagnosis_flag_in <= '0';
@@ -333,19 +331,19 @@ end process;
 
 -- handling fault information!
 process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
- 
   self_diagnosis_reg_in <= self_diagnosis_reg_out;
+  fault_info_in <= fault_info;
+  fault_info_ready_in <= fault_info_ready;
 
   -- If current node is not SHMU, we need to send fault information to SHMU
   if (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address /= current_address then
     fault_info_in <= turn_faults & link_faults;
     fault_info_ready_in <= '1';
+    report "NI recieved fault info on node " & integer'image(current_address) & " at time " & time'image(now) & " to be forwarded to SHMU!";
   -- If current node is SHMU, we handle it locally
   elsif (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address = current_address then
-      self_diagnosis_reg_in <= "0000000" & turn_faults & link_faults;
-  else
-    fault_info_in <= fault_info;
-    fault_info_ready_in <= fault_info_ready;
+    self_diagnosis_reg_in <= "0000000" & turn_faults & link_faults;
+    report "NI recieved self-diagnosis info on node " & integer'image(current_address) & " at time " & time'image(now);
   end if;
 
   if sent_info = '1' then 
@@ -487,49 +485,42 @@ valid_out <= grant;
   end process;
 
   process(address, write_byte_enable, N2P_empty)begin
+    N2P_read_en_in <= '0';
     if address = reserved_address and write_byte_enable = "0000" and N2P_empty = '0' then
       N2P_read_en_in <= '1';
-    else
-      N2P_read_en_in <= '0';
     end if;
   end process;
 
 
   process(N2P_write_en, N2P_FIFO_write_pointer)begin
+    N2P_FIFO_write_pointer_in <= N2P_FIFO_write_pointer;
     if N2P_write_en = '1'then
        N2P_FIFO_write_pointer_in <= N2P_FIFO_write_pointer(2 downto 0)&N2P_FIFO_write_pointer(3);
-    else
-       N2P_FIFO_write_pointer_in <= N2P_FIFO_write_pointer;
     end if;
   end process;
 
   process(N2P_read_en, N2P_empty, N2P_FIFO_read_pointer)begin
-       if (N2P_read_en = '1' and N2P_empty = '0') then
-           N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer(2 downto 0)&N2P_FIFO_read_pointer(3);
-       else
-           N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer;
-       end if;
+      N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer;
+      if (N2P_read_en = '1' and N2P_empty = '0') then
+        N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer(2 downto 0)&N2P_FIFO_read_pointer(3);
+      end if;
   end process;
 
   process(N2P_full, valid_in) begin
-     if (valid_in = '1' and N2P_full ='0') then
-         N2P_write_en <= '1';
-     else
-         N2P_write_en <= '0';
+    N2P_write_en <= '0';
+    if (valid_in = '1' and N2P_full ='0') then
+      N2P_write_en <= '1';
      end if;
   end process;
 
   process(N2P_FIFO_write_pointer, N2P_FIFO_read_pointer) begin
+      N2P_empty <= '0';
+      N2P_full <= '0';
       if N2P_FIFO_read_pointer = N2P_FIFO_write_pointer  then
-              N2P_empty <= '1';
-      else
-              N2P_empty <= '0';
+              N2P_empty <= '1';             
       end if;
-
       if N2P_FIFO_write_pointer = N2P_FIFO_read_pointer(0)&N2P_FIFO_read_pointer(3 downto 1) then
-              N2P_full <= '1';
-      else
-              N2P_full <= '0';
+              N2P_full <= '1';              
       end if;
   end process;
 
