@@ -3592,7 +3592,7 @@ E2L_fault <=    E_FIFO_checkers_ORed or
                 err_not_grant_L_or_credit_counter_L_out_zero_credit_counter_L_in_not_change or 
                 err_not_credit_in_L_not_grant_L_credit_counter_L_in_credit_counter_L_out_equal;
 
-                            -- FIFO
+                -- FIFO
 W2L_fault <=    W_FIFO_checkers_ORed or
 
                 -- LBDR
