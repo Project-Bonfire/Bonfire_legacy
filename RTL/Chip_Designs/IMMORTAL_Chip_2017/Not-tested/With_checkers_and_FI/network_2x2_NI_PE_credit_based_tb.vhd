@@ -163,7 +163,9 @@ begin
 
     --GPIO connections
     GPIO_out <= PE_0_GPIO_out(15 downto 0);
-    PE_0_GPIO_out <= PE_0_GPIO_in(21 downto 0);
+
+    PE_0_GPIO_in(31 downto 22) <= (others => '0');
+    PE_0_GPIO_in(21 downto 0) <= GPIO_in;
 
 
    clk_process :process
