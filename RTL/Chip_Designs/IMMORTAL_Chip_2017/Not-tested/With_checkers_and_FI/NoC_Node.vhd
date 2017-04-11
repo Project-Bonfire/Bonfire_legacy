@@ -31,10 +31,14 @@ port( reset        : in std_logic;
         RX: in std_logic_vector(31 downto 0);
         link_faults: in std_logic_vector(4 downto 0);
         turn_faults: in std_logic_vector(19 downto 0);
-     
-        Rxy_reconf_PE: out  std_logic_vector(7 downto 0);   
+
+        Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
-        Reconfig_command : out std_logic
+        Reconfig_command : out std_logic;
+
+        GPIO_out: out  std_logic_vector(31 downto 0);
+        GPIO_in: in  std_logic_vector(31 downto 0)
+
    );
 end; --entity NoC_Node
 
@@ -57,7 +61,6 @@ architecture updated of NoC_Node is
    signal no_ddr_stop : std_logic;
    signal byte_we     : std_logic_vector(3 downto 0);
    signal uart_write  : std_logic;
-   signal gpioA_in    : std_logic_vector(31 downto 0) := (others => '0');
 
    --signal credit_in, valid_in: std_logic := '0';
    --signal credit_out, valid_out: std_logic := '0';
@@ -100,8 +103,8 @@ begin  --architecture
          no_ddr_start      => no_ddr_start,
          no_ddr_stop       => no_ddr_stop,
 
-         gpio0_out         => open,
-         gpioA_in          => gpioA_in,
+         gpio0_out         => GPIO_out,
+         gpioA_in          => GPIO_in,
 
          credit_in         => credit_in,
          valid_out         => valid_out,
@@ -110,9 +113,9 @@ begin  --architecture
          credit_out        => credit_out,
          valid_in          => valid_in,
          RX                => RX,
-         link_faults       => link_faults,   
+         link_faults       => link_faults,
          turn_faults       => turn_faults,
-     
+
          Rxy_reconf_PE     => Rxy_reconf_PE,
          Cx_reconf_PE      => Cx_reconf_PE ,
          Reconfig_command  => Reconfig_command
