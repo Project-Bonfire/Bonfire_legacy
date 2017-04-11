@@ -76,9 +76,6 @@ port (reset: in  std_logic;
     Cx_reconf_PE_3: in  std_logic_vector(3 downto 0);
     Reconfig_command_3 : in std_logic;
 
-    GPIO_out: out std_logic_vector(15 downto 0);
-    GPIO_in: in  std_logic_vector(21 downto 0);
-
 
     -- IJTAG network for fault injection and checker status monitoring
     TCK         : in std_logic;
@@ -116,8 +113,8 @@ port( reset        : in std_logic;
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
         Reconfig_command : out std_logic;
 
-        GPIO_out: out  std_logic_vector(31 downto 0);
-        GPIO_in: in  std_logic_vector(31 downto 0)
+        GPIO_out: out  std_logic_vector(15 downto 0);
+        GPIO_in: in  std_logic_vector(21 downto 0)
    );
 end component; --entity NoC_Node
 
@@ -156,17 +153,10 @@ end component; --entity NoC_Node
     signal TCK, RST, SEL, SI, SE, UE, CE, SO, toF, toC : std_logic := '0';
 
     -- GPIO
-    signal PE_0_GPIO_out : std_logic_vector(31 downto 0);
-    signal PE_0_GPIO_in : std_logic_vector(31 downto 0);
+    signal PE_0_GPIO_out : std_logic_vector(15 downto 0);
+    signal PE_0_GPIO_in : std_logic_vector(21 downto 0) := (others => '1');
 
 begin
-
-    --GPIO connections
-    GPIO_out <= PE_0_GPIO_out(15 downto 0);
-
-    PE_0_GPIO_in(31 downto 22) <= (others => '0');
-    PE_0_GPIO_in(21 downto 0) <= GPIO_in;
-
 
    clk_process :process
    begin
@@ -287,7 +277,7 @@ port map( not_reset, clk,
         Reconfig_command 	=> Reconfig_command_0,
 
         GPIO_out            => PE_0_GPIO_out,
-        GPIO_in             => PE_0_GPIO_in
+        GPIO_in             => (others => '1')
    );
 
 PE_1: NoC_Node

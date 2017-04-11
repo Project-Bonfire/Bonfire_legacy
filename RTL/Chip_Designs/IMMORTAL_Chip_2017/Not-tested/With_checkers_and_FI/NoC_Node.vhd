@@ -36,8 +36,8 @@ port( reset        : in std_logic;
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
         Reconfig_command : out std_logic;
 
-        GPIO_out: out  std_logic_vector(31 downto 0);
-        GPIO_in: in  std_logic_vector(31 downto 0)
+        GPIO_out: out  std_logic_vector(15 downto 0);
+        GPIO_in: in  std_logic_vector(21 downto 0)
 
    );
 end; --entity NoC_Node
@@ -62,6 +62,9 @@ architecture updated of NoC_Node is
    signal byte_we     : std_logic_vector(3 downto 0);
    signal uart_write  : std_logic;
 
+   signal GPIO_out_tmp    : std_logic_vector(31 downto 0);
+   signal GPIO_in_tmp     : std_logic_vector(31 downto 0);
+
    --signal credit_in, valid_in: std_logic := '0';
    --signal credit_out, valid_out: std_logic := '0';
    --signal RX: std_logic_vector(31 downto 0) := (others => '0');
@@ -81,6 +84,13 @@ begin  --architecture
    --gpioA_in(19) <= not gpioA_in(19) after 20 us;  --E_RX_DV
    --gpioA_in(18 downto 15) <= gpioA_in(18 downto 15) + 1 after 400 ns; --E_RX_RXD
    --gpioA_in(14) <= not gpioA_in(14) after 200 ns; --E_TX_CLK
+
+   --GPIO connections
+   GPIO_out <= GPIO_out_tmp(15 downto 0);
+
+   GPIO_in_tmp(31 downto 22) <= (others => '0');
+   GPIO_in_tmp(21 downto 0) <= GPIO_in;
+
 
    u1_plasma: plasma
       generic map (memory_type => memory_type,
@@ -103,8 +113,8 @@ begin  --architecture
          no_ddr_start      => no_ddr_start,
          no_ddr_stop       => no_ddr_stop,
 
-         gpio0_out         => GPIO_out,
-         gpioA_in          => GPIO_in,
+         gpio0_out         => GPIO_out_tmp,
+         gpioA_in          => GPIO_in_tmp,
 
          credit_in         => credit_in,
          valid_out         => valid_out,
