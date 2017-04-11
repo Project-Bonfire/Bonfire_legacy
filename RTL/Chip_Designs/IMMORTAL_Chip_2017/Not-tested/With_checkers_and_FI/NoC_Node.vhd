@@ -87,10 +87,7 @@ begin  --architecture
 
    --GPIO connections
    GPIO_out <= GPIO_out_tmp(15 downto 0);
-
-   GPIO_in_tmp(31 downto 22) <= (others => '0');
-   GPIO_in_tmp(21 downto 0) <= GPIO_in;
-
+   GPIO_in_tmp <= (31 downto 22 => '0') & GPIO_in;
 
    u1_plasma: plasma
       generic map (memory_type => memory_type,
