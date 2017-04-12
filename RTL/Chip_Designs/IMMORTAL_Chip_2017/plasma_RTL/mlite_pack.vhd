@@ -451,7 +451,8 @@ package mlite_pack is
 
 
    component uart
-      generic(log_file : string := "UNUSED");
+      generic(log_file : string := "UNUSED";
+              count_value_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000100");
       port(clk          : in std_logic;
            reset        : in std_logic;
            enable_read  : in std_logic;
@@ -461,7 +462,14 @@ package mlite_pack is
            uart_read    : in std_logic;
            uart_write   : out std_logic;
            busy_write   : out std_logic;
-           data_avail   : out std_logic);
+           data_avail   : out std_logic;
+           
+           reg_enable            : in std_logic;
+           reg_write_byte_enable : in std_logic_vector(3 downto 0);
+           reg_address           : in std_logic_vector(31 downto 2);
+           reg_data_write        : in std_logic_vector(31 downto 0);
+           reg_data_read         : out std_logic_vector(31 downto 0)
+        );
    end component; --uart
 
    component eth_dma 

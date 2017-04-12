@@ -119,7 +119,7 @@ architecture logic of plasma is
    signal ram_byte_we       : std_logic_vector(3 downto 0);
    signal ram_address, ram_address_late       : std_logic_vector(31 downto 2);
    signal ram_data_w        : std_logic_vector(31 downto 0);
-   signal ram_data_r, ram_data_r_ni        : std_logic_vector(31 downto 0);
+   signal ram_data_r, ram_data_r_ni, ram_data_r_uart       : std_logic_vector(31 downto 0);
    signal NI_irq_out        : std_logic;
    --signal NI_read_flag           : std_logic;
    --signal NI_write_flag           : std_logic;
@@ -132,6 +132,7 @@ architecture logic of plasma is
    constant reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
    constant reserved_flag_address : std_logic_vector(29 downto 0) := "000000000000000010000000000000";
    constant reserved_counter_address : std_logic_vector(29 downto 0) := "000000000000000010000000000001";
+   constant uart_count_value_address : std_logic_vector(29 downto 0) := "000000000000000010000000000100";
 
 begin  --architecture
    write_enable <= '1' when cpu_byte_we /= "0000" else '0';
@@ -212,6 +213,8 @@ begin  --architecture
          if ((ram_address_late = reserved_address) or (ram_address_late = reserved_flag_address)
             or (ram_address_late = reserved_counter_address)) then
             cpu_data_r <= ram_data_r_ni;
+         elsif ram_address_late = uart_count_value_address then 
+            cpu_data_r <= ram_data_r_uart;
          else
             cpu_data_r <= ram_data_r;
          end if;
@@ -220,7 +223,9 @@ begin  --architecture
             --cpu_data_r <= ram_data_r; --cache
             if ((ram_address_late = reserved_address) or (ram_address_late = reserved_flag_address)
                 or (ram_address_late = reserved_counter_address)) then
-               cpu_data_r <= ram_data_r_ni;
+                cpu_data_r <= ram_data_r_ni;
+            elsif ram_address_late = uart_count_value_address then 
+                cpu_data_r <= ram_data_r_uart;
             else
                cpu_data_r <= ram_data_r; --cache
             end if;
@@ -332,7 +337,13 @@ begin  --architecture
          uart_read    => uart_read,
          uart_write   => uart_write,
          busy_write   => uart_write_busy,
-         data_avail   => uart_data_avail);
+         data_avail   => uart_data_avail,
+
+         reg_enable            =>ram_enable,
+         reg_write_byte_enable =>ram_byte_we,
+         reg_address           =>ram_address,
+         reg_data_write        =>ram_data_w,
+         reg_data_read         =>ram_data_r_uart);
 
    dma_gen: if ethernet = '0' generate
       address <= cpu_address(31 downto 2);

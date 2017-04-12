@@ -19,7 +19,8 @@ use std.textio.all;
 use work.mlite_pack.all;
 
 entity uart is
-   generic(log_file : string := "UNUSED");
+   generic(log_file : string := "UNUSED";
+           count_value_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000100");
    port(clk          : in std_logic;
         reset        : in std_logic;
         enable_read  : in std_logic;
@@ -29,7 +30,14 @@ entity uart is
         uart_read    : in std_logic;
         uart_write   : out std_logic;
         busy_write   : out std_logic;
-        data_avail   : out std_logic);
+        data_avail   : out std_logic;
+
+        reg_enable            : in std_logic;
+        reg_write_byte_enable : in std_logic_vector(3 downto 0);
+        reg_address           : in std_logic_vector(31 downto 2);
+        reg_data_write        : in std_logic_vector(31 downto 0);
+        reg_data_read         : out std_logic_vector(31 downto 0)
+        );
 end; --entity uart
 
 architecture logic of uart is
@@ -43,8 +51,39 @@ architecture logic of uart is
    signal busy_write_sig  : std_logic;
    signal read_value_reg  : std_logic_vector(6 downto 0);
    signal uart_read2      : std_logic;
-
+   signal count_value_reg_in, count_value_reg: std_logic_vector(31 downto 0);
+   signal old_address     : std_logic_vector(31 downto 2);
+   signal count_value_sig : std_logic_vector(9 downto 0);
 begin
+
+update_count_value: process(count_value_reg, reg_data_write, reg_write_byte_enable, reg_address, reg_enable)begin
+    count_value_reg_in <= count_value_reg ;
+    if reg_enable = '1' and reg_address = count_value_address then
+       if reg_write_byte_enable(0) = '1' then
+          count_value_reg_in(7 downto 0) <= reg_data_write(7 downto 0);
+       end if;
+       if reg_write_byte_enable(1) = '1' then
+          count_value_reg_in(15 downto 8) <= reg_data_write(15 downto 8);
+       end if;
+       if reg_write_byte_enable(2) = '1' then
+          count_value_reg_in(23 downto 16) <= reg_data_write(23 downto 16);
+       end if;
+       if reg_write_byte_enable(3) = '1' then
+          count_value_reg_in(31 downto 24) <= reg_data_write(31 downto 24);
+     end if;
+    end if;
+end process;
+
+process(count_value_reg, old_address) begin
+  if old_address = count_value_address then
+    reg_data_read <= count_value_reg;
+  else
+    reg_data_read <= (others => 'U');
+  end if;
+end process;
+
+
+  count_value_sig <= count_value_reg(9 downto 0);
 
 uart_proc: process(clk, reset, enable_read, enable_write, data_in,
                    data_write_reg, bits_write_reg, delay_write_reg,
@@ -56,10 +95,11 @@ uart_proc: process(clk, reset, enable_read, enable_write, data_in,
 --- MUST BE EDITED BASED ON THE FREQUENCY! ----
 -----------------------------------------------
 
-   constant COUNT_VALUE : std_logic_vector(9 downto 0) :=
+
+-- constant COUNT_VALUE : std_logic_vector(9 downto 0) :=
 --      "0100011110";  --33MHz/2/57600Hz = 0x11e
 --      "1101100100";  --50MHz/57600Hz = 0x364
-      "0110110010";  --25MHz/57600Hz = 0x1b2 -- Plasma IF uses div2
+--      "0110110010";  --25MHz/57600Hz = 0x1b2 -- Plasma IF uses div2
 --      "0011011001";  --12.5MHz/57600Hz = 0xd9
 --      "0000000100";  --for debug (shorten read_value_reg)
 begin
@@ -74,8 +114,11 @@ begin
       bits_read_reg   <= "0000";
       delay_read_reg  <= ZERO(9 downto 0);
       data_save_reg   <= ZERO(17 downto 0);
+      old_address <= (others => '0');
+      count_value_reg <= (others => '0');
    elsif rising_edge(clk) then
-
+      old_address <= reg_address;
+      count_value_reg <= count_value_reg_in;
       --Write UART
       if bits_write_reg = "0000" then               --nothing left to write?
          if enable_write = '1' then
@@ -84,7 +127,7 @@ begin
             data_write_reg <= data_in & '0';        --remember data & start bit
          end if;
       else
-         if delay_write_reg /= COUNT_VALUE then
+         if delay_write_reg /= count_value_sig then
             delay_write_reg <= delay_write_reg + 1; --delay before next bit
          else
             delay_write_reg <= ZERO(9 downto 0);    --reset delay
@@ -108,11 +151,11 @@ begin
       if delay_read_reg = ZERO(9 downto 0) then     --done delay for read?
          if bits_read_reg = "0000" then             --nothing left to read?
             if uart_read2 = '0' then                --wait for start bit
-               delay_read_reg <= '0' & COUNT_VALUE(9 downto 1);  --half period
+               delay_read_reg <= '0' & count_value_sig(9 downto 1);  --half period
                bits_read_reg <= "1001";             --bits left to read
             end if;
          else
-            delay_read_reg <= COUNT_VALUE;          --initialize delay
+            delay_read_reg <= count_value_sig;          --initialize delay
             bits_read_reg <= bits_read_reg - 1;     --bits left to read
             data_read_reg <= uart_read2 & data_read_reg(7 downto 1);
          end if;
@@ -121,7 +164,7 @@ begin
       end if;
 
       --Control character buffer
-      if bits_read_reg = "0000" and delay_read_reg = COUNT_VALUE then
+      if bits_read_reg = "0000" and delay_read_reg = count_value_sig then
          if data_save_reg(8) = '0' or
                (enable_read = '1' and data_save_reg(17) = '0') then
             --Empty buffer
