@@ -77,5 +77,5 @@ vsim -coverage -voptargs="+cover=bcestfx" work.tb_network_2x2
 # do do_files/wave_2x2.do
 do do_files/wave_2x2_with_top.do
 # Run the simulation
-do do_files/fault_inject_links_top.do 	#use to inject files in the simulation(not using IJTAG)
-#run 12000 ns
+# do do_files/fault_inject_links_top.do 	#use to inject files in the simulation(not using IJTAG)
+run 12000 ns

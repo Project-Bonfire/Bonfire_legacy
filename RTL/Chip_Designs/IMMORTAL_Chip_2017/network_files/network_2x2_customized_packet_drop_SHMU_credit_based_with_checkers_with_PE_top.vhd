@@ -13,6 +13,7 @@ use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 USE ieee.numeric_std.ALL; 
+use work.component_pack.all;
 
 entity network_2x2_with_PE is
  generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
@@ -42,100 +43,9 @@ end network_2x2_with_PE;
 architecture behavior of network_2x2_with_PE is
 
 -- Declaring network component
-component network_2x2 is
- generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
-port (reset: in  std_logic;
-    clk: in  std_logic;
-    --------------
-    --------------
-    RX_L_0: in std_logic_vector (DATA_WIDTH-1 downto 0);
-    credit_out_L_0, valid_out_L_0: out std_logic;
-    credit_in_L_0, valid_in_L_0: in std_logic;
-    TX_L_0: out std_logic_vector (DATA_WIDTH-1 downto 0);
-    --------------
-    RX_L_1: in std_logic_vector (DATA_WIDTH-1 downto 0);
-    credit_out_L_1, valid_out_L_1: out std_logic;
-    credit_in_L_1, valid_in_L_1: in std_logic;
-    TX_L_1: out std_logic_vector (DATA_WIDTH-1 downto 0);
-    --------------
-    RX_L_2: in std_logic_vector (DATA_WIDTH-1 downto 0);
-    credit_out_L_2, valid_out_L_2: out std_logic;
-    credit_in_L_2, valid_in_L_2: in std_logic;
-    TX_L_2: out std_logic_vector (DATA_WIDTH-1 downto 0);
-    --------------
-    RX_L_3: in std_logic_vector (DATA_WIDTH-1 downto 0);
-    credit_out_L_3, valid_out_L_3: out std_logic;
-    credit_in_L_3, valid_in_L_3: in std_logic;
-    TX_L_3: out std_logic_vector (DATA_WIDTH-1 downto 0);
-    --------------
-    link_faults_0: out std_logic_vector(4 downto 0);
-    turn_faults_0: out std_logic_vector(19 downto 0);
-    Rxy_reconf_PE_0: in  std_logic_vector(7 downto 0);
-    Cx_reconf_PE_0: in  std_logic_vector(3 downto 0);
-    Reconfig_command_0 : in std_logic;
-
-    --------------
-    link_faults_1: out std_logic_vector(4 downto 0);
-    turn_faults_1: out std_logic_vector(19 downto 0);
-    Rxy_reconf_PE_1: in  std_logic_vector(7 downto 0);
-    Cx_reconf_PE_1: in  std_logic_vector(3 downto 0);
-    Reconfig_command_1 : in std_logic;
-
-    --------------
-    link_faults_2: out std_logic_vector(4 downto 0);
-    turn_faults_2: out std_logic_vector(19 downto 0);
-    Rxy_reconf_PE_2: in  std_logic_vector(7 downto 0);
-    Cx_reconf_PE_2: in  std_logic_vector(3 downto 0);
-    Reconfig_command_2 : in std_logic;
-
-    --------------
-    link_faults_3: out std_logic_vector(4 downto 0);
-    turn_faults_3: out std_logic_vector(19 downto 0);
-    Rxy_reconf_PE_3: in  std_logic_vector(7 downto 0);
-    Cx_reconf_PE_3: in  std_logic_vector(3 downto 0);
-    Reconfig_command_3 : in std_logic;
-
-    -- IJTAG network for fault injection and checker status monitoring
-    TCK         : in std_logic;
-    RST         : in std_logic;
-    SEL         : in std_logic;
-    SI          : in std_logic;
-    SE          : in std_logic;
-    UE          : in std_logic;
-    CE          : in std_logic;
-    SO          : out std_logic;
-    toF         : out std_logic;
-    toC         : out std_logic
-    );
-end component;
 
 -- Declaring NoC_Node component (with Plasma, RAM, NI and UART)
-component NoC_Node is
-generic( current_address : integer := 0;
-         stim_file: string :="code.txt";
-         log_file  : string := "output.txt");
 
-port( reset        : in std_logic;
-      clk          : in std_logic;
-
-        credit_in : in std_logic;
-        valid_out: out std_logic;
-        TX: out std_logic_vector(31 downto 0);
-
-        credit_out : out std_logic;
-        valid_in: in std_logic;
-        RX: in std_logic_vector(31 downto 0);
-        link_faults: in std_logic_vector(4 downto 0);
-        turn_faults: in std_logic_vector(19 downto 0);
-
-        Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
-        Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
-        Reconfig_command : out std_logic;
-
-        GPIO_out: out  std_logic_vector(15 downto 0);
-        GPIO_in: in  std_logic_vector(21 downto 0)
-   );
-end component; --entity NoC_Node
 
 -- generating bulk signals...
     signal RX_L_0, TX_L_0:  std_logic_vector (31 downto 0);
