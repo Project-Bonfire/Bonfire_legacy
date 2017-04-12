@@ -132,6 +132,8 @@ architecture logic of plasma is
    constant reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
    constant reserved_flag_address : std_logic_vector(29 downto 0) := "000000000000000010000000000000";
    constant reserved_counter_address : std_logic_vector(29 downto 0) := "000000000000000010000000000001";
+   constant reconfiguration_address : std_logic_vector(29 downto 0) := "000000000000000010000000000010";
+   constant self_diagnosis_address : std_logic_vector(29 downto 0) := "000000000000000010000000000011";
    constant uart_count_value_address : std_logic_vector(29 downto 0) := "000000000000000010000000000100";
 
 begin  --architecture
@@ -211,7 +213,7 @@ begin  --architecture
       case cpu_address(30 downto 28) is
       when "000" =>         --internal RAM
          if ((ram_address_late = reserved_address) or (ram_address_late = reserved_flag_address)
-            or (ram_address_late = reserved_counter_address)) then
+            or (ram_address_late = reserved_counter_address) or (ram_address_late = reconfiguration_address) or (ram_address_late = self_diagnosis_address)) then
             cpu_data_r <= ram_data_r_ni;
          elsif ram_address_late = uart_count_value_address then 
             cpu_data_r <= ram_data_r_uart;
@@ -222,7 +224,7 @@ begin  --architecture
          if cache_checking = '1' then
             --cpu_data_r <= ram_data_r; --cache
             if ((ram_address_late = reserved_address) or (ram_address_late = reserved_flag_address)
-                or (ram_address_late = reserved_counter_address)) then
+                or (ram_address_late = reserved_counter_address) or (ram_address_late = reconfiguration_address) or (ram_address_late = self_diagnosis_address)) then
                 cpu_data_r <= ram_data_r_ni;
             elsif ram_address_late = uart_count_value_address then 
                 cpu_data_r <= ram_data_r_uart;
