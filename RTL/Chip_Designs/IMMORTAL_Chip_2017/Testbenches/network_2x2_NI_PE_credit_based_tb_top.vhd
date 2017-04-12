@@ -61,82 +61,91 @@ end component;
 
 begin
 
-   clk_process :process
-   begin
-        clk <= '0';
-        wait for clk_period/2;
-        clk <= '1';
-        wait for clk_period/2;
-   end process;
+  clk_process :process
+  begin
+      clk <= '0';
+      wait for clk_period/2;
+      clk <= '1';
+      wait for clk_period/2;
+  end process;
 
--- Added for IJTAG
+  ijtag_shift_proc: process
 
-   ijtag_shift_proc: process
+       -- Generate a number of TCK ticks
+    procedure tck_tick (number_of_tick : in positive) is
+    begin
+      for i in 1 to number_of_tick loop
+        TCK <= '0';
+        wait for TCK_period/2;
+        TCK <= '1';
+        wait for TCK_period/2;
+      end loop;
+    end procedure tck_tick;
+    
+    procedure tck_halftick_high is
+    begin
+      TCK <= '1';
+      wait for TCK_period/2;
+    end procedure tck_halftick_high;
+             
+    procedure tck_halftick_low is
+    begin
+      TCK <= '0';
+      wait for TCK_period/2;
+    end procedure tck_halftick_low;
 
-         -- Generate a number of TCK ticks
-      procedure tck_tick (number_of_tick : in positive) is
-      begin
-           for i in 1 to number_of_tick loop
-             TCK <= '1';
-              wait for TCK_period/2;
-              TCK <= '0';
-              wait for TCK_period/2;
-            end loop;
-      end procedure tck_tick;
+     -- Shifts in specified data (Capture -> Shift -> Update)
+    procedure shift_data (data : in std_logic_vector) is
+    begin
+       -- Capture phase
+      --CE <= '1';
+      --tck_tick(1);
+      --CE <= '0';
+        -- Shift phase
+      SE <= '1';
+      for i in data'range loop
+         SI <= data(i);
+         tck_tick(1);
+      end loop;
+      SE <= '0';
+      -- Update phase
+      UE <= '1';
+      tck_tick(1);
+      tck_halftick_low;
+      UE <= '0';
+      tck_halftick_high;
+    end procedure shift_data;
 
-         -- Shifts in specified data (Capture -> Shift -> Update)
-        procedure shift_data (data : in std_logic_vector) is
-        begin
-           -- Capture phase
-            CE <= '1';
-           tck_tick(1);
-            CE <= '0';
-            -- Shift phase
-          SE <= '1';
-           for i in data'range loop
-               SI <= data(i);
-             tck_tick(1);
-            end loop;
-          SE <= '0';
-            -- Update phase
-            UE <= '1';
-           tck_tick(1);
-            UE <= '0';
-        end procedure shift_data;
+          -- Returns all zeroes std_logic_vector of specified size
+    function all_zeroes (number_of_zeroes : in positive) return std_logic_vector is
+      variable zero_array : std_logic_vector(0 to number_of_zeroes-1);
+    begin
+      for i in zero_array'range loop
+       zero_array(i) := '0';
+      end loop;
+      return zero_array;
+    end function all_zeroes;
 
-            -- Returns all zeroes std_logic_vector of specified size
-       function all_zeroes (number_of_zeroes : in positive) return std_logic_vector is
-          variable zero_array : std_logic_vector(0 to number_of_zeroes-1);
-       begin
-          for i in zero_array'range loop
-           zero_array(i) := '0';
-          end loop;
-          return zero_array;
-       end function all_zeroes;
+  begin
 
-        begin
+            -- Reset iJTAG chain and Instruments
+    RST <= '1';
+    wait for tck_period;
+    RST <= '0';
+    SEL <= '1';
+    tck_tick(4);
 
-                -- Reset iJTAG chain and Instruments
-       RST <= '1';
-        wait for tck_period;
-       RST <= '0';
-       SEL <= '1';
-       tck_tick(4);
+    shift_data("0001000000000000"); -- open sib3
+    tck_tick(4);
 
-       --shift_data(all_zeroes(16));
-       --tck_tick(4);
+    -- 130 bits in total (for chains)
+    -- Inject fault in the bit with location 0 of L FIFO in Router 3 (SE)
+    shift_data("0000"&all_zeroes(122)&"00000001"&all_zeroes(12)); --close sib3, shift 1 into the last bit of fault injection register, close other sibs.
+    tck_tick(4);
 
-       shift_data("0001000000000000"); -- open sib3
-       tck_tick(4);
+    wait;
 
-       -- 164 bits in total (for chains)
-       -- Inject fault in the bit with location 0 of L FIFO in Router 3 (SE)
-       shift_data("0000"&all_zeroes(130)&"00000001"&all_zeroes(13)); --close sib3, shift 1 into the last bit of fault injection register, close other sibs.
-       tck_tick(4);
-
-       wait;
-
-   end process;
+end process;
 
 -- Added for IJTAG
 
