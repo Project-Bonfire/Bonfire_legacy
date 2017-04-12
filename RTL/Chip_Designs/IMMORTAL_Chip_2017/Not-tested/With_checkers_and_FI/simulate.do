@@ -64,10 +64,7 @@ vcom -cover bcesfx "plasma_RTL/mlite_cpu.vhd"
 vcom -cover bcesfx "plasma_RTL/plasma.vhd"
 vcom -cover bcesfx "plasma_RTL/NoC_Node.vhd"
 
-
-
-
-#vcom -cover bcesfx "network_files/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers.vhd"
+vcom -cover bcesfx "network_files/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers.vhd"
 vcom -cover bcesfx "temporary/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers_with_PE_top.vhd"
 
 #vcom -cover bcesfx "Testbenches/network_2x2_NI_PE_credit_based_tb.vhd"
@@ -81,4 +78,4 @@ vsim -coverage -voptargs="+cover=bcestfx" work.tb_network_2x2
 do do_files/wave_2x2_with_top.do
 # Run the simulation
 # do do_files/fault_inject_links.do 	#use to inject files in the simulation(not using IJTAG)
-run 12000 ns
+#run 12000 ns
