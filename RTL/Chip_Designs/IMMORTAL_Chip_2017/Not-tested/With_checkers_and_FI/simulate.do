@@ -65,10 +65,10 @@ vcom -cover bcesfx "plasma_RTL/plasma.vhd"
 vcom -cover bcesfx "plasma_RTL/NoC_Node.vhd"
 
 vcom -cover bcesfx "network_files/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers.vhd"
-vcom -cover bcesfx "temporary/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers_with_PE_top.vhd"
+vcom -cover bcesfx "network_files/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers_with_PE_top.vhd"
 
 #vcom -cover bcesfx "Testbenches/network_2x2_NI_PE_credit_based_tb.vhd"
-vcom -cover bcesfx "temporary/network_2x2_NI_PE_credit_based_tb_temp.vhd"
+vcom -cover bcesfx "Testbenches/network_2x2_NI_PE_credit_based_tb_top.vhd"
 
 # Start the simulation
 vsim -coverage -voptargs="+cover=bcestfx" work.tb_network_2x2
