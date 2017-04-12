@@ -133,8 +133,8 @@ end component; --entity NoC_Node
 
 	-- NI testing signals
 	--------------
-	signal Rxy_reconf: std_logic_vector (7 downto 0) := "01111101";
-	signal Reconfig: std_logic := '0';
+	--signal Rxy_reconf: std_logic_vector (7 downto 0) := "01111101";
+	--signal Reconfig: std_logic := '0';
 	--------------
 	constant clk_period : time := 1 ns;
 	constant tck_period : time := 10 ns;

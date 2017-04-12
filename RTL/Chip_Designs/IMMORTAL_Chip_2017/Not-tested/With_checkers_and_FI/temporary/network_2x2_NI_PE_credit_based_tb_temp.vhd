@@ -25,7 +25,6 @@ architecture behavior of tb_network_2x2 is
 -- Declaring network component
 component network_2x2_with_PE is
  generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
-    ); 
 port (reset: in  std_logic;
       clk: in  std_logic;
 
@@ -144,13 +143,10 @@ begin
 reset <= '1' after 1 ns;
 
 -- instantiating the top module for the network
-NoC: network_2x2_with_PE generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
+NoC_top: network_2x2_with_PE generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
 port map (reset, clk,
 	        TCK, RST, SEL, SI, SE, UE, CE, SO, toF, toC, 
           PE_0_GPIO_out, PE_0_GPIO_in 
          );
-
-not_reset <= not reset;
-
 
 end;

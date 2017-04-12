@@ -62,9 +62,11 @@ vcom -cover bcesfx "customized_routers/Router_32_bit_NE_credit_based_packet_drop
 vcom -cover bcesfx "customized_routers/Router_32_bit_SW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd"
 vcom -cover bcesfx "customized_routers/Router_32_bit_SE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd"
 
-
 vcom -cover bcesfx "network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers.vhd"
+# vcom -cover bcesfx "temporary/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers_with_PE_top.vhd"
+
 vcom -cover bcesfx "network_2x2_NI_PE_credit_based_tb.vhd"
+# vcom -cover bcesfx "temporary/network_2x2_NI_PE_credit_based_tb_temp.vhd"
 
 # Start the simulation
 vsim -coverage -voptargs="+cover=bcestfx" work.tb_network_2x2

@@ -16,7 +16,6 @@ USE ieee.numeric_std.ALL;
 
 entity network_2x2_with_PE is
  generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
-    ); 
 port (reset: in  std_logic;
       clk: in  std_logic;
 
@@ -154,15 +153,11 @@ end component; --entity NoC_Node
 
     -- NI testing signals
     --------------
-    signal Rxy_reconf: std_logic_vector (7 downto 0) := "01111101";
-    signal Reconfig: std_logic := '0';
+    --signal Rxy_reconf: std_logic_vector (7 downto 0) := "01111101";
+    --signal Reconfig: std_logic := '0';
     --------------
-    constant clk_period : time := 1 ns;
-    constant tck_period : time := 10 ns;
-    constant HALF_SEPARATOR : time := 2*tck_period;
-    constant FULL_SEPARATOR : time := 8*tck_period;
 
-    signal reset, not_reset, clk: std_logic :='0';
+    signal not_reset: std_logic;
 
     signal link_faults_0, link_faults_1, link_faults_2, link_faults_3   : std_logic_vector(4 downto 0);
     signal turn_faults_0, turn_faults_1, turn_faults_2, turn_faults_3   : std_logic_vector(19 downto 0);
@@ -170,11 +165,6 @@ end component; --entity NoC_Node
     signal Cx_reconf_PE_0, Cx_reconf_PE_1, Cx_reconf_PE_2, Cx_reconf_PE_3 : std_logic_vector(3 downto 0);
     signal Reconfig_command_0, Reconfig_command_1, Reconfig_command_2, Reconfig_command_3 : std_logic;
 
-    signal TCK, RST, SEL, SI, SE, UE, CE, SO, toF, toC : std_logic := '0';
-
-    -- GPIO
-    signal PE_0_GPIO_out : std_logic_vector(15 downto 0);
-    signal PE_0_GPIO_in : std_logic_vector(21 downto 0) := (others => '1');
 
 begin
 
@@ -191,6 +181,8 @@ port map (reset, clk,
     link_faults_3, turn_faults_3, Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3,
     TCK, RST, SEL, SI, SE, UE, CE, SO, toF, toC
     );
+
+not_reset <= not reset;
 
 -- instantiating and connecting the PEs
 PE_0: NoC_Node
