@@ -12,7 +12,7 @@ tmp
 Scripts/**/*.vhd
 
 RTL/Not_tested/plasma_fpu/workspace
-/media/siavoosh/3262AFAE17491E87/workspace/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/work/*.*
+RTL/Chip_Designs/IMMORTAL_Chip_2017/work
 *.wlf
-*/transcript
+transcript
 */output_*.txt
