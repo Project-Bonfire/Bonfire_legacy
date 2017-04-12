@@ -13,7 +13,16 @@
 #ifndef __UART_H__
 #define __UART_H__
 
+#define UART_CONF_ADDR 0x8010u
+
 #include "plasma.h"
+
+/**
+ * Sets up the UART port
+ * @param cpu_hz      CPU speed in Hz
+ * @param uart_baud_hz Desired UART baudrate in Hz
+ */
+void setup_uart(unsigned cpu_hz, unsigned uart_baud_hz);
 
 /**
  * Write a character to UART.

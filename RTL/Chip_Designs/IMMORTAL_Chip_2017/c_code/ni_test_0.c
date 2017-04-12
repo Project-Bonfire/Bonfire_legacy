@@ -1,6 +1,10 @@
 #include "ni.h"
 #include "packets.h"
 #include "plasma.h"
+#include "uart.h"
+
+#define CPU_SPEED       25000000
+#define UART_BAUDRATE   115200
 
 #define MY_ADDR     0
 #define DST_ADDR    1
@@ -10,6 +14,10 @@ int main(int argc, char const *argv[]) {
     unsigned flit;
     unsigned flit_type;
     unsigned payload;
+
+    setup_uart(CPU_SPEED, UART_BAUDRATE);
+    uart_puts("Hello!\n");
+
 
     // Test GPIO
     unsigned gpio_in = memory_read(GPIOA_IN);

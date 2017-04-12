@@ -17,6 +17,17 @@
 #include "uart.h"
 
 /**
+ * Sets up the UART port
+ * @param cpu_hz      CPU speed in Hz
+ * @param uart_baud_hz Desired UART baudrate in Hz
+ */
+void setup_uart(unsigned cpu_hz, unsigned uart_baud_hz)
+{
+    unsigned uart_counter = cpu_hz / uart_baud_hz;
+    memory_write(UART_CONF_ADDR, uart_counter);
+}
+
+/**
  * Write a character to UART.
  * @param  value Character to write
  */
