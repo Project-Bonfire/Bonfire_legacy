@@ -47,10 +47,15 @@ architecture logic of uart is
 begin
 
 uart_proc: process(clk, reset, enable_read, enable_write, data_in,
-                   data_write_reg, bits_write_reg, delay_write_reg, 
+                   data_write_reg, bits_write_reg, delay_write_reg,
                    data_read_reg, bits_read_reg, delay_read_reg,
                    data_save_reg, read_value_reg, uart_read2,
                    busy_write_sig, uart_read)
+
+-----------------------------------------------
+--- MUST BE EDITED BASED ON THE FREQUENCY! ----
+-----------------------------------------------
+
    constant COUNT_VALUE : std_logic_vector(9 downto 0) :=
 --      "0100011110";  --33MHz/2/57600Hz = 0x11e
 --      "1101100100";  --50MHz/57600Hz = 0x364
@@ -117,7 +122,7 @@ begin
 
       --Control character buffer
       if bits_read_reg = "0000" and delay_read_reg = COUNT_VALUE then
-         if data_save_reg(8) = '0' or 
+         if data_save_reg(8) = '0' or
                (enable_read = '1' and data_save_reg(17) = '0') then
             --Empty buffer
             data_save_reg(8 downto 0) <= '1' & data_read_reg;
@@ -135,9 +140,9 @@ begin
    end if;  --rising_edge(clk)
 
    uart_write <= data_write_reg(0);
-   if bits_write_reg /= "0000" 
+   if bits_write_reg /= "0000"
 -- Comment out the following line for full UART simulation (much slower)
-   and log_file = "UNUSED" 
+   and log_file = "UNUSED"
    then
       busy_write_sig <= '1';
    else
@@ -146,36 +151,36 @@ begin
    busy_write <= busy_write_sig;
    data_avail <= data_save_reg(8);
    data_out <= data_save_reg(7 downto 0);
-   
+
 end process; --uart_proc
 
 -- synthesis_off
-   uart_logger:
-   if log_file /= "UNUSED" generate
-      uart_proc: process(clk, enable_write, data_in)
-         file store_file : text open write_mode is log_file;
-         variable hex_file_line : line;
-         variable c : character;
-         variable index : natural;
-         variable line_length : natural := 0;
-      begin
-         if rising_edge(clk) and busy_write_sig = '0' then
-            if enable_write = '1' then
-               index := conv_integer(data_in(6 downto 0));
-               if index /= 10 then
-                  c := character'val(index);
-                  write(hex_file_line, c);
-                  line_length := line_length + 1;
-               end if;
-               if index = 10 or line_length >= 72 then
---The following line may have to be commented out for synthesis
-                  writeline(store_file, hex_file_line);
-                  line_length := 0;
-               end if;
-            end if; --uart_sel
-         end if; --rising_edge(clk)
-      end process; --uart_proc
-   end generate; --uart_logger
+--    uart_logger:
+--    if log_file /= "UNUSED" generate
+--       uart_proc: process(clk, enable_write, data_in)
+--          file store_file : text open write_mode is log_file;
+--          variable hex_file_line : line;
+--          variable c : character;
+--          variable index : natural;
+--          variable line_length : natural := 0;
+--       begin
+--          if rising_edge(clk) and busy_write_sig = '0' then
+--             if enable_write = '1' then
+--                index := conv_integer(data_in(6 downto 0));
+--                if index /= 10 then
+--                   c := character'val(index);
+--                   write(hex_file_line, c);
+--                   line_length := line_length + 1;
+--                end if;
+--                if index = 10 or line_length >= 72 then
+-- --The following line may have to be commented out for synthesis
+--                   writeline(store_file, hex_file_line);
+--                   line_length := 0;
+--                end if;
+--             end if; --uart_sel
+--          end if; --rising_edge(clk)
+--       end process; --uart_proc
+--    end generate; --uart_logger
 -- synthesis_on
 
 end; --architecture logic

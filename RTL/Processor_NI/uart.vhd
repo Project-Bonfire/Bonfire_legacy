@@ -155,32 +155,32 @@ begin
 end process; --uart_proc
 
 -- synthesis_off
---    uart_logger:
---    if log_file /= "UNUSED" generate
---       uart_proc: process(clk, enable_write, data_in)
---          file store_file : text open write_mode is log_file;
---          variable hex_file_line : line;
---          variable c : character;
---          variable index : natural;
---          variable line_length : natural := 0;
---       begin
---          if rising_edge(clk) and busy_write_sig = '0' then
---             if enable_write = '1' then
---                index := conv_integer(data_in(6 downto 0));
---                if index /= 10 then
---                   c := character'val(index);
---                   write(hex_file_line, c);
---                   line_length := line_length + 1;
---                end if;
---                if index = 10 or line_length >= 72 then
--- --The following line may have to be commented out for synthesis
---                   writeline(store_file, hex_file_line);
---                   line_length := 0;
---                end if;
---             end if; --uart_sel
---          end if; --rising_edge(clk)
---       end process; --uart_proc
---    end generate; --uart_logger
+   uart_logger:
+   if log_file /= "UNUSED" generate
+      uart_proc: process(clk, enable_write, data_in)
+         file store_file : text open write_mode is log_file;
+         variable hex_file_line : line;
+         variable c : character;
+         variable index : natural;
+         variable line_length : natural := 0;
+      begin
+         if rising_edge(clk) and busy_write_sig = '0' then
+            if enable_write = '1' then
+               index := conv_integer(data_in(6 downto 0));
+               if index /= 10 then
+                  c := character'val(index);
+                  write(hex_file_line, c);
+                  line_length := line_length + 1;
+               end if;
+               if index = 10 or line_length >= 72 then
+--The following line may have to be commented out for synthesis
+                  writeline(store_file, hex_file_line);
+                  line_length := 0;
+               end if;
+            end if; --uart_sel
+         end if; --rising_edge(clk)
+      end process; --uart_proc
+   end generate; --uart_logger
 -- synthesis_on
 
 end; --architecture logic
