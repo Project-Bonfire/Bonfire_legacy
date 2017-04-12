@@ -76,7 +76,6 @@ port (reset: in  std_logic;
     Cx_reconf_PE_3: in  std_logic_vector(3 downto 0);
     Reconfig_command_3 : in std_logic;
 
-
     -- IJTAG network for fault injection and checker status monitoring
     TCK         : in std_logic;
     RST         : in std_logic;
@@ -238,6 +237,7 @@ begin
 -- Added for IJTAG
 
 reset <= '1' after 1 ns;
+
 -- instantiating the network
 NoC: network_2x2 generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
 port map (reset, clk,
@@ -251,6 +251,7 @@ port map (reset, clk,
 	link_faults_3, turn_faults_3, Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3,
 	TCK, RST, SEL, SI, SE, UE, CE, SO, toF, toC
             );
+
 not_reset <= not reset;
 
 
