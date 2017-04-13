@@ -105,6 +105,11 @@ package mlite_pack is
    constant MEM_READ8S  : mem_source_type := "1110";
    constant MEM_WRITE8  : mem_source_type := "1101";
 
+   constant NI_reserved_data_address  : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
+   constant NI_flag_address           : std_logic_vector(29 downto 0) := "000000000000000010000000000000";  
+   constant NI_counter_address        : std_logic_vector(29 downto 0) := "000000000000000010000000000001";
+   constant  uart_count_value_address : std_logic_vector(29 downto 0) := "000000000000000010000000000100";
+
    function bv_adder(a     : in std_logic_vector;
                      b     : in std_logic_vector;
                      do_add: in std_logic) return std_logic_vector;
@@ -429,7 +434,7 @@ package mlite_pack is
         );
    end component; --network interface
 
-   component uart
+  component uart
       generic(log_file : string := "UNUSED");
       port(clk          : in std_logic;
            reset        : in std_logic;
@@ -440,8 +445,16 @@ package mlite_pack is
            uart_read    : in std_logic;
            uart_write   : out std_logic;
            busy_write   : out std_logic;
-           data_avail   : out std_logic);
+           data_avail   : out std_logic;
+           
+           reg_enable            : in std_logic;
+           reg_write_byte_enable : in std_logic_vector(3 downto 0);
+           reg_address           : in std_logic_vector(31 downto 2);
+           reg_data_write        : in std_logic_vector(31 downto 0);
+           reg_data_read         : out std_logic_vector(31 downto 0)
+        );
    end component; --uart
+
 
    component eth_dma 
       port(clk         : in std_logic;                      --25 MHz

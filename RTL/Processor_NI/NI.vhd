@@ -21,10 +21,8 @@ use ieee.std_logic_misc.all;
 
 
 entity NI is
-   generic(current_address : integer := 10; 	-- the current node's address
-   		   reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
-         flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";	-- reserved address for the memory mapped I/O
-         counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001");	-- reserved address for the counter
+   generic(current_address : integer := 10 	-- the current node's address
+   		   );	-- reserved address for the counter
    port(clk               : in std_logic;
         reset             : in std_logic;
         enable            : in std_logic;
@@ -172,7 +170,7 @@ process(write_byte_enable, enable, address, storage, data_write, valid_data, P2N
    storage_in <= storage ;
    valid_data_in <= valid_data;
 
-   if enable = '1' and address = reserved_address then
+   if enable = '1' and address = NI_reserved_data_address then
       if write_byte_enable /= "0000" then
         valid_data_in <= '1';
       end if;
@@ -354,7 +352,7 @@ valid_out <= grant;
   end process;
 
   process(address, write_byte_enable, N2P_empty)begin
-    if address = reserved_address and write_byte_enable = "0000" and N2P_empty = '0' then
+    if address = NI_reserved_data_address and write_byte_enable = "0000" and N2P_empty = '0' then
       N2P_read_en_in <= '1';
     else
       N2P_read_en_in <= '0';
@@ -403,11 +401,11 @@ valid_out <= grant;
 
 process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
 
-  if old_address = reserved_address and N2P_read_en = '1' then
+  if old_address = NI_reserved_data_address and N2P_read_en = '1' then
     data_read <= N2P_Data_out;
-  elsif old_address = flag_address then
+  elsif old_address = NI_flag_address then
     data_read <= flag_register;
-  elsif old_address = counter_address then
+  elsif old_address = NI_counter_address then
   	data_read <= "000000000000000000000000000000" & counter_register;
   else
     data_read <= (others => 'U');
