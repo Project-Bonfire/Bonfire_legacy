@@ -13,6 +13,186 @@ package component_pack is
 
   constant fake_tail :  std_logic_vector := "10000000000000000000000000000001";
 
+  component router_NW_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping 
+    generic (
+        DATA_WIDTH: integer := 32;
+        current_address : integer := 0;
+        Rxy_rst : integer := 10;
+        Cx_rst : integer := 10;
+        healthy_counter_threshold : integer := 8;
+        faulty_counter_threshold: integer := 2;
+        counter_depth: integer := 4;
+        NoC_size: integer := 4
+    );
+    port (
+    reset, clk: in std_logic;
+
+    RX_E, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
+    credit_in_E,  credit_in_S,  credit_in_L: in std_logic;
+    valid_in_E,   valid_in_S,   valid_in_L : in std_logic;
+    valid_out_E,  valid_out_S,  valid_out_L : out std_logic;
+    credit_out_E, credit_out_S, credit_out_L: out std_logic;
+    TX_E, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);
+
+    Faulty_E_in, Faulty_S_in: in std_logic;
+    Faulty_E_out, Faulty_S_out: out std_logic;
+
+    -- should be connected to NI (Outputs for classified fault information)
+    link_faults: out std_logic_vector(4 downto 0);
+    turn_faults: out std_logic_vector(19 downto 0);
+
+    Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
+    Cx_reconf_PE: in  std_logic_vector(3 downto 0);
+    Reconfig_command : in std_logic;
+
+    -- fault injector shift register with serial input signals
+    TCK: in std_logic;  
+    SE: in std_logic;       -- shift enable 
+    UE: in std_logic;       -- update enable
+    SI: in std_logic;       -- serial Input
+    SO: out std_logic;      -- serial output
+
+    ---- Outputs for non-classified fault information
+    link_faults_async: out std_logic_vector(4 downto 0);
+    turn_faults_async: out std_logic_vector(19 downto 0)
+    ); 
+    end component; 
+
+    component router_NE_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping 
+    generic (
+        DATA_WIDTH: integer := 32;
+        current_address : integer := 0;
+        Rxy_rst : integer := 10;
+        Cx_rst : integer := 10;
+        healthy_counter_threshold : integer := 8;
+        faulty_counter_threshold: integer := 2;
+        counter_depth: integer := 4;
+        NoC_size: integer := 4
+    );
+    port (
+    reset, clk: in std_logic;
+
+    RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
+    credit_in_W,  credit_in_S,  credit_in_L: in std_logic;
+    valid_in_W,   valid_in_S,   valid_in_L : in std_logic;
+    valid_out_W,  valid_out_S,  valid_out_L : out std_logic;
+    credit_out_W, credit_out_S, credit_out_L: out std_logic;
+    TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);
+
+    Faulty_W_in, Faulty_S_in: in std_logic;
+    Faulty_W_out, Faulty_S_out: out std_logic;
+
+    -- should be connected to NI (Outputs for classified fault information)
+    link_faults: out std_logic_vector(4 downto 0);
+    turn_faults: out std_logic_vector(19 downto 0);
+
+    Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
+    Cx_reconf_PE: in  std_logic_vector(3 downto 0);
+    Reconfig_command : in std_logic;
+
+    -- fault injector shift register with serial input signals
+    TCK: in std_logic;  
+    SE: in std_logic;       -- shift enable 
+    UE: in std_logic;       -- update enable
+    SI: in std_logic;       -- serial Input
+    SO: out std_logic;      -- serial output
+
+    ---- Outputs for non-classified fault information
+    link_faults_async: out std_logic_vector(4 downto 0);
+    turn_faults_async: out std_logic_vector(19 downto 0)
+    ); 
+    end component; 
+
+    component router_SW_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping 
+    generic (
+        DATA_WIDTH: integer := 32;
+        current_address : integer := 0;
+        Rxy_rst : integer := 10;
+        Cx_rst : integer := 10;
+        healthy_counter_threshold : integer := 8;
+        faulty_counter_threshold: integer := 2;
+        counter_depth: integer := 4;
+        NoC_size: integer := 4
+    );
+    port (
+    reset, clk: in std_logic;
+
+    RX_N, RX_E, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
+    credit_in_N, credit_in_E, credit_in_L: in std_logic;
+    valid_in_N, valid_in_E, valid_in_L : in std_logic;
+    valid_out_N, valid_out_E, valid_out_L : out std_logic;
+    credit_out_N, credit_out_E, credit_out_L: out std_logic;
+    TX_N, TX_E, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);
+
+    Faulty_N_in, Faulty_E_in : in std_logic;
+    Faulty_N_out, Faulty_E_out : out std_logic;
+
+    -- should be connected to NI (Outputs for classified fault information)
+    link_faults: out std_logic_vector(4 downto 0);
+    turn_faults: out std_logic_vector(19 downto 0);
+
+    Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
+    Cx_reconf_PE: in  std_logic_vector(3 downto 0);
+    Reconfig_command : in std_logic;
+
+    -- fault injector shift register with serial input signals
+    TCK: in std_logic;  
+    SE: in std_logic;       -- shift enable 
+    UE: in std_logic;       -- update enable
+    SI: in std_logic;       -- serial Input
+    SO: out std_logic;      -- serial output
+
+    ---- Outputs for non-classified fault information
+    link_faults_async: out std_logic_vector(4 downto 0);
+    turn_faults_async: out std_logic_vector(19 downto 0)
+    ); 
+    end component; 
+
+    component router_SE_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping 
+    generic (
+        DATA_WIDTH: integer := 32;
+        current_address : integer := 0;
+        Rxy_rst : integer := 10;
+        Cx_rst : integer := 10;
+        healthy_counter_threshold : integer := 8;
+        faulty_counter_threshold: integer := 2;
+        counter_depth: integer := 4;
+        NoC_size: integer := 4
+    );
+    port (
+    reset, clk: in std_logic;
+
+    RX_N, RX_W, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
+    credit_in_N, credit_in_W, credit_in_L: in std_logic;
+    valid_in_N, valid_in_W, valid_in_L : in std_logic;
+    valid_out_N, valid_out_W, valid_out_L : out std_logic;
+    credit_out_N, credit_out_W, credit_out_L: out std_logic;
+    TX_N, TX_W, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);
+
+    Faulty_N_in, Faulty_W_in : in std_logic;
+    Faulty_N_out, Faulty_W_out : out std_logic;
+
+    -- should be connected to NI (Outputs for classified fault information)
+    link_faults: out std_logic_vector(4 downto 0);
+    turn_faults: out std_logic_vector(19 downto 0);
+
+    Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
+    Cx_reconf_PE: in  std_logic_vector(3 downto 0);
+    Reconfig_command : in std_logic;
+
+    -- fault injector shift register with serial input signals
+    TCK: in std_logic;  
+    SE: in std_logic;       -- shift enable 
+    UE: in std_logic;       -- update enable
+    SI: in std_logic;       -- serial Input
+    SO: out std_logic;      -- serial output
+
+    ---- Outputs for non-classified fault information
+    link_faults_async: out std_logic_vector(4 downto 0);
+    turn_faults_async: out std_logic_vector(19 downto 0)
+    ); 
+    end component; 
+
   -- component declarations
   component network_2x2 is
     generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
