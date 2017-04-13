@@ -1,7 +1,7 @@
 ---------------------------------------------------------------------
 -- Copyright (C) 2016 Siavoosh Payandeh Azad
 --
--- 	Network interface: Its an interrupt based memory mapped I/O for sending and recieving packets.
+-- 	Network interface: Its an interrupt based memory mapped I/O for sending and receiving packets.
 --	the data that is sent to NI should be of the following form:
 -- 	FIRST write:  4bit source(31-28), 4 bit destination(27-14), 8bit packet length(23-16)
 -- 	Body write:  28 bit data(27-0)
@@ -37,10 +37,10 @@ entity NI is
         data_read         : out std_logic_vector(31 downto 0);
 
         -- Flags used by JNIFR and JNIFW instructions
-        --NI_read_flag      : out  std_logic; 	-- One if the N2P fifo is empty. No read should be performed if one.
-        --NI_write_flag      : out  std_logic;	-- One if P2N fifo is full. no write should be performed if one.
+        --NI_read_flag      : out  std_logic; 	-- One if the N2P FIFO is empty. No read should be performed if one.
+        --NI_write_flag      : out  std_logic;	-- One if P2N FIFO is full. no write should be performed if one.
 
-        -- interrupt signal: generated evertime a packet is recieved!
+        -- interrupt signal: generated every-time a packet is received! Disabled for the time being
         irq_out           : out std_logic;
 
         -- signals for sending packets to network
@@ -48,10 +48,10 @@ entity NI is
         valid_out: out std_logic;
         TX: out std_logic_vector(31 downto 0);	-- data sent to the NoC
 
-        -- signals for reciving packets from the network
+        -- signals for receiving packets from the network
         credit_out : out std_logic;
         valid_in: in std_logic;
-        RX: in std_logic_vector(31 downto 0);	-- data recieved form the NoC
+        RX: in std_logic_vector(31 downto 0);	-- data received form the NoC
 
         -- fault information signals from the router
         link_faults: in std_logic_vector(4 downto 0);
@@ -382,7 +382,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                            std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out & XOR_REDUCE("001" &  "0000" &
                             FIFO_Data_out(23 downto 16) &  FIFO_Data_out(31 downto 28) &
                            std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out);
-                    -- for syntehsis comment out the following   
+                    -- for synthesis comment out the next line   
                     report "Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(to_integer(unsigned(FIFO_Data_out(31 downto 28)))) & " with length: "& integer'image(to_integer(unsigned(FIFO_Data_out(23 downto 16))))  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
                     state_in <= BODY_FLIT;
                     
@@ -424,8 +424,9 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                 if credit_counter_out /= "00" then
                     grant <= '1';
                     TX <= "001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out & XOR_REDUCE("001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out);
-                    report "Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)))& "      Diagonstic";
-                    report "Diagonstic packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
+                    -- for synthesis comment out the next 2 line   
+                    report "Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)))& "      Diagnostic";
+                    report "Diagnostic packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
                     state_in <= DIAGNOSIS_BODY;
                 else
                     state_in <= DIAGNOSIS_HEADER;
@@ -543,10 +544,12 @@ end process;
 
 
 process(N2P_write_en, N2P_read_en, RX, N2P_Data_out,counter_register)
+  -- for synthesis comment the following 4 lines
   variable destination_node : std_logic_vector(3 downto 0);
   variable source_node : std_logic_vector(3 downto 0);
   variable id : std_logic_vector(7 downto 0);
   variable length : std_logic_vector(11 downto 0);
+  -- end of unnecessary block
 begin
   counter_register_in <= counter_register;
   if N2P_write_en = '1' and RX(31 downto 29) = "001" and N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "100" then
@@ -557,15 +560,17 @@ begin
   	counter_register_in <= counter_register -1;
   end if;
 
-  if N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "001" then 
-    source_node := N2P_Data_out(16 downto 13);
-    destination_node := N2P_Data_out(12 downto 9);
-    id := N2P_Data_out(8 downto 1);
-    length := N2P_Data_out(28 downto 17);
-  end if;
-  if N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "100" then
-    report "Packet received at " & time'image(now) & " From: " & integer'image(to_integer(unsigned(destination_node))) & " to: " & integer'image(to_integer(unsigned(source_node))) & " length: "& integer'image(to_integer(unsigned(length)))  & " id: "& integer'image(to_integer(unsigned(id)));
-  end if;
+  -- for synthesis comment the following 9 lines
+    if N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "001" then 
+      source_node := N2P_Data_out(16 downto 13);
+      destination_node := N2P_Data_out(12 downto 9);
+      id := N2P_Data_out(8 downto 1);
+      length := N2P_Data_out(28 downto 17);
+    end if;
+    if N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "100" then
+      report "Packet received at " & time'image(now) & " From: " & integer'image(to_integer(unsigned(destination_node))) & " to: " & integer'image(to_integer(unsigned(source_node))) & " length: "& integer'image(to_integer(unsigned(length)))  & " id: "& integer'image(to_integer(unsigned(id)));
+    end if;
+  -- end of unnecessary block
 end process;
 
 flag_register_in <= N2P_empty & P2N_full & self_diagnosis_flag & "00000000000000000000000000000";
