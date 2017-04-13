@@ -543,7 +543,12 @@ process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
 end process;
 
 
-process(N2P_write_en, N2P_read_en, RX, N2P_Data_out)begin
+process(N2P_write_en, N2P_read_en, RX, N2P_Data_out,counter_register)
+  variable destination_node : std_logic_vector(3 downto 0);
+  variable source_node : std_logic_vector(3 downto 0);
+  variable id : std_logic_vector(7 downto 0);
+  variable length : std_logic_vector(11 downto 0);
+begin
   counter_register_in <= counter_register;
   if N2P_write_en = '1' and RX(31 downto 29) = "001" and N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "100" then
   	counter_register_in <= counter_register;
@@ -553,8 +558,14 @@ process(N2P_write_en, N2P_read_en, RX, N2P_Data_out)begin
   	counter_register_in <= counter_register -1;
   end if;
 
-  if N2P_write_en = '1' and RX(31 downto 29) = "100" then
-    report "Packet received at " & time'image(now) & " From: " & integer'image(to_integer(unsigned(RX(31 downto 28)))) & " to: " & integer'image(current_address) & " length: "& integer'image(to_integer(unsigned(RX(23 downto 16))))  & " id: "& integer'image(to_integer(unsigned(RX(8 downto 1))));
+  if N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "001" then 
+    source_node := N2P_Data_out(16 downto 13);
+    destination_node := N2P_Data_out(12 downto 9);
+    id := N2P_Data_out(8 downto 1);
+    length := N2P_Data_out(28 downto 17);
+  end if;
+  if N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "100" then
+    report "Packet received at " & time'image(now) & " From: " & integer'image(to_integer(unsigned(destination_node))) & " to: " & integer'image(to_integer(unsigned(source_node))) & " length: "& integer'image(to_integer(unsigned(length)))  & " id: "& integer'image(to_integer(unsigned(id)));
   end if;
 end process;
 
