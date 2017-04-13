@@ -723,6 +723,11 @@ begin
 
    --end process;
 
+-- IJTAG top level
+toF <= F_segtop_fromSIB_0 or  F_segtop_fromSIB_1 or  F_segtop_fromSIB_2 or  F_segtop_fromSIB_3;
+toC <= C_segtop_fromSIB_0 and C_segtop_fromSIB_1 and C_segtop_fromSIB_2 and C_segtop_fromSIB_3;
+SO <= SIB_3_so;
+
 SIB_0 : SIB_mux_pre_FCX_SELgate
     port map ( -- Scan Interface  client --------------
     SI => SI,
