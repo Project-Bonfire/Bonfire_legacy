@@ -456,8 +456,7 @@ package mlite_pack is
 
 
    component uart
-      generic(log_file : string := "UNUSED";
-              count_value_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000100");
+      generic(log_file : string := "UNUSED");
       port(clk          : in std_logic;
            reset        : in std_logic;
            enable_read  : in std_logic;

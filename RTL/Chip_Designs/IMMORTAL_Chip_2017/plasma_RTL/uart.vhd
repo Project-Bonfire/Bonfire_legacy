@@ -19,8 +19,7 @@ use std.textio.all;
 use work.mlite_pack.all;
 
 entity uart is
-   generic(log_file : string := "UNUSED";
-           count_value_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000100");
+   generic(log_file : string := "UNUSED");
    port(clk          : in std_logic;
         reset        : in std_logic;
         enable_read  : in std_logic;
@@ -58,7 +57,7 @@ begin
 
 update_count_value: process(count_value_reg, reg_data_write, reg_write_byte_enable, reg_address, reg_enable)begin
     count_value_reg_in <= count_value_reg ;
-    if reg_enable = '1' and reg_address = count_value_address then
+    if reg_enable = '1' and reg_address = uart_count_value_address then
        if reg_write_byte_enable(0) = '1' then
           count_value_reg_in(7 downto 0) <= reg_data_write(7 downto 0);
        end if;
@@ -75,7 +74,7 @@ update_count_value: process(count_value_reg, reg_data_write, reg_write_byte_enab
 end process;
 
 process(count_value_reg, old_address) begin
-  if old_address = count_value_address then
+  if old_address = uart_count_value_address then
     reg_data_read <= count_value_reg;
   else
     reg_data_read <= (others => 'U');
