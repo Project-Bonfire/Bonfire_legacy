@@ -14,6 +14,7 @@
 --            * An NI has been added to the file as a new module
 --            * some changes has been applied to the ports of the older modules
 --              to facilitate the new module!  
+--            * memory mapped addresses are added!
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -104,6 +105,15 @@ package mlite_pack is
    constant MEM_READ8   : mem_source_type := "1100";
    constant MEM_READ8S  : mem_source_type := "1110";
    constant MEM_WRITE8  : mem_source_type := "1101";
+
+   -- memory mapped addresses
+   constant  NI_reserved_data_address   : std_logic_vector(29 downto 0) := "000000000000000001111111111111"; 
+   constant  NI_flag_address            : std_logic_vector(29 downto 0) := "000000000000000010000000000000";  
+   constant  NI_counter_address         : std_logic_vector(29 downto 0) := "000000000000000010000000000001";
+   constant  NI_reconfiguration_address : std_logic_vector(29 downto 0) := "000000000000000010000000000010";  
+   constant  NI_self_diagnosis_address  : std_logic_vector(29 downto 0) := "000000000000000010000000000011";
+   constant  uart_count_value_address   : std_logic_vector(29 downto 0) := "000000000000000010000000000100";
+
 
    function bv_adder(a     : in std_logic_vector;
                      b     : in std_logic_vector;
@@ -408,12 +418,7 @@ package mlite_pack is
 
   component NI  
      generic(current_address : integer := 10;   -- the current node's address
-             SHMU_address : integer := 0;
-             reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111"; -- Behrad: NI's reserved address ?
-             flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";  -- reserved address for the memory mapped I/O
-             counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001";
-             reconfiguration_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000010";  -- reserved address for reconfiguration register
-             self_diagnosis_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000011"); -- reserved address for self diagnosis register
+             SHMU_address : integer := 0); -- reserved address for self diagnosis register
      port(clk               : in std_logic;
           reset             : in std_logic;
           enable            : in std_logic;

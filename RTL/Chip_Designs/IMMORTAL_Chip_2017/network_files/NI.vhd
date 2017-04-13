@@ -1,12 +1,13 @@
 ---------------------------------------------------------------------
 -- Copyright (C) 2016 Siavoosh Payandeh Azad
 --
--- 	Network interface: Its an interrupt based memory mapped I/O for sending and receiving packets.
+-- 	Network interface: Its a memory mapped I/O for sending and receiving packets.
 --	the data that is sent to NI should be of the following form:
--- 	FIRST write:  4bit source(31-28), 4 bit destination(27-14), 8bit packet length(23-16)
--- 	Body write:  28 bit data(27-0)
--- 	Last write:  28 bit data(27-0)
-
+-- 	  * FIRST write (HEADER INFO):  4bit source(31-28), 4 bit destination(27-14), 8bit packet length(23-16)
+-- 	  * Body write:  28 bit data(27-0)
+-- 	  * Last write (Tail):  28 bit data(27-0)
+--  The NI also collects fault information from its node router and generates diagnostic packets and sends
+--  them through the actual NoC to SHMU that is assumed to be mapped on Node 0.
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -22,12 +23,7 @@ use ieee.std_logic_misc.all;
 
 entity NI is
    generic(current_address : integer := 10; 	-- the current node's address
-           SHMU_address : integer := 0;
-   		     reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111"; -- Behrad: NI's reserved address ?
-           flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";	-- reserved address for the memory mapped I/O
-           counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001";
-           reconfiguration_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000010";  -- reserved address for reconfiguration register
-           self_diagnosis_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000011");	-- reserved address for self diagnosis register
+           SHMU_address : integer := 0);	-- reserved address for self diagnosis register
    port(clk               : in std_logic;
         reset             : in std_logic;
         enable            : in std_logic;
@@ -203,7 +199,7 @@ process(enable, address, write_byte_enable) begin
   Rxy_reconf_PE <= (others =>'0');
   Cx_reconf_PE <= (others =>'0');
 
-  if address = reconfiguration_address and enable = '1' then
+  if address = NI_reconfiguration_address and enable = '1' then
     if write_byte_enable /= "0000" then
       -- In this case, data_write definitely includes the connectivity bits and routing bits for 
       -- reconfiguring LBDR logic.
@@ -220,7 +216,7 @@ process(write_byte_enable, enable, address, storage, data_write, valid_data, P2N
    valid_data_in <= valid_data;
 
    -- If PE wants to send data to NoC via NI (data is valid)
-   if enable = '1' and address = reserved_address then
+   if enable = '1' and address = NI_reserved_data_address then
       if write_byte_enable /= "0000" then
         valid_data_in <= '1';
       end if;
@@ -322,7 +318,7 @@ end process;
 process(link_faults, turn_faults, self_diagnosis_flag, old_address)begin
   if (link_faults /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address = current_address then
     self_diagnosis_flag_in <= '1';
-  elsif old_address = self_diagnosis_address then
+  elsif old_address = NI_self_diagnosis_address then
     self_diagnosis_flag_in <= '0';
   else
     self_diagnosis_flag_in <= self_diagnosis_flag;
@@ -489,7 +485,7 @@ valid_out <= grant;
 
   process(address, write_byte_enable, N2P_empty)begin
     N2P_read_en_in <= '0';
-    if address = reserved_address and write_byte_enable = "0000" and N2P_empty = '0' then
+    if address = NI_reserved_data_address and write_byte_enable = "0000" and N2P_empty = '0' then
       N2P_read_en_in <= '1';
     end if;
   end process;
@@ -529,13 +525,13 @@ valid_out <= grant;
 
 
 process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
-  if old_address = reserved_address and N2P_read_en = '1' then
+  if old_address = NI_reserved_data_address and N2P_read_en = '1' then
     data_read <= N2P_Data_out;
-  elsif old_address = flag_address then
+  elsif old_address = NI_flag_address then
     data_read <= flag_register;
-  elsif old_address = counter_address then
+  elsif old_address = NI_counter_address then
   	data_read <= "000000000000000000000000000000" & counter_register;
-  elsif old_address = self_diagnosis_address then
+  elsif old_address = NI_self_diagnosis_address then
     data_read <= self_diagnosis_reg_out;
   else
     data_read <= (others => 'U');
