@@ -6,6 +6,7 @@ Authors:
   * Tsotne Putkaradze
   * Nevin George 
   * Stephen Adeboye Oyeniran 
+  * Konstantin Shibin
 
 License:  	GNU GENERAL PUBLIC LICENSE Version 3
 
