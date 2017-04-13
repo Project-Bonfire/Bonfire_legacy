@@ -12,7 +12,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-USE ieee.numeric_std.ALL; 
+USE ieee.numeric_std.ALL;
 use work.component_pack.all;
 
 entity network_2x2_with_PE is
@@ -30,14 +30,24 @@ port (reset: in  std_logic;
       CE          : in std_logic;
       SO          : out std_logic;
       toF         : out std_logic;
-      toC         : out std_logic; 
- 
+      toC         : out std_logic;
+
       -- GPIO for Node 0
       GPIO_out: out  std_logic_vector(15 downto 0);
-      GPIO_in: in  std_logic_vector(21 downto 0)
+      GPIO_in: in  std_logic_vector(21 downto 0);
+
+      -- UART for all Plasmas
+      uart_write_0  : out std_logic;
+      uart_read_0   : in std_logic;
+      uart_write_1  : out std_logic;
+      uart_read_1   : in std_logic;
+      uart_write_2  : out std_logic;
+      uart_read_2   : in std_logic;
+      uart_write_3  : out std_logic;
+      uart_read_3   : in std_logic
     );
 
-end network_2x2_with_PE; 
+end network_2x2_with_PE;
 
 
 architecture behavior of network_2x2_with_PE is
@@ -101,7 +111,8 @@ generic map( current_address => 0,
     log_file  => "output_0.txt")
 
 port map( not_reset, clk,
-
+        uart_read         => uart_read_0,
+        uart_write        => uart_write_0,
         credit_in => credit_out_L_0,
         valid_out => valid_in_L_0,
         TX => RX_L_0,
@@ -125,6 +136,8 @@ generic map( current_address => 1,
     log_file  => "output_1.txt")
 
 port map( not_reset, clk,
+        uart_read         => uart_read_1,
+        uart_write        => uart_write_1,
 
         credit_in => credit_out_L_1,
         valid_out => valid_in_L_1,
@@ -149,6 +162,8 @@ generic map( current_address => 2,
     log_file  => "output_2.txt")
 
 port map( not_reset, clk,
+        uart_read         => uart_read_1,
+        uart_write        => uart_write_1,
 
         credit_in => credit_out_L_2,
         valid_out => valid_in_L_2,
@@ -173,6 +188,8 @@ generic map( current_address => 3,
     log_file  => "output_3.txt")
 
 port map( not_reset, clk,
+        uart_read         => uart_read_1,
+        uart_write        => uart_write_1,
 
         credit_in => credit_out_L_3,
         valid_out => valid_in_L_3,

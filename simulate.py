@@ -7,7 +7,7 @@ import shutil
 from math import ceil
 import logging
 import time
-from Scripts.include.Logger import * 
+from Scripts.include.Logger import *
 from Scripts.include.helper_func import *
 from Scripts.include.file_lists import *
 from Scripts.include.Help_note import print_help
@@ -29,7 +29,7 @@ from Scripts.include.file_gen import gen_network_and_tb, gen_wave_do
 Main program
 """
 def main(argv):
- 
+
 
     print "Project Root:", package.PROJECT_ROOT
 
@@ -64,7 +64,7 @@ def main(argv):
 
     DEBUG = package.program_argv['debug']
     report_parogram_arguments(package.program_argv, DEBUG)
-    
+
     if package.program_argv['credit_based_FC']:
         flow_control_type = package.CREDIT_BASED_SUFFIX
     else:

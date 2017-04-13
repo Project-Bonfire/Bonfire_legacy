@@ -22,6 +22,9 @@ generic( current_address : integer := 0;
 port( reset        : in std_logic;
       clk          : in std_logic;
 
+        uart_write  : out std_logic;
+        uart_read   : in std_logic;
+
         credit_in : in std_logic;
         valid_out: out std_logic;
         TX: out std_logic_vector(31 downto 0);
@@ -60,7 +63,6 @@ architecture updated of NoC_Node is
    signal no_ddr_start: std_logic;
    signal no_ddr_stop : std_logic;
    signal byte_we     : std_logic_vector(3 downto 0);
-   signal uart_write  : std_logic;
 
    signal GPIO_out_tmp    : std_logic_vector(31 downto 0);
    signal GPIO_in_tmp     : std_logic_vector(31 downto 0);
@@ -99,7 +101,7 @@ begin  --architecture
       PORT MAP (
          clk               => clk,
          reset             => reset,
-         uart_read         => uart_write,
+         uart_read         => uart_read,
          uart_write        => uart_write,
 
          address           => address,
