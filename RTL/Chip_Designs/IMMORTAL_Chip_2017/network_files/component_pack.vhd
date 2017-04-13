@@ -87,8 +87,11 @@ package component_pack is
              stim_file: string :="code.txt";
              log_file  : string := "output.txt");
 
-    port( reset        : in std_logic;
-          clk          : in std_logic;
+    port(   reset        : in std_logic;
+            clk          : in std_logic;
+
+            uart_write  : out std_logic;
+            uart_read   : in std_logic;
 
             credit_in : in std_logic;
             valid_out: out std_logic;

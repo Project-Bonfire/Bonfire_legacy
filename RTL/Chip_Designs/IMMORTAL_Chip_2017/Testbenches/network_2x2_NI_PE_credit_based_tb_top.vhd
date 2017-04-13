@@ -42,7 +42,16 @@ port (reset: in  std_logic;
  
       -- GPIO for Node 0
       GPIO_out: out  std_logic_vector(15 downto 0);
-      GPIO_in: in  std_logic_vector(21 downto 0)
+      GPIO_in: in  std_logic_vector(21 downto 0);
+           -- UART for all Plasmas
+      uart_write_0  : out std_logic;
+      uart_read_0   : in std_logic;
+      uart_write_1  : out std_logic;
+      uart_read_1   : in std_logic;
+      uart_write_2  : out std_logic;
+      uart_read_2   : in std_logic;
+      uart_write_3  : out std_logic;
+      uart_read_3   : in std_logic
     );
 end component; 
 
@@ -58,7 +67,8 @@ end component;
     -- GPIO
     signal PE_0_GPIO_out : std_logic_vector(15 downto 0);
     signal PE_0_GPIO_in : std_logic_vector(21 downto 0) := (others => '1');
-
+    signal uart_write_0,  uart_write_1, uart_write_2, uart_write_3: std_logic;
+    signal uart_read_0,   uart_read_1,  uart_read_2,  uart_read_3: std_logic;
 begin
 
    clk_process :process
@@ -146,7 +156,11 @@ reset <= '1' after 1 ns;
 NoC_top: network_2x2_with_PE generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
 port map (reset, clk,
 	        TCK, RST, SEL, SI, SE, UE, CE, SO, toF, toC, 
-          PE_0_GPIO_out, PE_0_GPIO_in 
+          PE_0_GPIO_out, PE_0_GPIO_in, 
+          uart_write_0, uart_read_0, 
+          uart_write_1, uart_read_1, 
+          uart_write_2, uart_read_2, 
+          uart_write_3, uart_read_3
          );
 
 end;
