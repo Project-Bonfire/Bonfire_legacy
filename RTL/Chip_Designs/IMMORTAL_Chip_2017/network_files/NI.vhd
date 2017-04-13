@@ -330,7 +330,7 @@ process(link_faults, turn_faults, self_diagnosis_flag, old_address)begin
 end process;
 
 -- handling fault information!
-process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
+process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info, self_diagnosis_reg_out)begin
   self_diagnosis_reg_in <= self_diagnosis_reg_out;
   fault_info_in <= fault_info;
   fault_info_ready_in <= fault_info_ready;
@@ -339,11 +339,9 @@ process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
   if (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address /= current_address then
     fault_info_in <= turn_faults & link_faults;
     fault_info_ready_in <= '1';
-    report "NI recieved fault info on node " & integer'image(current_address) & " at time " & time'image(now) & " to be forwarded to SHMU!";
   -- If current node is SHMU, we handle it locally
   elsif (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address = current_address then
     self_diagnosis_reg_in <= "0000000" & turn_faults & link_faults;
-    report "NI recieved self-diagnosis info on node " & integer'image(current_address) & " at time " & time'image(now);
   end if;
 
   if sent_info = '1' then 
@@ -426,8 +424,8 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                 if credit_counter_out /= "00" then
                     grant <= '1';
                     TX <= "001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out & XOR_REDUCE("001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out);
-                    report "Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
-                    report "Diagonsis packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
+                    report "Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)))& "      Diagonstic";
+                    report "Diagonstic packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
                     state_in <= DIAGNOSIS_BODY;
                 else
                     state_in <= DIAGNOSIS_HEADER;

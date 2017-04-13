@@ -8,7 +8,7 @@ for line in transcript_file:
 			recieved_file.write(line[11:])
 		if "Packet generated" in line:
 			sent_file.write(line[11:])
-		if "NI recieved" in line:
+		if "Diagonstic packet" in line:
 			diagnosis_file.write(line[11:])
 
 recieved_file.close()
