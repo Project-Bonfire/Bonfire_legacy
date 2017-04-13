@@ -185,7 +185,7 @@ begin
    uart_write <= data_write_reg(0);
    if bits_write_reg /= "0000"
 -- Comment out the following line for full UART simulation (much slower)
-   and log_file = "UNUSED"
+   --and log_file = "UNUSED"
    then
       busy_write_sig <= '1';
    else
