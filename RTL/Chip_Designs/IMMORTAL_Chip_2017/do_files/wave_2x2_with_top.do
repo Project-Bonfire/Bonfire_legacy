@@ -137,7 +137,6 @@ add wave -noupdate -group {CT:state} -color green :tb_network_2x2:NoC_top:NoC:R_
 add wave -noupdate -group {CT:state} -color green :tb_network_2x2:NoC_top:NoC:R_3:CT_N:state
 add wave -noupdate -group {CT:state} -color green :tb_network_2x2:NoC_top:NoC:R_3:CT_W:state
 add wave -noupdate -group {CT:state} -color green :tb_network_2x2:NoC_top:NoC:R_3:CT_L:state
-add wave -noupdate :tb_network_2x2:clk
 
 add wave -noupdate -group {R_0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_0:E_FIFO_checkers_ORed
 add wave -noupdate -group {R_0: FIFO Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_0:S_FIFO_checkers_ORed
@@ -154,7 +153,6 @@ add wave -noupdate -group {R_2: FIFO Checkers ORed} -color green :tb_network_2x2
 add wave -noupdate -group {R_3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_3:N_FIFO_checkers_ORed
 add wave -noupdate -group {R_3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_3:W_FIFO_checkers_ORed
 add wave -noupdate -group {R_3: FIFO Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_3:L_FIFO_checkers_ORed
-add wave -noupdate :tb_network_2x2:clk
 
 add wave -noupdate -group {R_0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_0:E_LBDR_checkers_ORed
 add wave -noupdate -group {R_0: LBDR Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_0:S_LBDR_checkers_ORed
@@ -171,37 +169,31 @@ add wave -noupdate -group {R_2: LBDR Checkers ORed} -color green :tb_network_2x2
 add wave -noupdate -group {R_3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_3:N_LBDR_checkers_ORed
 add wave -noupdate -group {R_3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_3:W_LBDR_checkers_ORed
 add wave -noupdate -group {R_3: LBDR Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_3:L_LBDR_checkers_ORed
-add wave -noupdate :tb_network_2x2:clk
 
 add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_0:Allocator_checkers_ORed
 add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_1:Allocator_checkers_ORed
 add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_2:Allocator_checkers_ORed
 add wave -noupdate -group {Allocator Checkers ORed} -color green :tb_network_2x2:NoC_top:NoC:R_3:Allocator_checkers_ORed
-add wave -noupdate :tb_network_2x2:clk
 
-add wave -noupdate -color green :tb_network_2x2:NoC_top:NoC:R_0:link_faults
-add wave -noupdate -color green :tb_network_2x2:NoC_top:NoC:R_1:link_faults
-add wave -noupdate -color green :tb_network_2x2:NoC_top:NoC:R_2:link_faults
-add wave -noupdate -color green :tb_network_2x2:NoC_top:NoC:R_3:link_faults
-add wave -noupdate :tb_network_2x2:clk
+add wave -noupdate -group {classified link faults} -color green :tb_network_2x2:NoC_top:NoC:R_0:link_faults
+add wave -noupdate -group {classified link faults} -color green :tb_network_2x2:NoC_top:NoC:R_1:link_faults
+add wave -noupdate -group {classified link faults} -color green :tb_network_2x2:NoC_top:NoC:R_2:link_faults
+add wave -noupdate -group {classified link faults} -color green :tb_network_2x2:NoC_top:NoC:R_3:link_faults
 
 add wave -noupdate -group {Non-classified link faults} -color green :tb_network_2x2:NoC_top:NoC:R_0:link_faults_async
 add wave -noupdate -group {Non-classified link faults} -color green :tb_network_2x2:NoC_top:NoC:R_1:link_faults_async
 add wave -noupdate -group {Non-classified link faults} -color green :tb_network_2x2:NoC_top:NoC:R_2:link_faults_async
 add wave -noupdate -group {Non-classified link faults} -color green :tb_network_2x2:NoC_top:NoC:R_3:link_faults_async
-add wave -noupdate :tb_network_2x2:clk
 
-add wave -noupdate -color green :tb_network_2x2:NoC_top:NoC:R_0:turn_faults
-add wave -noupdate -color green :tb_network_2x2:NoC_top:NoC:R_1:turn_faults
-add wave -noupdate -color green :tb_network_2x2:NoC_top:NoC:R_2:turn_faults
-add wave -noupdate -color green :tb_network_2x2:NoC_top:NoC:R_3:turn_faults
-add wave -noupdate :tb_network_2x2:clk
+add wave -noupdate -group {classified turn faults} -color green :tb_network_2x2:NoC_top:NoC:R_0:turn_faults
+add wave -noupdate -group {classified turn faults} -color green :tb_network_2x2:NoC_top:NoC:R_1:turn_faults
+add wave -noupdate -group {classified turn faults} -color green :tb_network_2x2:NoC_top:NoC:R_2:turn_faults
+add wave -noupdate -group {classified turn faults} -color green :tb_network_2x2:NoC_top:NoC:R_3:turn_faults
 
 add wave -noupdate -group {Non-classified turn faults} -color green :tb_network_2x2:NoC_top:NoC:R_0:turn_faults_async
 add wave -noupdate -group {Non-classified turn faults} -color green :tb_network_2x2:NoC_top:NoC:R_1:turn_faults_async
 add wave -noupdate -group {Non-classified turn faults} -color green :tb_network_2x2:NoC_top:NoC:R_2:turn_faults_async
 add wave -noupdate -group {Non-classified turn faults} -color green :tb_network_2x2:NoC_top:NoC:R_3:turn_faults_async
-add wave -noupdate :tb_network_2x2:clk
 
 add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC_top:NoC:R_0:E2S_turn_fault
 add wave -noupdate -group {Turn Faults for R_0} -color green :tb_network_2x2:NoC_top:NoC:R_0:S2E_turn_fault
@@ -333,6 +325,16 @@ add wave -noupdate -group {Fault Injection information} -color green :tb_network
 
 add wave -noupdate -group {GPIO} -color green :tb_network_2x2:PE_0_GPIO_in
 add wave -noupdate -group {GPIO} -color green :tb_network_2x2:PE_0_GPIO_out
+
+add wave -noupdate -group {UART_read} -color green :tb_network_2x2:uart_read_0
+add wave -noupdate -group {UART_read} -color green :tb_network_2x2:uart_read_1
+add wave -noupdate -group {UART_read} -color green :tb_network_2x2:uart_read_2
+add wave -noupdate -group {UART_read} -color green :tb_network_2x2:uart_read_3
+
+add wave -noupdate -group {UART_write} -color green :tb_network_2x2:uart_write_0
+add wave -noupdate -group {UART_write} -color green :tb_network_2x2:uart_write_1
+add wave -noupdate -group {UART_write} -color green :tb_network_2x2:uart_write_2
+add wave -noupdate -group {UART_write} -color green :tb_network_2x2:uart_write_3
 
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors
