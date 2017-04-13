@@ -34,18 +34,18 @@ entity ram is
 end; --entity ram
 
 architecture logic of ram is
-   constant ADDRESS_WIDTH   : natural := 13;
+   constant ADDRESS_WIDTH   : natural := 15;
    subtype word is std_logic_vector(data_write'length-1 downto 0);
       type storage_array is
          array(natural range 0 to (2 ** ADDRESS_WIDTH)/4 - 1) of word;
    signal storage : storage_array;
 begin
- 
-    
-   ram_proc: process(clk, enable, write_byte_enable, 
+
+
+   ram_proc: process(clk, enable, write_byte_enable,
          address, data_write) --mem_write, mem_sel
-       variable data : std_logic_vector(31 downto 0); 
-      
+       variable data : std_logic_vector(31 downto 0);
+
        variable index : natural := 0;
       file load_file : text open read_mode is stim_file;
       variable hex_file_line : line;
@@ -80,7 +80,7 @@ begin
                data(31 downto 24) := data_write(31 downto 24);
             end if;
          end if;
-      
+
          if write_byte_enable /= "0000" then
             storage(index) <= data;
          end if;
@@ -88,7 +88,7 @@ begin
 
       data_read <= data;
    end process;
- 
- 
+
+
 
 end; --architecture logic

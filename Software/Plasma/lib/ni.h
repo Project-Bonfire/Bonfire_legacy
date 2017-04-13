@@ -9,7 +9,7 @@
  * DESCRIPTION:
  *    Functions for accessing the Bonfire NoC
  *--------------------------------------------------------------------*/
- 
+
 #ifndef __NI_H__
 #define __NI_H__
 

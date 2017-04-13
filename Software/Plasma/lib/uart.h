@@ -61,7 +61,7 @@ int uart_kbhit(void);
  * Gets a character from UART
  * @return  Character recieved over uart
  */
-char uart_getch(void);
+int uart_getch(void);
 
 
 #endif //__UART_H__
