@@ -11,7 +11,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
-use ieee.std_logic_arith.all;
+--use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 use IEEE.NUMERIC_STD.all;
 use ieee.std_logic_textio.all;
@@ -356,6 +356,7 @@ end process;
 process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_counter_out, FIFO_Data_out, fault_info_ready)
 
     begin
+
         -- Some initializations
     	  sent_info <= '0';
         TX <= (others => '0');
@@ -383,7 +384,8 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                            std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out & XOR_REDUCE("001" &  "0000" &
                             FIFO_Data_out(23 downto 16) &  FIFO_Data_out(31 downto 28) &
                            std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out);
-
+                    -- for syntehsis comment out the following   
+                    report "Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(to_integer(unsigned(FIFO_Data_out(31 downto 28)))) & " with length: "& integer'image(to_integer(unsigned(FIFO_Data_out(23 downto 16))))  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
                     state_in <= BODY_FLIT;
                     
                 else
@@ -424,6 +426,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                 if credit_counter_out /= "00" then
                     grant <= '1';
                     TX <= "001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out & XOR_REDUCE("001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out);
+                    report "Diagonsis packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
                     state_in <= DIAGNOSIS_BODY;
                 else
                     state_in <= DIAGNOSIS_HEADER;
@@ -548,6 +551,10 @@ process(N2P_write_en, N2P_read_en, RX, N2P_Data_out)begin
     counter_register_in <= counter_register +1;
   elsif N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "100" then
   	counter_register_in <= counter_register -1;
+  end if;
+
+  if N2P_write_en = '1' and RX(31 downto 29) = "100" then
+    report "Packet received at " & time'image(now) & " From: " & integer'image(to_integer(unsigned(RX(31 downto 28)))) & " to: " & integer'image(current_address) & " length: "& integer'image(to_integer(unsigned(RX(23 downto 16))))  & " id: "& integer'image(to_integer(unsigned(RX(8 downto 1))));
   end if;
 end process;
 
