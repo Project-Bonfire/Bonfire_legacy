@@ -4,7 +4,8 @@
  * DATE CREATED: 02.12.16
  * FILENAME: ni.h
  * PROJECT: Project Bonfire
- * COPYRIGHT: Software placed into the public domain by the author.
+ * COPYRIGHT: BASED ON CODE FROM THE PLASMA PROJECT
+ *    Software placed into the public domain by the author.
  *    Software 'as is' without warranty. Author liable for nothing.
  * DESCRIPTION:
  *    Functions related to communication over UART
@@ -43,6 +44,14 @@ void uart_puts(const char *string);
 void uart_print_hex(unsigned long num);
 
 /**
+* Prints a number into UART
+* @param num    Number to print
+* @param base   Base of the number
+* @param digits Number of digits to print
+*/
+void uart_print_num(long num, long base, long digits);
+
+/**
  * Check if there is a character in UART buffer
  * @return  True if there is a character to read, False otherwise
  */
@@ -52,6 +61,7 @@ int uart_kbhit(void);
  * Gets a character from UART
  * @return  Character recieved over uart
  */
-int uart_getch(void);
+char uart_getch(void);
+
 
 #endif //__UART_H__

@@ -1,5 +1,5 @@
 # Program name
-PROG_NAME = counter_test
+PROG_NAME = gpio_test
 
 # Directories
 BONFIRE_ROOT = ../../../..
@@ -10,7 +10,7 @@ UTIL_FOLDER = $(BONFIRE_ROOT)/tmp/bin/plasma_utils
 SIMUL_TEMP	= $(BONFIRE_ROOT)/tmp/simul_temp
 
 # Compiler flags
-CFLAGS = -O0 -Wall -c -s
+CFLAGS = -O0 -Wall -c -s -fno-stack-protector
 CFLAGS += -fno-pic -mips1 -mno-abicalls -mfp32
 CFLAGS += -I $(LIBDIR) #-msoft-float
 
