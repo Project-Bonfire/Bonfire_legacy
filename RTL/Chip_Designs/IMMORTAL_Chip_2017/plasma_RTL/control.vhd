@@ -23,6 +23,7 @@
 -- modified by: Siavoosh Payandeh Azad 
 -- Change logs:  
 --            * EPC register have been changed! It used to be R0, now it is R26
+--            * added the instruction type and signal for debuging the CPU behaviour!
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -50,6 +51,19 @@ entity control is
 end; --entity control
 
 architecture logic of control is
+-- this type and the signal after it has been added for debugging!
+-- you can comment this if you dont want to debug!
+type instruction_name is (i_None, i_SLL, i_SRL, i_SRA, i_SLLV, i_SRLV, i_SRAV, 
+                          i_JR, i_JALR, i_SYSCALL, i_BREAK, i_SYNC, i_MFHI, 
+                          i_MTHI, i_MFLO, i_MTLO, i_MULT, i_MULTU, i_DIV, i_DIVU, i_ADD, 
+                          i_ADDU, i_SUB, i_SUBU, i_AND, i_OR, i_XOR, i_NOR, i_SLT, 
+                          i_SLTU, i_DADDU, i_BLTZAL, i_BLTZ, i_BGEZAL, i_BGEZ,
+                          i_JAL, i_J, i_BEQ, i_BNE, i_BLEZ, i_BGTZ, i_ADDI, 
+                          i_ADDIU, i_SLTI, i_SLTIU, i_ANDI, i_ORI, i_XORI, i_LUI, 
+                          i_MFC0, i_MTC0, i_SUBI, i_LB, i_LH, i_LWL, i_LW, i_LBU, 
+                          i_LHU, i_SB, i_SH, i_SWL, i_SW);
+signal instruction : instruction_name;
+-- end of debugging block
 begin
 
 control_proc: process(opcode, intr_signal) 
@@ -85,7 +99,7 @@ begin
    func := opcode(5 downto 0);
    imm := opcode(15 downto 0);
    is_syscall := '0';
-
+   instruction <= i_None;
    case op is
    when "000000" =>   --SPECIAL
       case func is
@@ -95,121 +109,150 @@ begin
          a_source := A_FROM_IMM10_6;
          c_source := C_FROM_SHIFT;
          shift_function := SHIFT_LEFT_UNSIGNED;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_SLL;
       when "000010" =>   --SRL   r[rd]=u[rt]>>re;
          a_source := A_FROM_IMM10_6;
          c_source := C_FROM_shift;
          shift_function := SHIFT_RIGHT_UNSIGNED;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_SRL;
       when "000011" =>   --SRA   r[rd]=r[rt]>>re;
          a_source := A_FROM_IMM10_6;
          c_source := C_FROM_SHIFT;
          shift_function := SHIFT_RIGHT_SIGNED;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_SRL;
       when "000100" =>   --SLLV  r[rd]=r[rt]<<r[rs];
          c_source := C_FROM_SHIFT;
          shift_function := SHIFT_LEFT_UNSIGNED;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_SLLV;
       when "000110" =>   --SRLV  r[rd]=u[rt]>>r[rs];
          c_source := C_FROM_SHIFT;
          shift_function := SHIFT_RIGHT_UNSIGNED;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_SRLV;
       when "000111" =>   --SRAV  r[rd]=r[rt]>>r[rs];
          c_source := C_FROM_SHIFT;
          shift_function := SHIFT_RIGHT_SIGNED;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_SRAV;
       when "001000" =>   --JR    s->pc_next=r[rs];
          pc_source := FROM_BRANCH;
          alu_function := ALU_ADD;
          branch_function := BRANCH_YES;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_JR;
       when "001001" =>   --JALR  r[rd]=s->pc_next; s->pc_next=r[rs];
          c_source := C_FROM_PC_PLUS4;
          pc_source := FROM_BRANCH;
          alu_function := ALU_ADD;
          branch_function := BRANCH_YES;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_JALR;
       --when "001010" =>   --MOVZ  if(!r[rt]) r[rd]=r[rs]; /*IV*/
       --when "001011" =>   --MOVN  if(r[rt]) r[rd]=r[rs];  /*IV*/
 
       when "001100" =>   --SYSCALL
          is_syscall := '1';
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_SYSCALL;
       when "001101" =>   --BREAK s->wakeup=1;
          is_syscall := '1';
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_BREAK;
       --when "001111" =>   --SYNC  s->wakeup=1;
 
       when "010000" =>   --MFHI  r[rd]=s->hi;
          c_source := C_FROM_MULT;
          mult_function := MULT_READ_HI;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_MFHI;
       when "010001" =>   --MTHI  s->hi=r[rs];
          mult_function := MULT_WRITE_HI;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_MTHI;
       when "010010" =>   --MFLO  r[rd]=s->lo;
          c_source := C_FROM_MULT;
          mult_function := MULT_READ_LO;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_MFLO;
       when "010011" =>   --MTLO  s->lo=r[rs];
          mult_function := MULT_WRITE_LO;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_MTLO;
       when "011000" =>   --MULT  s->lo=r[rs]*r[rt]; s->hi=0;
          mult_function := MULT_SIGNED_MULT;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_MULT;
       when "011001" =>   --MULTU s->lo=r[rs]*r[rt]; s->hi=0;
          mult_function := MULT_MULT;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_MULTU;
       when "011010" =>   --DIV   s->lo=r[rs]/r[rt]; s->hi=r[rs]%r[rt];
          mult_function := MULT_SIGNED_DIVIDE;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_DIV;
       when "011011" =>   --DIVU  s->lo=r[rs]/r[rt]; s->hi=r[rs]%r[rt];
          mult_function := MULT_DIVIDE;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_DIVU;
       when "100000" =>   --ADD   r[rd]=r[rs]+r[rt];
          c_source := C_FROM_ALU;
          alu_function := ALU_ADD;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_ADD;
       when "100001" =>   --ADDU  r[rd]=r[rs]+r[rt];
          c_source := C_FROM_ALU;
          alu_function := ALU_ADD;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_ADDU;
       when "100010" =>   --SUB   r[rd]=r[rs]-r[rt];
          c_source := C_FROM_ALU;
          alu_function := ALU_SUBTRACT;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_SUB;
       when "100011" =>   --SUBU  r[rd]=r[rs]-r[rt];
          c_source := C_FROM_ALU;
          alu_function := ALU_SUBTRACT;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_SUBU;
       when "100100" =>   --AND   r[rd]=r[rs]&r[rt];
          c_source := C_FROM_ALU;
          alu_function := ALU_AND;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_AND;
       when "100101" =>   --OR    r[rd]=r[rs]|r[rt];
          c_source := C_FROM_ALU;
          alu_function := ALU_OR;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_OR;
       when "100110" =>   --XOR   r[rd]=r[rs]^r[rt];
          c_source := C_FROM_ALU;
          alu_function := ALU_XOR;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_XOR;
       when "100111" =>   --NOR   r[rd]=~(r[rs]|r[rt]);
          c_source := C_FROM_ALU;
          alu_function := ALU_NOR;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_NOR;
       when "101010" =>   --SLT   r[rd]=r[rs]<r[rt];
          c_source := C_FROM_ALU;
          alu_function := ALU_LESS_THAN_SIGNED;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_SLT;
       when "101011" =>   --SLTU  r[rd]=u[rs]<u[rt];
          c_source := C_FROM_ALU;
          alu_function := ALU_LESS_THAN;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_SLTU;
       when "101101" =>   --DADDU r[rd]=r[rs]+u[rt];
          c_source := C_FROM_ALU;
          alu_function := ALU_ADD;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_DADDU;
       --when "110001" =>   --TGEU
       --when "110010" =>   --TLT
       --when "110011" =>   --TLTU
@@ -232,17 +275,21 @@ begin
       when "10000" =>   --BLTZAL  r[31]=s->pc_next; branch=r[rs]<0;
          c_source := C_FROM_PC_PLUS4;
          branch_function := BRANCH_LTZ;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_BLTZAL;
       when "00000" =>   --BLTZ    branch=r[rs]<0;
          branch_function := BRANCH_LTZ;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_BLTZ;
       when "10001" =>   --BGEZAL  r[31]=s->pc_next; branch=r[rs]>=0;
          c_source := C_FROM_PC_PLUS4;
          branch_function := BRANCH_GEZ;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_BGEZAL;
       when "00001" =>   --BGEZ    branch=r[rs]>=0;
          branch_function := BRANCH_GEZ;
-
+         --Comment the next line if you dont want to debug!
+         instruction <= i_BGEZ;
       --when "10010" =>   --BLTZALL r[31]=s->pc_next; lbranch=r[rs]<0;
       --when "00010" =>   --BLTZL   lbranch=r[rs]<0;
       --when "10011" =>   --BGEZALL r[31]=s->pc_next; lbranch=r[rs]>=0;
@@ -255,84 +302,98 @@ begin
       c_source := C_FROM_PC_PLUS4;
       rd := "011111";
       pc_source := FROM_OPCODE25_0;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_JAL;
    when "000010" =>   --J      s->pc_next=(s->pc&0xf0000000)|target; 
       pc_source := FROM_OPCODE25_0;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_J;
    when "000100" =>   --BEQ    branch=r[rs]==r[rt];
       a_source := A_FROM_PC;
       b_source := B_FROM_IMMX4;
       alu_function := ALU_ADD;
       pc_source := FROM_BRANCH;
       branch_function := BRANCH_EQ;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_BEQ;
    when "000101" =>   --BNE    branch=r[rs]!=r[rt];
       a_source := A_FROM_PC;
       b_source := B_FROM_IMMX4;
       alu_function := ALU_ADD;
       pc_source := FROM_BRANCH;
       branch_function := BRANCH_NE;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_BNE;
    when "000110" =>   --BLEZ   branch=r[rs]<=0;
       a_source := A_FROM_PC;
       b_source := b_FROM_IMMX4;
       alu_function := ALU_ADD;
       pc_source := FROM_BRANCH;
       branch_function := BRANCH_LEZ;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_BLEZ;
    when "000111" =>   --BGTZ   branch=r[rs]>0;
       a_source := A_FROM_PC;
       b_source := B_FROM_IMMX4;
       alu_function := ALU_ADD;
       pc_source := FROM_BRANCH;
       branch_function := BRANCH_GTZ;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_BGTZ;
    when "001000" =>   --ADDI   r[rt]=r[rs]+(short)imm;
       b_source := B_FROM_SIGNED_IMM;
       c_source := C_FROM_ALU;
       rd := rt;
       alu_function := ALU_ADD;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_ADDI;
    when "001001" =>   --ADDIU  u[rt]=u[rs]+(short)imm;
       b_source := B_FROM_SIGNED_IMM;
       c_source := C_FROM_ALU;
       rd := rt;
       alu_function := ALU_ADD;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_ADDIU;
    when "001010" =>   --SLTI   r[rt]=r[rs]<(short)imm;
       b_source := B_FROM_SIGNED_IMM;
       c_source := C_FROM_ALU;
       rd := rt;
       alu_function := ALU_LESS_THAN_SIGNED;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_SLTI;
    when "001011" =>   --SLTIU  u[rt]=u[rs]<(unsigned long)(short)imm;
       b_source := B_FROM_SIGNED_IMM;
       c_source := C_FROM_ALU;
       rd := rt;
       alu_function := ALU_LESS_THAN;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_SLTIU;
    when "001100" =>   --ANDI   r[rt]=r[rs]&imm;
       b_source := B_FROM_IMM;
       c_source := C_FROM_ALU;
       rd := rt;
       alu_function := ALU_AND;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_ANDI;
    when "001101" =>   --ORI    r[rt]=r[rs]|imm;
       b_source := B_FROM_IMM;
       c_source := C_FROM_ALU;
       rd := rt;
       alu_function := ALU_OR;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_ORI;
    when "001110" =>   --XORI   r[rt]=r[rs]^imm;
       b_source := B_FROM_IMM;
       c_source := C_FROM_ALU;
       rd := rt;
       alu_function := ALU_XOR;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_XORI;
    when "001111" =>   --LUI    r[rt]=(imm<<16);
       c_source := C_FROM_IMM_SHIFT16;
       rd := rt;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_LUI;
    when "010000" =>   --COP0
       alu_function := ALU_OR;
       c_source := C_FROM_ALU;
@@ -340,11 +401,15 @@ begin
          rs := '1' & opcode(15 downto 11);
          rt := "000000";
          rd := '0' & opcode(20 downto 16);
+         --Comment the next line if you dont want to debug!
+         instruction <= i_MFC0;
       else                      --move to CP0
          rs := "000000";
          rd(5) := '1';
          pc_source := FROM_BRANCH;   --delay possible interrupt
          branch_function := BRANCH_NO;
+         --Comment the next line if you dont want to debug!
+         instruction <= i_MTC0;
       end if;
 
    --when "010001" =>   --COP1
@@ -360,7 +425,8 @@ begin
       c_source := C_FROM_ALU;
       rd := rt;
       alu_function := ALU_SUBTRACT;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_SUBI;
    when "100000" =>   --LB     r[rt]=*(signed char*)ptr;
       a_source := A_FROM_REG_SOURCE;
       b_source := B_FROM_SIGNED_IMM;
@@ -368,7 +434,8 @@ begin
       rd := rt;
       c_source := C_FROM_MEMORY;
       mem_source := MEM_READ8S;    --address=(short)imm+r[rs];
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_LB;
    when "100001" =>   --LH     r[rt]=*(signed short*)ptr;
       a_source := A_FROM_REG_SOURCE;
       b_source := B_FROM_SIGNED_IMM;
@@ -376,7 +443,8 @@ begin
       rd := rt;
       c_source := C_FROM_MEMORY;
       mem_source := MEM_READ16S;   --address=(short)imm+r[rs];
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_LH;
    when "100010" =>   --LWL    //Not Implemented
       a_source := A_FROM_REG_SOURCE;
       b_source := B_FROM_SIGNED_IMM;
@@ -384,7 +452,8 @@ begin
       rd := rt;
       c_source := C_FROM_MEMORY;
       mem_source := MEM_READ32;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_LWL;
    when "100011" =>   --LW     r[rt]=*(long*)ptr;
       a_source := A_FROM_REG_SOURCE;
       b_source := B_FROM_SIGNED_IMM;
@@ -392,7 +461,8 @@ begin
       rd := rt;
       c_source := C_FROM_MEMORY;
       mem_source := MEM_READ32;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_LW;
    when "100100" =>   --LBU    r[rt]=*(unsigned char*)ptr;
       a_source := A_FROM_REG_SOURCE;
       b_source := B_FROM_SIGNED_IMM;
@@ -400,7 +470,8 @@ begin
       rd := rt;
       c_source := C_FROM_MEMORY;
       mem_source := MEM_READ8;    --address=(short)imm+r[rs];
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_LBU;
    when "100101" =>   --LHU    r[rt]=*(unsigned short*)ptr;
       a_source := A_FROM_REG_SOURCE;
       b_source := B_FROM_SIGNED_IMM;
@@ -408,7 +479,8 @@ begin
       rd := rt;
       c_source := C_FROM_MEMORY;
       mem_source := MEM_READ16;    --address=(short)imm+r[rs];
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_LHU;
    --when "100110" =>   --LWR    //Not Implemented
 
    when "101000" =>   --SB     *(char*)ptr=(char)r[rt];
@@ -416,25 +488,29 @@ begin
       b_source := B_FROM_SIGNED_IMM;
       alu_function := ALU_ADD;
       mem_source := MEM_WRITE8;   --address=(short)imm+r[rs];
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_SB;
    when "101001" =>   --SH     *(short*)ptr=(short)r[rt];
       a_source := A_FROM_REG_SOURCE;
       b_source := B_FROM_SIGNED_IMM;
       alu_function := ALU_ADD;
       mem_source := MEM_WRITE16;
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_SH;
    when "101010" =>   --SWL    //Not Implemented
       a_source := A_FROM_REG_SOURCE;
       b_source := B_FROM_SIGNED_IMM;
       alu_function := ALU_ADD;
       mem_source := MEM_WRITE32;  --address=(short)imm+r[rs];
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_SWL;
    when "101011" =>   --SW     *(long*)ptr=r[rt];
       a_source := A_FROM_REG_SOURCE;
       b_source := B_FROM_SIGNED_IMM;
       alu_function := ALU_ADD;
       mem_source := MEM_WRITE32;  --address=(short)imm+r[rs];
-
+      --Comment the next line if you dont want to debug!
+      instruction <= i_SW;
    --when "101110" =>   --SWR    //Not Implemented
    --when "101111" =>   --CACHE
    --when "110000" =>   --LL     r[rt]=*(long*)ptr;

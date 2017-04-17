@@ -331,10 +331,16 @@ add wave -noupdate -group {UART_read} -color green :tb_network_2x2:uart_read_1
 add wave -noupdate -group {UART_read} -color green :tb_network_2x2:uart_read_2
 add wave -noupdate -group {UART_read} -color green :tb_network_2x2:uart_read_3
 
-add wave -noupdate -group {UART_write} -color green :tb_network_2x2:uart_write_0
-add wave -noupdate -group {UART_write} -color green :tb_network_2x2:uart_write_1
-add wave -noupdate -group {UART_write} -color green :tb_network_2x2:uart_write_2
-add wave -noupdate -group {UART_write} -color green :tb_network_2x2:uart_write_3
+add wave -noupdate -group {UART_write} -color Gold :tb_network_2x2:uart_write_0
+add wave -noupdate -group {UART_write} -color Gold :tb_network_2x2:uart_write_1
+add wave -noupdate -group {UART_write} -color Gold :tb_network_2x2:uart_write_2
+add wave -noupdate -group {UART_write} -color Gold :tb_network_2x2:uart_write_3
+
+
+add wave -noupdate -group {CPU insturctions} -color green :tb_network_2x2:NoC_top:PE_0:u1_plasma:u1_cpu:u3_control:instruction
+add wave -noupdate -group {CPU insturctions} -color green :tb_network_2x2:NoC_top:PE_1:u1_plasma:u1_cpu:u3_control:instruction
+add wave -noupdate -group {CPU insturctions} -color green :tb_network_2x2:NoC_top:PE_2:u1_plasma:u1_cpu:u3_control:instruction
+add wave -noupdate -group {CPU insturctions} -color green :tb_network_2x2:NoC_top:PE_3:u1_plasma:u1_cpu:u3_control:instruction
 
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors
