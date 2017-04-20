@@ -16,3 +16,8 @@ RTL/Chip_Designs/IMMORTAL_Chip_2017/work
 *.wlf
 transcript
 */output_*.txt
+
+RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/vivado_pid*
+RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/immortal_zed_fpga
+RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/ip_repo
+RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/ip_user_files
