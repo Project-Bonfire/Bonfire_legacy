@@ -60,6 +60,7 @@ set proj_dir [get_property directory [current_project]]
 ##########################
 
 set obj [get_projects immortal_zed_fpga]
+set_param general.maxThreads 8
 set_property "board_part" "em.avnet.com:zed:part0:1.3" $obj
 set_property "compxlib.activehdl_compiled_library_dir" \
   "$proj_dir/immortal_zed_fpga.cache/compile_simlib/activehdl" $obj
@@ -169,17 +170,48 @@ startgroup
 create_bd_cell -type ip -vlnv ati.ttu.ee:Bonfire:NoC:1.0 NoC_0
 endgroup
 
+# Connect reset and clock signals
 connect_bd_net [get_bd_pins NoC_0/reset] [get_bd_pins proc_sys_reset_0/peripheral_aresetn]
 connect_bd_net [get_bd_pins NoC_0/RST] [get_bd_pins proc_sys_reset_0/peripheral_aresetn]
 connect_bd_net [get_bd_pins NoC_0/clk] [get_bd_pins processing_system7_0/FCLK_CLK0]
+connect_bd_net [get_bd_pins NoC_0/TCK] [get_bd_pins processing_system7_0/FCLK_CLK0]
+
+# Change memory to Xilinx Block Ram
+startgroup
+set_property -dict [list CONFIG.memory_type {XILINX_16X}] [get_bd_cells NoC_0]
+endgroup
+
 regenerate_bd_layout
+
+###############################
+# Add concat IP               #
+###############################
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat:2.1 xlconcat_0
+endgroup
+
+startgroup
+set_property -dict [list CONFIG.IN0_WIDTH.VALUE_SRC USER CONFIG.IN1_WIDTH.VALUE_SRC USER] [get_bd_cells xlconcat_0]
+set_property -dict [list CONFIG.IN0_WIDTH {15} CONFIG.IN1_WIDTH {7}] [get_bd_cells xlconcat_0]
+endgroup
+
+###############################
+# Add constant IP             #
+###############################
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 xlconstant_0
+endgroup
+
+startgroup
+set_property -dict [list CONFIG.CONST_WIDTH {7} CONFIG.CONST_VAL {0}] [get_bd_cells xlconstant_0]
+endgroup
+
 
 ###############################
 # Create port definitions     #
 ###############################
 
 # IJTAG
-create_bd_port -dir I IJTAG_TCK
 create_bd_port -dir I IJTAG_SEL
 create_bd_port -dir I IJTAG_SI
 create_bd_port -dir I IJTAG_SE
@@ -202,7 +234,7 @@ create_bd_port -dir I UART_3_IN
 create_bd_port -dir O UART_3_OUT
 
 # GPIO
-create_bd_port -dir I -from 21 -to 0 GPIO_in
+create_bd_port -dir I -from 14 -to 0 GPIO_in
 create_bd_port -dir O -from 15 -to 0 GPIO_out
 
 
@@ -210,7 +242,6 @@ create_bd_port -dir O -from 15 -to 0 GPIO_out
 # Connect NoC pins            #
 ###############################
 # IJTAG
-connect_bd_net [get_bd_ports IJTAG_TCK] [get_bd_pins NoC_0/TCK]
 connect_bd_net [get_bd_ports IJTAG_SEL] [get_bd_pins NoC_0/SEL]
 connect_bd_net [get_bd_ports IJTAG_SI] [get_bd_pins NoC_0/SI]
 connect_bd_net [get_bd_ports IJTAG_SE] [get_bd_pins NoC_0/SE]
@@ -218,7 +249,6 @@ connect_bd_net [get_bd_ports IJTAG_UE] [get_bd_pins NoC_0/UE]
 connect_bd_net [get_bd_ports IJTAG_CE] [get_bd_pins NoC_0/CE]
 connect_bd_net [get_bd_ports IJTAG_SO] [get_bd_pins NoC_0/SO]
 
-# Fault manager
 connect_bd_net [get_bd_ports toF] [get_bd_pins NoC_0/toF]
 connect_bd_net [get_bd_ports toC] [get_bd_pins NoC_0/toC]
 
@@ -233,7 +263,10 @@ connect_bd_net [get_bd_ports UART_3_IN] [get_bd_pins NoC_0/uart_read_3]
 connect_bd_net [get_bd_ports UART_3_OUT] [get_bd_pins NoC_0/uart_write_3]
 
 # GPIO
-connect_bd_net [get_bd_ports GPIO_in] [get_bd_pins NoC_0/GPIO_in]
+connect_bd_net [get_bd_ports GPIO_in] [get_bd_pins xlconcat_0/In0]
+connect_bd_net [get_bd_pins xlconstant_0/dout] [get_bd_pins xlconcat_0/In1]
+connect_bd_net [get_bd_pins xlconcat_0/dout] [get_bd_pins NoC_0/GPIO_in]
+
 connect_bd_net [get_bd_ports GPIO_out] [get_bd_pins NoC_0/GPIO_out]
 
 regenerate_bd_layout

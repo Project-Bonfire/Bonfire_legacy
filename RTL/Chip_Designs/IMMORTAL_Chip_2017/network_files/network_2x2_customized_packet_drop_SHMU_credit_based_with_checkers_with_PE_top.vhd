@@ -16,7 +16,15 @@ USE ieee.numeric_std.ALL;
 use work.component_pack.all;
 
 entity network_2x2_with_PE is
- generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
+ generic (DATA_WIDTH: integer := 32;
+          DATA_WIDTH_LV: integer := 11;
+          memory_type : string :=
+              "TRI_PORT_X"
+           --   "DUAL_PORT_"
+           --   "ALTERA_LPM"
+           --   "XILINX_16X"
+      );
+
 port (reset: in  std_logic;
       clk: in  std_logic;
 
@@ -108,7 +116,8 @@ not_reset <= not reset;
 PE_0: NoC_Node
 generic map( current_address => 0,
     stim_file => "code_0.txt",
-    log_file  => "output_0.txt")
+    log_file  => "output_0.txt",
+    memory_type => memory_type)
 
 port map( not_reset, clk,
         uart_read         => uart_read_0,
@@ -133,7 +142,8 @@ port map( not_reset, clk,
 PE_1: NoC_Node
 generic map( current_address => 1,
     stim_file => "code_1.txt",
-    log_file  => "output_1.txt")
+    log_file  => "output_1.txt",
+    memory_type => memory_type)
 
 port map( not_reset, clk,
         uart_read         => uart_read_1,
@@ -159,11 +169,12 @@ port map( not_reset, clk,
 PE_2: NoC_Node
 generic map( current_address => 2,
     stim_file => "code_2.txt",
-    log_file  => "output_2.txt")
+    log_file  => "output_2.txt",
+    memory_type => memory_type)
 
 port map( not_reset, clk,
-        uart_read         => uart_read_1,
-        uart_write        => uart_write_1,
+        uart_read         => uart_read_2,
+        uart_write        => uart_write_2,
 
         credit_in => credit_out_L_2,
         valid_out => valid_in_L_2,
@@ -185,11 +196,12 @@ port map( not_reset, clk,
 PE_3: NoC_Node
 generic map( current_address => 3,
     stim_file => "code_3.txt",
-    log_file  => "output_3.txt")
+    log_file  => "output_3.txt",
+    memory_type => memory_type)
 
 port map( not_reset, clk,
-        uart_read         => uart_read_1,
-        uart_write        => uart_write_1,
+        uart_read         => uart_read_3,
+        uart_write        => uart_write_3,
 
         credit_in => credit_out_L_3,
         valid_out => valid_in_L_3,

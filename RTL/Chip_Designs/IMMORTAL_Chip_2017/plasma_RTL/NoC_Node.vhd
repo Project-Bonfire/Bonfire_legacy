@@ -17,7 +17,13 @@ use ieee.std_logic_unsigned.all;
 entity NoC_Node is
 generic( current_address : integer := 0;
          stim_file: string :="code.txt";
-         log_file  : string := "output.txt");
+         log_file  : string := "output.txt";
+         memory_type : string :=
+         "TRI_PORT_X"
+      --   "DUAL_PORT_"
+      --   "ALTERA_LPM"
+      --   "XILINX_16X"
+      );
 
 port( reset        : in std_logic;
       clk          : in std_logic;
@@ -46,11 +52,6 @@ port( reset        : in std_logic;
 end; --entity NoC_Node
 
 architecture updated of NoC_Node is
-   constant memory_type : string :=
-   "TRI_PORT_X";
---   "DUAL_PORT_";
---   "ALTERA_LPM";
---   "XILINX_16X";
 
    signal interrupt   : std_logic := '0';
    signal mem_write   : std_logic;

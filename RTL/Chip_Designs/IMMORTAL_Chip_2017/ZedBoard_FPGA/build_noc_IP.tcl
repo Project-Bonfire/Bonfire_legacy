@@ -59,6 +59,7 @@ set proj_dir [get_property directory [current_project]]
 ##########################
 
 set obj [get_projects NoC]
+set_param general.maxThreads 8
 set_property "board_part" "em.avnet.com:zed:part0:1.3" $obj
 set_property "compxlib.activehdl_compiled_library_dir" \
   "$proj_dir/NoC.cache/compile_simlib/activehdl" $obj
@@ -165,7 +166,7 @@ set files [list \
 "[file normalize "${plasma_RTL_dir}/mult.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/pc_next.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/pipeline.vhd"]"\
-"[file normalize "${plasma_RTL_dir}/ram.vhd"]"\
+"[file normalize "${plasma_RTL_dir}/xilinx_image.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/reg_bank.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/shifter.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/uart.vhd"]"\

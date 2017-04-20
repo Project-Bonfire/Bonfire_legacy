@@ -5,11 +5,11 @@
 #include "test_plasma.h"
 
 
-//#define CPU_SPEED       25000000
-#define CPU_SPEED       10 // For simulation
+#define CPU_SPEED       25000000
+//#define CPU_SPEED       10 // For simulation
 
-//#define UART_BAUDRATE   115200
-#define UART_BAUDRATE   1 //for simulation
+#define UART_BAUDRATE   115200
+//#define UART_BAUDRATE   1 //for simulation
 
 #define UART_IN_TEST    0
 #define GPIO_TEST       1
@@ -56,10 +56,11 @@ int main(int argc, char const *argv[]) {
 
     /* Test GPIO */
     unsigned gpio_in = memory_read(GPIOA_IN);
-    memory_write(GPIO0_SET, gpio_in);
+    //memory_write(GPIO0_SET, gpio_in);
 
     #endif
 
+    memory_write(GPIO0_SET, 0xFFFFFFFF);
     /* Run CPU test */
     test_plasma_funcitons();
 
