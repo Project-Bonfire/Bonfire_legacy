@@ -70,7 +70,8 @@ int main(int argc, char const *argv[]) {
     ni_write(0b1111111111111111111111111111);
     ni_write(0);
 
-    while (1) {
+    while (1)
+    {
         if ((ni_read_flags() & NI_READ_MASK) == 0)
         {
             flit = ni_read();
