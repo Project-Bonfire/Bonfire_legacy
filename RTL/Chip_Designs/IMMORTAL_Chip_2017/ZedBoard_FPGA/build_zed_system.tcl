@@ -124,6 +124,11 @@ add_files -norecurse $proj_dir/immortal_zed_fpga.srcs/sources_1/bd/immortal_desi
 update_compile_order -fileset sources_1
 update_compile_order -fileset sim_1
 
+#############################################
+# Add constraints                           #
+#############################################
+import_files -fileset constrs_1 -norecurse $proj_root/constraints.xdc
+
 ###############################
 # Add and confire Zynq module #
 ###############################
@@ -132,6 +137,16 @@ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_sy
 endgroup
 apply_bd_automation -rule xilinx.com:bd_rule:processing_system7 -config {make_external "FIXED_IO, DDR" apply_board_preset "1" Master "Disable" Slave "Disable" }  [get_bd_cells processing_system7_0]
 connect_bd_net [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK]
+
+# Disable PE MIO support to free the PMOD
+startgroup
+set_property -dict [list CONFIG.PCW_QSPI_GRP_SINGLE_SS_ENABLE {1} CONFIG.PCW_ENET0_PERIPHERAL_ENABLE {1} CONFIG.PCW_GPIO_MIO_GPIO_ENABLE {0} CONFIG.PCW_GPIO_MIO_GPIO_IO {MIO} CONFIG.PCW_GPIO_EMIO_GPIO_ENABLE {0}] [get_bd_cells processing_system7_0]
+endgroup
+
+# Set clock speed
+startgroup
+set_property -dict [list CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ {25.000000} CONFIG.PCW_QSPI_GRP_SINGLE_SS_ENABLE {1}] [get_bd_cells processing_system7_0]
+endgroup
 
 ###############################
 # Add Reset Processing System #
