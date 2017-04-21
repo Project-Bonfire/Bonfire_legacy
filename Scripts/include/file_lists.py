@@ -44,7 +44,7 @@ credit_based_files_NI_Test = ["mlite_pack.vhd", "allocator.vhd", "arbiter_in.vhd
 #TODO: should add to NI_Test the following file: "TB_Package_32_bit_credit_based_NI.vhd"
 
 # Original Plasma processor files along with the NI and NoC node wrapper!
-PE_files = ["mlite_pack.vhd", "alu.vhd", "bus_mux.vhd", "cache.vhd",
+PE_files = ["mlite_pack.vhd", "memory_sim.vhd", "alu.vhd", "bus_mux.vhd", "cache.vhd",
             "control.vhd", "ddr_ctrl.vhd", "eth_dma.vhd", "mem_ctrl.vhd",
             "mult.vhd", "pc_next.vhd", "pipeline.vhd", "ram.vhd",
             "reg_bank.vhd", "shifter.vhd", "uart.vhd", "NI.vhd",
