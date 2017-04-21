@@ -239,7 +239,9 @@ begin
     -- 130 bits in total (for chains)
     -- Inject fault in the bit with location 0 of L FIFO in Router 3 (SE)
     shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
-    shift_data("0000"&"0000"&"0000"&all_zeroes(122)&"00000001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    shift_data("0001"&"0001"&"0000"&all_zeroes(122)&"00000001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    shift_data("0000"&"0000"&"0000"&all_zeroes(122)&"00001011"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
     tck_tick(4);
 
     wait;

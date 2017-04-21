@@ -26,6 +26,8 @@ architecture AsyncDataRegisterAdapter_arch of AsyncDataRegisterAdapter is
 signal DI_sync_first, DI_sync: STD_LOGIC_VECTOR (Size-1 downto 0);
 signal sreg_do: STD_LOGIC_VECTOR (Size-1 downto 0);
 signal sreg_so: STD_LOGIC;
+signal sticky_flags, sticky_flags_mux: STD_LOGIC_VECTOR (Size-1 downto 0);
+signal flag_mask_strobe: STD_LOGIC;
 
 component SReg is
  Generic ( Size : positive := 7);
@@ -45,13 +47,34 @@ end component;
 
 begin
 
-synchronizer : process( TCK )
+sticky_flags_mux <= (sticky_flags or DI_sync) and not sreg_do when flag_mask_strobe = '1' else sticky_flags or DI_sync;
+
+synchronizer_di : process(TCK,RST)
 begin
-  if  TCK'event and TCK = '1' then
+  if RST = '1' then
+    DI_sync_first <= (others => '0');
+    DI_sync <= (others => '0');
+  elsif  TCK'event and TCK = '1' then
     DI_sync_first <= DI;
     DI_sync <= DI_sync_first;
   end if ;
 end process ; -- synchronizer
+  
+sticky_flag_update : process(TCK,RST)
+begin
+  if RST = '1' then
+    sticky_flags <= (others => '0');
+  elsif  TCK'event and TCK = '1' then
+    sticky_flags <= sticky_flags_mux;
+  end if ;
+end process ;
+
+sticky_flag_update_strobe : process(TCK)
+begin
+  if  TCK'event and TCK = '1' then
+    flag_mask_strobe <= SEL and UE;
+  end if;
+end process;
 
 SO <= sreg_so;
 DO <= sreg_do;
