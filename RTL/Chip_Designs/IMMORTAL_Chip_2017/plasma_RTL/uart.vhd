@@ -82,7 +82,18 @@ process(count_value_reg, old_address) begin
 end process;
 
 
-  count_value_sig <= count_value_reg(9 downto 0);
+process(clk, reset, count_value_reg_in, reg_address)begin
+  if reset = '1' then
+    old_address <= (others => '0');
+    count_value_reg <= (others => '0');
+  elsif rising_edge(clk) then
+    old_address <= reg_address;
+    count_value_reg <= count_value_reg_in;
+  end if;
+end process;
+
+count_value_sig <= count_value_reg(9 downto 0);
+
 
 uart_proc: process(clk, reset, enable_read, enable_write, data_in,
                    data_write_reg, bits_write_reg, delay_write_reg,
@@ -113,11 +124,9 @@ begin
       bits_read_reg   <= "0000";
       delay_read_reg  <= ZERO(9 downto 0);
       data_save_reg   <= ZERO(17 downto 0);
-      old_address <= (others => '0');
-      count_value_reg <= (others => '0');
+      
    elsif rising_edge(clk) then
-      old_address <= reg_address;
-      count_value_reg <= count_value_reg_in;
+
       --Write UART
       if bits_write_reg = "0000" then               --nothing left to write?
          if enable_write = '1' then
