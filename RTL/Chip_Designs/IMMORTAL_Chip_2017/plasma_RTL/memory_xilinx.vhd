@@ -3,6 +3,12 @@ use ieee.std_logic_1164.all;
 use work.mlite_pack.all;
 use ieee.std_logic_unsigned.all;
 
+use IEEE.numeric_std.all;
+Library UNISIM;
+use UNISIM.vcomponents.all;
+Library UNIMACRO;
+use UNIMACRO.vcomponents.all;
+
 entity memory is
     generic(address_width : natural := 16);
     port(clk          : in std_logic;

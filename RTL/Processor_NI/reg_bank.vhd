@@ -157,143 +157,143 @@ end process;
    ---- RAM16X1D: 16 x 1 positive edge write, asynchronous read dual-port
    ---- distributed RAM for all Xilinx FPGAs
    ---- From library UNISIM; use UNISIM.vcomponents.all;
-   --xilinx_16x1d:
-   --if memory_type = "XILINX_16X" generate
-   --   signal data_out1A, data_out1B : std_logic_vector(31 downto 0);
-   --   signal data_out2A, data_out2B : std_logic_vector(31 downto 0);
-   --   signal weA, weB               : std_logic;
-   --   signal no_connect             : std_logic_vector(127 downto 0);
-   --begin
-   --   weA <= write_enable and not addr_write(4);  --lower 16 registers
-   --   weB <= write_enable and addr_write(4);      --upper 16 registers
+   xilinx_16x1d:
+   if memory_type = "XILINX_16X" generate
+     signal data_out1A, data_out1B : std_logic_vector(31 downto 0);
+     signal data_out2A, data_out2B : std_logic_vector(31 downto 0);
+     signal weA, weB               : std_logic;
+     signal no_connect             : std_logic_vector(127 downto 0);
+   begin
+     weA <= write_enable and not addr_write(4);  --lower 16 registers
+     weB <= write_enable and addr_write(4);      --upper 16 registers
 
-   --   reg_loop: for i in 0 to 31 generate
-   --   begin
-   --      --Read port 1 lower 16 registers
-   --      reg_bit1a : RAM16X1D
-   --      port map (
-   --         WCLK  => clk,              -- Port A write clock input
-   --         WE    => weA,              -- Port A write enable input
-   --         A0    => addr_write(0),    -- Port A address[0] input bit
-   --         A1    => addr_write(1),    -- Port A address[1] input bit
-   --         A2    => addr_write(2),    -- Port A address[2] input bit
-   --         A3    => addr_write(3),    -- Port A address[3] input bit
-   --         D     => reg_dest_new(i),  -- Port A 1-bit data input
-   --         DPRA0 => addr_read1(0),    -- Port B address[0] input bit
-   --         DPRA1 => addr_read1(1),    -- Port B address[1] input bit
-   --         DPRA2 => addr_read1(2),    -- Port B address[2] input bit
-   --         DPRA3 => addr_read1(3),    -- Port B address[3] input bit
-   --         DPO   => data_out1A(i),    -- Port B 1-bit data output
-   --         SPO   => no_connect(i)     -- Port A 1-bit data output
-   --      );
-   --      --Read port 1 upper 16 registers
-   --      reg_bit1b : RAM16X1D
-   --      port map (
-   --         WCLK  => clk,              -- Port A write clock input
-   --         WE    => weB,              -- Port A write enable input
-   --         A0    => addr_write(0),    -- Port A address[0] input bit
-   --         A1    => addr_write(1),    -- Port A address[1] input bit
-   --         A2    => addr_write(2),    -- Port A address[2] input bit
-   --         A3    => addr_write(3),    -- Port A address[3] input bit
-   --         D     => reg_dest_new(i),  -- Port A 1-bit data input
-   --         DPRA0 => addr_read1(0),    -- Port B address[0] input bit
-   --         DPRA1 => addr_read1(1),    -- Port B address[1] input bit
-   --         DPRA2 => addr_read1(2),    -- Port B address[2] input bit
-   --         DPRA3 => addr_read1(3),    -- Port B address[3] input bit
-   --         DPO   => data_out1B(i),    -- Port B 1-bit data output
-   --         SPO   => no_connect(32+i)  -- Port A 1-bit data output
-   --      );
-   --      --Read port 2 lower 16 registers
-   --      reg_bit2a : RAM16X1D
-   --      port map (
-   --         WCLK  => clk,              -- Port A write clock input
-   --         WE    => weA,              -- Port A write enable input
-   --         A0    => addr_write(0),    -- Port A address[0] input bit
-   --         A1    => addr_write(1),    -- Port A address[1] input bit
-   --         A2    => addr_write(2),    -- Port A address[2] input bit
-   --         A3    => addr_write(3),    -- Port A address[3] input bit
-   --         D     => reg_dest_new(i),  -- Port A 1-bit data input
-   --         DPRA0 => addr_read2(0),    -- Port B address[0] input bit
-   --         DPRA1 => addr_read2(1),    -- Port B address[1] input bit
-   --         DPRA2 => addr_read2(2),    -- Port B address[2] input bit
-   --         DPRA3 => addr_read2(3),    -- Port B address[3] input bit
-   --         DPO   => data_out2A(i),    -- Port B 1-bit data output
-   --         SPO   => no_connect(64+i)  -- Port A 1-bit data output
-   --      );
-   --      --Read port 2 upper 16 registers
-   --      reg_bit2b : RAM16X1D
-   --      port map (
-   --         WCLK  => clk,              -- Port A write clock input
-   --         WE    => weB,              -- Port A write enable input
-   --         A0    => addr_write(0),    -- Port A address[0] input bit
-   --         A1    => addr_write(1),    -- Port A address[1] input bit
-   --         A2    => addr_write(2),    -- Port A address[2] input bit
-   --         A3    => addr_write(3),    -- Port A address[3] input bit
-   --         D     => reg_dest_new(i),  -- Port A 1-bit data input
-   --         DPRA0 => addr_read2(0),    -- Port B address[0] input bit
-   --         DPRA1 => addr_read2(1),    -- Port B address[1] input bit
-   --         DPRA2 => addr_read2(2),    -- Port B address[2] input bit
-   --         DPRA3 => addr_read2(3),    -- Port B address[3] input bit
-   --         DPO   => data_out2B(i),    -- Port B 1-bit data output
-   --         SPO   => no_connect(96+i)  -- Port A 1-bit data output
-   --      );
-   --   end generate; --reg_loop
+     reg_loop: for i in 0 to 31 generate
+     begin
+        --Read port 1 lower 16 registers
+        reg_bit1a : RAM16X1D
+        port map (
+           WCLK  => clk,              -- Port A write clock input
+           WE    => weA,              -- Port A write enable input
+           A0    => addr_write(0),    -- Port A address[0] input bit
+           A1    => addr_write(1),    -- Port A address[1] input bit
+           A2    => addr_write(2),    -- Port A address[2] input bit
+           A3    => addr_write(3),    -- Port A address[3] input bit
+           D     => reg_dest_new(i),  -- Port A 1-bit data input
+           DPRA0 => addr_read1(0),    -- Port B address[0] input bit
+           DPRA1 => addr_read1(1),    -- Port B address[1] input bit
+           DPRA2 => addr_read1(2),    -- Port B address[2] input bit
+           DPRA3 => addr_read1(3),    -- Port B address[3] input bit
+           DPO   => data_out1A(i),    -- Port B 1-bit data output
+           SPO   => no_connect(i)     -- Port A 1-bit data output
+        );
+        --Read port 1 upper 16 registers
+        reg_bit1b : RAM16X1D
+        port map (
+           WCLK  => clk,              -- Port A write clock input
+           WE    => weB,              -- Port A write enable input
+           A0    => addr_write(0),    -- Port A address[0] input bit
+           A1    => addr_write(1),    -- Port A address[1] input bit
+           A2    => addr_write(2),    -- Port A address[2] input bit
+           A3    => addr_write(3),    -- Port A address[3] input bit
+           D     => reg_dest_new(i),  -- Port A 1-bit data input
+           DPRA0 => addr_read1(0),    -- Port B address[0] input bit
+           DPRA1 => addr_read1(1),    -- Port B address[1] input bit
+           DPRA2 => addr_read1(2),    -- Port B address[2] input bit
+           DPRA3 => addr_read1(3),    -- Port B address[3] input bit
+           DPO   => data_out1B(i),    -- Port B 1-bit data output
+           SPO   => no_connect(32+i)  -- Port A 1-bit data output
+        );
+        --Read port 2 lower 16 registers
+        reg_bit2a : RAM16X1D
+        port map (
+           WCLK  => clk,              -- Port A write clock input
+           WE    => weA,              -- Port A write enable input
+           A0    => addr_write(0),    -- Port A address[0] input bit
+           A1    => addr_write(1),    -- Port A address[1] input bit
+           A2    => addr_write(2),    -- Port A address[2] input bit
+           A3    => addr_write(3),    -- Port A address[3] input bit
+           D     => reg_dest_new(i),  -- Port A 1-bit data input
+           DPRA0 => addr_read2(0),    -- Port B address[0] input bit
+           DPRA1 => addr_read2(1),    -- Port B address[1] input bit
+           DPRA2 => addr_read2(2),    -- Port B address[2] input bit
+           DPRA3 => addr_read2(3),    -- Port B address[3] input bit
+           DPO   => data_out2A(i),    -- Port B 1-bit data output
+           SPO   => no_connect(64+i)  -- Port A 1-bit data output
+        );
+        --Read port 2 upper 16 registers
+        reg_bit2b : RAM16X1D
+        port map (
+           WCLK  => clk,              -- Port A write clock input
+           WE    => weB,              -- Port A write enable input
+           A0    => addr_write(0),    -- Port A address[0] input bit
+           A1    => addr_write(1),    -- Port A address[1] input bit
+           A2    => addr_write(2),    -- Port A address[2] input bit
+           A3    => addr_write(3),    -- Port A address[3] input bit
+           D     => reg_dest_new(i),  -- Port A 1-bit data input
+           DPRA0 => addr_read2(0),    -- Port B address[0] input bit
+           DPRA1 => addr_read2(1),    -- Port B address[1] input bit
+           DPRA2 => addr_read2(2),    -- Port B address[2] input bit
+           DPRA3 => addr_read2(3),    -- Port B address[3] input bit
+           DPO   => data_out2B(i),    -- Port B 1-bit data output
+           SPO   => no_connect(96+i)  -- Port A 1-bit data output
+        );
+     end generate; --reg_loop
 
-   --   data_out1 <= data_out1A when addr_read1(4)='0' else data_out1B;
-   --   data_out2 <= data_out2A when addr_read2(4)='0' else data_out2B;
-   --end generate; --xilinx_16x1d
+     data_out1 <= data_out1A when addr_read1(4)='0' else data_out1B;
+     data_out2 <= data_out2A when addr_read2(4)='0' else data_out2B;
+   end generate; --xilinx_16x1d
 
 
    ---- Option #4
    ---- RAM32X1D: 32 x 1 positive edge write, asynchronous read dual-port
    ---- distributed RAM for 5-LUT Xilinx FPGAs such as Virtex-5
    ---- From library UNISIM; use UNISIM.vcomponents.all;
-   --xilinx_32x1d:
-   --if memory_type = "XILINX_32X" generate
-   --   signal no_connect             : std_logic_vector(63 downto 0);
-   --begin
-   --   reg_loop: for i in 0 to 31 generate
-   --   begin
-   --      --Read port 1
-   --      reg_bit1 : RAM32X1D
-   --      port map (
-   --         WCLK  => clk,              -- Port A write clock input
-   --         WE    => write_enable,     -- Port A write enable input
-   --         A0    => addr_write(0),    -- Port A address[0] input bit
-   --         A1    => addr_write(1),    -- Port A address[1] input bit
-   --         A2    => addr_write(2),    -- Port A address[2] input bit
-   --         A3    => addr_write(3),    -- Port A address[3] input bit
-   --         A4    => addr_write(4),    -- Port A address[4] input bit
-   --         D     => reg_dest_new(i),  -- Port A 1-bit data input
-   --         DPRA0 => addr_read1(0),    -- Port B address[0] input bit
-   --         DPRA1 => addr_read1(1),    -- Port B address[1] input bit
-   --         DPRA2 => addr_read1(2),    -- Port B address[2] input bit
-   --         DPRA3 => addr_read1(3),    -- Port B address[3] input bit
-   --         DPRA4 => addr_read1(4),    -- Port B address[4] input bit
-   --         DPO   => data_out1(i),     -- Port B 1-bit data output
-   --         SPO   => no_connect(i)     -- Port A 1-bit data output
-   --      );
-   --      --Read port 2
-   --      reg_bit2 : RAM32X1D
-   --      port map (
-   --         WCLK  => clk,              -- Port A write clock input
-   --         WE    => write_enable,     -- Port A write enable input
-   --         A0    => addr_write(0),    -- Port A address[0] input bit
-   --         A1    => addr_write(1),    -- Port A address[1] input bit
-   --         A2    => addr_write(2),    -- Port A address[2] input bit
-   --         A3    => addr_write(3),    -- Port A address[3] input bit
-   --         A4    => addr_write(4),    -- Port A address[4] input bit
-   --         D     => reg_dest_new(i),  -- Port A 1-bit data input
-   --         DPRA0 => addr_read2(0),    -- Port B address[0] input bit
-   --         DPRA1 => addr_read2(1),    -- Port B address[1] input bit
-   --         DPRA2 => addr_read2(2),    -- Port B address[2] input bit
-   --         DPRA3 => addr_read2(3),    -- Port B address[3] input bit
-   --         DPRA4 => addr_read2(4),    -- Port B address[4] input bit
-   --         DPO   => data_out2(i),     -- Port B 1-bit data output
-   --         SPO   => no_connect(32+i)  -- Port A 1-bit data output
-   --      );
-   --   end generate; --reg_loop
-   --end generate; --xilinx_32x1d
+   xilinx_32x1d:
+   if memory_type = "XILINX_32X" generate
+     signal no_connect             : std_logic_vector(63 downto 0);
+   begin
+     reg_loop: for i in 0 to 31 generate
+     begin
+        --Read port 1
+        reg_bit1 : RAM32X1D
+        port map (
+           WCLK  => clk,              -- Port A write clock input
+           WE    => write_enable,     -- Port A write enable input
+           A0    => addr_write(0),    -- Port A address[0] input bit
+           A1    => addr_write(1),    -- Port A address[1] input bit
+           A2    => addr_write(2),    -- Port A address[2] input bit
+           A3    => addr_write(3),    -- Port A address[3] input bit
+           A4    => addr_write(4),    -- Port A address[4] input bit
+           D     => reg_dest_new(i),  -- Port A 1-bit data input
+           DPRA0 => addr_read1(0),    -- Port B address[0] input bit
+           DPRA1 => addr_read1(1),    -- Port B address[1] input bit
+           DPRA2 => addr_read1(2),    -- Port B address[2] input bit
+           DPRA3 => addr_read1(3),    -- Port B address[3] input bit
+           DPRA4 => addr_read1(4),    -- Port B address[4] input bit
+           DPO   => data_out1(i),     -- Port B 1-bit data output
+           SPO   => no_connect(i)     -- Port A 1-bit data output
+        );
+        --Read port 2
+        reg_bit2 : RAM32X1D
+        port map (
+           WCLK  => clk,              -- Port A write clock input
+           WE    => write_enable,     -- Port A write enable input
+           A0    => addr_write(0),    -- Port A address[0] input bit
+           A1    => addr_write(1),    -- Port A address[1] input bit
+           A2    => addr_write(2),    -- Port A address[2] input bit
+           A3    => addr_write(3),    -- Port A address[3] input bit
+           A4    => addr_write(4),    -- Port A address[4] input bit
+           D     => reg_dest_new(i),  -- Port A 1-bit data input
+           DPRA0 => addr_read2(0),    -- Port B address[0] input bit
+           DPRA1 => addr_read2(1),    -- Port B address[1] input bit
+           DPRA2 => addr_read2(2),    -- Port B address[2] input bit
+           DPRA3 => addr_read2(3),    -- Port B address[3] input bit
+           DPRA4 => addr_read2(4),    -- Port B address[4] input bit
+           DPO   => data_out2(i),     -- Port B 1-bit data output
+           SPO   => no_connect(32+i)  -- Port A 1-bit data output
+        );
+     end generate; --reg_loop
+   end generate; --xilinx_32x1d
 
 
    ---- Option #5

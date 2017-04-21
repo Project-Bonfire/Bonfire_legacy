@@ -157,6 +157,7 @@ set files [list \
 "[file normalize "${IJTAG_RTL_dir}/ScanMux.vhd"]"\
 "[file normalize "${IJTAG_RTL_dir}/ScanRegister.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/alu.vhd"]"\
+"[file normalize "${plasma_RTL_dir}/memory_xilinx.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/bus_mux.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/cache.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/control.vhd"]"\
