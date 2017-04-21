@@ -8,6 +8,11 @@
 --    Software 'as is' without warranty.  Author liable for nothing.
 -- DESCRIPTION:
 --    Implements the UART.
+-- modified by: Siavoosh Payandeh Azad 
+-- Change logs:  
+--            * added a memory mapped register for counter value
+--            * added necessary signals for the above mentioned register to the interface!
+--            * COUNT_VALUE is replaced with count_value_sig which comes from the above mentioned register 
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -55,6 +60,8 @@ architecture logic of uart is
    signal count_value_sig : std_logic_vector(9 downto 0);
 begin
 
+
+-- added by siavoosh payandeh azad
 update_count_value: process(count_value_reg, reg_data_write, reg_write_byte_enable, reg_address, reg_enable)begin
     count_value_reg_in <= count_value_reg ;
     if reg_enable = '1' and reg_address = uart_count_value_address then
@@ -93,7 +100,7 @@ process(clk, reset, count_value_reg_in, reg_address)begin
 end process;
 
 count_value_sig <= count_value_reg(9 downto 0);
-
+-- end of updates by Siavoosh Payandeh Azad
 
 uart_proc: process(clk, reset, enable_read, enable_write, data_in,
                    data_write_reg, bits_write_reg, delay_write_reg,
@@ -135,6 +142,7 @@ begin
             data_write_reg <= data_in & '0';        --remember data & start bit
          end if;
       else
+         --if delay_write_reg /= COUNT_VALUE then
          if delay_write_reg /= count_value_sig then
             delay_write_reg <= delay_write_reg + 1; --delay before next bit
          else
@@ -159,10 +167,12 @@ begin
       if delay_read_reg = ZERO(9 downto 0) then     --done delay for read?
          if bits_read_reg = "0000" then             --nothing left to read?
             if uart_read2 = '0' then                --wait for start bit
+               --delay_read_reg <= '0' & COUNT_VALUE(9 downto 1);  --half period
                delay_read_reg <= '0' & count_value_sig(9 downto 1);  --half period
                bits_read_reg <= "1001";             --bits left to read
             end if;
          else
+            --delay_read_reg <= COUNT_VALUE;          --initialize delay
             delay_read_reg <= count_value_sig;          --initialize delay
             bits_read_reg <= bits_read_reg - 1;     --bits left to read
             data_read_reg <= uart_read2 & data_read_reg(7 downto 1);
@@ -172,6 +182,7 @@ begin
       end if;
 
       --Control character buffer
+      --if bits_read_reg = "0000" and delay_read_reg = COUNT_VALUE then
       if bits_read_reg = "0000" and delay_read_reg = count_value_sig then
          if data_save_reg(8) = '0' or
                (enable_read = '1' and data_save_reg(17) = '0') then
