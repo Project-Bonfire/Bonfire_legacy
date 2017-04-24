@@ -3,18 +3,7 @@
 #include "plasma.h"
 #include "uart.h"
 #include "test_plasma.h"
-
-
-//#define CPU_SPEED       25000000
-#define CPU_SPEED       10 // For simulation
-
-//#define UART_BAUDRATE   115200
-#define UART_BAUDRATE   1 //for simulation
-
-#define UART_IN_TEST    0
-#define GPIO_TEST       1
-
-#define SEND_PACKET_COUNT   1000
+#include "ni_test.h"
 
 #define MY_ADDR     0
 #define DST_ADDR    1
@@ -56,13 +45,9 @@ int main(int argc, char const *argv[]) {
 
     /* Test GPIO */
     unsigned gpio_in = memory_read(GPIOA_IN);
-    //memory_write(GPIO0_SET, gpio_in);
+    memory_write(GPIO0_SET, gpio_in);
 
     #endif
-
-    memory_write(GPIO0_SET, 0xFFFFFFFF);
-    /* Run CPU test */
-    test_plasma_funcitons();
 
     uart_puts("\n\nBeginning communication test\n\n");
 
@@ -71,30 +56,31 @@ int main(int argc, char const *argv[]) {
     ni_write(0b1111111111111111111111111111);
     ni_write(0);
 
-    while (1)
+    while (packet_counter < SEND_PACKET_COUNT)
     {
         if ((ni_read_flags() & NI_READ_MASK) == 0)
         {
             flit = ni_read();
             flit_type = get_flit_type(flit);
 
-            if (packet_counter < SEND_PACKET_COUNT)
+            if (flit_type == FLIT_TYPE_HEADER)
             {
-                if (flit_type == FLIT_TYPE_HEADER)
-                {
-                    uart_puts("Sending packet number ");
-                    uart_print_num(packet_counter, 10, 0);
-                    uart_putchar('\n');
-                    ni_write(build_header(DST_ADDR, 3));
-                }
-                else
-                {
-                    payload = get_flit_payload(flit);
-                    ni_write(payload);
-                }
+                uart_puts("Sending packet number ");
+                uart_print_num(packet_counter, 10, 0);
+                uart_putchar('\n');
+                ni_write(build_header(DST_ADDR, 3));
                 packet_counter++;
+            }
+            else
+            {
+                payload = get_flit_payload(flit);
+                ni_write(payload);
             }
         }
     }
+
+    /* Run CPU test */
+    test_plasma_funcitons();
+
     return 0;
 }
