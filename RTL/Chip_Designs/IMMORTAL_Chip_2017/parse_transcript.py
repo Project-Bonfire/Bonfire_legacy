@@ -26,10 +26,10 @@ for line in transcript_file:
 		if "Packet received" in line:
 			recieved_file.write(line[11:])
 			received_packet_counter += 1
-		if "Packet generated" in line:
+		if "Packet generated" in line and "Diagnostic" not in line:
 			sent_file.write(line[11:])
 			sent_packet_counter += 1
-		if "Diagnostic packet" in line:
+		if "Diagnostic" in line:
 			diagnosis_file.write(line[11:])
 			diagnostic_packet_counter+=1
 print "--------------------------------"
