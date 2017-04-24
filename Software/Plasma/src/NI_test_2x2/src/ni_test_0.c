@@ -56,7 +56,7 @@ int main(int argc, char const *argv[]) {
     ni_write(0b1111111111111111111111111111);
     ni_write(0);
 
-    while (packet_counter < SEND_PACKET_COUNT)
+    while (packet_counter <= SEND_PACKET_COUNT)
     {
         if ((ni_read_flags() & NI_READ_MASK) == 0)
         {
