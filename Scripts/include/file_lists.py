@@ -47,7 +47,7 @@ credit_based_files_NI_Test = ["mlite_pack.vhd", "allocator.vhd", "arbiter_in.vhd
 PE_files = ["mlite_pack.vhd", "memory_sim.vhd", "alu.vhd", "bus_mux.vhd", "cache.vhd",
             "control.vhd", "ddr_ctrl.vhd", "eth_dma.vhd", "mem_ctrl.vhd",
             "mult.vhd", "pc_next.vhd", "pipeline.vhd", "ram.vhd",
-            "reg_bank.vhd", "shifter.vhd", "uart.vhd", "NI.vhd",
+            "reg_bank_tri_port.vhd", "shifter.vhd", "uart.vhd", "NI.vhd",
             "mlite_cpu.vhd", "plasma.vhd", "NoC_Node.vhd"]
 
 

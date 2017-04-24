@@ -168,7 +168,7 @@ set files [list \
 "[file normalize "${plasma_RTL_dir}/pc_next.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/pipeline.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/xilinx_image.vhd"]"\
-"[file normalize "${plasma_RTL_dir}/reg_bank.vhd"]"\
+"[file normalize "${plasma_RTL_dir}/reg_bank_xilinx.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/shifter.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/uart.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/mlite_cpu.vhd"]"\
