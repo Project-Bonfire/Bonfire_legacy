@@ -114,6 +114,22 @@ component SIB_mux_pre_FCX_SELgate is
            fromC : in STD_LOGIC);  -- From an AND of all C flags in the underlying network segment
 end component;
 
+component AsyncDataRegisterAdapter is
+ Generic ( Size : positive);
+    Port ( -- Scan Interface scan_client ----------
+           SI : in STD_LOGIC; -- ScanInPort 
+           SO : out STD_LOGIC; -- ScanOutPort
+           SEL : in STD_LOGIC; -- SelectPort
+           ----------------------------------------     
+           SE : in STD_LOGIC; -- ShiftEnPort
+           CE : in STD_LOGIC; -- CaptureEnPort
+           UE : in STD_LOGIC; -- UpdateEnPort
+           RST : in STD_LOGIC; -- ResetPort
+           TCK : in STD_LOGIC; -- TCKPort
+              -- Data interface
+           DI : in STD_LOGIC_VECTOR (Size-1 downto 0);
+           DO : out STD_LOGIC_VECTOR (Size-1 downto 0));
+end component;
 
 
 -- generating bulk signals. not all of them are used in the design...
@@ -165,10 +181,33 @@ end component;
 
     --------------
     -- IJTAG network signals
-    signal SIB_0_toSEL, SIB_1_toSEL, SIB_2_toSEL, SIB_3_toSEL : std_logic;
-    signal SIB_0_toCE,  SIB_1_toCE,  SIB_2_toCE,  SIB_3_toCE  : std_logic;
-    signal SIB_0_toRST, SIB_1_toRST, SIB_2_toRST, SIB_3_toRST : std_logic;
-    signal SIB_0_so,    SIB_1_so,    SIB_2_so,    SIB_3_so    : std_logic;
+    signal SIB_0_toSEL,  SIB_1_toSEL,  SIB_2_toSEL,  SIB_3_toSEL  : std_logic;
+    signal SIB_0_toCE,   SIB_1_toCE,   SIB_2_toCE,   SIB_3_toCE   : std_logic;
+    signal SIB_0_toSE,   SIB_1_toSE,   SIB_2_toSE,   SIB_3_toSE   : std_logic;
+    signal SIB_0_toUE,   SIB_1_toUE,   SIB_2_toUE,   SIB_3_toUE   : std_logic;
+    signal SIB_0_toSI,   SIB_1_toSI,   SIB_2_toSI,   SIB_3_toSI   : std_logic;
+    signal SIB_0_toRST,  SIB_1_toRST,  SIB_2_toRST,  SIB_3_toRST  : std_logic;
+    signal SIB_0_toTCK,  SIB_1_toTCK,  SIB_2_toTCK,  SIB_3_toTCK  : std_logic;
+    signal SIB_0_so,     SIB_1_so,     SIB_2_so,     SIB_3_so     : std_logic;
+        
+    signal SIB_0_inj_toSI,  SIB_1_inj_toSI,  SIB_2_inj_toSI,  SIB_3_inj_toSI  : std_logic;    
+    signal SIB_0_inj_toTCK, SIB_1_inj_toTCK, SIB_2_inj_toTCK, SIB_3_inj_toTCK : std_logic;    
+    signal SIB_0_inj_toRST, SIB_1_inj_toRST, SIB_2_inj_toRST, SIB_3_inj_toRST : std_logic;    
+    signal SIB_0_inj_toSEL, SIB_1_inj_toSEL, SIB_2_inj_toSEL, SIB_3_inj_toSEL : std_logic;    
+    signal SIB_0_inj_toUE,  SIB_1_inj_toUE,  SIB_2_inj_toUE,  SIB_3_inj_toUE  : std_logic;    
+    signal SIB_0_inj_toSE,  SIB_1_inj_toSE,  SIB_2_inj_toSE,  SIB_3_inj_toSE  : std_logic;
+    signal SIB_0_inj_toCE,  SIB_1_inj_toCE,  SIB_2_inj_toCE,  SIB_3_inj_toCE  : std_logic;
+    signal SIB_0_inj_so,    SIB_1_inj_so,    SIB_2_inj_so,    SIB_3_inj_so    : std_logic;
+    
+    signal SIB_0_sta_toSI,  SIB_1_sta_toSI,  SIB_2_sta_toSI,  SIB_3_sta_toSI  : std_logic;    
+    signal SIB_0_sta_toTCK, SIB_1_sta_toTCK, SIB_2_sta_toTCK, SIB_3_sta_toTCK : std_logic;    
+    signal SIB_0_sta_toRST, SIB_1_sta_toRST, SIB_2_sta_toRST, SIB_3_sta_toRST : std_logic;    
+    signal SIB_0_sta_toSEL, SIB_1_sta_toSEL, SIB_2_sta_toSEL, SIB_3_sta_toSEL : std_logic;    
+    signal SIB_0_sta_toUE,  SIB_1_sta_toUE,  SIB_2_sta_toUE,  SIB_3_sta_toUE  : std_logic;    
+    signal SIB_0_sta_toSE,  SIB_1_sta_toSE,  SIB_2_sta_toSE,  SIB_3_sta_toSE  : std_logic;
+    signal SIB_0_sta_toCE,  SIB_1_sta_toCE,  SIB_2_sta_toCE,  SIB_3_sta_toCE  : std_logic;
+    signal SIB_0_sta_so,    SIB_1_sta_so,    SIB_2_sta_so,    SIB_3_sta_so    : std_logic;
+
     -- flags from checkers
     signal F_R0, F_R1, F_R2, F_R3 : std_logic := '0';
     signal C_R0, C_R1, C_R2, C_R3 : std_logic := '1';
@@ -177,6 +216,20 @@ end component;
     signal F_segtop_fromSIB_1, C_segtop_fromSIB_1 : std_logic;
     signal F_segtop_fromSIB_2, C_segtop_fromSIB_2 : std_logic;
     signal F_segtop_fromSIB_3, C_segtop_fromSIB_3 : std_logic;
+    -- flags second level
+    signal toF_SIB_0,          toF_SIB_1,          toF_SIB_2,          toF_SIB_3          : std_logic;
+    signal toC_SIB_0,          toC_SIB_1,          toC_SIB_2,          toC_SIB_3          : std_logic;
+    signal F_fromSIB_0_inj,    F_fromSIB_1_inj,    F_fromSIB_2_inj,    F_fromSIB_3_inj    : std_logic;
+    signal C_fromSIB_0_inj,    C_fromSIB_1_inj,    C_fromSIB_2_inj,    C_fromSIB_3_inj    : std_logic;
+    signal F_fromSIB_0_status, F_fromSIB_1_status, F_fromSIB_2_status, F_fromSIB_3_status : std_logic;
+    signal C_fromSIB_0_status, C_fromSIB_1_status, C_fromSIB_2_status, C_fromSIB_3_status : std_logic;
+
+    signal R0_inj_so,         R1_inj_so,         R2_inj_so,         R3_inj_so         : std_logic;
+    signal R0_sta_adapter_so, R1_sta_adapter_so, R2_sta_adapter_so, R3_sta_adapter_so : std_logic;
+    signal R0_sta_adapter_do, R1_sta_adapter_do, R2_sta_adapter_do, R3_sta_adapter_do : std_logic_vector(24 downto 0);
+    
+    signal R0_aggregated_fault_status, R1_aggregated_fault_status, R2_aggregated_fault_status, R3_aggregated_fault_status : std_logic_vector(24 downto 0);
+
     --------------
     -- the checker output related ports (for unclassified fault information)
     signal link_faults_async_0 : std_logic_vector(4 downto 0);
@@ -208,6 +261,10 @@ toF <= F_segtop_fromSIB_0 or  F_segtop_fromSIB_1 or  F_segtop_fromSIB_2 or  F_se
 toC <= C_segtop_fromSIB_0 and C_segtop_fromSIB_1 and C_segtop_fromSIB_2 and C_segtop_fromSIB_3;
 SO <= SIB_3_so;
 
+-----------------------------------
+------ ROUTER 0 -------------------
+-----------------------------------
+-- Router 0 main SIB
 SIB_0 : SIB_mux_pre_FCX_SELgate
     port map ( -- Scan Interface  client --------------
     SI => SI,
@@ -221,17 +278,94 @@ SIB_0 : SIB_mux_pre_FCX_SELgate
     toF => F_segtop_fromSIB_0,
     toC => C_segtop_fromSIB_0,
      -- Scan Interface  host ----------------
-    fromSO => SO_0,
+    fromSO => SIB_0_sta_so,
     toCE => SIB_0_toCE,
-    toSE => SE_0,
-    toUE => UE_0,
+    toSE => SIB_0_toSE,
+    toUE => SIB_0_toUE,
     toSEL => SIB_0_toSEL,
     toRST => SIB_0_toRST,
-    toTCK => TCK_0,
-    toSI => SI_0,
+    toTCK => SIB_0_toTCK,
+    toSI => SIB_0_toSI,
+    fromF => toF_SIB_0,
+    fromC => toC_SIB_0
+);
+
+toF_SIB_0 <= F_fromSIB_0_inj or  F_fromSIB_0_status;
+toC_SIB_0 <= C_fromSIB_0_inj and C_fromSIB_0_status;
+
+-- Router 0 fault injection SIB
+SIB_0_injection : SIB_mux_pre_FCX_SELgate
+    port map ( -- Scan Interface  client --------------
+    SI => SIB_0_toSI,
+    CE => SIB_0_toCE,
+    SE => SIB_0_toSE,
+    UE => SIB_0_toUE,
+    SEL => SIB_0_toSEL,
+    RST => SIB_0_toRST,
+    TCK => SIB_0_toTCK,
+    SO => SIB_0_inj_so,
+    toF => F_fromSIB_0_inj,
+    toC => C_fromSIB_0_inj,
+     -- Scan Interface  host ----------------
+    fromSO => R0_inj_so,
+    toCE => SIB_0_inj_toCE,
+    toSE => SIB_0_inj_toSE,
+    toUE => SIB_0_inj_toUE,
+    toSEL => SIB_0_inj_toSEL,
+    toRST => SIB_0_inj_toRST,
+    toTCK => SIB_0_inj_toTCK,
+    toSI => SIB_0_inj_toSI,
+    fromF => '0',
+    fromC => '1'
+);
+-- Router 0 checker status SIB
+SIB_0_status : SIB_mux_pre_FCX_SELgate
+    port map ( -- Scan Interface  client --------------
+    SI => SIB_0_inj_so,
+    CE => SIB_0_toCE,
+    SE => SIB_0_toSE,
+    UE => SIB_0_toUE,
+    SEL => SIB_0_toSEL,
+    RST => SIB_0_toRST,
+    TCK => SIB_0_toTCK,
+    SO => SIB_0_sta_so,
+    toF => F_fromSIB_0_status,
+    toC => C_fromSIB_0_status,
+     -- Scan Interface  host ----------------
+    fromSO => R0_sta_adapter_so,
+    toCE => SIB_0_sta_toCE,
+    toSE => SIB_0_sta_toSE,
+    toUE => SIB_0_sta_toUE,
+    toSEL => SIB_0_sta_toSEL,
+    toRST => SIB_0_sta_toRST,
+    toTCK => SIB_0_sta_toTCK,
+    toSI => SIB_0_sta_toSI,
     fromF => F_R0,
     fromC => C_R0
 );
+-- Router 0 checker status IJTAG adapter
+R0_status_adapter : AsyncDataRegisterAdapter
+    generic map (Size => 25)
+    port map (
+    SI => SIB_0_sta_toSI,
+    SO => R0_sta_adapter_so,
+    SEL => SIB_0_sta_toSEL,
+    ----------------------------------------     
+    SE => SIB_0_sta_toSE,
+    CE => SIB_0_sta_toCE,
+    UE => SIB_0_sta_toUE,
+    RST => SIB_0_sta_toRST,
+    TCK => SIB_0_sta_toTCK,
+      -- Data interface
+    DI => R0_aggregated_fault_status,
+    DO => R0_sta_adapter_do
+);
+
+R0_aggregated_fault_status <= link_faults_async_0 & turn_faults_async_0;
+-----------------------------------
+------ ROUTER 1 -------------------
+-----------------------------------
+-- Router 1 main SIB
 SIB_1 : SIB_mux_pre_FCX_SELgate
     port map ( -- Scan Interface  client --------------
     SI => SIB_0_so,
@@ -245,18 +379,95 @@ SIB_1 : SIB_mux_pre_FCX_SELgate
     toF => F_segtop_fromSIB_1,
     toC => C_segtop_fromSIB_1,
      -- Scan Interface  host ----------------
-    fromSO => SO_1,
+    fromSO => SIB_1_sta_so,
     toCE => SIB_1_toCE,
-    toSE => SE_1,
-    toUE => UE_1,
+    toSE => SIB_1_toSE,
+    toUE => SIB_1_toUE,
     toSEL => SIB_1_toSEL,
     toRST => SIB_1_toRST,
-    toTCK => TCK_1,
-    toSI => SI_1,
+    toTCK => SIB_1_toTCK,
+    toSI => SIB_1_toSI,
+    fromF => toF_SIB_1,
+    fromC => toC_SIB_1
+);
+
+toF_SIB_1 <= F_fromSIB_1_inj or  F_fromSIB_1_status;
+toC_SIB_1 <= C_fromSIB_1_inj and C_fromSIB_1_status;
+
+-- Router 1 fault injection SIB
+SIB_1_injection : SIB_mux_pre_FCX_SELgate
+    port map ( -- Scan Interface  client --------------
+    SI => SIB_1_toSI,
+    CE => SIB_1_toCE,
+    SE => SIB_1_toSE,
+    UE => SIB_1_toUE,
+    SEL => SIB_1_toSEL,
+    RST => SIB_1_toRST,
+    TCK => SIB_1_toTCK,
+    SO => SIB_1_inj_so,
+    toF => F_fromSIB_1_inj,
+    toC => C_fromSIB_1_inj,
+     -- Scan Interface  host ----------------
+    fromSO => R1_inj_so,
+    toCE => SIB_1_inj_toCE,
+    toSE => SIB_1_inj_toSE,
+    toUE => SIB_1_inj_toUE,
+    toSEL => SIB_1_inj_toSEL,
+    toRST => SIB_1_inj_toRST,
+    toTCK => SIB_1_inj_toTCK,
+    toSI => SIB_1_inj_toSI,
+    fromF => '0',
+    fromC => '1'
+);
+-- Router 1 checker status SIB
+SIB_1_status : SIB_mux_pre_FCX_SELgate
+    port map ( -- Scan Interface  client --------------
+    SI => SIB_1_inj_so,
+    CE => SIB_1_toCE,
+    SE => SIB_1_toSE,
+    UE => SIB_1_toUE,
+    SEL => SIB_1_toSEL,
+    RST => SIB_1_toRST,
+    TCK => SIB_1_toTCK,
+    SO => SIB_1_sta_so,
+    toF => F_fromSIB_1_status,
+    toC => C_fromSIB_1_status,
+     -- Scan Interface  host ----------------
+    fromSO => R1_sta_adapter_so,
+    toCE => SIB_1_sta_toCE,
+    toSE => SIB_1_sta_toSE,
+    toUE => SIB_1_sta_toUE,
+    toSEL => SIB_1_sta_toSEL,
+    toRST => SIB_1_sta_toRST,
+    toTCK => SIB_1_sta_toTCK,
+    toSI => SIB_1_sta_toSI,
     fromF => F_R1,
     fromC => C_R1
 );
-SIB_2 : SIB_mux_pre_FCX_SELgate
+-- Router 1 checker status IJTAG adapter
+R1_status_adapter : AsyncDataRegisterAdapter
+    generic map (Size => 25)
+    port map (
+    SI => SIB_1_sta_toSI,
+    SO => R1_sta_adapter_so,
+    SEL => SIB_1_sta_toSEL,
+    ----------------------------------------     
+    SE => SIB_1_sta_toSE,
+    CE => SIB_1_sta_toCE,
+    UE => SIB_1_sta_toUE,
+    RST => SIB_1_sta_toRST,
+    TCK => SIB_1_sta_toTCK,
+      -- Data interface
+    DI => R1_aggregated_fault_status,
+    DO => R1_sta_adapter_do
+);
+
+R1_aggregated_fault_status <= link_faults_async_1 & turn_faults_async_1;
+-----------------------------------
+------ ROUTER 2 -------------------
+-----------------------------------
+-- Router R2 main SIB
+SIB_R2_inj_so : SIB_mux_pre_FCX_SELgate
     port map ( -- Scan Interface  client --------------
     SI => SIB_1_so,
     CE => CE,
@@ -269,17 +480,94 @@ SIB_2 : SIB_mux_pre_FCX_SELgate
     toF => F_segtop_fromSIB_2,
     toC => C_segtop_fromSIB_2,
      -- Scan Interface  host ----------------
-    fromSO => SO_2,
+    fromSO => SIB_2_sta_so,
     toCE => SIB_2_toCE,
-    toSE => SE_2,
-    toUE => UE_2,
+    toSE => SIB_2_toSE,
+    toUE => SIB_2_toUE,
     toSEL => SIB_2_toSEL,
     toRST => SIB_2_toRST,
-    toTCK => TCK_2,
-    toSI => SI_2,
+    toTCK => SIB_2_toTCK,
+    toSI => SIB_2_toSI,
+    fromF => toF_SIB_2,
+    fromC => toC_SIB_2
+);
+
+toF_SIB_2 <= F_fromSIB_2_inj or  F_fromSIB_2_status;
+toC_SIB_2 <= C_fromSIB_2_inj and C_fromSIB_2_status;
+
+-- Router 2 fault injection SIB
+SIB_2_injection : SIB_mux_pre_FCX_SELgate
+    port map ( -- Scan Interface  client --------------
+    SI => SIB_2_toSI,
+    CE => SIB_2_toCE,
+    SE => SIB_2_toSE,
+    UE => SIB_2_toUE,
+    SEL => SIB_2_toSEL,
+    RST => SIB_2_toRST,
+    TCK => SIB_2_toTCK,
+    SO => SIB_2_inj_so,
+    toF => F_fromSIB_2_inj,
+    toC => C_fromSIB_2_inj,
+     -- Scan Interface  host ----------------
+    fromSO => R2_inj_so,
+    toCE => SIB_2_inj_toCE,
+    toSE => SIB_2_inj_toSE,
+    toUE => SIB_2_inj_toUE,
+    toSEL => SIB_2_inj_toSEL,
+    toRST => SIB_2_inj_toRST,
+    toTCK => SIB_2_inj_toTCK,
+    toSI => SIB_2_inj_toSI,
+    fromF => '0',
+    fromC => '1'
+);
+-- Router 2 checker status SIB
+SIB_2_status : SIB_mux_pre_FCX_SELgate
+    port map ( -- Scan Interface  client --------------
+    SI => SIB_2_inj_so,
+    CE => SIB_2_toCE,
+    SE => SIB_2_toSE,
+    UE => SIB_2_toUE,
+    SEL => SIB_2_toSEL,
+    RST => SIB_2_toRST,
+    TCK => SIB_2_toTCK,
+    SO => SIB_2_sta_so,
+    toF => F_fromSIB_2_status,
+    toC => C_fromSIB_2_status,
+     -- Scan Interface  host ----------------
+    fromSO => R2_sta_adapter_so,
+    toCE => SIB_2_sta_toCE,
+    toSE => SIB_2_sta_toSE,
+    toUE => SIB_2_sta_toUE,
+    toSEL => SIB_2_sta_toSEL,
+    toRST => SIB_2_sta_toRST,
+    toTCK => SIB_2_sta_toTCK,
+    toSI => SIB_2_sta_toSI,
     fromF => F_R2,
     fromC => C_R2
 );
+-- Router 2 checker status IJTAG adapter
+R2_status_adapter : AsyncDataRegisterAdapter
+    generic map (Size => 25)
+    port map (
+    SI => SIB_2_sta_toSI,
+    SO => R2_sta_adapter_so,
+    SEL => SIB_2_sta_toSEL,
+    ----------------------------------------     
+    SE => SIB_2_sta_toSE,
+    CE => SIB_2_sta_toCE,
+    UE => SIB_2_sta_toUE,
+    RST => SIB_2_sta_toRST,
+    TCK => SIB_2_sta_toTCK,
+      -- Data interface
+    DI => R2_aggregated_fault_status,
+    DO => R2_sta_adapter_do
+);
+
+R2_aggregated_fault_status <= link_faults_async_2 & turn_faults_async_2;
+-----------------------------------
+------ ROUTER 3 -------------------
+-----------------------------------
+-- Router 3 main SIB
 SIB_3 : SIB_mux_pre_FCX_SELgate
     port map ( -- Scan Interface  client --------------
     SI => SIB_2_so,
@@ -293,18 +581,90 @@ SIB_3 : SIB_mux_pre_FCX_SELgate
     toF => F_segtop_fromSIB_3,
     toC => C_segtop_fromSIB_3,
      -- Scan Interface  host ----------------
-    fromSO => SO_3,
+    fromSO => SIB_3_sta_so,
     toCE => SIB_3_toCE,
-    toSE => SE_3,
-    toUE => UE_3,
+    toSE => SIB_3_toSE,
+    toUE => SIB_3_toUE,
     toSEL => SIB_3_toSEL,
     toRST => SIB_3_toRST,
-    toTCK => TCK_3,
-    toSI => SI_3,
+    toTCK => SIB_3_toTCK,
+    toSI => SIB_3_toSI,
+    fromF => toF_SIB_3,
+    fromC => toC_SIB_3
+);
+
+toF_SIB_3 <= F_fromSIB_3_inj or  F_fromSIB_3_status;
+toC_SIB_3 <= C_fromSIB_3_inj and C_fromSIB_3_status;
+
+-- Router 3 fault injection SIB
+SIB_3_injection : SIB_mux_pre_FCX_SELgate
+    port map ( -- Scan Interface  client --------------
+    SI => SIB_3_toSI,
+    CE => SIB_3_toCE,
+    SE => SIB_3_toSE,
+    UE => SIB_3_toUE,
+    SEL => SIB_3_toSEL,
+    RST => SIB_3_toRST,
+    TCK => SIB_3_toTCK,
+    SO => SIB_3_inj_so,
+    toF => F_fromSIB_3_inj,
+    toC => C_fromSIB_3_inj,
+     -- Scan Interface  host ----------------
+    fromSO => R3_inj_so,
+    toCE => SIB_3_inj_toCE,
+    toSE => SIB_3_inj_toSE,
+    toUE => SIB_3_inj_toUE,
+    toSEL => SIB_3_inj_toSEL,
+    toRST => SIB_3_inj_toRST,
+    toTCK => SIB_3_inj_toTCK,
+    toSI => SIB_3_inj_toSI,
+    fromF => '0',
+    fromC => '1'
+);
+-- Router 3 checker status SIB
+SIB_3_status : SIB_mux_pre_FCX_SELgate
+    port map ( -- Scan Interface  client --------------
+    SI => SIB_3_inj_so,
+    CE => SIB_3_toCE,
+    SE => SIB_3_toSE,
+    UE => SIB_3_toUE,
+    SEL => SIB_3_toSEL,
+    RST => SIB_3_toRST,
+    TCK => SIB_3_toTCK,
+    SO => SIB_3_sta_so,
+    toF => F_fromSIB_3_status,
+    toC => C_fromSIB_3_status,
+     -- Scan Interface  host ----------------
+    fromSO => R3_sta_adapter_so,
+    toCE => SIB_3_sta_toCE,
+    toSE => SIB_3_sta_toSE,
+    toUE => SIB_3_sta_toUE,
+    toSEL => SIB_3_sta_toSEL,
+    toRST => SIB_3_sta_toRST,
+    toTCK => SIB_3_sta_toTCK,
+    toSI => SIB_3_sta_toSI,
     fromF => F_R3,
     fromC => C_R3
 );
-
+-- Router 3 checker status IJTAG adapter
+R3_status_adapter : AsyncDataRegisterAdapter
+    generic map (Size => 25)
+    port map (
+    SI => SIB_3_sta_toSI,
+    SO => R3_sta_adapter_so,
+    SEL => SIB_3_sta_toSEL,
+    ----------------------------------------     
+    SE => SIB_3_sta_toSE,
+    CE => SIB_3_sta_toCE,
+    UE => SIB_3_sta_toUE,
+    RST => SIB_3_sta_toRST,
+    TCK => SIB_3_sta_toTCK,
+      -- Data interface
+    DI => R3_aggregated_fault_status,
+    DO => R3_sta_adapter_do
+);
+    
+R3_aggregated_fault_status <= link_faults_async_3 & turn_faults_async_3;
 
 
 R_0: router_NW_credit_based_PD_C_SHMU 
@@ -324,7 +684,7 @@ R_0: router_NW_credit_based_PD_C_SHMU
 	link_faults_0, turn_faults_0,
 	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0, 
 	-- fault injector shift register with serial input signals
-	TCK_0, SE_0, UE_0, SI_0, SO_0, 
+    SIB_0_inj_toTCK, SIB_0_inj_toSE, SIB_0_inj_toUE, SIB_0_inj_toSI, R0_inj_so,
     -- the non-classified fault information
     link_faults_async_0, turn_faults_async_0
  ); 
@@ -346,7 +706,7 @@ R_1: router_NE_credit_based_PD_C_SHMU
 	link_faults_1, turn_faults_1,
 	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1, 
     -- fault injector shift register with serial input signals
-    TCK_1, SE_1, UE_1, SI_1, SO_1, 
+    SIB_1_inj_toTCK, SIB_1_inj_toSE, SIB_1_inj_toUE, SIB_1_inj_toSI, R1_inj_so,
     -- the non-classified fault information
     link_faults_async_1, turn_faults_async_1
  ); 
@@ -368,7 +728,7 @@ R_2: router_SW_credit_based_PD_C_SHMU
 	link_faults_2, turn_faults_2,
 	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2, 
     -- fault injector shift register with serial input signals
-    TCK_2, SE_2, UE_2, SI_2, SO_2, 
+    SIB_2_inj_toTCK, SIB_2_inj_toSE, SIB_2_inj_toUE, SIB_2_inj_toSI, R2_inj_so,
     -- the non-classified fault information
     link_faults_async_2, turn_faults_async_2
  ); 
@@ -390,7 +750,7 @@ R_3: router_SE_credit_based_PD_C_SHMU
 	link_faults_3, turn_faults_3,
 	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3, 
     -- fault injector shift register with serial input signals
-    TCK_3, SE_3, UE_3, SI_3, SO_3, 
+    SIB_3_inj_toTCK, SIB_3_inj_toSE, SIB_3_inj_toUE, SIB_3_inj_toSI, R3_inj_so, 
     -- the non-classified fault information
     link_faults_async_3, turn_faults_async_3
  ); 

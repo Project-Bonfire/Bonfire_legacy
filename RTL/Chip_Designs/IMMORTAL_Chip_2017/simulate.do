@@ -44,6 +44,8 @@ vcom -cover bcesfx "network_files/customized_routers/Router_32_bit_SE_credit_bas
 vcom -cover bcesfx "IJTAG_files/SIB_mux_pre_FCX_SELgate.vhd"
 vcom -cover bcesfx "IJTAG_files/ScanMux.vhd"
 vcom -cover bcesfx "IJTAG_files/ScanRegister.vhd"
+vcom -cover bcesfx "IJTAG_files/SReg.vhd"
+vcom -cover bcesfx "IJTAG_files/AsyncDataRegisterAdapter.vhd"
 
 # plasma components
 vcom -cover bcesfx "plasma_RTL/memory_sim.vhd"
@@ -79,4 +81,4 @@ vsim -coverage -voptargs="+cover=bcestfx" work.tb_network_2x2
 do do_files/wave_2x2_with_top.do
 # Run the simulation for 4ms
 run 4000000 ns
-#do do_files/fault_inject_links_top_3000ns.do 	#use to inject files in the simulation(not using IJTAG)
+# do do_files/fault_inject_links_top_3000ns.do 	#use to inject files in the simulation(not using IJTAG)
