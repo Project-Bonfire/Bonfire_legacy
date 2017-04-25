@@ -82,3 +82,4 @@ do do_files/wave_2x2_with_top.do
 # Run the simulation for 4ms
 run 4000000 ns
 # do do_files/fault_inject_links_top_3000ns.do 	#use to inject files in the simulation(not using IJTAG)
+coverage report -file coverage_report.txt -byfile -assert -directive -cvg -codeAll
