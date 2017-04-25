@@ -381,7 +381,7 @@ Req_W <= Req_W_FF;
 Req_S <= Req_S_FF;
 Req_L <= Req_L_FF;
 
-process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF, grants, packet_drop, faulty) begin
+process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF, grants, packet_drop, faulty, dst_addr, cur_addr) begin
  packet_drop_in <= packet_drop;
   if flit_type = "001" and empty = '0' then
         Req_N_in <= ((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0);
