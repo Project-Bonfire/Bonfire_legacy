@@ -63,6 +63,8 @@ begin
   
    write_enable <= not(write_byte_enable(0) or write_byte_enable(1) or write_byte_enable(2) or write_byte_enable(3));
    not_clock <= not clk;
+
+   -- the following process is not actually tested! 
    process(write_byte_enable)
    begin
    write_BWEBM <= (others => '1'); 
@@ -83,6 +85,7 @@ begin
    end if;
    end process;
 
+   -- Plasma wants the data in the next clock cycle!
     process(clk, reset)begin
       if reset = '1' then
         delayed_data_out <= (others=> '0');
@@ -95,7 +98,7 @@ begin
    RAM_unit: TS1N40LPB1024X32M4S  
    port map(
       PD  => '0',
-      CLK => not_clock,
+      CLK => not_clock,   -- this is the part that we changed. there was some serious timing issues with setup and hold times!
       CEB => '0',
       WEB => write_enable,
       CEBM => '0',    
