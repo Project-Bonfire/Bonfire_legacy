@@ -159,8 +159,33 @@ begin
     shift_data("0001"&"0001"&"0000"& "000000001"     &      "0000001"&"0000001"&"0000001"&"0000001"&"0000001"      &     "0000001"&"0000001"&"0000001"&"0000001"&"0000001"       &"000000001"&"000000001"&"000000001"      &    "00000001"&"00000001"&"00000001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
     shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
     shift_data("0000"&"0000"&"0000"& "000000001"     &      "0000001"&"0000001"&"0000001"&"0000001"&"0000001"      &     "0000001"&"0000001"&"0000001"&"0000001"&"0000001"       &"000000001"&"000000001"&"000000001"      &    "00000001"&"00000001"&"00000001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    tck_tick(4);
 
+    shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
 
+    -- Inject fault in the bit with location 1 of L FIFO in Router 3 (SE)
+    shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
+    shift_data("0001"&"0001"&"0000"& "000000101"     &      "0000101"&"0000101"&"0000101"&"0000101"&"0000101"      &     "0000101"&"0000101"&"0000101"&"0000101"&"0000101"       &"000000101"&"000000101"&"000000101"      &    "00000101"&"00000101"&"00000101"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    shift_data("0000"&"0000"&"0000"& "000000001"     &      "0000101"&"0000101"&"0000101"&"0000101"&"0000101"      &     "0000101"&"0000101"&"0000101"&"0000101"&"0000101"       &"000000101"&"000000101"&"000000101"      &    "00000101"&"00000101"&"00000101"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    tck_tick(4);
+
+    shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
+
+    -- Inject fault in the bit with location 2 of L FIFO in Router 3 (SE)
+    shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
+    shift_data("0001"&"0001"&"0000"& "000000001"     &      "0001001"&"0001001"&"0001001"&"0001001"&"0001001"      &     "0001001"&"0001001"&"0001001"&"0001001"&"0001001"       &"000001001"&"000001001"&"000001001"      &    "00001001"&"00001001"&"00001001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    shift_data("0000"&"0000"&"0000"& "000000001"     &      "0001001"&"0001001"&"0001001"&"0001001"&"0001001"      &     "0001001"&"0001001"&"0001001"&"0001001"&"0001001"       &"000001001"&"000001001"&"000001001"      &    "00001001"&"00001001"&"00001001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    tck_tick(4);
+
+    shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
+
+    -- Inject fault in the bit with location 3 of L FIFO in Router 3 (SE)
+    shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
+    shift_data("0001"&"0001"&"0000"& "000000001"     &      "0001101"&"0001101"&"0001101"&"0001101"&"0001101"      &     "0001101"&"0001101"&"0001101"&"0001101"&"0001101"       &"000001101"&"000001101"&"000001101"      &    "00001101"&"00001101"&"00001101"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+    shift_data("0000"&"0000"&"0000"& "000000001"     &      "0001101"&"0001101"&"0001101"&"0001101"&"0001101"      &     "0001101"&"0001101"&"0001101"&"0001101"&"0001101"       &"000001101"&"000001101"&"000001101"      &    "00001101"&"00001101"&"00001101"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
     tck_tick(4);
 
     wait;
