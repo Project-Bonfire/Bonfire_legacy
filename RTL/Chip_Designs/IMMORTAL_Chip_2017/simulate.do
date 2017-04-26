@@ -60,8 +60,9 @@ vcom -cover bcesfx "plasma_RTL/mult.vhd"
 vcom -cover bcesfx "plasma_RTL/pc_next.vhd"
 vcom -cover bcesfx "plasma_RTL/pipeline.vhd"
 
+# for normal simulation use this:
 #vcom -cover bcesfx "plasma_RTL/ram.vhd"
-
+# to use the verilog of the memory use the following 2 lines:
 vlog -reportprogress 300 -work work "plasma_RTL/ts1n40lpb1024x32m4s_210b_tt1p1v25c.v"
 vcom -cover bcesfx "plasma_RTL/ram_wrapper.vhd"
 
