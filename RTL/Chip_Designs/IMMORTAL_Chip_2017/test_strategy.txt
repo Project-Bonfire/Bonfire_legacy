@@ -1,0 +1,41 @@
+testing strategy:
+
+
+RTL tests:
+
+	* 1st round (using plasma's behavioral memory content from file):
+		* reconfigure the routers in the beginning (this will increase the coverage for LBDRs and NI):
+			* to do so, write in the NI_reconfiguration_address: "000000000000000010000000000010" 
+			* the data is in the following format: Cx_reconf_PE(4 bits) & Rxy_reconf_PE(8bits):
+		* some dummy faults should be injected via iJTAG that enables a turn fault in the SHMU 
+			* to do so, read the flags in the NI and if the flag is set, read NI_self_diagnosis_address: "000000000000000010000000000011"
+			* the side effect is that we test the sibs
+		* try firing all the checkers in one router via iJTAG fault injection
+		* then start sending packets to all other nodes, without waiting for specific packets to recieve 
+		  (during this time we can inject faults):
+			* real faults should be injected on the links to test all the cases of FIFO packet drop and the counter threshold:
+				* some links should go faulty... which should be restored later (this will cover the transition from healthy 
+				  to intermittent and faulty)
+				* some links should go intermittend and back to healthy 
+			* real faults should be injected on the LBDR input to test the LBDR packet drop mechanism
+		* start syncing packets (wait for a packet and then re-route it)
+		* test GPIO
+		* run plasma test program and use UART
+
+	* 2nd round:
+		* pre-load verilog memory from file and send packets in the network (the rest should already work!). log via UART!
+
+	* 3nd round:
+		* try writing simple application (sending packets to other nodes) into verilog-memory via iJTAG. log via UART!
+	
+Post-synthesis tests:
+	* write into Plasma Memory via iJTAG
+		* test UART (if it works, try getting out the other test results from UART)
+			* for this we need a UART reciever for the testbench! maybe re-use the plasma UART
+		* test NoC packet sending (sent and recieved packets should be recorded via UART), not many packets are required, 
+		  each node should be able to send to all others
+		* test GPIO
+
+Post-layout tests:
+	* re-do Post-synthesis tests!
+
