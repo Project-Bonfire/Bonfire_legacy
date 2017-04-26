@@ -1,16 +1,6 @@
 ---------------------------------------------------------------------
--- TITLE: Random Access Memory
--- AUTHOR: Steve Rhoads (rhoadss@yahoo.com)
--- DATE CREATED: 4/21/01
--- FILENAME: ram.vhd
--- PROJECT: Plasma CPU core
--- COPYRIGHT: Software placed into the public domain by the author.
---    Software 'as is' without warranty.  Author liable for nothing.
--- DESCRIPTION:
---    Implements the RAM, reads the executable from either "code.txt",
---    or for Altera "code[0-3].hex".
---    Modified from "The Designer's Guide to VHDL" by Peter J. Ashenden
-
+-- TITLE: RAM wrapper
+-- AUTHOR: Siavoosh Payandeh Azad
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
