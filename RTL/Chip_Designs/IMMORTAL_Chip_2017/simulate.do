@@ -59,7 +59,12 @@ vcom -cover bcesfx "plasma_RTL/mem_ctrl.vhd"
 vcom -cover bcesfx "plasma_RTL/mult.vhd"
 vcom -cover bcesfx "plasma_RTL/pc_next.vhd"
 vcom -cover bcesfx "plasma_RTL/pipeline.vhd"
-vcom -cover bcesfx "plasma_RTL/ram.vhd"
+
+#vcom -cover bcesfx "plasma_RTL/ram.vhd"
+
+vlog -reportprogress 300 -work work "plasma_RTL/ts1n40lpb1024x32m4s_210b_tt1p1v25c.v"
+vcom -cover bcesfx "plasma_RTL/ram_wrapper.vhd"
+
 vcom -cover bcesfx "plasma_RTL/reg_bank_tri_port.vhd"
 vcom -cover bcesfx "plasma_RTL/shifter.vhd"
 vcom -cover bcesfx "plasma_RTL/uart.vhd"

@@ -342,6 +342,22 @@ add wave -noupdate -group {CPU insturctions} -color green :tb_network_2x2:NoC_to
 add wave -noupdate -group {CPU insturctions} -color green :tb_network_2x2:NoC_top:PE_2:u1_plasma:u1_cpu:u3_control:instruction
 add wave -noupdate -group {CPU insturctions} -color green :tb_network_2x2:NoC_top:PE_3:u1_plasma:u1_cpu:u3_control:instruction
 
+add wave -position insertpoint -color green sim/:tb_network_2x2:NoC_top:PE_0:u1_plasma:u2_ram:*
+add wave -noupdate -color yellow -radix decimal :tb_network_2x2:clk
+add wave -position insertpoint -color green sim/:tb_network_2x2:NoC_top:PE_1:u1_plasma:u2_ram:*
+add wave -noupdate -color yellow -radix decimal :tb_network_2x2:clk
+add wave -position insertpoint -color green sim/:tb_network_2x2:NoC_top:PE_2:u1_plasma:u2_ram:*
+add wave -noupdate -color yellow -radix decimal :tb_network_2x2:clk
+add wave -position insertpoint -color green sim/:tb_network_2x2:NoC_top:PE_3:u1_plasma:u2_ram:*
+
+
+add wave -position insertpoint sim/:tb_network_2x2:NoC_top:PE_0:u1_plasma:u2_ram:RAM_unit:MEMORY
+add wave -position insertpoint sim/:tb_network_2x2:NoC_top:PE_1:u1_plasma:u2_ram:RAM_unit:MEMORY
+add wave -position insertpoint sim/:tb_network_2x2:NoC_top:PE_2:u1_plasma:u2_ram:RAM_unit:MEMORY
+add wave -position insertpoint sim/:tb_network_2x2:NoC_top:PE_3:u1_plasma:u2_ram:RAM_unit:MEMORY
+
+
+
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors
 quietly wave cursor active 0

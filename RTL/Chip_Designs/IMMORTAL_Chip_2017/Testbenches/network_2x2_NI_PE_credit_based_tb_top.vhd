@@ -55,8 +55,8 @@ port (reset: in  std_logic;
     );
 end component; 
 
-	  constant clk_period : time := 1 ns;
-	  constant tck_period : time := 10 ns;
+	  constant clk_period : time := 10 ns;
+	  constant tck_period : time := 100 ns;
     constant HALF_SEPARATOR : time := 2*tck_period;
     constant FULL_SEPARATOR : time := 8*tck_period;
 
@@ -194,7 +194,7 @@ end process;
 
 -- Added for IJTAG
 
-reset <= '1' after 1 ns;
+reset <= '1' after 3 ns;
 
 -- instantiating the top module for the network
 NoC_top: network_2x2_with_PE generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
