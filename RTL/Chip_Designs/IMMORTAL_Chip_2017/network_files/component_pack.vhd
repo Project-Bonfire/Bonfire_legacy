@@ -311,18 +311,18 @@ package component_pack is
             );
   end COMPONENT;
 
-  COMPONENT checkers_counter_threshold_classifier is
-        generic (
-            counter_depth: integer := 8;
-            healthy_counter_threshold: integer := 4;
-            faulty_counter_threshold: integer := 4
-         );
-        port (  reset: in  std_logic;
-                clk: in  std_logic;
-                data_input: in  std_logic;
-                Healthy, Intermittent, Faulty: out std_logic
-                );
-  end COMPONENT;
+  --COMPONENT checkers_counter_threshold_classifier is
+  --      generic (
+  --          counter_depth: integer := 8;
+  --          healthy_counter_threshold: integer := 4;
+  --          faulty_counter_threshold: integer := 4
+  --       );
+  --      port (  reset: in  std_logic;
+  --              clk: in  std_logic;
+  --              data_input: in  std_logic;
+  --              Healthy, Intermittent, Faulty: out std_logic
+  --              );
+  --end COMPONENT;
 
   component LBDR_packet_drop_routing_part_pseudo_checkers is
   generic (
