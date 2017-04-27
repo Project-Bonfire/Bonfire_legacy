@@ -941,7 +941,9 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
 
 signal      W_FIFO_checkers_ORed, S_FIFO_checkers_ORed, L_FIFO_checkers_ORed : std_logic;
 signal      W2S_turn_fault, S2W_turn_fault : std_logic;
+signal      not_W2S_turn_fault, not_S2W_turn_fault : std_logic;
 signal      L2W_fault, L2S_fault, W2L_fault, S2L_fault : std_logic;
+signal      not_L2W_fault, not_L2S_fault, not_W2L_fault, not_S2L_fault : std_logic;
 
 -- Just used temporarily for debugging purposes!
 
@@ -965,6 +967,13 @@ signal      fault_DO_serial_W_LBDR_to_S_LBDR, fault_DO_serial_S_LBDR_to_Allocato
 ------------------------------------------------------------------
 
 begin
+
+not_W2S_turn_fault <= not W2S_turn_fault; 
+not_S2W_turn_fault <= not not_W2S_turn_fault; 
+not_L2W_fault <= not L2W_fault; 
+not_L2S_fault <= not L2S_fault; 
+not_W2L_fault <= not W2L_fault; 
+not_S2L_fault <= not S2L_fault; 
 
 -- FIFO contributes to all turns and paths, therefore, for each turn or path (for the input direction), all the outputs of FIFO checkers
 -- corresponding to that input are ORed together. 
@@ -2298,28 +2307,28 @@ CT_L:  counter_threshold_classifier  generic map(counter_depth => counter_depth,
 
 -- Turn faults
 CHK_CT_W2S_turn_fault:  counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, faulty_packet => W2S_turn_fault, Healthy_packet => not W2S_turn_fault, 
+    port map(reset => reset, clk => clk, faulty_packet => W2S_turn_fault, Healthy_packet => not_W2S_turn_fault, 
              Healthy => Healthy_W2S_turn_fault, Intermittent => intermittent_W2S_turn_fault, Faulty => faulty_W2S_turn_fault);
 
 CHK_CT_S2W_turn_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, faulty_packet => S2W_turn_fault, Healthy_packet => not S2W_turn_fault, 
+    port map(reset => reset, clk => clk, faulty_packet => S2W_turn_fault, Healthy_packet => not_S2W_turn_fault, 
              Healthy => Healthy_S2W_turn_fault, Intermittent => intermittent_S2W_turn_fault, Faulty => faulty_S2W_turn_fault);
 
 CHK_CT_L2W_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, faulty_packet => L2W_fault, Healthy_packet => not L2W_fault, 
+    port map(reset => reset, clk => clk, faulty_packet => L2W_fault, Healthy_packet => not_L2W_fault, 
              Healthy => Healthy_L2W_fault, Intermittent => intermittent_L2W_fault, Faulty => faulty_L2W_fault);
 
 CHK_CT_L2S_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, faulty_packet => L2S_fault, Healthy_packet => not L2S_fault, 
+    port map(reset => reset, clk => clk, faulty_packet => L2S_fault, Healthy_packet => not_L2S_fault, 
              Healthy => Healthy_L2S_fault, Intermittent => intermittent_L2S_fault, Faulty => faulty_L2S_fault);
 
 -- Local port related faults (to/from local port)
 CHK_CT_W2L_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, faulty_packet => W2L_fault, Healthy_packet => not W2L_fault, 
+    port map(reset => reset, clk => clk, faulty_packet => W2L_fault, Healthy_packet => not_W2L_fault, 
              Healthy => Healthy_W2L_fault, Intermittent => intermittent_W2L_fault, Faulty => faulty_W2L_fault);
 
 CHK_CT_S2L_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, faulty_packet => S2L_fault, Healthy_packet => not S2L_fault, 
+    port map(reset => reset, clk => clk, faulty_packet => S2L_fault, Healthy_packet => not_S2L_fault, 
              Healthy => Healthy_S2L_fault, Intermittent => intermittent_S2L_fault, Faulty => faulty_S2L_fault);
 
 ------------------------------------------------------------------------------------------------------------------------------
