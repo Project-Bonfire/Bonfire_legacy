@@ -29,7 +29,6 @@ vcom -cover bcesfx "network_files/LBDR_packet_drop_with_checkers_with_FI/LBDR_pa
 vcom -cover bcesfx "network_files/LBDR_packet_drop_with_checkers_with_FI/LBDR_packet_drop_with_checkers_with_FI.vhd"
 vcom -cover bcesfx "network_files/ParityChecker_for_LBDR.vhd"
 vcom -cover bcesfx "network_files/counter_threshold.vhd"
-vcom -cover bcesfx "network_files/checkers_counter_threshold.vhd"
 vcom -cover bcesfx "network_files/Fault_injector.vhd"
 vcom -cover bcesfx "network_files/shift_register_serial_in.vhd"
 vcom -cover bcesfx "network_files/NI.vhd"
