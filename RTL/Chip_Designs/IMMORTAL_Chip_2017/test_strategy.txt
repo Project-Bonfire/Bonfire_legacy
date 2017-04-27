@@ -13,11 +13,11 @@ RTL tests:
 		* try firing all the checkers in one router via iJTAG fault injection
 		* then start sending packets to all other nodes, without waiting for specific packets to recieve 
 		  (during this time we can inject faults):
-			* real faults should be injected on the links to test all the cases of FIFO packet drop and the counter threshold:
+			* real faults (via modelsim force command) should be injected on the links to test all the cases of FIFO packet drop and the counter threshold:
 				* some links should go faulty... which should be restored later (this will cover the transition from healthy 
 				  to intermittent and faulty)
 				* some links should go intermittend and back to healthy 
-			* real faults should be injected on the LBDR input to test the LBDR packet drop mechanism
+			* real faults (via modelsim force command) should be injected on the LBDR input to test the LBDR packet drop mechanism
 		* start syncing packets (wait for a packet and then re-route it)
 		* test GPIO
 		* run plasma test program and use UART
