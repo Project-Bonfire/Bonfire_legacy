@@ -71,144 +71,130 @@ Coverage Report Summary Data by file
     Toggle Bins                    772       317       455      41.0
 
 =================================================================================
-=== File: Testbenches/network_2x2_NI_PE_credit_based_tb_top.vhd
-=================================================================================
-    Enabled Coverage            Active      Hits    Misses % Covered
-    ----------------            ------      ----    ------ ---------
-    Stmts                           48        48         0     100.0
-    Branches                         0         0         0     100.0
-    FEC Condition Terms              0         0         0     100.0
-    FEC Expression Terms             0         0         0     100.0
-    FSMs                                                       100.0
-        States                       0         0         0     100.0
-        Transitions                  0         0         0     100.0
-    Toggle Bins                    310        24       286       7.7
-
-=================================================================================
 === File: network_files/Allocator_with_checkers_with_FI/Arbiter_in_one_hot_checkers.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          209       152        57      72.7
-    Branches                       138        81        57      58.6
-    FEC Condition Terms            362        38       324      10.4
+    Stmts                          209       167        42      79.9
+    Branches                       138        96        42      69.5
+    FEC Condition Terms            362       111       251      30.6
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    518        53       465      10.2
+    Toggle Bins                    438        84       354      19.1
 
 =================================================================================
 === File: network_files/Allocator_with_checkers_with_FI/Arbiter_in_one_hot_with_checkers_with_FI.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           87        37        50      42.5
-    Branches                        44        16        28      36.3
+    Stmts                           87        47        40      54.0
+    Branches                        44        24        20      54.5
     FEC Condition Terms              0         0         0     100.0
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                        65.2
         States                       6         6         0     100.0
         Transitions                 36        11        25      30.5
-    Toggle Bins                    810       112       698      13.8
+    Toggle Bins                    662       177       485      26.7
 
 =================================================================================
 === File: network_files/Allocator_with_checkers_with_FI/Arbiter_out_one_hot_pseudo_checkers.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          155       118        37      76.1
-    Branches                       102        65        37      63.7
-    FEC Condition Terms            267        45       222      16.8
+    Stmts                          155       127        28      81.9
+    Branches                       102        74        28      72.5
+    FEC Condition Terms            267        96       171      35.9
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    362        76       286      20.9
+    Toggle Bins                    354        79       275      22.3
 
 =================================================================================
 === File: network_files/Allocator_with_checkers_with_FI/allocator_credit_counter_logic_pseudo_checkers.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           90        67        23      74.4
-    Branches                        60        37        23      61.6
-    FEC Condition Terms            110        19        91      17.2
+    Stmts                           90        79        11      87.7
+    Branches                        60        49        11      81.6
+    FEC Condition Terms            110        58        52      52.7
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    256        56       200      21.8
+    Toggle Bins                    248        58       190      23.3
 
 =================================================================================
 === File: network_files/Allocator_with_checkers_with_FI/allocator_logic_pseudo_checkers.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          183       138        45      75.4
-    Branches                       122        77        45      63.1
-    FEC Condition Terms            265        54       211      20.3
+    Stmts                          183       153        30      83.6
+    Branches                       122        92        30      75.4
+    FEC Condition Terms            265       101       164      38.1
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    632        62       570       9.8
+    Toggle Bins                    572        92       480      16.0
 
 =================================================================================
 === File: network_files/Allocator_with_checkers_with_FI/allocator_with_checkers_with_FI.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          167       157        10      94.0
-    Branches                        22        12        10      54.5
-    FEC Condition Terms             30        10        20      33.3
-    FEC Expression Terms           100         6        94       6.0
+    Stmts                          167       166         1      99.4
+    Branches                        22        21         1      95.4
+    FEC Condition Terms             30        26         4      86.6
+    FEC Expression Terms           100        28        72      28.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                   5814       506      5308       8.7
+    Toggle Bins                   5514       638      4876      11.5
 
 =================================================================================
 === File: network_files/Allocator_with_checkers_with_FI/arbiter_out_one_hot_with_checkers_with_FI.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           62        34        28      54.8
-    Branches                        54        22        32      40.7
-    FEC Condition Terms             10         3         7      30.0
+    Stmts                           62        42        20      67.7
+    Branches                        54        34        20      62.9
+    FEC Condition Terms             10         7         3      70.0
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                        72.2
         States                       6         6         0     100.0
         Transitions                 36        16        20      44.4
-    Toggle Bins                    510       183       327      35.8
+    Toggle Bins                    482       196       286      40.6
 
 =================================================================================
 === File: network_files/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI/FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          330       269        61      81.5
-    Branches                       220       159        61      72.2
-    FEC Condition Terms            433       148       285      34.1
+    Stmts                          330       288        42      87.2
+    Branches                       220       178        42      80.9
+    FEC Condition Terms            433       230       203      53.1
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    818        83       735      10.1
+    Toggle Bins                    814        85       729      10.4
 
 =================================================================================
 === File: network_files/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          228       133        95      58.3
-    Branches                        88        55        33      62.5
-    FEC Condition Terms             24         9        15      37.5
-    FEC Expression Terms             6         4         2      66.6
+    Stmts                          228       177        51      77.6
+    Branches                        88        68        20      77.2
+    FEC Condition Terms             24        12        12      50.0
+    FEC Expression Terms             6         6         0     100.0
     FSMs                                                        58.4
         States                       5         4         1      80.0
         Transitions                 19         7        12      36.8
-    Toggle Bins                   1960       920      1040      46.9
+    Toggle Bins                   1956       922      1034      47.1
 
 =================================================================================
 === File: network_files/Fault_injector.vhd
@@ -218,11 +204,11 @@ Coverage Report Summary Data by file
     Stmts                            4         4         0     100.0
     Branches                         0         0         0     100.0
     FEC Condition Terms              0         0         0     100.0
-    FEC Expression Terms             4         3         1      75.0
+    FEC Expression Terms             4         4         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    994       258       736      25.9
+    Toggle Bins                    614       442       172      71.9
 
 =================================================================================
 === File: network_files/LBDR_packet_drop_with_checkers_with_FI/Cx_Reconf_pseudo_checkers.vhd
@@ -236,21 +222,21 @@ Coverage Report Summary Data by file
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    256        10       246       3.9
+    Toggle Bins                    188        44       144      23.4
 
 =================================================================================
 === File: network_files/LBDR_packet_drop_with_checkers_with_FI/LBDR_packet_drop_routing_part_pseudo_checkers.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           91        75        16      82.4
-    Branches                        58        42        16      72.4
-    FEC Condition Terms            103        35        68      33.9
+    Stmts                           91        86         5      94.5
+    Branches                        58        53         5      91.3
+    FEC Condition Terms            103        78        25      75.7
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    352        88       264      25.0
+    Toggle Bins                    292       118       174      40.4
 
 =================================================================================
 === File: network_files/LBDR_packet_drop_with_checkers_with_FI/LBDR_packet_drop_with_checkers_with_FI.vhd
@@ -258,13 +244,13 @@ Coverage Report Summary Data by file
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
     Stmts                          112       100        12      89.2
-    Branches                        30        22         8      73.3
-    FEC Condition Terms             21         5        16      23.8
-    FEC Expression Terms            29         4        25      13.7
+    Branches                        30        24         6      80.0
+    FEC Condition Terms             21         8        13      38.0
+    FEC Expression Terms            29        11        18      37.9
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                   1926       175      1751       9.0
+    Toggle Bins                   1510       383      1127      25.3
 
 =================================================================================
 === File: network_files/LBDR_packet_drop_with_checkers_with_FI/Rxy_Reconf_pseudo_checkers.vhd
@@ -278,21 +264,21 @@ Coverage Report Summary Data by file
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    310        10       300       3.2
+    Toggle Bins                    194        68       126      35.0
 
 =================================================================================
 === File: network_files/NI.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          236       164        72      69.4
-    Branches                       121        64        57      52.8
-    FEC Condition Terms             50        15        35      30.0
+    Stmts                          236       223        13      94.4
+    Branches                       121       108        13      89.2
+    FEC Condition Terms             50        34        16      68.0
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                        78.9
         States                       7         7         0     100.0
         Transitions                 19        11         8      57.8
-    Toggle Bins                   3802      1690      2112      44.4
+    Toggle Bins                   3802      1692      2110      44.5
 
 =================================================================================
 === File: network_files/ParityChecker_for_LBDR.vhd
@@ -313,22 +299,22 @@ Coverage Report Summary Data by file
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           38        34         4      89.4
-    Branches                        22        20         2      90.9
+    Stmts                           38        36         2      94.7
+    Branches                        22        21         1      95.4
     FEC Condition Terms              0         0         0     100.0
     FEC Expression Terms             0         0         0     100.0
-    FSMs                                                        85.7
+    FSMs                                                        92.8
         States                       3         3         0     100.0
-        Transitions                  7         5         2      71.4
-    Toggle Bins                     80        43        37      53.7
+        Transitions                  7         6         1      85.7
+    Toggle Bins                     76        47        29      61.8
 
 =================================================================================
 === File: network_files/counter_threshold.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           38        20        18      52.6
-    Branches                        22         9        13      40.9
+    Stmts                           38        25        13      65.7
+    Branches                        22        13         9      59.0
     FEC Condition Terms              0         0         0     100.0
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                        23.8
@@ -344,7 +330,7 @@ Coverage Report Summary Data by file
     Stmts                           22        22         0     100.0
     Branches                         0         0         0     100.0
     FEC Condition Terms              0         0         0     100.0
-    FEC Expression Terms           138         3       135       2.1
+    FEC Expression Terms           138        20       118      14.4
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
@@ -358,11 +344,11 @@ Coverage Report Summary Data by file
     Stmts                           22        22         0     100.0
     Branches                         0         0         0     100.0
     FEC Condition Terms              0         0         0     100.0
-    FEC Expression Terms           138         7       131       5.0
+    FEC Expression Terms           138        25       113      18.1
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                   8482       681      7801       8.0
+    Toggle Bins                   8478       683      7795       8.0
 
 =================================================================================
 === File: network_files/customized_routers/Router_32_bit_SE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd
@@ -372,11 +358,11 @@ Coverage Report Summary Data by file
     Stmts                           22        22         0     100.0
     Branches                         0         0         0     100.0
     FEC Condition Terms              0         0         0     100.0
-    FEC Expression Terms           138         3       135       2.1
+    FEC Expression Terms           138        46        92      33.3
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                   8606       603      8003       7.0
+    Toggle Bins                   8218       787      7431       9.5
 
 =================================================================================
 === File: network_files/customized_routers/Router_32_bit_SW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd
@@ -386,7 +372,7 @@ Coverage Report Summary Data by file
     Stmts                           22        22         0     100.0
     Branches                         0         0         0     100.0
     FEC Condition Terms              0         0         0     100.0
-    FEC Expression Terms           138         8       130       5.7
+    FEC Expression Terms           138        23       115      16.6
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
@@ -418,7 +404,7 @@ Coverage Report Summary Data by file
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                   1790       581      1209      32.4
+    Toggle Bins                   1790       597      1193      33.3
 
 =================================================================================
 === File: network_files/shift_register_serial_in.vhd
@@ -432,15 +418,15 @@ Coverage Report Summary Data by file
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                     86        33        53      38.3
+    Toggle Bins                     54        49         5      90.7
 
 =================================================================================
 === File: network_files/xbar.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                            6         5         1      83.3
-    Branches                         5         4         1      80.0
+    Stmts                            6         6         0     100.0
+    Branches                         5         5         0     100.0
     FEC Condition Terms              0         0         0     100.0
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                       100.0
@@ -460,7 +446,7 @@ Coverage Report Summary Data by file
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                   1394       255      1139      18.2
+    Toggle Bins                   1394       293      1101      21.0
 
 =================================================================================
 === File: plasma_RTL/alu.vhd
@@ -468,21 +454,21 @@ Coverage Report Summary Data by file
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
     Stmts                            4         4         0     100.0
-    Branches                        11         9         2      81.8
-    FEC Condition Terms              6         3         3      50.0
+    Branches                        11        11         0     100.0
+    FEC Condition Terms              6         5         1      83.3
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    274       268         6      97.8
+    Toggle Bins                    270       270         0     100.0
 
 =================================================================================
 === File: plasma_RTL/bus_mux.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           33        28         5      84.8
-    Branches                        29        24         5      82.7
+    Stmts                           33        30         3      90.9
+    Branches                        29        26         3      89.6
     FEC Condition Terms              0         0         0     100.0
     FEC Expression Terms             4         0         4       0.0
     FSMs                                                       100.0
@@ -495,23 +481,23 @@ Coverage Report Summary Data by file
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          295       109       186      36.9
-    Branches                        70        22        48      31.4
+    Stmts                          295       194       101      65.7
+    Branches                        70        44        26      62.8
     FEC Condition Terms              2         0         2       0.0
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    278       207        71      74.4
+    Toggle Bins                    274       213        61      77.7
 
 =================================================================================
 === File: plasma_RTL/mem_ctrl.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           63        47        16      74.6
-    Branches                        42        25        17      59.5
-    FEC Condition Terms              6         1         5      16.6
+    Stmts                           63        59         4      93.6
+    Branches                        42        38         4      90.4
+    FEC Condition Terms              6         2         4      33.3
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
@@ -544,7 +530,7 @@ Coverage Report Summary Data by file
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                   1936      1334       602      68.9
+    Toggle Bins                   1928      1338       590      69.3
 
 =================================================================================
 === File: plasma_RTL/mlite_pack.vhd
@@ -565,14 +551,14 @@ Coverage Report Summary Data by file
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           69        28        41      40.5
-    Branches                        33        15        18      45.4
-    FEC Condition Terms             14         5         9      35.7
+    Stmts                           69        52        17      75.3
+    Branches                        33        25         8      75.7
+    FEC Condition Terms             14         7         7      50.0
     FEC Expression Terms             6         0         6       0.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    800       616       184      77.0
+    Toggle Bins                    796       617       179      77.5
 
 =================================================================================
 === File: plasma_RTL/pc_next.vhd
@@ -593,28 +579,28 @@ Coverage Report Summary Data by file
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           68        45        23      66.1
-    Branches                        49        28        21      57.1
-    FEC Condition Terms             18         5        13      27.7
-    FEC Expression Terms            23         1        22       4.3
+    Stmts                           68        49        19      72.0
+    Branches                        49        32        17      65.3
+    FEC Condition Terms             18         7        11      38.8
+    FEC Expression Terms            23         4        19      17.3
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                   2840       714      2126      25.1
+    Toggle Bins                   2832       763      2069      26.9
 
 =================================================================================
-=== File: plasma_RTL/ram.vhd
+=== File: plasma_RTL/ram_wrapper.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           15        15         0     100.0
-    Branches                        16        16         0     100.0
+    Stmts                           11        11         0     100.0
+    Branches                        10        10         0     100.0
     FEC Condition Terms              0         0         0     100.0
-    FEC Expression Terms             0         0         0     100.0
+    FEC Expression Terms             4         4         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                    266       171        95      64.2
+    Toggle Bins                    462       367        95      79.4
 
 =================================================================================
 === File: plasma_RTL/reg_bank_tri_port.vhd
@@ -636,8 +622,8 @@ Coverage Report Summary Data by file
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
     Stmts                           12        12         0     100.0
-    Branches                        25        23         2      92.0
-    FEC Condition Terms              4         0         4       0.0
+    Branches                        25        25         0     100.0
+    FEC Condition Terms              4         4         0     100.0
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                       100.0
         States                       0         0         0     100.0
@@ -659,5 +645,5 @@ Coverage Report Summary Data by file
     Toggle Bins                   1350       234      1116      17.3
 
 
-Total Coverage By File (code coverage only, filtered view): 42.2%
+Total Coverage By File (code coverage only, filtered view): 53.2%
 

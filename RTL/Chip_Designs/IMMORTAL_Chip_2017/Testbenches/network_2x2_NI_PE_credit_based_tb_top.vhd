@@ -56,7 +56,7 @@ port (reset: in  std_logic;
 end component; 
 
 	  constant clk_period : time := 10 ns;
-	  constant tck_period : time := 100 ns;
+	  constant tck_period : time := 35 ns;
     constant HALF_SEPARATOR : time := 2*tck_period;
     constant FULL_SEPARATOR : time := 8*tck_period;
 
@@ -136,6 +136,13 @@ begin
       return zero_array;
     end function all_zeroes;
 
+    variable I: integer := 0;
+    variable address_fifo: std_logic_vector (5 downto 0) := (others => '0');
+
+    variable address_arbiter_out: std_logic_vector (4 downto 0) := (others => '0');
+    variable address_arbiter_in: std_logic_vector (4 downto 0) := (others => '0');
+    variable address_arbiter_logic: std_logic_vector (8 downto 0) := (others => '0');
+    variable address_lbdr: std_logic_vector (6 downto 0) := (others => '0');
   begin
 
             -- Reset iJTAG chain and Instruments
@@ -145,48 +152,86 @@ begin
     SEL <= '1';
     tck_tick(4);
 
-    --shift_data("0001000000000000"); -- open sib3
-    shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
+    -- this tests if we can go back from intermittent to healthy again!
+      wait for 16200*clk_period;
+      shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
+      -- Inject fault in the bit with location 1 of L FIFO in Router 3 (SE)
+      shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
+      shift_data("0001"&"0001"&"0000"& "000000000"     &     "0000001"&"0000001"&"0000001"&"0000001"&"0000001"    &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  &"000000000"&"000000000"&"000000000"      &    "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0000"&"0000"&"0000"& "000000000"     &     "0000001"&"0000001"&"0000001"&"0000001"&"0000001"     &    "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  &"000000000"&"000000000"&"000000000"      &    "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      tck_tick(4);
+      address_arbiter_out :=  address_arbiter_out +1 ;
+      I := I +1;
 
-    tck_tick(4);
+      wait for 1000*clk_period;
 
-    -- 130 bits in total (for chains)
-    -- Inject fault in the bit with location 0 of L, N, and W FIFOs , L, N, and W LBDRs , L, N, E, W and S Arbiter_ins and Arbiter_outs and Allocator logic  in Router 3 (SE)
-    --shift_data("0000"  & "000000001"     &      "0000001"&"0000001"&"0000001"&"0000001"&"0000001"      &     "0000001"&"0000001"&"0000001"&"0000001"&"0000001"       &"000000001"&"000000001"&"000000001"      &    "00000001"&"00000001"&"00000001"&all_zeroes(12)); --close sib3, shift 1 into the last bit of fault injection register, close other sibs.
+      -- end of Intermittent to Healthy test!
+    -- inject into arbiter out  
+    while (I <= 16) loop
+      shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
+      -- Inject fault in the bit with location 1 of L FIFO in Router 3 (SE)
+      shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
+      shift_data("0001"&"0001"&"0000"& "000000000"     &      address_arbiter_out&"01"&address_arbiter_out&"01"&address_arbiter_out&"01"&address_arbiter_out&"01"&address_arbiter_out&"01"      &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  &"000000000"&"000000000"&"000000000"      &    "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0000"&"0000"&"0000"& "000000000"     &      address_arbiter_out&"01"&address_arbiter_out&"01"&address_arbiter_out&"01"&address_arbiter_out&"01"&address_arbiter_out&"01"       &    "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  &"000000000"&"000000000"&"000000000"      &    "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      tck_tick(4);
+      address_arbiter_out :=  address_arbiter_out +1 ;
+      I := I +1;
+    end loop;
+    -- inject into arbiter in 
+    I:= 0;
+    while (I <= 16) loop
+      shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
+      -- Inject fault in the bit with location 1 of L FIFO in Router 3 (SE)
+      shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
+      shift_data("0001"&"0001"&"0000"& "000000000"     &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"    &     address_arbiter_in&"01"&address_arbiter_in&"01"&address_arbiter_in&"01"&address_arbiter_in&"01"&address_arbiter_in&"01"   &"000000000"&"000000000"&"000000000"      &    "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0000"&"0000"&"0000"& "000000000"     &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"     &    address_arbiter_in&"01"&address_arbiter_in&"01"&address_arbiter_in&"01"&address_arbiter_in&"01"&address_arbiter_in&"01"   &"000000000"&"000000000"&"000000000"      &    "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      tck_tick(4);
+      address_arbiter_in :=  address_arbiter_in +1 ;
+      I := I +1;
+    end loop;
+    -- inject into arbiter in LBDR
+    I := 0;
+    while (I <= 69) loop
+      shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
+      -- Inject fault in the bit with location 1 of L FIFO in Router 3 (SE)
+      shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
+      shift_data("0001"&"0001"&"0000"& "000000000"     &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"    &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  & address_lbdr&"01"&address_lbdr&"01"&address_lbdr&"01"     &    "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0000"&"0000"&"0000"& "000000000"     &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"     &    "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  & address_lbdr&"01"&address_lbdr&"01"&address_lbdr&"01"     &    "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      tck_tick(4);
+      address_lbdr :=  address_lbdr +1 ;
+      I := I +1;
+    end loop;
+    -- inject into arbiter in FIFO
+    I := 0;
+    while (I <= 43) loop
+      shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
+      -- Inject fault in the bit with location 1 of L FIFO in Router 3 (SE)
+      shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
+      shift_data("0001"&"0001"&"0000"& "000000000"     &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"    &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  &"000000000"&"000000000"&"000000000"      &    address_fifo&"01"&address_fifo&"01"&address_fifo&"01"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0000"&"0000"&"0000"& "000000000"     &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"     &    "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  &"000000000"&"000000000"&"000000000"      &    address_fifo&"01"&address_fifo&"01"&address_fifo&"01"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      tck_tick(4);
+      address_arbiter_out :=  address_arbiter_out +1 ;
+      I := I +1;
+    end loop;
 
-    -- Inject fault in the bit with location 0 of L FIFO in Router 3 (SE)
-    shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
-    shift_data("0001"&"0001"&"0000"& "000000001"     &      "0000001"&"0000001"&"0000001"&"0000001"&"0000001"      &     "0000001"&"0000001"&"0000001"&"0000001"&"0000001"       &"000000001"&"000000001"&"000000001"      &    "00000001"&"00000001"&"00000001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    shift_data("0000"&"0000"&"0000"& "000000001"     &      "0000001"&"0000001"&"0000001"&"0000001"&"0000001"      &     "0000001"&"0000001"&"0000001"&"0000001"&"0000001"       &"000000001"&"000000001"&"000000001"      &    "00000001"&"00000001"&"00000001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    tck_tick(4);
-
-    shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
-
-    -- Inject fault in the bit with location 1 of L FIFO in Router 3 (SE)
-    shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
-    shift_data("0001"&"0001"&"0000"& "000000101"     &      "0000101"&"0000101"&"0000101"&"0000101"&"0000101"      &     "0000101"&"0000101"&"0000101"&"0000101"&"0000101"       &"000000101"&"000000101"&"000000101"      &    "00000101"&"00000101"&"00000101"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    shift_data("0000"&"0000"&"0000"& "000000001"     &      "0000101"&"0000101"&"0000101"&"0000101"&"0000101"      &     "0000101"&"0000101"&"0000101"&"0000101"&"0000101"       &"000000101"&"000000101"&"000000101"      &    "00000101"&"00000101"&"00000101"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    tck_tick(4);
-
-    shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
-
-    -- Inject fault in the bit with location 2 of L FIFO in Router 3 (SE)
-    shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
-    shift_data("0001"&"0001"&"0000"& "000000001"     &      "0001001"&"0001001"&"0001001"&"0001001"&"0001001"      &     "0001001"&"0001001"&"0001001"&"0001001"&"0001001"       &"000001001"&"000001001"&"000001001"      &    "00001001"&"00001001"&"00001001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    shift_data("0000"&"0000"&"0000"& "000000001"     &      "0001001"&"0001001"&"0001001"&"0001001"&"0001001"      &     "0001001"&"0001001"&"0001001"&"0001001"&"0001001"       &"000001001"&"000001001"&"000001001"      &    "00001001"&"00001001"&"00001001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    tck_tick(4);
-
-    shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
-
-    -- Inject fault in the bit with location 3 of L FIFO in Router 3 (SE)
-    shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
-    shift_data("0001"&"0001"&"0000"& "000000001"     &      "0001101"&"0001101"&"0001101"&"0001101"&"0001101"      &     "0001101"&"0001101"&"0001101"&"0001101"&"0001101"       &"000001101"&"000001101"&"000001101"      &    "00001101"&"00001101"&"00001101"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    shift_data("0000"&"0000"&"0000"& "000000001"     &      "0001101"&"0001101"&"0001101"&"0001101"&"0001101"      &     "0001101"&"0001101"&"0001101"&"0001101"&"0001101"       &"000001101"&"000001101"&"000001101"      &    "00001101"&"00001101"&"00001101"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
-    tck_tick(4);
+    -- inject into arbiter in ARBITER LOGIC
+     I := 0;
+    while (I <= 43) loop
+      shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
+      -- Inject fault in the bit with location 1 of L FIFO in Router 3 (SE)
+      shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
+      shift_data("0001"&"0001"&"0000"& address_arbiter_logic     &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"    &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  &"000000000"&"000000000"&"000000000"      &   "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      shift_data("0000"&"0000"&"0000"& address_arbiter_logic     &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"     &    "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  &"000000000"&"000000000"&"000000000"      &    "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
+      tck_tick(4);
+      address_arbiter_logic :=  address_arbiter_logic +1 ;
+      I := I +1;
+    end loop;
 
     wait;
 
