@@ -4,8 +4,8 @@ use work.mlite_pack.all;
 use ieee.std_logic_unsigned.all;
 
 use IEEE.numeric_std.all;
-Library UNISIM;
-use UNISIM.vcomponents.all;
+-- Library UNISIM;
+-- use UNISIM.vcomponents.all;
 Library UNIMACRO;
 use UNIMACRO.vcomponents.all;
 
@@ -21,16 +21,13 @@ entity memory is
 end; --entity memory
 
 architecture rtl of memory is
-    signal data    : std_logic_vector(31 downto 0);
+    signal data_out    : std_logic_vector(31 downto 0);
     signal index   : integer := 0;
-
-    type storage_array is
-        array(natural range 0 to (2 ** address_width) / 4 - 1) of
-        std_logic_vector(31 downto 0);
-    signal storage : storage_array;
 
     begin
 
+        index <= conv_integer(address(16 - 1 downto 2));
+        
         BRAM_SINGLE_MACRO_inst : BRAM_SINGLE_MACRO
         generic map(
             BRAM_SIZE   => "36Kb",      -- Target BRAM, "18Kb" or "36Kb"
@@ -45,7 +42,7 @@ architecture rtl of memory is
         )
 
         port map(
-            DO    => data,          -- Output data, width defined by READ_WIDTH parameter
+            DO    => data_out,          -- Output data, width defined by READ_WIDTH parameter
             ADDR  => STD_logic_vector(to_unsigned(index, 10)), -- Input address, width defined by read/write port depth
             CLK   => CLK,               -- 1-bit input clock
             DI    => data_write,        -- Input data port, width defined by WRITE_WIDTH parameter
@@ -55,17 +52,14 @@ architecture rtl of memory is
             WE    => byte_we            -- Input write enable, width defined by write port depth
         );
 
-
         dram_proc : process(clk, address, byte_we, pause)
         begin
-            if rising_edge(clk) then
 
-                if pause = '0' then
-                    data_read <= data;
-                end if;
-
+          if rising_edge(clk) then
+            if pause = '0' then
+              data_read <= data_out;
             end if;
-
+          end if;
         end process;
 
 end; --architecture logic

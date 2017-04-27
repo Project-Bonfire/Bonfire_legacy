@@ -14,8 +14,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 use work.mlite_pack.all;
-library UNISIM;               --May need to uncomment for ModelSim
-use UNISIM.vcomponents.all;   --May need to uncomment for ModelSim
+-- library UNISIM;               --May need to uncomment for ModelSim
+-- use UNISIM.vcomponents.all;   --May need to uncomment for ModelSim
+Library UNIMACRO;
+use UNIMACRO.vcomponents.all;
 
 entity reg_bank is
     port(clk            : in  std_logic;
@@ -116,13 +118,15 @@ begin
     -----------------------
     -- Implements memory --
     -----------------------
+    weA <= write_enable and not addr_write(4);  --lower 16 registers
+    weB <= write_enable and addr_write(4);      --upper 16 registers
 
     -- RAM16X1D: 16 x 1 positive edge write, asynchronous read dual-port
     -- distributed RAM for all Xilinx FPGAs
     -- From library UNISIM; use UNISIM.vcomponents.all;
-
     reg_loop: for i in 0 to 31 generate
         begin
+
             --Read port 1 lower 16 registers
             reg_bit1a : RAM16X1D
                 port map (
@@ -198,8 +202,4 @@ begin
 
         data_out1 <= data_out1A when addr_read1(4)='0' else data_out1B;
         data_out2 <= data_out2A when addr_read2(4)='0' else data_out2B;
-
-        weA <= write_enable and not addr_write(4);  --lower 16 registers
-        weB <= write_enable and addr_write(4);      --upper 16 registers
-
 end; --architecture ram_block

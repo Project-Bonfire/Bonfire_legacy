@@ -156,6 +156,8 @@ set files [list \
 "[file normalize "${IJTAG_RTL_dir}/SIB_mux_pre_FCX_SELgate.vhd"]"\
 "[file normalize "${IJTAG_RTL_dir}/ScanMux.vhd"]"\
 "[file normalize "${IJTAG_RTL_dir}/ScanRegister.vhd"]"\
+"[file normalize "${IJTAG_RTL_dir}/SReg.vhd"]"\
+"[file normalize "${IJTAG_RTL_dir}/AsyncDataRegisterAdapter.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/alu.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/memory_xilinx.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/bus_mux.vhd"]"\
