@@ -3790,6 +3790,9 @@ force -drive sim/:tb_network_2x2:NoC:R_2:RX_E(14) 1 0 ns -cancel 1ns
 run 1ns
 force -drive sim/:tb_network_2x2:NoC:R_2:RX_E(14) 0 0 ns -cancel 1ns
 run 1ns
+
+force -drive sim/:tb_network_2x2:NoC:R_0:FIFO_D_out_L(10) U 1ns
+
 force -drive sim/:tb_network_2x2:NoC:R_2:RX_E(14) 0 0 ns -cancel 1ns
 run 1ns
 force -drive sim/:tb_network_2x2:NoC:R_2:RX_E(14) 1 0 ns -cancel 1ns

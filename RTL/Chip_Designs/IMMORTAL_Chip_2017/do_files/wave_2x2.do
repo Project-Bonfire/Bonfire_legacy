@@ -346,8 +346,6 @@ add wave -noupdate -group {Fault Injection information} -color green :tb_network
 add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_3:allocator_unit:arb_X_S:FI_add_sta
 add wave -noupdate -group {Fault Injection information} -color green :tb_network_2x2:NoC:R_3:allocator_unit:FI_add_sta
 
-add wave -noupdate -group {GPIO} -color green :tb_network_2x2:PE_0:GPIO_in
-add wave -noupdate -group {GPIO} -color green :tb_network_2x2:PE_0:GPIO_out
 
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors

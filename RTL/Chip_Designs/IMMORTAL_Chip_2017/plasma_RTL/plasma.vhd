@@ -197,7 +197,7 @@ begin  --architecture
    eth_pause_in <= mem_pause_in or (not eth_pause and cache_miss and not cache_checking);
 
    misc_proc: process(clk, reset, cpu_address, enable_misc,
-      ram_data_r, ram_address_late, ram_data_r_ni,
+      ram_data_r, ram_address_late, ram_data_r_ni, ram_data_r_uart,
       data_read, data_read_uart, cpu_pause,
       irq_mask_reg, irq_status, gpio0_reg, write_enable,
       cache_checking,

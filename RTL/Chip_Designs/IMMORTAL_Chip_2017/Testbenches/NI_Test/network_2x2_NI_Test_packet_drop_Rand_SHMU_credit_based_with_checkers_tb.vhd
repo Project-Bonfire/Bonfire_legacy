@@ -73,19 +73,26 @@ port (reset: in  std_logic;
     turn_faults_3: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_3: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_3: in  std_logic_vector(3 downto 0);
-    Reconfig_command_3 : in std_logic
+    Reconfig_command_3 : in std_logic;
+      --------------
+    -- IJTAG network for fault injection and checker status monitoring
+    TCK         : in std_logic;
+    RST         : in std_logic;
+    SEL         : in std_logic;
+    SI          : in std_logic;
+    SE          : in std_logic;
+    UE          : in std_logic;
+    CE          : in std_logic;
+    SO          : out std_logic;
+    toF         : out std_logic;
+    toC         : out std_logic
             ); 
 end component; 
 -- Declaring NI component
 
 component NI is
    generic(current_address : integer := 10;   -- the current node's address
-           SHMU_address : integer := 0;
-           reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
-           flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";  -- reserved address for the memory mapped I/O
-           counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001";
-           reconfiguration_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000010";  -- reserved address for reconfiguration register
-           self_diagnosis_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000011"); -- reserved address for self diagnosis register
+           SHMU_address : integer := 0); -- reserved address for self diagnosis register
    port(clk               : in std_logic;
         reset             : in std_logic;
         enable            : in std_logic;
@@ -190,7 +197,9 @@ port map (reset, clk,
 	link_faults_0, turn_faults_0,	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0, 
 	link_faults_1, turn_faults_1,	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1, 
 	link_faults_2, turn_faults_2,	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2, 
-	link_faults_3, turn_faults_3,	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3
+	link_faults_3, turn_faults_3,	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3, 
+ 	'0', '0', '0', '0', '0',
+  	'0', '0', open, open, open
             ); 
 not_reset <= not reset; 
 

@@ -416,7 +416,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
             -- SHMU stuff ----------------------------------------------------------------------------------------
             ------------------------------------------------------------------------------------------------------
             when DIAGNOSIS_HEADER =>
-
+                state_in <= DIAGNOSIS_HEADER;
                 if credit_counter_out /= "00" then
                     grant <= '1';
                     TX <= "001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out & XOR_REDUCE("001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out);
@@ -424,19 +424,16 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                     report "Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)))& "      Diagnostic";
                     --report "Diagnostic packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
                     state_in <= DIAGNOSIS_BODY;
-                else
-                    state_in <= DIAGNOSIS_HEADER;
                 end if; 
 
             when DIAGNOSIS_BODY => 
+                state_in <= DIAGNOSIS_BODY;
                 if credit_counter_out /= "00" then
                     grant <= '1';
                     --FD (Fault Diagnosis) : 01000110 01000100
                     -- fault info is 13 bits 
                     TX <= "010" & "0100011001000100" & fault_info(11 downto 0) & XOR_REDUCE("010" & "0100011001000100" & fault_info(11 downto 0));
                     state_in <= DIAGNOSIS_TAIL;
-                else
-                    state_in <= DIAGNOSIS_BODY;
                 end if; 
 
             when DIAGNOSIS_TAIL =>
