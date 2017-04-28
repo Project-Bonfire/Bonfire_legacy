@@ -80,7 +80,7 @@ architecture logic of NI is
   signal packet_length_counter_in, packet_length_counter_out: std_logic_vector(11 downto 0);
   signal grant : std_logic;
 
-  type STATE_TYPE IS (IDLE, HEADER_FLIT, BODY_FLIT, TAIL_FLIT, DIAGNOSIS_HEADER, DIAGNOSIS_BODY, DIAGNOSIS_TAIL);
+  type STATE_TYPE IS (IDLE, HEADER_FLIT, BODY_FLIT, TAIL_FLIT, DIAGNOSIS_HEADER, DIAGNOSIS_BODY, DIAGNOSIS_TAIL, RESET_STATE);
   signal state, state_in   : STATE_TYPE := IDLE;
   signal FIFO_Data_out : std_logic_vector(31 downto 0);
   signal flag_register, flag_register_in : std_logic_vector(31 downto 0);
@@ -119,7 +119,7 @@ process(clk, enable, write_byte_enable) begin
       P2N_FIFO_MEM_4 <= (others=>'0');
       credit_counter_out <= "11";
       packet_length_counter_out <= "000000000000";
-      state <= IDLE;
+      state <= RESET_STATE;
       packet_counter_out <= "00000000";
       ------------------------------------------------
       N2P_FIFO_MEM_1 <= (others=>'0');
@@ -369,6 +369,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                 end if;
 
             when HEADER_FLIT =>
+                state_in <= HEADER_FLIT;
                 if credit_counter_out /= "00" and P2N_empty = '0' then
                     
                     packet_length_counter_in <=   ("0000" & FIFO_Data_out(23 downto 16))-1;
@@ -381,12 +382,10 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                     -- for synthesis comment out the next line   
                     report "Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(to_integer(unsigned(FIFO_Data_out(31 downto 28)))) & " with length: "& integer'image(to_integer(unsigned(FIFO_Data_out(23 downto 16))))  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
                     state_in <= BODY_FLIT;
-                    
-                else
-                    state_in <= HEADER_FLIT;
                 end if;
 
             when BODY_FLIT =>
+                state_in <= BODY_FLIT;
                 if credit_counter_out /= "00" and P2N_empty = '0'then
                     grant <= '1';
                     TX <= "010" & FIFO_Data_out(27 downto 0) & XOR_REDUCE("010" & FIFO_Data_out(27 downto 0));
@@ -397,19 +396,16 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                     else
                       state_in <= TAIL_FLIT;
                     end if;
-                else
-                    state_in <= BODY_FLIT;
                 end if;
 
             when TAIL_FLIT =>
+                state_in <= TAIL_FLIT;
                 if credit_counter_out /= "00" and P2N_empty = '0' then
                     grant <= '1';
                     packet_length_counter_in <= packet_length_counter_out - 1;
                     TX <= "100" & FIFO_Data_out(27 downto 0) & XOR_REDUCE("100" & FIFO_Data_out(27 downto 0));
                     packet_counter_in <= packet_counter_out +1;
                     state_in <= IDLE;
-                else
-                    state_in <= TAIL_FLIT;
                 end if;
 
 
@@ -437,17 +433,16 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                 end if; 
 
             when DIAGNOSIS_TAIL =>
+                state_in <= DIAGNOSIS_TAIL;
                 if credit_counter_out /= "00" then
                     grant <= '1';
                     TX <= "100" & fault_info(24 downto 12) & "000000000000000" & XOR_REDUCE("100" & fault_info(24 downto 12) & "000000000000000");
                     state_in <= IDLE;
                     sent_info <= '1';
                     packet_counter_in <= packet_counter_out +1;
-                else
-                    state_in <= DIAGNOSIS_TAIL;
                 end if; 
 
-            when others =>
+            when RESET_STATE =>
                 state_in <= IDLE;
         end case ;
 

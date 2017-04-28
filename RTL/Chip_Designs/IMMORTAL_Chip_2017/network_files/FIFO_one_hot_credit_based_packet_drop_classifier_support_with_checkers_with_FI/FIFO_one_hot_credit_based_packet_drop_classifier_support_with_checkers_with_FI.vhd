@@ -620,6 +620,7 @@ process(RX, faulty_packet_out, fault_out, write_pointer, FIFO_MEM_1, FIFO_MEM_2,
               end if;
 
             when Packet_drop => 
+                  state_in <= state_out;
                   if faulty_packet_out = '1' then
                         report "FIFO dropping packet at" & time'image(now) &"!" severity note;
                         if valid_in = '1' and RX(DATA_WIDTH-1 downto DATA_WIDTH-3) = "001"  and fault_out = '0' then
@@ -649,16 +650,11 @@ process(RX, faulty_packet_out, fault_out, write_pointer, FIFO_MEM_1, FIFO_MEM_2,
                               FIFO_MEM_1_in <= FIFO_MEM_1; FIFO_MEM_2_in <= FIFO_MEM_2; FIFO_MEM_3_in <= FIFO_MEM_3; FIFO_MEM_4_in <= FIFO_MEM_4; 
                               state_in <= state_out;
                         end if;
-                  else
-                    -- we should not be here!
-                    assert (False) report "FIFO got to packet dropping state but faulty_packet_out is ZERO!" severity failure;
-                    state_in <= state_out;
                   end if;
 	     when others => state_in <= state_out;
        end case;
 end process;
 
- 
 
 process(read_pointer, FIFO_MEM_1, FIFO_MEM_2, FIFO_MEM_3, FIFO_MEM_4)begin
     case( read_pointer ) is
