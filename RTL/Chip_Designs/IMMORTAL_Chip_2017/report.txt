@@ -1,117 +1,313 @@
 Coverage Report Summary Data by file
 
 =================================================================================
-=== File: network_files/Allocator_with_checkers_with_FI/Arbiter_in_one_hot_with_checkers_with_FI.vhd
+=== File: IJTAG_files/AsyncDataRegisterAdapter.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           87        69        18      79.3
-    Branches                        44        35         9      79.5
+    Stmts                           10        10         0     100.0
+    Branches                         7         7         0     100.0
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms             2         1         1      50.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    954       138       816      14.4
 
 =================================================================================
-=== File: network_files/Allocator_with_checkers_with_FI/allocator_with_checkers_with_FI.vhd
+=== File: IJTAG_files/SIB_mux_pre_FCX_SELgate.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          167       167         0     100.0
-    Branches                        22        22         0     100.0
+    Stmts                           18        18         0     100.0
+    Branches                         1         1         0     100.0
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms            15         5        10      33.3
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    132        39        93      29.5
 
 =================================================================================
-=== File: network_files/Allocator_with_checkers_with_FI/arbiter_out_one_hot_with_checkers_with_FI.vhd
+=== File: IJTAG_files/SReg.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           62        53         9      85.4
-    Branches                        54        45         9      83.3
+    Stmts                            2         2         0     100.0
+    Branches                         0         0         0     100.0
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    448        78       370      17.4
 
 =================================================================================
-=== File: network_files/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI.vhd
+=== File: IJTAG_files/ScanMux.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          228       215        13      94.2
-    Branches                        88        84         4      95.4
+    Stmts                            3         3         0     100.0
+    Branches                         2         2         0     100.0
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                     14        14         0     100.0
 
 =================================================================================
-=== File: network_files/Fault_injector.vhd
+=== File: IJTAG_files/ScanRegister.vhd
+=================================================================================
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           13        13         0     100.0
+    Branches                        10         8         2      80.0
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms             6         2         4      33.3
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    772       317       455      41.0
+
+=================================================================================
+=== File: network_files/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers.vhd
+=================================================================================
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           47        47         0     100.0
+    Branches                         0         0         0     100.0
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms            24         0        24       0.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                   9100      1573      7527      17.2
+
+=================================================================================
+=== File: network_files/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers_with_PE_top.vhd
+=================================================================================
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            1         1         0     100.0
+    Branches                         0         0         0     100.0
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                   1790       597      1193      33.3
+
+=================================================================================
+=== File: network_files/shift_register_serial_in.vhd
+=================================================================================
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            7         7         0     100.0
+    Branches                         7         7         0     100.0
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                     54        49         5      90.7
+
+=================================================================================
+=== File: plasma_RTL/NoC_Node.vhd
+=================================================================================
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            5         5         0     100.0
+    Branches                         0         0         0     100.0
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms             2         0         2       0.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                   1394       293      1101      21.0
+
+=================================================================================
+=== File: plasma_RTL/alu.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
     Stmts                            4         4         0     100.0
-    Branches                         0         0         0     100.0
+    Branches                        11        11         0     100.0
+    FEC Condition Terms              6         5         1      83.3
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    270       270         0     100.0
 
 =================================================================================
-=== File: network_files/LBDR_packet_drop_with_checkers_with_FI/LBDR_packet_drop_with_checkers_with_FI.vhd
+=== File: plasma_RTL/bus_mux.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          112       109         3      97.3
-    Branches                        30        29         1      96.6
+    Stmts                           33        30         3      90.9
+    Branches                        29        26         3      89.6
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms             4         0         4       0.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    766       550       216      71.8
 
 =================================================================================
-=== File: network_files/NI.vhd
+=== File: plasma_RTL/control.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                          236       230         6      97.4
-    Branches                       121       114         7      94.2
+    Stmts                          295       194       101      65.7
+    Branches                        70        44        26      62.8
+    FEC Condition Terms              2         0         2       0.0
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    274       213        61      77.7
 
 =================================================================================
-=== File: network_files/ParityChecker_for_LBDR.vhd
+=== File: plasma_RTL/mem_ctrl.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                            6         6         0     100.0
-    Branches                         4         4         0     100.0
+    Stmts                           63        59         4      93.6
+    Branches                        42        38         4      90.4
+    FEC Condition Terms              6         2         4      33.3
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                   1068       661       407      61.8
 
 =================================================================================
-=== File: network_files/counter_threshold.vhd
+=== File: plasma_RTL/memory_sim.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           38        36         2      94.7
-    Branches                        22        21         1      95.4
+    Stmts                            7         6         1      85.7
+    Branches                        17        11         6      64.7
+    FEC Condition Terms              2         0         2       0.0
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    585       105       480      17.9
 
 =================================================================================
-=== File: network_files/customized_routers/Router_32_bit_NE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd
+=== File: plasma_RTL/mlite_cpu.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           28        28         0     100.0
-    Branches                         0         0         0     100.0
+    Stmts                           19        18         1      94.7
+    Branches                        12        10         2      83.3
+    FEC Condition Terms              9         2         7      22.2
+    FEC Expression Terms            11         5         6      45.4
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                   1928      1338       590      69.3
 
 =================================================================================
-=== File: network_files/customized_routers/Router_32_bit_NW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd
+=== File: plasma_RTL/mult.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           28        28         0     100.0
-    Branches                         0         0         0     100.0
+    Stmts                           69        52        17      75.3
+    Branches                        33        25         8      75.7
+    FEC Condition Terms             14         7         7      50.0
+    FEC Expression Terms             6         0         6       0.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    796       617       179      77.5
 
 =================================================================================
-=== File: network_files/customized_routers/Router_32_bit_SE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd
+=== File: plasma_RTL/pc_next.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                           28        28         0     100.0
-    Branches                         0         0         0     100.0
+    Stmts                           14        14         0     100.0
+    Branches                        12        11         1      91.6
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    656       219       437      33.3
 
 =================================================================================
-=== File: network_files/customized_routers/Router_32_bit_SW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd
-=================================================================================
-    Enabled Coverage            Active      Hits    Misses % Covered
-    ----------------            ------      ----    ------ ---------
-    Stmts                           28        28         0     100.0
-    Branches                         0         0         0     100.0
-
-=================================================================================
-=== File: network_files/xbar.vhd
+=== File: plasma_RTL/plasma.vhd
 =================================================================================
     Enabled Coverage            Active      Hits    Misses % Covered
     ----------------            ------      ----    ------ ---------
-    Stmts                            6         6         0     100.0
-    Branches                         5         5         0     100.0
+    Stmts                           68        49        19      72.0
+    Branches                        49        32        17      65.3
+    FEC Condition Terms             18         7        11      38.8
+    FEC Expression Terms            23         4        19      17.3
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                   2832       763      2069      26.9
+
+=================================================================================
+=== File: plasma_RTL/ram_wrapper.vhd
+=================================================================================
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           11        11         0     100.0
+    Branches                        10        10         0     100.0
+    FEC Condition Terms              0         0         0     100.0
+    FEC Expression Terms             4         4         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    462       367        95      79.4
+
+=================================================================================
+=== File: plasma_RTL/reg_bank_tri_port.vhd
+=================================================================================
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           22        16         6      72.7
+    Branches                        22        16         6      72.7
+    FEC Condition Terms              3         2         1      66.6
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    428       388        40      90.6
+
+=================================================================================
+=== File: plasma_RTL/shifter.vhd
+=================================================================================
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           12        12         0     100.0
+    Branches                        25        25         0     100.0
+    FEC Condition Terms              4         4         0     100.0
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                    814       814         0     100.0
+
+=================================================================================
+=== File: plasma_RTL/uart.vhd
+=================================================================================
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           50        46         4      92.0
+    Branches                        44        39         5      88.6
+    FEC Condition Terms              7         5         2      71.4
+    FEC Expression Terms             0         0         0     100.0
+    FSMs                                                       100.0
+        States                       0         0         0     100.0
+        Transitions                  0         0         0     100.0
+    Toggle Bins                   1350       234      1116      17.3
 
 
-Total Coverage By File (code coverage only, filtered view): 93.6%
+Total Coverage By File (code coverage only, filtered view): 53.0%
 
