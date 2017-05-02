@@ -33,37 +33,40 @@ RTL tests:
 		|-------------------------------------------------------------------------------------------------------|-----------|
 		| 11| try firing all the checkers in one router via iJTAG fault injection								|	Done	|	
 		'-------------------------------------------------------------------------------------------------------------------'
-
-		results:              
-                                                                                                                         	                 FEC 		                 FSM
-                                                                                                                         		--------------------- 		---------------------
-                                                                                           file_name |	     stmts |	  branches |	 Condition |	Expression |	    States |	Transitions     toggle
-																-------------------------------------|-------------|---------------|---------------|---------------|---------------|---------------|---------------|
-                                                                     Arbiter_in_one_hot_checkers.vhd |	      88.5 |	      82.6 |	      57.7 |	     100.0 |	     100.0 |	     100.0 |	      12.9
-                                                        Arbiter_in_one_hot_with_checkers_with_FI.vhd |	      79.3 |	      79.5 |	     100.0 |	     100.0 |	     100.0 |	      61.1 |	      24.4
-                                                             Arbiter_out_one_hot_pseudo_checkers.vhd |	      89.6 |	      84.3 |	      64.4 |	     100.0 |	     100.0 |	     100.0 |	      25.4
-                                                  allocator_credit_counter_logic_pseudo_checkers.vhd |	      88.8 |	      83.3 |	      59.0 |	     100.0 |	     100.0 |	     100.0 |	      25.0
-                                                                 allocator_logic_pseudo_checkers.vhd |	      85.7 |	      78.6 |	      50.9 |	     100.0 |	     100.0 |	     100.0 |	      13.0
-                                                                 allocator_with_checkers_with_FI.vhd |	     100.0 |	     100.0 |	      96.6 |	      48.0 |	     100.0 |	     100.0 |	      11.4
-                                                       arbiter_out_one_hot_with_checkers_with_FI.vhd |	      85.4 |	      83.3 |	     100.0 |	     100.0 |	     100.0 |	      75.0 |	      42.7
-                               FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd |	      94.5 |	      91.8 |	      79.9 |	     100.0 |	     100.0 |	     100.0 |	      13.8
-                  FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI.vhd |	     100.0 |	      98.7 |	     100.0 |	     100.0 |	     100.0 |	      73.6 |	      48.3
-                                                                                  Fault_injector.vhd |	     100.0 |	     100.0 |	     100.0 |	      75.0 |	     100.0 |	     100.0 |	      40.2
-                                                                       Cx_Reconf_pseudo_checkers.vhd |	      96.7 |	      95.0 |	      65.0 |	     100.0 |	     100.0 |	     100.0 |	      15.7
-                                                   LBDR_packet_drop_routing_part_pseudo_checkers.vhd |	      98.9 |	      98.2 |	      96.1 |	     100.0 |	     100.0 |	     100.0 |	      28.2
-                                                          LBDR_packet_drop_with_checkers_with_FI.vhd |	     100.0 |	     100.0 |	     100.0 |	      51.7 |	     100.0 |	     100.0 |	      15.2
-                                                                      Rxy_Reconf_pseudo_checkers.vhd |	      95.2 |	      92.8 |	      48.8 |	     100.0 |	     100.0 |	     100.0 |	       6.7
-                                                                                              NI.vhd |	     100.0 |	      97.5 |	      84.0 |	     100.0 |	     100.0 |	      62.5 |	      31.1
-                                                                          ParityChecker_for_LBDR.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0
-                                                                               counter_threshold.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	      72.7 |	      62.5
-     Router_32_bit_NE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd |	     100.0 |	     100.0 |	     100.0 |	      27.5 |	     100.0 |	     100.0 |	       7.7
-     Router_32_bit_NW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd |	     100.0 |	     100.0 |	     100.0 |	      23.9 |	     100.0 |	     100.0 |	       7.4
-     Router_32_bit_SE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd |	     100.0 |	     100.0 |	     100.0 |	      28.9 |	     100.0 |	     100.0 |	      10.1
-     Router_32_bit_SW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd |	     100.0 |	     100.0 |	     100.0 |	      23.9 |	     100.0 |	     100.0 |	       7.4
-                                                                                            xbar.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	      79.0
-                                                                                                     --------------|---------------|---------------|---------------|---------------|---------------|---------------|
-                                                                                                      	     95.32 |	     93.64 |	     86.27 |	     80.68 |	    100.00 |	     92.86 |	     28.18
-
+		=====================================================================================================================================================================
+		report:              
+                                                                                                                         	        FEC 		         FSM
+                                                                                                                         	 ----------------- 		 --------------
+                                                                                           file_name | stmts | branches |Condition|Expression | States |Transitions| toggle
+																-------------------------------------|-------|----------|---------|-----------|--------|-----------|--------|
+                                                                     Arbiter_in_one_hot_checkers.vhd |  88.9 |     83.3 |    58.2 |     100.0 |  100.0 |     100.0 |   17.9
+                                                        Arbiter_in_one_hot_with_checkers_with_FI.vhd |  79.3 |     79.5 |   100.0 |     100.0 |  100.0 |      61.1 |   33.2
+                                                             Arbiter_out_one_hot_pseudo_checkers.vhd |  89.6 |     84.3 |    64.4 |     100.0 |  100.0 |     100.0 |   25.4
+                                                  allocator_credit_counter_logic_pseudo_checkers.vhd |  88.8 |     83.3 |    59.0 |     100.0 |  100.0 |     100.0 |   25.0
+                                                                 allocator_logic_pseudo_checkers.vhd |  87.4 |     81.1 |    53.2 |     100.0 |  100.0 |     100.0 |   19.4
+                                                                 allocator_with_checkers_with_FI.vhd | 100.0 |    100.0 |    96.6 |      48.0 |  100.0 |     100.0 |   14.2
+                                                       arbiter_out_one_hot_with_checkers_with_FI.vhd |  85.4 |     83.3 |   100.0 |     100.0 |  100.0 |      75.0 |   44.3
+                               FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd |  95.4 |     93.1 |    82.4 |     100.0 |  100.0 |     100.0 |   25.6
+                  FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI.vhd | 100.0 |     98.7 |   100.0 |     100.0 |  100.0 |      73.6 |   57.2
+                                                                                  Fault_injector.vhd | 100.0 |    100.0 |   100.0 |     100.0 |  100.0 |     100.0 |   82.1
+                                                                       Cx_Reconf_pseudo_checkers.vhd |  96.7 |     95.0 |    66.6 |     100.0 |  100.0 |     100.0 |   43.4
+                                                   LBDR_packet_drop_routing_part_pseudo_checkers.vhd |  98.9 |     98.2 |    96.1 |     100.0 |  100.0 |     100.0 |   51.5
+                                                          LBDR_packet_drop_with_checkers_with_FI.vhd | 100.0 |    100.0 |   100.0 |      51.7 |  100.0 |     100.0 |   37.3
+                                                                      Rxy_Reconf_pseudo_checkers.vhd |  95.2 |     92.8 |    48.8 |     100.0 |  100.0 |     100.0 |   56.9
+                                                                                              NI.vhd | 100.0 |     97.5 |    84.0 |     100.0 |  100.0 |      62.5 |   31.3
+                                                                          ParityChecker_for_LBDR.vhd | 100.0 |    100.0 |   100.0 |     100.0 |  100.0 |     100.0 |  100.0
+                                                                               counter_threshold.vhd | 100.0 |    100.0 |   100.0 |     100.0 |  100.0 |      72.7 |   62.5
+     Router_32_bit_NE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd | 100.0 |    100.0 |   100.0 |      27.5 |  100.0 |     100.0 |    7.7
+     Router_32_bit_NW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd | 100.0 |    100.0 |   100.0 |      23.9 |  100.0 |     100.0 |    7.4
+     Router_32_bit_SE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd | 100.0 |    100.0 |   100.0 |      50.0 |  100.0 |     100.0 |   15.9
+     Router_32_bit_SW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd | 100.0 |    100.0 |   100.0 |      23.9 |  100.0 |     100.0 |    7.5
+                                                                                            xbar.vhd | 100.0 |    100.0 |   100.0 |     100.0 |  100.0 |     100.0 |   79.0
+                                                                                                    ---------|----------|---------|-----------|--------|-----------|--------|
+                                                                                                       95.45 |    93.91 |   86.64 |     82.82 | 100.00 |     92.86 |  38.00
+		=====================================================================================================================================================================
+    	* problems identified:
+    		* Its not possible in this configuration to test all the statements in arbiter_in and arbiter_out.
+    		* reaching all the statements in checekrs is difficult since some of them fire only in very specific cases!	
 
 
 	* 3rd round (using plasma's behavioral memory content from file):
@@ -75,36 +78,40 @@ RTL tests:
 		|-------------------------------------------------------------------------------------------------------|-----------|
 		| 14| run plasma test program and use UART																|	Done	|
 		'-------------------------------------------------------------------------------------------------------------------'
+		====================================================================================================================================================================
+		report:				
+                                                                                                                	     FEC 		             FSM
+                                                                                                 			       ------------------- 		-----------------
+                                                                                 file_name |  stmts | branches |Condition |	Expression | States |Transitions  toggle
+													  -------------------------------------|--------|----------|----------|------------|--------|-----------|---------|
+                                                              AsyncDataRegisterAdapter.vhd |  100.0 |    100.0 |    100.0 |	      50.0 |  100.0 |     100.0 |    14.4
+                                                               SIB_mux_pre_FCX_SELgate.vhd |  100.0 |    100.0 |    100.0 |	      33.3 |  100.0 |     100.0 |    29.5
+                                                                                  SReg.vhd |  100.0 |    100.0 |    100.0 |	     100.0 |  100.0 |     100.0 |    17.4
+                                                                               ScanMux.vhd |  100.0 |    100.0 |    100.0 |	     100.0 |  100.0 |     100.0 |   100.0
+                                                                          ScanRegister.vhd |  100.0 |     80.0 |    100.0 |	      33.3 |  100.0 |     100.0 |    41.0
+                    network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers.vhd |  100.0 |    100.0 |    100.0 |	       0.0 |  100.0 |     100.0 |    17.2
+        network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers_with_PE_top.vhd |  100.0 |    100.0 |    100.0 |	     100.0 |  100.0 |     100.0 |    33.3
+                                                              shift_register_serial_in.vhd |  100.0 |    100.0 |    100.0 |	     100.0 |  100.0 |     100.0 |    90.7
+                                                                              NoC_Node.vhd |  100.0 |    100.0 |    100.0 |	       0.0 |  100.0 |     100.0 |    21.0
+                                                                                   alu.vhd |  100.0 |    100.0 |     83.3 |	     100.0 |  100.0 |     100.0 |   100.0
+                                                                               bus_mux.vhd |   90.9 |     89.6 |    100.0 |	       0.0 |  100.0 |     100.0 |    71.8
+                                                                               control.vhd |   65.7 |     62.8 |      0.0 |	     100.0 |  100.0 |     100.0 |    77.7
+                                                                              mem_ctrl.vhd |   93.6 |     90.4 |     33.3 |	     100.0 |  100.0 |     100.0 |    61.8
+                                                                            memory_sim.vhd |   85.7 |     64.7 |      0.0 |	     100.0 |  100.0 |     100.0 |    17.9
+                                                                             mlite_cpu.vhd |   94.7 |     83.3 |     22.2 |	      45.4 |  100.0 |     100.0 |    69.3
+                                                                                  mult.vhd |   75.3 |     75.7 |     50.0 |	       0.0 |  100.0 |     100.0 |    77.5
+                                                                               pc_next.vhd |  100.0 |     91.6 |    100.0 |	     100.0 |  100.0 |     100.0 |    33.3
+                                                                                plasma.vhd |   72.0 |     65.3 |     38.8 |	      17.3 |  100.0 |     100.0 |    26.9
+                                                                           ram_wrapper.vhd |  100.0 |    100.0 |    100.0 |	     100.0 |  100.0 |     100.0 |    79.4
+                                                                     reg_bank_tri_port.vhd |   72.7 |     72.7 |     66.6 |	     100.0 |  100.0 |     100.0 |    90.6
+                                                                               shifter.vhd |  100.0 |    100.0 |    100.0 |	     100.0 |  100.0 |     100.0 |   100.0
+                                                                                  uart.vhd |   92.0 |     88.6 |     71.4 |	     100.0 |  100.0 |     100.0 |    17.3
+                                                                                           ---------|----------|----------|------------|--------|-----------|---------|
+                                                                                              92.64 |    89.05 |    75.59 |	     67.18 | 100.00 |    100.00 |   53.59
 
-                                                                                                                          	                 FEC 		                 FSM
-                                                                                                                         		--------------------- 		---------------------
-                                                                                           file_name |	     stmts |	  branches |	 Condition |	Expression |	    States |	Transitions     toggle
-																-------------------------------------|-------------|---------------|---------------|---------------|---------------|---------------|---------------|
-                                                                        AsyncDataRegisterAdapter.vhd |	     100.0 |	     100.0 |	     100.0 |	      50.0 |	     100.0 |	     100.0 |	      14.4
-                                                                         SIB_mux_pre_FCX_SELgate.vhd |	     100.0 |	     100.0 |	     100.0 |	      33.3 |	     100.0 |	     100.0 |	      29.5
-                                                                                            SReg.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	      17.4
-                                                                                         ScanMux.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0
-                                                                                    ScanRegister.vhd |	     100.0 |	      80.0 |	     100.0 |	      33.3 |	     100.0 |	     100.0 |	      41.0
-                              network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers.vhd |	     100.0 |	     100.0 |	     100.0 |	       0.0 |	     100.0 |	     100.0 |	      17.2
-                  network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers_with_PE_top.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	      33.3
-                                                                        shift_register_serial_in.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	      90.7
-                                                                                        NoC_Node.vhd |	     100.0 |	     100.0 |	     100.0 |	       0.0 |	     100.0 |	     100.0 |	      21.0
-                                                                                             alu.vhd |	     100.0 |	     100.0 |	      83.3 |	     100.0 |	     100.0 |	     100.0 |	     100.0
-                                                                                         bus_mux.vhd |	      90.9 |	      89.6 |	     100.0 |	       0.0 |	     100.0 |	     100.0 |	      71.8
-                                                                                         control.vhd |	      65.7 |	      62.8 |	       0.0 |	     100.0 |	     100.0 |	     100.0 |	      77.7
-                                                                                        mem_ctrl.vhd |	      93.6 |	      90.4 |	      33.3 |	     100.0 |	     100.0 |	     100.0 |	      61.8
-                                                                                      memory_sim.vhd |	      85.7 |	      64.7 |	       0.0 |	     100.0 |	     100.0 |	     100.0 |	      17.9
-                                                                                       mlite_cpu.vhd |	      94.7 |	      83.3 |	      22.2 |	      45.4 |	     100.0 |	     100.0 |	      69.3
-                                                                                            mult.vhd |	      75.3 |	      75.7 |	      50.0 |	       0.0 |	     100.0 |	     100.0 |	      77.5
-                                                                                         pc_next.vhd |	     100.0 |	      91.6 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	      33.3
-                                                                                          plasma.vhd |	      72.0 |	      65.3 |	      38.8 |	      17.3 |	     100.0 |	     100.0 |	      26.9
-                                                                                     ram_wrapper.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	      79.4
-                                                                               reg_bank_tri_port.vhd |	      72.7 |	      72.7 |	      66.6 |	     100.0 |	     100.0 |	     100.0 |	      90.6
-                                                                                         shifter.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0
-                                                                                            uart.vhd |	      92.0 |	      88.6 |	      71.4 |	     100.0 |	     100.0 |	     100.0 |	      17.3
-                                                                                                     --------------|---------------|---------------|---------------|---------------|---------------|---------------|
-                                                                                                      	     92.64 |	     89.05 |	     75.59 |	     67.18 |	    100.00 |	    100.00 |	     53.59
-
+            ================================================================================================================================================================
+            * problems identified:
+            	* more tests are needed for Plasma! however, its not clear if its needed to test everything inside plasma
 
 
 	* 4th round:
@@ -113,9 +120,8 @@ RTL tests:
 		'-------------------------------------------------------------------------------------------------------------------'
 
 	* 5th round:
-
 		.-------------------------------------------------------------------------------------------------------------------.
-		| 1	| simple application (sending packets to other nodes). write into verilog-memory via iJTAG. 		|	Done	|
+		| 1	| simple application (sending packets to other nodes). write into verilog-memory via iJTAG. 		|	Pending	|
 		'-------------------------------------------------------------------------------------------------------------------'
 	
 Post-synthesis tests:
