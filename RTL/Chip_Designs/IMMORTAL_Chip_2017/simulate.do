@@ -14,14 +14,14 @@ vcom "network_files/component_pack.vhd"
 vcom "plasma_RTL/mlite_pack.vhd"
 
 # router and NI components
-vcom -cover bcesfx "network_files/Allocator_with_checkers_with_FI/Arbiter_in_one_hot_checkers.vhd"
-vcom -cover bcesfx "network_files/Allocator_with_checkers_with_FI/Arbiter_out_one_hot_pseudo_checkers.vhd"
-vcom -cover bcesfx "network_files/Allocator_with_checkers_with_FI/allocator_logic_pseudo_checkers.vhd"
-vcom -cover bcesfx "network_files/Allocator_with_checkers_with_FI/allocator_credit_counter_logic_pseudo_checkers.vhd"
-vcom -cover bcesfx "network_files/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI/FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd"
-vcom -cover bcesfx "network_files/LBDR_packet_drop_with_checkers_with_FI/Cx_Reconf_pseudo_checkers.vhd"
-vcom -cover bcesfx "network_files/LBDR_packet_drop_with_checkers_with_FI/Rxy_Reconf_pseudo_checkers.vhd"
-vcom -cover bcesfx "network_files/LBDR_packet_drop_with_checkers_with_FI/LBDR_packet_drop_routing_part_pseudo_checkers.vhd"
+vcom "network_files/Allocator_with_checkers_with_FI/Arbiter_in_one_hot_checkers.vhd"
+vcom "network_files/Allocator_with_checkers_with_FI/Arbiter_out_one_hot_pseudo_checkers.vhd"
+vcom "network_files/Allocator_with_checkers_with_FI/allocator_logic_pseudo_checkers.vhd"
+vcom "network_files/Allocator_with_checkers_with_FI/allocator_credit_counter_logic_pseudo_checkers.vhd"
+vcom "network_files/FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI/FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd"
+vcom "network_files/LBDR_packet_drop_with_checkers_with_FI/Cx_Reconf_pseudo_checkers.vhd"
+vcom "network_files/LBDR_packet_drop_with_checkers_with_FI/Rxy_Reconf_pseudo_checkers.vhd"
+vcom "network_files/LBDR_packet_drop_with_checkers_with_FI/LBDR_packet_drop_routing_part_pseudo_checkers.vhd"
 
 vcom -cover bcesfx "network_files/shift_register_serial_in.vhd"
 
@@ -87,6 +87,7 @@ vsim -coverage -voptargs="+cover=bcestfx" work.tb_network_2x2
 # Draw waves
 do do_files/wave_2x2_with_top.do
 # Run the simulation for 4ms
-run 36000000 ns
+run 4 ms
+run 36 ms
 # do do_files/fault_inject_links_top_3000ns.do 	#use to inject files in the simulation(not using IJTAG)
 coverage report -file coverage_report.txt -byfile -assert -directive -cvg -codeAll

@@ -4,7 +4,7 @@
 ########################################################################
 import sys
 try:
-	report_file = open('report.txt', 'r')
+	report_file = open('coverage_report.txt', 'r')
 except IOError:
     print "Could not open input report file!"
     sys.exit()

@@ -30,6 +30,8 @@ RTL tests:
 		| 9	| test all the arbiter in cases																		|  Pending	|
 		|-------------------------------------------------------------------------------------------------------|-----------|
 		| 10| test all the arbiter out cases																	|  Pending	|
+		|-------------------------------------------------------------------------------------------------------|-----------|
+		| 11| try firing all the checkers in one router via iJTAG fault injection								|	Done	|	
 		'-------------------------------------------------------------------------------------------------------------------'
 
 		results:              
@@ -58,8 +60,6 @@ RTL tests:
 	* 3rd round (using plasma's behavioral memory content from file):
 
 		.-------------------------------------------------------------------------------------------------------------------.
-		| 11| try firing all the checkers in one router via iJTAG fault injection								|	Done	|	
-		|-------------------------------------------------------------------------------------------------------|-----------|
 		| 12| sending packets to all other nodes, without waiting for specific packets to receive				|	Done	|
 		|-------------------------------------------------------------------------------------------------------|-----------|
 		| 13| test GPIO																							|	Done	|
