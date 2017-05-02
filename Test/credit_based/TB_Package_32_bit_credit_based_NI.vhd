@@ -78,6 +78,7 @@ package body TB_Package is
     variable frame_counter: integer:= 0;
     variable diagnosis : std_logic := '0';
     variable diagnosis_data: std_logic_vector(24 downto 0);
+    variable first_packet : boolean := True;
 
     begin
 
@@ -271,7 +272,11 @@ package body TB_Package is
                   -- first body flit
                   address <= reserved_address;
                   write_byte_enable <= "1111";
-                  data_write <= "0000" & std_logic_vector(to_unsigned(integer(rand*1000.0), 28));
+                  if first_packet = True then
+                    data_write <= "0000" & "1111111111111111111111111111";
+                  else
+                    data_write <= "0000" & std_logic_vector(to_unsigned(integer(rand*1000.0), 28));
+                  end if;
                   send_counter := send_counter+1;
                   state :=  Body_flit;
               elsif state = Body_flit then
@@ -289,7 +294,12 @@ package body TB_Package is
                   -- tail flit
                   address <= reserved_address;
                   write_byte_enable <= "1111";
-                  data_write <= "0000" & std_logic_vector(to_unsigned(integer(rand*1000.0), 28));
+                  if first_packet = True then
+                    data_write <= "0000" & "0000000000000000000000000000";
+                    first_packet := False;
+                  else
+                    data_write <= "0000" & std_logic_vector(to_unsigned(integer(rand*1000.0), 28));
+                  end if;
                   send_counter := 0;
                   state :=  Idle;
                   send_id_counter := send_id_counter + 1;
