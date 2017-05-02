@@ -35,34 +35,35 @@ RTL tests:
 		'-------------------------------------------------------------------------------------------------------------------'
 		=====================================================================================================================================================================
 		report:              
-                                                                                                                         	        FEC 		         FSM
-                                                                                                                         	 ----------------- 		 --------------
-                                                                                           file_name | stmts | branches |Condition|Expression | States |Transitions| toggle
-																-------------------------------------|-------|----------|---------|-----------|--------|-----------|--------|
-                                                                     Arbiter_in_one_hot_checkers.vhd |  88.9 |     83.3 |    58.2 |     100.0 |  100.0 |     100.0 |   17.9
-                                                        Arbiter_in_one_hot_with_checkers_with_FI.vhd |  79.3 |     79.5 |   100.0 |     100.0 |  100.0 |      61.1 |   33.2
-                                                             Arbiter_out_one_hot_pseudo_checkers.vhd |  89.6 |     84.3 |    64.4 |     100.0 |  100.0 |     100.0 |   25.4
-                                                  allocator_credit_counter_logic_pseudo_checkers.vhd |  88.8 |     83.3 |    59.0 |     100.0 |  100.0 |     100.0 |   25.0
-                                                                 allocator_logic_pseudo_checkers.vhd |  87.4 |     81.1 |    53.2 |     100.0 |  100.0 |     100.0 |   19.4
-                                                                 allocator_with_checkers_with_FI.vhd | 100.0 |    100.0 |    96.6 |      48.0 |  100.0 |     100.0 |   14.2
-                                                       arbiter_out_one_hot_with_checkers_with_FI.vhd |  85.4 |     83.3 |   100.0 |     100.0 |  100.0 |      75.0 |   44.3
-                               FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd |  95.4 |     93.1 |    82.4 |     100.0 |  100.0 |     100.0 |   25.6
-                  FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI.vhd | 100.0 |     98.7 |   100.0 |     100.0 |  100.0 |      73.6 |   57.2
-                                                                                  Fault_injector.vhd | 100.0 |    100.0 |   100.0 |     100.0 |  100.0 |     100.0 |   82.1
-                                                                       Cx_Reconf_pseudo_checkers.vhd |  96.7 |     95.0 |    66.6 |     100.0 |  100.0 |     100.0 |   43.4
-                                                   LBDR_packet_drop_routing_part_pseudo_checkers.vhd |  98.9 |     98.2 |    96.1 |     100.0 |  100.0 |     100.0 |   51.5
-                                                          LBDR_packet_drop_with_checkers_with_FI.vhd | 100.0 |    100.0 |   100.0 |      51.7 |  100.0 |     100.0 |   37.3
-                                                                      Rxy_Reconf_pseudo_checkers.vhd |  95.2 |     92.8 |    48.8 |     100.0 |  100.0 |     100.0 |   56.9
-                                                                                              NI.vhd | 100.0 |     97.5 |    84.0 |     100.0 |  100.0 |      62.5 |   31.3
-                                                                          ParityChecker_for_LBDR.vhd | 100.0 |    100.0 |   100.0 |     100.0 |  100.0 |     100.0 |  100.0
-                                                                               counter_threshold.vhd | 100.0 |    100.0 |   100.0 |     100.0 |  100.0 |      72.7 |   62.5
-     Router_32_bit_NE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd | 100.0 |    100.0 |   100.0 |      27.5 |  100.0 |     100.0 |    7.7
-     Router_32_bit_NW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd | 100.0 |    100.0 |   100.0 |      23.9 |  100.0 |     100.0 |    7.4
-     Router_32_bit_SE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd | 100.0 |    100.0 |   100.0 |      50.0 |  100.0 |     100.0 |   15.9
-     Router_32_bit_SW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd | 100.0 |    100.0 |   100.0 |      23.9 |  100.0 |     100.0 |    7.5
-                                                                                            xbar.vhd | 100.0 |    100.0 |   100.0 |     100.0 |  100.0 |     100.0 |   79.0
-                                                                                                    ---------|----------|---------|-----------|--------|-----------|--------|
-                                                                                                       95.45 |    93.91 |   86.64 |     82.82 | 100.00 |     92.86 |  38.00
+                                                                                                                          	                 FEC 		                 FSM
+                                                                                                                         		--------------------- 		---------------------
+                                                                                           file_name |	     stmts |	  branches |	 Condition |	Expression |	    States |	Transitions     toggle
+																-------------------------------------|-------------|---------------|---------------|---------------|---------------|---------------|---------------|
+                                                                     Arbiter_in_one_hot_checkers.vhd |	      88.9 |	      83.3 |	      58.2 |	     100.0 |	     100.0 |	     100.0 |	      17.9
+                                                        Arbiter_in_one_hot_with_checkers_with_FI.vhd |	      79.3 |	      79.5 |	     100.0 |	     100.0 |	     100.0 |	      61.1 |	      33.2
+                                                             Arbiter_out_one_hot_pseudo_checkers.vhd |	      89.6 |	      84.3 |	      64.4 |	     100.0 |	     100.0 |	     100.0 |	      25.4
+                                                  allocator_credit_counter_logic_pseudo_checkers.vhd |	      88.8 |	      83.3 |	      59.0 |	     100.0 |	     100.0 |	     100.0 |	      25.0
+                                                                 allocator_logic_pseudo_checkers.vhd |	      87.4 |	      81.1 |	      53.2 |	     100.0 |	     100.0 |	     100.0 |	      19.4
+                                                                 allocator_with_checkers_with_FI.vhd |	     100.0 |	     100.0 |	      96.6 |	      48.0 |	     100.0 |	     100.0 |	      14.2
+                                                       arbiter_out_one_hot_with_checkers_with_FI.vhd |	      85.4 |	      83.3 |	     100.0 |	     100.0 |	     100.0 |	      75.0 |	      44.3
+                               FIFO_one_hot_credit_based_packet_drop_classifier_support_checkers.vhd |	      95.4 |	      93.1 |	      82.4 |	     100.0 |	     100.0 |	     100.0 |	      25.6
+                  FIFO_one_hot_credit_based_packet_drop_classifier_support_with_checkers_with_FI.vhd |	     100.0 |	      98.7 |	     100.0 |	     100.0 |	     100.0 |	      73.6 |	      57.2
+                                                                                  Fault_injector.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	      82.1
+                                                                       Cx_Reconf_pseudo_checkers.vhd |	      96.7 |	      95.0 |	      66.6 |	     100.0 |	     100.0 |	     100.0 |	      43.4
+                                                   LBDR_packet_drop_routing_part_pseudo_checkers.vhd |	      98.9 |	      98.2 |	      96.1 |	     100.0 |	     100.0 |	     100.0 |	      51.5
+                                                          LBDR_packet_drop_with_checkers_with_FI.vhd |	     100.0 |	     100.0 |	     100.0 |	      51.7 |	     100.0 |	     100.0 |	      37.3
+                                                                      Rxy_Reconf_pseudo_checkers.vhd |	      95.2 |	      92.8 |	      48.8 |	     100.0 |	     100.0 |	     100.0 |	      56.9
+                                                                                              NI.vhd |	     100.0 |	      97.5 |	      90.0 |	     100.0 |	     100.0 |	      62.5 |	      31.3
+                                                                          ParityChecker_for_LBDR.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0
+                                                                               counter_threshold.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	      72.7 |	      62.5
+     Router_32_bit_NE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd |	     100.0 |	     100.0 |	     100.0 |	      27.5 |	     100.0 |	     100.0 |	       7.7
+     Router_32_bit_NW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd |	     100.0 |	     100.0 |	     100.0 |	      23.9 |	     100.0 |	     100.0 |	       7.4
+     Router_32_bit_SE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd |	     100.0 |	     100.0 |	     100.0 |	      50.0 |	     100.0 |	     100.0 |	      16.1
+     Router_32_bit_SW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd |	     100.0 |	     100.0 |	     100.0 |	      23.9 |	     100.0 |	     100.0 |	       7.5
+                                                                                            xbar.vhd |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	     100.0 |	      79.0
+                                                                                                     --------------|---------------|---------------|---------------|---------------|---------------|---------------|
+                                                                                                      	     95.45 |	     93.91 |	     86.91 |	     82.82 |	    100.00 |	     92.86 |	     38.05
+
 		=====================================================================================================================================================================
     	* problems identified:
     		* Its not possible in this configuration to test all the statements in arbiter_in and arbiter_out.

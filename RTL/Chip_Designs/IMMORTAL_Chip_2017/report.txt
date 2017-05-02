@@ -203,7 +203,7 @@ Coverage Report Summary Data by file
     ----------------            ------      ----    ------ ---------
     Stmts                          236       236         0     100.0
     Branches                       121       118         3      97.5
-    FEC Condition Terms             50        42         8      84.0
+    FEC Condition Terms             50        45         5      90.0
     FEC Expression Terms             0         0         0     100.0
     FSMs                                                        81.2
         States                       8         8         0     100.0
@@ -264,7 +264,7 @@ Coverage Report Summary Data by file
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                   8590       636      7954       7.4
+    Toggle Bins                   8582       640      7942       7.4
 
 =================================================================================
 === File: network_files/customized_routers/Router_32_bit_SE_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd
@@ -278,7 +278,7 @@ Coverage Report Summary Data by file
     FSMs                                                       100.0
         States                       0         0         0     100.0
         Transitions                  0         0         0     100.0
-    Toggle Bins                   7442      1189      6253      15.9
+    Toggle Bins                   7422      1199      6223      16.1
 
 =================================================================================
 === File: network_files/customized_routers/Router_32_bit_SW_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd
@@ -309,5 +309,5 @@ Coverage Report Summary Data by file
     Toggle Bins                    458       362        96      79.0
 
 
-Total Coverage By File (code coverage only, filtered view): 65.1%
+Total Coverage By File (code coverage only, filtered view): 65.2%
 
