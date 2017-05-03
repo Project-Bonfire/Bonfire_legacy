@@ -112,24 +112,14 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
             W_err_grants_onehot,
             W_err_grants_mismatch, 
             W_err_header_tail_Requests_FF_Requests_in, 
-            W_err_dst_addr_cur_addr_N1,
-            W_err_dst_addr_cur_addr_not_N1,
-            W_err_dst_addr_cur_addr_E1,
-            W_err_dst_addr_cur_addr_not_E1,
-            W_err_dst_addr_cur_addr_W1,
-            W_err_dst_addr_cur_addr_not_W1,
-            W_err_dst_addr_cur_addr_S1,
-            W_err_dst_addr_cur_addr_not_S1, 
-            W_err_dst_addr_cur_addr_Req_L_in, 
+            W_err_dst_addr_cur_addr_N1, W_err_dst_addr_cur_addr_not_N1, W_err_dst_addr_cur_addr_E1, W_err_dst_addr_cur_addr_not_E1, 
+            W_err_dst_addr_cur_addr_W1, W_err_dst_addr_cur_addr_not_W1, W_err_dst_addr_cur_addr_S1, W_err_dst_addr_cur_addr_not_S1,  W_err_dst_addr_cur_addr_Req_L_in, 
             W_err_dst_addr_cur_addr_not_Req_L_in, 
             W_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             W_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             W_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
             --W_err_header_not_empty_Req_L_in, -- added according to new design
-            W_err_header_not_empty_Req_N_in,
-            W_err_header_not_empty_Req_E_in,
-            W_err_header_not_empty_Req_W_in,
-            W_err_header_not_empty_Req_S_in, 
+            W_err_header_not_empty_Req_N_in, W_err_header_not_empty_Req_E_in, W_err_header_not_empty_Req_W_in, W_err_header_not_empty_Req_S_in, 
             W_err_header_empty_packet_drop_in_packet_drop_equal, 
             W_err_tail_not_empty_packet_drop_not_packet_drop_in, 
             W_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal, 
@@ -163,24 +153,15 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
             S_err_grants_onehot,
             S_err_grants_mismatch, 
             S_err_header_tail_Requests_FF_Requests_in, 
-            S_err_dst_addr_cur_addr_N1,
-            S_err_dst_addr_cur_addr_not_N1,
-            S_err_dst_addr_cur_addr_E1,
-            S_err_dst_addr_cur_addr_not_E1,
-            S_err_dst_addr_cur_addr_W1,
-            S_err_dst_addr_cur_addr_not_W1,
-            S_err_dst_addr_cur_addr_S1,
-            S_err_dst_addr_cur_addr_not_S1, 
+            S_err_dst_addr_cur_addr_N1, S_err_dst_addr_cur_addr_not_N1, S_err_dst_addr_cur_addr_E1, S_err_dst_addr_cur_addr_not_E1, 
+            S_err_dst_addr_cur_addr_W1, S_err_dst_addr_cur_addr_not_W1, S_err_dst_addr_cur_addr_S1, S_err_dst_addr_cur_addr_not_S1, 
             S_err_dst_addr_cur_addr_Req_L_in, 
             S_err_dst_addr_cur_addr_not_Req_L_in, 
             S_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             S_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
             --S_err_header_not_empty_Req_L_in, -- added according to new design
-            S_err_header_not_empty_Req_N_in,
-            S_err_header_not_empty_Req_E_in,
-            S_err_header_not_empty_Req_W_in,
-            S_err_header_not_empty_Req_S_in, 
+            S_err_header_not_empty_Req_N_in, S_err_header_not_empty_Req_E_in, S_err_header_not_empty_Req_W_in, S_err_header_not_empty_Req_S_in, 
             S_err_header_empty_packet_drop_in_packet_drop_equal, 
             S_err_tail_not_empty_packet_drop_not_packet_drop_in, 
             S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal, 
@@ -207,31 +188,17 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
             S_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal, 
 
     -- Local
-            L_err_header_empty_Requests_FF_Requests_in, 
-            L_err_tail_Requests_in_all_zero, 
-            L_err_tail_empty_Requests_FF_Requests_in, 
-            L_err_tail_not_empty_not_grants_Requests_FF_Requests_in,
-            L_err_grants_onehot,
-            L_err_grants_mismatch, 
-            L_err_header_tail_Requests_FF_Requests_in, 
-            L_err_dst_addr_cur_addr_N1,
-            L_err_dst_addr_cur_addr_not_N1,
-            L_err_dst_addr_cur_addr_E1,
-            L_err_dst_addr_cur_addr_not_E1,
-            L_err_dst_addr_cur_addr_W1,
-            L_err_dst_addr_cur_addr_not_W1,
-            L_err_dst_addr_cur_addr_S1,
-            L_err_dst_addr_cur_addr_not_S1, 
-            L_err_dst_addr_cur_addr_Req_L_in, 
-            L_err_dst_addr_cur_addr_not_Req_L_in, 
+            L_err_header_empty_Requests_FF_Requests_in, L_err_tail_Requests_in_all_zero, L_err_tail_empty_Requests_FF_Requests_in, 
+            L_err_tail_not_empty_not_grants_Requests_FF_Requests_in, L_err_grants_onehot, L_err_grants_mismatch, 
+            L_err_header_tail_Requests_FF_Requests_in, L_err_dst_addr_cur_addr_N1, L_err_dst_addr_cur_addr_not_N1,
+            L_err_dst_addr_cur_addr_E1, L_err_dst_addr_cur_addr_not_E1, L_err_dst_addr_cur_addr_W1,
+            L_err_dst_addr_cur_addr_not_W1, L_err_dst_addr_cur_addr_S1, L_err_dst_addr_cur_addr_not_S1, 
+            L_err_dst_addr_cur_addr_Req_L_in, L_err_dst_addr_cur_addr_not_Req_L_in, 
             L_err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             L_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             L_err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
             --L_err_header_not_empty_Req_L_in, -- added according to new design
-            L_err_header_not_empty_Req_N_in,
-            L_err_header_not_empty_Req_E_in,
-            L_err_header_not_empty_Req_W_in,
-            L_err_header_not_empty_Req_S_in, 
+            L_err_header_not_empty_Req_N_in, L_err_header_not_empty_Req_E_in, L_err_header_not_empty_Req_W_in, L_err_header_not_empty_Req_S_in, 
             L_err_header_empty_packet_drop_in_packet_drop_equal, 
             L_err_tail_not_empty_packet_drop_not_packet_drop_in, 
             L_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal, 
@@ -393,17 +360,11 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
             S_err_not_fake_credit_not_read_en_fake_credit_counter_zero_not_credit_out, 
 
             -- Checkers for Packet Dropping FSM of FIFO
-            S_err_state_out_Idle_not_fault_out_valid_in_state_in_Header_flit, 
-            S_err_state_out_Idle_not_fault_out_valid_in_state_in_not_change, 
-            S_err_state_out_Idle_not_fault_out_not_fake_credit, 
-            S_err_state_out_Idle_not_fault_out_not_fault_info_in, 
-            S_err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal, 
-            S_err_state_out_Idle_fault_out_fake_credit, 
-            S_err_state_out_Idle_fault_out_state_in_Packet_drop, 
-            S_err_state_out_Idle_fault_out_fault_info_in, 
-            S_err_state_out_Idle_fault_out_faulty_packet_in, 
-            S_err_state_out_Idle_not_health_info, 
-            S_err_state_out_Idle_not_write_fake_flit, 
+            S_err_state_out_Idle_not_fault_out_valid_in_state_in_Header_flit, S_err_state_out_Idle_not_fault_out_valid_in_state_in_not_change, 
+            S_err_state_out_Idle_not_fault_out_not_fake_credit, S_err_state_out_Idle_not_fault_out_not_fault_info_in, 
+            S_err_state_out_Idle_not_fault_out_faulty_packet_in_faulty_packet_out_equal, S_err_state_out_Idle_fault_out_fake_credit, 
+            S_err_state_out_Idle_fault_out_state_in_Packet_drop, S_err_state_out_Idle_fault_out_fault_info_in, S_err_state_out_Idle_fault_out_faulty_packet_in, 
+            S_err_state_out_Idle_not_health_info, S_err_state_out_Idle_not_write_fake_flit, 
 
             S_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Body_state_in_Body_flit, 
             S_err_state_out_Header_flit_valid_in_not_fault_out_flit_type_Tail_state_in_Tail_flit, 
@@ -788,38 +749,17 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
             -- North Arbiter_out checker outputs
     signal  N_arbiter_out_err_Requests_state_in_state_not_equal, 
        
-            N_err_IDLE_req_X_N, 
-            N_err_North_req_X_N, 
-            N_err_North_credit_not_zero_req_X_N_grant_N, 
-            N_err_North_credit_zero_or_not_req_X_N_not_grant_N, 
-            N_err_East_req_X_E, 
-            N_err_East_credit_not_zero_req_X_E_grant_E, 
-            N_err_East_credit_zero_or_not_req_X_E_not_grant_E, 
-            N_err_West_req_X_W, 
-            N_err_West_credit_not_zero_req_X_W_grant_W, 
-            N_err_West_credit_zero_or_not_req_X_W_not_grant_W, 
-            N_err_South_req_X_S, 
-            N_err_South_credit_not_zero_req_X_S_grant_S, 
-            N_err_South_credit_zero_or_not_req_X_S_not_grant_S, 
-            N_err_Local_req_X_L, 
-            N_err_Local_credit_not_zero_req_X_L_grant_L, 
-            N_err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
+            N_err_IDLE_req_X_N, N_err_North_req_X_N, N_err_North_credit_not_zero_req_X_N_grant_N, N_err_North_credit_zero_or_not_req_X_N_not_grant_N, 
+            N_err_East_req_X_E, N_err_East_credit_not_zero_req_X_E_grant_E, N_err_East_credit_zero_or_not_req_X_E_not_grant_E, N_err_West_req_X_W, 
+            N_err_West_credit_not_zero_req_X_W_grant_W, N_err_West_credit_zero_or_not_req_X_W_not_grant_W, N_err_South_req_X_S, N_err_South_credit_not_zero_req_X_S_grant_S, 
+            N_err_South_credit_zero_or_not_req_X_S_not_grant_S, N_err_Local_req_X_L, N_err_Local_credit_not_zero_req_X_L_grant_L, N_err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
 
-            N_err_IDLE_req_X_E, N_err_North_req_X_E, N_err_East_req_X_W, N_err_West_req_X_S, 
-            N_err_South_req_X_L, N_err_Local_req_X_N, 
+            N_err_IDLE_req_X_E, N_err_North_req_X_E, N_err_East_req_X_W, N_err_West_req_X_S, N_err_South_req_X_L, N_err_Local_req_X_N, 
+            N_err_IDLE_req_X_W, N_err_North_req_X_W, N_err_East_req_X_S, N_err_West_req_X_L, N_err_South_req_X_N, N_err_Local_req_X_E, 
+            N_err_IDLE_req_X_S, N_err_North_req_X_S, N_err_East_req_X_L, N_err_West_req_X_N, N_err_South_req_X_E, N_err_Local_req_X_W, 
+            N_err_IDLE_req_X_L, N_err_North_req_X_L, N_err_East_req_X_N, N_err_West_req_X_E, N_err_South_req_X_W, N_err_Local_req_X_S, 
        
-            N_err_IDLE_req_X_W, N_err_North_req_X_W, N_err_East_req_X_S, N_err_West_req_X_L, 
-            N_err_South_req_X_N, N_err_Local_req_X_E, 
-       
-            N_err_IDLE_req_X_S, N_err_North_req_X_S, N_err_East_req_X_L, N_err_West_req_X_N, 
-            N_err_South_req_X_E, N_err_Local_req_X_W, 
-       
-            N_err_IDLE_req_X_L, N_err_North_req_X_L, N_err_East_req_X_N, N_err_West_req_X_E, 
-            N_err_South_req_X_W, N_err_Local_req_X_S, 
-       
-            N_arbiter_out_err_state_in_onehot, 
-            N_arbiter_out_err_no_request_grants, 
-            N_err_request_IDLE_state, 
+            N_arbiter_out_err_state_in_onehot, N_arbiter_out_err_no_request_grants, N_err_request_IDLE_state, 
 
             N_err_request_IDLE_not_Grants, N_err_state_North_Invalid_Grant, N_err_state_East_Invalid_Grant, 
             N_err_state_West_Invalid_Grant, N_err_state_South_Invalid_Grant, N_err_state_Local_Invalid_Grant, 
@@ -828,31 +768,17 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
             -- East Arbiter_out checker outputs
             E_arbiter_out_err_Requests_state_in_state_not_equal, 
        
-            E_err_IDLE_req_X_N, 
-            E_err_North_req_X_N, 
-            E_err_North_credit_not_zero_req_X_N_grant_N, 
-            E_err_North_credit_zero_or_not_req_X_N_not_grant_N, 
-            E_err_East_req_X_E, 
-            E_err_East_credit_not_zero_req_X_E_grant_E, 
-            E_err_East_credit_zero_or_not_req_X_E_not_grant_E, 
-            E_err_West_req_X_W, 
-            E_err_West_credit_not_zero_req_X_W_grant_W, 
-            E_err_West_credit_zero_or_not_req_X_W_not_grant_W, 
-            E_err_South_req_X_S, 
-            E_err_South_credit_not_zero_req_X_S_grant_S, 
-            E_err_South_credit_zero_or_not_req_X_S_not_grant_S, 
-            E_err_Local_req_X_L, 
-            E_err_Local_credit_not_zero_req_X_L_grant_L, 
-            E_err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
+            E_err_IDLE_req_X_N, E_err_North_req_X_N, E_err_North_credit_not_zero_req_X_N_grant_N, E_err_North_credit_zero_or_not_req_X_N_not_grant_N, 
+            E_err_East_req_X_E, E_err_East_credit_not_zero_req_X_E_grant_E, E_err_East_credit_zero_or_not_req_X_E_not_grant_E, E_err_West_req_X_W, 
+            E_err_West_credit_not_zero_req_X_W_grant_W, E_err_West_credit_zero_or_not_req_X_W_not_grant_W, E_err_South_req_X_S, E_err_South_credit_not_zero_req_X_S_grant_S, 
+            E_err_South_credit_zero_or_not_req_X_S_not_grant_S, E_err_Local_req_X_L, E_err_Local_credit_not_zero_req_X_L_grant_L, E_err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
 
             E_err_IDLE_req_X_E, E_err_North_req_X_E, E_err_East_req_X_W, E_err_West_req_X_S, E_err_South_req_X_L, E_err_Local_req_X_N, 
             E_err_IDLE_req_X_W, E_err_North_req_X_W, E_err_East_req_X_S, E_err_West_req_X_L, E_err_South_req_X_N, E_err_Local_req_X_E, 
             E_err_IDLE_req_X_S, E_err_North_req_X_S, E_err_East_req_X_L, E_err_West_req_X_N, E_err_South_req_X_E, E_err_Local_req_X_W, 
             E_err_IDLE_req_X_L, E_err_North_req_X_L, E_err_East_req_X_N, E_err_West_req_X_E, E_err_South_req_X_W, E_err_Local_req_X_S, 
        
-            E_arbiter_out_err_state_in_onehot, 
-            E_arbiter_out_err_no_request_grants, 
-            E_err_request_IDLE_state, 
+            E_arbiter_out_err_state_in_onehot, E_arbiter_out_err_no_request_grants, E_err_request_IDLE_state, 
 
             E_err_request_IDLE_not_Grants, E_err_state_North_Invalid_Grant, E_err_state_East_Invalid_Grant, E_err_state_West_Invalid_Grant,  
             E_err_state_South_Invalid_Grant, E_err_state_Local_Invalid_Grant, E_err_Grants_onehot_or_all_zero, 
@@ -867,21 +793,12 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
             W_err_South_req_X_S, W_err_South_credit_not_zero_req_X_S_grant_S, W_err_South_credit_zero_or_not_req_X_S_not_grant_S, 
             W_err_Local_req_X_L, W_err_Local_credit_not_zero_req_X_L_grant_L, W_err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
 
-            W_err_IDLE_req_X_E, W_err_North_req_X_E, W_err_East_req_X_W, W_err_West_req_X_S, 
-            W_err_South_req_X_L, W_err_Local_req_X_N, 
+            W_err_IDLE_req_X_E, W_err_North_req_X_E, W_err_East_req_X_W, W_err_West_req_X_S, W_err_South_req_X_L, W_err_Local_req_X_N, 
+            W_err_IDLE_req_X_W, W_err_North_req_X_W, W_err_East_req_X_S, W_err_West_req_X_L, W_err_South_req_X_N, W_err_Local_req_X_E, 
+            W_err_IDLE_req_X_S, W_err_North_req_X_S, W_err_East_req_X_L, W_err_West_req_X_N, W_err_South_req_X_E, W_err_Local_req_X_W, 
+            W_err_IDLE_req_X_L, W_err_North_req_X_L, W_err_East_req_X_N, W_err_West_req_X_E, W_err_South_req_X_W, W_err_Local_req_X_S, 
        
-            W_err_IDLE_req_X_W, W_err_North_req_X_W, W_err_East_req_X_S, W_err_West_req_X_L, 
-            W_err_South_req_X_N, W_err_Local_req_X_E, 
-       
-            W_err_IDLE_req_X_S, W_err_North_req_X_S, W_err_East_req_X_L, W_err_West_req_X_N, 
-            W_err_South_req_X_E, W_err_Local_req_X_W, 
-       
-            W_err_IDLE_req_X_L, W_err_North_req_X_L, W_err_East_req_X_N, W_err_West_req_X_E, 
-            W_err_South_req_X_W, W_err_Local_req_X_S, 
-       
-            W_arbiter_out_err_state_in_onehot, 
-            W_arbiter_out_err_no_request_grants, 
-            W_err_request_IDLE_state, 
+            W_arbiter_out_err_state_in_onehot, W_arbiter_out_err_no_request_grants, W_err_request_IDLE_state, 
 
             W_err_request_IDLE_not_Grants, W_err_state_North_Invalid_Grant,W_err_state_East_Invalid_Grant, 
             W_err_state_West_Invalid_Grant, W_err_state_South_Invalid_Grant,W_err_state_Local_Invalid_Grant,
@@ -910,25 +827,18 @@ architecture behavior of router_NE_credit_based_PD_C_SHMU is
             -- Local Arbiter_out checker outputs
             L_arbiter_out_err_Requests_state_in_state_not_equal, 
        
-            L_err_IDLE_req_X_N, L_err_North_req_X_N, L_err_North_credit_not_zero_req_X_N_grant_N, 
-            L_err_North_credit_zero_or_not_req_X_N_not_grant_N, 
-            L_err_East_req_X_E, L_err_East_credit_not_zero_req_X_E_grant_E, 
-            L_err_East_credit_zero_or_not_req_X_E_not_grant_E, 
-            L_err_West_req_X_W, L_err_West_credit_not_zero_req_X_W_grant_W, 
-            L_err_West_credit_zero_or_not_req_X_W_not_grant_W, 
-            L_err_South_req_X_S, L_err_South_credit_not_zero_req_X_S_grant_S, 
-            L_err_South_credit_zero_or_not_req_X_S_not_grant_S, 
-            L_err_Local_req_X_L, L_err_Local_credit_not_zero_req_X_L_grant_L, 
-            L_err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
+            L_err_IDLE_req_X_N, L_err_North_req_X_N, L_err_North_credit_not_zero_req_X_N_grant_N, L_err_North_credit_zero_or_not_req_X_N_not_grant_N, 
+            L_err_East_req_X_E, L_err_East_credit_not_zero_req_X_E_grant_E, L_err_East_credit_zero_or_not_req_X_E_not_grant_E, 
+            L_err_West_req_X_W, L_err_West_credit_not_zero_req_X_W_grant_W, L_err_West_credit_zero_or_not_req_X_W_not_grant_W, 
+            L_err_South_req_X_S, L_err_South_credit_not_zero_req_X_S_grant_S, L_err_South_credit_zero_or_not_req_X_S_not_grant_S, 
+            L_err_Local_req_X_L, L_err_Local_credit_not_zero_req_X_L_grant_L, L_err_Local_credit_zero_or_not_req_X_L_not_grant_L, 
 
             L_err_IDLE_req_X_E, L_err_North_req_X_E, L_err_East_req_X_W, L_err_West_req_X_S, L_err_South_req_X_L, L_err_Local_req_X_N, 
             L_err_IDLE_req_X_W, L_err_North_req_X_W, L_err_East_req_X_S, L_err_West_req_X_L, L_err_South_req_X_N, L_err_Local_req_X_E, 
             L_err_IDLE_req_X_S, L_err_North_req_X_S, L_err_East_req_X_L, L_err_West_req_X_N, L_err_South_req_X_E, L_err_Local_req_X_W, 
             L_err_IDLE_req_X_L, L_err_North_req_X_L, L_err_East_req_X_N, L_err_West_req_X_E, L_err_South_req_X_W, L_err_Local_req_X_S, 
        
-            L_arbiter_out_err_state_in_onehot, 
-            L_arbiter_out_err_no_request_grants, 
-            L_err_request_IDLE_state, 
+            L_arbiter_out_err_state_in_onehot, L_arbiter_out_err_no_request_grants, L_err_request_IDLE_state, 
 
             L_err_request_IDLE_not_Grants, L_err_state_North_Invalid_Grant,L_err_state_East_Invalid_Grant, 
             L_err_state_West_Invalid_Grant, L_err_state_South_Invalid_Grant, L_err_state_Local_Invalid_Grant,
@@ -1200,14 +1110,9 @@ S_FIFO_checkers_ORed  <=    S_err_empty_full or S_err_empty_read_en or S_err_ful
 L_FIFO_checkers_ORed  <=    L_err_empty_full or L_err_empty_read_en or L_err_full_write_en or L_err_state_in_onehot or 
                             L_err_read_pointer_in_onehot or L_err_write_pointer_in_onehot or 
 
-                            L_err_write_en_write_pointer or 
-                            L_err_not_write_en_write_pointer or 
-                            L_err_read_pointer_write_pointer_not_empty or 
-                            L_err_read_pointer_write_pointer_empty or 
-                            L_err_read_pointer_write_pointer_not_full or 
-                            L_err_read_pointer_write_pointer_full or 
-                            L_err_read_pointer_increment or 
-                            L_err_read_pointer_not_increment or 
+                            L_err_write_en_write_pointer or L_err_not_write_en_write_pointer or L_err_read_pointer_write_pointer_not_empty or 
+                            L_err_read_pointer_write_pointer_empty or L_err_read_pointer_write_pointer_not_full or L_err_read_pointer_write_pointer_full or 
+                            L_err_read_pointer_increment or L_err_read_pointer_not_increment or 
                             L_err_write_en or L_err_not_write_en or L_err_not_write_en1 or L_err_not_write_en2 or 
                             L_err_read_en_mismatch or L_err_read_en_mismatch1 or 
 
@@ -1319,31 +1224,15 @@ L_FIFO_checkers_ORed  <=    L_err_empty_full or L_err_empty_read_en or L_err_ful
 
 -- West
                             -- Routing part checkers            
-W_LBDR_checkers_ORed <=     W_err_header_empty_Requests_FF_Requests_in or  
-                            W_err_tail_Requests_in_all_zero or  
-                            W_err_tail_empty_Requests_FF_Requests_in or  
-                            W_err_tail_not_empty_not_grants_Requests_FF_Requests_in or 
-                            W_err_grants_onehot or 
-                            W_err_grants_mismatch or  
-                            W_err_header_tail_Requests_FF_Requests_in or  
-                            W_err_dst_addr_cur_addr_N1 or 
-                            W_err_dst_addr_cur_addr_not_N1 or 
-                            W_err_dst_addr_cur_addr_E1 or 
-                            W_err_dst_addr_cur_addr_not_E1 or 
-                            W_err_dst_addr_cur_addr_W1 or 
-                            W_err_dst_addr_cur_addr_not_W1 or 
-                            W_err_dst_addr_cur_addr_S1 or 
-                            W_err_dst_addr_cur_addr_not_S1 or  
-                            W_err_dst_addr_cur_addr_Req_L_in or  
-                            W_err_dst_addr_cur_addr_not_Req_L_in or  
-                            W_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
+W_LBDR_checkers_ORed <=     W_err_header_empty_Requests_FF_Requests_in or  W_err_tail_Requests_in_all_zero or  W_err_tail_empty_Requests_FF_Requests_in or  
+                            W_err_tail_not_empty_not_grants_Requests_FF_Requests_in or W_err_grants_onehot or W_err_grants_mismatch or  W_err_header_tail_Requests_FF_Requests_in or  
+                            W_err_dst_addr_cur_addr_N1 or W_err_dst_addr_cur_addr_not_N1 or W_err_dst_addr_cur_addr_E1 or W_err_dst_addr_cur_addr_not_E1 or W_err_dst_addr_cur_addr_W1 or 
+                            W_err_dst_addr_cur_addr_not_W1 or W_err_dst_addr_cur_addr_S1 or W_err_dst_addr_cur_addr_not_S1 or  W_err_dst_addr_cur_addr_Req_L_in or  
+                            W_err_dst_addr_cur_addr_not_Req_L_in or  W_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
                             W_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or  -- added according to new design
                             W_err_header_not_empty_faulty_Req_in_all_zero or  -- added according to new design
                             --W_err_header_not_empty_Req_L_in or  -- added according to new design
-                            W_err_header_not_empty_Req_N_in or 
-                            W_err_header_not_empty_Req_E_in or 
-                            W_err_header_not_empty_Req_W_in or 
-                            W_err_header_not_empty_Req_S_in or  
+                            W_err_header_not_empty_Req_N_in or  W_err_header_not_empty_Req_E_in or  W_err_header_not_empty_Req_W_in or  W_err_header_not_empty_Req_S_in or  
                             W_err_header_empty_packet_drop_in_packet_drop_equal or  
                             W_err_tail_not_empty_packet_drop_not_packet_drop_in or  
                             W_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or  
@@ -1373,36 +1262,17 @@ W_LBDR_checkers_ORed <=     W_err_header_empty_Requests_FF_Requests_in or
 
 -- South
                             -- Routing part checkers            
-S_LBDR_checkers_ORed <=     S_err_header_empty_Requests_FF_Requests_in or  
-                            S_err_tail_Requests_in_all_zero or  
-                            S_err_tail_empty_Requests_FF_Requests_in or  
-                            S_err_tail_not_empty_not_grants_Requests_FF_Requests_in or 
-                            S_err_grants_onehot or 
-                            S_err_grants_mismatch or  
-                            S_err_header_tail_Requests_FF_Requests_in or  
-                            S_err_dst_addr_cur_addr_N1 or 
-                            S_err_dst_addr_cur_addr_not_N1 or 
-                            S_err_dst_addr_cur_addr_E1 or 
-                            S_err_dst_addr_cur_addr_not_E1 or 
-                            S_err_dst_addr_cur_addr_W1 or 
-                            S_err_dst_addr_cur_addr_not_W1 or 
-                            S_err_dst_addr_cur_addr_S1 or 
-                            S_err_dst_addr_cur_addr_not_S1 or  
-                            S_err_dst_addr_cur_addr_Req_L_in or  
-                            S_err_dst_addr_cur_addr_not_Req_L_in or  
-                            S_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
+S_LBDR_checkers_ORed <=     S_err_header_empty_Requests_FF_Requests_in or  S_err_tail_Requests_in_all_zero or  S_err_tail_empty_Requests_FF_Requests_in or  
+                            S_err_tail_not_empty_not_grants_Requests_FF_Requests_in or S_err_grants_onehot or S_err_grants_mismatch or  
+                            S_err_header_tail_Requests_FF_Requests_in or  S_err_dst_addr_cur_addr_N1 or S_err_dst_addr_cur_addr_not_N1 or S_err_dst_addr_cur_addr_E1 or 
+                            S_err_dst_addr_cur_addr_not_E1 or S_err_dst_addr_cur_addr_W1 or S_err_dst_addr_cur_addr_not_W1 or S_err_dst_addr_cur_addr_S1 or S_err_dst_addr_cur_addr_not_S1 or  
+                            S_err_dst_addr_cur_addr_Req_L_in or  S_err_dst_addr_cur_addr_not_Req_L_in or  S_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
                             S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or  -- added according to new design
                             S_err_header_not_empty_faulty_Req_in_all_zero or  -- added according to new design
                             --S_err_header_not_empty_Req_L_in or  -- added according to new design
-                            S_err_header_not_empty_Req_N_in or 
-                            S_err_header_not_empty_Req_E_in or 
-                            S_err_header_not_empty_Req_W_in or 
-                            S_err_header_not_empty_Req_S_in or  
-                            S_err_header_empty_packet_drop_in_packet_drop_equal or  
-                            S_err_tail_not_empty_packet_drop_not_packet_drop_in or  
-                            S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or  
-                            S_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or  
-                            S_err_packet_drop_order or  
+                            S_err_header_not_empty_Req_N_in or S_err_header_not_empty_Req_E_in or S_err_header_not_empty_Req_W_in or S_err_header_not_empty_Req_S_in or  
+                            S_err_header_empty_packet_drop_in_packet_drop_equal or  S_err_tail_not_empty_packet_drop_not_packet_drop_in or  
+                            S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or  S_err_invalid_or_body_flit_packet_drop_in_packet_drop_equal or  S_err_packet_drop_order or  
 
                             -- Cx_Reconf checkers
                             S_err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal or  
@@ -1431,27 +1301,14 @@ L_LBDR_checkers_ORed <=     L_err_header_empty_Requests_FF_Requests_in or
                             L_err_tail_Requests_in_all_zero or  
                             L_err_tail_empty_Requests_FF_Requests_in or  
                             L_err_tail_not_empty_not_grants_Requests_FF_Requests_in or 
-                            L_err_grants_onehot or 
-                            L_err_grants_mismatch or  
-                            L_err_header_tail_Requests_FF_Requests_in or  
-                            L_err_dst_addr_cur_addr_N1 or 
-                            L_err_dst_addr_cur_addr_not_N1 or 
-                            L_err_dst_addr_cur_addr_E1 or 
-                            L_err_dst_addr_cur_addr_not_E1 or 
-                            L_err_dst_addr_cur_addr_W1 or 
-                            L_err_dst_addr_cur_addr_not_W1 or 
-                            L_err_dst_addr_cur_addr_S1 or 
-                            L_err_dst_addr_cur_addr_not_S1 or  
-                            L_err_dst_addr_cur_addr_Req_L_in or  
-                            L_err_dst_addr_cur_addr_not_Req_L_in or  
-                            L_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
+                            L_err_grants_onehot or L_err_grants_mismatch or  L_err_header_tail_Requests_FF_Requests_in or  L_err_dst_addr_cur_addr_N1 or 
+                            L_err_dst_addr_cur_addr_not_N1 or L_err_dst_addr_cur_addr_E1 or L_err_dst_addr_cur_addr_not_E1 or L_err_dst_addr_cur_addr_W1 or 
+                            L_err_dst_addr_cur_addr_not_W1 or L_err_dst_addr_cur_addr_S1 or L_err_dst_addr_cur_addr_not_S1 or  L_err_dst_addr_cur_addr_Req_L_in or  
+                            L_err_dst_addr_cur_addr_not_Req_L_in or  L_err_header_not_empty_faulty_drop_packet_in or  -- added according to new design
                             L_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or  -- added according to new design
                             L_err_header_not_empty_faulty_Req_in_all_zero or  -- added according to new design
                             --L_err_header_not_empty_Req_L_in or  -- added according to new design
-                            L_err_header_not_empty_Req_N_in or 
-                            L_err_header_not_empty_Req_E_in or 
-                            L_err_header_not_empty_Req_W_in or 
-                            L_err_header_not_empty_Req_S_in or  
+                            L_err_header_not_empty_Req_N_in or L_err_header_not_empty_Req_E_in or L_err_header_not_empty_Req_W_in or L_err_header_not_empty_Req_S_in or  
                             L_err_header_empty_packet_drop_in_packet_drop_equal or  
                             L_err_tail_not_empty_packet_drop_not_packet_drop_in or  
                             L_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or  
@@ -1724,45 +1581,17 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
                                     N_err_Local_credit_not_zero_req_X_L_grant_L or  
                                     N_err_Local_credit_zero_or_not_req_X_L_not_grant_L or  
 
-                                    N_err_IDLE_req_X_E or  
-                                    N_err_North_req_X_E or  
-                                    N_err_East_req_X_W or  
-                                    N_err_West_req_X_S or  
-                                    N_err_South_req_X_L or  
-                                    N_err_Local_req_X_N or  
-                               
-                                    N_err_IDLE_req_X_W or  
-                                    N_err_North_req_X_W or  
-                                    N_err_East_req_X_S or  
-                                    N_err_West_req_X_L or  
-                                    N_err_South_req_X_N or  
-                                    N_err_Local_req_X_E or  
-                               
-                                    N_err_IDLE_req_X_S or  
-                                    N_err_North_req_X_S or  
-                                    N_err_East_req_X_L or  
-                                    N_err_West_req_X_N or  
-                                    N_err_South_req_X_E or  
-                                    N_err_Local_req_X_W or  
-                               
-                                    N_err_IDLE_req_X_L or  
-                                    N_err_North_req_X_L or  
-                                    N_err_East_req_X_N or  
-                                    N_err_West_req_X_E or  
-                                    N_err_South_req_X_W or  
-                                    N_err_Local_req_X_S or  
+                                    N_err_IDLE_req_X_E or  N_err_North_req_X_E or  N_err_East_req_X_W or  N_err_West_req_X_S or  N_err_South_req_X_L or  N_err_Local_req_X_N or  
+                                    N_err_IDLE_req_X_W or  N_err_North_req_X_W or  N_err_East_req_X_S or  N_err_West_req_X_L or  N_err_South_req_X_N or  N_err_Local_req_X_E or  
+                                    N_err_IDLE_req_X_S or  N_err_North_req_X_S or  N_err_East_req_X_L or  N_err_West_req_X_N or  N_err_South_req_X_E or  N_err_Local_req_X_W or  
+                                    N_err_IDLE_req_X_L or  N_err_North_req_X_L or  N_err_East_req_X_N or  N_err_West_req_X_E or  N_err_South_req_X_W or  N_err_Local_req_X_S or  
                                
                                     N_arbiter_out_err_state_in_onehot or  
                                     N_arbiter_out_err_no_request_grants or  
                                     N_err_request_IDLE_state or  
 
-                                    N_err_request_IDLE_not_Grants or  
-                                    N_err_state_North_Invalid_Grant or  
-                                    N_err_state_East_Invalid_Grant or  
-                                    N_err_state_West_Invalid_Grant or  
-                                    N_err_state_South_Invalid_Grant or  
-                                    N_err_state_Local_Invalid_Grant or  
-                                    N_err_Grants_onehot_or_all_zero or               
+                                    N_err_request_IDLE_not_Grants or  N_err_state_North_Invalid_Grant or  N_err_state_East_Invalid_Grant or  N_err_state_West_Invalid_Grant or  
+                                    N_err_state_South_Invalid_Grant or  N_err_state_Local_Invalid_Grant or  N_err_Grants_onehot_or_all_zero or               
 
                                     -- East Arbiter_out checker outputs
                                     E_arbiter_out_err_Requests_state_in_state_not_equal or  
@@ -1784,17 +1613,10 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
                                     E_err_Local_credit_not_zero_req_X_L_grant_L or  
                                     E_err_Local_credit_zero_or_not_req_X_L_not_grant_L or  
 
-                                    E_err_IDLE_req_X_E or  E_err_North_req_X_E or  E_err_East_req_X_W or  E_err_West_req_X_S or  E_err_South_req_X_L or  
-                                    E_err_Local_req_X_N or  
-                               
-                                    E_err_IDLE_req_X_W or  E_err_North_req_X_W or  E_err_East_req_X_S or  E_err_West_req_X_L or  E_err_South_req_X_N or  
-                                    E_err_Local_req_X_E or  
-                               
-                                    E_err_IDLE_req_X_S or  E_err_North_req_X_S or  E_err_East_req_X_L or  E_err_West_req_X_N or  E_err_South_req_X_E or  
-                                    E_err_Local_req_X_W or  
-                               
-                                    E_err_IDLE_req_X_L or  E_err_North_req_X_L or  E_err_East_req_X_N or  E_err_West_req_X_E or  E_err_South_req_X_W or  
-                                    E_err_Local_req_X_S or  
+                                    E_err_IDLE_req_X_E or  E_err_North_req_X_E or  E_err_East_req_X_W or  E_err_West_req_X_S or  E_err_South_req_X_L or  E_err_Local_req_X_N or  
+                                    E_err_IDLE_req_X_W or  E_err_North_req_X_W or  E_err_East_req_X_S or  E_err_West_req_X_L or  E_err_South_req_X_N or  E_err_Local_req_X_E or  
+                                    E_err_IDLE_req_X_S or  E_err_North_req_X_S or  E_err_East_req_X_L or  E_err_West_req_X_N or  E_err_South_req_X_E or  E_err_Local_req_X_W or  
+                                    E_err_IDLE_req_X_L or  E_err_North_req_X_L or  E_err_East_req_X_N or  E_err_West_req_X_E or  E_err_South_req_X_W or  E_err_Local_req_X_S or  
                                
                                     E_arbiter_out_err_state_in_onehot or  
                                     E_arbiter_out_err_no_request_grants or  
@@ -1824,21 +1646,12 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
                                     W_err_Local_credit_not_zero_req_X_L_grant_L or  
                                     W_err_Local_credit_zero_or_not_req_X_L_not_grant_L or  
 
-                                    W_err_IDLE_req_X_E or  W_err_North_req_X_E or  W_err_East_req_X_W or  W_err_West_req_X_S or  W_err_South_req_X_L or  
-                                    W_err_Local_req_X_N or  
+                                    W_err_IDLE_req_X_E or  W_err_North_req_X_E or  W_err_East_req_X_W or  W_err_West_req_X_S or  W_err_South_req_X_L or  W_err_Local_req_X_N or  
+                                    W_err_IDLE_req_X_W or  W_err_North_req_X_W or  W_err_East_req_X_S or  W_err_West_req_X_L or  W_err_South_req_X_N or  W_err_Local_req_X_E or  
+                                    W_err_IDLE_req_X_S or  W_err_North_req_X_S or  W_err_East_req_X_L or  W_err_West_req_X_N or  W_err_South_req_X_E or  W_err_Local_req_X_W or  
+                                    W_err_IDLE_req_X_L or  W_err_North_req_X_L or  W_err_East_req_X_N or  W_err_West_req_X_E or  W_err_South_req_X_W or  W_err_Local_req_X_S or  
                                
-                                    W_err_IDLE_req_X_W or  W_err_North_req_X_W or  W_err_East_req_X_S or  W_err_West_req_X_L or  W_err_South_req_X_N or  
-                                    W_err_Local_req_X_E or  
-                               
-                                    W_err_IDLE_req_X_S or  W_err_North_req_X_S or  W_err_East_req_X_L or  W_err_West_req_X_N or  W_err_South_req_X_E or  
-                                    W_err_Local_req_X_W or  
-                               
-                                    W_err_IDLE_req_X_L or  W_err_North_req_X_L or  W_err_East_req_X_N or  W_err_West_req_X_E or  W_err_South_req_X_W or  
-                                    W_err_Local_req_X_S or  
-                               
-                                    W_arbiter_out_err_state_in_onehot or  
-                                    W_arbiter_out_err_no_request_grants or  
-                                    W_err_request_IDLE_state or  
+                                    W_arbiter_out_err_state_in_onehot or  W_arbiter_out_err_no_request_grants or W_err_request_IDLE_state or  
 
                                     W_err_request_IDLE_not_Grants or  W_err_state_North_Invalid_Grant or W_err_state_East_Invalid_Grant or 
                                     W_err_state_West_Invalid_Grant or W_err_state_South_Invalid_Grant or W_err_state_Local_Invalid_Grant or 
@@ -1866,7 +1679,7 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
 
                                     S_err_IDLE_req_X_E or  S_err_North_req_X_E or  S_err_East_req_X_W or  
                                     S_err_West_req_X_S or  S_err_South_req_X_L or  S_err_Local_req_X_N or  
-                               
+
                                     S_err_IDLE_req_X_W or  S_err_North_req_X_W or  S_err_East_req_X_S or  
                                     S_err_West_req_X_L or  S_err_South_req_X_N or  S_err_Local_req_X_E or  
                                
@@ -1885,38 +1698,19 @@ Allocator_checkers_ORed <=  err_grant_N_N_sig_not_empty_N_grant_N_N or  err_not_
                                     -- Local Arbiter_out checker outputs
                                     L_arbiter_out_err_Requests_state_in_state_not_equal or  
                                
-                                    L_err_IDLE_req_X_N or  
-                                    L_err_North_req_X_N or  
-                                    L_err_North_credit_not_zero_req_X_N_grant_N or  
-                                    L_err_North_credit_zero_or_not_req_X_N_not_grant_N or  
-                                    L_err_East_req_X_E or  
-                                    L_err_East_credit_not_zero_req_X_E_grant_E or  
-                                    L_err_East_credit_zero_or_not_req_X_E_not_grant_E or  
-                                    L_err_West_req_X_W or  
-                                    L_err_West_credit_not_zero_req_X_W_grant_W or  
-                                    L_err_West_credit_zero_or_not_req_X_W_not_grant_W or  
-                                    L_err_South_req_X_S or  
-                                    L_err_South_credit_not_zero_req_X_S_grant_S or  
-                                    L_err_South_credit_zero_or_not_req_X_S_not_grant_S or  
-                                    L_err_Local_req_X_L or  
-                                    L_err_Local_credit_not_zero_req_X_L_grant_L or  
+                                    L_err_IDLE_req_X_N or  L_err_North_req_X_N or  L_err_North_credit_not_zero_req_X_N_grant_N or  
+                                    L_err_North_credit_zero_or_not_req_X_N_not_grant_N or  L_err_East_req_X_E or  L_err_East_credit_not_zero_req_X_E_grant_E or  
+                                    L_err_East_credit_zero_or_not_req_X_E_not_grant_E or  L_err_West_req_X_W or  L_err_West_credit_not_zero_req_X_W_grant_W or  
+                                    L_err_West_credit_zero_or_not_req_X_W_not_grant_W or  L_err_South_req_X_S or  L_err_South_credit_not_zero_req_X_S_grant_S or  
+                                    L_err_South_credit_zero_or_not_req_X_S_not_grant_S or  L_err_Local_req_X_L or  L_err_Local_credit_not_zero_req_X_L_grant_L or  
                                     L_err_Local_credit_zero_or_not_req_X_L_not_grant_L or  
 
-                                    L_err_IDLE_req_X_E or  L_err_North_req_X_E or  L_err_East_req_X_W or  L_err_West_req_X_S or  L_err_South_req_X_L or  
-                                    L_err_Local_req_X_N or  
+                                    L_err_IDLE_req_X_E or  L_err_North_req_X_E or  L_err_East_req_X_W or  L_err_West_req_X_S or  L_err_South_req_X_L or  L_err_Local_req_X_N or  
+                                    L_err_IDLE_req_X_W or  L_err_North_req_X_W or  L_err_East_req_X_S or  L_err_West_req_X_L or  L_err_South_req_X_N or  L_err_Local_req_X_E or  
+                                    L_err_IDLE_req_X_S or  L_err_North_req_X_S or  L_err_East_req_X_L or  L_err_West_req_X_N or  L_err_South_req_X_E or  L_err_Local_req_X_W or  
+                                    L_err_IDLE_req_X_L or  L_err_North_req_X_L or  L_err_East_req_X_N or  L_err_West_req_X_E or  L_err_South_req_X_W or  L_err_Local_req_X_S or  
                                
-                                    L_err_IDLE_req_X_W or  L_err_North_req_X_W or  L_err_East_req_X_S or  L_err_West_req_X_L or  L_err_South_req_X_N or  
-                                    L_err_Local_req_X_E or  
-                               
-                                    L_err_IDLE_req_X_S or  L_err_North_req_X_S or  L_err_East_req_X_L or  L_err_West_req_X_N or  L_err_South_req_X_E or  
-                                    L_err_Local_req_X_W or  
-                               
-                                    L_err_IDLE_req_X_L or  L_err_North_req_X_L or  L_err_East_req_X_N or  L_err_West_req_X_E or  L_err_South_req_X_W or  
-                                    L_err_Local_req_X_S or  
-                               
-                                    L_arbiter_out_err_state_in_onehot or  
-                                    L_arbiter_out_err_no_request_grants or  
-                                    L_err_request_IDLE_state or  
+                                    L_arbiter_out_err_state_in_onehot or  L_arbiter_out_err_no_request_grants or  L_err_request_IDLE_state or  
 
                                     L_err_request_IDLE_not_Grants or  L_err_state_North_Invalid_Grant or L_err_state_East_Invalid_Grant or 
                                     L_err_state_West_Invalid_Grant or L_err_state_South_Invalid_Grant or L_err_state_Local_Invalid_Grant or 
@@ -2188,19 +1982,11 @@ W2L_fault <=    W_FIFO_checkers_ORed or
 S2L_fault <=    S_FIFO_checkers_ORed or
 
                 -- LBDR
-                S_err_header_empty_Requests_FF_Requests_in or
-                S_err_tail_Requests_in_all_zero or
-                S_err_tail_empty_Requests_FF_Requests_in or
-                S_err_tail_not_empty_not_grants_Requests_FF_Requests_in or
-                S_err_grants_onehot or
-                S_err_grants_mismatch or
-                S_err_header_tail_Requests_FF_Requests_in or
-                S_err_dst_addr_cur_addr_Req_L_in or
-                S_err_dst_addr_cur_addr_not_Req_L_in or
-                S_err_header_not_empty_faulty_drop_packet_in or
-                S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or
-                S_err_header_not_empty_faulty_Req_in_all_zero or 
-                --S_err_header_not_empty_Req_L_in or                                  
+                S_err_header_empty_Requests_FF_Requests_in or S_err_tail_Requests_in_all_zero or S_err_tail_empty_Requests_FF_Requests_in or 
+                S_err_tail_not_empty_not_grants_Requests_FF_Requests_in or S_err_grants_onehot or S_err_grants_mismatch or 
+                S_err_header_tail_Requests_FF_Requests_in or S_err_dst_addr_cur_addr_Req_L_in or S_err_dst_addr_cur_addr_not_Req_L_in or 
+                S_err_header_not_empty_faulty_drop_packet_in or S_err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change or 
+                S_err_header_not_empty_faulty_Req_in_all_zero or  --S_err_header_not_empty_Req_L_in or                                  
                 S_err_header_empty_packet_drop_in_packet_drop_equal or
                 S_err_tail_not_empty_packet_drop_not_packet_drop_in or
                 S_err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal or
