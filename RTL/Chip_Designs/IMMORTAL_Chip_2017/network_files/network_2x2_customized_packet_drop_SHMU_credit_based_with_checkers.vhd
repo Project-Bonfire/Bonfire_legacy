@@ -14,6 +14,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 USE ieee.numeric_std.ALL; 
 use work.component_pack.all;
+use ieee.std_logic_misc.all;
 
 entity network_2x2 is
  generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
@@ -666,6 +667,12 @@ R3_status_adapter : AsyncDataRegisterAdapter
     
 R3_aggregated_fault_status <= link_faults_async_3 & turn_faults_async_3;
 
+
+-- added by sivaoosh! has to checked!
+F_R0 <= OR_REDUCE(link_faults_async_0&turn_faults_async_0);
+F_R1 <= OR_REDUCE(link_faults_async_0&turn_faults_async_0);
+F_R2 <= OR_REDUCE(link_faults_async_0&turn_faults_async_0);
+F_R3 <= OR_REDUCE(link_faults_async_0&turn_faults_async_0);
 
 R_0: router_NW_credit_based_PD_C_SHMU 
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 0, Rxy_rst => 60,
