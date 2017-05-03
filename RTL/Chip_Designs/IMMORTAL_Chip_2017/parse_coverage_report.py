@@ -3,8 +3,17 @@
 #
 ########################################################################
 import sys
+
+input_file_path = None
+if '-i' in sys.argv[1:]:
+    input_file_path = sys.argv[sys.argv.index('-i')+1]
+    if ".txt" not in input_file_path:
+            raise ValueError("Wrong file extention. only .txt files are accepted!")
+else:
+    raise ValueError("Please provide a valid modelsim coverage report file!")
+
 try:
-	report_file = open('report.txt', 'r')
+	report_file = open(input_file_path, 'r')
 except IOError:
     print "Could not open input report file!"
     sys.exit()
