@@ -37,8 +37,8 @@ print "sent packets:", sent_packet_counter
 print "received packets:", received_packet_counter
 print "diagnostic packets:", diagnostic_packet_counter
 print "--------------------------------"
-print "packets not recieved:", sent_packet_counter-received_packet_counter
-print "packet loss rate:", float(sent_packet_counter-received_packet_counter)/sent_packet_counter, " %"
+print "packets not recieved:", sent_packet_counter-received_packet_counter+diagnostic_packet_counter
+print "packet loss rate:", float(sent_packet_counter-received_packet_counter+diagnostic_packet_counter)/sent_packet_counter, " %"
 print "--------------------------------"
 recieved_file.close()
 sent_file.close()
