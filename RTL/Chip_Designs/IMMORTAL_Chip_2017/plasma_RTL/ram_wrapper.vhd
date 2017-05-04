@@ -47,7 +47,7 @@ architecture logic of ram is
     );
     end component;
     signal write_enable: std_logic;
-    signal write_BWEBM: std_logic_vector(31 downto 0);
+    signal write_BWEB: std_logic_vector(31 downto 0);
     signal not_clock: std_logic;
     signal delayed_data_out, Q: std_logic_vector(31 downto 0);
 begin
@@ -58,21 +58,21 @@ begin
    -- the following process is not actually tested! 
    process(write_byte_enable)
    begin
-   write_BWEBM <= (others => '1'); 
+   write_BWEB <= (others => '1'); 
    if write_byte_enable(0) = '1' then 
-      write_BWEBM(7 downto 0) <= "00000000";
+      write_BWEB(7 downto 0) <= "00000000";
    end if;
 
    if write_byte_enable(1) = '1' then 
-      write_BWEBM(15 downto 8) <= "00000000";
+      write_BWEB(15 downto 8) <= "00000000";
    end if;
 
    if write_byte_enable(2) = '1' then 
-      write_BWEBM(23 downto 16) <= "00000000";
+      write_BWEB(23 downto 16) <= "00000000";
    end if;
 
    if write_byte_enable(3) = '1' then 
-      write_BWEBM(31 downto 24) <= "00000000";
+      write_BWEB(31 downto 24) <= "00000000";
    end if;
    end process;
 
@@ -98,7 +98,7 @@ begin
       AWT  => '0',  
       A => address(13 downto 2),
       D => data_write, 
-      BWEB => (others =>'0'),
+      BWEB => write_BWEB,
       --AM => (others =>'0'),
       --DM => (others =>'0'),
       --BWEBM => write_BWEBM,
