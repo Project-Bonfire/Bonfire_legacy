@@ -53,8 +53,6 @@ architecture logic of sim_uart is
    signal data_read_reg   : std_logic_vector(7 downto 0);
    signal data_save_reg   : std_logic_vector(17 downto 0);
    signal busy_write_sig  : std_logic;
-   signal read_value_reg  : std_logic_vector(6 downto 0);
-   signal uart_read2      : std_logic;
    signal count_value_reg_in, count_value_reg: std_logic_vector(31 downto 0);
    signal old_address     : std_logic_vector(31 downto 2);
    signal count_value_sig : std_logic_vector(9 downto 0);
@@ -105,7 +103,7 @@ count_value_sig <= count_value_reg(9 downto 0);
 uart_proc: process(clk, reset, enable_read, enable_write, data_in,
                    data_write_reg, bits_write_reg, delay_write_reg,
                    data_read_reg, bits_read_reg, delay_read_reg,
-                   data_save_reg, read_value_reg, uart_read2,
+                   data_save_reg, 
                    busy_write_sig, uart_read)
 
 -----------------------------------------------
@@ -120,13 +118,11 @@ uart_proc: process(clk, reset, enable_read, enable_write, data_in,
 --      "0011011001";  --12.5MHz/57600Hz = 0xd9
 --      "0000000100";  --for debug (shorten read_value_reg)
 begin
-   uart_read2 <= read_value_reg(read_value_reg'length - 1);
-
+   
    if reset = '1' then
       data_write_reg  <= ZERO(8 downto 1) & '1';
       bits_write_reg  <= "0000";
       delay_write_reg <= ZERO(9 downto 0);
-      read_value_reg  <= ONES(read_value_reg'length-1 downto 0);
       data_read_reg   <= ZERO(7 downto 0);
       bits_read_reg   <= "0000";
       delay_read_reg  <= ZERO(9 downto 0);
@@ -149,17 +145,6 @@ begin
             delay_write_reg <= ZERO(9 downto 0);    --reset delay
             bits_write_reg <= bits_write_reg - 1;   --bits left to write
             data_write_reg <= '1' & data_write_reg(8 downto 1);
-         end if;
-      end if;
-
-      --Average uart_read signal
-      if uart_read = '1' then
-         if read_value_reg /= ONES(read_value_reg'length - 1 downto 0) then
-            read_value_reg <= read_value_reg + 1;
-         end if;
-      else
-         if read_value_reg /= ZERO(read_value_reg'length - 1 downto 0) then
-            read_value_reg <= read_value_reg - 1;
          end if;
       end if;
 

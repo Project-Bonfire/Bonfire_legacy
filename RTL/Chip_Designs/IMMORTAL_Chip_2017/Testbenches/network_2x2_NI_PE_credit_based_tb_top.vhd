@@ -332,7 +332,7 @@ begin
     uart_1_enable_read <= '0';
     uart_2_enable_read <= '0';
     uart_3_enable_read <= '0';
-
+    uart_0_data_in <= (others => '0');
   elsif rising_edge(clk) then
     if configure_uart = True then
       uart_0_reg_write_byte_enable <= "1111";
@@ -348,19 +348,26 @@ begin
       uart_0_reg_enable <= '0';
       uart_0_reg_write_byte_enable <= "0000";
       uart_0_reg_data_write <= "00000000000000000000000000001010";
+
+
+      if now > 37 ms then 
+        uart_0_data_in <= uart_0_data_in + 1;
+        uart_0_enable_write <= '1';
+      end if; 
+
     end if;
   end if;
 end process;
 
 
 
-uart_0_enable_write <= '0';
+
 uart_1_enable_write <= '0';
 uart_2_enable_write <= '0';
 uart_3_enable_write <= '0';
 
 
-uart_0_data_in <= (others => '0');
+
 uart_1_data_in <= (others => '0');
 uart_2_data_in <= (others => '0');
 uart_3_data_in <= (others => '0');
