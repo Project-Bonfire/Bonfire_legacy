@@ -106,9 +106,9 @@ architecture logic of NI is
   signal self_diagnosis_reg_out, self_diagnosis_reg_in: std_logic_vector(31 downto 0);
   signal self_diagnosis_flag, self_diagnosis_flag_in: std_logic;
 
-  signal Rxy_reconf_PE_in : out  std_logic_vector(7 downto 0);   
-  signal Cx_reconf_PE_in : out  std_logic_vector(3 downto 0);    
-  signal Reconfig_command_in : out std_logic;
+  signal Rxy_reconf_PE_in :   std_logic_vector(7 downto 0);   
+  signal Cx_reconf_PE_in :   std_logic_vector(3 downto 0);    
+  signal Reconfig_command_in :  std_logic;
 
 begin 
 
