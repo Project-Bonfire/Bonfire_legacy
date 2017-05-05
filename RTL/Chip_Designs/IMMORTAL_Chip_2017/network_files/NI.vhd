@@ -146,8 +146,8 @@ process(clk, enable, write_byte_enable) begin
       self_diagnosis_flag <= '0';
 
       Reconfig_command <= '0';
-      Cx_reconf_PE <= (others <= '0');
-      Rxy_reconf_PE <= (others <= '0');
+      Cx_reconf_PE <= (others => '0');
+      Rxy_reconf_PE <= (others => '0');
 
    elsif clk'event and clk = '1'  then
    
