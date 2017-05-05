@@ -105,6 +105,11 @@ architecture logic of NI is
   signal sent_info, fault_info_ready, fault_info_ready_in: std_logic;
   signal self_diagnosis_reg_out, self_diagnosis_reg_in: std_logic_vector(31 downto 0);
   signal self_diagnosis_flag, self_diagnosis_flag_in: std_logic;
+
+  signal Rxy_reconf_PE_in : out  std_logic_vector(7 downto 0);   
+  signal Cx_reconf_PE_in : out  std_logic_vector(3 downto 0);    
+  signal Reconfig_command_in : out std_logic;
+
 begin 
 
 process(clk, enable, write_byte_enable) begin
@@ -140,7 +145,16 @@ process(clk, enable, write_byte_enable) begin
       self_diagnosis_reg_out <= (others => '0');
       self_diagnosis_flag <= '0';
 
+      Reconfig_command <= '0';
+      Cx_reconf_PE <= (others <= '0');
+      Rxy_reconf_PE <= (others <= '0');
+
    elsif clk'event and clk = '1'  then
+   
+      Reconfig_command <= Reconfig_command_in;
+      Cx_reconf_PE <= Cx_reconf_PE_in;
+      Rxy_reconf_PE <= Rxy_reconf_PE_in;
+
       old_address <= address;
       P2N_FIFO_write_pointer <= P2N_FIFO_write_pointer_in;
       P2N_FIFO_read_pointer  <=  P2N_FIFO_read_pointer_in;
@@ -195,17 +209,17 @@ end process;
 
 process(enable, address, write_byte_enable) begin
   -- Some initializations
-  Reconfig_command <= '0'; 
-  Rxy_reconf_PE <= (others =>'0');
-  Cx_reconf_PE <= (others =>'0');
+  Reconfig_command_in <= '0'; 
+  Rxy_reconf_PE_in <= (others =>'0');
+  Cx_reconf_PE_in <= (others =>'0');
 
   if address = NI_reconfiguration_address and enable = '1' then
     if write_byte_enable /= "0000" then
       -- In this case, data_write definitely includes the connectivity bits and routing bits for 
       -- reconfiguring LBDR logic.
-      Rxy_reconf_PE <= data_write(7 downto 0); -- Rxy is 8 bits long 
-      Cx_reconf_PE <= data_write(11 downto 8); -- Cx is 4 bits long
-      Reconfig_command <= '1';
+      Rxy_reconf_PE_in <= data_write(7 downto 0); -- Rxy is 8 bits long 
+      Cx_reconf_PE_in <= data_write(11 downto 8); -- Cx is 4 bits long
+      Reconfig_command_in <= '1';
     end if;
   end if;
 end process;
