@@ -328,6 +328,19 @@ begin
     uart_0_reg_write_byte_enable <= (others => '0');
     uart_0_reg_data_write <= (others => '0');
     uart_0_reg_enable <= '0';
+
+    uart_1_reg_write_byte_enable <= (others => '0');
+    uart_1_reg_data_write <= (others => '0');
+    uart_1_reg_enable <= '0';
+
+    uart_2_reg_write_byte_enable <= (others => '0');
+    uart_2_reg_data_write <= (others => '0');
+    uart_2_reg_enable <= '0';
+
+    uart_3_reg_write_byte_enable <= (others => '0');
+    uart_3_reg_data_write <= (others => '0');
+    uart_3_reg_enable <= '0';
+
     uart_0_enable_read <= '0';
     uart_1_enable_read <= '0';
     uart_2_enable_read <= '0';
@@ -338,6 +351,19 @@ begin
       uart_0_reg_write_byte_enable <= "1111";
       uart_0_reg_data_write <= "00000000000000000000000000001010";
       uart_0_reg_enable <= '1';
+
+      uart_1_reg_write_byte_enable <= "1111";
+      uart_1_reg_data_write <= "00000000000000000000000000001010";
+      uart_1_reg_enable <= '1';
+
+      uart_2_reg_write_byte_enable <= "1111";
+      uart_2_reg_data_write <= "00000000000000000000000000001010";
+      uart_2_reg_enable <= '1';
+
+      uart_3_reg_write_byte_enable <= "1111";
+      uart_3_reg_data_write <= "00000000000000000000000000001010";
+      uart_3_reg_enable <= '1';
+
       configure_uart := False;
     else
       uart_0_enable_read <= '1';
@@ -349,8 +375,19 @@ begin
       uart_0_reg_write_byte_enable <= "0000";
       uart_0_reg_data_write <= "00000000000000000000000000001010";
 
+      uart_1_reg_enable <= '0';
+      uart_1_reg_write_byte_enable <= "0000";
+      uart_1_reg_data_write <= "00000000000000000000000000001010";
 
-      if now > 37 ms then 
+      uart_2_reg_enable <= '0';
+      uart_2_reg_write_byte_enable <= "0000";
+      uart_2_reg_data_write <= "00000000000000000000000000001010";
+
+      uart_3_reg_enable <= '0';
+      uart_3_reg_write_byte_enable <= "0000";
+      uart_3_reg_data_write <= "00000000000000000000000000001010";
+
+      if now > 3 ms then 
         uart_0_data_in <= uart_0_data_in + 1;
         uart_0_enable_write <= '1';
       end if; 
@@ -358,9 +395,6 @@ begin
     end if;
   end if;
 end process;
-
-
-
 
 uart_1_enable_write <= '0';
 uart_2_enable_write <= '0';

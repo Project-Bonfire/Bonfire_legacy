@@ -138,16 +138,16 @@ begin  --architecture
             Reconfig_command => Reconfig_command
         );
 
-        memory_impl: memory
-            generic map (address_width => mem_address_width)
-
-            port map (
-                clk         => clk,
-                address     => address,
-                data_write  => data_write,
-                pause       => pause,
-                byte_we     => byte_we,
-                data_read   => data_read
-            );
+        --memory_impl: memory
+        --    generic map (address_width => mem_address_width)
+        --
+        --    port map (
+        --        clk         => clk,
+        --        address     => address,
+        --        data_write  => data_write,
+        --        pause       => pause,
+        --        byte_we     => byte_we,
+        --        data_read   => data_read
+        --    );
 
 end; --architecture logic

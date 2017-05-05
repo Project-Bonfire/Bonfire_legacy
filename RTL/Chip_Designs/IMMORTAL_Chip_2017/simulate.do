@@ -50,7 +50,7 @@ vcom -cover bcesfx "IJTAG_files/SReg.vhd"
 vcom -cover bcesfx "IJTAG_files/AsyncDataRegisterAdapter.vhd"
 
 # plasma components
-vcom -cover bcesfx "plasma_RTL/memory_sim.vhd"
+# vcom -cover bcesfx "plasma_RTL/memory_sim.vhd"
 vcom -cover bcesfx "plasma_RTL/alu.vhd"
 vcom -cover bcesfx "plasma_RTL/bus_mux.vhd"
 vcom -cover bcesfx "plasma_RTL/cache.vhd"
