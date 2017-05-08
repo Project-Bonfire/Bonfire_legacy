@@ -18,6 +18,7 @@
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 package mlite_pack is
    constant ZERO          : std_logic_vector(31 downto 0) :=
@@ -592,27 +593,42 @@ end; --package mlite_pack
 
 package body mlite_pack is
 
+--function bv_adder(a     : in std_logic_vector;
+--                  b     : in std_logic_vector;
+--                  do_add: in std_logic) return std_logic_vector is
+--   variable carry_in : std_logic;
+--   variable bb       : std_logic_vector(a'length-1 downto 0);
+--   variable result   : std_logic_vector(a'length downto 0);
+--begin
+--   if do_add = '1' then
+--      bb := b;
+--      carry_in := '0';
+--   else
+--      bb := not b;
+--      carry_in := '1';
+--   end if;
+--   for index in 0 to a'length-1 loop
+--      result(index) := a(index) xor bb(index) xor carry_in;
+--      carry_in := (carry_in and (a(index) or bb(index))) or
+--                  (a(index) and bb(index));
+--   end loop;
+--   result(a'length) := carry_in xnor do_add;
+--   return result;
+--end; --function
+
 function bv_adder(a     : in std_logic_vector;
                   b     : in std_logic_vector;
                   do_add: in std_logic) return std_logic_vector is
-   variable carry_in : std_logic;
-   variable bb       : std_logic_vector(a'length-1 downto 0);
-   variable result   : std_logic_vector(a'length downto 0);
+   variable A1, B1, S : UNSIGNED(a'length downto 0);
 begin
+   A1 := resize(unsigned(a), A1'length);
+   B1 := resize(unsigned(b), B1'length);
    if do_add = '1' then
-      bb := b;
-      carry_in := '0';
+      S := A1 + B1; 
    else
-      bb := not b;
-      carry_in := '1';
+      S := A1 - B1; 
    end if;
-   for index in 0 to a'length-1 loop
-      result(index) := a(index) xor bb(index) xor carry_in;
-      carry_in := (carry_in and (a(index) or bb(index))) or
-                  (a(index) and bb(index));
-   end loop;
-   result(a'length) := carry_in xnor do_add;
-   return result;
+   return std_logic_vector(S);
 end; --function
 
 

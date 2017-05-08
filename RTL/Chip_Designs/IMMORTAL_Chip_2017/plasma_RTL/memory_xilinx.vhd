@@ -27,7 +27,7 @@ architecture rtl of memory is
     begin
 
         index <= conv_integer(address(16 - 1 downto 2));
-        
+
         BRAM_SINGLE_MACRO_inst : BRAM_SINGLE_MACRO
         generic map(
             BRAM_SIZE   => "36Kb",      -- Target BRAM, "18Kb" or "36Kb"

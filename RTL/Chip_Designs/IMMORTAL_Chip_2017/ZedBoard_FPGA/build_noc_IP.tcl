@@ -144,7 +144,6 @@ set files [list \
 "[file normalize "${network_RTL_dir}/LBDR_packet_drop_with_checkers_with_FI/LBDR_packet_drop_with_checkers_with_FI.vhd"]"\
 "[file normalize "${network_RTL_dir}/ParityChecker_for_LBDR.vhd"]"\
 "[file normalize "${network_RTL_dir}/counter_threshold.vhd"]"\
-"[file normalize "${network_RTL_dir}/checkers_counter_threshold.vhd"]"\
 "[file normalize "${network_RTL_dir}/Fault_injector.vhd"]"\
 "[file normalize "${network_RTL_dir}/shift_register_serial_in.vhd"]"\
 "[file normalize "${network_RTL_dir}/NI.vhd"]"\
@@ -170,7 +169,7 @@ set files [list \
 "[file normalize "${plasma_RTL_dir}/pc_next.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/pipeline.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/xilinx_image.vhd"]"\
-"[file normalize "${plasma_RTL_dir}/reg_bank_xilinx.vhd"]"\
+"[file normalize "${plasma_RTL_dir}/reg_bank_tri_port.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/shifter.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/uart.vhd"]"\
 "[file normalize "${plasma_RTL_dir}/mlite_cpu.vhd"]"\
@@ -180,6 +179,7 @@ set files [list \
 "[file normalize "${network_RTL_dir}/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers_with_PE_top.vhd"]"
 ]
 add_files -norecurse -fileset $obj $files
+#"[file normalize "${plasma_RTL_dir}/reg_bank_xilinx.vhd"]"\
 
 # Set 'sources_1' fileset file properties for remote files
 

@@ -14,7 +14,6 @@
 --            * An NI has been added to the file as a new module
 --            * some changes has been applied to the ports of the older modules
 --              to facilitate the new module!
---            * memory mapped addresses are added!
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -107,14 +106,10 @@ package mlite_pack is
    constant MEM_READ8S  : mem_source_type := "1110";
    constant MEM_WRITE8  : mem_source_type := "1101";
 
-   -- memory mapped addresses
-   constant  NI_reserved_data_address   : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
-   constant  NI_flag_address            : std_logic_vector(29 downto 0) := "000000000000000010000000000000";
-   constant  NI_counter_address         : std_logic_vector(29 downto 0) := "000000000000000010000000000001";
-   constant  NI_reconfiguration_address : std_logic_vector(29 downto 0) := "000000000000000010000000000010";
-   constant  NI_self_diagnosis_address  : std_logic_vector(29 downto 0) := "000000000000000010000000000011";
-   constant  uart_count_value_address   : std_logic_vector(29 downto 0) := "000000000000000010000000000100";
-
+   constant NI_reserved_data_address  : std_logic_vector(29 downto 0) := "000000000000000001111111111111";
+   constant NI_flag_address           : std_logic_vector(29 downto 0) := "000000000000000010000000000000";
+   constant NI_counter_address        : std_logic_vector(29 downto 0) := "000000000000000010000000000001";
+   constant  uart_count_value_address : std_logic_vector(29 downto 0) := "000000000000000010000000000100";
 
    function bv_adder(a     : in std_logic_vector;
                      b     : in std_logic_vector;
@@ -416,47 +411,29 @@ package mlite_pack is
            data_read         : out std_logic_vector(31 downto 0));
    end component; --ram
 
+   component NI
+     generic(current_address : integer := 10   -- the current node's address
+            );  -- reserved address for the counter
+      port(clk               : in std_logic;
+           reset            : in std_logic;
+           enable            : in std_logic;
+           write_byte_enable : in std_logic_vector(3 downto 0);
+           address           : in std_logic_vector(31 downto 2);
+           data_write        : in std_logic_vector(31 downto 0);
+           data_read         : out std_logic_vector(31 downto 0);
+           --NI_read_flag      : out  std_logic;
+           --NI_write_flag      : out  std_logic;
+           irq_out           : out std_logic;
+           credit_in : in std_logic;
+           valid_out: out std_logic;
+           TX: out std_logic_vector(31 downto 0);
+           credit_out : out std_logic;
+           valid_in: in std_logic;
+           RX: in std_logic_vector(31 downto 0)
+        );
+   end component; --network interface
 
-  component NI
-     generic(current_address : integer := 10;   -- the current node's address
-             SHMU_address : integer := 0); -- reserved address for self diagnosis register
-     port(clk               : in std_logic;
-          reset             : in std_logic;
-          enable            : in std_logic;
-          write_byte_enable : in std_logic_vector(3 downto 0);
-          address           : in std_logic_vector(31 downto 2);
-          data_write        : in std_logic_vector(31 downto 0);
-          data_read         : out std_logic_vector(31 downto 0);
-
-          -- Flags used by JNIFR and JNIFW instructions
-          --NI_read_flag      : out  std_logic;   -- One if the N2P fifo is empty. No read should be performed if one.
-          --NI_write_flag      : out  std_logic;  -- One if P2N fifo is full. no write should be performed if one.
-
-          -- interrupt signal: generated evertime a packet is recieved!
-          irq_out           : out std_logic;
-
-          -- signals for sending packets to network
-          credit_in : in std_logic;
-          valid_out: out std_logic;
-          TX: out std_logic_vector(31 downto 0);  -- data sent to the NoC
-
-          -- signals for reciving packets from the network
-          credit_out : out std_logic;
-          valid_in: in std_logic;
-          RX: in std_logic_vector(31 downto 0); -- data recieved form the NoC
-
-          -- fault information signals from the router
-          link_faults: in std_logic_vector(4 downto 0);
-          turn_faults: in std_logic_vector(19 downto 0);
-
-          Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
-          Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
-          Reconfig_command : out std_logic
-    );
-  end component; --entity NI
-
-
-   component uart
+  component uart
       generic(log_file : string := "UNUSED");
       port(clk          : in std_logic;
            reset        : in std_logic;
@@ -476,6 +453,7 @@ package mlite_pack is
            reg_data_read         : out std_logic_vector(31 downto 0)
         );
    end component; --uart
+
 
    component eth_dma
       port(clk         : in std_logic;                      --25 MHz
@@ -533,15 +511,7 @@ package mlite_pack is
 
            credit_out : out std_logic;
            valid_in: in std_logic;
-           RX: in std_logic_vector(31 downto 0);
-
-           link_faults: in std_logic_vector(4 downto 0);
-           turn_faults: in std_logic_vector(19 downto 0);
-
-           Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
-           Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
-           Reconfig_command : out std_logic
-
+           RX: in std_logic_vector(31 downto 0)
            );
    end component; --plasma
 
@@ -593,43 +563,20 @@ end; --package mlite_pack
 
 package body mlite_pack is
 
---function bv_adder(a     : in std_logic_vector;
---                  b     : in std_logic_vector;
---                  do_add: in std_logic) return std_logic_vector is
---   variable carry_in : std_logic;
---   variable bb       : std_logic_vector(a'length-1 downto 0);
---   variable result   : std_logic_vector(a'length downto 0);
---begin
---   if do_add = '1' then
---      bb := b;
---      carry_in := '0';
---   else
---      bb := not b;
---      carry_in := '1';
---   end if;
---   for index in 0 to a'length-1 loop
---      result(index) := a(index) xor bb(index) xor carry_in;
---      carry_in := (carry_in and (a(index) or bb(index))) or
---                  (a(index) and bb(index));
---   end loop;
---   result(a'length) := carry_in xnor do_add;
---   return result;
---end; --function
-
-function bv_adder(a     : in std_logic_vector;
-                  b     : in std_logic_vector;
-                  do_add: in std_logic) return std_logic_vector is
-   variable A1, B1, S : UNSIGNED(a'length downto 0);
-begin
-   A1 := resize(unsigned(a), A1'length);
-   B1 := resize(unsigned(b), B1'length);
-   if do_add = '1' then
-      S := A1 + B1; 
-   else
-      S := A1 - B1; 
-   end if;
-   return std_logic_vector(S);
-end; --function
+    function bv_adder(a     : in std_logic_vector;
+                      b     : in std_logic_vector;
+                      do_add: in std_logic) return std_logic_vector is
+       variable A1, B1, S : UNSIGNED(a'length downto 0);
+    begin
+       A1 := resize(unsigned(a), A1'length);
+       B1 := resize(unsigned(b), B1'length);
+       if do_add = '1' then
+          S := A1 + B1;
+       else
+          S := A1 - B1;
+       end if;
+       return std_logic_vector(S);
+    end; --function
 
 
 function bv_negate(a : in std_logic_vector) return std_logic_vector is
