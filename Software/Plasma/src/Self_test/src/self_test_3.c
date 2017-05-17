@@ -16,8 +16,10 @@ int main(int argc, char const *argv[]) {
     unsigned payload;
     unsigned packet_counter = 1;
 
-    ni_write(build_header(DST_ADDR, 5));
+    ni_write(build_header(DST_ADDR, 7));
     ni_write(0b0000010101000101000001001001);
+    ni_write(0);
+    ni_write(0);
     ni_write(0);
     ni_write(0);
     ni_write(0);
