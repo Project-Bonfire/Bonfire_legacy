@@ -46,13 +46,12 @@ int main(int argc, char const *argv[]) {
                     while (flit_byte_counter < 3){      // read the data byte by byte! we only get 28 bits so each flit has 3 bytes of an instruction
                         current_byte = (flit & (255<<(flit_byte_counter*8+1)))>>(flit_byte_counter*8+1);     // the additional one is due to the parity
                         flit_byte_counter ++;           // to keep track of the bytes read!
-                        byte_counter ++;                // keeping track of all the bytes read so far!
+                        byte_counter ++;                // keeping track of all the bytes written so far!    
+                        write_inst = write_inst | (current_byte <<(((byte_counter-1)%4)*8));
                         if (byte_counter % 4 == 0){     // one instruction is full, write it to memory
                             self_test_write(write_inst, counter);
                             counter = counter + 1;
                             write_inst = 0;
-                        } else {    // continue adding the info
-                            write_inst = write_inst | (current_byte <<((byte_counter%4)*8));
                         }
                     }
                 }
