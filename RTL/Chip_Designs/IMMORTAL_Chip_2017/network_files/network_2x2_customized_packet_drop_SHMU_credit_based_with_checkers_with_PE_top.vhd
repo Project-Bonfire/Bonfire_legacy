@@ -94,6 +94,10 @@ architecture behavior of network_2x2_with_PE is
     signal Reconfig_command_0, Reconfig_command_1, Reconfig_command_2, Reconfig_command_3 : std_logic;
 
     signal GPIO_out_FF_in, GPIO_out_FF : std_logic_vector(15 downto 0);
+    signal UART_0_W_in, UART_0_W_out, UART_0_R_in, UART_0_R_out : std_logic;
+    signal UART_1_W_in, UART_1_W_out, UART_1_R_in, UART_1_R_out : std_logic;
+    signal UART_2_W_in, UART_2_W_out, UART_2_R_in, UART_2_R_out : std_logic;
+    signal UART_3_W_in, UART_3_W_out, UART_3_R_in, UART_3_R_out : std_logic;
 begin
 
 -- instantiating the network
@@ -115,13 +119,44 @@ process (not_reset, clk)
 begin
   if not_reset = '1' then 
       GPIO_out_FF <= (others => '0');
+
+      UART_0_W_out <= '0';
+      UART_1_W_out <= '0';
+      UART_2_W_out <= '0';
+      UART_3_W_out <= '0';
+
+      UART_0_R_out <= '0';
+      UART_1_R_out <= '0';
+      UART_2_R_out <= '0';
+      UART_3_R_out <= '0';
+
   elsif clk'event and clk = '1' then
       GPIO_out_FF <= GPIO_out_FF_in;
+
+      UART_0_W_out <= UART_0_W_in;
+      UART_1_W_out <= UART_1_W_in;
+      UART_2_W_out <= UART_2_W_in;
+      UART_3_W_out <= UART_3_W_in;
+
+      UART_0_R_out <= UART_0_R_in;
+      UART_1_R_out <= UART_1_R_in;
+      UART_2_R_out <= UART_2_R_in;
+      UART_3_R_out <= UART_3_R_in;
   end if;
 end process;
 
 
 GPIO_out <=  GPIO_out_FF;
+
+uart_write_0 <= UART_0_W_out;
+uart_write_1 <= UART_1_W_out;
+uart_write_2 <= UART_2_W_out;
+uart_write_3 <= UART_3_W_out;
+
+UART_0_R_in <= uart_read_0;
+UART_1_R_in <= uart_read_1;
+UART_2_R_in <= uart_read_2;
+UART_3_R_in <= uart_read_3;
 
 not_reset <= not reset;
 
@@ -133,8 +168,8 @@ generic map( current_address => 0,
     memory_type => memory_type)
 
 port map( not_reset, clk,
-        uart_read         => uart_read_0,
-        uart_write        => uart_write_0,
+        uart_read         => UART_0_R_out,
+        uart_write        => UART_0_W_in,
         credit_in => credit_out_L_0,
         valid_out => valid_in_L_0,
         TX => RX_L_0,
@@ -159,8 +194,8 @@ generic map( current_address => 1,
     memory_type => memory_type)
 
 port map( not_reset, clk,
-        uart_read         => uart_read_1,
-        uart_write        => uart_write_1,
+        uart_read         => UART_1_R_out,
+        uart_write        => UART_1_W_in,
 
         credit_in => credit_out_L_1,
         valid_out => valid_in_L_1,
@@ -186,8 +221,8 @@ generic map( current_address => 2,
     memory_type => memory_type)
 
 port map( not_reset, clk,
-        uart_read         => uart_read_2,
-        uart_write        => uart_write_2,
+        uart_read         => UART_2_R_out,
+        uart_write        => UART_2_W_in,
 
         credit_in => credit_out_L_2,
         valid_out => valid_in_L_2,
@@ -213,8 +248,8 @@ generic map( current_address => 3,
     memory_type => memory_type)
 
 port map( not_reset, clk,
-        uart_read         => uart_read_3,
-        uart_write        => uart_write_3,
+        uart_read         => UART_3_R_out,
+        uart_write        => UART_3_W_in,
 
         credit_in => credit_out_L_3,
         valid_out => valid_in_L_3,
