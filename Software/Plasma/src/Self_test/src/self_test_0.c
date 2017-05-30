@@ -92,7 +92,7 @@ int main(int argc, char const *argv[]) {
     }
     while(1){ 
         if ((ni_read_flags() & NI_READ_MASK) == 0)
-        {   
+        {
             flit = ni_read();
         }
     };

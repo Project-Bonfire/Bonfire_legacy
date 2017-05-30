@@ -93,7 +93,7 @@ architecture behavior of network_2x2_with_PE is
     signal Cx_reconf_PE_0, Cx_reconf_PE_1, Cx_reconf_PE_2, Cx_reconf_PE_3 : std_logic_vector(3 downto 0);
     signal Reconfig_command_0, Reconfig_command_1, Reconfig_command_2, Reconfig_command_3 : std_logic;
 
-
+    signal GPIO_out_FF_in, GPIO_out_FF : std_logic_vector(15 downto 0);
 begin
 
 -- instantiating the network
@@ -109,6 +109,19 @@ port map (reset, clk,
     link_faults_3, turn_faults_3, Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3,
     TCK, RST, SEL, SI, SE, UE, CE, SO, toF, toC
     );
+
+
+process (not_reset, clk)
+begin
+  if not_reset = '1' then 
+      GPIO_out_FF <= (others => '0');
+  elsif clk'event and clk = '1' then
+      GPIO_out_FF <= GPIO_out_FF_in;
+  end if;
+end process;
+
+
+GPIO_out <=  GPIO_out_FF;
 
 not_reset <= not reset;
 
@@ -135,7 +148,7 @@ port map( not_reset, clk,
         Cx_reconf_PE        => Cx_reconf_PE_0,
         Reconfig_command    => Reconfig_command_0,
 
-        GPIO_out            => GPIO_out,
+        GPIO_out            => GPIO_out_FF_in,
         GPIO_in             => GPIO_in
    );
 
