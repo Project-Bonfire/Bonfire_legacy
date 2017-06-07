@@ -76,8 +76,8 @@ entity plasma is
 
         link_faults: in std_logic_vector(4 downto 0);
         turn_faults: in std_logic_vector(19 downto 0);
-  
-        Rxy_reconf_PE: out  std_logic_vector(7 downto 0);   
+
+        Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
         Reconfig_command : out std_logic
 
@@ -206,10 +206,10 @@ begin  --architecture
       case cpu_address(30 downto 28) is
       when "000" =>         --internal RAM
          if ((ram_address_late = NI_reserved_data_address) or (ram_address_late = NI_flag_address)
-            or (ram_address_late = NI_counter_address) or (ram_address_late = NI_reconfiguration_address) 
+            or (ram_address_late = NI_counter_address) or (ram_address_late = NI_reconfiguration_address)
             or (ram_address_late = NI_self_diagnosis_address)) then
             cpu_data_r <= ram_data_r_ni;
-         elsif ram_address_late = uart_count_value_address then 
+         elsif ram_address_late = uart_count_value_address then
             cpu_data_r <= ram_data_r_uart;
          else
             cpu_data_r <= ram_data_r;
@@ -218,10 +218,10 @@ begin  --architecture
          if cache_checking = '1' then
             --cpu_data_r <= ram_data_r; --cache
             if ((ram_address_late = NI_reserved_data_address) or (ram_address_late = NI_flag_address)
-                or (ram_address_late = NI_counter_address) or (ram_address_late = NI_reconfiguration_address) 
+                or (ram_address_late = NI_counter_address) or (ram_address_late = NI_reconfiguration_address)
                 or (ram_address_late = NI_self_diagnosis_address)) then
                 cpu_data_r <= ram_data_r_ni;
-            elsif ram_address_late = uart_count_value_address then 
+            elsif ram_address_late = uart_count_value_address then
                 cpu_data_r <= ram_data_r_uart;
             else
                cpu_data_r <= ram_data_r; --cache
@@ -311,7 +311,9 @@ begin  --architecture
       end if;
    end process;
 
-   u2_ram: ram
+
+  ramgen_tri: if memory_type = "TRI_PORT_X" generate
+   u2_ramgen: ram
       generic map (memory_type => memory_type, stim_file => stim_file)
       port map (
          clk               => clk,
@@ -321,6 +323,70 @@ begin  --architecture
          address           => ram_address,
          data_write        => ram_data_w,
          data_read         => ram_data_r);
+   end generate;
+
+
+
+
+
+  ramgen_xil: if memory_type = "XILINX_16X" generate
+   node_0: -- node_0:
+   if current_address = 0 generate
+      u2_ram: entity work.ram_0 generic map (memory_type => memory_type)
+      port map (
+         clk               => clk,
+        reset             => reset,
+         enable            => ram_enable,
+         write_byte_enable => ram_byte_we,
+         address           => ram_address,
+         data_write        => ram_data_w,
+         data_read         => ram_data_r);
+  end generate;
+
+   node_1: --  node_1:
+   if current_address = 1 generate
+       u2_ram: entity work.ram_1 generic map (memory_type => memory_type)
+       port map (
+          clk               => clk,
+           reset             => reset,
+          enable            => ram_enable,
+          write_byte_enable => ram_byte_we,
+          address           => ram_address,
+          data_write        => ram_data_w,
+          data_read         => ram_data_r);
+     end generate;
+
+
+    node_2: -- node_2:
+    if current_address = 2 generate
+       u2_ram: entity work.ram_2 generic map (memory_type => memory_type)
+       port map (
+          clk               => clk,
+           reset             => reset,
+          enable            => ram_enable,
+          write_byte_enable => ram_byte_we,
+          address           => ram_address,
+          data_write        => ram_data_w,
+          data_read         => ram_data_r);
+     end generate;
+
+
+   node_3: -- node_3:
+   if current_address = 3 generate
+       u2_ram: entity work.ram_3 generic map (memory_type => memory_type)
+       port map (
+          clk               => clk,
+           reset             => reset,
+          enable            => ram_enable,
+          write_byte_enable => ram_byte_we,
+          address           => ram_address,
+          data_write        => ram_data_w,
+          data_read         => ram_data_r);
+     end generate;
+  end generate;
+
+
+
 
    u3_uart: uart
       generic map (log_file => log_file)
@@ -380,9 +446,9 @@ begin  --architecture
          E_TX_EN     => gpio0_out(28),
          E_TXD       => gpio0_out(27 downto 24));
    end generate;
- 
 
-u4_ni: NI  
+
+u4_ni: NI
      generic map(current_address =>  current_address)
      port map (clk               => clk,
           reset             => reset,
@@ -398,11 +464,11 @@ u4_ni: NI
           credit_out        => credit_out,
           valid_in          => valid_in,
           RX                => RX,
-  
+
           -- fault information signals from the router
           link_faults => link_faults,
           turn_faults => turn_faults,
-  
+
           Rxy_reconf_PE => Rxy_reconf_PE,
           Cx_reconf_PE  => Cx_reconf_PE,
           Reconfig_command  => Reconfig_command
