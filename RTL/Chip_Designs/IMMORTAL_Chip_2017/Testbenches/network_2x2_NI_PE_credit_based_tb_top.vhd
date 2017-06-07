@@ -407,7 +407,7 @@ uart_2_data_in <= (others => '0');
 uart_3_data_in <= (others => '0');
 
 
-uart0: sim_uart generic map (log_file => "uart_0.txt") port map(
+uuart0: sim_uart generic map (log_file => path & "uart_0.txt") port map(
 
     clk          => clk,
     reset        => not_reset,
@@ -429,7 +429,7 @@ uart0: sim_uart generic map (log_file => "uart_0.txt") port map(
   );
 
 
-uart1: sim_uart generic map (log_file => "uart_1.txt") port map(
+uart1: sim_uart generic map (log_file => path & "uart_1.txt") port map(
 
     clk          => clk,
     reset        => not_reset,
@@ -451,7 +451,7 @@ uart1: sim_uart generic map (log_file => "uart_1.txt") port map(
   );
 
 
-uart2: sim_uart generic map (log_file => "uart_2.txt") port map(
+uart2: sim_uart generic map (log_file => path & "uart_2.txt") port map(
 
     clk          => clk,
     reset        => not_reset,
@@ -473,7 +473,7 @@ uart2: sim_uart generic map (log_file => "uart_2.txt") port map(
   );
 
 
-uart3: sim_uart generic map (log_file => "uart_3.txt") port map(
+uart3: sim_uart generic map (log_file => path & "uart_3.txt") port map(
 
     clk          => clk,
     reset        => not_reset,
