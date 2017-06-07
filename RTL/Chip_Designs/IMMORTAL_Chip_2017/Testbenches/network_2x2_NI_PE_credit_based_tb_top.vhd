@@ -39,8 +39,8 @@ port (reset: in  std_logic;
       CE          : in std_logic;
       SO          : out std_logic;
       toF         : out std_logic;
-      toC         : out std_logic; 
- 
+      toC         : out std_logic;
+
       -- GPIO for Node 0
       GPIO_out: out  std_logic_vector(15 downto 0);
       GPIO_in: in  std_logic_vector(21 downto 0);
@@ -54,7 +54,7 @@ port (reset: in  std_logic;
       uart_write_3  : out std_logic;
       uart_read_3   : in std_logic
     );
-end component; 
+end component;
 
   component sim_uart is
      generic(log_file : string := "UNUSED");
@@ -68,7 +68,7 @@ end component;
           uart_write   : out std_logic;
           busy_write   : out std_logic;
           data_avail   : out std_logic;
-  
+
           reg_enable            : in std_logic;
           reg_write_byte_enable : in std_logic_vector(3 downto 0);
           reg_address           : in std_logic_vector(31 downto 2);
@@ -124,13 +124,13 @@ begin
         wait for TCK_period/2;
       end loop;
     end procedure tck_tick;
-    
+
     procedure tck_halftick_high is
     begin
       TCK <= '1';
       wait for TCK_period/2;
     end procedure tck_halftick_high;
-             
+
     procedure tck_halftick_low is
     begin
       TCK <= '0';
@@ -181,22 +181,22 @@ begin
 
             -- Reset iJTAG chain and Instruments
 
-    --            .-------.             .-------.     
+    --            .-------.             .-------.
     --        ----|  sib0 |-- .... -----|  sib3 |-- SO                the order of bits in each sib is: SXCF where S is opening bit!
-    --            '-------'             '-------'  
+    --            '-------'             '-------'
     --                                    |    |_________________________________________________.
     --                                    |                                                      |
     --                                    |  .----------.                      .------------.    |
-    --                                    '--| sib3 inj |--------------------->|sib3 status |----' 
-    --                                       '----------'                      '------------'   
-    --                                        |      |_____________               |      |_____________           
-    --                                        |     _____________  |              |     _____________  |          
-    --                                        '--->|injection reg|-'              '--->|ijtag adapter|-'              
+    --                                    '--| sib3 inj |--------------------->|sib3 status |----'
+    --                                       '----------'                      '------------'
+    --                                        |      |_____________               |      |_____________
+    --                                        |     _____________  |              |     _____________  |
+    --                                        '--->|injection reg|-'              '--->|ijtag adapter|-'
     --                                             '-------------'                     '-------------'
     --
     --    to open sib 3 we need to shift the following: "0001"&"0000"&"0000"&"0000"
-    --    to open sib3inj we need to shift "0001"&"0000"&"0001"&"0000"&"0000"&"0000" the chain configuration is following: sib0->sib1->sib2->sib3inj->sib3stat->sib3-> 
-    --      * note that the shifting order is oposite! 
+    --    to open sib3inj we need to shift "0001"&"0000"&"0001"&"0000"&"0000"&"0000" the chain configuration is following: sib0->sib1->sib2->sib3inj->sib3stat->sib3->
+    --      * note that the shifting order is oposite!
 
 
     RST <= '1';
@@ -218,12 +218,12 @@ begin
       else
         stuck_at := "10";
       end if;
-        
+
         -- this tests if we can go back from intermittent to healthy again!
         wait for 16200*clk_period;
-        shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3 
+        shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
         -- Inject fault in the bit with location 1 of L FIFO in Router 3 (SE)
-        shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj  
+        shift_data("0001"&"0000"&"0001"&"0000"&"0000"&"0000"); --keep sib3 opened, open sib3inj
         shift_data("0001"&"0001"&"0000"& "000000000"     &     "0000001"&"0000001"&"0000001"&"0000001"&"0000001"    &     "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  &"000000000"&"000000000"&"000000000"      &    "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
         shift_data("0001"&"0000"&"1111111111111111111111111"&"0001"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
         shift_data("0000"&"0000"&"0000"& "000000000"     &     "0000001"&"0000001"&"0000001"&"0000001"&"0000001"     &    "0000000"&"0000000"&"0000000"&"0000000"&"0000000"  &"000000000"&"000000000"&"000000000"      &    "00000000"&"00000000"&"00000000"&all_zeroes(12)); --close sib3, leave sib3sta closed, shift into fault injection register, close other sibs.
@@ -233,7 +233,7 @@ begin
         wait for 1000*clk_period;
         -- end of Intermittent to Healthy test!
 
-            -- inject into arbiter out 
+            -- inject into arbiter out
       while (I <= 16) loop
         shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
         -- Inject fault in the bit with location 1 of L FIFO in Router 3 (SE)
@@ -245,7 +245,7 @@ begin
         address_arbiter_out :=  address_arbiter_out +1 ;
         I := I +1;
       end loop;
-      -- inject into arbiter in 
+      -- inject into arbiter in
       I:= 0;
       while (I <= 16) loop
         shift_data("0001"&"0000"&"0000"&"0000"); -- open sib3
@@ -311,20 +311,20 @@ not_reset <= not reset;
 -- instantiating the top module for the network
 NoC_top: network_2x2_with_PE generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
 port map (reset, clk,
-	        TCK, RST, SEL, SI, SE, UE, CE, SO, toF, toC, 
-          PE_0_GPIO_out, PE_0_GPIO_in, 
-          uart_write_0, uart_read_0, 
-          uart_write_1, uart_read_1, 
-          uart_write_2, uart_read_2, 
+	        TCK, RST, SEL, SI, SE, UE, CE, SO, toF, toC,
+          PE_0_GPIO_out, PE_0_GPIO_in,
+          uart_write_0, uart_read_0,
+          uart_write_1, uart_read_1,
+          uart_write_2, uart_read_2,
           uart_write_3, uart_read_3
          );
 
 
-process(clk, reset) 
+process(clk, reset)
   variable configure_uart : boolean := True;
 
 begin
-  if reset = '0' then 
+  if reset = '0' then
     uart_0_reg_write_byte_enable <= (others => '0');
     uart_0_reg_data_write <= (others => '0');
     uart_0_reg_enable <= '0';
@@ -387,10 +387,10 @@ begin
       uart_3_reg_write_byte_enable <= "0000";
       uart_3_reg_data_write <= "00000000000000000000000000001010";
 
-      if now > 3 ms then 
+      if now > 3 ms then
         uart_0_data_in <= uart_0_data_in + 1;
         uart_0_enable_write <= '1';
-      end if; 
+      end if;
 
     end if;
   end if;
@@ -419,7 +419,7 @@ uart0: sim_uart generic map (log_file => "uart_0.txt") port map(
     uart_write   => uart_read_0,
     busy_write   => uart_0_busy_write,
     data_avail   => uart_0_data_avail,
-  
+
     reg_enable            => uart_0_reg_enable ,
     reg_write_byte_enable => uart_0_reg_write_byte_enable,
     reg_address           => uart_count_value_address,
@@ -441,7 +441,7 @@ uart1: sim_uart generic map (log_file => "uart_1.txt") port map(
     uart_write   => uart_read_1,
     busy_write   => uart_1_busy_write,
     data_avail   => uart_1_data_avail,
-  
+
     reg_enable            => uart_1_reg_enable ,
     reg_write_byte_enable => uart_1_reg_write_byte_enable,
     reg_address           => uart_count_value_address,
@@ -463,7 +463,7 @@ uart2: sim_uart generic map (log_file => "uart_2.txt") port map(
     uart_write   => uart_read_2,
     busy_write   => uart_2_busy_write,
     data_avail   => uart_2_data_avail,
-  
+
     reg_enable            => uart_2_reg_enable ,
     reg_write_byte_enable => uart_2_reg_write_byte_enable,
     reg_address           => uart_count_value_address,
@@ -485,7 +485,7 @@ uart3: sim_uart generic map (log_file => "uart_3.txt") port map(
     uart_write   => uart_read_3,
     busy_write   => uart_3_busy_write,
     data_avail   => uart_3_data_avail,
-  
+
     reg_enable            => uart_3_reg_enable ,
     reg_write_byte_enable => uart_3_reg_write_byte_enable,
     reg_address           => uart_count_value_address,
