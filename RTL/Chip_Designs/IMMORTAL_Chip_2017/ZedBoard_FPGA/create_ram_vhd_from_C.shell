@@ -1,0 +1,36 @@
+# This script, gets C files and generates .txt and .vhd files for simulation and synthesis, for that read and do next 3 comments.
+
+#1 set this generic first and point it to your Bonfire folder.
+  origin=/home/tsotne/ownCloud/git/Bonfire_sim/Bonfire
+#2 install compiler if you have not done so.
+	# sudo apt install gcc-mips-linux-gnu
+#3 run this script like:
+  # bash ./RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/create_ram_vhd_from_C.shell
+
+
+
+
+
+
+
+
+# Create converter tools
+cd $origin/Tools/Plasma_Utils/ && make all
+
+
+# .C to .ELF
+cd $origin/Software/Plasma/src/NI_test_2x2/ && make all
+
+
+# .ELF to .TXT
+$origin/tmp/bin/plasma_utils/./convert_to_bin -i $origin/tmp/bin/NI_test_2x2/ni_test_0.elf -t $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_0.txt
+$origin/tmp/bin/plasma_utils/./convert_to_bin -i $origin/tmp/bin/NI_test_2x2/ni_test_1.elf -t $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_1.txt
+$origin/tmp/bin/plasma_utils/./convert_to_bin -i $origin/tmp/bin/NI_test_2x2/ni_test_2.elf -t $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_2.txt
+$origin/tmp/bin/plasma_utils/./convert_to_bin -i $origin/tmp/bin/NI_test_2x2/ni_test_3.elf -t $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_3.txt
+
+
+# .TXT to .VHD
+$origin/tmp/bin/plasma_utils/./gen_ram_image   $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_0.vhd      $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_0.txt    $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_0.vhd
+$origin/tmp/bin/plasma_utils/./gen_ram_image   $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_1.vhd      $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_1.txt    $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_1.vhd
+$origin/tmp/bin/plasma_utils/./gen_ram_image   $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_2.vhd      $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_2.txt    $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_2.vhd
+$origin/tmp/bin/plasma_utils/./gen_ram_image   $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_3.vhd      $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_3.txt    $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_3.vhd
