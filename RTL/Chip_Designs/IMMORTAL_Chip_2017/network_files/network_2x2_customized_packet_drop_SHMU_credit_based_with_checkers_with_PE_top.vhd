@@ -19,7 +19,7 @@ entity network_2x2_with_PE is
  generic (DATA_WIDTH: integer := 32;
           DATA_WIDTH_LV: integer := 11;
           memory_type : string :=
-              "TRI_PORT_X"
+            "TRI_PORT_X"
            --   "DUAL_PORT_"
            --   "ALTERA_LPM"
            --   "XILINX_16X"
@@ -59,6 +59,9 @@ end network_2x2_with_PE;
 
 
 architecture behavior of network_2x2_with_PE is
+
+constant path : string(1 to 14) := "./Testbenches/"; --used in Modelsim simulation
+-- constant path : string(positive range <>) := "/home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/"; --Vivado sim. Tsotnes PC.
 
 -- Declaring network component
 
@@ -102,7 +105,7 @@ begin
 
 -- instantiating the network
 NoC: network_2x2 generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
-port map (reset, clk,
+port map (not_reset, clk,
     RX_L_0, credit_out_L_0, valid_out_L_0, credit_in_L_0, valid_in_L_0,  TX_L_0,
     RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1,  TX_L_1,
     RX_L_2, credit_out_L_2, valid_out_L_2, credit_in_L_2, valid_in_L_2,  TX_L_2,
@@ -117,7 +120,7 @@ port map (reset, clk,
 
 process (not_reset, clk)
 begin
-  if not_reset = '1' then 
+  if reset = '1' then
       GPIO_out_FF <= (others => '0');
 
       UART_0_W_out <= '0';
@@ -163,11 +166,11 @@ not_reset <= not reset;
 -- instantiating and connecting the PEs
 PE_0: NoC_Node
 generic map( current_address => 0,
-    stim_file => "code_0.txt",
-    log_file  => "output_0.txt",
+    stim_file => path & "code_0.txt",
+    log_file  => path & "output_0.txt",
     memory_type => memory_type)
 
-port map( not_reset, clk,
+port map( reset, clk,
         uart_read         => UART_0_R_out,
         uart_write        => UART_0_W_in,
         credit_in => credit_out_L_0,
@@ -189,11 +192,11 @@ port map( not_reset, clk,
 
 PE_1: NoC_Node
 generic map( current_address => 1,
-    stim_file => "code_1.txt",
-    log_file  => "output_1.txt",
+    stim_file => path & "code_1.txt",
+    log_file  => path & "output_1.txt",
     memory_type => memory_type)
 
-port map( not_reset, clk,
+port map( reset, clk,
         uart_read         => UART_1_R_out,
         uart_write        => UART_1_W_in,
 
@@ -216,11 +219,11 @@ port map( not_reset, clk,
 
 PE_2: NoC_Node
 generic map( current_address => 2,
-    stim_file => "code_2.txt",
-    log_file  => "output_2.txt",
+    stim_file => path & "code_2.txt",
+    log_file  => path & "output_2.txt",
     memory_type => memory_type)
 
-port map( not_reset, clk,
+port map( reset, clk,
         uart_read         => UART_2_R_out,
         uart_write        => UART_2_W_in,
 
@@ -243,11 +246,11 @@ port map( not_reset, clk,
 
 PE_3: NoC_Node
 generic map( current_address => 3,
-    stim_file => "code_3.txt",
-    log_file  => "output_3.txt",
+    stim_file => path & "code_3.txt",
+    log_file  => path & "output_3.txt",
     memory_type => memory_type)
 
-port map( not_reset, clk,
+port map( reset, clk,
         uart_read         => UART_3_R_out,
         uart_write        => UART_3_W_in,
 
