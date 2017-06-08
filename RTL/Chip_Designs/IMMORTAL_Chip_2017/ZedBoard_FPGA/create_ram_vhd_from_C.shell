@@ -20,7 +20,7 @@ echo "tools created"
 echo
 
 # .C to .ELF
-cd $origin/Software/Plasma/src/NI_test_2x2/ && make all
+cd $origin/Software/Plasma/src/NI_test_2x2/ && make clean && make all
 echo "elf files created"
 echo
 
