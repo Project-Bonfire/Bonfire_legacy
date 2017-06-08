@@ -74,7 +74,7 @@ begin
         memory_type => memory_type
        )
        port map (
-        reset => reset,
+        reset => (not reset),
         clk => clk1_noc,
 
         TCK => clk2_ijtag,
