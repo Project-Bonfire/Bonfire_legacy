@@ -1,0 +1,87 @@
+To simulate in Questasim:
+  1.  uncomment simulation lines and comment synthesis lines
+      here: /home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/Software/Plasma/src/NI_test_2x2/src/ni_test.h
+
+  2.  make sure "TRI_PORT_X" is selected in generics
+      here: /home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/network_files/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers_with_PE_top.vhd
+
+  3.  execute the instruction memory generator script
+      this: /home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/create_ram_vhd_from_C.shell
+
+  4.  run simulation script from same directory
+      this: /home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/simulate.do
+
+
+
+
+To synthesize with Vivado:
+  1.  uncomment synthesis lines and comment simulation lines
+      here: /home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/Software/Plasma/src/NI_test_2x2/src/ni_test.h
+
+  2.  make sure "XILINX_16X" is selected in generics
+      here: /home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/toppest_module.vhd
+
+  3.  execute the instruction memory generator script
+      this: /home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/create_ram_vhd_from_C.shell
+
+  4.  execute bitstream generation script
+      this: /home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/create_proj_build_bit.tcl
+
+
+
+
+Diagram of system:
+
+
+                                              toppest_module.VHD
+                                    +----------------------------------------+
+                                    |                                        |
+                                    |                                        |
+                                    |                 NoC                    |
+                                    |       +----------------------+         |
+                4x uart_in(4 bits)  |       |                      |         |4x uart out (4 bits)
+    Pmod B    +---------------------->      |                      |       +--------------------->   Pmod B
+                                    |       |                      |         |
+                                    |       |                      |         |
+                   IJTAG(5 bits)    |       |                      |         | IJTAG(3 bits)
+    Pmod C    +---------------------->      |                      |       +--------------------->   Pmod C
+                 (SEL,SI,SE,UE,CE)  |       |                      |         |  (SO,toF,toC)
+                                    |       |                      |         |
+                                    |       |                      |         |
+                  GPIO(7 upper bits)|       |                      |         | GPIO(8 upper bits)
+    Pmod D    +---------------------->      |                      |       +--------------------->   Pmod A
+                                    |       |                      |         |
+                                    |       |                      |         |
+                  GPIO(8 lower bits)|       |                      |         | GPIO(8 lower bits)
+    Switches  +---------------------->      |                      |       +--------------------->   LEDs
+                                    |       |                      |         |
+                                    |       |                      |         |
+                                    |       |                      |         |
+                   IJTAG reset      |       |                      |         |
+    BTN R     +---------------------->      |                      |         |
+                                    |       +----------------------+         |
+                                    |             ^             ^            |
+                   NoC Reset        |             |             |            |
+    BTN U     +---------------------->            |             |            |
+                                    |             |             |            |
+                                    |             |             |            |
+                                    |             |             |            |
+                                    |   +---------------------------------+  |
+                                    |   |     5mhz(ijtag)   25mhz(noc)    |  |
+                                    |   |                                 |  |
+                   100 mhz CLK      |   |                                 |  |
+    CLK       +------------------------->     xilinx clock generator      |  |
+                                    |   +---------------------------------+  |
+                                    +----------------------------------------+
+
+
+
+Mode details on diagram:
+  PE_0's uart_read_0  is pin JB1 (W12) on Pmod B.
+  PE_0's uart_write_0 is pin JB2 (W11) on Pmod B.
+
+  PE_1's uart_read_1  is pin JB3 (W12) on Pmod B.
+  PE_1's uart_write_1 is pin JB4 (W11) on Pmod B.
+
+  pin JD1_p (W7) on Pmod D is not used
+  Pmod E(all 8 bits) is not/cant used (it's connected to zynq Processing System not Programmable Logic)
