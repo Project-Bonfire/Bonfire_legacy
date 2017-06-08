@@ -31,3 +31,9 @@ RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/vivado_*
 RTL/Chip_Designs/IMMORTAL_Chip_2017/output_*.txt
 RTL/Chip_Designs/IMMORTAL_Chip_2017/report.txt
 RTL/Chip_Designs/IMMORTAL_Chip_2017/diagnosis.txt
+
+
+#vivado stuff
+vivado_*
+*.jou
+*vivado.log
