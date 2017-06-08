@@ -16,6 +16,7 @@ RTL/Chip_Designs/IMMORTAL_Chip_2017/work
 *.wlf
 transcript
 */output_*.txt
+modelsim.ini
 
 RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/vivado_pid*
 RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/webtalk*
