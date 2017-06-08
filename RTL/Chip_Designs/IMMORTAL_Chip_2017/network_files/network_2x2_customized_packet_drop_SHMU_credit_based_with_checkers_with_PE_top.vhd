@@ -60,8 +60,8 @@ end network_2x2_with_PE;
 
 architecture behavior of network_2x2_with_PE is
 
-constant path : string(1 to 14) := "./Testbenches/"; --used in Modelsim simulation
--- constant path : string(positive range <>) := "/home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/"; --Vivado sim. Tsotnes PC.
+constant path : string(1 to 12) := "Testbenches/"; --uncomment this if you are SIMULATING in MODELSIM, or if you're synthesizing.
+-- constant path : string(positive range <>) := "/home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/"; --used only for Vivado similation. Tsotnes PC.
 
 -- Declaring network component
 
@@ -105,7 +105,7 @@ begin
 
 -- instantiating the network
 NoC: network_2x2 generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
-port map (not_reset, clk,
+port map (reset, clk,
     RX_L_0, credit_out_L_0, valid_out_L_0, credit_in_L_0, valid_in_L_0,  TX_L_0,
     RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1,  TX_L_1,
     RX_L_2, credit_out_L_2, valid_out_L_2, credit_in_L_2, valid_in_L_2,  TX_L_2,
@@ -120,7 +120,7 @@ port map (not_reset, clk,
 
 process (not_reset, clk)
 begin
-  if reset = '1' then
+  if not_reset = '1' then
       GPIO_out_FF <= (others => '0');
 
       UART_0_W_out <= '0';
@@ -170,7 +170,7 @@ generic map( current_address => 0,
     log_file  => path & "output_0.txt",
     memory_type => memory_type)
 
-port map( reset, clk,
+port map( not_reset, clk,
         uart_read         => UART_0_R_out,
         uart_write        => UART_0_W_in,
         credit_in => credit_out_L_0,
@@ -196,7 +196,7 @@ generic map( current_address => 1,
     log_file  => path & "output_1.txt",
     memory_type => memory_type)
 
-port map( reset, clk,
+port map( not_reset, clk,
         uart_read         => UART_1_R_out,
         uart_write        => UART_1_W_in,
 
@@ -223,7 +223,7 @@ generic map( current_address => 2,
     log_file  => path & "output_2.txt",
     memory_type => memory_type)
 
-port map( reset, clk,
+port map( not_reset, clk,
         uart_read         => UART_2_R_out,
         uart_write        => UART_2_W_in,
 
@@ -250,7 +250,7 @@ generic map( current_address => 3,
     log_file  => path & "output_3.txt",
     memory_type => memory_type)
 
-port map( reset, clk,
+port map( not_reset, clk,
         uart_read         => UART_3_R_out,
         uart_write        => UART_3_W_in,
 
