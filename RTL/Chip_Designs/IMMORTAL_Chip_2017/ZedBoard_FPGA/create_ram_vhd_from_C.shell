@@ -16,10 +16,13 @@
 
 # Create converter tools
 cd $origin/Tools/Plasma_Utils/ && make all
-
+echo "tools created"
+echo
 
 # .C to .ELF
 cd $origin/Software/Plasma/src/NI_test_2x2/ && make all
+echo "elf files created"
+echo
 
 
 # .ELF to .TXT
@@ -27,10 +30,13 @@ $origin/tmp/bin/plasma_utils/./convert_to_bin -i $origin/tmp/bin/NI_test_2x2/ni_
 $origin/tmp/bin/plasma_utils/./convert_to_bin -i $origin/tmp/bin/NI_test_2x2/ni_test_1.elf -t $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_1.txt
 $origin/tmp/bin/plasma_utils/./convert_to_bin -i $origin/tmp/bin/NI_test_2x2/ni_test_2.elf -t $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_2.txt
 $origin/tmp/bin/plasma_utils/./convert_to_bin -i $origin/tmp/bin/NI_test_2x2/ni_test_3.elf -t $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_3.txt
-
+echo "txt files created"
+echo
 
 # .TXT to .VHD
 $origin/tmp/bin/plasma_utils/./gen_ram_image   $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_0.vhd      $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_0.txt    $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_0.vhd
 $origin/tmp/bin/plasma_utils/./gen_ram_image   $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_1.vhd      $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_1.txt    $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_1.vhd
 $origin/tmp/bin/plasma_utils/./gen_ram_image   $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_2.vhd      $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_2.txt    $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_2.vhd
 $origin/tmp/bin/plasma_utils/./gen_ram_image   $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_3.vhd      $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/code_3.txt    $origin/RTL/Chip_Designs/IMMORTAL_Chip_2017/plasma_RTL/ram_xilinx_3.vhd
+echo "vhd files created"
+echo
