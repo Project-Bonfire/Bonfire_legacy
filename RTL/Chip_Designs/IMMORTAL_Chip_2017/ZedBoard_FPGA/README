@@ -8,7 +8,7 @@ To simulate in Questasim:
   3.  execute the instruction memory generator script
       this: Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/ZedBoard_FPGA/create_ram_vhd_from_C.shell
 
-  4.  run simulation script from same directory
+  4.  run simulation script from this script's directory (vsim -do simulate.do)
       this: Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/simulate.do
 
 
@@ -82,8 +82,9 @@ Mode details on diagram:
   PE_0's uart_read_0  is pin JB1 (W12) on Pmod B.
   PE_0's uart_write_0 is pin JB2 (W11) on Pmod B.
 
-  PE_1's uart_read_1  is pin JB3 (W12) on Pmod B.
-  PE_1's uart_write_1 is pin JB4 (W11) on Pmod B.
+  PE_1's uart_read_1  is pin JB3 (V10) on Pmod B.
+  PE_1's uart_write_1 is pin JB4 (W8)  on Pmod B.
+  and etc..
 
   pin JD1_p (W7) on Pmod D is not used
   Pmod E(all 8 bits) is not/cant used (it's connected to zynq Processing System not Programmable Logic)
