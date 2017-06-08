@@ -105,7 +105,7 @@ def main(argv):
         statistics(True)
 
         # Run latency calculation script
-        latency_command = "python " + SCRIPTS_DIR + "/include/" + LATENCY_CALCULATION_PATH + " -S " + SENT_TXT_PATH + " -R " + RECEIVED_TXT_PATH
+        latency_command = "python " + package.SCRIPTS_DIR + "/include/" + package.LATENCY_CALCULATION_PATH + " -S " + package.SENT_TXT_PATH + " -R " + package.RECEIVED_TXT_PATH
 
         if package.program_argv['add_FI'] == False:
             if DEBUG: print_msg(MSG_DEBUG, "Running latency calculator script:\n\t" + latency_command)
