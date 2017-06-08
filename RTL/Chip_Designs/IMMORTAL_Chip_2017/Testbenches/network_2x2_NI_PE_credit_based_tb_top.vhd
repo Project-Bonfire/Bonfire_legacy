@@ -23,6 +23,9 @@ end tb_network_2x2;
 
 architecture behavior of tb_network_2x2 is
 
+constant path : string(1 to 12) := "Testbenches/"; --uncomment this if you are SIMULATING in MODELSIM, or if you're synthesizing.
+-- constant path : string(positive range <>) := "/home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/"; --used only for Vivado similation. Tsotnes PC.
+
 -- Declaring network component
 component network_2x2_with_PE is
  generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
@@ -407,7 +410,7 @@ uart_2_data_in <= (others => '0');
 uart_3_data_in <= (others => '0');
 
 
-uuart0: sim_uart generic map (log_file => path & "uart_0.txt") port map(
+uart0: sim_uart generic map (log_file => path & "uart_0.txt") port map(
 
     clk          => clk,
     reset        => not_reset,
