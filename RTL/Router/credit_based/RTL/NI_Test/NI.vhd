@@ -208,7 +208,7 @@ process(enable, address, write_byte_enable) begin
       -- In this case, data_write definitely includes the connectivity bits and routing bits for 
       -- reconfiguring LBDR logic.
       Rxy_reconf_PE <= data_write(7 downto 0); -- Rxy is 8 bits long 
-      Cx_reconf_PE <= data_write(4 downto 8); -- Cx is 4 bits long
+      Cx_reconf_PE <= data_write(11 downto 8); -- Cx is 4 bits long
       Reconfig_command <= '1';
     end if;
   end if;
