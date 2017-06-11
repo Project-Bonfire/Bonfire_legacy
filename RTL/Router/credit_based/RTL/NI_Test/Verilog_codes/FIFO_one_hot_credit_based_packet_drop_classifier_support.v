@@ -24,7 +24,7 @@ module FIFO_credit_based (
                           empty_out, 
                           Data_out, 
 
-                          fault_info, health_info, 
+                          fault_info, health_info
                          );
 
 parameter DATA_WIDTH = 32;
