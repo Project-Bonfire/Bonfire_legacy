@@ -1,4 +1,4 @@
--- In Questasim simulation, instead of adding actual
+-- In Questasim simulation. because i cant add actual xilinx rams, since they use unisim libraries. I can export libraries but can not put it on git for license issues.
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
