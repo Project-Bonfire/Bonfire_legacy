@@ -90,7 +90,7 @@ package body TB_Package is
     state :=  Idle;
     send_packet_length := min_packet_size;
     uniform(seed1, seed2, rand);
-    frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - 2*max_packet_size)))/100);
+    frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - max_packet_size-1)))/100);
 
     wait until clk'event and clk ='0';
     address <= reconfiguration_address;
@@ -303,13 +303,16 @@ package body TB_Package is
                   send_counter := 0;
                   state :=  Idle;
                   send_id_counter := send_id_counter + 1;
+                  if send_id_counter = 256 then
+                    send_id_counter := 0;
+                  end if; 
               end if;
             end if;
 
             frame_counter := frame_counter + 1;
             if frame_counter = frame_length then
                 frame_counter := 0;
-                frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - 2*max_packet_size)))/100);
+                frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - max_packet_size)))/100);
             end if;
 
             wait until clk'event and clk ='0';
