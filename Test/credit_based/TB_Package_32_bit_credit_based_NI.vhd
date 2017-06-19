@@ -9,6 +9,8 @@ use IEEE.NUMERIC_STD.all;
  use ieee.std_logic_misc.all;
 
 package TB_Package is
+  function CX_GEN(current_address, network_size : integer) return integer;
+
    procedure NI_control(network_size, frame_length, current_address, initial_delay, min_packet_size, max_packet_size: in integer;
                       finish_time: in time; 
                       signal clk:                      in std_logic;
@@ -33,6 +35,32 @@ package body TB_Package is
   constant Body_type : std_logic_vector := "010";
   constant Tail_type : std_logic_vector := "100";
 
+  function CX_GEN(current_address, network_size : integer) return integer is
+    variable X, Y : integer := 0;
+    variable CN, CE, CW, CS : std_logic := '0';
+    variable CX : std_logic_vector(3 downto 0);
+  begin
+    X :=  current_address mod  network_size;
+    Y :=  current_address / network_size;
+
+    if X /= 0 then
+      CW := '1';
+    end if;
+
+    if X /= network_size-1 then
+      CE := '1';
+    end if;
+
+    if Y /= 0 then
+      CN := '1';
+    end if;
+    
+    if Y /= network_size-1 then
+     CS := '1';
+    end if;
+   CX := CS&CW&CE&CN;
+   return to_integer(unsigned(CX));
+  end CX_GEN;
 
   procedure NI_control(network_size, frame_length, current_address, initial_delay, min_packet_size, max_packet_size: in integer;
                       finish_time: in time; 
@@ -96,15 +124,9 @@ package body TB_Package is
     address <= reconfiguration_address;
     wait until clk'event and clk ='0';
     write_byte_enable <= "1111";
-    if current_address = 0 then 
-      data_write <= "00000000000000000000" & std_logic_vector(to_unsigned(10, 4)) & std_logic_vector(to_unsigned(60, 8));
-    elsif current_address = 1 then 
-      data_write <= "00000000000000000000" & std_logic_vector(to_unsigned(12, 4)) & std_logic_vector(to_unsigned(60, 8));
-    elsif current_address = 2 then 
-      data_write <= "00000000000000000000" & std_logic_vector(to_unsigned(3, 4)) & std_logic_vector(to_unsigned(60, 8));
-    elsif current_address = 3 then  
-      data_write <= "00000000000000000000" & std_logic_vector(to_unsigned(5, 4)) & std_logic_vector(to_unsigned(60, 8));
-    end if;
+ 
+    data_write <= "00000000000000000000" & std_logic_vector(to_unsigned(CX_GEN(current_address, network_size), 4)) & std_logic_vector(to_unsigned(60, 8));
+ 
     wait until clk'event and clk ='0';
     write_byte_enable <= "0000";
     data_write <= (others =>'0');
