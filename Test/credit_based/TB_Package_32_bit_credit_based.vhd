@@ -112,7 +112,7 @@ package body TB_Package is
 
       --generating the frame initial delay
       uniform(seed1, seed2, rand);
-      frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - Packet_length)))/100); 
+      frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - Packet_length-1)))/100); 
       --generating the frame ending delay
       frame_ending_delay := frame_length - (Packet_length+frame_starting_delay);
 

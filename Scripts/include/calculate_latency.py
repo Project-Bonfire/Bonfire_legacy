@@ -2,7 +2,7 @@
 
 from math import ceil
 import random
-
+from package import SIMUL_DIR
 import sys
 
 if '--help' in sys.argv[1:]:
@@ -60,6 +60,7 @@ while line != '':
     packet_id = sent_packet[sent_packet.index('id:')+1]
     identifier = sender + "_" + receiver+ "_" + packet_id
     if int(packet_id) > 256:
+        print line
         raise ValueError("Something is wrong! An identifier bigger than 256 in sent packets file!")
 
     packet_time = sent_packet[sent_packet.index('at')+1]
@@ -70,22 +71,33 @@ while line != '':
     line = sent_file.readline()
 sent_file.close()
 
+
+
 if len(sent_packets_dict.keys()) != len(received_packets_dict.keys()):
-    raise ValueError("Something is wrong! The number of sent packets are not equal to the number of recieved packets.")
+    print "sent packets:", len(sent_packets_dict.keys())
+    print "received packets:", len(received_packets_dict.keys())
+    print "Something is wrong! The number of sent packets are not equal to the number of recieved packets."
+else:
+    f = open(SIMUL_DIR+"/"+'latency.txt', 'w')
+    delay_list = []
+    for identifier in sent_packets_dict:
+        packet_sent_time = float(sent_packets_dict[identifier])
+        if identifier in received_packets_dict.keys():
+            packet_recieved_time    = float(received_packets_dict[identifier])
+            delay = packet_recieved_time - packet_sent_time
+            delay_list.append(delay)
+        else:
+            print identifier
+            raise ValueError("Something is worong! An identifier is missing from the recieved file")
 
-delay_list = []
-for identifier in sent_packets_dict:
-    packet_sent_time = float(sent_packets_dict[identifier])
-    if identifier in received_packets_dict.keys():
-        packet_recieved_time    = float(received_packets_dict[identifier])
-        delay = packet_recieved_time - packet_sent_time
-        delay_list.append(delay)
-    else:
-        print identifier
-        raise ValueError("Something is worong! An identifier is missing from the recieved file")
+    # print "delay_list:", delay_list
+    f.write("number of processed packets:"+str(len(delay_list))+"\n")
+    f.write("maximum packet latency:"+str(max(delay_list)/1000.0)+" ns"+"\n")
+    f.write("minimmum packet latency:"+str(min(delay_list)/1000.0)+" ns"+"\n")
+    f.write("average packet latency:"+str("%.2f" % float(sum(delay_list)/(len(delay_list)*1000)))+" ns"+"\n")
 
-# print "delay_list:", delay_list
-print "number of processed packets:", len(delay_list)
-print "maximum packet latency:", max(delay_list)/1000.0 , "ns"
-print "minimmum packet latency:", min(delay_list)/1000.0 , "ns"
-print "average packet latency:", "%.2f" % float(sum(delay_list)/(len(delay_list)*1000)), "ns!"
+    print "number of processed packets:", len(delay_list)
+    print "maximum packet latency:", max(delay_list)/1000.0 , "ns"
+    print "minimmum packet latency:", min(delay_list)/1000.0 , "ns"
+    print "average packet latency:", "%.2f" % float(sum(delay_list)/(len(delay_list)*1000)), "ns!"
+    f.close()

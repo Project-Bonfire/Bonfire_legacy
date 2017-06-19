@@ -283,9 +283,9 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
         else:
             do_file.write("run " + str(program_argv['end']) + " ns\n")
 
-        if program_argv['lat']:
-            do_file.write("\n# Exit Modelsim after simulation\n")
-            do_file.write("exit\n")
+    if program_argv['lat']:
+        do_file.write("\n# Exit Modelsim after simulation\n")
+        do_file.write("exit\n")
     do_file.close()
     logging.info("finished writing do file...")
 

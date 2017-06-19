@@ -55,4 +55,13 @@ def statistics(verbal):
     print "\tPackets lost: \t\t" + str(num_packets_sent - num_packets_recv)+"\tflits lost:\t" + str(flits_sent-flits_recieved)
     print "\tPacket loss:\t" + "%.2f" %(100 - (num_packets_recv * 100.0 / num_packets_sent)) + "%"
     print "\tFlit loss:\t" + "%.2f" %(100 - (flits_recieved * 100.0 / flits_sent)) + "%"
+
+    f = open(SIMUL_DIR+"/"+'stats.txt', 'w')
+    
+    f.write("\tPackets sent:\t\t" + str(num_packets_sent)+"\tflits sent:\t" + str(flits_sent)+"\n")
+    f.write("\tPackets received:\t" + str(num_packets_recv)+"\tflits recieved:\t" + str(flits_recieved)+"\n")
+    f.write("\tPackets lost: \t\t" + str(num_packets_sent - num_packets_recv)+"\tflits lost:\t" + str(flits_sent-flits_recieved)+"\n")
+    f.write("\tPacket loss:\t" + "%.2f" %(100 - (num_packets_recv * 100.0 / num_packets_sent)) + "%"+"\n")
+    f.write("\tFlit loss:\t" + "%.2f" %(100 - (flits_recieved * 100.0 / flits_sent)) + "%"+"\n")
+    f.close()
     return None
