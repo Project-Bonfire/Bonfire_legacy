@@ -100,6 +100,7 @@ RAM_write_enable <= sib_data_update_strobe;
 --                |     _____________  |              |     _____________  |          
 --                '--->|   data      |-'              '--->|inc + address|-'              
 --                     '-------------'                     '-------------'
+-- Auto increment bit is MSb in Address shift register
 
 SO <= sib_mem_so;
 MEM_SIB_SEL <= sib_mem_toSEL;
@@ -213,7 +214,7 @@ begin
   elsif TCK'event and TCK = '0' then
     if sib_addr_update_strobe = '1' then
       RAM_address <= '0' & RAM_address_update(AddressSize-1 downto 0);
-      RAM_addr_inc_reg <= RAM_address_update(AddressSize);
+      RAM_addr_inc_reg <= RAM_address_update(AddressSize);  -- Auto increment bit is MSb in Address shift register
     elsif sib_data_update_strobe = '1' and RAM_addr_inc_reg = '1' then
       RAM_address <= std_logic_vector(unsigned(RAM_address) + 1);
     end if;
