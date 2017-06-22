@@ -17,6 +17,7 @@ entity RAMAccessInstrument is
            UE : in STD_LOGIC; -- UpdateEnPort
            RST : in STD_LOGIC; -- ResetPort
            TCK : in STD_LOGIC; -- TCKPort
+           MEM_SIB_SEL : out STD_LOGIC;
         -- RAM interface
            RAM_data_read : in STD_LOGIC_VECTOR (DataSize-1 downto 0);
            RAM_data_write : out STD_LOGIC_VECTOR (DataSize-1 downto 0);
@@ -101,6 +102,7 @@ RAM_write_enable <= sib_data_update_strobe;
 --                     '-------------'                     '-------------'
 
 SO <= sib_mem_so;
+MEM_SIB_SEL <= sib_mem_toSEL;
 
 -- Top-level SIB for integration into system's IJTAG network
 sib_mem : SIB_mux_pre

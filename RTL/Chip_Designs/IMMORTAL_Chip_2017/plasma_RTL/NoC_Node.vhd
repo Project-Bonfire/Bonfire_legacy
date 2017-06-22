@@ -47,6 +47,16 @@ port(
     Rxy_reconf_PE : out  std_logic_vector(7 downto 0);
     Cx_reconf_PE  : out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
     Reconfig_command : out std_logic;
+    
+    -- IJTAG RAM instrument related signals
+    --SI  : in std_logic; 
+    --SO  : out std_logic;
+    --SEL : in std_logic;
+    --SE  : in std_logic;
+    --CE  : in std_logic;
+    --UE  : in std_logic;
+    --RST : in std_logic;
+    --TCK : in std_logic;
 
     GPIO_out: out  std_logic_vector(15 downto 0);
     GPIO_in: in  std_logic_vector(21 downto 0)
@@ -71,7 +81,6 @@ architecture updated of NoC_Node is
     signal GPIO_out_tmp    : std_logic_vector(31 downto 0);
     signal GPIO_in_tmp     : std_logic_vector(31 downto 0);
 
-
     --signal credit_in, valid_in: std_logic := '0';
     --signal credit_out, valid_out: std_logic := '0';
     --signal RX: std_logic_vector(31 downto 0) := (others => '0');
@@ -79,6 +88,39 @@ architecture updated of NoC_Node is
 
     -- signal credit_counter_out_0:  std_logic_vector (1 downto 0);
 
+    -- IJTAG RAM instrument related stuff
+    --signal RAM_instr_data_read      : std_logic_vector(31 downto 0);
+    --signal RAM_instr_data_write     : std_logic_vector(31 downto 0);
+    --signal RAM_instr_address_out    : std_logic_vector(31 downto 2);
+    --signal RAM_instr_write_enable   : std_logic;
+    --signal RAM_instrument_enabled   : std_logic;
+    --signal muxed_mem_clk            : std_logic;
+    --signal muxed_mem_address        : std_logic_vector(31 downto 2);
+    --signal muxed_mem_data_write     : std_logic_vector(31 downto 0);
+    --signal muxed_mem_data_read      : std_logic_vector(31 downto 0);
+    --signal muxed_mem_byte_we        : std_logic_vector(3 downto 0);
+    --signal muxed_mem_pause          : std_logic;
+
+    --component RAMAccessInstrument is
+    -- Generic ( DataSize : positive := 8;
+    --          AddressSize : positive := 8);
+    --   Port ( -- Scan Interface scan_client ----------
+    --           SI : in STD_LOGIC; -- ScanInPort 
+    --          SO : out STD_LOGIC; -- ScanOutPort
+    --          SEL : in STD_LOGIC; -- SelectPort
+    --          ----------------------------------------        
+    --          SE : in STD_LOGIC; -- ShiftEnPort
+    --          CE : in STD_LOGIC; -- CaptureEnPort
+    --          UE : in STD_LOGIC; -- UpdateEnPort
+    --          RST : in STD_LOGIC; -- ResetPort
+    --          TCK : in STD_LOGIC; -- TCKPort
+    --          MEM_SIB_SEL : out STD_LOGIC;
+    --             -- RAM interface
+    --          RAM_data_read : in STD_LOGIC_VECTOR (DataSize-1 downto 0);
+    --          RAM_data_write : out STD_LOGIC_VECTOR (DataSize-1 downto 0);
+    --          RAM_address_out : out STD_LOGIC_VECTOR (AddressSize-1 downto 0);
+    --          RAM_write_enable : out STD_LOGIC);
+    --end component;
 
 begin  --architecture
 
@@ -142,12 +184,36 @@ begin  --architecture
         --    generic map (address_width => mem_address_width)
         --
         --    port map (
-        --        clk         => clk,
-        --        address     => address,
-        --        data_write  => data_write,
-        --        pause       => pause,
-        --        byte_we     => byte_we,
-        --        data_read   => data_read
+        --        clk         => muxed_mem_clk,
+        --        address     => muxed_mem_address,
+        --        data_write  => muxed_mem_data_write,
+        --        pause       => muxed_mem_pause,
+        --        byte_we     => muxed_mem_byte_we,
+        --        data_read   => muxed_mem_data_read
         --    );
+
+        --RAM_instr : RAMAccessInstrument
+        -- generic map ( DataSize => 32,
+        --               AddressSize => 30)
+        --    port map ( SI => SI,
+        --               SO => SO,
+        --               SEL => SEL,
+        --               SE => SE,
+        --               CE => CE,
+        --               UE => UE,
+        --               RST => RST,
+        --               TCK => TCK,
+        --               MEM_SIB_SEL => RAM_instrument_enabled,
+        --               RAM_data_read => RAM_instr_data_read,
+        --               RAM_data_write => RAM_instr_data_write,
+        --               RAM_address_out => RAM_instr_address_out,
+        --               RAM_write_enable => RAM_instr_write_enable);
+
+        --muxed_mem_clk           <= clk          when RAM_instrument_enabled = '0' else TCK;
+        --muxed_mem_address       <= address      when RAM_instrument_enabled = '0' else RAM_instr_address_out;
+        --muxed_mem_data_write    <= data_write   when RAM_instrument_enabled = '0' else RAM_instr_data_write;
+        --muxed_mem_data_read     <= data_read    when RAM_instrument_enabled = '0' else RAM_instr_data_read;
+        --muxed_mem_pause         <= pause        when RAM_instrument_enabled = '0' else '0';
+        --muxed_mem_byte_we       <= byte_we      when RAM_instrument_enabled = '0' else (others => RAM_instr_write_enable);
 
 end; --architecture logic
