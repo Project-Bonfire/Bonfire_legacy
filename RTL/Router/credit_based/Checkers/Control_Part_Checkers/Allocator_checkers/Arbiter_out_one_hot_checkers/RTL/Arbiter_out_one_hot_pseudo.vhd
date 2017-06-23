@@ -34,7 +34,7 @@ begin
 
 -- anything below here is pure combinational
 
-process(state, req_X_N, req_X_E, req_X_W, req_X_S, req_X_L, credit) 
+process(state, req_X_N, req_X_E, req_X_W, req_X_S, req_X_L, credit)
 begin
 
     grant_Y_N <= '0';
@@ -44,7 +44,7 @@ begin
     grant_Y_L <= '0';
 
     -- Arbiter_out's prioritization is N,E,W,S and L (N: highest priority)
-    case state is 
+    case state is
 
       when IDLE =>
           if req_X_N ='1'  then
@@ -59,7 +59,7 @@ begin
               state_in <= Local;
           else
               state_in <= IDLE;
-          end if; 
+          end if;
 
       when North =>
           if credit /= "00" and req_X_N = '1' then
@@ -149,7 +149,7 @@ begin
               state_in <= South;
           else
               state_in <= IDLE;
-          end if; 
+          end if;
 
     end case;
 

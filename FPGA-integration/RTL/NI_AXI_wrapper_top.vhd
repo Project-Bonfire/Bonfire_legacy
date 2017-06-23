@@ -18,9 +18,9 @@ entity AXI_wrapper_top is
 	port (
 		-- Users to add ports here
         signal AXI_RX_IRQ      :   out std_logic;
-        
+
         --Router connection
-        R_RX    :   in std_logic_vector(C_S00_AXI_DATA_WIDTH-1 downto 0); 
+        R_RX    :   in std_logic_vector(C_S00_AXI_DATA_WIDTH-1 downto 0);
         R_TX    :   out std_logic_vector(C_S00_AXI_DATA_WIDTH-1 downto 0);
         R_DRTS  :   in std_logic;
         R_DCTS  :   in std_logic;
@@ -86,12 +86,12 @@ component AXI_wrapper is
         S_AXI_RRESP	    : out std_logic_vector(1 downto 0);
         S_AXI_RVALID	: out std_logic;
         S_AXI_RREADY	: in std_logic;
-        
+
         --Router connection
         AXI_RX_IRQ      :   out std_logic;
-        
+
         --Router connection
-        R_RX    :   in std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0); 
+        R_RX    :   in std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
         R_TX    :   out std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
         R_DRTS  :   in std_logic;
         R_DCTS  :   in std_logic;
@@ -131,7 +131,7 @@ AXI_wrapper_inst : AXI_wrapper
         S_AXI_RRESP	    =>  s00_axi_rresp,
         S_AXI_RVALID	=>  s00_axi_rvalid,
         S_AXI_RREADY	=>  s00_axi_rready,
-        
+
         -- Router connection
         R_RX     =>  R_RX,
         R_DRTS   =>  R_DRTS,
@@ -139,7 +139,7 @@ AXI_wrapper_inst : AXI_wrapper
         R_TX     =>  R_TX,
         R_DCTS   =>  R_DCTS,
         R_RTS    =>  R_RTS,
-        
+
         AXI_RX_IRQ      =>  AXI_RX_IRQ
 	);
 

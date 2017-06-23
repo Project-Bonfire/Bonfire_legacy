@@ -17,7 +17,7 @@ entity LBDR_packet_drop is
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-            
+
             Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S: in std_logic;
 
             empty: in  std_logic;
@@ -30,52 +30,52 @@ entity LBDR_packet_drop is
 
             Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
             Cx_reconf_PE: in  std_logic_vector(3 downto 0);
-            Reconfig_command : in std_logic; 
+            Reconfig_command : in std_logic;
 
             -- fault injector shift register with serial input signals
-            TCK: in std_logic;  
-            SE: in std_logic;       -- shift enable 
+            TCK: in std_logic;
+            SE: in std_logic;       -- shift enable
             UE: in std_logic;       -- update enable
             SI: in std_logic;       -- serial Input
             SO: out std_logic;      -- serial output
 
             -- Checker outputs
-            -- Routing part checkers            
-            err_header_empty_Requests_FF_Requests_in, err_tail_Requests_in_all_zero, err_tail_empty_Requests_FF_Requests_in, 
-            err_tail_not_empty_not_grants_Requests_FF_Requests_in,err_grants_onehot,err_grants_mismatch, 
-            err_header_tail_Requests_FF_Requests_in, err_dst_addr_cur_addr_N1,err_dst_addr_cur_addr_not_N1, 
+            -- Routing part checkers
+            err_header_empty_Requests_FF_Requests_in, err_tail_Requests_in_all_zero, err_tail_empty_Requests_FF_Requests_in,
+            err_tail_not_empty_not_grants_Requests_FF_Requests_in,err_grants_onehot,err_grants_mismatch,
+            err_header_tail_Requests_FF_Requests_in, err_dst_addr_cur_addr_N1,err_dst_addr_cur_addr_not_N1,
             err_dst_addr_cur_addr_E1,err_dst_addr_cur_addr_not_E1,err_dst_addr_cur_addr_W1, err_dst_addr_cur_addr_not_W1,
-            err_dst_addr_cur_addr_S1,err_dst_addr_cur_addr_not_S1, err_dst_addr_cur_addr_Req_L_in, err_dst_addr_cur_addr_not_Req_L_in, 
+            err_dst_addr_cur_addr_S1,err_dst_addr_cur_addr_not_S1, err_dst_addr_cur_addr_Req_L_in, err_dst_addr_cur_addr_not_Req_L_in,
             err_header_not_empty_faulty_drop_packet_in, -- added according to new design
             err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
             err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
             --err_header_not_empty_Req_L_in, -- added according to new design
-            err_header_not_empty_Req_N_in, err_header_not_empty_Req_E_in, err_header_not_empty_Req_W_in, err_header_not_empty_Req_S_in, 
-            err_header_empty_packet_drop_in_packet_drop_equal, err_tail_not_empty_packet_drop_not_packet_drop_in, 
-            err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal, 
-            err_invalid_or_body_flit_packet_drop_in_packet_drop_equal, 
-            err_packet_drop_order, 
+            err_header_not_empty_Req_N_in, err_header_not_empty_Req_E_in, err_header_not_empty_Req_W_in, err_header_not_empty_Req_S_in,
+            err_header_empty_packet_drop_in_packet_drop_equal, err_tail_not_empty_packet_drop_not_packet_drop_in,
+            err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal,
+            err_invalid_or_body_flit_packet_drop_in_packet_drop_equal,
+            err_packet_drop_order,
 
             -- Cx_Reconf checkers
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal, 
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in, 
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal, -- Added 
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal,
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in,
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal, -- Added
             err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal, -- Added
 
             -- Rxy_Reconf checkers
-            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp, 
-            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal : out std_logic            
+            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp,
+            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in,
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal,
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in,
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal,
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal,
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal : out std_logic
             );
 end LBDR_packet_drop;
 
@@ -88,7 +88,7 @@ architecture behavior of LBDR_packet_drop is
    -- Total: 9 bits
    signal FI_add_sta: std_logic_vector(8 downto 0); -- 7 bits for fault injection location address (ceil of log2(70) = 7)
                                                      -- 2 bits for type of fault (SA0 or SA1)
-   signal non_faulty_signals: std_logic_vector (69 downto 0); -- 70 bits for internal- and output-related signals (non-faulty)                                          
+   signal non_faulty_signals: std_logic_vector (69 downto 0); -- 70 bits for internal- and output-related signals (non-faulty)
    signal faulty_signals: std_logic_vector(69 downto 0); -- 70 bits for internal- and output-related signals (with single stuck-at fault injected in one of them)
 
    ----------------------------------------
@@ -103,13 +103,13 @@ architecture behavior of LBDR_packet_drop is
   signal Rxy, Rxy_in:  std_logic_vector(7 downto 0);
   signal Rxy_tmp, Rxy_tmp_in:  std_logic_vector(7 downto 0);
 
-  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  
-  signal N1, E1, W1, S1  :std_logic :='0';  
+  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);
+  signal N1, E1, W1, S1  :std_logic :='0';
   signal Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: std_logic;
   signal Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: std_logic;
   signal grants: std_logic;
   signal packet_drop, packet_drop_in: std_logic;
-  
+
   -- Signal(s) required for checker(s)
   signal packet_drop_order_sig: std_logic;
 
@@ -123,7 +123,7 @@ architecture behavior of LBDR_packet_drop is
   signal Rxy_faulty, Rxy_in_faulty:  std_logic_vector(7 downto 0);
   signal Rxy_tmp_faulty, Rxy_tmp_in_faulty:  std_logic_vector(7 downto 0);
   --signal cur_addr_faulty:  std_logic_vector(NoC_size-1 downto 0); -- current address not included yet, in this way ??!!
-  signal N1_faulty, E1_faulty, W1_faulty, S1_faulty :std_logic;  
+  signal N1_faulty, E1_faulty, W1_faulty, S1_faulty :std_logic;
   signal Req_N_in_faulty, Req_E_in_faulty, Req_W_in_faulty, Req_S_in_faulty, Req_L_in_faulty: std_logic;
   signal Req_N_FF_faulty, Req_E_FF_faulty, Req_W_FF_faulty, Req_S_FF_faulty, Req_L_FF_faulty: std_logic;
   signal grants_faulty: std_logic;
@@ -132,22 +132,22 @@ architecture behavior of LBDR_packet_drop is
    -- LBDR output-related signals
   signal packet_drop_order_sig_faulty: std_logic;
 
-begin 
--------------------------------------      
+begin
+-------------------------------------
 ---- Related to fault injection -----
--------------------------------------      
+-------------------------------------
 
 -- Total: 70 bits
 -- Still not sure whether to include cur_addr or not ??!!
 -- for packet_drop_order output, not sure whether to include that one or the signal with _sig suffix in its name ??!!
 non_faulty_signals <= Cx & Cx_in & Temp_Cx & Temp_Cx_in & reconfig_cx & reconfig_cx_in & ReConf_FF_in &
-                      ReConf_FF_out & Rxy & Rxy_in & Rxy_tmp & Rxy_tmp_in & N1 & E1 & W1 & S1 & 
+                      ReConf_FF_out & Rxy & Rxy_in & Rxy_tmp & Rxy_tmp_in & N1 & E1 & W1 & S1 &
                       Req_N_in & Req_E_in & Req_W_in & Req_S_in & Req_L_in &
                       Req_N_FF & Req_E_FF & Req_W_FF & Req_S_FF & Req_L_FF &
                       grants & packet_drop & packet_drop_in & packet_drop_order_sig;
 
 -- Fault injector module instantiation
-FI: fault_injector generic map(DATA_WIDTH => 70, ADDRESS_WIDTH => 7) 
+FI: fault_injector generic map(DATA_WIDTH => 70, ADDRESS_WIDTH => 7)
            port map (data_in=> non_faulty_signals , address => FI_add_sta(8 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out=> faulty_signals
             );
 
@@ -190,107 +190,107 @@ SR: shift_register_serial_in generic map(REG_WIDTH => 9)
           port map ( TCK=> TCK, reset=>reset, SE=> SE, UE=> UE, SI=> SI, SO=> SO, data_out_parallel=> FI_add_sta
                    );
 
--------------------------------------      
--------------------------------------      
+-------------------------------------
+-------------------------------------
 
 -- Becuase of checkers we did this
 
   packet_drop_order <= packet_drop_order_sig;
 
 -- LBDR packet drop routing part checkers instantiation
-LBDR_packet_drop_routing_part_checkers: 
-    LBDR_packet_drop_routing_part_pseudo_checkers  
+LBDR_packet_drop_routing_part_checkers:
+    LBDR_packet_drop_routing_part_pseudo_checkers
     generic map (cur_addr_rst => cur_addr_rst, Cx_rst => Cx_rst, Rxy_rst => Rxy_rst, NoC_size => NoC_size)
     port map (
-              empty       => empty,        
-              flit_type   => flit_type,        
-              Req_N_FF    => Req_N_FF_faulty, Req_E_FF => Req_E_FF_faulty, Req_W_FF => Req_W_FF_faulty, 
-              Req_S_FF    => Req_S_FF_faulty, Req_L_FF => Req_L_FF_faulty,        
-              grant_N     => grant_N,  grant_E => grant_E,  grant_W => grant_W,  grant_S => grant_S,  grant_L => grant_L,        
+              empty       => empty,
+              flit_type   => flit_type,
+              Req_N_FF    => Req_N_FF_faulty, Req_E_FF => Req_E_FF_faulty, Req_W_FF => Req_W_FF_faulty,
+              Req_S_FF    => Req_S_FF_faulty, Req_L_FF => Req_L_FF_faulty,
+              grant_N     => grant_N,  grant_E => grant_E,  grant_W => grant_W,  grant_S => grant_S,  grant_L => grant_L,
               dst_addr    => dst_addr,
-              faulty      => faulty,         
-              Cx          => Cx_faulty, Rxy  => Rxy_faulty,        
-              packet_drop => packet_drop_faulty,        
+              faulty      => faulty,
+              Cx          => Cx_faulty, Rxy  => Rxy_faulty,
+              packet_drop => packet_drop_faulty,
 
-              N1_out      => N1_faulty, E1_out => E1_faulty, W1_out => W1_faulty, S1_out => S1_faulty, 
-              Req_N_in    => Req_N_in_faulty, Req_E_in => Req_E_in_faulty, Req_W_in => Req_W_in_faulty, 
-              Req_S_in    => Req_S_in_faulty, Req_L_in => Req_L_in_faulty, 
-              grants      => grants_faulty, 
-              packet_drop_order => packet_drop_order_sig_faulty, 
-              packet_drop_in    => packet_drop_in_faulty, 
+              N1_out      => N1_faulty, E1_out => E1_faulty, W1_out => W1_faulty, S1_out => S1_faulty,
+              Req_N_in    => Req_N_in_faulty, Req_E_in => Req_E_in_faulty, Req_W_in => Req_W_in_faulty,
+              Req_S_in    => Req_S_in_faulty, Req_L_in => Req_L_in_faulty,
+              grants      => grants_faulty,
+              packet_drop_order => packet_drop_order_sig_faulty,
+              packet_drop_in    => packet_drop_in_faulty,
 
               -- Checker outputs
-              err_header_empty_Requests_FF_Requests_in => err_header_empty_Requests_FF_Requests_in, 
-              err_tail_Requests_in_all_zero => err_tail_Requests_in_all_zero, 
-              err_tail_empty_Requests_FF_Requests_in => err_tail_empty_Requests_FF_Requests_in, 
-              err_tail_not_empty_not_grants_Requests_FF_Requests_in => err_tail_not_empty_not_grants_Requests_FF_Requests_in, 
-              err_grants_onehot => err_grants_onehot, 
-              err_grants_mismatch => err_grants_mismatch, 
-              err_header_tail_Requests_FF_Requests_in => err_header_tail_Requests_FF_Requests_in, 
-              err_dst_addr_cur_addr_N1 => err_dst_addr_cur_addr_N1, 
-              err_dst_addr_cur_addr_not_N1 => err_dst_addr_cur_addr_not_N1, 
-              err_dst_addr_cur_addr_E1 => err_dst_addr_cur_addr_E1, 
-              err_dst_addr_cur_addr_not_E1 => err_dst_addr_cur_addr_not_E1, 
-              err_dst_addr_cur_addr_W1 => err_dst_addr_cur_addr_W1, 
-              err_dst_addr_cur_addr_not_W1 => err_dst_addr_cur_addr_not_W1, 
-              err_dst_addr_cur_addr_S1 => err_dst_addr_cur_addr_S1, 
-              err_dst_addr_cur_addr_not_S1 => err_dst_addr_cur_addr_not_S1, 
-              err_dst_addr_cur_addr_Req_L_in => err_dst_addr_cur_addr_Req_L_in,                                     
-              err_dst_addr_cur_addr_not_Req_L_in => err_dst_addr_cur_addr_not_Req_L_in, 
+              err_header_empty_Requests_FF_Requests_in => err_header_empty_Requests_FF_Requests_in,
+              err_tail_Requests_in_all_zero => err_tail_Requests_in_all_zero,
+              err_tail_empty_Requests_FF_Requests_in => err_tail_empty_Requests_FF_Requests_in,
+              err_tail_not_empty_not_grants_Requests_FF_Requests_in => err_tail_not_empty_not_grants_Requests_FF_Requests_in,
+              err_grants_onehot => err_grants_onehot,
+              err_grants_mismatch => err_grants_mismatch,
+              err_header_tail_Requests_FF_Requests_in => err_header_tail_Requests_FF_Requests_in,
+              err_dst_addr_cur_addr_N1 => err_dst_addr_cur_addr_N1,
+              err_dst_addr_cur_addr_not_N1 => err_dst_addr_cur_addr_not_N1,
+              err_dst_addr_cur_addr_E1 => err_dst_addr_cur_addr_E1,
+              err_dst_addr_cur_addr_not_E1 => err_dst_addr_cur_addr_not_E1,
+              err_dst_addr_cur_addr_W1 => err_dst_addr_cur_addr_W1,
+              err_dst_addr_cur_addr_not_W1 => err_dst_addr_cur_addr_not_W1,
+              err_dst_addr_cur_addr_S1 => err_dst_addr_cur_addr_S1,
+              err_dst_addr_cur_addr_not_S1 => err_dst_addr_cur_addr_not_S1,
+              err_dst_addr_cur_addr_Req_L_in => err_dst_addr_cur_addr_Req_L_in,
+              err_dst_addr_cur_addr_not_Req_L_in => err_dst_addr_cur_addr_not_Req_L_in,
               err_header_not_empty_faulty_drop_packet_in => err_header_not_empty_faulty_drop_packet_in, -- added according to new design
               err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change => err_header_not_empty_not_faulty_drop_packet_in_packet_drop_not_change, -- added according to new design
               err_header_not_empty_faulty_Req_in_all_zero => err_header_not_empty_faulty_Req_in_all_zero, -- added according to new design
               --err_header_not_empty_Req_L_in => err_header_not_empty_Req_L_in, -- added according to new design
-              err_header_not_empty_Req_N_in => err_header_not_empty_Req_N_in, 
-              err_header_not_empty_Req_E_in => err_header_not_empty_Req_E_in, 
-              err_header_not_empty_Req_W_in => err_header_not_empty_Req_W_in, 
-              err_header_not_empty_Req_S_in => err_header_not_empty_Req_S_in, 
-              err_header_empty_packet_drop_in_packet_drop_equal => err_header_empty_packet_drop_in_packet_drop_equal, 
-              err_tail_not_empty_packet_drop_not_packet_drop_in => err_tail_not_empty_packet_drop_not_packet_drop_in, 
-              err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal => err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal, 
-              err_invalid_or_body_flit_packet_drop_in_packet_drop_equal => err_invalid_or_body_flit_packet_drop_in_packet_drop_equal, 
+              err_header_not_empty_Req_N_in => err_header_not_empty_Req_N_in,
+              err_header_not_empty_Req_E_in => err_header_not_empty_Req_E_in,
+              err_header_not_empty_Req_W_in => err_header_not_empty_Req_W_in,
+              err_header_not_empty_Req_S_in => err_header_not_empty_Req_S_in,
+              err_header_empty_packet_drop_in_packet_drop_equal => err_header_empty_packet_drop_in_packet_drop_equal,
+              err_tail_not_empty_packet_drop_not_packet_drop_in => err_tail_not_empty_packet_drop_not_packet_drop_in,
+              err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal => err_tail_not_empty_not_packet_drop_packet_drop_in_packet_drop_equal,
+              err_invalid_or_body_flit_packet_drop_in_packet_drop_equal => err_invalid_or_body_flit_packet_drop_in_packet_drop_equal,
               err_packet_drop_order => err_packet_drop_order);
 
 -- LBDR packet drop Cx Reconfiguration module checkers instantiation
-Cx_Reconf_checkers: 
-  Cx_Reconf_pseudo_checkers 
+Cx_Reconf_checkers:
+  Cx_Reconf_pseudo_checkers
   port map (
-            reconfig_cx => reconfig_cx_faulty, flit_type => flit_type, empty => empty, grants => grants_faulty, 
-            Cx_in => Cx_in_faulty, Temp_Cx => Temp_Cx_faulty, reconfig_cx_in => reconfig_cx_in_faulty, Cx => Cx_faulty, 
-            Cx_reconf_PE => Cx_reconf_PE, Reconfig_command => Reconfig_command,                                                
-            Faulty_C_N => Faulty_C_N, Faulty_C_E => Faulty_C_E, Faulty_C_W => Faulty_C_W, Faulty_C_S => Faulty_C_S, 
-            Temp_Cx_in => Temp_Cx_in_faulty, 
+            reconfig_cx => reconfig_cx_faulty, flit_type => flit_type, empty => empty, grants => grants_faulty,
+            Cx_in => Cx_in_faulty, Temp_Cx => Temp_Cx_faulty, reconfig_cx_in => reconfig_cx_in_faulty, Cx => Cx_faulty,
+            Cx_reconf_PE => Cx_reconf_PE, Reconfig_command => Reconfig_command,
+            Faulty_C_N => Faulty_C_N, Faulty_C_E => Faulty_C_E, Faulty_C_W => Faulty_C_W, Faulty_C_S => Faulty_C_S,
+            Temp_Cx_in => Temp_Cx_in_faulty,
             -- Checker Outputs
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal => err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal, 
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in => err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in, 
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal => err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal, 
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal => err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal,
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in => err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Reconfig_command_reconfig_cx_in,
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal => err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_reconfig_cx_in_reconfig_cx_equal,
             err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_not_Reconfig_command_Temp_Cx_in_Temp_Cx_equal
             );
 
 -- LBDR packet drop Rxy Reconfiguration checkers instantiation
-Rxy_Reconf_checkers : 
-  Rxy_Reconf_pseudo_checkers 
+Rxy_Reconf_checkers :
+  Rxy_Reconf_pseudo_checkers
   port map (
             ReConf_FF_out => ReConf_FF_out_faulty, Rxy => Rxy_faulty, Rxy_tmp => Rxy_tmp_faulty,Reconfig_command => Reconfig_command,
-            flit_type => flit_type, grants => grants_faulty, empty => empty, Rxy_reconf_PE => Rxy_reconf_PE, Rxy_in => Rxy_in_faulty, 
-            Rxy_tmp_in => Rxy_tmp_in_faulty, ReConf_FF_in => ReConf_FF_in_faulty, 
-            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp => err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp, 
-            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in => err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal => err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in => err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal => err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal, 
-            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal => err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal, 
+            flit_type => flit_type, grants => grants_faulty, empty => empty, Rxy_reconf_PE => Rxy_reconf_PE, Rxy_in => Rxy_in_faulty,
+            Rxy_tmp_in => Rxy_tmp_in_faulty, ReConf_FF_in => ReConf_FF_in_faulty,
+            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp => err_ReConf_FF_out_flit_type_Tail_not_empty_grants_Rxy_in_Rxy_tmp,
+            err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in => err_ReConf_FF_out_flit_type_Tail_not_empty_grants_not_ReConf_FF_in,
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal => err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Rxy_in_Rxy_equal,
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in => err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_ReConf_FF_in,
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal => err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_Reconfig_command_Rxy_tmp_in_Rxy_reconf_PE_equal,
+            err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal => err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_Rxy_tmp_in_Rxy_tmp_equal,
             err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal => err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal
             );
 
   grants <= grant_N or grant_E or grant_W or grant_S or grant_L;
- 
+
   cur_addr <= std_logic_vector(to_unsigned(cur_addr_rst, cur_addr'length));
 
   N1 <= '1' when  dst_addr(NoC_size-1 downto NoC_size/2) < cur_addr(NoC_size-1 downto NoC_size/2) else '0';
@@ -301,14 +301,14 @@ Rxy_Reconf_checkers :
 
 process(clk, reset)
 begin
-if reset = '0' then 
+if reset = '0' then
   Rxy <= std_logic_vector(to_unsigned(Rxy_rst, Rxy'length));
   Rxy_tmp <= (others => '0');
 
-  Req_N_FF <= '0'; 
-  Req_E_FF <= '0'; 
-  Req_W_FF <= '0'; 
-  Req_S_FF <= '0'; 
+  Req_N_FF <= '0';
+  Req_E_FF <= '0';
+  Req_W_FF <= '0';
+  Req_S_FF <= '0';
   Req_L_FF <= '0';
 
   Cx <= std_logic_vector(to_unsigned(Cx_rst, Cx'length));
@@ -318,13 +318,13 @@ if reset = '0' then
   packet_drop <= '0';
 
 elsif clk'event and clk = '1' then
-  Rxy <= Rxy_in;	
+  Rxy <= Rxy_in;
   Rxy_tmp <=  Rxy_tmp_in;
 
-  Req_N_FF <= Req_N_in; 
-  Req_E_FF <= Req_E_in; 
-  Req_W_FF <= Req_W_in; 
-  Req_S_FF <= Req_S_in; 
+  Req_N_FF <= Req_N_in;
+  Req_E_FF <= Req_E_in;
+  Req_W_FF <= Req_W_in;
+  Req_S_FF <= Req_S_in;
   Req_L_FF <= Req_L_in;
 
   ReConf_FF_out <= ReConf_FF_in;
@@ -334,10 +334,10 @@ elsif clk'event and clk = '1' then
   packet_drop <= packet_drop_in;
 end if;
 end process;
- 
+
 
 -- The combionational part
- 
+
 process(Reconfig_command, Rxy_reconf_PE, Rxy_tmp, ReConf_FF_out, Rxy, flit_type, grants, empty)begin
   if ReConf_FF_out= '1' and flit_type = "100" and empty = '0' and grants = '1' then
       Rxy_tmp_in <= Rxy_tmp;
@@ -345,14 +345,14 @@ process(Reconfig_command, Rxy_reconf_PE, Rxy_tmp, ReConf_FF_out, Rxy, flit_type,
 	  	ReConf_FF_in <= '0';
   else
   	Rxy_in <= Rxy;
-    if Reconfig_command = '1'then 
+    if Reconfig_command = '1'then
       Rxy_tmp_in <= Rxy_reconf_PE;
   		ReConf_FF_in <= '1';
   	else
       Rxy_tmp_in <= Rxy_tmp;
   		ReConf_FF_in <= ReConf_FF_out;
   	end if;
-  end if; 
+  end if;
 end process;
 
 
@@ -363,13 +363,13 @@ process(Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S, Cx, Temp_Cx, flit_type, 
     reconfig_cx_in <= '0';
   else
     Cx_in <= Cx;
-    if (Faulty_C_N or Faulty_C_E or Faulty_C_W or Faulty_C_S) = '1' then 
+    if (Faulty_C_N or Faulty_C_E or Faulty_C_W or Faulty_C_S) = '1' then
       reconfig_cx_in <= '1';
       Temp_Cx_in <= not(Faulty_C_S & Faulty_C_W & Faulty_C_E & Faulty_C_N) and Cx;
     elsif Reconfig_command = '1' then
       reconfig_cx_in <= '1';
       Temp_Cx_in <=  Cx_reconf_PE;
-    else 
+    else
       reconfig_cx_in <= reconfig_cx;
     end if;
   end if;
@@ -393,9 +393,9 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
         else
           Req_L_in <= '0';
         end if;
-        if faulty = '1' or (((((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0)) = '0') and 
-                            ((((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1)) = '0') and 
-                            ((((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2)) = '0') and 
+        if faulty = '1' or (((((N1 and not E1 and not W1) or (N1 and E1 and Rxy(0)) or (N1 and W1 and Rxy(1))) and Cx(0)) = '0') and
+                            ((((E1 and not N1 and not S1) or (E1 and N1 and Rxy(2)) or (E1 and S1 and Rxy(3))) and Cx(1)) = '0') and
+                            ((((W1 and not N1 and not S1) or (W1 and N1 and Rxy(4)) or (W1 and S1 and Rxy(5))) and Cx(2)) = '0') and
                             ((((S1 and not E1 and not W1) or (S1 and E1 and Rxy(6)) or (S1 and W1 and Rxy(7))) and Cx(3)) = '0') and
                             (dst_addr /= cur_addr)) then
           packet_drop_in <= '1';
@@ -419,13 +419,13 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
     Req_L_in <= Req_L_FF;
   end if;
 
-   if flit_type = "100" and empty = '0' then 
+   if flit_type = "100" and empty = '0' then
     if packet_drop = '1' then
           packet_drop_in <= '0';
     end if;
   end if;
 end process;
-   
+
 packet_drop_order_sig <= packet_drop;
 
 END;

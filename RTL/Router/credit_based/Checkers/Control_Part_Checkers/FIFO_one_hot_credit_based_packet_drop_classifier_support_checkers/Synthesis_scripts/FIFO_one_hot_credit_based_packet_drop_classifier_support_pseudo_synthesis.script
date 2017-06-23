@@ -4,9 +4,9 @@
 
 bus_naming_style = "%s<%d>"
 bus_dimension_separator_style = "><"
-bus_range_separator_style = ":" 
+bus_range_separator_style = ":"
 bus_extraction_style = "%s<%d:%d>"
- 
+
 /* Power and Ground variables */
 
 edifin_ground_net_name = "gnd!"
@@ -40,10 +40,10 @@ write_name_nets_same_as_ports = "true"
 edifout_netlist_only = "true"
 edifout_instantiate_ports = "true"
 edifout_pin_name_propery_name = "pinName"
- 
+
 /* Important! */
 
-edifout_numerical_array_members = "true" 
+edifout_numerical_array_members = "true"
 edifout_no_array = "false"
 
 /********************************************/
@@ -66,4 +66,4 @@ link
 compile
 
 write -format edif -hierarchy -output FIFO_one_hot_credit_based_packet_drop_classifier_support_pseudo.edif
- 
+

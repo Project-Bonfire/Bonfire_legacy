@@ -23,14 +23,14 @@ architecture behavior of comparator is
 
 begin
 
-process (input0, input1) 
+process (input0, input1)
 begin
 
 	error_out <= '0';
 
 	if (input0 = input1) then
 		error_out <= '0';
-	else 
+	else
 		error_out <= '1';
 	end if;
 

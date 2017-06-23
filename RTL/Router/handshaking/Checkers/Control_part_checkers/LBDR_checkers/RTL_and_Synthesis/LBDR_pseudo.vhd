@@ -28,10 +28,10 @@ architecture behavior of LBDR_pseudo is
 
   signal Cx:  std_logic_vector(3 downto 0);
   signal Rxy:  std_logic_vector(7 downto 0);
-  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  
-  signal N1, E1, W1, S1: std_logic;  
+  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);
+  signal N1, E1, W1, S1: std_logic;
 
-begin 
+begin
   Cx       <= std_logic_vector(to_unsigned(Cx_rst, Cx'length));
   Rxy      <= std_logic_vector(to_unsigned(Rxy_rst, Rxy'length));
   cur_addr <= std_logic_vector(to_unsigned(cur_addr_rst, cur_addr'length));
@@ -39,7 +39,7 @@ begin
   N1 <= '1' when  dst_addr(NoC_size-1 downto NoC_size/2) < cur_addr(NoC_size-1 downto NoC_size/2) else '0';
   E1 <= '1' when  cur_addr((NoC_size/2)-1 downto 0) < dst_addr((NoC_size/2)-1 downto 0) else '0';
   W1 <= '1' when  dst_addr((NoC_size/2)-1 downto 0) < cur_addr((NoC_size/2)-1 downto 0) else '0';
-  S1 <= '1' when  cur_addr(NoC_size-1 downto NoC_size/2) < dst_addr(NoC_size-1 downto NoC_size/2) else '0'; 
+  S1 <= '1' when  cur_addr(NoC_size-1 downto NoC_size/2) < dst_addr(NoC_size-1 downto NoC_size/2) else '0';
 
   -- Taking X1 signals to the output interface for checking with checkers
   N1_out <= N1;
@@ -75,5 +75,5 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
   end if;
 
 end process;
-   
+
 END;

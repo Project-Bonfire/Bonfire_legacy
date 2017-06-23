@@ -10,12 +10,12 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-USE ieee.numeric_std.ALL; 
+USE ieee.numeric_std.ALL;
 
 entity network_2x2 is
  generic (DATA_WIDTH: integer := 32);
-port (reset: in  std_logic; 
-	clk: in  std_logic; 
+port (reset: in  std_logic;
+	clk: in  std_logic;
 	--------------
 	RX_L_0: in std_logic_vector (DATA_WIDTH-1 downto 0);
 	RTS_L_0, CTS_L_0: out std_logic;
@@ -48,8 +48,8 @@ port (reset: in  std_logic;
 
 	FI_Add_3_2, FI_Add_2_3: in std_logic_vector(4 downto 0);
 	sta0_2_3, sta1_2_3, sta0_3_2, sta1_3_2: in std_logic
-            ); 
-end network_2x2; 
+            );
+end network_2x2;
 
 
 architecture behavior of network_2x2 is
@@ -73,10 +73,10 @@ component router_parity is
     TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);
     faulty_packet_N, faulty_packet_E, faulty_packet_W, faulty_packet_S, faulty_packet_L:out std_logic;
     healthy_packet_N, healthy_packet_E, healthy_packet_W, healthy_packet_S, healthy_packet_L:out std_logic);
-end component; 
+end component;
 
 
-component fault_injector is 
+component fault_injector is
   generic(DATA_WIDTH : integer := 32);
   port(
     data_in: in std_logic_vector (DATA_WIDTH-1 downto 0);
@@ -182,9 +182,9 @@ end component;
 --  |         ----       ----
 --  |        | 2  | --- | 3  |
 --  v         ----       ----
---                         
+--
 
-SHMU_unit:  SHMU 
+SHMU_unit:  SHMU
     generic map(router_fault_info_width => 5,network_size => 2)
     port map(  reset => reset,
             clk => clk,
@@ -196,122 +196,122 @@ SHMU_unit:  SHMU
 
 
 CT_0_N: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_N_0, Healthy_packet => healthy_packet_N_0,
             Healthy => Healthy_N_0, Intermittent => Intermittent_N_0, Faulty => Faulty_N_0);
 
 CT_0_E: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map(  reset => reset, 
+    port map(  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_E_0, Healthy_packet => healthy_packet_E_0,
             Healthy => Healthy_E_0, Intermittent => Intermittent_E_0, Faulty => Faulty_E_0);
 
 CT_0_W: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map(  reset => reset, 
+    port map(  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_W_0, Healthy_packet => healthy_packet_W_0,
             Healthy => Healthy_W_0, Intermittent => Intermittent_W_0, Faulty => Faulty_W_0);
 
 CT_0_S: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map(  reset => reset, 
+    port map(  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_S_0, Healthy_packet => healthy_packet_S_0,
             Healthy => Healthy_S_0, Intermittent => Intermittent_S_0, Faulty => Faulty_S_0);
 
 CT_0_L: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map(  reset => reset, 
+    port map(  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_L_0, Healthy_packet => healthy_packet_L_0,
             Healthy => Healthy_L_0, Intermittent => Intermittent_L_0, Faulty => Faulty_L_0);
 ------------------------------------------------------------------------------------------------------------
  CT_1_N: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_N_1, Healthy_packet => healthy_packet_N_1,
             Healthy => Healthy_N_1, Intermittent => Intermittent_N_1, Faulty => Faulty_N_1);
 
 CT_1_E: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_E_1, Healthy_packet => healthy_packet_E_1,
             Healthy => Healthy_E_1, Intermittent => Intermittent_E_1, Faulty => Faulty_E_1);
 
 CT_1_W: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_W_1, Healthy_packet => healthy_packet_W_1,
             Healthy => Healthy_W_1, Intermittent => Intermittent_W_1, Faulty => Faulty_W_1);
-    
+
 CT_1_S: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_S_1, Healthy_packet => healthy_packet_S_1,
             Healthy => Healthy_S_1, Intermittent => Intermittent_S_1, Faulty => Faulty_S_1);
 
 CT_1_L: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_L_1, Healthy_packet => healthy_packet_L_1,
             Healthy => Healthy_L_1, Intermittent => Intermittent_L_1, Faulty => Faulty_L_1);
 ------------------------------------------------------------------------------------------------------------
- 
+
 CT_2_N: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_N_2, Healthy_packet => healthy_packet_N_2,
             Healthy => Healthy_N_2, Intermittent => Intermittent_N_2, Faulty => Faulty_N_2);
 
 CT_2_E: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_E_2, Healthy_packet => healthy_packet_E_2,
             Healthy => Healthy_E_2, Intermittent => Intermittent_E_2, Faulty => Faulty_E_2);
 
 CT_2_W: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_W_2, Healthy_packet => healthy_packet_W_2,
             Healthy => Healthy_W_2, Intermittent => Intermittent_W_2, Faulty => Faulty_W_2);
-    
+
 CT_2_S: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_S_2, Healthy_packet => healthy_packet_S_2,
             Healthy => Healthy_S_2, Intermittent => Intermittent_S_2, Faulty => Faulty_S_2);
 
 CT_2_L: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_L_2, Healthy_packet => healthy_packet_L_2,
             Healthy => Healthy_L_2, Intermittent => Intermittent_L_2, Faulty => Faulty_L_2);
 ------------------------------------------------------------------------------------------------------------
 CT_3_N: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_N_3, Healthy_packet => healthy_packet_N_3,
             Healthy => Healthy_N_3, Intermittent => Intermittent_N_3, Faulty => Faulty_N_3);
 
 CT_3_E: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_E_3, Healthy_packet => healthy_packet_E_3,
             Healthy => Healthy_E_3, Intermittent => Intermittent_E_3, Faulty => Faulty_E_3);
 
 CT_3_W: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_W_3, Healthy_packet => healthy_packet_W_3,
             Healthy => Healthy_W_3, Intermittent => Intermittent_W_3, Faulty => Faulty_W_3);
-    
+
 CT_3_S: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_S_3, Healthy_packet => healthy_packet_S_3,
             Healthy => Healthy_S_3, Intermittent => Intermittent_S_3, Faulty => Faulty_S_3);
 
 CT_3_L: counter_threshold_classifier   generic map(counter_depth => 8, healthy_counter_threshold => 20, faulty_counter_threshold => 1)
-    port map (  reset => reset, 
+    port map (  reset => reset,
             clk => clk,
             faulty_packet => faulty_packet_L_3, Healthy_packet => healthy_packet_L_3,
             Healthy => Healthy_L_3, Intermittent => Intermittent_L_3, Faulty => Faulty_L_3);
@@ -319,7 +319,7 @@ CT_3_L: counter_threshold_classifier   generic map(counter_depth => 8, healthy_c
 
 -- instantiating the routers
 R_0: router_parity generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>0, Rxy_rst => 60, Cx_rst => 10, NoC_size=>2)
-PORT MAP (reset, clk, 
+PORT MAP (reset, clk,
 	DCTS_N_0, DCTS_E_0, DCTS_W_0, DCTS_S_0, DCTS_L_0,
 	DRTS_N_0, DRTS_E_0, DRTS_W_0, DRTS_S_0, DRTS_L_0,
 	RX_N_0, RX_E_0, RX_W_0, RX_S_0, RX_L_0,
@@ -330,7 +330,7 @@ PORT MAP (reset, clk,
 	healthy_packet_N_0, healthy_packet_E_0, healthy_packet_W_0, healthy_packet_S_0, healthy_packet_L_0);
 
 R_1: router_parity generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>1, Rxy_rst => 60, Cx_rst => 12, NoC_size=>2)
-PORT MAP (reset, clk, 
+PORT MAP (reset, clk,
 	DCTS_N_1, DCTS_E_1, DCTS_W_1, DCTS_S_1, DCTS_L_1,
 	DRTS_N_1, DRTS_E_1, DRTS_W_1, DRTS_S_1, DRTS_L_1,
 	RX_N_1, RX_E_1, RX_W_1, RX_S_1, RX_L_1,
@@ -341,7 +341,7 @@ PORT MAP (reset, clk,
 	healthy_packet_N_1, healthy_packet_E_1, healthy_packet_W_1, healthy_packet_S_1, healthy_packet_L_1);
 
 R_2: router_parity generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>2, Rxy_rst => 60, Cx_rst => 3, NoC_size=>2)
-PORT MAP (reset, clk, 
+PORT MAP (reset, clk,
 	DCTS_N_2, DCTS_E_2, DCTS_W_2, DCTS_S_2, DCTS_L_2,
 	DRTS_N_2, DRTS_E_2, DRTS_W_2, DRTS_S_2, DRTS_L_2,
 	RX_N_2, RX_E_2, RX_W_2, RX_S_2, RX_L_2,
@@ -352,7 +352,7 @@ PORT MAP (reset, clk,
 	healthy_packet_N_2, healthy_packet_E_2, healthy_packet_W_2, healthy_packet_S_2, healthy_packet_L_2);
 
 R_3: router_parity generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>3, Rxy_rst => 60, Cx_rst => 5, NoC_size=>2)
-PORT MAP (reset, clk, 
+PORT MAP (reset, clk,
 	DCTS_N_3, DCTS_E_3, DCTS_W_3, DCTS_S_3, DCTS_L_3,
 	DRTS_N_3, DRTS_E_3, DRTS_W_3, DRTS_S_3, DRTS_L_3,
 	RX_N_3, RX_E_3, RX_W_3, RX_S_3, RX_L_3,
@@ -365,15 +365,15 @@ PORT MAP (reset, clk,
 
 -- instantiating the Fault fault_injector
 -- vertical FIs
-FI_0_2: fault_injector generic map(DATA_WIDTH => DATA_WIDTH) 
+FI_0_2: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
  port map(
     data_in => TX_S_0,
     address => FI_Add_0_2,
     sta_0 => sta0_0_2,
     sta_1 => sta1_0_2,
-    data_out => RX_N_2 
+    data_out => RX_N_2
     );
-FI_2_0: fault_injector generic map(DATA_WIDTH => DATA_WIDTH) 
+FI_2_0: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
  port map(
     data_in => TX_N_2,
     address => FI_Add_2_0,
@@ -381,15 +381,15 @@ FI_2_0: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
     sta_1 => sta1_2_0,
     data_out => RX_S_0
     );
-FI_1_3: fault_injector generic map(DATA_WIDTH => DATA_WIDTH) 
+FI_1_3: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
  port map(
     data_in => TX_S_1,
     address => FI_Add_1_3,
     sta_0 => sta0_1_3,
     sta_1 => sta1_1_3,
-    data_out => RX_N_3 
+    data_out => RX_N_3
     );
-FI_3_1: fault_injector generic map(DATA_WIDTH => DATA_WIDTH) 
+FI_3_1: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
  port map(
     data_in => TX_N_3,
     address => FI_Add_3_1,
@@ -399,7 +399,7 @@ FI_3_1: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
     );
 
 -- horizontal FIs
-FI_0_1: fault_injector generic map(DATA_WIDTH => DATA_WIDTH) 
+FI_0_1: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
  port map(
     data_in => TX_E_0,
     address => FI_Add_0_1,
@@ -407,7 +407,7 @@ FI_0_1: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
     sta_1 => sta1_0_1,
     data_out =>  RX_W_1
     );
-FI_1_0: fault_injector generic map(DATA_WIDTH => DATA_WIDTH) 
+FI_1_0: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
  port map(
     data_in => TX_W_1,
     address => FI_Add_1_0,
@@ -415,7 +415,7 @@ FI_1_0: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
     sta_1 => sta1_1_0,
     data_out => RX_E_0
     );
-FI_2_3: fault_injector generic map(DATA_WIDTH => DATA_WIDTH) 
+FI_2_3: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
  port map(
     data_in => TX_E_2,
     address => FI_Add_2_3,
@@ -423,7 +423,7 @@ FI_2_3: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
     sta_1 => sta1_2_3,
     data_out =>  RX_W_3
     );
-FI_3_2: fault_injector generic map(DATA_WIDTH => DATA_WIDTH) 
+FI_3_2: fault_injector generic map(DATA_WIDTH => DATA_WIDTH)
  port map(
     data_in => TX_W_3,
     address => FI_Add_3_2,

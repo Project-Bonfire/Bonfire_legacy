@@ -16,7 +16,7 @@ elaborate FIFO_credit_based -architecture behavior -library DEFAULT -parameters 
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/FIFO_one_hot_credit_based_area.txt
@@ -35,7 +35,7 @@ elaborate FIFO_credit_based -architecture behavior -library DEFAULT -parameters 
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/FIFO_one_hot_credit_based_packet_drop_area.txt
@@ -54,7 +54,7 @@ elaborate FIFO_credit_based -architecture behavior -library DEFAULT -parameters 
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/FIFO_one_hot_credit_based_packet_drop_flit_saving_area.txt
@@ -74,7 +74,7 @@ elaborate FIFO_credit_based -architecture behavior -library DEFAULT -parameters 
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/FIFO_one_hot_credit_based_packet_drop_classifier_support_area.txt

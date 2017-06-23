@@ -85,5 +85,5 @@ namespace text_ui_cmds
     void MM_IO_Write_Command::execute()
     {
         ui->display_msg(msg_type_debug, "Command not yet implemented!", "Write to MM IO");
-    }    
+    }
 }

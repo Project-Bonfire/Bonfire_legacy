@@ -8,10 +8,10 @@ entity RAMAccessInstrument is
  Generic ( DataSize : positive := 8;
            AddressSize : positive := 8);
     Port ( -- Scan Interface scan_client ----------
-          SI : in STD_LOGIC; -- ScanInPort 
+          SI : in STD_LOGIC; -- ScanInPort
            SO : out STD_LOGIC; -- ScanOutPort
            SEL : in STD_LOGIC; -- SelectPort
-           ----------------------------------------   
+           ----------------------------------------
            SE : in STD_LOGIC; -- ShiftEnPort
            CE : in STD_LOGIC; -- CaptureEnPort
            UE : in STD_LOGIC; -- UpdateEnPort
@@ -48,10 +48,10 @@ signal sib_mem_toSI, sib_data_toSI, sib_addr_toSI: STD_LOGIC;
 component SReg is
  Generic ( Size : positive := 33);
     Port ( -- Scan Interface scan_client ----------
-          SI : in STD_LOGIC; -- ScanInPort 
+          SI : in STD_LOGIC; -- ScanInPort
            SO : out STD_LOGIC; -- ScanOutPort
            SEL : in STD_LOGIC; -- SelectPort
-           ----------------------------------------   
+           ----------------------------------------
            SE : in STD_LOGIC; -- ShiftEnPort
            CE : in STD_LOGIC; -- CaptureEnPort
            UE : in STD_LOGIC; -- UpdateEnPort
@@ -63,7 +63,7 @@ end component;
 
 component SIB_mux_pre is
     Port ( -- Scan Interface  client --------------
-         SI : in  STD_LOGIC; -- ScanInPort 
+         SI : in  STD_LOGIC; -- ScanInPort
            CE : in STD_LOGIC; -- CaptureEnPort
            SE : in STD_LOGIC; -- ShiftEnPort
            UE : in STD_LOGIC; -- UpdateEnPort
@@ -88,17 +88,17 @@ RAM_address_out <= RAM_address(AddressSize-1 downto 0);
 RAM_data_write <= RAM_data_write_internal;
 RAM_write_enable <= sib_data_update_strobe;
 
---          .-------.     
---  SI -----|sib_mem|-- SO      
---          '-------'  
+--          .-------.
+--  SI -----|sib_mem|-- SO
+--          '-------'
 --            |    |_________________________________________________.
 --            |                                                      |
 --            |  .----------.                      .------------.    |
---            '--| sib_data |--------------------->| sib_addr   |----' 
---               '----------'                      '------------'   
---                |      |_____________               |      |_____________           
---                |     _____________  |              |     _____________  |          
---                '--->|   data      |-'              '--->|inc + address|-'              
+--            '--| sib_data |--------------------->| sib_addr   |----'
+--               '----------'                      '------------'
+--                |      |_____________               |      |_____________
+--                |     _____________  |              |     _____________  |
+--                '--->|   data      |-'              '--->|inc + address|-'
 --                     '-------------'                     '-------------'
 -- Auto increment bit is MSb in Address shift register
 
@@ -146,7 +146,7 @@ sib_data : SIB_mux_pre
               toSI => sib_data_toSI);
 
 -- Shift register for RAM data
-data_shiftreg : SReg 
+data_shiftreg : SReg
  Generic map ( Size => DataSize)
     Port map ( -- Scan Interface scan_client ----------
               SI => sib_data_toSI, -- Input Port SI = SI
@@ -181,7 +181,7 @@ sib_addr : SIB_mux_pre
               toSI => sib_addr_toSI);
 
 -- Shift register for RAM address and address increment bit
-addr_shiftreg : SReg 
+addr_shiftreg : SReg
  Generic map ( Size => AddressSize+1)
     Port map ( -- Scan Interface scan_client ----------
               SI => sib_addr_toSI, -- Input Port SI = SI
@@ -194,7 +194,7 @@ addr_shiftreg : SReg
                TCK => sib_addr_toTCK,
                DI => RAM_address,
                DO => RAM_address_update);
-               
+
 
 update_strobes: process(TCK)
 begin

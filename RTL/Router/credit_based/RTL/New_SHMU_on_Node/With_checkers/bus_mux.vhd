@@ -7,7 +7,7 @@
 -- COPYRIGHT: Software placed into the public domain by the author.
 --    Software 'as is' without warranty.  Author liable for nothing.
 -- DESCRIPTION:
---    This entity is the main signal router.  
+--    This entity is the main signal router.
 --    It multiplexes signals from multiple sources to the correct location.
 --    The outputs are as follows:
 --       a_bus        : goes to the ALU
@@ -44,7 +44,7 @@ architecture logic of bus_mux is
 begin
 
 --Determine value of a_bus
-amux: process(reg_source, imm_in, a_mux, c_pc) 
+amux: process(reg_source, imm_in, a_mux, c_pc)
 begin
    case a_mux is
    when A_FROM_REG_SOURCE =>
@@ -59,7 +59,7 @@ begin
 end process;
 
 --Determine value of b_bus
-bmux: process(reg_target, imm_in, b_mux) 
+bmux: process(reg_target, imm_in, b_mux)
 begin
    case b_mux is
    when B_FROM_REG_TARGET =>
@@ -85,8 +85,8 @@ begin
    end case;
 end process;
 
---Determine value of c_bus								
-cmux: process(c_bus, c_memory, c_pc, c_pc_plus4, imm_in, c_mux) 
+--Determine value of c_bus
+cmux: process(c_bus, c_memory, c_pc, c_pc_plus4, imm_in, c_mux)
 begin
    case c_mux is
    when C_FROM_ALU =>  -- | C_FROM_SHIFT | C_FROM_MULT =>
@@ -94,7 +94,7 @@ begin
    when C_FROM_MEMORY =>
       reg_dest_out <= c_memory;
    when C_FROM_PC =>
-      reg_dest_out <= c_pc(31 downto 2) & "00"; 
+      reg_dest_out <= c_pc(31 downto 2) & "00";
    when C_FROM_PC_PLUS4 =>
       reg_dest_out <= c_pc_plus4 & "00";
    when C_FROM_IMM_SHIFT16 =>
@@ -105,7 +105,7 @@ begin
 end process;
 
 --Determine value of take_branch
-pc_mux: process(branch_func, reg_source, reg_target) 
+pc_mux: process(branch_func, reg_source, reg_target)
    variable is_equal : std_logic;
 begin
    if reg_source = reg_target then

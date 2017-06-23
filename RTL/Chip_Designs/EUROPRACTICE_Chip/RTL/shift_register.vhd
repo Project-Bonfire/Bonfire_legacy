@@ -18,18 +18,18 @@ end;
 
 architecture behavior of shift_register is
 
-signal shift_register_mem_out : std_logic_vector(REG_WIDTH-1 downto 0); 
+signal shift_register_mem_out : std_logic_vector(REG_WIDTH-1 downto 0);
 
 begin
 process (clk, reset)
-begin 
+begin
     if reset = '0'  then
         shift_register_mem_out <= (others => '0');
-    elsif clk'event and clk = '1' then 
+    elsif clk'event and clk = '1' then
         if shift = '1' then
             shift_register_mem_out <=  shift_register_mem_out (REG_WIDTH-2 downto 0) & '0';
         else
-            shift_register_mem_out <= data_in or shift_register_mem_out;  
+            shift_register_mem_out <= data_in or shift_register_mem_out;
         end if;
     end if;
 

@@ -17,7 +17,7 @@ entity LBDR is
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-            
+
             Rxy_reconf: in  std_logic_vector(7 downto 0);
             Reconfig : in std_logic;
 
@@ -32,7 +32,7 @@ end LBDR;
 architecture behavior of LBDR is
 
   COMPONENT deroute_logic is
-      port (  
+      port (
               LBDR_Req_N, LBDR_Req_E, LBDR_Req_W, LBDR_Req_S, LBDR_Req_L: in std_logic;
               deroute: in std_logic_vector (1 downto 0);
               flit_type: in std_logic_vector (2 downto 0);
@@ -44,8 +44,8 @@ architecture behavior of LBDR is
 
   signal Cx:  std_logic_vector(3 downto 0);
   signal Rxy, Rxy_in:  std_logic_vector(7 downto 0);
-  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  
-  signal N1, E1, W1, S1  :std_logic :='0';  
+  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);
+  signal N1, E1, W1, S1  :std_logic :='0';
   signal Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: std_logic;
   signal Req_N_sig, Req_E_sig, Req_W_sig, Req_S_sig: std_logic;
   signal Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: std_logic;
@@ -54,7 +54,7 @@ architecture behavior of LBDR is
                                                          -- default: deroute to East
   signal ReConf_FF_in, ReConf_FF_out: std_logic;
 
-begin 
+begin
 
 grants <= grant_N or grant_E or grant_W or grant_S or grant_L;
 
@@ -72,7 +72,7 @@ S1 <= '1' when  cur_addr(NoC_size-1 downto NoC_size/2) < dst_addr(NoC_size-1 dow
 -- Sequential part!
 process(clk, reset)
 begin
-if reset = '0' then 
+if reset = '0' then
   Rxy <= Rxy_reconf;
   Req_N_FF <= '0';
   Req_E_FF <= '0';
@@ -81,7 +81,7 @@ if reset = '0' then
   Req_L_FF <= '0';
   ReConf_FF_out <= '0';
 elsif clk'event and clk = '1' then
-  Rxy <= Rxy_in;	
+  Rxy <= Rxy_in;
   Req_N_FF <= Req_N_in;
   Req_E_FF <= Req_E_in;
   Req_W_FF <= Req_W_in;
@@ -90,7 +90,7 @@ elsif clk'event and clk = '1' then
   ReConf_FF_out <= ReConf_FF_in;
 end if;
 end process;
- 
+
 
 -- The combionational part
 process (Rxy_reconf, ReConf_FF_out, Rxy, Reconfig, flit_type, grants, empty) begin
@@ -99,12 +99,12 @@ process (Rxy_reconf, ReConf_FF_out, Rxy, Reconfig, flit_type, grants, empty) beg
 	  	ReConf_FF_in <= '0';
   else
   	Rxy_in <= Rxy;
-  	if Reconfig = '1' then 
+  	if Reconfig = '1' then
   		ReConf_FF_in <= '1';
   	else
   		ReConf_FF_in <= ReConf_FF_out;
   	end if;
-  end if; 
+  end if;
 end process;
 
 
@@ -116,18 +116,18 @@ Req_L <= Req_L_FF;
 
 -- uLBDR deroute logic instantiation
 dr_logic: deroute_logic port map (
-                                    LBDR_Req_N => Req_N_sig, 
-                                    LBDR_Req_E => Req_E_sig, 
-                                    LBDR_Req_W => Req_W_sig, 
-                                    LBDR_Req_S => Req_S_sig, 
-                                    LBDR_Req_L => Req_L_in, 
-                                    deroute    => deroute, 
-                                    flit_type  => flit_type, 
-                                    empty      => empty, 
+                                    LBDR_Req_N => Req_N_sig,
+                                    LBDR_Req_E => Req_E_sig,
+                                    LBDR_Req_W => Req_W_sig,
+                                    LBDR_Req_S => Req_S_sig,
+                                    LBDR_Req_L => Req_L_in,
+                                    deroute    => deroute,
+                                    flit_type  => flit_type,
+                                    empty      => empty,
 
-                                    Req_N => Req_N_in, 
-                                    Req_E => Req_E_in, 
-                                    Req_W => Req_W_in, 
+                                    Req_N => Req_N_in,
+                                    Req_E => Req_E_in,
+                                    Req_W => Req_W_in,
                                     Req_S => Req_S_in
                                 );
 
@@ -156,5 +156,5 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
   end if;
 
 end process;
-   
+
 END;

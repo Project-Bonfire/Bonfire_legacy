@@ -9,7 +9,7 @@ entity Cx_Reconf_pseudo_with_checkers_top is
     port (  reconfig_cx: in  std_logic;
             flit_type: in std_logic_vector(2 downto 0);
             empty: in std_logic;
-            grants: in std_logic; 
+            grants: in std_logic;
             Temp_Cx: in std_logic_vector(3 downto 0);
             Faulty_C_N: in std_logic;
             Faulty_C_E: in std_logic;
@@ -19,16 +19,16 @@ entity Cx_Reconf_pseudo_with_checkers_top is
 
             Cx_in_out: out std_logic_vector(3 downto 0);
             reconfig_cx_in_out: out std_logic;
-            Temp_Cx_in_out: out std_logic_vector(3 downto 0); 
+            Temp_Cx_in_out: out std_logic_vector(3 downto 0);
 
             -- Checker Outputs
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal, 
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal, 
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal, 
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal,
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal,
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal,
             err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal : out std_logic
             );
 end Cx_Reconf_pseudo_with_checkers_top;
@@ -39,7 +39,7 @@ component Cx_Reconf_pseudo is
     port (  reconfig_cx: in  std_logic;
             flit_type: in std_logic_vector(2 downto 0);
             empty: in std_logic;
-            grants: in std_logic; 
+            grants: in std_logic;
             Temp_Cx: in std_logic_vector(3 downto 0);
             Faulty_C_N: in std_logic;
             Faulty_C_E: in std_logic;
@@ -58,7 +58,7 @@ component Cx_Reconf_pseudo_checkers is
             flit_type: in std_logic_vector(2 downto 0); -- *
             empty: in std_logic; -- *
             grants: in std_logic;  -- *
-            Cx_in: out std_logic_vector(3 downto 0); -- * 
+            Cx_in: out std_logic_vector(3 downto 0); -- *
             Temp_Cx: in std_logic_vector(3 downto 0); -- *
             reconfig_cx_in: in std_logic; -- *
             Cx: in std_logic_vector(3 downto 0); -- *
@@ -69,13 +69,13 @@ component Cx_Reconf_pseudo_checkers is
             Temp_Cx_in: in std_logic_vector(3 downto 0); -- *
 
             -- Checker Outputs
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal, 
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in, 
-            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal, 
-            err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal, 
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal,
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in,
+            err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal,
+            err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal,
             err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal : out std_logic
             );
 end component;
@@ -84,7 +84,7 @@ signal Cx_in_sig: std_logic_vector (3 downto 0);
 signal reconfig_cx_in_sig: std_logic;
 signal Temp_Cx_in_sig: std_logic_vector(3 downto 0);
 
-begin 
+begin
 
 Cx_in_out <= Cx_in_sig;
 reconfig_cx_in_out <= reconfig_cx_in_sig;
@@ -92,46 +92,46 @@ Temp_Cx_in_out <= Temp_Cx_in_sig;
 
 -- Cx Reconfiguration module instantiation
 Cx_Reconf: Cx_Reconf_pseudo port map (
-                                       reconfig_cx => reconfig_cx, 
-                                       flit_type => flit_type, 
-                                       empty => empty, 
-                                       grants => grants, 
-                                       Temp_Cx => Temp_Cx, 
-                                       Faulty_C_N => Faulty_C_N, 
-                                       Faulty_C_E => Faulty_C_E, 
-                                       Faulty_C_W => Faulty_C_W, 
-                                       Faulty_C_S => Faulty_C_S, 
-                                       Cx => Cx, 
+                                       reconfig_cx => reconfig_cx,
+                                       flit_type => flit_type,
+                                       empty => empty,
+                                       grants => grants,
+                                       Temp_Cx => Temp_Cx,
+                                       Faulty_C_N => Faulty_C_N,
+                                       Faulty_C_E => Faulty_C_E,
+                                       Faulty_C_W => Faulty_C_W,
+                                       Faulty_C_S => Faulty_C_S,
+                                       Cx => Cx,
 
-                                       Cx_in => Cx_in_sig, 
-                                       reconfig_cx_in => reconfig_cx_in_sig, 
+                                       Cx_in => Cx_in_sig,
+                                       reconfig_cx_in => reconfig_cx_in_sig,
                                        Temp_Cx_in => Temp_Cx_in_sig
                                      );
 
 -- Cx Reconfiguration module checkers instantiation
 CHECKERS: Cx_Reconf_pseudo_checkers port map (
-                                               reconfig_cx => reconfig_cx, 
-                                               flit_type => flit_type, 
-                                               empty => empty, 
-                                               grants => grants, 
-                                               Cx_in => Cx_in_sig, 
-                                               Temp_Cx => Temp_Cx, 
-                                               reconfig_cx_in => reconfig_cx_in_sig, 
-                                               Cx => Cx, 
-                                               Faulty_C_N => Faulty_C_N, 
-                                               Faulty_C_E => Faulty_C_E, 
-                                               Faulty_C_W => Faulty_C_W, 
-                                               Faulty_C_S => Faulty_C_S, 
-                                               Temp_Cx_in => Temp_Cx_in_sig, 
-   
+                                               reconfig_cx => reconfig_cx,
+                                               flit_type => flit_type,
+                                               empty => empty,
+                                               grants => grants,
+                                               Cx_in => Cx_in_sig,
+                                               Temp_Cx => Temp_Cx,
+                                               reconfig_cx_in => reconfig_cx_in_sig,
+                                               Cx => Cx,
+                                               Faulty_C_N => Faulty_C_N,
+                                               Faulty_C_E => Faulty_C_E,
+                                               Faulty_C_W => Faulty_C_W,
+                                               Faulty_C_S => Faulty_C_S,
+                                               Temp_Cx_in => Temp_Cx_in_sig,
+
                                                -- Checker Outputs
-                                               err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal => err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal, 
-                                               err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in => err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in, 
-                                               err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal, 
-                                               err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in, 
-                                               err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in, 
-                                               err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal, 
-                                               err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal => err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal, 
+                                               err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal => err_reconfig_cx_flit_type_Tail_not_empty_grants_Cx_in_Temp_Cx_equal,
+                                               err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in => err_reconfig_cx_flit_type_Tail_not_empty_grants_not_reconfig_cx_in,
+                                               err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Cx_in_Cx_equal,
+                                               err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_reconfig_cx_in,
+                                               err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_Faulty_C_Temp_Cx_in,
+                                               err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_reconfig_cx_in_reconfig_cx_equal,
+                                               err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal => err_reconfig_cx_flit_type_Tail_not_empty_grants_Temp_Cx_in_Temp_Cx_equal,
                                                err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal => err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Temp_Cx_equal
                                              );
 

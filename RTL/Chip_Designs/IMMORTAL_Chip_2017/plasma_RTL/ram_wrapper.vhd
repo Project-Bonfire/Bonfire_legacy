@@ -24,7 +24,7 @@ entity ram is
 end; --entity ram
 
 architecture logic of ram is
-   component TS1N40LPB4096X32M4S is 
+   component TS1N40LPB4096X32M4S is
    generic (cdeFileInit : string);
    port (
       PD : in std_logic;    --Power down mode
@@ -51,27 +51,27 @@ architecture logic of ram is
     signal not_clock: std_logic;
     signal delayed_data_out, Q: std_logic_vector(31 downto 0);
 begin
-  
+
    write_enable <= not(write_byte_enable(0) or write_byte_enable(1) or write_byte_enable(2) or write_byte_enable(3));
    not_clock <= not clk;
 
-   -- the following process is not actually tested! 
+   -- the following process is not actually tested!
    process(write_byte_enable)
    begin
-   write_BWEB <= (others => '1'); 
-   if write_byte_enable(0) = '1' then 
+   write_BWEB <= (others => '1');
+   if write_byte_enable(0) = '1' then
       write_BWEB(7 downto 0) <= "00000000";
    end if;
 
-   if write_byte_enable(1) = '1' then 
+   if write_byte_enable(1) = '1' then
       write_BWEB(15 downto 8) <= "00000000";
    end if;
 
-   if write_byte_enable(2) = '1' then 
+   if write_byte_enable(2) = '1' then
       write_BWEB(23 downto 16) <= "00000000";
    end if;
 
-   if write_byte_enable(3) = '1' then 
+   if write_byte_enable(3) = '1' then
       write_BWEB(31 downto 24) <= "00000000";
    end if;
    end process;
@@ -86,18 +86,18 @@ begin
     end process;
 
 
-   RAM_unit: TS1N40LPB4096X32M4S  
+   RAM_unit: TS1N40LPB4096X32M4S
    generic map (cdeFileInit => stim_file)
    port map(
       PD  => '0',
       CLK => not_clock,   -- this is the part that we changed. there was some serious timing issues with setup and hold times!
       CEB => '0',
       WEB => write_enable,
-      --CEBM => '0',    
-      --WEBM => '0',  
-      AWT  => '0',  
+      --CEBM => '0',
+      --WEBM => '0',
+      AWT  => '0',
       A => address(13 downto 2),
-      D => data_write, 
+      D => data_write,
       BWEB => write_BWEB,
       --AM => (others =>'0'),
       --DM => (others =>'0'),

@@ -17,27 +17,27 @@ entity router is
     reset, clk: in std_logic;
     DCTS_N, DCTS_E, DCTS_w, DCTS_S, DCTS_L: in std_logic;
     DRTS_N, DRTS_E, DRTS_W, DRTS_S, DRTS_L: in std_logic;
-    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
+    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0);
     RTS_N, RTS_E, RTS_W, RTS_S, RTS_L: out std_logic;
     CTS_N, CTS_E, CTS_w, CTS_S, CTS_L: out std_logic;
     TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0)
-    ); 
-end router; 
+    );
+end router;
 
 architecture behavior of router is
 
-  COMPONENT FIFO   
+  COMPONENT FIFO
  	generic (
         DATA_WIDTH: integer := 32
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-            RX: in std_logic_vector (DATA_WIDTH-1 downto 0); 
+            RX: in std_logic_vector (DATA_WIDTH-1 downto 0);
             DRTS: in std_logic;
-            read_en_N : in std_logic;   
-            read_en_E : in std_logic; 
-            read_en_W : in std_logic; 
-            read_en_S : in std_logic; 
+            read_en_N : in std_logic;
+            read_en_E : in std_logic;
+            read_en_W : in std_logic;
+            read_en_S : in std_logic;
             read_en_L : in std_logic;
             CTS: out std_logic;
             empty_out: out std_logic;
@@ -45,8 +45,8 @@ architecture behavior of router is
     );
 	end COMPONENT;
 
-    COMPONENT Arbiter   
- 	 
+    COMPONENT Arbiter
+
     port (  reset: in  std_logic;
             clk: in  std_logic;
             Req_N, Req_E, Req_W, Req_S, Req_L:in std_logic;
@@ -104,58 +104,58 @@ architecture behavior of router is
  	signal Req_NS, Req_ES, Req_WS, Req_SS, Req_LS: std_logic;
  	signal Req_NL, Req_EL, Req_WL, Req_SL, Req_LL: std_logic;
 
-  signal empty_N, empty_E, empty_W, empty_S, empty_L: std_logic; 
+  signal empty_N, empty_E, empty_W, empty_S, empty_L: std_logic;
 
  	signal Xbar_sel_N, Xbar_sel_E, Xbar_sel_W, Xbar_sel_S, Xbar_sel_L: std_logic_vector(4 downto 0);
 begin
-	
+
 ------------------------------------------------------------------------------------------------------------------------------
 --                                      block diagram of one channel
 --
---                                     .____________grant_________     
+--                                     .____________grant_________
 --                                     |                          ▲
---                                     |     _______            __|_______        
---                                     |    |       |          |          |      
---                                     |    | LBDR  |---req--->|  Arbiter | <--handshake-->                       
---                                     |    |_______|          |__________|     signals         
+--                                     |     _______            __|_______
+--                                     |    |       |          |          |
+--                                     |    | LBDR  |---req--->|  Arbiter | <--handshake-->
+--                                     |    |_______|          |__________|     signals
 --                                     |       ▲                  |
---                                   __▼___    | flit          ___▼__  
---                         RX ----->|      |   | type         |      |        
+--                                   __▼___    | flit          ___▼__
+--                         RX ----->|      |   | type         |      |
 --                     <-handshake->| FIFO |---o------------->|      |-----> TX
 --                        signals   |______|           ------>|      |
---                                                     ------>| XBAR |        
---                                                     ------>|      |        
---                                                     ------>|      |        
---                                                            |______|        
---                    
+--                                                     ------>| XBAR |
+--                                                     ------>|      |
+--                                                     ------>|      |
+--                                                            |______|
+--
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 
 -- all the FIFOs
  FIFO_N: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, RX => RX_N, DRTS => DRTS_N, 
-   			read_en_N => '0', read_en_E =>Grant_EN, read_en_W =>Grant_WN, read_en_S =>Grant_SN, read_en_L =>Grant_LN, 
-   			CTS => CTS_N, empty_out => empty_N, Data_out => FIFO_D_out_N);      
+   PORT MAP (reset => reset, clk => clk, RX => RX_N, DRTS => DRTS_N,
+   			read_en_N => '0', read_en_E =>Grant_EN, read_en_W =>Grant_WN, read_en_S =>Grant_SN, read_en_L =>Grant_LN,
+   			CTS => CTS_N, empty_out => empty_N, Data_out => FIFO_D_out_N);
 
  FIFO_E: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, RX => RX_E, DRTS => DRTS_E, 
-   			read_en_N => Grant_NE, read_en_E =>'0', read_en_W =>Grant_WE, read_en_S =>Grant_SE, read_en_L =>Grant_LE, 
-   			CTS => CTS_E, empty_out => empty_E, Data_out => FIFO_D_out_E);     
+   PORT MAP (reset => reset, clk => clk, RX => RX_E, DRTS => DRTS_E,
+   			read_en_N => Grant_NE, read_en_E =>'0', read_en_W =>Grant_WE, read_en_S =>Grant_SE, read_en_L =>Grant_LE,
+   			CTS => CTS_E, empty_out => empty_E, Data_out => FIFO_D_out_E);
 
  FIFO_W: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, RX => RX_W, DRTS => DRTS_W, 
-   			read_en_N => Grant_NW, read_en_E =>Grant_EW, read_en_W =>'0', read_en_S =>Grant_SW, read_en_L =>Grant_LW, 
+   PORT MAP (reset => reset, clk => clk, RX => RX_W, DRTS => DRTS_W,
+   			read_en_N => Grant_NW, read_en_E =>Grant_EW, read_en_W =>'0', read_en_S =>Grant_SW, read_en_L =>Grant_LW,
    			CTS => CTS_W, empty_out => empty_W, Data_out => FIFO_D_out_W);
 
  FIFO_S: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, RX => RX_S, DRTS => DRTS_S, 
-   			read_en_N => Grant_NS, read_en_E =>Grant_ES, read_en_W =>Grant_WS, read_en_S =>'0', read_en_L =>Grant_LS, 
-   			CTS => CTS_S, empty_out => empty_S, Data_out => FIFO_D_out_S); 
+   PORT MAP (reset => reset, clk => clk, RX => RX_S, DRTS => DRTS_S,
+   			read_en_N => Grant_NS, read_en_E =>Grant_ES, read_en_W =>Grant_WS, read_en_S =>'0', read_en_L =>Grant_LS,
+   			CTS => CTS_S, empty_out => empty_S, Data_out => FIFO_D_out_S);
 
  FIFO_L: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, RX => RX_L, DRTS => DRTS_L, 
+   PORT MAP (reset => reset, clk => clk, RX => RX_L, DRTS => DRTS_L,
    			read_en_N => Grant_NL, read_en_E =>Grant_EL, read_en_W =>Grant_WL, read_en_S => Grant_SL, read_en_L =>'0',
-   			CTS => CTS_L, empty_out => empty_L, Data_out => FIFO_D_out_L); 
+   			CTS => CTS_L, empty_out => empty_L, Data_out => FIFO_D_out_L);
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
@@ -186,46 +186,46 @@ LBDR_L: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, C
 ------------------------------------------------------------------------------------------------------------------------------
 
 -- all the Arbiters
-Arbiter_N: Arbiter 
+Arbiter_N: Arbiter
    PORT MAP (reset => reset, clk => clk,
           Req_N => '0' , Req_E => Req_EN, Req_W => Req_WN, Req_S => Req_SN, Req_L => Req_LN,
           DCTS => DCTS_N, Grant_N => Grant_NN, Grant_E => Grant_NE, Grant_W => Grant_NW, Grant_S => Grant_NS, Grant_L => Grant_NL,
-          Xbar_sel => Xbar_sel_N, 
+          Xbar_sel => Xbar_sel_N,
           RTS =>  RTS_N
-        );     
+        );
 
- Arbiter_E: Arbiter 
+ Arbiter_E: Arbiter
    PORT MAP (reset => reset, clk => clk,
           Req_N => Req_NE , Req_E => '0', Req_W => Req_WE, Req_S => Req_SE, Req_L => Req_LE,
           DCTS => DCTS_E, Grant_N => Grant_EN, Grant_E => Grant_EE, Grant_W => Grant_EW, Grant_S => Grant_ES, Grant_L => Grant_EL,
-          Xbar_sel => Xbar_sel_E, 
+          Xbar_sel => Xbar_sel_E,
           RTS =>  RTS_E
-        );  
+        );
 
-  Arbiter_W: Arbiter 
+  Arbiter_W: Arbiter
    PORT MAP (reset => reset, clk => clk,
           Req_N => Req_NW , Req_E => Req_EW, Req_W => '0', Req_S => Req_SW, Req_L => Req_LW,
           DCTS => DCTS_W, Grant_N => Grant_WN, Grant_E => Grant_WE, Grant_W => Grant_WW, Grant_S => Grant_WS, Grant_L => Grant_WL,
-          Xbar_sel => Xbar_sel_W, 
+          Xbar_sel => Xbar_sel_W,
           RTS =>  RTS_W
-        );      
+        );
 
-  Arbiter_S: Arbiter 
+  Arbiter_S: Arbiter
    PORT MAP (reset => reset, clk => clk,
           Req_N => Req_NS , Req_E => Req_ES, Req_W => Req_WS, Req_S => '0', Req_L => Req_LS,
           DCTS => DCTS_S, Grant_N => Grant_SN, Grant_E => Grant_SE, Grant_W => Grant_SW, Grant_S => Grant_SS, Grant_L => Grant_SL,
-          Xbar_sel => Xbar_sel_S, 
+          Xbar_sel => Xbar_sel_S,
           RTS =>  RTS_S
-        );   
+        );
 
-  Arbiter_L: Arbiter 
+  Arbiter_L: Arbiter
    PORT MAP (reset => reset, clk => clk,
           Req_N => Req_NL , Req_E => Req_EL, Req_W => Req_WL, Req_S => Req_SL, Req_L => '0',
           DCTS => DCTS_L, Grant_N => Grant_LN, Grant_E => Grant_LE, Grant_W => Grant_LW, Grant_S => Grant_LS, Grant_L => Grant_LL,
-          Xbar_sel => Xbar_sel_L, 
+          Xbar_sel => Xbar_sel_L,
           RTS =>  RTS_L
-        );          
-        
+        );
+
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------

@@ -12,13 +12,13 @@ entity NI is
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-            RX1: in std_logic_vector(DATA_WIDTH-1 downto 0); 
-            TX1: out std_logic_vector(DATA_WIDTH-1 downto 0); 
+            RX1: in std_logic_vector(DATA_WIDTH-1 downto 0);
+            TX1: out std_logic_vector(DATA_WIDTH-1 downto 0);
             DRTS1, DCTS1: in  std_logic;
             RTS1,CTS1: out  std_logic;
 
-            RX2: in std_logic_vector(DATA_WIDTH-1 downto 0); 
-            TX2: out std_logic_vector(DATA_WIDTH-1 downto 0); 
+            RX2: in std_logic_vector(DATA_WIDTH-1 downto 0);
+            TX2: out std_logic_vector(DATA_WIDTH-1 downto 0);
             DRTS2, DCTS2: in  std_logic;
             RTS2,CTS2: out  std_logic
     );
@@ -34,8 +34,8 @@ component NI_channel is
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-            RX: in std_logic_vector(DATA_WIDTH-1 downto 0); 
-            TX: out std_logic_vector(DATA_WIDTH-1 downto 0); 
+            RX: in std_logic_vector(DATA_WIDTH-1 downto 0);
+            TX: out std_logic_vector(DATA_WIDTH-1 downto 0);
             DRTS, DCTS: in  std_logic;
             RTS,CTS: out  std_logic
     );
@@ -43,9 +43,9 @@ end component;
 
 begin
 
---              
+--
 --   PE                                                                 router
---     --            ---- ---------------------------------- --          --  
+--     --            ---- ---------------------------------- --          --
 --   RX  |<---------| TX1                                   RX1|<----   | TX_L_R_?
 --   DRTS|<---------| RTS1                                DRTS1|<----   | RTS_L_R_?
 --   CTS |--------->| DCTS1                                CTS1|---->   | DCTS_L_R_?
@@ -57,21 +57,21 @@ begin
 
 
 --  circular buffer structure
---                                   <--- WriteP    
+--                                   <--- WriteP
 --              ---------------------------------
 --              |   3   |   2   |   1   |   0   |
 --              ---------------------------------
---                                   <--- readP          
+--                                   <--- readP
 
 Channel_1: NI_channel generic map(DATA_WIDTH => DATA_WIDTH, NI_DEPTH => NI_DEPTH)
-            port map(reset=>reset, clk =>clk, 
-                RX => RX1, TX => TX1, 
+            port map(reset=>reset, clk =>clk,
+                RX => RX1, TX => TX1,
                 DRTS=>DRTS1, DCTS=>DCTS1,
                 RTS=>RTS1,CTS=>CTS1);
 
 Channel_2: NI_channel generic map(DATA_WIDTH => DATA_WIDTH, NI_DEPTH => NI_DEPTH)
-            port map(reset=>reset, clk =>clk, 
-                RX => RX2, TX => TX2, 
+            port map(reset=>reset, clk =>clk,
+                RX => RX2, TX => TX2,
                 DRTS=>DRTS2, DCTS=>DCTS2,
                 RTS=>RTS2,CTS=>CTS2);
 

@@ -200,7 +200,7 @@ begin  --architecture
          if ((ram_address_late = NI_reserved_data_address) or (ram_address_late = NI_flag_address)
             or (ram_address_late = NI_counter_address)) then
             cpu_data_r <= ram_data_r_ni;
-         elsif ram_address_late = uart_count_value_address then 
+         elsif ram_address_late = uart_count_value_address then
                 cpu_data_r <= ram_data_r_uart;
          else
             cpu_data_r <= ram_data_r;
@@ -211,7 +211,7 @@ begin  --architecture
             if ((ram_address_late = NI_reserved_data_address) or (ram_address_late = NI_flag_address)
                 or (ram_address_late = NI_counter_address)) then
                cpu_data_r <= ram_data_r_ni;
-            elsif ram_address_late = uart_count_value_address then 
+            elsif ram_address_late = uart_count_value_address then
                 cpu_data_r <= ram_data_r_uart;
             else
                cpu_data_r <= ram_data_r; --cache

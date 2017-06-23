@@ -10,7 +10,7 @@ use IEEE.MATH_REAL.ALL;
 entity Rxy_Reconf_pseudo is
     port (  Rxy_reconf: in  std_logic_vector(7 downto 0);
             ReConf_FF_out: in std_logic;
-            Rxy: in  std_logic_vector(7 downto 0);   
+            Rxy: in  std_logic_vector(7 downto 0);
             Reconfig : in std_logic;
             flit_type: in std_logic_vector(2 downto 0);
             grants: in std_logic;
@@ -32,12 +32,12 @@ begin
         ReConf_FF_in <= '0';
   else
     Rxy_in <= Rxy;
-    if Reconfig = '1' then 
+    if Reconfig = '1' then
         ReConf_FF_in <= '1';
     else
         ReConf_FF_in <= ReConf_FF_out;
     end if;
-  end if; 
+  end if;
 
 end process;
 

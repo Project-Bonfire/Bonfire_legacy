@@ -7,7 +7,7 @@ def generate_entity(noc_file, network_dime, add_SHMU):
     network_dime:   integer : network size
     add_SHMU:       boolean : if SHMU is included in the network
     """
-    
+
     string_to_print = ""
     noc_file.write("entity network_"+str(network_dime)+"x"+str(network_dime)+" is\n")
 

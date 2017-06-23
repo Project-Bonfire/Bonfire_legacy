@@ -33,7 +33,7 @@ component hamming_encoder is
  --generic(n: integer := 34);
  port   (datain               : in  Std_logic_vector(31 downto 0);  -- d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27
          dataout              : out std_logic_vector(38 downto 0)
-            ); -- d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27 p0 p1                                        
+            ); -- d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27 p0 p1
 
 end component;
 
@@ -41,7 +41,7 @@ component hamming_decoder is
  --generic(n: integer := 34);
  port
          (hamming_in     : in std_logic_vector(38 downto 0);    --d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25                                             --d26 d27 p0 p1 p2 p3 p4 p5 p6
-        dataout        : out std_logic_vector(31 downto 0);   --d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25                                             --d26 d27 
+        dataout        : out std_logic_vector(31 downto 0);   --d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25                                             --d26 d27
           s_err_corr     : out std_logic;                   --diagnostic outputs
          d_err_det      : out std_logic;                   --diagnostic outputs
           no_error       : out std_logic);                  --diagnostic outputs
@@ -49,7 +49,7 @@ component hamming_decoder is
 end component;
 
 signal dataout_sig : std_logic_vector (38 downto 0);
-signal datain_sig, data_out_sig : std_logic_vector (31 downto 0); 
+signal datain_sig, data_out_sig : std_logic_vector (31 downto 0);
 signal serr_sig, derr_sig, ne_sig : std_logic;
 
 -- FOR Hamenc : hamming_encoder USE ENTITY work.hamming_encoder;

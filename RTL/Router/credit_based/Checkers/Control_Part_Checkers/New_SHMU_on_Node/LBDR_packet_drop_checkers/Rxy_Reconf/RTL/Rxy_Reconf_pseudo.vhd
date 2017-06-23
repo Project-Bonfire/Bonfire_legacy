@@ -9,7 +9,7 @@ use IEEE.MATH_REAL.ALL;
 
 entity Rxy_Reconf_pseudo is
     port (  ReConf_FF_out: in std_logic;
-            Rxy: in  std_logic_vector(7 downto 0);   
+            Rxy: in  std_logic_vector(7 downto 0);
             Rxy_tmp: in std_logic_vector(7 downto 0);
             Reconfig_command : in std_logic;
             flit_type: in std_logic_vector(2 downto 0);
@@ -18,7 +18,7 @@ entity Rxy_Reconf_pseudo is
             Rxy_reconf_PE: in  std_logic_vector(7 downto 0);
 
             Rxy_in: out std_logic_vector(7 downto 0);
-            Rxy_tmp_in: out std_logic_vector(7 downto 0);            
+            Rxy_tmp_in: out std_logic_vector(7 downto 0);
             ReConf_FF_in: out std_logic
          );
 end Rxy_Reconf_pseudo;
@@ -26,7 +26,7 @@ end Rxy_Reconf_pseudo;
 architecture behavior of Rxy_Reconf_pseudo is
 begin
 
-process(Reconfig_command, Rxy_reconf_PE, Rxy_tmp, ReConf_FF_out, Rxy, flit_type, grants, empty) 
+process(Reconfig_command, Rxy_reconf_PE, Rxy_tmp, ReConf_FF_out, Rxy, flit_type, grants, empty)
 begin
 
 Rxy_tmp_in <= Rxy_tmp;
@@ -37,7 +37,7 @@ Rxy_tmp_in <= Rxy_tmp;
   else
     Rxy_in <= Rxy;
 
-    if Reconfig_command = '1' then 
+    if Reconfig_command = '1' then
       Rxy_tmp_in <= Rxy_reconf_PE;
       ReConf_FF_in <= '1';
 
@@ -46,7 +46,7 @@ Rxy_tmp_in <= Rxy_tmp;
       ReConf_FF_in <= ReConf_FF_out;
 
     end if;
-  end if; 
+  end if;
 
 end process;
 

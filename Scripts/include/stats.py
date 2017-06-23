@@ -4,8 +4,8 @@ from Scripts.include.helper_func import *
 
 
 def statistics(verbal):
-    """ 
-        Calculates the amount of packets sent and recieved and prints statistics 
+    """
+        Calculates the amount of packets sent and recieved and prints statistics
         about flit and packet loss percentages!
     """
     print
@@ -57,7 +57,7 @@ def statistics(verbal):
     print "\tFlit loss:\t" + "%.2f" %(100 - (flits_recieved * 100.0 / flits_sent)) + "%"
 
     f = open(SIMUL_DIR+"/"+'stats.txt', 'w')
-    
+
     f.write("\tPackets sent:\t\t" + str(num_packets_sent)+"\tflits sent:\t" + str(flits_sent)+"\n")
     f.write("\tPackets received:\t" + str(num_packets_recv)+"\tflits recieved:\t" + str(flits_recieved)+"\n")
     f.write("\tPackets lost: \t\t" + str(num_packets_sent - num_packets_recv)+"\tflits lost:\t" + str(flits_sent-flits_recieved)+"\n")

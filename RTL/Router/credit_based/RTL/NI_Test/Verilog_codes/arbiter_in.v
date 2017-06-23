@@ -24,12 +24,12 @@ output reg X_N, X_E, X_W, X_S, X_L;
 reg [5:0] state = `IDLE;
 reg [5:0] state_in = `IDLE; // encoded as one-hot
 
-// Sequential part  
+// Sequential part
 
 always @(posedge clk) begin
 	if (reset == 0)
 		state <= `IDLE;
-	else 
+	else
 		state <= state_in;
 end
 
@@ -41,10 +41,10 @@ always @* begin
     X_W <= 0;
     X_S <= 0;
     X_L <= 0;
-    
-    case (state) 
+
+    case (state)
       `IDLE: begin	   // In the arbiter for hand-shaking FC router, L had the  highest priority (L, N, E, W, S)
-      			 	   // Here it seems N has the higest priority, is it fine ? 
+      			 	   // Here it seems N has the higest priority, is it fine ?
       	if (req_X_N == 1) begin
       		state_in <= `North;
         	X_N <= 1;
@@ -73,7 +73,7 @@ always @* begin
       	if (req_X_N == 1) begin
       		state_in <= `North;
         	X_N <= 1;
-        end        	
+        end
 	    else if (req_X_E == 1) begin
 	    	state_in <= `East;
 	        X_E <= 1;
@@ -92,7 +92,7 @@ always @* begin
 	    end
 	    else
 	    	state_in <= state;
-	  end 
+	  end
 
       `East: begin
 	    if (req_X_E == 1) begin
@@ -193,7 +193,7 @@ always @* begin
 	    else
 	    	state_in <= state;
 	  end
-	    
+
     endcase // End of case
 
 end // End of process

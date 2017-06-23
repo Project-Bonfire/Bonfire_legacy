@@ -1,13 +1,13 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 
-def declare_components(noc_file, add_parity, add_SHMU, add_packet_drop, add_FC, 
+def declare_components(noc_file, add_parity, add_SHMU, add_packet_drop, add_FC,
                        add_tracker):
     """
-    writes component deceleration into noc_file based on add_parity, add_SHMU, add_packet_drop, 
+    writes component deceleration into noc_file based on add_parity, add_SHMU, add_packet_drop,
     add_FC, and add_tracker
-    add_parity, add_SHMU, add_packet_drop, add_FC, add_tracker are all Boolean 
+    add_parity, add_SHMU, add_packet_drop, add_FC, add_tracker are all Boolean
     """
-    
+
     if add_packet_drop and add_FC and not add_SHMU:
         noc_file.write("component router_credit_based_PD_C is  --fault classifier plus packet-dropping  \n")
         noc_file.write("    generic ( \n")
@@ -78,21 +78,21 @@ def declare_components(noc_file, add_parity, add_SHMU, add_packet_drop, add_FC,
         noc_file.write("    );\n")
         noc_file.write("    port (\n")
         noc_file.write("    reset, clk: in std_logic;\n\n")
- 
+
         noc_file.write("    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); \n")
         noc_file.write("    credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic;\n")
         noc_file.write("    valid_in_N, valid_in_E, valid_in_W, valid_in_S, valid_in_L : in std_logic;\n")
         noc_file.write("    valid_out_N, valid_out_E, valid_out_W, valid_out_S, valid_out_L : out std_logic;\n")
         noc_file.write("    credit_out_N, credit_out_E, credit_out_W, credit_out_S, credit_out_L: out std_logic;\n")
         noc_file.write("    TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0);\n\n")
- 
+
         noc_file.write("    Faulty_N_in, Faulty_E_in, Faulty_W_in, Faulty_S_in: in std_logic;\n")
         noc_file.write("    Faulty_N_out, Faulty_E_out, Faulty_W_out, Faulty_S_out: out std_logic;\n\n")
- 
+
         noc_file.write("    -- should be connected to NI\n")
         noc_file.write("    link_faults: out std_logic_vector(4 downto 0);\n")
         noc_file.write("    turn_faults: out std_logic_vector(19 downto 0);\n\n")
- 
+
         noc_file.write("    Rxy_reconf_PE: in  std_logic_vector(7 downto 0);\n")
         noc_file.write("    Cx_reconf_PE: in  std_logic_vector(3 downto 0);\n")
         noc_file.write("    Reconfig_command : in std_logic\n")

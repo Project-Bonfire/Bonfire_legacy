@@ -9,7 +9,7 @@ entity Arbiter_pseudo_DMR is
     generic (
         DATA_WIDTH: integer := 23 -- number of Arbiter outputs (pseudo-combinational circuit)
     );
-    port   (  
+    port   (
             Req_N, Req_E, Req_W,Req_S, Req_L:in std_logic; -- From LBDR modules
             DCTS: in std_logic; -- Getting the CTS signal from the input FIFO of the next router/NI (for hand-shaking)
             RTS_FF: in std_logic;
@@ -28,7 +28,7 @@ end;
 architecture behavior of Arbiter_pseudo_DMR is
 
 component Arbiter_pseudo is
-    port   (  
+    port   (
             Req_N, Req_E, Req_W,Req_S, Req_L:in std_logic; -- From LBDR modules
             DCTS: in std_logic; -- Getting the CTS signal from the input FIFO of the next router/NI (for hand-shaking)
             RTS_FF: in std_logic;
@@ -56,18 +56,18 @@ end component;
 
 signal Comparator_input_0_sig, Comparator_input_1_sig: std_logic_vector(DATA_WIDTH-1 downto 0);
 
-begin 
+begin
 
 -- Arbiter instantiation (For TMR logic)
 ARBITER0: Arbiter_pseudo port map (
-                             Req_N =>  Req_N, 
-                             Req_E =>  Req_E, 
-                             Req_W =>  Req_W, 
-                             Req_S =>  Req_S, 
-                             Req_L =>  Req_L, 
-                             DCTS =>   DCTS, 
-                             RTS_FF => RTS_FF, 
-                             state =>  state, 
+                             Req_N =>  Req_N,
+                             Req_E =>  Req_E,
+                             Req_W =>  Req_W,
+                             Req_S =>  Req_S,
+                             Req_L =>  Req_L,
+                             DCTS =>   DCTS,
+                             RTS_FF => RTS_FF,
+                             state =>  state,
 
                              Grant_N   => Comparator_input_0_sig(0),
                              Grant_E   => Comparator_input_0_sig(1),
@@ -81,14 +81,14 @@ ARBITER0: Arbiter_pseudo port map (
                             );
 
 ARBITER1: Arbiter_pseudo port map (
-                             Req_N =>  Req_N, 
-                             Req_E =>  Req_E, 
-                             Req_W =>  Req_W, 
-                             Req_S =>  Req_S, 
-                             Req_L =>  Req_L, 
-                             DCTS =>   DCTS, 
-                             RTS_FF => RTS_FF, 
-                             state =>  state, 
+                             Req_N =>  Req_N,
+                             Req_E =>  Req_E,
+                             Req_W =>  Req_W,
+                             Req_S =>  Req_S,
+                             Req_L =>  Req_L,
+                             DCTS =>   DCTS,
+                             RTS_FF => RTS_FF,
+                             state =>  state,
 
                              Grant_N => Comparator_input_1_sig(0),
                              Grant_E => Comparator_input_1_sig(1),
@@ -106,7 +106,7 @@ DMR_comparator: comparator  generic map (DATA_WIDTH => DATA_WIDTH)
                   port map (
                               input0 => Comparator_input_0_sig,
                               input1 => Comparator_input_1_sig,
- 
+
                               error_out => error_out
                            );
 

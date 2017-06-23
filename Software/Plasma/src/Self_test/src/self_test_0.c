@@ -28,12 +28,12 @@ int main(int argc, char const *argv[]) {
     ni_write(0b1111111111111111111111111111);
     ni_write(0);
 
-    
+
     while(1){
         if ((ni_read_flags() & NI_READ_MASK) == 0)
         {
             flit = ni_read();
-            flit_type = get_flit_type(flit); 
+            flit_type = get_flit_type(flit);
             if (flit_type == FLIT_TYPE_HEADER)
             {
                 body_counter = 0;
@@ -42,7 +42,7 @@ int main(int argc, char const *argv[]) {
             {
                 body_counter ++;                                    // counting the number of body flits
                 if (body_counter == 1)
-                { 
+                {
                     if (flit == 1084792979 ){                       // check if preamble exists preamble is of the form 010 + "0000" + "01010100 01010000 01001001"+"1" the last part is TPI (test program instructions)
                         test_program  = 1;                          // recieved a test program!
                         uart_puts("recieved test instructions!\n");
@@ -55,7 +55,7 @@ int main(int argc, char const *argv[]) {
                         current_byte = (flit & (255<<(flit_byte_counter*8+1)))>>(flit_byte_counter*8+1);     // the additional one is due to the parity
                         write_inst = write_inst | (current_byte <<(((byte_counter)%4)*8));
                         flit_byte_counter ++;                       // to keep track of the bytes read!
-                        byte_counter ++;                            // keeping track of all the bytes written so far!    
+                        byte_counter ++;                            // keeping track of all the bytes written so far!
                         if (byte_counter % 4 == 0){                 // one instruction is full, write it to memory
                             self_test_write(write_inst, counter);   // write the instruction into the memory
                             counter ++;                             // increase the instruction counter
@@ -64,7 +64,7 @@ int main(int argc, char const *argv[]) {
                     }
                 }
             }
-            
+
             if (flit_type == FLIT_TYPE_TAIL)
             {
                 if (test_program == 1){
@@ -75,7 +75,7 @@ int main(int argc, char const *argv[]) {
                         current_byte = (flit & (255<<(flit_byte_counter*8+1)))>>(flit_byte_counter*8+1);     // the additional one is due to the parity
                         write_inst = write_inst | (current_byte <<(((byte_counter)%4)*8));
                         flit_byte_counter ++;                       // to keep track of the bytes read!
-                        byte_counter ++;                            // keeping track of all the bytes written so far!    
+                        byte_counter ++;                            // keeping track of all the bytes written so far!
                         if (byte_counter % 4 == 0){                 // one instruction is full, write it to memory
                             self_test_write(write_inst, counter);   // write the instruction into the memory
                             counter ++;                             // increase the instruction counter
@@ -90,7 +90,7 @@ int main(int argc, char const *argv[]) {
             }
         }
     }
-    while(1){ 
+    while(1){
         if ((ni_read_flags() & NI_READ_MASK) == 0)
         {
             flit = ni_read();

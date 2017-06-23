@@ -40,7 +40,7 @@ else:
 
 if '-IF'  in sys.argv[1:]:
 	pointer = sys.argv.index('-IF')+1
-	while("-" not in sys.argv[pointer]):	
+	while("-" not in sys.argv[pointer]):
 		if not sys.argv[pointer].isdigit():
 			raise ValueError("Wrong input size!")
 		input_size.append(int(sys.argv[pointer]))
@@ -61,22 +61,22 @@ if '-IF'  in sys.argv[1:]:
 				raise ValueError("Wrong input format!")
 
 			pointer += 1
-			
+
 			if "-" in sys.argv[pointer]:
 				break
-			
-			if pointer == len(sys.argv): 
+
+			if pointer == len(sys.argv):
 				break
-		
+
 		counter += 1
-		if pointer == len(sys.argv): 
+		if pointer == len(sys.argv):
 			break
 	pattern_length = sum(input_size)
 else:
 	print "no input patterns provided...Exit!"
 	sys.exit()
- 
-test_patern_file = open(str(filename), 'w')	
+
+test_patern_file = open(str(filename), 'w')
 
 print "--------------------------------------------------------------------------------"
 list_of_accepted_patterns= []
@@ -84,11 +84,11 @@ print '\033[92m'+"INFO: "+'\033[0m'+"reporting the configuration:\n"
 print "\t.---------------------------------------."
 print "\t|  input size 	|	input format\t|"
 print "   .----'---------------------------------------'"
-for i in range(0, len(input_size)):	
-	print '   |{:3d} | {:10d} \t|\t {:10s}'.format(i, input_size[i], input_format [i]) 
+for i in range(0, len(input_size)):
+	print '   |{:3d} | {:10d} \t|\t {:10s}'.format(i, input_size[i], input_format [i])
 	print "    ---------------------------------------------"
 
-print 
+print
 if verbose:
 	print '\033[92m'+"INFO: "+'\033[0m'+"Starting preparing individual lists..."
 output_size = 1
@@ -110,7 +110,7 @@ for item in input_format:
 
 	if "we" in input_format[item]:
 		string = [''.join(map(str,tup)) for tup in itertools.product([0, 1], repeat=input_size[item])]
-	
+
 	if "oh" in input_format[item]:
 		for i in range(0, input_size[item]):
 			string.append('0'*i + '1' +  '0'* (input_size[item]-i-1))
@@ -128,7 +128,7 @@ if verbose:
 	print '\033[92m'+"INFO: "+'\033[0m'+"Final output size:", output_size
 	if output_size > 100000000:
 		print '\033[91m'+ "WARNING: "+'\033[0m'+"your final output size is big... you might run out of disc space!"
-	print 
+	print
 	print '\033[92m'+"INFO: "+'\033[0m'+"Starting making product of the lists... This might take a while!"
 
 list_of_accepted_patterns = []
@@ -136,7 +136,7 @@ for item in input_format:
 	if len(input_format[item]) > 0:
 			sub_item = input_format[item][len(input_format[item])-1]
 			if len(list_of_accepted_patterns) == 0:
-				list_of_accepted_patterns = sub_item	
+				list_of_accepted_patterns = sub_item
 			else:
 				list_of_accepted_patterns =  map(''.join, itertools.chain(itertools.product(list_of_accepted_patterns, sub_item)))
 
@@ -148,6 +148,6 @@ for item in list_of_accepted_patterns:
 	string_for_file = ""
 	for bit in item:
 		string_for_file += str(bit)
-	string_for_file += "\n"	
+	string_for_file += "\n"
 	test_patern_file.write(string_for_file)
 test_patern_file.close()

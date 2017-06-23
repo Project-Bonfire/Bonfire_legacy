@@ -12,14 +12,14 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-USE ieee.numeric_std.ALL; 
+USE ieee.numeric_std.ALL;
 use work.component_pack.all;
 use ieee.std_logic_misc.all;
 
 entity network_2x2 is
  generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
-port (reset: in  std_logic; 
-	clk: in  std_logic; 
+port (reset: in  std_logic;
+	clk: in  std_logic;
 	--------------
 	--------------
 	RX_L_0: in std_logic_vector (DATA_WIDTH-1 downto 0);
@@ -81,8 +81,8 @@ port (reset: in  std_logic;
     SO          : out std_logic;
     toF         : out std_logic;
     toC         : out std_logic
-    ); 
-end network_2x2; 
+    );
+end network_2x2;
 
 
 architecture behavior of network_2x2 is
@@ -92,7 +92,7 @@ architecture behavior of network_2x2 is
 
 component SIB_mux_pre_FCX_SELgate is
     Port ( -- Scan Interface  client --------------
-           SI : in STD_LOGIC; -- ScanInPort 
+           SI : in STD_LOGIC; -- ScanInPort
            CE : in STD_LOGIC; -- CaptureEnPort
            SE : in STD_LOGIC; -- ShiftEnPort
            UE : in STD_LOGIC; -- UpdateEnPort
@@ -118,10 +118,10 @@ end component;
 component AsyncDataRegisterAdapter is
  Generic ( Size : positive);
     Port ( -- Scan Interface scan_client ----------
-           SI : in STD_LOGIC; -- ScanInPort 
+           SI : in STD_LOGIC; -- ScanInPort
            SO : out STD_LOGIC; -- ScanOutPort
            SEL : in STD_LOGIC; -- SelectPort
-           ----------------------------------------     
+           ----------------------------------------
            SE : in STD_LOGIC; -- ShiftEnPort
            CE : in STD_LOGIC; -- CaptureEnPort
            UE : in STD_LOGIC; -- UpdateEnPort
@@ -190,21 +190,21 @@ end component;
     signal SIB_0_toRST,  SIB_1_toRST,  SIB_2_toRST,  SIB_3_toRST  : std_logic;
     signal SIB_0_toTCK,  SIB_1_toTCK,  SIB_2_toTCK,  SIB_3_toTCK  : std_logic;
     signal SIB_0_so,     SIB_1_so,     SIB_2_so,     SIB_3_so     : std_logic;
-        
-    signal SIB_0_inj_toSI,  SIB_1_inj_toSI,  SIB_2_inj_toSI,  SIB_3_inj_toSI  : std_logic;    
-    signal SIB_0_inj_toTCK, SIB_1_inj_toTCK, SIB_2_inj_toTCK, SIB_3_inj_toTCK : std_logic;    
-    signal SIB_0_inj_toRST, SIB_1_inj_toRST, SIB_2_inj_toRST, SIB_3_inj_toRST : std_logic;    
-    signal SIB_0_inj_toSEL, SIB_1_inj_toSEL, SIB_2_inj_toSEL, SIB_3_inj_toSEL : std_logic;    
-    signal SIB_0_inj_toUE,  SIB_1_inj_toUE,  SIB_2_inj_toUE,  SIB_3_inj_toUE  : std_logic;    
+
+    signal SIB_0_inj_toSI,  SIB_1_inj_toSI,  SIB_2_inj_toSI,  SIB_3_inj_toSI  : std_logic;
+    signal SIB_0_inj_toTCK, SIB_1_inj_toTCK, SIB_2_inj_toTCK, SIB_3_inj_toTCK : std_logic;
+    signal SIB_0_inj_toRST, SIB_1_inj_toRST, SIB_2_inj_toRST, SIB_3_inj_toRST : std_logic;
+    signal SIB_0_inj_toSEL, SIB_1_inj_toSEL, SIB_2_inj_toSEL, SIB_3_inj_toSEL : std_logic;
+    signal SIB_0_inj_toUE,  SIB_1_inj_toUE,  SIB_2_inj_toUE,  SIB_3_inj_toUE  : std_logic;
     signal SIB_0_inj_toSE,  SIB_1_inj_toSE,  SIB_2_inj_toSE,  SIB_3_inj_toSE  : std_logic;
     signal SIB_0_inj_toCE,  SIB_1_inj_toCE,  SIB_2_inj_toCE,  SIB_3_inj_toCE  : std_logic;
     signal SIB_0_inj_so,    SIB_1_inj_so,    SIB_2_inj_so,    SIB_3_inj_so    : std_logic;
-    
-    signal SIB_0_sta_toSI,  SIB_1_sta_toSI,  SIB_2_sta_toSI,  SIB_3_sta_toSI  : std_logic;    
-    signal SIB_0_sta_toTCK, SIB_1_sta_toTCK, SIB_2_sta_toTCK, SIB_3_sta_toTCK : std_logic;    
-    signal SIB_0_sta_toRST, SIB_1_sta_toRST, SIB_2_sta_toRST, SIB_3_sta_toRST : std_logic;    
-    signal SIB_0_sta_toSEL, SIB_1_sta_toSEL, SIB_2_sta_toSEL, SIB_3_sta_toSEL : std_logic;    
-    signal SIB_0_sta_toUE,  SIB_1_sta_toUE,  SIB_2_sta_toUE,  SIB_3_sta_toUE  : std_logic;    
+
+    signal SIB_0_sta_toSI,  SIB_1_sta_toSI,  SIB_2_sta_toSI,  SIB_3_sta_toSI  : std_logic;
+    signal SIB_0_sta_toTCK, SIB_1_sta_toTCK, SIB_2_sta_toTCK, SIB_3_sta_toTCK : std_logic;
+    signal SIB_0_sta_toRST, SIB_1_sta_toRST, SIB_2_sta_toRST, SIB_3_sta_toRST : std_logic;
+    signal SIB_0_sta_toSEL, SIB_1_sta_toSEL, SIB_2_sta_toSEL, SIB_3_sta_toSEL : std_logic;
+    signal SIB_0_sta_toUE,  SIB_1_sta_toUE,  SIB_2_sta_toUE,  SIB_3_sta_toUE  : std_logic;
     signal SIB_0_sta_toSE,  SIB_1_sta_toSE,  SIB_2_sta_toSE,  SIB_3_sta_toSE  : std_logic;
     signal SIB_0_sta_toCE,  SIB_1_sta_toCE,  SIB_2_sta_toCE,  SIB_3_sta_toCE  : std_logic;
     signal SIB_0_sta_so,    SIB_1_sta_so,    SIB_2_sta_so,    SIB_3_sta_so    : std_logic;
@@ -228,7 +228,7 @@ end component;
     signal R0_inj_so,         R1_inj_so,         R2_inj_so,         R3_inj_so         : std_logic;
     signal R0_sta_adapter_so, R1_sta_adapter_so, R2_sta_adapter_so, R3_sta_adapter_so : std_logic;
     signal R0_sta_adapter_do, R1_sta_adapter_do, R2_sta_adapter_do, R3_sta_adapter_do : std_logic_vector(24 downto 0);
-    
+
     signal R0_aggregated_fault_status, R1_aggregated_fault_status, R2_aggregated_fault_status, R3_aggregated_fault_status : std_logic_vector(24 downto 0);
 
     --------------
@@ -254,7 +254,7 @@ end component;
 --  |         ----       ----
 --  |        | 2  | --- | 3  |
 --  v         ----       ----
---                         
+--
 begin
 
 -- IJTAG top level
@@ -351,7 +351,7 @@ R0_status_adapter : AsyncDataRegisterAdapter
     SI => SIB_0_sta_toSI,
     SO => R0_sta_adapter_so,
     SEL => SIB_0_sta_toSEL,
-    ----------------------------------------     
+    ----------------------------------------
     SE => SIB_0_sta_toSE,
     CE => SIB_0_sta_toCE,
     UE => SIB_0_sta_toUE,
@@ -452,7 +452,7 @@ R1_status_adapter : AsyncDataRegisterAdapter
     SI => SIB_1_sta_toSI,
     SO => R1_sta_adapter_so,
     SEL => SIB_1_sta_toSEL,
-    ----------------------------------------     
+    ----------------------------------------
     SE => SIB_1_sta_toSE,
     CE => SIB_1_sta_toCE,
     UE => SIB_1_sta_toUE,
@@ -553,7 +553,7 @@ R2_status_adapter : AsyncDataRegisterAdapter
     SI => SIB_2_sta_toSI,
     SO => R2_sta_adapter_so,
     SEL => SIB_2_sta_toSEL,
-    ----------------------------------------     
+    ----------------------------------------
     SE => SIB_2_sta_toSE,
     CE => SIB_2_sta_toCE,
     UE => SIB_2_sta_toUE,
@@ -654,7 +654,7 @@ R3_status_adapter : AsyncDataRegisterAdapter
     SI => SIB_3_sta_toSI,
     SO => R3_sta_adapter_so,
     SEL => SIB_3_sta_toSEL,
-    ----------------------------------------     
+    ----------------------------------------
     SE => SIB_3_sta_toSE,
     CE => SIB_3_sta_toCE,
     UE => SIB_3_sta_toUE,
@@ -664,7 +664,7 @@ R3_status_adapter : AsyncDataRegisterAdapter
     DI => R3_aggregated_fault_status,
     DO => R3_sta_adapter_do
 );
-    
+
 R3_aggregated_fault_status <= link_faults_async_3 & turn_faults_async_3;
 
 
@@ -674,7 +674,7 @@ F_R1 <= OR_REDUCE(link_faults_async_0&turn_faults_async_0);
 F_R2 <= OR_REDUCE(link_faults_async_0&turn_faults_async_0);
 F_R3 <= OR_REDUCE(link_faults_async_0&turn_faults_async_0);
 
-R_0: router_NW_credit_based_PD_C_SHMU 
+R_0: router_NW_credit_based_PD_C_SHMU
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 0, Rxy_rst => 60,
         Cx_rst =>  10, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
@@ -689,14 +689,14 @@ R_0: router_NW_credit_based_PD_C_SHMU
 	Faulty_E_out0,Faulty_S_out0,
 	-- should be connected to NI
 	link_faults_0, turn_faults_0,
-	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0, 
+	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0,
 	-- fault injector shift register with serial input signals
     SIB_0_inj_toTCK, SIB_0_inj_toSE, SIB_0_inj_toUE, SIB_0_inj_toSI, R0_inj_so,
     -- the non-classified fault information
     link_faults_async_0, turn_faults_async_0
- ); 
+ );
 
-R_1: router_NE_credit_based_PD_C_SHMU 
+R_1: router_NE_credit_based_PD_C_SHMU
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 1, Rxy_rst => 60,
         Cx_rst =>  12, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
@@ -711,14 +711,14 @@ R_1: router_NE_credit_based_PD_C_SHMU
 	Faulty_W_out1,Faulty_S_out1,
 	-- should be connected to NI
 	link_faults_1, turn_faults_1,
-	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1, 
+	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1,
     -- fault injector shift register with serial input signals
     SIB_1_inj_toTCK, SIB_1_inj_toSE, SIB_1_inj_toUE, SIB_1_inj_toSI, R1_inj_so,
     -- the non-classified fault information
     link_faults_async_1, turn_faults_async_1
- ); 
-    
-R_2: router_SW_credit_based_PD_C_SHMU 
+ );
+
+R_2: router_SW_credit_based_PD_C_SHMU
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 2, Rxy_rst => 60,
         Cx_rst =>  3, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
@@ -733,14 +733,14 @@ R_2: router_SW_credit_based_PD_C_SHMU
 	Faulty_N_out2,Faulty_E_out2,
 	-- should be connected to NI
 	link_faults_2, turn_faults_2,
-	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2, 
+	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2,
     -- fault injector shift register with serial input signals
     SIB_2_inj_toTCK, SIB_2_inj_toSE, SIB_2_inj_toUE, SIB_2_inj_toSI, R2_inj_so,
     -- the non-classified fault information
     link_faults_async_2, turn_faults_async_2
- ); 
+ );
 
-R_3: router_SE_credit_based_PD_C_SHMU 
+R_3: router_SE_credit_based_PD_C_SHMU
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 3, Rxy_rst => 60,
         Cx_rst =>  5, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
@@ -755,12 +755,12 @@ R_3: router_SE_credit_based_PD_C_SHMU
 	Faulty_N_out3,Faulty_W_out3,
 	-- should be connected to NI
 	link_faults_3, turn_faults_3,
-	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3, 
+	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3,
     -- fault injector shift register with serial input signals
-    SIB_3_inj_toTCK, SIB_3_inj_toSE, SIB_3_inj_toUE, SIB_3_inj_toSI, R3_inj_so, 
+    SIB_3_inj_toTCK, SIB_3_inj_toSE, SIB_3_inj_toUE, SIB_3_inj_toSI, R3_inj_so,
     -- the non-classified fault information
     link_faults_async_3, turn_faults_async_3
- ); 
+ );
 
 ---------------------------------------------------------------
 -- binding the routers together

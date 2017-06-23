@@ -624,9 +624,9 @@ begin
    A1 := resize(unsigned(a), A1'length);
    B1 := resize(unsigned(b), B1'length);
    if do_add = '1' then
-      S := A1 + B1; 
+      S := A1 + B1;
    else
-      S := A1 - B1; 
+      S := A1 - B1;
    end if;
    return std_logic_vector(S);
 end; --function

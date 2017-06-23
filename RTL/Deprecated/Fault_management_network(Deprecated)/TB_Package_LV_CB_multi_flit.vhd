@@ -13,17 +13,17 @@ package TB_Package_LV is
   function Header_gen(Packet_length, source, destination, packet_id: integer ) return std_logic_vector ;
   function Body_gen(Packet_length, Data: integer ) return std_logic_vector ;
   function Tail_gen(Packet_length, Data: integer ) return std_logic_vector ;
-  procedure credit_counter_control_LV(signal clk: in std_logic; 
-                                 signal credit_in: in std_logic; signal valid_out: in std_logic; 
+  procedure credit_counter_control_LV(signal clk: in std_logic;
+                                 signal credit_in: in std_logic; signal valid_out: in std_logic;
                                  signal credit_counter_out: out std_logic_vector(1 downto 0));
   procedure gen_random_packet_LV(SHMU_ID, frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
                       finish_time: in time; signal clk: in std_logic;
-                      signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic; 
+                      signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic;
                       signal port_in: out std_logic_vector);
-  procedure get_packet_LV(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; 
+  procedure get_packet_LV(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic;
                      signal credit_out: out std_logic; signal valid_in: in std_logic; signal port_in: in std_logic_vector);
-  
-  
+
+
 
 end TB_Package_LV;
 
@@ -47,7 +47,7 @@ package body TB_Package_LV is
       else
           Header_flit := std_logic_vector(to_unsigned(source, 4))  & std_logic_vector(to_unsigned(destination, 4)) &  Header_type;
       end if;
-    	
+
     return Header_flit;
   end Header_gen;
 
@@ -69,34 +69,34 @@ package body TB_Package_LV is
     return Tail_flit;
   end Tail_gen;
 
-  procedure credit_counter_control_LV(signal clk: in std_logic; 
-                                   signal credit_in: in std_logic; signal valid_out: in std_logic; 
+  procedure credit_counter_control_LV(signal clk: in std_logic;
+                                   signal credit_in: in std_logic; signal valid_out: in std_logic;
                                    signal credit_counter_out: out std_logic_vector(1 downto 0)) is
 
     variable credit_counter: std_logic_vector (1 downto 0);
 
     begin
     credit_counter := "11";
-    
+
     while true loop
       credit_counter_out<= credit_counter;
       wait until clk'event and clk ='1';
       if credit_in = '1' then
-        credit_counter := credit_counter + 1; 
+        credit_counter := credit_counter + 1;
       end if;
       if valid_out = '1' and  credit_counter > 0 then
-        credit_counter := credit_counter - 1; 
+        credit_counter := credit_counter - 1;
       end if;
     end loop;
   end credit_counter_control_LV;
 
   procedure gen_random_packet_LV(SHMU_ID, frame_length, source, initial_delay, min_packet_size, max_packet_size: in integer;
                       finish_time: in time; signal clk: in std_logic;
-                      signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic; 
+                      signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic;
                       signal port_in: out std_logic_vector) is
     variable seed1 :positive ;
     variable seed2 :positive ;
-    variable LINEVARIABLE : line; 
+    variable LINEVARIABLE : line;
     file VEC_FILE : text is out "LV_sent.txt";
     variable rand : real ;
     variable destination_id: integer;
@@ -121,7 +121,7 @@ package body TB_Package_LV is
       --generating the frame ending delay
       frame_ending_delay := frame_length - (Packet_length+frame_starting_delay);
 
-      for k in 0 to frame_starting_delay-1 loop 
+      for k in 0 to frame_starting_delay-1 loop
           wait until clk'event and clk ='0';
       end loop;
 
@@ -131,21 +131,21 @@ package body TB_Package_LV is
       end loop;
 
 
-      -- generating the packet 
+      -- generating the packet
       id_counter := id_counter + 1;
       --------------------------------------
       uniform(seed1, seed2, rand);
       Packet_length := integer((integer(rand*100.0)*frame_length)/300);
-      if (Packet_length < min_packet_size) then 
+      if (Packet_length < min_packet_size) then
           Packet_length:=min_packet_size;
       end if;
-      if (Packet_length > max_packet_size) then 
+      if (Packet_length > max_packet_size) then
           Packet_length:=max_packet_size;
       end if;
       --------------------------------------
       --uniform(seed1, seed2, rand);
       --destination_id := integer(rand*3.0);
-      --while (destination_id = source) loop 
+      --while (destination_id = source) loop
       --    uniform(seed1, seed2, rand);
       --    destination_id := integer(rand*3.0);
       --end loop;
@@ -162,11 +162,11 @@ package body TB_Package_LV is
       --while credit_counter_in = 0 loop
       --  wait until clk'event and clk ='1';
       --end loop;
- 
 
-      for I in 0 to Packet_length-3 loop 
-            if credit_counter_in = "00" then 
-             valid_out <= '0'; 
+
+      for I in 0 to Packet_length-3 loop
+            if credit_counter_in = "00" then
+             valid_out <= '0';
              wait until credit_counter_in'event and credit_counter_in >0;
              wait until clk'event and clk ='0';
             end if;
@@ -178,20 +178,20 @@ package body TB_Package_LV is
             --valid_out <= '0';
             --while credit_counter_in = 0 loop
             --    wait until clk'event and clk ='0';
-            --end loop;  
+            --end loop;
             --wait until clk'event and clk ='1';
-           
-           
-            
+
+
+
       end loop;
 
-      if credit_counter_in = "00" then 
-             valid_out <= '0'; 
+      if credit_counter_in = "00" then
+             valid_out <= '0';
              wait until credit_counter_in'event and credit_counter_in >0;
              wait until clk'event and clk ='0';
       end if;
 
- 
+
       uniform(seed1, seed2, rand);
       port_in <= Tail_gen(Packet_length, integer(rand*1000.0));
       valid_out <= '1';
@@ -200,23 +200,23 @@ package body TB_Package_LV is
       valid_out <= '0';
       port_in <= "ZZZZZZZZZZZ" ;
 
-      for l in 0 to frame_ending_delay-1 loop 
+      for l in 0 to frame_ending_delay-1 loop
          wait until clk'event and clk ='0';
       end loop;
       port_in <= "UUUUUUUUUUU" ;
-      
-      if now > finish_time then 
-          wait; 
+
+      if now > finish_time then
+          wait;
       end if;
     end loop;
   end gen_random_packet_LV;
 
 
-  procedure get_packet_LV(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic; 
+  procedure get_packet_LV(DATA_WIDTH, initial_delay, Node_ID: in integer; signal clk: in std_logic;
                        signal credit_out: out std_logic; signal valid_in: in std_logic; signal port_in: in std_logic_vector) is
   -- initial_delay: waits for this number of clock cycles before sending the packet!
     variable source_node, destination_node, P_length, packet_id, counter: integer;
-    variable LINEVARIABLE : line; 
+    variable LINEVARIABLE : line;
      file VEC_FILE : text is out "LV_received.txt";
      file SHMU_FILE : text is out "SHMU_Notifications.txt";
 
@@ -225,14 +225,14 @@ package body TB_Package_LV is
      begin
      credit_out <= '1';
       while true loop
-         
+
          wait until clk'event and clk ='1';
-        
+
          if valid_in = '1' then
              if (port_in(2 downto 0) = "001") then
                 destination_node := to_integer(unsigned(port_in(6 downto 3)));
                 source_node := to_integer(unsigned(port_in(10 downto 7)));
-             end if; 
+             end if;
              if (port_in(2 downto 0) = "010") then
               body_input := port_in;
              end if;
@@ -242,56 +242,56 @@ package body TB_Package_LV is
                write(LINEVARIABLE, "LV_Packet received at " & time'image(now) & " From: " & integer'image(source_node) & " to: " & integer'image(destination_node) );
                writeline(VEC_FILE, LINEVARIABLE);
                if Node_ID = 0 then
-                  if body_input(3) = '1'  then 
+                  if body_input(3) = '1'  then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link L is Intermittent " );
-                  elsif body_input(8) = '1' then 
+                  elsif body_input(8) = '1' then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link L is Faulty " );
-                  elsif tail_input(5) = '1' then 
+                  elsif tail_input(5) = '1' then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link L is Healthy " );
                   end if;
 
-                  if body_input(4) = '1'  then 
+                  if body_input(4) = '1'  then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link S is Intermittent " );
-                  elsif body_input(9) = '1' then 
+                  elsif body_input(9) = '1' then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link S is Faulty " );
-                  elsif tail_input(6) = '1' then 
+                  elsif tail_input(6) = '1' then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link S is Healthy " );
                   end if;
 
-                  if body_input(5) = '1'  then 
+                  if body_input(5) = '1'  then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link W is Intermittent " );
-                  elsif body_input(10) = '1' then 
+                  elsif body_input(10) = '1' then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link W is Faulty " );
-                  elsif tail_input(7) = '1' then 
+                  elsif tail_input(7) = '1' then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link W is Healthy " );
                   end if;
 
 
-                  if body_input(6) = '1'  then 
+                  if body_input(6) = '1'  then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link E is Intermittent " );
-                  elsif tail_input(3) = '1' then 
+                  elsif tail_input(3) = '1' then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link E is Faulty " );
-                  elsif tail_input(8) = '1' then 
+                  elsif tail_input(8) = '1' then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link E is Healthy " );
                   end if;
 
-                  if body_input(7) = '1'  then 
+                  if body_input(7) = '1'  then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link N is Intermittent " );
-                  elsif tail_input(4) = '1' then 
+                  elsif tail_input(4) = '1' then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link N is Faulty " );
-                  elsif tail_input(9) = '1' then 
+                  elsif tail_input(9) = '1' then
                      write(LINEVARIABLE, " Node " & integer'image(source_node) & " link N is Healthy " );
                   end if;
 
 
                   writeline(SHMU_FILE, LINEVARIABLE);
-              end if; 
-             end if; 
+              end if;
+             end if;
          end if;
 
      end loop;
   end get_packet_LV;
 
- 
+
 
 end TB_Package_LV;

@@ -76,7 +76,7 @@ entity plasma is
 
         link_faults: in std_logic_vector(4 downto 0);
         turn_faults: in std_logic_vector(19 downto 0);
-   
+
         Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);
         Reconfig_command : out std_logic
@@ -390,7 +390,7 @@ u4_ni: NI
          credit_out        => credit_out,
          valid_in          => valid_in,
          RX                => RX,
-         
+
          link_faults       => link_faults,
          turn_faults       => turn_faults,
          Rxy_reconf_PE     => Rxy_reconf_PE,

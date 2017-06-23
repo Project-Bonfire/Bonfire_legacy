@@ -10,7 +10,7 @@
 module arbiter_out ( reset,
         			 clk,
             		 X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, // From Arbiter_in modules
-            		 credit, 
+            		 credit,
             		 grant_Y_N, grant_Y_E, grant_Y_W, grant_Y_S, grant_Y_L // Grants given to Arbiter_in requests (encoded as one-hot)
             	   );
 
@@ -24,12 +24,12 @@ output reg grant_Y_N, grant_Y_E, grant_Y_W, grant_Y_S, grant_Y_L;
 reg [5:0] state = `IDLE;
 reg [5:0] state_in = `IDLE; // encoded as one-hot
 
-// Sequential part  
+// Sequential part
 
 always @(posedge clk) begin
 	if (reset == 0)
 		state <= `IDLE;
-	else 
+	else
 		state <= state_in;
 end
 
@@ -41,11 +41,11 @@ always @* begin
     grant_Y_W <= 0;
     grant_Y_S <= 0;
     grant_Y_L <= 0;
-    
-    case (state) 
+
+    case (state)
       `IDLE: begin	   // In the arbiter for hand-shaking FC router, L had the  highest priority (L, N, E, W, S)
-      			 	   // Here it seems N has the higest priority, is it fine ? 
-      	if (X_N_Y == 1) 
+      			 	   // Here it seems N has the higest priority, is it fine ?
+      	if (X_N_Y == 1)
       		state_in <= `North;
 	    else if (X_E_Y == 1)
 	    	state_in <= `East;
@@ -75,7 +75,7 @@ always @* begin
 	    	state_in <= `Local;
 	    else
 	    	state_in <= `IDLE;
-	  end 
+	  end
 
       `East: begin
       	if (credit != 2'b00 && X_E_Y == 1)
@@ -148,7 +148,7 @@ always @* begin
 	    else
 	    	state_in <= `IDLE;
 	  end
-	    
+
     endcase // End of case
 
 end // End of process

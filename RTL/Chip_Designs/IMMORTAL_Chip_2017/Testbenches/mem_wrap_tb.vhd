@@ -23,7 +23,7 @@ end mem_wrap_tb;
 architecture behavior of mem_wrap_tb is
 
 -- Declaring network component
- 
+
 
 	  constant clk_period : time := 10 ns;
 
@@ -61,15 +61,15 @@ reset <= '1' after clk_period;
  process(clk)
  variable counter: integer := 0;
  begin
-  if reset = '0' then 
+  if reset = '0' then
     counter := 0;
-    enable <= '0'; 
+    enable <= '0';
     write_byte_enable <= "0000";
     address <=  (others => '0');
     data_write <= (others => '0');
-  elsif falling_edge(clk) then 
+  elsif falling_edge(clk) then
     if counter < 10 then
-      enable <= '1'; 
+      enable <= '1';
       address <=  address + 1;
       write_byte_enable <= "1111";
       data_write <= data_write + 1;
@@ -77,7 +77,7 @@ reset <= '1' after clk_period;
     else
       if counter < 20 then
         address <=  address - 1;
-        enable <= '1'; 
+        enable <= '1';
         write_byte_enable <= "0000";
         counter := counter +1;
       else

@@ -8,7 +8,7 @@ Entity hamming_decoder is
 
  port
               (hamming_in    : in  std_logic_vector(38 downto 0);    --d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25                                             --d26 d27 p0 p1 p2 p3 p4 p5 p6
-           dataout       : out std_logic_vector(31 downto 0);   --d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25                                             --d26 d27 
+           dataout       : out std_logic_vector(31 downto 0);   --d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25                                             --d26 d27
               s_err_corr    : out std_logic;                   --diagnostic outputs
               d_err_det     : out std_logic;                   --diagnostic outputs
               no_error      : out std_logic);                  --diagnostic outputs
@@ -19,17 +19,17 @@ end hamming_decoder;
 architecture beh OF hamming_decoder is
 
 Signal syndrome : std_logic_vector (6 downto 0);
- 
+
 begin
 
-syndrome(0) <=  hamming_in(0) xor hamming_in(1) xor hamming_in(3) xor hamming_in(4) xor hamming_in(6) xor 
-                 hamming_in(8) xor hamming_in(10) xor hamming_in(11) xor hamming_in(13) xor hamming_in(15) xor 
+syndrome(0) <=  hamming_in(0) xor hamming_in(1) xor hamming_in(3) xor hamming_in(4) xor hamming_in(6) xor
+                 hamming_in(8) xor hamming_in(10) xor hamming_in(11) xor hamming_in(13) xor hamming_in(15) xor
                  hamming_in(17) xor hamming_in(19) xor hamming_in(21) xor hamming_in(23) xor hamming_in(25) xor hamming_in(26) xor hamming_in(28) xor hamming_in(30) xor hamming_in(32);
 
-syndrome(1) <=  hamming_in(0) xor hamming_in(2) xor hamming_in(3) xor hamming_in(5) xor hamming_in(6) xor 
-                 hamming_in(9) xor hamming_in(10) xor hamming_in(12) xor hamming_in(13) xor hamming_in(16) xor 
+syndrome(1) <=  hamming_in(0) xor hamming_in(2) xor hamming_in(3) xor hamming_in(5) xor hamming_in(6) xor
+                 hamming_in(9) xor hamming_in(10) xor hamming_in(12) xor hamming_in(13) xor hamming_in(16) xor
                  hamming_in(17) xor hamming_in(20) xor hamming_in(21) xor hamming_in(24) xor hamming_in(25) xor hamming_in(27) xor hamming_in(28) xor hamming_in(31) xor hamming_in(33);
-syndrome(2) <=  XOR_REDUCE(hamming_in(3 downto 1)) xor XOR_REDUCE(hamming_in(10 downto 7)) xor XOR_REDUCE(hamming_in(17 downto 14)) xor 
+syndrome(2) <=  XOR_REDUCE(hamming_in(3 downto 1)) xor XOR_REDUCE(hamming_in(10 downto 7)) xor XOR_REDUCE(hamming_in(17 downto 14)) xor
                  XOR_REDUCE(hamming_in(25 downto 22)) xor XOR_REDUCE(hamming_in(31 downto 29)) xor hamming_in(34);
 syndrome(3) <=  XOR_REDUCE(hamming_in(10 downto 4)) xor XOR_REDUCE(hamming_in(25 downto 18)) xor hamming_in(35);
 syndrome(4) <=  XOR_REDUCE(hamming_in(25 downto 11)) xor hamming_in(36);
@@ -39,7 +39,7 @@ syndrome(6) <=  XOR_REDUCE(hamming_in(38 downto 0));
 
  PROCESS(hamming_in, syndrome)
  BEGIN
-        if syndrome(6) = '0' then 
+        if syndrome(6) = '0' then
             s_err_corr <= '0';
             if (syndrome = "0000000") then -------no errors
                 no_error   <= '1';
@@ -58,7 +58,7 @@ syndrome(6) <=  XOR_REDUCE(hamming_in(38 downto 0));
             dataout <= hamming_in(31 downto 0);     -- to cover all the bits
             Case syndrome(5 downto 0) is
                 when "000000"|"000001"|"000010"|"000100"|"001000"|"010000"|"100000" =>   ------ this implies the error is only in parity bits, not data.
-                dataout <= hamming_in(31 downto 0); 
+                dataout <= hamming_in(31 downto 0);
                 when "000011" => dataout(0) <= not hamming_in(0);
                 when "000101" => dataout(1) <= not hamming_in(1);
                 when "000110" => dataout(2) <= not hamming_in(2);
@@ -92,7 +92,7 @@ syndrome(6) <=  XOR_REDUCE(hamming_in(38 downto 0));
                 when "100101" => dataout(30) <= not hamming_in(30);
                 when "100110" => dataout(31) <= not hamming_in(31);
                 when others=> dataout <= (others=> '0');
-            END Case;   
+            END Case;
         END if;
  END process;
 

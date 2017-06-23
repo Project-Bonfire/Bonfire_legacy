@@ -12,12 +12,12 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.TB_Package.all;
 
-USE ieee.numeric_std.ALL; 
+USE ieee.numeric_std.ALL;
 use IEEE.math_real."ceil";
 use IEEE.math_real."log2";
 
 entity tb_network_2x2 is
-end tb_network_2x2; 
+end tb_network_2x2;
 
 
 architecture behavior of tb_network_2x2 is
@@ -25,8 +25,8 @@ architecture behavior of tb_network_2x2 is
 -- Declaring network component
 component network_2x2 is
  generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
-port (reset: in  std_logic; 
-	clk: in  std_logic; 
+port (reset: in  std_logic;
+	clk: in  std_logic;
 	--------------
 	RX_L_0: in std_logic_vector (DATA_WIDTH-1 downto 0);
 	credit_out_L_0, valid_out_L_0: out std_logic;
@@ -87,8 +87,8 @@ port (reset: in  std_logic;
     Rxy_reconf_PE_3: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_3: in  std_logic_vector(3 downto 0);
     Reconfig_command_3 : in std_logic
-            ); 
-end component; 
+            );
+end component;
 component NoC_Node is
 generic( current_address : integer := 0;
          stim_file: string :="code.txt";
@@ -171,116 +171,116 @@ begin
    clk_process :process
    begin
         clk <= '0';
-        wait for clk_period/2;   
+        wait for clk_period/2;
         clk <= '1';
-        wait for clk_period/2; 
+        wait for clk_period/2;
    end process;
 
 reset <= '1' after 1 ns;
 -- instantiating the network
 NoC: network_2x2 generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
-port map (reset, clk, 
-	RX_L_0, credit_out_L_0, valid_out_L_0, credit_in_L_0, valid_in_L_0,  TX_L_0, 
-	RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1,  TX_L_1, 
-	RX_L_2, credit_out_L_2, valid_out_L_2, credit_in_L_2, valid_in_L_2,  TX_L_2, 
-	RX_L_3, credit_out_L_3, valid_out_L_3, credit_in_L_3, valid_in_L_3,  TX_L_3, 
+port map (reset, clk,
+	RX_L_0, credit_out_L_0, valid_out_L_0, credit_in_L_0, valid_in_L_0,  TX_L_0,
+	RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1,  TX_L_1,
+	RX_L_2, credit_out_L_2, valid_out_L_2, credit_in_L_2, valid_in_L_2,  TX_L_2,
+	RX_L_3, credit_out_L_3, valid_out_L_3, credit_in_L_3, valid_in_L_3,  TX_L_3,
 	--fault injector signals
 	--FI vertical signals
-	FI_Add_2_0, FI_Add_0_2, 
-	sta0_0_2, sta1_0_2, sta0_2_0, sta1_2_0, 
-	FI_Add_3_1, FI_Add_1_3, 
-	sta0_1_3, sta1_1_3, sta0_3_1, sta1_3_1, 
+	FI_Add_2_0, FI_Add_0_2,
+	sta0_0_2, sta1_0_2, sta0_2_0, sta1_2_0,
+	FI_Add_3_1, FI_Add_1_3,
+	sta0_1_3, sta1_1_3, sta0_3_1, sta1_3_1,
 	--FI horizontal signals
 	FI_Add_1_0, FI_Add_0_1,
-	sta0_0_1, sta1_0_1, sta0_1_0, sta1_1_0, 
+	sta0_0_1, sta1_0_1, sta0_1_0, sta1_1_0,
 	FI_Add_3_2, FI_Add_2_3,
-	sta0_2_3, sta1_2_3, sta0_3_2, sta1_3_2, 
+	sta0_2_3, sta1_2_3, sta0_3_2, sta1_3_2,
 	-- should be connected to NI
-	link_faults_0, turn_faults_0,	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0, 
-	link_faults_1, turn_faults_1,	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1, 
-	link_faults_2, turn_faults_2,	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2, 
+	link_faults_0, turn_faults_0,	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0,
+	link_faults_1, turn_faults_1,	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1,
+	link_faults_2, turn_faults_2,	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2,
 	link_faults_3, turn_faults_3,	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3
-            ); 
-not_reset <= not reset; 
+            );
+not_reset <= not reset;
 
 -- connecting the PEs
-PE_0: NoC_Node 
+PE_0: NoC_Node
 generic map( current_address => 0,
 	stim_file => "code_0.txt",
 	log_file  => "output_0.txt")
 
-port map( not_reset, clk, 
+port map( not_reset, clk,
 
-        credit_in => credit_out_L_0, 
+        credit_in => credit_out_L_0,
         valid_out => valid_in_L_0,
-        TX => RX_L_0, 
+        TX => RX_L_0,
 
-        credit_out => credit_in_L_0, 
+        credit_out => credit_in_L_0,
         valid_in => valid_out_L_0,
         RX => TX_L_0,
         link_faults => link_faults_0,
         turn_faults => turn_faults_0,
-        Rxy_reconf_PE => Rxy_reconf_PE_0, 
+        Rxy_reconf_PE => Rxy_reconf_PE_0,
         Cx_reconf_PE => Cx_reconf_PE_0,
         Reconfig_command => Reconfig_command_0
    );
-PE_1: NoC_Node 
+PE_1: NoC_Node
 generic map( current_address => 1,
 	stim_file => "code_1.txt",
 	log_file  => "output_1.txt")
 
-port map( not_reset, clk, 
+port map( not_reset, clk,
 
-        credit_in => credit_out_L_1, 
+        credit_in => credit_out_L_1,
         valid_out => valid_in_L_1,
-        TX => RX_L_1, 
+        TX => RX_L_1,
 
-        credit_out => credit_in_L_1, 
+        credit_out => credit_in_L_1,
         valid_in => valid_out_L_1,
         RX => TX_L_1,
         link_faults => link_faults_1,
         turn_faults => turn_faults_1,
-        Rxy_reconf_PE => Rxy_reconf_PE_1, 
+        Rxy_reconf_PE => Rxy_reconf_PE_1,
         Cx_reconf_PE => Cx_reconf_PE_1,
         Reconfig_command => Reconfig_command_1
    );
-PE_2: NoC_Node 
+PE_2: NoC_Node
 generic map( current_address => 2,
 	stim_file => "code_2.txt",
 	log_file  => "output_2.txt")
 
-port map( not_reset, clk, 
+port map( not_reset, clk,
 
-        credit_in => credit_out_L_2, 
+        credit_in => credit_out_L_2,
         valid_out => valid_in_L_2,
-        TX => RX_L_2, 
+        TX => RX_L_2,
 
-        credit_out => credit_in_L_2, 
+        credit_out => credit_in_L_2,
         valid_in => valid_out_L_2,
         RX => TX_L_2,
         link_faults => link_faults_2,
         turn_faults => turn_faults_2,
-        Rxy_reconf_PE => Rxy_reconf_PE_2, 
+        Rxy_reconf_PE => Rxy_reconf_PE_2,
         Cx_reconf_PE => Cx_reconf_PE_2,
         Reconfig_command => Reconfig_command_2
    );
-PE_3: NoC_Node 
+PE_3: NoC_Node
 generic map( current_address => 3,
 	stim_file => "code_3.txt",
 	log_file  => "output_3.txt")
 
-port map( not_reset, clk, 
+port map( not_reset, clk,
 
-        credit_in => credit_out_L_3, 
+        credit_in => credit_out_L_3,
         valid_out => valid_in_L_3,
-        TX => RX_L_3, 
+        TX => RX_L_3,
 
-        credit_out => credit_in_L_3, 
+        credit_out => credit_in_L_3,
         valid_in => valid_out_L_3,
         RX => TX_L_3,
         link_faults => link_faults_3,
         turn_faults => turn_faults_3,
-        Rxy_reconf_PE => Rxy_reconf_PE_3, 
+        Rxy_reconf_PE => Rxy_reconf_PE_3,
         Cx_reconf_PE => Cx_reconf_PE_3,
         Reconfig_command => Reconfig_command_3
    );

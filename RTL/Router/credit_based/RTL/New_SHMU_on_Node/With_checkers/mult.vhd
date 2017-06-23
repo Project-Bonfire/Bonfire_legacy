@@ -9,7 +9,7 @@
 -- DESCRIPTION:
 --    Implements the multiplication and division unit in 32 clocks.
 --
---    To reduce space, compile your code using the flag "-mno-mul" which 
+--    To reduce space, compile your code using the flag "-mno-mul" which
 --    will use software base routines in math.c if USE_SW_MULT is defined.
 --    Then remove references to the entity mult in mlite_cpu.vhd.
 --
@@ -70,28 +70,28 @@ architecture logic of mult is
    signal a_neg       : std_logic_vector(31 downto 0);
    signal b_neg       : std_logic_vector(31 downto 0);
    signal sum         : std_logic_vector(32 downto 0);
-   
+
 begin
- 
+
    -- Result
-   c_mult <= lower_reg when mult_func = MULT_READ_LO and negate_reg = '0' else 
-             bv_negate(lower_reg) when mult_func = MULT_READ_LO 
+   c_mult <= lower_reg when mult_func = MULT_READ_LO and negate_reg = '0' else
+             bv_negate(lower_reg) when mult_func = MULT_READ_LO
                 and negate_reg = '1' else
-             upper_reg when mult_func = MULT_READ_HI and negate_reg = '0' else 
-             bv_negate(upper_reg) when mult_func = MULT_READ_HI 
+             upper_reg when mult_func = MULT_READ_HI and negate_reg = '0' else
+             bv_negate(upper_reg) when mult_func = MULT_READ_HI
                 and negate_reg = '1' else
              ZERO;
-   pause_out <= '1' when (count_reg /= "000000") and 
+   pause_out <= '1' when (count_reg /= "000000") and
              (mult_func = MULT_READ_LO or mult_func = MULT_READ_HI) else '0';
 
    -- ABS and remainder signals
    a_neg <= bv_negate(a);
    b_neg <= bv_negate(b);
    sum <= bv_adder(upper_reg, aa_reg, mode_reg);
-    
+
    --multiplication/division unit
    mult_proc: process(clk, reset_in, a, b, mult_func,
-      a_neg, b_neg, sum, sign_reg, mode_reg, negate_reg, 
+      a_neg, b_neg, sum, sign_reg, mode_reg, negate_reg,
       count_reg, aa_reg, bb_reg, upper_reg, lower_reg)
       variable count : std_logic_vector(2 downto 0);
    begin
@@ -177,7 +177,7 @@ begin
                         sign_reg <= '0';
                         bb_reg <= '0' & bb_reg(31 downto 1);
                      -- The following six lines are optional for speedup
-                     --elsif bb_reg(3 downto 0) = "0000" and sign2_reg = '0' and 
+                     --elsif bb_reg(3 downto 0) = "0000" and sign2_reg = '0' and
                      --      count_reg(5 downto 2) /= "0000" then
                      --   upper_reg <= "0000" & upper_reg(31 downto 4);
                      --   lower_reg <=  upper_reg(3 downto 0) & lower_reg(31 downto 4);
@@ -188,9 +188,9 @@ begin
                         lower_reg <= upper_reg(0) & lower_reg(31 downto 1);
                         bb_reg <= '0' & bb_reg(31 downto 1);
                      end if;
-                  else   
+                  else
                      -- Division
-                     if sum(32) = '0' and aa_reg /= ZERO and 
+                     if sum(32) = '0' and aa_reg /= ZERO and
                            bb_reg(31 downto 1) = ZERO(31 downto 1) then
                         upper_reg <= sum(31 downto 0);
                         lower_reg(0) <= '1';
@@ -205,9 +205,9 @@ begin
                end if; --count
 
          end case;
-         
+
       end if;
 
    end process;
-    
+
 end; --architecture logic

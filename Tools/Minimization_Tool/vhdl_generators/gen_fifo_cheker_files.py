@@ -5,7 +5,7 @@ def gen_fifo_checkers(checker_id):
     name_string = name_string_generator(checker_id)
 
     fifo_checker_vhd = open("checker_vhdl/fifo_control_part_checker" + name_string + ".vhd", 'w')
-    
+
     fifo_checker_vhd.write("library ieee;\n")
     fifo_checker_vhd.write("use ieee.std_logic_1164.all;\n")
     fifo_checker_vhd.write("use IEEE.STD_LOGIC_ARITH.ALL;\n")
@@ -73,7 +73,7 @@ def gen_fifo_checkers(checker_id):
     fifo_checker_vhd.write("signal read_en_signal: std_logic; \n")
     fifo_checker_vhd.write("\n")
     fifo_checker_vhd.write("begin \n")
-    fifo_checker_vhd.write("\n")    
+    fifo_checker_vhd.write("\n")
     fifo_checker_vhd.write("read_en_signal <= (read_en_N or read_en_E or read_en_W or read_en_S or read_en_L) and not empty_out; \n")
     fifo_checker_vhd.write("\n")
     fifo_checker_vhd.write("-- Checkers\n")

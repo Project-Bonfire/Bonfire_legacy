@@ -14,7 +14,7 @@ entity arbiter_in_one_hot_pseudo is
 end;
 
 architecture behavior of arbiter_in_one_hot_pseudo is
- 
+
  CONSTANT IDLE: std_logic_vector (5 downto 0) := "000001";
  CONSTANT Local: std_logic_vector (5 downto 0) := "000010";
  CONSTANT North: std_logic_vector (5 downto 0) := "000100";
@@ -35,10 +35,10 @@ begin
     X_S <= '0';
     X_L <= '0';
 
-    case state is 
+    case state is
 
       when IDLE => -- In the arbiter for hand-shaking FC router, L had the  highest priority (L, N, E, W, S)
-      			   -- Here it seems N has the higest priority, am I correct ? 
+      			   -- Here it seems N has the higest priority, am I correct ?
       	if req_X_N ='1'  then
       		state_in <= North;
         	X_N <= '1';
@@ -157,8 +157,8 @@ begin
 	    else
 	    	state_in <= state;
 	    end if;
-	    
+
     end case;
-    
+
 end process;
 end;

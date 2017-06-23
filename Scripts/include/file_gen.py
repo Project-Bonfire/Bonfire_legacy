@@ -5,7 +5,7 @@ import os
 
 def gen_network_and_tb(program_argv, flow_control_type):
     """
-    Gets program arguments and flow control type and generates the Network and Testbench files 
+    Gets program arguments and flow control type and generates the Network and Testbench files
     by generating the correct name and then calling the related script
     """
 
@@ -112,4 +112,3 @@ def gen_wave_do(program_argv, flow_control_type):
 
 
 
-    

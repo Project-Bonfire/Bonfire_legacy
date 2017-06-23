@@ -6,7 +6,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity Arbiter_pseudo is
-    port   (  
+    port   (
             Req_N, Req_E, Req_W,Req_S, Req_L:in std_logic; -- From LBDR modules
             DCTS: in std_logic; -- Getting the CTS signal from the input FIFO of the next router/NI (for hand-shaking)
             RTS_FF: in std_logic;
@@ -26,7 +26,7 @@ architecture behavior of Arbiter_pseudo is
 --                     -------------------------------------          ----
 --   from LBDR  --->  |Req(s)                           RTS | -----> |DRTS
 --    To FIFO   <---  |Grant(s)                         DCTS| <----- |CTS
---    to XBAR   <---  |Xbar_sel                             |        | 
+--    to XBAR   <---  |Xbar_sel                             |        |
 --                     -------------------------------------          ----
 
  --------------------------------------------------------------------------------------------
@@ -63,28 +63,28 @@ next_state_out <= next_state;
 -- anything below here is pure combinational
 
 process(RTS_FF, DCTS, state, next_state)begin
-    if RTS_FF = '1' and DCTS = '0' then 
+    if RTS_FF = '1' and DCTS = '0' then
         state_in <= state;
     else
         state_in <= next_state;
-    end if;    
+    end if;
 end process;
 
 process(state, RTS_FF, DCTS)begin
-    if state = IDLE then 
+    if state = IDLE then
         RTS_FF_in <= '0';
-        -- if there was a grant given to one of the inputs, 
+        -- if there was a grant given to one of the inputs,
         -- tell the next router/NI that the output data is valid
-    else 
+    else
         if RTS_FF = '1' and DCTS = '1' then
             RTS_FF_in <= '0';
-        else 
+        else
             RTS_FF_in <= '1';
         end if;
     end if ;
-end process; 
+end process;
 
--- sets the grants using round robin 
+-- sets the grants using round robin
 -- the order is   L --> N --> E --> W --> S  and then back to L
 process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
 
@@ -93,70 +93,70 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
     Grant_W <= '0';
     Grant_S <= '0';
     Grant_L <= '0';
-    Xbar_sel<= "00000"; 
-    
+    Xbar_sel<= "00000";
+
     case(state) is
         when IDLE =>
-            Xbar_sel<= "00000"; 
-            
+            Xbar_sel<= "00000";
+
             If Req_L = '1' then
                 next_state <= Local;
             elsif Req_N = '1' then
-                next_state <= North;         
+                next_state <= North;
             elsif Req_E = '1' then
                 next_state <= East;
             elsif Req_W = '1' then
                 next_state <= West;
             elsif Req_S = '1' then
-                next_state <= South;                
+                next_state <= South;
             else
                 next_state <= IDLE;
-            end if;    
-            
+            end if;
+
         when North =>
             Grant_N <= DCTS and RTS_FF ;
             Xbar_sel<= "00001";
-            
-            If Req_N = '1' then 
-                next_state <= North; 
+
+            If Req_N = '1' then
+                next_state <= North;
             elsif Req_E = '1' then
                 next_state <= East;
             elsif Req_W = '1' then
                 next_state <= West;
             elsif Req_S = '1' then
-                next_state <= South;                
+                next_state <= South;
             elsif Req_L = '1' then
                 next_state <= Local;
             else
-                next_state <= IDLE; 
+                next_state <= IDLE;
             end if;
-                    
+
         when East =>
             Grant_E <= DCTS and RTS_FF;
             Xbar_sel<= "00010";
-            
-            If Req_E = '1' then 
-                next_state <= East; 
+
+            If Req_E = '1' then
+                next_state <= East;
             elsif Req_W = '1' then
                 next_state <= West;
             elsif Req_S = '1' then
-                next_state <= South;                
+                next_state <= South;
             elsif Req_L = '1' then
                 next_state <= Local;
             elsif Req_N = '1' then
                 next_state <= North;
             else
-                next_state <= IDLE; 
+                next_state <= IDLE;
             end if;
-            
+
         when West =>
             Grant_W <= DCTS and RTS_FF;
             Xbar_sel<= "00100";
-            
+
             If Req_W = '1' then
-                next_state <= West; 
+                next_state <= West;
             elsif Req_S = '1' then
-                next_state <= South;                
+                next_state <= South;
             elsif Req_L = '1' then
                 next_state <= Local;
             elsif Req_N = '1' then
@@ -164,15 +164,15 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
             elsif Req_E = '1' then
                 next_state <= East;
             else
-                next_state <= IDLE; 
+                next_state <= IDLE;
             end if;
 
         when South =>
             Grant_S <= DCTS and RTS_FF;
             Xbar_sel<= "01000";
-            
-            If Req_S = '1' then 
-                next_state <= South; 
+
+            If Req_S = '1' then
+                next_state <= South;
             elsif Req_L = '1' then
                 next_state <= Local;
             elsif Req_N = '1' then
@@ -182,25 +182,25 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF) begin
             elsif Req_W = '1' then
                 next_state <= West;
             else
-                next_state <= IDLE; 
-            end if;            
-                        
+                next_state <= IDLE;
+            end if;
+
         when others => -- Local
             Grant_L <= DCTS and RTS_FF;
             Xbar_sel<= "10000";
-            
+
             If Req_L = '1' then
-                next_state <= Local; 
+                next_state <= Local;
             elsif Req_N = '1' then
-                next_state <= North;         
+                next_state <= North;
             elsif Req_E = '1' then
                 next_state <= East;
             elsif Req_W = '1' then
                 next_state <= West;
             elsif Req_S = '1' then
-                next_state <= South;                
+                next_state <= South;
             else
-                next_state <= IDLE; 
+                next_state <= IDLE;
             end if;
 
     end case ;

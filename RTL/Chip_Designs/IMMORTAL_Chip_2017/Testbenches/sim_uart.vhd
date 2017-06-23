@@ -8,11 +8,11 @@
 --    Software 'as is' without warranty.  Author liable for nothing.
 -- DESCRIPTION:
 --    Implements the UART.
--- modified by: Siavoosh Payandeh Azad 
--- Change logs:  
+-- modified by: Siavoosh Payandeh Azad
+-- Change logs:
 --            * added a memory mapped register for counter value
 --            * added necessary signals for the above mentioned register to the interface!
---            * COUNT_VALUE is replaced with count_value_sig which comes from the above mentioned register 
+--            * COUNT_VALUE is replaced with count_value_sig which comes from the above mentioned register
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -103,7 +103,7 @@ count_value_sig <= count_value_reg(9 downto 0);
 uart_proc: process(clk, reset, enable_read, enable_write, data_in,
                    data_write_reg, bits_write_reg, delay_write_reg,
                    data_read_reg, bits_read_reg, delay_read_reg,
-                   data_save_reg, 
+                   data_save_reg,
                    busy_write_sig, uart_read)
 
 -----------------------------------------------
@@ -118,7 +118,7 @@ uart_proc: process(clk, reset, enable_read, enable_write, data_in,
 --      "0011011001";  --12.5MHz/57600Hz = 0xd9
 --      "0000000100";  --for debug (shorten read_value_reg)
 begin
-   
+
    if reset = '1' then
       data_write_reg  <= ZERO(8 downto 1) & '1';
       bits_write_reg  <= "0000";
@@ -127,7 +127,7 @@ begin
       bits_read_reg   <= "0000";
       delay_read_reg  <= ZERO(9 downto 0);
       data_save_reg   <= ZERO(17 downto 0);
-      
+
    elsif rising_edge(clk) then
 
       --Write UART

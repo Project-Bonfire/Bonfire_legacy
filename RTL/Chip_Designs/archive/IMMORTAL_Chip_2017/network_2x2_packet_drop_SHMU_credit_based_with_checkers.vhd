@@ -12,12 +12,12 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-USE ieee.numeric_std.ALL; 
+USE ieee.numeric_std.ALL;
 
 entity network_2x2 is
  generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
-port (reset: in  std_logic; 
-	clk: in  std_logic; 
+port (reset: in  std_logic;
+	clk: in  std_logic;
 	--------------
 	--------------
 	RX_L_0: in std_logic_vector (DATA_WIDTH-1 downto 0);
@@ -65,7 +65,7 @@ port (reset: in  std_logic;
     turn_faults_3: out std_logic_vector(19 downto 0);
     Rxy_reconf_PE_3: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_3: in  std_logic_vector(3 downto 0);
-    Reconfig_command_3 : in std_logic; 
+    Reconfig_command_3 : in std_logic;
 
     --------------
     -- IJTAG network for fault injection and checker status monitoring
@@ -79,13 +79,13 @@ port (reset: in  std_logic;
     SO          : out std_logic;
     toF         : out std_logic;
     toC         : out std_logic
-    ); 
-end network_2x2; 
+    );
+end network_2x2;
 
 
 architecture behavior of network_2x2 is
 
-COMPONENT router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping 
+COMPONENT router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropping
     generic (
         DATA_WIDTH: integer := 32;
         current_address : integer := 0;
@@ -99,7 +99,7 @@ COMPONENT router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropp
     port (
     reset, clk: in std_logic;
 
-    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0); 
+    RX_N, RX_E, RX_W, RX_S, RX_L : in std_logic_vector (DATA_WIDTH-1 downto 0);
     credit_in_N, credit_in_E, credit_in_W, credit_in_S, credit_in_L: in std_logic;
     valid_in_N, valid_in_E, valid_in_W, valid_in_S, valid_in_L : in std_logic;
     valid_out_N, valid_out_E, valid_out_W, valid_out_S, valid_out_L : out std_logic;
@@ -118,8 +118,8 @@ COMPONENT router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropp
     Reconfig_command : in std_logic;
 
     -- fault injector shift register with serial input signals
-    TCK: in std_logic;  
-    SE: in std_logic;       -- shift enable 
+    TCK: in std_logic;
+    SE: in std_logic;       -- shift enable
     UE: in std_logic;       -- update enable
     SI: in std_logic;       -- serial Input
     SO: out std_logic;      -- serial output
@@ -127,15 +127,15 @@ COMPONENT router_credit_based_PD_C_SHMU is  --fault classifier plus packet-dropp
     ---- Outputs for non-classified fault information
     link_faults_async: out std_logic_vector(4 downto 0);
     turn_faults_async: out std_logic_vector(19 downto 0)
- ); 
-end COMPONENT; 
+ );
+end COMPONENT;
 
 
 -- For IJAG
 
 component SIB_mux_pre_FCX_SELgate is
     Port ( -- Scan Interface  client --------------
-           SI : in STD_LOGIC; -- ScanInPort 
+           SI : in STD_LOGIC; -- ScanInPort
            CE : in STD_LOGIC; -- CaptureEnPort
            SE : in STD_LOGIC; -- ShiftEnPort
            UE : in STD_LOGIC; -- UpdateEnPort
@@ -251,21 +251,21 @@ end component;
 --  |         ----       ----
 --  |        | 2  | --- | 3  |
 --  v         ----       ----
---                         
+--
 begin
 
    ---- Fault injection clock process (IJTAG-related)
    --fault_clk_process :process
    --begin
    --     TCK_0 <= '0';
-   --     wait for fault_clk_period/2;   
+   --     wait for fault_clk_period/2;
    --     TCK_0 <= '1';
-   --     wait for fault_clk_period/2; 
+   --     wait for fault_clk_period/2;
    --end process;
 
    ---- Fault Injection Stimulus process (shifting in single SA0 fault at a location in L FIFO in Router 0)
    --fault_injection_stim_proc: process
-   --begin        
+   --begin
    --   wait for 3000 ns;
 
    --   UE_0 <= '0';
@@ -644,7 +644,7 @@ begin
    --   wait until TCK_0'event and TCK_0 ='0'; -- Actually affect the signal(s) with fault information
    --     UE_0 <= '1';
    --     SE_0 <= '0';
-   --     SI_0 <= '0'; 
+   --     SI_0 <= '0';
    --   --wait until TCK_0'event and TCK_0 ='0'; -- No fault injection anymore and no shifting
 
    --   --wait until TCK_0'event and TCK_0 ='0'; -- No fault injection anymore and no shifting
@@ -656,8 +656,8 @@ begin
    --   wait until TCK_0'event and TCK_0 ='0'; -- No fault injection anymore and no shifting
    --     UE_0 <= '0';
    --     SE_0 <= '0';
-   --     SI_0 <= '0';         
-   --   --wait until TCK_0'event and TCK_0 ='0'; 
+   --     SI_0 <= '0';
+   --   --wait until TCK_0'event and TCK_0 ='0';
 
    --   wait; --??
 
@@ -766,7 +766,7 @@ SIB_3 : SIB_mux_pre_FCX_SELgate
 );
 
 
-R_0: router_credit_based_PD_C_SHMU 
+R_0: router_credit_based_PD_C_SHMU
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 0, Rxy_rst => 60,
         Cx_rst =>  10, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
@@ -781,14 +781,14 @@ R_0: router_credit_based_PD_C_SHMU
 	Faulty_N_out0,Faulty_E_out0,Faulty_W_out0,Faulty_S_out0,
 	-- should be connected to NI
 	link_faults_0, turn_faults_0,
-	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0, 
+	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0,
 	-- fault injector shift register with serial input signals
-	TCK_0, SE_0, UE_0, SI_0, SO_0, 
+	TCK_0, SE_0, UE_0, SI_0, SO_0,
     -- the non-classified fault information
     link_faults_async_0, turn_faults_async_0
- ); 
+ );
 
-R_1: router_credit_based_PD_C_SHMU 
+R_1: router_credit_based_PD_C_SHMU
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 1, Rxy_rst => 60,
         Cx_rst =>  12, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
@@ -803,13 +803,13 @@ R_1: router_credit_based_PD_C_SHMU
 	Faulty_N_out1,Faulty_E_out1,Faulty_W_out1,Faulty_S_out1,
 	-- should be connected to NI
 	link_faults_1, turn_faults_1,
-	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1, 
+	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1,
     -- fault injector shift register with serial input signals
-    TCK_1, SE_1, UE_1, SI_1, SO_1, 
+    TCK_1, SE_1, UE_1, SI_1, SO_1,
     -- the non-classified fault information
     link_faults_async_1, turn_faults_async_1
- ); 
-R_2: router_credit_based_PD_C_SHMU 
+ );
+R_2: router_credit_based_PD_C_SHMU
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 2, Rxy_rst => 60,
         Cx_rst =>  3, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
@@ -824,13 +824,13 @@ R_2: router_credit_based_PD_C_SHMU
 	Faulty_N_out2,Faulty_E_out2,Faulty_W_out2,Faulty_S_out2,
 	-- should be connected to NI
 	link_faults_2, turn_faults_2,
-	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2, 
+	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2,
     -- fault injector shift register with serial input signals
-    TCK_2, SE_2, UE_2, SI_2, SO_2, 
+    TCK_2, SE_2, UE_2, SI_2, SO_2,
     -- the non-classified fault information
     link_faults_async_2, turn_faults_async_2
- ); 
-R_3: router_credit_based_PD_C_SHMU 
+ );
+R_3: router_credit_based_PD_C_SHMU
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 3, Rxy_rst => 60,
         Cx_rst =>  5, NoC_size => 2, healthy_counter_threshold => 15, faulty_counter_threshold => 3, counter_depth => 4)
     port map(
@@ -845,12 +845,12 @@ R_3: router_credit_based_PD_C_SHMU
 	Faulty_N_out3,Faulty_E_out3,Faulty_W_out3,Faulty_S_out3,
 	-- should be connected to NI
 	link_faults_3, turn_faults_3,
-	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3, 
+	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3,
     -- fault injector shift register with serial input signals
-    TCK_3, SE_3, UE_3, SI_3, SO_3, 
+    TCK_3, SE_3, UE_3, SI_3, SO_3,
     -- the non-classified fault information
     link_faults_async_3, turn_faults_async_3
- ); 
+ );
 
 ---------------------------------------------------------------
 -- binding the routers together

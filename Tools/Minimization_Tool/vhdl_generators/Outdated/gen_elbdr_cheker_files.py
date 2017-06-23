@@ -33,7 +33,7 @@ def gen_elbdr_checkers(checker_id):
     if '3' in checker_id:
         string_to_write += "err_LBDR_Req_tail_allzero,"
     if '4' in checker_id:
-        string_to_write += "err_LBDR_Req_allzero,"    
+        string_to_write += "err_LBDR_Req_allzero,"
 
     elbdr_checker_vhd.write(string_to_write[:len(string_to_write)-1]+": out std_logic -- , err_LBDR_Req_not_Local : out std_logic\n")
     elbdr_checker_vhd.write("            );\n")
@@ -43,13 +43,13 @@ def gen_elbdr_checkers(checker_id):
     elbdr_checker_vhd.write("\n")
     elbdr_checker_vhd.write("signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  \n")
     elbdr_checker_vhd.write("\n")
-    elbdr_checker_vhd.write("begin\n") 
+    elbdr_checker_vhd.write("begin\n")
     elbdr_checker_vhd.write("\n")
     elbdr_checker_vhd.write("  cur_addr <= std_logic_vector(to_unsigned(cur_addr_rst, cur_addr'length));\n")
     elbdr_checker_vhd.write("\n")
     elbdr_checker_vhd.write("-- Implementing checkers in form of concurrent assignments (combinational assertions)\n")
     elbdr_checker_vhd.write("\n")
-    
+
     if '1' in checker_id:
         elbdr_checker_vhd.write("-- If empty is zero (If FIFO is not empty), Request outputs of LBDR must be one-hot\n")
         elbdr_checker_vhd.write("process(flit_type, empty, Req_N_in, Req_W_in, Req_S_in, Req_L_in)begin\n")

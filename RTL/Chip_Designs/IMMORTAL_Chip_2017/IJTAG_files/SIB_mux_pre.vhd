@@ -5,7 +5,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity SIB_mux_pre is
     Port ( -- Scan Interface  client --------------
-	       SI : in  STD_LOGIC; -- ScanInPort 
+	       SI : in  STD_LOGIC; -- ScanInPort
            CE : in STD_LOGIC; -- CaptureEnPort
            SE : in STD_LOGIC; -- ShiftEnPort
            UE : in STD_LOGIC; -- UpdateEnPort
@@ -81,7 +81,7 @@ SR : ScanRegister
                SO => SR_so,
                CaptureSource => SR_do, -- CaptureSource SR
                ScanRegister_out => SR_do);
-			   
+
 SIBmux : ScanMux
  Generic map ( ControlSize => 1)
     Port map ( ScanMux_in(0) => SI, -- 1'b0 : SI

@@ -13,26 +13,26 @@ entity Arbiter_in is
             X_N, X_E, X_W, X_S, X_L: out std_logic; -- Grants given to LBDR requests (encoded as one-hot)
 
             -- fault injector shift register with serial input signals
-	        TCK: in std_logic;  
-	        SE: in std_logic;       -- shift enable 
+	        TCK: in std_logic;
+	        SE: in std_logic;       -- shift enable
 	        UE: in std_logic;       -- update enable
 	        SI: in std_logic;       -- serial Input
 	        SO: out std_logic;      -- serial output
 
             -- Checker outputs
-			err_Requests_state_in_state_not_equal, 
+			err_Requests_state_in_state_not_equal,
 
-			err_IDLE_Req_N, err_IDLE_grant_N,err_North_Req_N, err_North_grant_N, err_East_Req_E, err_East_grant_E, 
+			err_IDLE_Req_N, err_IDLE_grant_N,err_North_Req_N, err_North_grant_N, err_East_Req_E, err_East_grant_E,
 			err_West_Req_W, err_West_grant_W, err_South_Req_S,err_South_grant_S,err_Local_Req_L, err_Local_grant_L,
-			err_IDLE_Req_E, err_IDLE_grant_E, err_North_Req_E, err_North_grant_E, err_East_Req_W, err_East_grant_W, 
+			err_IDLE_Req_E, err_IDLE_grant_E, err_North_Req_E, err_North_grant_E, err_East_Req_W, err_East_grant_W,
 			err_West_Req_S, err_West_grant_S, err_South_Req_L, err_South_grant_L, err_Local_Req_N, err_Local_grant_N,
-			err_IDLE_Req_W, err_IDLE_grant_W, err_North_Req_W, err_North_grant_W, err_East_Req_S, err_East_grant_S, 
-			err_West_Req_L, err_West_grant_L, err_South_Req_N,  err_South_grant_N, err_Local_Req_E, err_Local_grant_E, 
-			err_IDLE_Req_S, err_IDLE_grant_S, err_North_Req_S, err_North_grant_S, err_East_Req_L, err_East_grant_L, 
-			err_West_Req_N, err_West_grant_N, err_South_Req_E, err_South_grant_E, err_Local_Req_W, err_Local_grant_W, 
-			err_IDLE_Req_L, err_IDLE_grant_L, err_North_Req_L, err_North_grant_L, err_East_Req_N, err_East_grant_N, 
-			err_West_Req_E, err_West_grant_E, err_South_Req_W, err_South_grant_W, err_Local_Req_S, err_Local_grant_S, 
-			err_state_in_onehot, err_no_request_grants, err_request_no_grants, 
+			err_IDLE_Req_W, err_IDLE_grant_W, err_North_Req_W, err_North_grant_W, err_East_Req_S, err_East_grant_S,
+			err_West_Req_L, err_West_grant_L, err_South_Req_N,  err_South_grant_N, err_Local_Req_E, err_Local_grant_E,
+			err_IDLE_Req_S, err_IDLE_grant_S, err_North_Req_S, err_North_grant_S, err_East_Req_L, err_East_grant_L,
+			err_West_Req_N, err_West_grant_N, err_South_Req_E, err_South_grant_E, err_Local_Req_W, err_Local_grant_W,
+			err_IDLE_Req_L, err_IDLE_grant_L, err_North_Req_L, err_North_grant_L, err_East_Req_N, err_East_grant_N,
+			err_West_Req_E, err_West_grant_E, err_South_Req_W, err_South_grant_W, err_Local_Req_S, err_Local_grant_S,
+			err_state_in_onehot, err_no_request_grants, err_request_no_grants,
 			err_no_Req_N_grant_N, err_no_Req_E_grant_E, err_no_Req_W_grant_W, err_no_Req_S_grant_S, err_no_Req_L_grant_L : out std_logic
           );
 end Arbiter_in;
@@ -45,8 +45,8 @@ component shift_register_serial_in is
         REG_WIDTH: integer := 32
     );
     port (
-        TCK, reset : in std_logic;  
-        SE: in std_logic;       -- shift enable 
+        TCK, reset : in std_logic;
+        SE: in std_logic;       -- shift enable
         UE: in std_logic;       -- update enable
         SI: in std_logic;       -- serial Input
         SO: out std_logic;      -- serial output
@@ -57,13 +57,13 @@ end component;
  ----------------------------------------
  -- Signals related to fault injection --
  ----------------------------------------
- 
+
  -- Total: 7 bits
  signal FI_add_sta: std_logic_vector (6 downto 0); -- 5 bits for fault injection location address (ceil of log2(17) = 5)
                                                    -- 2 bits for type of fault (SA0 or SA1)
- signal non_faulty_signals: std_logic_vector (16 downto 0); -- 17 bits for internal- and output-related signals (non-faulty)                                          
+ signal non_faulty_signals: std_logic_vector (16 downto 0); -- 17 bits for internal- and output-related signals (non-faulty)
  signal faulty_signals: std_logic_vector(16 downto 0); -- 17 bits for internal- and output-related signals (with single stuck-at fault injected in one of them)
- 
+
  ----------------------------------------
  ----------------------------------------
 
@@ -73,7 +73,7 @@ end component;
 --SIGNAL state, state_in   : STATE_TYPE := IDLE;
 SIGNAL state, state_in   : STD_LOGIC_VECTOR (5 downto 0) := IDLE;
 
-SIGNAL X_N_sig, X_E_sig, X_W_sig, X_S_sig, X_L_sig: std_logic; -- needed for connecting output ports 
+SIGNAL X_N_sig, X_E_sig, X_W_sig, X_S_sig, X_L_sig: std_logic; -- needed for connecting output ports
 															   -- of Arbiter_in to checker inputs
 
    -- Signal(s) used for creating the chain of injected fault locations
@@ -87,16 +87,16 @@ SIGNAL X_N_sig, X_E_sig, X_W_sig, X_S_sig, X_L_sig: std_logic; -- needed for con
 
 begin
 
--------------------------------------      
+-------------------------------------
 ---- Related to fault injection -----
--------------------------------------      
+-------------------------------------
 
 -- Total: 17 bits
 -- for X_N, ... , X_L output signals, not sure whether to include them or the signals with _sig suffix in their names ??!!
 non_faulty_signals <= state & state_in & X_N_sig & X_E_sig & X_W_sig & X_S_sig & X_L_sig;
 
 -- Fault injector module instantiation
-FI: fault_injector generic map(DATA_WIDTH => 17, ADDRESS_WIDTH => 5) 
+FI: fault_injector generic map(DATA_WIDTH => 17, ADDRESS_WIDTH => 5)
            port map (data_in=> non_faulty_signals , address => FI_add_sta(6 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out=> faulty_signals
             );
 
@@ -117,8 +117,8 @@ SR: shift_register_serial_in generic map(REG_WIDTH => 7)
           port map ( TCK=> TCK, reset=>reset, SE=> SE, UE=> UE, SI=> SI, SO=> SO, data_out_parallel=> FI_add_sta
                    );
 
--------------------------------------      
--------------------------------------      
+-------------------------------------
+-------------------------------------
 
 -- Becuase of checkers we did this
 
@@ -128,7 +128,7 @@ X_W <= X_W_sig;
 X_S <= X_S_sig;
 X_L <= X_L_sig;
 
--- Arbiter_in Checkers module instantiation 
+-- Arbiter_in Checkers module instantiation
 ARBITER_IN_CHECKERS: Arbiter_in_one_hot_checkers port map (
                                       req_X_N => req_X_N, -- _sig not needed, because it is an input port
                                       req_X_E => req_X_E, -- _sig not needed, because it is an input port
@@ -138,54 +138,54 @@ ARBITER_IN_CHECKERS: Arbiter_in_one_hot_checkers port map (
                                       state => state_faulty,     -- _sig not needed, because it is an input port
 
                                       state_in => state_in_faulty, -- _sig not needed, because it is an internal signal
-                                      X_N => X_N_sig_faulty, X_E => X_E_sig_faulty, X_W => X_W_sig_faulty, 
-                                      X_S => X_S_sig_faulty, X_L => X_L_sig_faulty, 
+                                      X_N => X_N_sig_faulty, X_E => X_E_sig_faulty, X_W => X_W_sig_faulty,
+                                      X_S => X_S_sig_faulty, X_L => X_L_sig_faulty,
 
                                       -- Checker outputs
 									  err_Requests_state_in_state_not_equal => err_Requests_state_in_state_not_equal,
-  
-									  err_IDLE_Req_N => err_IDLE_Req_N, err_IDLE_grant_N => err_IDLE_grant_N, 
-									  err_North_Req_N => err_North_Req_N, err_North_grant_N => err_North_grant_N, 
-									  err_East_Req_E => err_East_Req_E, err_East_grant_E => err_East_grant_E, 
-									  err_West_Req_W => err_West_Req_W, err_West_grant_W => err_West_grant_W, 
-									  err_South_Req_S => err_South_Req_S, err_South_grant_S => err_South_grant_S, 
-									  err_Local_Req_L => err_Local_Req_L, err_Local_grant_L => err_Local_grant_L,
-  
-									  err_IDLE_Req_E => err_IDLE_Req_E, err_IDLE_grant_E => err_IDLE_grant_E, 
-									  err_North_Req_E => err_North_Req_E, err_North_grant_E => err_North_grant_E, 
-									  err_East_Req_W => err_East_Req_W, err_East_grant_W => err_East_grant_W, 
-									  err_West_Req_S => err_West_Req_S, err_West_grant_S => err_West_grant_S, 
-									  err_South_Req_L => err_South_Req_L, err_South_grant_L => err_South_grant_L, 
-									  err_Local_Req_N => err_Local_Req_N, err_Local_grant_N => err_Local_grant_N,
-  
-									  err_IDLE_Req_W => err_IDLE_Req_W, err_IDLE_grant_W => err_IDLE_grant_W, 
-									  err_North_Req_W => err_North_Req_W, err_North_grant_W => err_North_grant_W, 
-									  err_East_Req_S => err_East_Req_S, err_East_grant_S => err_East_grant_S, 
-									  err_West_Req_L => err_West_Req_L, err_West_grant_L => err_West_grant_L, 
-									  err_South_Req_N => err_South_Req_N, err_South_grant_N => err_South_grant_N, 
-									  err_Local_Req_E => err_Local_Req_E, err_Local_grant_E => err_Local_grant_E,
-  
-									  err_IDLE_Req_S => err_IDLE_Req_S, err_IDLE_grant_S => err_IDLE_grant_S, 
-									  err_North_Req_S => err_North_Req_S, err_North_grant_S => err_North_grant_S, 
-									  err_East_Req_L => err_East_Req_L, err_East_grant_L => err_East_grant_L, 
-									  err_West_Req_N => err_West_Req_N, err_West_grant_N => err_West_grant_N, 
-									  err_South_Req_E => err_South_Req_E, err_South_grant_E => err_South_grant_E, 
-									  err_Local_Req_W => err_Local_Req_W, err_Local_grant_W => err_Local_grant_W,
-  
-									  err_IDLE_Req_L => err_IDLE_Req_L, err_IDLE_grant_L => err_IDLE_grant_L, 
-									  err_North_Req_L => err_North_Req_L, err_North_grant_L => err_North_grant_L, 
-									  err_East_Req_N => err_East_Req_N, err_East_grant_N => err_East_grant_N, 
-									  err_West_Req_E => err_West_Req_E, err_West_grant_E => err_West_grant_E, 
-									  err_South_Req_W => err_South_Req_W, err_South_grant_W => err_South_grant_W, 
-									  err_Local_Req_S => err_Local_Req_S, err_Local_grant_S => err_Local_grant_S,
-  
-									  err_state_in_onehot => err_state_in_onehot, 
-									  err_no_request_grants => err_no_request_grants,
-									  err_request_no_grants => err_request_no_grants, 
 
-									  err_no_Req_N_grant_N => err_no_Req_N_grant_N, err_no_Req_E_grant_E => err_no_Req_E_grant_E, 
-									  err_no_Req_W_grant_W => err_no_Req_W_grant_W, err_no_Req_S_grant_S => err_no_Req_S_grant_S, 
-									  err_no_Req_L_grant_L => err_no_Req_L_grant_L								  
+									  err_IDLE_Req_N => err_IDLE_Req_N, err_IDLE_grant_N => err_IDLE_grant_N,
+									  err_North_Req_N => err_North_Req_N, err_North_grant_N => err_North_grant_N,
+									  err_East_Req_E => err_East_Req_E, err_East_grant_E => err_East_grant_E,
+									  err_West_Req_W => err_West_Req_W, err_West_grant_W => err_West_grant_W,
+									  err_South_Req_S => err_South_Req_S, err_South_grant_S => err_South_grant_S,
+									  err_Local_Req_L => err_Local_Req_L, err_Local_grant_L => err_Local_grant_L,
+
+									  err_IDLE_Req_E => err_IDLE_Req_E, err_IDLE_grant_E => err_IDLE_grant_E,
+									  err_North_Req_E => err_North_Req_E, err_North_grant_E => err_North_grant_E,
+									  err_East_Req_W => err_East_Req_W, err_East_grant_W => err_East_grant_W,
+									  err_West_Req_S => err_West_Req_S, err_West_grant_S => err_West_grant_S,
+									  err_South_Req_L => err_South_Req_L, err_South_grant_L => err_South_grant_L,
+									  err_Local_Req_N => err_Local_Req_N, err_Local_grant_N => err_Local_grant_N,
+
+									  err_IDLE_Req_W => err_IDLE_Req_W, err_IDLE_grant_W => err_IDLE_grant_W,
+									  err_North_Req_W => err_North_Req_W, err_North_grant_W => err_North_grant_W,
+									  err_East_Req_S => err_East_Req_S, err_East_grant_S => err_East_grant_S,
+									  err_West_Req_L => err_West_Req_L, err_West_grant_L => err_West_grant_L,
+									  err_South_Req_N => err_South_Req_N, err_South_grant_N => err_South_grant_N,
+									  err_Local_Req_E => err_Local_Req_E, err_Local_grant_E => err_Local_grant_E,
+
+									  err_IDLE_Req_S => err_IDLE_Req_S, err_IDLE_grant_S => err_IDLE_grant_S,
+									  err_North_Req_S => err_North_Req_S, err_North_grant_S => err_North_grant_S,
+									  err_East_Req_L => err_East_Req_L, err_East_grant_L => err_East_grant_L,
+									  err_West_Req_N => err_West_Req_N, err_West_grant_N => err_West_grant_N,
+									  err_South_Req_E => err_South_Req_E, err_South_grant_E => err_South_grant_E,
+									  err_Local_Req_W => err_Local_Req_W, err_Local_grant_W => err_Local_grant_W,
+
+									  err_IDLE_Req_L => err_IDLE_Req_L, err_IDLE_grant_L => err_IDLE_grant_L,
+									  err_North_Req_L => err_North_Req_L, err_North_grant_L => err_North_grant_L,
+									  err_East_Req_N => err_East_Req_N, err_East_grant_N => err_East_grant_N,
+									  err_West_Req_E => err_West_Req_E, err_West_grant_E => err_West_grant_E,
+									  err_South_Req_W => err_South_Req_W, err_South_grant_W => err_South_grant_W,
+									  err_Local_Req_S => err_Local_Req_S, err_Local_grant_S => err_Local_grant_S,
+
+									  err_state_in_onehot => err_state_in_onehot,
+									  err_no_request_grants => err_no_request_grants,
+									  err_request_no_grants => err_request_no_grants,
+
+									  err_no_Req_N_grant_N => err_no_Req_N_grant_N, err_no_Req_E_grant_E => err_no_Req_E_grant_E,
+									  err_no_Req_W_grant_W => err_no_Req_W_grant_W, err_no_Req_S_grant_S => err_no_Req_S_grant_S,
+									  err_no_Req_L_grant_L => err_no_Req_L_grant_L
                                      );
 
 -- Sequential part
@@ -209,10 +209,10 @@ begin
     X_W_sig <= '0';
     X_S_sig <= '0';
     X_L_sig <= '0';
-    
-    case state is 
+
+    case state is
       when IDLE => -- In the arbiter for hand-shaking FC router, L had the  highest priority (L, N, E, W, S)
-      			   -- Here it seems N has the higest priority, is it fine ? 
+      			   -- Here it seems N has the higest priority, is it fine ?
       	if req_X_N ='1'  then
       		state_in <= North;
         	X_N_sig <= '1';
@@ -329,8 +329,8 @@ begin
 	    else
 	    	state_in <= state;
 	    end if;
-	    
+
     end case;
-    
+
 end process;
 end;

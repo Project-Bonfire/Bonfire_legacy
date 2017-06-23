@@ -26,11 +26,11 @@ architecture behavior of SHMU is
   type SHM_type is array (0 to network_size*network_size-1) of std_logic_vector(router_fault_info_width-1 downto 0);  --memory
   signal SHM : SHM_type ;
 
-begin 
+begin
 
 
   process(clk, reset)begin
-    if reset = '0' then 
+    if reset = '0' then
       SHM <= (others => (others => '0'));
     elsif clk'event and clk = '1' then
        SHM(0) <= Faulty_N_0 & Faulty_E_0 & Faulty_W_0 & Faulty_S_0 & Faulty_L_0;

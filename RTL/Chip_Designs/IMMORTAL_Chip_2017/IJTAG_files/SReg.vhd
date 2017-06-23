@@ -6,10 +6,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity SReg is
  Generic ( Size : positive := 7);
     Port ( -- Scan Interface scan_client ----------
-	        SI : in STD_LOGIC; -- ScanInPort 
+	        SI : in STD_LOGIC; -- ScanInPort
            SO : out STD_LOGIC; -- ScanOutPort
            SEL : in STD_LOGIC; -- SelectPort
-           ----------------------------------------		
+           ----------------------------------------
            SE : in STD_LOGIC; -- ShiftEnPort
            CE : in STD_LOGIC; -- CaptureEnPort
            UE : in STD_LOGIC; -- UpdateEnPort

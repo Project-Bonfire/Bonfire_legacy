@@ -8,7 +8,7 @@ link
 
 create_clock -name "clk" -period 10 -waveform { 0 1  }  { clk  }
 
-set_dont_touch reset 
+set_dont_touch reset
 
 set_max_area 0
 

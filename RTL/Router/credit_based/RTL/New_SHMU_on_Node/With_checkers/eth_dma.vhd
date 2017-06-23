@@ -7,9 +7,9 @@
 -- COPYRIGHT: Software placed into the public domain by the author.
 --    Software 'as is' without warranty.  Author liable for nothing.
 -- DESCRIPTION:
---    Ethernet DMA (Direct Memory Access) controller.  
---    Reads four bits and writes four bits from/to the Ethernet PHY each 
---    2.5 MHz clock cycle.  Received data is DMAed starting at 0x13ff0000 
+--    Ethernet DMA (Direct Memory Access) controller.
+--    Reads four bits and writes four bits from/to the Ethernet PHY each
+--    2.5 MHz clock cycle.  Received data is DMAed starting at 0x13ff0000
 --    transmit data is read from 0x13fd0000.
 --    To send a packet write bytes/4 to Ethernet send register.
 ---------------------------------------------------------------------
@@ -66,12 +66,12 @@ architecture logic of eth_dma is
 
 begin  --architecture
 
-   dma_proc: process(clk, reset, enable_eth, select_eth, 
-         data_read, pause_in, mem_address, mem_byte_we, data_w, 
+   dma_proc: process(clk, reset, enable_eth, select_eth,
+         data_read, pause_in, mem_address, mem_byte_we, data_w,
          E_RX_CLK, E_RX_DV, E_RXD, E_TX_CLK,
-         rec_clk, rec_store, rec_data, 
+         rec_clk, rec_store, rec_data,
          rec_cnt, rec_words, rec_dma, rec_done,
-         send_clk, send_read, send_data, send_cnt, send_words, 
+         send_clk, send_read, send_data, send_cnt, send_words,
          send_level, send_dma, send_enable)
    begin
 

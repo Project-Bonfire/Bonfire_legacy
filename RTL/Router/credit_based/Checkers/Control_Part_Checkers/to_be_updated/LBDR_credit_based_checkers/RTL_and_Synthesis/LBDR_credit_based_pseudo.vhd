@@ -30,10 +30,10 @@ architecture behavior of LBDR_credit_based_pseudo is
 
   signal Cx:  std_logic_vector(3 downto 0);
   signal Rxy:  std_logic_vector(7 downto 0);
-  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  
-  signal N1, E1, W1, S1  :std_logic :='0';  
+  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);
+  signal N1, E1, W1, S1  :std_logic :='0';
   signal grants: std_logic;
-begin 
+begin
 
  grants <= grant_N or grant_E or grant_W or grant_S or grant_L;
  grants_out <= grants;
@@ -51,7 +51,7 @@ begin
   N1_out <= N1;
   E1_out <= E1;
   W1_out <= W1;
-  S1_out <= S1; 
+  S1_out <= S1;
 
 -- The combionational part
 
@@ -78,5 +78,5 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, grants, Req_N_FF, Req_E_FF, R
         Req_L_in <= Req_L_FF;
   end if;
 end process;
-   
+
 end;

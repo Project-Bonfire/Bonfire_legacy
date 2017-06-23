@@ -29,13 +29,13 @@ begin
 
    do_add <= '1' when alu_function = ALU_ADD else '0';
    sum <= bv_adder(a_in, b_in, do_add);
-   less_than <= sum(32) when a_in(31) = b_in(31) or alu_function = ALU_LESS_THAN 
+   less_than <= sum(32) when a_in(31) = b_in(31) or alu_function = ALU_LESS_THAN
                 else a_in(31);
 
    GENERIC_ALU: if alu_type = "DEFAULT" generate
       c_alu <= sum(31 downto 0) when alu_function=ALU_ADD or
                                 alu_function=ALU_SUBTRACT else
-               ZERO(31 downto 1) & less_than when alu_function=ALU_LESS_THAN or 
+               ZERO(31 downto 1) & less_than when alu_function=ALU_LESS_THAN or
                                 alu_function=ALU_LESS_THAN_SIGNED else
                a_in or  b_in    when alu_function=ALU_OR else
                a_in and b_in    when alu_function=ALU_AND else
@@ -45,10 +45,10 @@ begin
    end generate;
 
    AREA_OPTIMIZED_ALU: if alu_type /= "DEFAULT" generate
-      c_alu <= sum(31 downto 0) when alu_function=ALU_ADD or 
+      c_alu <= sum(31 downto 0) when alu_function=ALU_ADD or
 		                          alu_function=ALU_SUBTRACT else (others => 'Z');
-      c_alu <= ZERO(31 downto 1) & less_than when alu_function=ALU_LESS_THAN or 
-		                          alu_function=ALU_LESS_THAN_SIGNED else 
+      c_alu <= ZERO(31 downto 1) & less_than when alu_function=ALU_LESS_THAN or
+		                          alu_function=ALU_LESS_THAN_SIGNED else
 										  (others => 'Z');
       c_alu <= a_in or  b_in    when alu_function=ALU_OR else (others => 'Z');
       c_alu <= a_in and b_in    when alu_function=ALU_AND else (others => 'Z');
@@ -56,6 +56,6 @@ begin
       c_alu <= a_in nor b_in    when alu_function=ALU_NOR else (others => 'Z');
       c_alu <= ZERO             when alu_function=ALU_NOTHING else (others => 'Z');
    end generate;
-    
+
 end; --architecture logic
 

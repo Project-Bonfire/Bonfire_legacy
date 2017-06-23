@@ -66,7 +66,7 @@ MSBLSB_SO : if BitOrder = "MSBLSB" generate
 				end generate;
 LSBMSB_SO : if BitOrder = "LSBMSB" generate
               SO <= internal_si(Size-1-SOSource);
-				end generate;				
+				end generate;
 ScanRegister_out <= u_reg;
 
 end ScanRegister_arch;

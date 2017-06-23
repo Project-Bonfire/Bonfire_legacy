@@ -188,7 +188,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("    end if; \n")
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
-    
+
     if '2' in checker_id:
         arbiter_checker_vhd.write("process (state, Xbar_sel) \n")
         arbiter_checker_vhd.write("begin \n")
@@ -244,7 +244,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("    end if;          \n")
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
-    
+
     if '7' in checker_id:
         arbiter_checker_vhd.write("process (RTS_FF, DCTS, state, state_in) \n")
         arbiter_checker_vhd.write("begin \n")
@@ -389,7 +389,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("    end if; \n")
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write(" \n")
- 
+
     if '20' in checker_id:
         arbiter_checker_vhd.write("process (state, Req_S, next_state_out) \n")
         arbiter_checker_vhd.write("begin  \n")
@@ -567,7 +567,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("    end if; \n")
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write("  \n")
- 
+
     if '36' in checker_id:
         arbiter_checker_vhd.write("process (state, Req_E, Req_W, Req_S, Req_L, next_state_out) \n")
         arbiter_checker_vhd.write("begin  \n")
@@ -709,7 +709,7 @@ def gen_arbiter_checkers(checker_id):
         arbiter_checker_vhd.write("    end if;   \n")
         arbiter_checker_vhd.write("end process; \n")
         arbiter_checker_vhd.write("  \n")
- 
+
     if '48' in checker_id:
         arbiter_checker_vhd.write("process (DCTS, RTS_FF, state, Grant_N) \n")
         arbiter_checker_vhd.write("begin \n")

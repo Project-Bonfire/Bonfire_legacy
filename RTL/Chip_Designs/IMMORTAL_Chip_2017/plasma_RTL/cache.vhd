@@ -50,8 +50,8 @@ architecture logic of cache is
    signal cache_we         : std_logic;
 begin
 
-   cache_proc: process(clk, reset, mem_busy, cache_address, 
-      state_reg, state, state_next, 
+   cache_proc: process(clk, reset, mem_busy, cache_address,
+      state_reg, state, state_next,
       address_next, byte_we_next, cache_tag_in, --Stage1
       cache_tag_reg, cache_tag_out,             --Stage2
       cpu_address) --Stage3
@@ -60,7 +60,7 @@ begin
       case state_reg is
       when STATE_IDLE =>            --cache idle
          cache_checking <= '0';
-         cache_miss <= '0'; 
+         cache_miss <= '0';
          state <= STATE_IDLE;
       when STATE_CHECKING =>        --current read in cached range, check if match
          cache_checking <= '1';
@@ -143,22 +143,22 @@ begin
 --      cache_tag: RAMB16_S9  --Xilinx specific
 --      port map (
 --         DO   => cache_tag_out(7 downto 0),
---         DOP  => cache_tag_out(8 downto 8), 
+--         DOP  => cache_tag_out(8 downto 8),
 --         ADDR => cache_address,             --registered
---         CLK  => clk, 
+--         CLK  => clk,
 --         DI   => cache_tag_in(7 downto 0),  --registered
 --         DIP  => cache_tag_in(8 downto 8),
 --         EN   => '1',
 --         SSR  => ZERO(0),
 --         WE   => cache_we);
 --   end generate; --cache_xilinx
-      
+
    cache_generic: if memory_type /= "XILINX_16X" generate
    begin
       cache_tag: process(clk, cache_address, cache_tag_in, cache_we)
          constant ADDRESS_WIDTH : natural := 10;
          type storage_array is
-            array(natural range 0 to 2 ** ADDRESS_WIDTH - 1) of 
+            array(natural range 0 to 2 ** ADDRESS_WIDTH - 1) of
             std_logic_vector(8 downto 0);
          variable storage : storage_array;
          variable index   : natural := 0;

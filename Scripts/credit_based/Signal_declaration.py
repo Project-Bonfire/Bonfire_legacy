@@ -5,9 +5,9 @@ def declare_signals(noc_file, network_dime, add_parity, add_packet_drop, add_FC,
     """
     noc_file:       string  : path to the network file
     network_dime:   integer : network size
-    dd_parity, add_packet_drop, add_FC, add_SHMU: boolean   : Configuration bits 
+    dd_parity, add_packet_drop, add_FC, add_SHMU: boolean   : Configuration bits
     """
-    
+
     noc_file.write("\n\n")
     noc_file.write("-- generating bulk signals. not all of them are used in the design...\n")
 
@@ -44,10 +44,10 @@ def declare_signals(noc_file, network_dime, add_parity, add_packet_drop, add_FC,
         for i in range(0, network_dime**2):
             noc_file.write("\tsignal healthy_packet_N"+str(i)+", healthy_packet_E"+str(i)+", healthy_packet_W"+str(i) +
                            ", healthy_packet_S"+str(i) + ", healthy_packet_L"+str(i)+" : std_logic;\n")
-    
+
     if add_packet_drop and add_FC:
       for i in range(0, network_dime**2):
- 
+
         string_to_print  = ""
 
         string_to_print += "\tsignal "
@@ -60,7 +60,7 @@ def declare_signals(noc_file, network_dime, add_parity, add_packet_drop, add_FC,
 
         string_to_print  = ""
         string_to_print += "\tsignal "
- 
+
         string_to_print += "Faulty_N_in"+str(i)+","
         string_to_print += "Faulty_E_in"+str(i)+","
         string_to_print += "Faulty_W_in"+str(i)+","

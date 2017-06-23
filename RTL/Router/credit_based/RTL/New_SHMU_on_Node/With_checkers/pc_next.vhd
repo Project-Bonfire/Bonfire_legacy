@@ -27,10 +27,10 @@ entity pc_next is
 end; --pc_next
 
 architecture logic of pc_next is
-   signal pc_reg : std_logic_vector(31 downto 2); 
+   signal pc_reg : std_logic_vector(31 downto 2);
 begin
 
-pc_select: process(clk, reset_in, pc_new, take_branch, pause_in, 
+pc_select: process(clk, reset_in, pc_new, take_branch, pause_in,
                  opcode25_0, pc_source, pc_reg)
    variable pc_inc      : std_logic_vector(31 downto 2);
    variable pc_next : std_logic_vector(31 downto 2);

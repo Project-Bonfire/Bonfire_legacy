@@ -39,11 +39,11 @@ def add_color(value):
 	else:
 		return '\033[00m' + value + '\033[0m'
 
-print '%120s' % "", "\t", '%20s' %"FEC" , "\t\t", '%20s' %"FSM" 
-print '%120s' % "", "\t\t", '%20s' %"---------------------" , "\t\t", '%20s' %"---------------------" 
+print '%120s' % "", "\t", '%20s' %"FEC" , "\t\t", '%20s' %"FSM"
+print '%120s' % "", "\t\t", '%20s' %"---------------------" , "\t\t", '%20s' %"---------------------"
 
 print '%100s' % "file_name", "|\t", '%10s' %"stmts", "|\t", '%10s' %"branches" ,\
-	  "|\t", '%10s' %"Condition" , "|\t", '%10s' %"Expression" , "|\t", '%10s' %"States" , "|\t", '%10s' %"Transitions"  , '%10s' %"toggle"  
+	  "|\t", '%10s' %"Condition" , "|\t", '%10s' %"Expression" , "|\t", '%10s' %"States" , "|\t", '%10s' %"Transitions"  , '%10s' %"toggle"
 print 8*"\t"+"-------------------------------------|-------------|---------------|---------------|---------------|---------------|---------------|---------------|"
 sum_statement = 0
 sum_branches = 0
@@ -53,7 +53,7 @@ sum_states = 0
 sum_transition = 0
 sum_toggle = 0
 num_of_files = 0
-for line in report_file:	
+for line in report_file:
 	if line != '':
 		if "File" in line:
 			file_name = line.split("/")[-1][:-1]
@@ -81,7 +81,7 @@ for line in report_file:
 
 		if toggle is not None:
 			print '%100s' % file_name, "|\t", '%19s' %statements, "|\t", '%19s' %branches, "|\t", '%19s' %condition, \
-				  "|\t", '%19s' %expression, "|\t", '%19s' %states,  "|\t", '%19s' %transition , "|\t", '%19s' %toggle 
+				  "|\t", '%19s' %expression, "|\t", '%19s' %states,  "|\t", '%19s' %transition , "|\t", '%19s' %toggle
 			num_of_files += 1.0
 			file_name = None
 			statements = None

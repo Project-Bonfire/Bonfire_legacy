@@ -57,7 +57,7 @@ entity NI is
         link_faults: in std_logic_vector(4 downto 0);
         turn_faults: in std_logic_vector(19 downto 0);
 
-        Rxy_reconf_PE: out  std_logic_vector(7 downto 0);   
+        Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
         Reconfig_command : out std_logic
 	);
@@ -77,7 +77,7 @@ architecture logic of NI is
   signal P2N_FIFO_MEM_3, P2N_FIFO_MEM_3_in : std_logic_vector(31 downto 0);
   signal P2N_FIFO_MEM_4, P2N_FIFO_MEM_4_in : std_logic_vector(31 downto 0);
   signal P2N_full, P2N_empty: std_logic;
-  
+
 
   signal credit_counter_in, credit_counter_out: std_logic_vector(1 downto 0);
   signal packet_counter_in, packet_counter_out: std_logic_vector(7 downto 0);
@@ -109,7 +109,7 @@ architecture logic of NI is
   signal sent_info, fault_info_ready, fault_info_ready_in: std_logic;
   signal self_diagnosis_reg_out, self_diagnosis_reg_in: std_logic_vector(31 downto 0);
   signal self_diagnosis_flag, self_diagnosis_flag_in: std_logic;
-begin 
+begin
 
 process(clk, enable, write_byte_enable) begin
    if reset = '1' then
@@ -181,7 +181,7 @@ process(clk, enable, write_byte_enable) begin
       end if;
       flag_register <= flag_register_in;
 
-      fault_info <= fault_info_in; 
+      fault_info <= fault_info_in;
       fault_info_ready <= fault_info_ready_in;
       self_diagnosis_reg_out <= self_diagnosis_reg_in;
       self_diagnosis_flag <= self_diagnosis_flag_in;
@@ -193,21 +193,21 @@ end process;
 
 ---------------------------------------------------------------------------------------
 --below this is code for communication from PE 2 NoC
- 
+
 
 -- Process used for sending reconfiguration command from PE to router (which is part of NoC)
 
 process(enable, address, write_byte_enable) begin
   -- Some initializations
-  Reconfig_command <= '0'; 
+  Reconfig_command <= '0';
   Rxy_reconf_PE <= (others =>'0');
   Cx_reconf_PE <= (others =>'0');
 
   if address = reconfiguration_address and enable = '1' then
     if write_byte_enable /= "0000" then
-      -- In this case, data_write definitely includes the connectivity bits and routing bits for 
+      -- In this case, data_write definitely includes the connectivity bits and routing bits for
       -- reconfiguring LBDR logic.
-      Rxy_reconf_PE <= data_write(7 downto 0); -- Rxy is 8 bits long 
+      Rxy_reconf_PE <= data_write(7 downto 0); -- Rxy is 8 bits long
       Cx_reconf_PE <= data_write(4 downto 8); -- Cx is 4 bits long
       Reconfig_command <= '1';
     end if;
@@ -225,7 +225,7 @@ process(write_byte_enable, enable, address, storage, data_write, valid_data, P2N
         valid_data_in <= '1';
       end if;
 
-      -- Behrad: So according to Plasma, is write_byte_enable always one-hot ? 
+      -- Behrad: So according to Plasma, is write_byte_enable always one-hot ?
       --         (of course it can also be "0000")
       if write_byte_enable(0) = '1' then
          storage_in(7 downto 0) <= data_write(7 downto 0);
@@ -320,7 +320,7 @@ process (credit_in, credit_counter_out, grant)begin
 end process;
 
 
--- flag setting and clearing for self diagnosis 
+-- flag setting and clearing for self diagnosis
 process(link_faults, turn_faults, self_diagnosis_flag, old_address)begin
   if (link_faults  /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address = current_address then
     self_diagnosis_flag_in <= '1';
@@ -333,7 +333,7 @@ end process;
 
 -- handling fault information!
 process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
- 
+
   self_diagnosis_reg_in <= self_diagnosis_reg_out;
 
   -- If current node is not SHMU, we need to send fault information to SHMU
@@ -348,11 +348,11 @@ process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
     fault_info_ready_in <= fault_info_ready;
   end if;
 
-  if sent_info = '1' then 
+  if sent_info = '1' then
       fault_info_ready_in <= '0';
   end if;
 
-end process; 
+end process;
 
 
 process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_counter_out, FIFO_Data_out, fault_info_ready)
@@ -367,7 +367,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
 
         case(state) is
             when IDLE =>
-                if fault_info_ready = '1' then 
+                if fault_info_ready = '1' then
                     state_in <= DIAGNOSIS_HEADER;
                 elsif P2N_empty = '0' then
                     state_in <= HEADER_FLIT;
@@ -377,7 +377,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
 
             when HEADER_FLIT =>
                 if credit_counter_out /= "00" and P2N_empty = '0' then
-                    
+
                     packet_length_counter_in <=   ("0000" & FIFO_Data_out(23 downto 16))-1;
                     grant <= '1';
 
@@ -387,7 +387,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                            std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out);
 
                     state_in <= BODY_FLIT;
-                    
+
                 else
                     state_in <= HEADER_FLIT;
                 end if;
@@ -429,18 +429,18 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                     state_in <= DIAGNOSIS_BODY;
                 else
                     state_in <= DIAGNOSIS_HEADER;
-                end if; 
+                end if;
 
-            when DIAGNOSIS_BODY => 
+            when DIAGNOSIS_BODY =>
                 if credit_counter_out /= "00" then
                     grant <= '1';
                     --FD (Fault Diagnosis) : 01000110 01000100
-                    -- fault info is 13 bits 
+                    -- fault info is 13 bits
                     TX <= "010" & "0100011001000100" & fault_info(11 downto 0) & XOR_REDUCE("010" & "0100011001000100" & fault_info(11 downto 0));
                     state_in <= DIAGNOSIS_TAIL;
                 else
                     state_in <= DIAGNOSIS_BODY;
-                end if; 
+                end if;
 
             when DIAGNOSIS_TAIL =>
                 if credit_counter_out /= "00" then
@@ -451,7 +451,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                     packet_counter_in <= packet_counter_out +1;
                 else
                     state_in <= DIAGNOSIS_TAIL;
-                end if; 
+                end if;
 
             when others =>
                 state_in <= IDLE;

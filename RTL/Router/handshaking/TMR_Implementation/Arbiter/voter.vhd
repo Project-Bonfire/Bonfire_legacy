@@ -31,5 +31,5 @@ begin
     S2 <= input0 and input2;
 
     voted_output <= S0 or S1 or S2;
-    
+
 end;

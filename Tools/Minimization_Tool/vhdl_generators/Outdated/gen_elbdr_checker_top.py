@@ -124,6 +124,6 @@ def gen_elbdr_checker_top(checker_id):
     elbdr_checker_top.write("                                  -- err_LBDR_Req_not_Local => err_LBDR_Req_not_Local);\n")
     elbdr_checker_top.write("\n")
     elbdr_checker_top.write("end behavior;\n")
-    
+
     elbdr_checker_top.close()
 

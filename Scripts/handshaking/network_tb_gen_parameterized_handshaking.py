@@ -242,7 +242,7 @@ if add_FI:
       string_to_print += "\tFI_Add_"+str(i+network_dime)+"_"+str(i)+", FI_Add_"+str(i)+"_"+str(i+network_dime)+", "
       string_to_print += "sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +\
                        ", sta0_"+str(i+network_dime)+"_"+str(i)+", sta1_"+str(i+network_dime)+"_"+str(i)+",\n"
-                       
+
   string_to_print +="\t--horizontal signals\n"
   for i in range(0, network_dime*network_dime):
       node_x = i % network_dime
@@ -330,5 +330,5 @@ if add_FI:
       seed_2 = random.randint(10, 2147483560)
       noc_file.write("gen_fault(sta0_"+str(i)+"_"+str(i+network_dime)+", sta1_"+str(i)+"_"+str(i+network_dime) +
                      ", FI_Add_"+str(i)+"_"+str(i+network_dime)+", "+str(random_delay)+", "+ str(seed_1)+", "+ str(seed_2)+");\n")
- 
+
 noc_file.write("end;\n")
