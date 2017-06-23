@@ -10,18 +10,18 @@
 --    MIPS Technologies does not endorse and is not associated with
 --    this project.
 -- DESCRIPTION:
---    Controls the CPU by decoding the opcode and generating control 
+--    Controls the CPU by decoding the opcode and generating control
 --    signals to the rest of the CPU.
---    This entity decodes the MIPS(tm) opcode into a 
---    Very-Long-Word-Instruction.  
---    The 32-bit opcode is converted to a 
+--    This entity decodes the MIPS(tm) opcode into a
+--    Very-Long-Word-Instruction.
+--    The 32-bit opcode is converted to a
 --       6+6+6+16+4+2+4+3+2+2+3+2+4 = 60 bit VLWI opcode.
 --    Based on information found in:
 --       "MIPS RISC Architecture" by Gerry Kane and Joe Heinrich
 --       and "The Designer's Guide to VHDL" by Peter J. Ashenden
 
--- modified by: Siavoosh Payandeh Azad 
--- Change logs:  
+-- modified by: Siavoosh Payandeh Azad
+-- Change logs:
 --            * EPC register have been changed! It used to be R0, now it is R26
 --            * added the instruction type and signal for debuging the CPU behaviour!
 ---------------------------------------------------------------------
@@ -53,20 +53,20 @@ end; --entity control
 architecture logic of control is
 -- this type and the signal after it has been added for debugging!
 -- you can comment this if you dont want to debug!
-type instruction_name is (i_None, i_SLL, i_SRL, i_SRA, i_SLLV, i_SRLV, i_SRAV, 
-                          i_JR, i_JALR, i_SYSCALL, i_BREAK, i_SYNC, i_MFHI, 
-                          i_MTHI, i_MFLO, i_MTLO, i_MULT, i_MULTU, i_DIV, i_DIVU, i_ADD, 
-                          i_ADDU, i_SUB, i_SUBU, i_AND, i_OR, i_XOR, i_NOR, i_SLT, 
+type instruction_name is (i_None, i_SLL, i_SRL, i_SRA, i_SLLV, i_SRLV, i_SRAV,
+                          i_JR, i_JALR, i_SYSCALL, i_BREAK, i_SYNC, i_MFHI,
+                          i_MTHI, i_MFLO, i_MTLO, i_MULT, i_MULTU, i_DIV, i_DIVU, i_ADD,
+                          i_ADDU, i_SUB, i_SUBU, i_AND, i_OR, i_XOR, i_NOR, i_SLT,
                           i_SLTU, i_DADDU, i_BLTZAL, i_BLTZ, i_BGEZAL, i_BGEZ,
-                          i_JAL, i_J, i_BEQ, i_BNE, i_BLEZ, i_BGTZ, i_ADDI, 
-                          i_ADDIU, i_SLTI, i_SLTIU, i_ANDI, i_ORI, i_XORI, i_LUI, 
-                          i_MFC0, i_MTC0, i_SUBI, i_LB, i_LH, i_LWL, i_LW, i_LBU, 
+                          i_JAL, i_J, i_BEQ, i_BNE, i_BLEZ, i_BGTZ, i_ADDI,
+                          i_ADDIU, i_SLTI, i_SLTIU, i_ANDI, i_ORI, i_XORI, i_LUI,
+                          i_MFC0, i_MTC0, i_SUBI, i_LB, i_LH, i_LWL, i_LW, i_LBU,
                           i_LHU, i_SB, i_SH, i_SWL, i_SW);
 signal instruction : instruction_name;
 -- end of debugging block
 begin
 
-control_proc: process(opcode, intr_signal) 
+control_proc: process(opcode, intr_signal)
    variable op, func       : std_logic_vector(5 downto 0);
    variable rs, rt, rd     : std_logic_vector(5 downto 0);
    variable rtx            : std_logic_vector(4 downto 0);
@@ -104,7 +104,7 @@ begin
    when "000000" =>   --SPECIAL
       case func is
       when "000000" =>   --SLL   r[rd]=r[rt]<<re;
-                         -- This is overlapping with NOP instruction in which all bits are zero, so opcode is zero and the last 6 bits (funct) are also zero, 
+                         -- This is overlapping with NOP instruction in which all bits are zero, so opcode is zero and the last 6 bits (funct) are also zero,
                          -- does this mean that NOP acts as SLL ???
          a_source := A_FROM_IMM10_6;
          c_source := C_FROM_SHIFT;
@@ -256,8 +256,8 @@ begin
       --when "110001" =>   --TGEU
       --when "110010" =>   --TLT
       --when "110011" =>   --TLTU
-      --when "110100" =>   --TEQ 
-      --when "110110" =>   --TNE 
+      --when "110100" =>   --TEQ
+      --when "110110" =>   --TNE
       when others =>
       end case;
 
@@ -304,7 +304,7 @@ begin
       pc_source := FROM_OPCODE25_0;
       --Comment the next line if you dont want to debug!
       instruction <= i_JAL;
-   when "000010" =>   --J      s->pc_next=(s->pc&0xf0000000)|target; 
+   when "000010" =>   --J      s->pc_next=(s->pc&0xf0000000)|target;
       pc_source := FROM_OPCODE25_0;
       --Comment the next line if you dont want to debug!
       instruction <= i_J;
@@ -419,7 +419,7 @@ begin
    --when "010101" =>   --BNEL   lbranch=r[rs]!=r[rt];
    --when "010110" =>   --BLEZL  lbranch=r[rs]<=0;
    --when "010111" =>   --BGTZL  lbranch=r[rs]>0;
-   
+
    when "011010" =>  -- SUBI   r[rt]=r[rs]-(short)imm;
       b_source := B_FROM_SIGNED_IMM;
       c_source := C_FROM_ALU;
@@ -514,19 +514,19 @@ begin
    --when "101110" =>   --SWR    //Not Implemented
    --when "101111" =>   --CACHE
    --when "110000" =>   --LL     r[rt]=*(long*)ptr;
-   --when "110001" =>   --LWC1 
-   --when "110010" =>   --LWC2 
-   --when "110011" =>   --LWC3 
-   --when "110101" =>   --LDC1 
-   --when "110110" =>   --LDC2 
-   --when "110111" =>   --LDC3 
+   --when "110001" =>   --LWC1
+   --when "110010" =>   --LWC2
+   --when "110011" =>   --LWC3
+   --when "110101" =>   --LDC1
+   --when "110110" =>   --LDC2
+   --when "110111" =>   --LDC3
    --when "111000" =>   --SC     *(long*)ptr=r[rt]; r[rt]=1;
-   --when "111001" =>   --SWC1 
-   --when "111010" =>   --SWC2 
-   --when "111011" =>   --SWC3 
-   --when "111101" =>   --SDC1 
-   --when "111110" =>   --SDC2 
-   --when "111111" =>   --SDC3 
+   --when "111001" =>   --SWC1
+   --when "111010" =>   --SWC2
+   --when "111011" =>   --SWC3
+   --when "111101" =>   --SDC1
+   --when "111110" =>   --SDC2
+   --when "111111" =>   --SDC3
    when others =>
    end case;
 

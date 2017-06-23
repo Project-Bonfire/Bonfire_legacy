@@ -6,10 +6,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity AsyncDataRegisterAdapter is
  Generic ( Size : positive := 8);
     Port ( -- Scan Interface scan_client ----------
-	        SI : in STD_LOGIC; -- ScanInPort 
+	        SI : in STD_LOGIC; -- ScanInPort
            SO : out STD_LOGIC; -- ScanOutPort
            SEL : in STD_LOGIC; -- SelectPort
-           ----------------------------------------		
+           ----------------------------------------
            SE : in STD_LOGIC; -- ShiftEnPort
            CE : in STD_LOGIC; -- CaptureEnPort
            UE : in STD_LOGIC; -- UpdateEnPort
@@ -32,10 +32,10 @@ signal flag_mask_strobe: STD_LOGIC;
 component SReg is
  Generic ( Size : positive := 7);
     Port ( -- Scan Interface scan_client ----------
-	        SI : in STD_LOGIC; -- ScanInPort 
+	        SI : in STD_LOGIC; -- ScanInPort
            SO : out STD_LOGIC; -- ScanOutPort
            SEL : in STD_LOGIC; -- SelectPort
-           ----------------------------------------		
+           ----------------------------------------
            SE : in STD_LOGIC; -- ShiftEnPort
            CE : in STD_LOGIC; -- CaptureEnPort
            UE : in STD_LOGIC; -- UpdateEnPort
@@ -59,7 +59,7 @@ begin
     DI_sync <= DI_sync_first;
   end if ;
 end process ; -- synchronizer
-  
+
 sticky_flag_update : process(TCK,RST)
 begin
   if RST = '1' then
@@ -78,20 +78,20 @@ end process;
 
 SO <= sreg_so;
 DO <= sreg_do;
-			  
-shiftreg : SReg 
+
+shiftreg : SReg
  Generic map ( Size => Size)
     Port map ( -- Scan Interface scan_client ----------
 	            SI => SI, -- Input Port SI = SI
                SO => sreg_so,
                SEL => SEL,
-               ----------------------------------------		
+               ----------------------------------------
                SE => SE,
                CE => CE,
                UE => UE,
                RST => RST,
                TCK => TCK,
 			         DI => DI_sync,
-			         DO => sreg_do);		  
+			         DO => sreg_do);
 
 end AsyncDataRegisterAdapter_arch;

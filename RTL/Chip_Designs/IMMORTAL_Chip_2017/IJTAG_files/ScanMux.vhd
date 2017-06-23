@@ -21,7 +21,7 @@ internal_connections((2**ControlSize)-1 downto 0) <= ScanMux_in;
 mux_network: for i in 0 to ControlSize-1 generate
 
  mux_layer: for j in 0 to 2**(ControlSize-1-i)-1 generate
- 
+
    internal_connections((2**(ControlSize+1))-(2**(ControlSize-i))+j) <= internal_connections((2**(ControlSize+1))-(2**(ControlSize+1-i))+2*j+1) when SelectedBy(i) = '1' else internal_connections((2**(ControlSize+1))-(2**(ControlSize+1-i))+2*j+0);
 
  end generate;

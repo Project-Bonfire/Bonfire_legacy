@@ -47,9 +47,9 @@ port(
     Rxy_reconf_PE : out  std_logic_vector(7 downto 0);
     Cx_reconf_PE  : out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
     Reconfig_command : out std_logic;
-    
+
     -- IJTAG RAM instrument related signals
-    --SI  : in std_logic; 
+    --SI  : in std_logic;
     --SO  : out std_logic;
     --SEL : in std_logic;
     --SE  : in std_logic;
@@ -105,10 +105,10 @@ architecture updated of NoC_Node is
     -- Generic ( DataSize : positive := 8;
     --          AddressSize : positive := 8);
     --   Port ( -- Scan Interface scan_client ----------
-    --           SI : in STD_LOGIC; -- ScanInPort 
+    --           SI : in STD_LOGIC; -- ScanInPort
     --          SO : out STD_LOGIC; -- ScanOutPort
     --          SEL : in STD_LOGIC; -- SelectPort
-    --          ----------------------------------------        
+    --          ----------------------------------------
     --          SE : in STD_LOGIC; -- ShiftEnPort
     --          CE : in STD_LOGIC; -- CaptureEnPort
     --          UE : in STD_LOGIC; -- UpdateEnPort

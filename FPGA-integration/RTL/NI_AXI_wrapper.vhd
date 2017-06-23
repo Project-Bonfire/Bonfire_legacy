@@ -17,9 +17,9 @@ entity AXI_wrapper is
 	port (
 		-- Users to add ports here
         AXI_RX_IRQ      :   out std_logic;
-        
+
         --Router connection
-        R_RX    :   in std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0); 
+        R_RX    :   in std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
         R_TX    :   out std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
         R_DRTS  :   in std_logic;
         R_DCTS  :   in std_logic;
@@ -99,23 +99,23 @@ architecture arch_imp of AXI_wrapper is
             DATA_WIDTH  :   integer := 32;
             NI_DEPTH    :   integer := 16
         );
-        port ( 
+        port (
             reset   :   in std_logic;
             clk     :   in std_logic;
-            
+
             --Router connection
-            R_RX    :   in std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0); 
+            R_RX    :   in std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
             R_TX    :   out std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
             R_DRTS  :   in std_logic;
             R_DCTS  :   in std_logic;
             R_RTS   :   out std_logic;
             R_CTS   :   out std_logic;
-            
+
             -- Abstraction signals for AXI
             AXI_RX_out          :   out std_logic_vector(DATA_WIDTH-1 downto 0);
             AXI_RX_IRQ_out      :   out std_logic;
             AXI_data_read_in   :   in std_logic;
-            
+
             AXI_TX_in      :   in std_logic_vector(DATA_WIDTH-1 downto 0);
             AXI_send_en :   in std_logic
         );
@@ -143,11 +143,11 @@ architecture arch_imp of AXI_wrapper is
 	------------------------------------------------
 	---- Signals for user logic register space example
 	--------------------------------------------------
-    
+
     -- Abstraction signals for AXI
     signal AXI_RX          :   std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
     signal AXI_data_read   :   std_logic;
-    
+
     signal AXI_TX      :   std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
     signal AXI_send_en :   std_logic;
 
@@ -157,7 +157,7 @@ architecture arch_imp of AXI_wrapper is
 	signal slv_reg_rden	: std_logic;
 	signal slv_reg_wren	: std_logic;
 	signal reg_data_out	: std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
-	
+
 
 begin
 	-- I/O Connections assignments
@@ -180,11 +180,11 @@ AXI_Network_interface: AXI_handshake_wrapper
     generic map(
         DATA_WIDTH => C_S_AXI_DATA_WIDTH,
         NI_DEPTH => NI_DEPTH)
-        
+
     port map (
         reset   =>  S_AXI_ARESETN,
         clk     =>  S_AXI_ACLK,
-        
+
         --Router connection
         R_RX    =>   R_RX,
         R_TX    =>   R_TX,
@@ -192,12 +192,12 @@ AXI_Network_interface: AXI_handshake_wrapper
         R_DCTS  =>   R_DCTS,
         R_RTS   =>   R_RTS,
         R_CTS   =>   R_CTS,
-        
+
         -- Abstraction signals for AXI
         AXI_RX_out          =>  AXI_RX,
         AXI_RX_IRQ_out      =>  AXI_RX_IRQ,
         AXI_data_read_in    =>  AXI_data_read,
-        
+
         AXI_TX_in   =>  AXI_TX,
         AXI_send_en =>  AXI_send_en
     );
@@ -276,10 +276,10 @@ AXI_Network_interface: AXI_handshake_wrapper
 	variable loc_addr :std_logic_vector(OPT_MEM_ADDR_BITS downto 0);
 	begin
 	  if rising_edge(S_AXI_ACLK) then
-	  
+
 	  	AXI_send_en <= '0';
         AXI_data_read <= '0';
-	  
+
 	    if S_AXI_ARESETN = '0' then
 	      RX_reg <= (others => '0');
 	      TX_reg <= (others => '0');
@@ -287,16 +287,16 @@ AXI_Network_interface: AXI_handshake_wrapper
 				--input
 	      loc_addr := axi_awaddr(ADDR_LSB + OPT_MEM_ADDR_BITS downto ADDR_LSB);
 	      if (slv_reg_wren = '1') then
-	        
+
 	        case loc_addr is
-	        
+
 	          -- Read data from AXI
 	          when b"00" =>
 			     TX_reg <= S_AXI_WDATA;
-			     
+
 	          when b"01" =>
 		         AXI_send_en <= '1';
-		          
+
 	          when b"11" =>
 			     AXI_data_read <= '1';
 
@@ -398,7 +398,7 @@ AXI_Network_interface: AXI_handshake_wrapper
 
 	      when b"10" =>
 		      reg_data_out <= AXI_RX;
-		      
+
 	      when others =>
 	          reg_data_out <= (others => '0');
 	    end case;

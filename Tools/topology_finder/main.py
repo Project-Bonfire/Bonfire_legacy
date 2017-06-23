@@ -7,7 +7,7 @@ from display_topology import draw_ag
 number_of_ports = 2
 starting_number_of_links = 15
 
-def calculate_reachability(ag): 
+def calculate_reachability(ag):
 	reachability_counter = 0
 	for source_node in ag.nodes():
 	    for destination_node in ag.nodes():
@@ -52,7 +52,7 @@ if len(list_of_edges) < starting_number_of_links:
 print "starting from ", starting_number_of_links, "links in the network"
 counter = 0
 
-for i in range(len(list_of_edges)-1 , starting_number_of_links-1, -1): 
+for i in range(len(list_of_edges)-1 , starting_number_of_links-1, -1):
 	print "-------------------------------------------------------------------------------------"
 	print "starting to check lists with", i, "bi-directional links out of ",  len(list_of_edges)
 	chosen_edges = itertools.combinations(list_of_edges, i)
@@ -71,7 +71,7 @@ for i in range(len(list_of_edges)-1 , starting_number_of_links-1, -1):
 					break
 
 			if trying:
-				degree_sequence=sorted(networkx.degree(ag).values(),reverse=True)  
+				degree_sequence=sorted(networkx.degree(ag).values(),reverse=True)
 				degree = max(degree_sequence)/2
 				if number_of_ports == degree:
 					reachability = calculate_reachability(ag)
@@ -81,6 +81,6 @@ for i in range(len(list_of_edges)-1 , starting_number_of_links-1, -1):
 						print "port number:", degree, "with reachability: 240 list of links:", edge_list
 						counter += 1
 
-			del ag 
-	
+			del ag
+
 

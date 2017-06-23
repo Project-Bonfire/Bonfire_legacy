@@ -12,12 +12,12 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.TB_Package.all;
 
-USE ieee.numeric_std.ALL; 
+USE ieee.numeric_std.ALL;
 use IEEE.math_real."ceil";
 use IEEE.math_real."log2";
 
 entity tb_network_2x2 is
-end tb_network_2x2; 
+end tb_network_2x2;
 
 
 architecture behavior of tb_network_2x2 is
@@ -25,8 +25,8 @@ architecture behavior of tb_network_2x2 is
 -- Declaring network component
 component network_2x2 is
  generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
-port (reset: in  std_logic; 
-	clk: in  std_logic; 
+port (reset: in  std_logic;
+	clk: in  std_logic;
 	--------------
 	RX_L_0: in std_logic_vector (DATA_WIDTH-1 downto 0);
 	credit_out_L_0, valid_out_L_0: out std_logic;
@@ -74,8 +74,8 @@ port (reset: in  std_logic;
     Rxy_reconf_PE_3: in  std_logic_vector(7 downto 0);
     Cx_reconf_PE_3: in  std_logic_vector(3 downto 0);
     Reconfig_command_3 : in std_logic
-            ); 
-end component; 
+            );
+end component;
 -- Declaring NI component
 
 component NI is
@@ -173,129 +173,129 @@ begin
    clk_process :process
    begin
         clk <= '0';
-        wait for clk_period/2;   
+        wait for clk_period/2;
         clk <= '1';
-        wait for clk_period/2; 
+        wait for clk_period/2;
    end process;
 
 reset <= '1' after 1 ns;
 -- instantiating the network
 NoC: network_2x2 generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
-port map (reset, clk, 
-	RX_L_0, credit_out_L_0, valid_out_L_0, credit_in_L_0, valid_in_L_0,  TX_L_0, 
-	RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1,  TX_L_1, 
-	RX_L_2, credit_out_L_2, valid_out_L_2, credit_in_L_2, valid_in_L_2,  TX_L_2, 
-	RX_L_3, credit_out_L_3, valid_out_L_3, credit_in_L_3, valid_in_L_3,  TX_L_3, 
+port map (reset, clk,
+	RX_L_0, credit_out_L_0, valid_out_L_0, credit_in_L_0, valid_in_L_0,  TX_L_0,
+	RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1,  TX_L_1,
+	RX_L_2, credit_out_L_2, valid_out_L_2, credit_in_L_2, valid_in_L_2,  TX_L_2,
+	RX_L_3, credit_out_L_3, valid_out_L_3, credit_in_L_3, valid_in_L_3,  TX_L_3,
 	-- should be connected to NI
-	link_faults_0, turn_faults_0,	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0, 
-	link_faults_1, turn_faults_1,	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1, 
-	link_faults_2, turn_faults_2,	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2, 
+	link_faults_0, turn_faults_0,	Rxy_reconf_PE_0, Cx_reconf_PE_0, Reconfig_command_0,
+	link_faults_1, turn_faults_1,	Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1,
+	link_faults_2, turn_faults_2,	Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2,
 	link_faults_3, turn_faults_3,	Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3
-            ); 
-not_reset <= not reset; 
+            );
+not_reset <= not reset;
 
 -- connecting the NIs
-NI_0: NI 
+NI_0: NI
    generic map(current_address => 0
-           ) 
-   port map(clk => clk , reset => not_reset , enable => enable_0, 
-        write_byte_enable => write_byte_enable_0, 
-        address => address_0, 
-        data_write => data_write_0, 
-        data_read => data_read_0, 
+           )
+   port map(clk => clk , reset => not_reset , enable => enable_0,
+        write_byte_enable => write_byte_enable_0,
+        address => address_0,
+        data_write => data_write_0,
+        data_read => data_read_0,
         -- interrupt signal: generated evertime a packet is recieved!
-        irq_out => irq_out_0, 
+        irq_out => irq_out_0,
         -- signals for sending packets to network
-        credit_in => credit_out_L_0, 
+        credit_in => credit_out_L_0,
         valid_out => valid_in_L_0,
         TX => RX_L_0, -- data sent to the NoC
         -- signals for reciving packets from the network
-        credit_out => credit_in_L_0, 
+        credit_out => credit_in_L_0,
         valid_in => valid_out_L_0,
         RX => TX_L_0,
         -- fault information signals from the router
-        link_faults => link_faults_0, 
+        link_faults => link_faults_0,
         turn_faults => turn_faults_0,
 
-        Rxy_reconf_PE => Rxy_reconf_PE_0, 
+        Rxy_reconf_PE => Rxy_reconf_PE_0,
         Cx_reconf_PE => Cx_reconf_PE_0,
         Reconfig_command => Reconfig_command_0
   );
-NI_1: NI 
+NI_1: NI
    generic map(current_address => 1
-           ) 
-   port map(clk => clk , reset => not_reset , enable => enable_1, 
-        write_byte_enable => write_byte_enable_1, 
-        address => address_1, 
-        data_write => data_write_1, 
-        data_read => data_read_1, 
+           )
+   port map(clk => clk , reset => not_reset , enable => enable_1,
+        write_byte_enable => write_byte_enable_1,
+        address => address_1,
+        data_write => data_write_1,
+        data_read => data_read_1,
         -- interrupt signal: generated evertime a packet is recieved!
-        irq_out => irq_out_1, 
+        irq_out => irq_out_1,
         -- signals for sending packets to network
-        credit_in => credit_out_L_1, 
+        credit_in => credit_out_L_1,
         valid_out => valid_in_L_1,
         TX => RX_L_1, -- data sent to the NoC
         -- signals for reciving packets from the network
-        credit_out => credit_in_L_1, 
+        credit_out => credit_in_L_1,
         valid_in => valid_out_L_1,
         RX => TX_L_1,
         -- fault information signals from the router
-        link_faults => link_faults_1, 
+        link_faults => link_faults_1,
         turn_faults => turn_faults_1,
 
-        Rxy_reconf_PE => Rxy_reconf_PE_1, 
+        Rxy_reconf_PE => Rxy_reconf_PE_1,
         Cx_reconf_PE => Cx_reconf_PE_1,
         Reconfig_command => Reconfig_command_1
   );
-NI_2: NI 
+NI_2: NI
    generic map(current_address => 2
-           ) 
-   port map(clk => clk , reset => not_reset , enable => enable_2, 
-        write_byte_enable => write_byte_enable_2, 
-        address => address_2, 
-        data_write => data_write_2, 
-        data_read => data_read_2, 
+           )
+   port map(clk => clk , reset => not_reset , enable => enable_2,
+        write_byte_enable => write_byte_enable_2,
+        address => address_2,
+        data_write => data_write_2,
+        data_read => data_read_2,
         -- interrupt signal: generated evertime a packet is recieved!
-        irq_out => irq_out_2, 
+        irq_out => irq_out_2,
         -- signals for sending packets to network
-        credit_in => credit_out_L_2, 
+        credit_in => credit_out_L_2,
         valid_out => valid_in_L_2,
         TX => RX_L_2, -- data sent to the NoC
         -- signals for reciving packets from the network
-        credit_out => credit_in_L_2, 
+        credit_out => credit_in_L_2,
         valid_in => valid_out_L_2,
         RX => TX_L_2,
         -- fault information signals from the router
-        link_faults => link_faults_2, 
+        link_faults => link_faults_2,
         turn_faults => turn_faults_2,
 
-        Rxy_reconf_PE => Rxy_reconf_PE_2, 
+        Rxy_reconf_PE => Rxy_reconf_PE_2,
         Cx_reconf_PE => Cx_reconf_PE_2,
         Reconfig_command => Reconfig_command_2
   );
-NI_3: NI 
+NI_3: NI
    generic map(current_address => 3
-           ) 
-   port map(clk => clk , reset => not_reset , enable => enable_3, 
-        write_byte_enable => write_byte_enable_3, 
-        address => address_3, 
-        data_write => data_write_3, 
-        data_read => data_read_3, 
+           )
+   port map(clk => clk , reset => not_reset , enable => enable_3,
+        write_byte_enable => write_byte_enable_3,
+        address => address_3,
+        data_write => data_write_3,
+        data_read => data_read_3,
         -- interrupt signal: generated evertime a packet is recieved!
-        irq_out => irq_out_3, 
+        irq_out => irq_out_3,
         -- signals for sending packets to network
-        credit_in => credit_out_L_3, 
+        credit_in => credit_out_L_3,
         valid_out => valid_in_L_3,
         TX => RX_L_3, -- data sent to the NoC
         -- signals for reciving packets from the network
-        credit_out => credit_in_L_3, 
+        credit_out => credit_in_L_3,
         valid_in => valid_out_L_3,
         RX => TX_L_3,
         -- fault information signals from the router
-        link_faults => link_faults_3, 
+        link_faults => link_faults_3,
         turn_faults => turn_faults_3,
 
-        Rxy_reconf_PE => Rxy_reconf_PE_3, 
+        Rxy_reconf_PE => Rxy_reconf_PE_3,
         Cx_reconf_PE => Cx_reconf_PE_3,
         Reconfig_command => Reconfig_command_3
   );
@@ -306,25 +306,25 @@ NI_control(2, 100, 0, 12, 8, 8, 10000 ns, clk,
            -- NI configuration
            reserved_address, flag_address, counter_address, reconfiguration_address, self_diagnosis_address,
            -- NI signals
-           enable_0, write_byte_enable_0, address_0, data_write_0, data_read_0, test_0); 
+           enable_0, write_byte_enable_0, address_0, data_write_0, data_read_0, test_0);
 
 NI_control(2, 100, 1, 3, 8, 8, 10000 ns, clk,
            -- NI configuration
            reserved_address, flag_address, counter_address, reconfiguration_address, self_diagnosis_address,
            -- NI signals
-           enable_1, write_byte_enable_1, address_1, data_write_1, data_read_1, test_1); 
+           enable_1, write_byte_enable_1, address_1, data_write_1, data_read_1, test_1);
 
 NI_control(2, 100, 2, 13, 8, 8, 10000 ns, clk,
            -- NI configuration
            reserved_address, flag_address, counter_address, reconfiguration_address, self_diagnosis_address,
            -- NI signals
-           enable_2, write_byte_enable_2, address_2, data_write_2, data_read_2, test_2); 
+           enable_2, write_byte_enable_2, address_2, data_write_2, data_read_2, test_2);
 
 NI_control(2, 100, 3, 14, 8, 8, 10000 ns, clk,
            -- NI configuration
            reserved_address, flag_address, counter_address, reconfiguration_address, self_diagnosis_address,
            -- NI signals
-           enable_3, write_byte_enable_3, address_3, data_write_3, data_read_3, test_3); 
+           enable_3, write_byte_enable_3, address_3, data_write_3, data_read_3, test_3);
 
 
 

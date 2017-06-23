@@ -3,7 +3,7 @@
 # TODO: update latency script to also handle FI cases!
 
 PL=8
-# check if there is a 
+# check if there is a
 if [ ! -d "output" ]; then
     mkdir output
 else
@@ -12,11 +12,11 @@ else
     mkdir output
 fi
 
-for j in 0 1 2 3 4 5 
+for j in 0 1 2 3 4 5
 do
 	mkdir output/$j
 	for i in 0.005 0.01 0.015 0.02 0.025 0.03
-	  do 
+	  do
 	     echo "running simulate.py for PIR: $i "
 	     # here we run the tool...
 	     python ../../simulate.py -D 2 -credit_based_FC -packet_drop -FC -FI -NI_Test -SHMU -Rand $i -PS $PL $PL -sim 10000 -end 11000 -lat

@@ -179,13 +179,13 @@ begin
         wait for TCK_period/2;
       end loop;
     end procedure tck_tick;
-    
+
     procedure tck_halftick_high is
     begin
       TCK <= '1';
       wait for TCK_period/2;
     end procedure tck_halftick_high;
-             
+
     procedure tck_halftick_low is
     begin
       TCK <= '0';

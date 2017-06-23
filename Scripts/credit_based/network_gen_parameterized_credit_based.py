@@ -101,7 +101,7 @@ if CB_Package.add_tracker:
 
 noc_file.write("---------------------------------------------------------------\n")
 noc_file.write("-- binding the routers together\n")
- 
+
 for i in range(0, CB_Package.network_dime**2):
     node_x = i % CB_Package.network_dime
     node_y = i / CB_Package.network_dime
@@ -114,7 +114,7 @@ for i in range(0, CB_Package.network_dime**2):
         noc_file.write("credit_in_N_"+str(i+CB_Package.network_dime)+" <= credit_out_S_"+str(i)+";\n")
         noc_file.write("-------------------\n")
 noc_file.write("\n")
- 
+
 for i in range(0, CB_Package.network_dime**2):
     node_x = i % CB_Package.network_dime
     node_y = i / CB_Package.network_dime
@@ -145,8 +145,8 @@ if (CB_Package.add_packet_drop and CB_Package.add_FC):
             noc_file.write("Faulty_S_in"+str(i)+" <= Faulty_N_out"+str(south_node)+";\n")
 
         if node_x > 0:
-            noc_file.write("Faulty_W_in"+str(i)+" <= Faulty_E_out"+str(west_node)+";\n")    
-        
+            noc_file.write("Faulty_W_in"+str(i)+" <= Faulty_E_out"+str(west_node)+";\n")
+
         if node_x < CB_Package.network_dime-1:
-            noc_file.write("Faulty_E_in"+str(i)+" <= Faulty_W_out"+str(east_node)+";\n")  
+            noc_file.write("Faulty_E_in"+str(i)+" <= Faulty_W_out"+str(east_node)+";\n")
 noc_file.write("end;\n")

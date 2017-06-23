@@ -20,10 +20,10 @@ wave_file.write("onerror {resume}\n")
 wave_file.write("quietly WaveActivateNextPane {} 0\n")
 for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -group {NoC RX} -color green -radix decimal :"+tb_name+":RX_L_"+str(i)+"\n")
- 
+
 for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -group {NoC TX} -color green -radix decimal :"+tb_name+":TX_L_"+str(i)+"\n")
- 
+
 
 for i in range(0 , network_dime*network_dime):
 	if i/network_dime != 0:

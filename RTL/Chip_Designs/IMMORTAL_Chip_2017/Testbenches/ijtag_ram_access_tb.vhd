@@ -1,21 +1,21 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
+-- Company:
+-- Engineer:
+--
 -- Create Date: 06/21/2017 05:18:09 PM
--- Design Name: 
+-- Design Name:
 -- Module Name: ijtag_ram_access_tb - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
+-- Project Name:
+-- Target Devices:
+-- Tool Versions:
+-- Description:
+--
+-- Dependencies:
+--
 -- Revision:
 -- Revision 0.01 - File Created
 -- Additional Comments:
--- 
+--
 ----------------------------------------------------------------------------------
 
 
@@ -61,10 +61,10 @@ component RAMAccessInstrument is
  Generic ( DataSize : positive := 8;
           AddressSize : positive := 8);
    Port ( -- Scan Interface scan_client ----------
-           SI : in STD_LOGIC; -- ScanInPort 
+           SI : in STD_LOGIC; -- ScanInPort
           SO : out STD_LOGIC; -- ScanOutPort
           SEL : in STD_LOGIC; -- SelectPort
-          ----------------------------------------        
+          ----------------------------------------
           SE : in STD_LOGIC; -- ShiftEnPort
           CE : in STD_LOGIC; -- CaptureEnPort
           UE : in STD_LOGIC; -- UpdateEnPort
@@ -96,7 +96,7 @@ RAM_instr : RAMAccessInstrument
                RAM_data_write => RAM_data_write,
                RAM_address_out => RAM_address_out,
                RAM_write_enable => RAM_write_enable);
-               
+
 RAM_data_read <= "00000000000000001111000000000000";
 
 ijtag_shift_proc: process
@@ -110,13 +110,13 @@ ijtag_shift_proc: process
         wait for TCK_period/2;
       end loop;
     end procedure tck_tick;
-    
+
     procedure tck_halftick_high is
     begin
       TCK <= '1';
       wait for TCK_period/2;
     end procedure tck_halftick_high;
-             
+
     procedure tck_halftick_low is
     begin
       TCK <= '0';
@@ -166,11 +166,11 @@ ijtag_shift_proc: process
 
     shift_data("1"); -- open sib_mem
     tck_tick(4);
-    
+
     shift_data("11"&"0"); -- open sib_mem and sib_addr and close sib_data
     shift_data("11"&"110000000000000000000000000000000"&"0"); -- shift in address 3 and no autoincrement
     shift_data("10"&"101000000000000000000000000000001"&"1"); -- shift in address 5, close addr_sib and enable autoincrement
-    
+
     shift_data("10"&"1"&"01110000000000000000000000000000"); -- shift in data 14
 
     wait;

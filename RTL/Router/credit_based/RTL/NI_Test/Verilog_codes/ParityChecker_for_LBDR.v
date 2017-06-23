@@ -3,7 +3,7 @@
 module parity_checker_for_LBDR (
 								RX,
 								empty,
-								
+
 								faulty
 							   );
 
@@ -18,7 +18,7 @@ reg xor_all;
 wire [DATA_WIDTH-2 : 0] xor_reduce_RX = RX[DATA_WIDTH-1 : 1]; // XOR_REDUCE(RX(DATA_WIDTH-1 downto 1));
 
 always @* begin
-	if (empty == 0) 
+	if (empty == 0)
 		xor_all <= ^xor_reduce_RX; // XOR_REDUCE(RX(DATA_WIDTH-1 downto 1));
 	else
 		xor_all <= 0;
@@ -26,7 +26,7 @@ end
 
 always @* begin
 	faulty <= 0;
-	if (xor_all != RX[0]) 
+	if (xor_all != RX[0])
 		faulty <= 1;
 end
 

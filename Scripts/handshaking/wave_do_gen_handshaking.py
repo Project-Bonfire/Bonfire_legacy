@@ -5,7 +5,7 @@ if '-D'  in sys.argv[1:]:
 else:
 	network_dime = 4
 
-if '-o'  in sys.argv[1:]: 
+if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
   if ".do" not in file_path:
       raise ValueError("wrong file extention. only do files are accepted!")
@@ -31,7 +31,7 @@ for i in range(0 , network_dime*network_dime):
 	wave_file.write("add wave -noupdate -color Gold :"+tb_name+":CTS_L_"+str(i)+"\n")
 	wave_file.write("add wave -noupdate -color Gold :"+tb_name+":DRTS_L_"+str(i)+"\n")
 	wave_file.write("add wave -noupdate -color Violet -radix decimal :"+tb_name+":TX_L_"+str(i)+"\n")
-	wave_file.write("add wave -noupdate -color Violet :"+tb_name+":RTS_L_"+str(i)+"\n") 
+	wave_file.write("add wave -noupdate -color Violet :"+tb_name+":RTS_L_"+str(i)+"\n")
 	wave_file.write("add wave -noupdate -color Violet :"+tb_name+":DCTS_L_"+str(i)+"\n")
  	wave_file.write("add wave -noupdate :"+tb_name+":clk\n")
 for i in range(0 , network_dime*network_dime):

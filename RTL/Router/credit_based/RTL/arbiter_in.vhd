@@ -14,7 +14,7 @@ end;
 
 architecture behavior of arbiter_in is
 
- 
+
  TYPE STATE_TYPE IS (IDLE, North, East, West, South, Local);
  SIGNAL state, state_in   : STATE_TYPE := IDLE;
 
@@ -37,10 +37,10 @@ begin
     X_W <= '0';
     X_S <= '0';
     X_L <= '0';
-    
-    case state is 
+
+    case state is
       when IDLE => -- In the arbiter for hand-shaking FC router, L had the  highest priority (L, N, E, W, S)
-      			   -- Here it seems N has the higest priority, is it fine ? 
+      			   -- Here it seems N has the higest priority, is it fine ?
       	if req_X_N ='1'  then
       		state_in <= North;
         	X_N <= '1';
@@ -157,8 +157,8 @@ begin
 	    else
 	    	state_in <= state;
 	    end if;
-	    
+
     end case;
-    
+
 end process;
 end;

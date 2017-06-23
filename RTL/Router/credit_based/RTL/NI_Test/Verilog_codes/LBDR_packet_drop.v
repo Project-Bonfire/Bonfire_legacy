@@ -3,28 +3,28 @@
 * Description:  LBDR with packet dropping
 *
 * $Revision:
-* $Id: 
-* $Date: 
+* $Id:
+* $Date:
 * $Author:
 *********************/
 
 
-module LBDR_packet_drop (reset, 
+module LBDR_packet_drop (reset,
 						 clk,
 
 			             Faulty_C_N, Faulty_C_E, Faulty_C_W, Faulty_C_S,
 
-			             empty, 
-			             flit_type, 
-			             dst_addr, 
-			             faulty, 
-			             packet_drop_order, 
-			             grant_N, grant_E, grant_W, grant_S, grant_L, 
-			             Req_N, Req_E, Req_W, Req_S, Req_L, 
+			             empty,
+			             flit_type,
+			             dst_addr,
+			             faulty,
+			             packet_drop_order,
+			             grant_N, grant_E, grant_W, grant_S, grant_L,
+			             Req_N, Req_E, Req_W, Req_S, Req_L,
 
-			             Rxy_reconf_PE, 
+			             Rxy_reconf_PE,
 			             Cx_reconf_PE,
-			             Reconfig_command			             
+			             Reconfig_command
 			            );
 
   parameter cur_addr_rst = 8;
@@ -45,7 +45,7 @@ module LBDR_packet_drop (reset,
 
   output packet_drop_order;
   output Req_N, Req_E, Req_W, Req_S, Req_L;
-  
+
   // Declaring the local variables
   // Not sure, but if something gets a value in a process, make it reg !
   reg [3:0] Cx, Cx_in;
@@ -73,10 +73,10 @@ module LBDR_packet_drop (reset,
   wire S1 = ( cur_addr[NoC_size-1 : NoC_size/2] < dst_addr[NoC_size-1 : NoC_size/2] ) ? 1'b1 : 1'b0;
 
 
-  // Sequential part  
+  // Sequential part
 
 	always @(posedge clk) begin
-	  if (reset == 0) begin 
+	  if (reset == 0) begin
 	  	  Rxy <= Rxy_rst;
 	  	  Rxy_tmp <= { 8 {1'b0} };
 
@@ -92,7 +92,7 @@ module LBDR_packet_drop (reset,
 	  	  packet_drop <= 0;
 	  end
 	  else begin
-	  	  Rxy <= Rxy_in;	
+	  	  Rxy <= Rxy_in;
 	  	  Rxy_tmp <=  Rxy_tmp_in;
 
 	  	  Req_N_FF <= Req_N_in;
@@ -107,7 +107,7 @@ module LBDR_packet_drop (reset,
 	  	  packet_drop <= packet_drop_in;
 	  end
 	end
-     
+
 	//Anything below is combinational
 
 	always @* begin
@@ -125,11 +125,11 @@ module LBDR_packet_drop (reset,
 		    Rxy_tmp_in <= Rxy_tmp;
 			ReConf_FF_in <= ReConf_FF_out;
 		end
-	  end 
+	  end
 	end
 
 
-	always @* begin	  
+	always @* begin
 	  Temp_Cx_in <= Temp_Cx;
 	  if (reconfig_cx == 1 && flit_type == 3'b100 && empty == 0 && grants == 1) begin
 	    Cx_in <= Temp_Cx;
@@ -137,14 +137,14 @@ module LBDR_packet_drop (reset,
 	  end
 	  else begin
 	    Cx_in <= Cx;
-	    if ( (Faulty_C_N | Faulty_C_E | Faulty_C_W | Faulty_C_S) == 1 ) begin 
+	    if ( (Faulty_C_N | Faulty_C_E | Faulty_C_W | Faulty_C_S) == 1 ) begin
 	      reconfig_cx_in <= 1;
 	      Temp_Cx_in <= (~{Faulty_C_S, Faulty_C_W, Faulty_C_E, Faulty_C_N}) & Cx;
 	    end
-	    else if (Reconfig_command == 1) begin 
+	    else if (Reconfig_command == 1) begin
 			reconfig_cx_in <= 1;
 			Temp_Cx_in <= Cx_reconf_PE;
-	    end 
+	    end
 	    else
 	    	reconfig_cx_in <= reconfig_cx;
 	  end
@@ -166,12 +166,12 @@ module LBDR_packet_drop (reset,
 
 	        if (dst_addr == cur_addr)
 				Req_L_in <= 1;
-	        else 
+	        else
 				Req_L_in <= 0; //  Added to remove latch possibility. Correct ??
 
-			if ( faulty == 1 || ( ((((N1 & ~E1 & ~W1) | (N1 & E1 & Rxy[0]) | (N1 & W1 & Rxy[1])) & Cx[0]) == 0) && 
-			                      ((((E1 & ~N1 & ~S1) | (E1 & N1 & Rxy[2]) | (E1 & S1 & Rxy[3])) & Cx[1]) == 0) && 
-			                      ((((W1 & ~N1 & ~S1) | (W1 & N1 & Rxy[4]) | (W1 & S1 & Rxy[5])) & Cx[2]) == 0) && 
+			if ( faulty == 1 || ( ((((N1 & ~E1 & ~W1) | (N1 & E1 & Rxy[0]) | (N1 & W1 & Rxy[1])) & Cx[0]) == 0) &&
+			                      ((((E1 & ~N1 & ~S1) | (E1 & N1 & Rxy[2]) | (E1 & S1 & Rxy[3])) & Cx[1]) == 0) &&
+			                      ((((W1 & ~N1 & ~S1) | (W1 & N1 & Rxy[4]) | (W1 & S1 & Rxy[5])) & Cx[2]) == 0) &&
 			                      ((((S1 & ~E1 & ~W1) | (S1 & E1 & Rxy[6]) | (S1 & W1 & Rxy[7])) & Cx[3]) == 0) &&
 			                      (dst_addr != cur_addr) ) ) begin
 				packet_drop_in <= 1;
@@ -179,16 +179,16 @@ module LBDR_packet_drop (reset,
 				Req_E_in <= 0;
 				Req_W_in <= 0;
 				Req_S_in <= 0;
-				Req_L_in <= 0;			
+				Req_L_in <= 0;
 		 	end
-	    end 
+	    end
 		else if (flit_type == 3'b100 && empty == 0 && grants == 1) begin
 	        Req_N_in <= 0;
 	        Req_E_in <= 0;
 	        Req_W_in <= 0;
 	        Req_S_in <= 0;
 	        Req_L_in <= 0;
-	    end 
+	    end
 		else begin
 		    Req_N_in <= Req_N_FF;
 		    Req_E_in <= Req_E_FF;

@@ -57,9 +57,9 @@ begin
 --are delayed by one clock cycle:  a_bus, b_bus, alu/shift/mult_func,
 --c_source, and rd_index.
 pipeline3: process(clk, reset, a_bus, b_bus, alu_func, shift_func, mult_func,
-      rd_index, rd_index_reg, pause_any, pause_enable_reg, 
+      rd_index, rd_index_reg, pause_any, pause_enable_reg,
       rs_index, rt_index,
-      pc_source, mem_source, a_source, b_source, c_source, c_source_reg, 
+      pc_source, mem_source, a_source, b_source, c_source, c_source_reg,
       reg_dest, reg_dest_reg, reg_dest_delay, c_bus)
    variable pause_mult_clock : std_logic;
    variable freeze_pipeline  : std_logic;
@@ -77,15 +77,15 @@ begin
    rd_indexD <= rd_index_reg;
 
    -- The value written back into the register bank, signal reg_dest is tricky.
-   -- If reg_dest comes from the ALU via the signal c_bus, it is already delayed 
-   -- into stage #3, because a_busD and b_busD are delayed.  If reg_dest comes from 
-   -- c_memory, pc_current, or pc_plus4 then reg_dest hasn't yet been delayed into 
+   -- If reg_dest comes from the ALU via the signal c_bus, it is already delayed
+   -- into stage #3, because a_busD and b_busD are delayed.  If reg_dest comes from
+   -- c_memory, pc_current, or pc_plus4 then reg_dest hasn't yet been delayed into
    -- stage #3.
    -- Instead of delaying c_memory, pc_current, and pc_plus4, these signals
    -- are multiplexed into reg_dest which is then delayed.  The decision to use
-   -- the already delayed c_bus or the delayed value of reg_dest (reg_dest_reg) is 
+   -- the already delayed c_bus or the delayed value of reg_dest (reg_dest_reg) is
    -- based on a delayed value of c_source (c_source_reg).
-   
+
    if c_source_reg = C_FROM_ALU then
       reg_dest_delay <= c_bus;        --delayed by 1 clock cycle via a_busD & b_busD
    else
@@ -105,7 +105,7 @@ begin
       pause_enable_reg <= '0';
    elsif rising_edge(clk) then
       if freeze_pipeline = '0' then
-         if (rs_index = "000000" or rs_index /= rd_index_reg) or 
+         if (rs_index = "000000" or rs_index /= rd_index_reg) or
             (a_source /= A_FROM_REG_SOURCE or pause_enable_reg = '0') then
             a_busD <= a_bus;
          else

@@ -70,7 +70,7 @@ int main(int argc, char const *argv[]) {
                 uart_print_num(packet_counter, 10, 0);
                 uart_putchar('\n');
                 ni_write(build_header(DST_ADDR, 3));
-                
+
             }
 	    else if (flit_type == FLIT_TYPE_TAIL){
 		payload = get_flit_payload(flit);
@@ -81,7 +81,7 @@ int main(int argc, char const *argv[]) {
             {
                 payload = get_flit_payload(flit);
                 ni_write(payload);
-		
+
             }
         }
     }

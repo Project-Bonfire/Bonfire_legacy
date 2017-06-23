@@ -7,4 +7,4 @@ particular purpose are disclaimed.
 
 
 The code has been modified by Karl Janson in 2016. Above mentioned license applies
-to this version as well. 
+to this version as well.

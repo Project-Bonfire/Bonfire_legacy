@@ -6,7 +6,7 @@
 
 # there are some things you should be carefull with:
 # 		- if you have different packets with the same source, destination, and packet id
-# 		  in your files, it will badly mess up the vizualization. Since the packet_id in 
+# 		  in your files, it will badly mess up the vizualization. Since the packet_id in
 # 		  our system is 8 bits, after sending 256 packets from one node, you will face
 # 		  this problem. At the moment i dont have a solution for it! just reduce your
 #		  packet injection rate or reduce the simulation time (so you inject less packets!)
@@ -25,7 +25,7 @@ import matplotlib.patches as patches
 
 def find_events():
     """
-    goes through all the files in trace folder and generates info dictionaries 
+    goes through all the files in trace folder and generates info dictionaries
     returns time_dic, packet_dic, end_of_sim
     time dic: dictionary with time as key and list of flit info as value
     packet_dic: dictionary with packet identifier (source,destination,id) as key and list of flit info as value
@@ -38,12 +38,12 @@ def find_events():
     print "parsing file: "
     for f in os.listdir(package.TRACE_DIR):
         if f.endswith('.txt'):
-            print "\t", f 
+            print "\t", f
             counter = 0
             traffic_dic = {}
             file = open(package.TRACE_DIR+"/"+str(f), 'r')
             line = file.readline()
-            while line != '': 
+            while line != '':
                 split_line = line.split()
                 flit_type = split_line[0]
                 time_stamp = float(split_line[3])/1000
@@ -100,7 +100,7 @@ def find_events():
 
     print "number of Events: ", len(time_dic)
     print "number of packets: ", len(packet_dic)
-    print "end of simulation:", end_of_sim 
+    print "end of simulation:", end_of_sim
     print "sorted all the events... returning!"
     print "-----------------------------------"
     return time_dic, packet_dic, end_of_sim
@@ -133,14 +133,14 @@ def init():
             plt.gca().add_patch(patches.Arrow(x+0.1, y+0.03, 0.8, 0, width=0.05, color = "gray"))
         if x != 0:
             plt.gca().add_patch(patches.Arrow(x-0.1, y-0.03, -0.8, 0, width=0.05, color = "gray"))
-    
+
         if y != 0:
             plt.gca().add_patch(patches.Arrow(x+0.03, y-0.1, 0, -0.8, width=0.05, color = "gray"))
-    
+
         if y != noc_size-1:
             plt.gca().add_patch(patches.Arrow(x-0.03, y+0.1, 0, 0.8, width=0.05, color = "gray"))
     time_stamp_view = plt.text(-0.35, (noc_size-1)+0.24, "time: 0 ns", fontsize=10)
-    return None 
+    return None
 
 
 def func(i):
@@ -148,7 +148,7 @@ def func(i):
     Updates the positions of the packets...
     """
     global events, packets, time_stamp_view, packet_dic, noc_size
-    
+
     time = i/10.0
     x={}
     y={}
@@ -190,8 +190,8 @@ def func(i):
                 y[event[2]] = [current_y]
             else:
                 x[event[2]].append(current_x)
-                y[event[2]].append(current_y) 
-            
+                y[event[2]].append(current_y)
+
             #processed_packets.append(event[2])
     for event in x.keys():
         if event not in packets.keys():
@@ -200,9 +200,9 @@ def func(i):
                 packets[event].set_color('red')
             else:
                 r = lambda: random.randint(0,255)
-                packets[event].set_color('#%02X%02X%02X' % (0,r(),r())) 
+                packets[event].set_color('#%02X%02X%02X' % (0,r(),r()))
         packets[event].set_data(x[event], y[event], )
-            
+
     if time-1 in events.keys():
         del events[time-1]
         print "removing all events of time:", time-1, "events left:", len(events)
@@ -232,8 +232,8 @@ def viz_traffic(network_size):
 
     global packets, ax, events, packet_dic, noc_size
 
-    events, packet_dic, end_of_sim = find_events()  
-    
+    events, packet_dic, end_of_sim = find_events()
+
     noc_size  = network_size
     print "generating the figure and axis for a "+str(noc_size)+" by "+str(noc_size)+ " network!"
 
@@ -243,15 +243,15 @@ def viz_traffic(network_size):
     fig = plt.figure()
     ax = fig.add_subplot(111, aspect='equal', autoscale_on=False,
                          xlim=(-0.5, (noc_size-1)+0.5), ylim=(-0.5, (noc_size-1)+0.5))
-    
+
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
 
     packets = {}
-    
 
-    ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim+5)*10, 
+
+    ani = animation.FuncAnimation(fig, func, frames=int(end_of_sim+5)*10,
                                   interval=1, blit=False, init_func=init())
- 
+
     plt.show()
     #ani.save(package.TMP_DIR+'/im.mp4', writer=writer)

@@ -18,14 +18,14 @@ end;
 
 architecture behavior of shift_register_serial_in is
 
-signal shift_register_mem_out : std_logic_vector(REG_WIDTH-1 downto 0); 
+signal shift_register_mem_out : std_logic_vector(REG_WIDTH-1 downto 0);
 
 begin
 process (clk, reset)
-begin 
+begin
     if reset = '0'  then
         shift_register_mem_out <= (others => '0');
-    elsif clk'event and clk = '1' then 
+    elsif clk'event and clk = '1' then
         if shift = '1' then
             shift_register_mem_out <=  shift_register_mem_out (REG_WIDTH-2 downto 0) & data_in_serial;
         end if;

@@ -26,13 +26,13 @@ end LBDR_LV;
 architecture behavior of LBDR_LV is
 
   signal Cx:  std_logic_vector(3 downto 0);
-  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  
-  signal N1, E1, W1, S1  :std_logic :='0';  
+  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);
+  signal N1, E1, W1, S1  :std_logic :='0';
   signal grants: std_logic;
-  signal Req_E_in, Req_W_in, Req_L_in: std_logic;  
+  signal Req_E_in, Req_W_in, Req_L_in: std_logic;
   signal Req_E_FF, Req_W_FF, Req_L_FF: std_logic;
- 
-begin 
+
+begin
 
  grants <= grant_E or grant_W or grant_L;
 
@@ -44,20 +44,20 @@ begin
   W1 <= '1' when  dst_addr((NoC_size/2)-1 downto 0) < cur_addr((NoC_size/2)-1 downto 0) else '0';
   S1 <= '1' when  cur_addr(NoC_size-1 downto NoC_size/2) < dst_addr(NoC_size-1 downto NoC_size/2) else '0';
 
-  
+
 process(clk, reset)
 begin
-  if reset = '0' then 
+  if reset = '0' then
     Req_E_FF <= '0';
     Req_W_FF <= '0';
     Req_L_FF <= '0';
-  elsif clk'event and clk = '1' then 
+  elsif clk'event and clk = '1' then
     Req_E_FF <= Req_E_in;
     Req_W_FF <= Req_W_in;
     Req_L_FF <= Req_L_in;
   end if;
 end process;
- 
+
 
 -- The combionational part
 
@@ -71,7 +71,7 @@ process(N1, E1, W1, S1, Cx, empty, Req_E_FF, Req_W_FF, Req_L_FF, grants) begin
         Req_E_in <= (N1 or (E1 and not S1)) and Cx(1);
         Req_W_in <= (S1 or (W1 and not N1)) and Cx(2);
         Req_L_in <= not N1 and not E1 and not W1 and not S1;
-    else 
+    else
         Req_E_in <= (S1 or (E1 and not N1)) and Cx(1);
         Req_W_in <= (N1 or (W1 and not S1)) and Cx(2);
         Req_L_in <= not N1 and not E1 and not W1 and not S1;
@@ -87,5 +87,5 @@ process(N1, E1, W1, S1, Cx, empty, Req_E_FF, Req_W_FF, Req_L_FF, grants) begin
         Req_L_in <= Req_L_FF;
   end if;
 end process;
-   
+
 END;

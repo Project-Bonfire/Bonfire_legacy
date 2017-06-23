@@ -54,7 +54,7 @@ architecture rtl of memory is
                 if pause = '0' then
                     data_read <= data;
                 end if;
-                
+
             end if;
 
         end process;

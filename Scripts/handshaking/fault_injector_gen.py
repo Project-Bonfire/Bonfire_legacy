@@ -16,7 +16,7 @@ else:
   data_width = 32
 
 
-if '-o'  in sys.argv[1:]: 
+if '-o'  in sys.argv[1:]:
   file_path = sys.argv[sys.argv.index('-o')+1]
   if ".vhd" not in file_path:
       raise ValueError("wrong file extention. only vhdl files are accepted!")
@@ -25,7 +25,7 @@ else:
 
 fi_file = open(file_path, 'w')
 
-fi_addres_width = int(ceil(log(data_width,2)))    
+fi_addres_width = int(ceil(log(data_width,2)))
 
 fi_file.write("--Copyright (C) 2016 Siavoosh Payandeh Azad")
 fi_file.write("\n")

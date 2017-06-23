@@ -118,7 +118,7 @@ begin  --architecture
          Rxy_reconf_PE     => Rxy_reconf_PE,
          Cx_reconf_PE      => Cx_reconf_PE,
          Reconfig_command  => Reconfig_command
-         
+
          );
 
    dram_proc: process(clk, address, byte_we, data_write, pause)

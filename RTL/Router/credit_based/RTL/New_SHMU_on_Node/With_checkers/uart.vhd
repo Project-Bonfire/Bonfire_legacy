@@ -47,7 +47,7 @@ architecture logic of uart is
 begin
 
 uart_proc: process(clk, reset, enable_read, enable_write, data_in,
-                   data_write_reg, bits_write_reg, delay_write_reg, 
+                   data_write_reg, bits_write_reg, delay_write_reg,
                    data_read_reg, bits_read_reg, delay_read_reg,
                    data_save_reg, read_value_reg, uart_read2,
                    busy_write_sig, uart_read)
@@ -117,7 +117,7 @@ begin
 
       --Control character buffer
       if bits_read_reg = "0000" and delay_read_reg = COUNT_VALUE then
-         if data_save_reg(8) = '0' or 
+         if data_save_reg(8) = '0' or
                (enable_read = '1' and data_save_reg(17) = '0') then
             --Empty buffer
             data_save_reg(8 downto 0) <= '1' & data_read_reg;
@@ -135,9 +135,9 @@ begin
    end if;  --rising_edge(clk)
 
    uart_write <= data_write_reg(0);
-   if bits_write_reg /= "0000" 
+   if bits_write_reg /= "0000"
 -- Comment out the following line for full UART simulation (much slower)
-   and log_file = "UNUSED" 
+   and log_file = "UNUSED"
    then
       busy_write_sig <= '1';
    else
@@ -146,7 +146,7 @@ begin
    busy_write <= busy_write_sig;
    data_avail <= data_save_reg(8);
    data_out <= data_save_reg(7 downto 0);
-   
+
 end process; --uart_proc
 
 -- synthesis_off

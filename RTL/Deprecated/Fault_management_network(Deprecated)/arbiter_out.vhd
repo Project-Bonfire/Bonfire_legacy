@@ -4,7 +4,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity arbiter_out_LV is
-    port (  
+    port (
             reset: in  std_logic;
             clk: in  std_logic;
             X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y :in std_logic; -- From LBDR modules
@@ -33,7 +33,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
     grant_Y_W <= '0';
     grant_Y_S <= '0';
     grant_Y_L <= '0';
-    case state is 
+    case state is
       when IDLE =>
           if X_N_Y ='1'  then
               state_in <= North;
@@ -47,7 +47,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= Local;
           else
               state_in <= IDLE;
-          end if; 
+          end if;
       when North =>
           if credit = '1' then
             grant_Y_N <= '1';
@@ -132,7 +132,7 @@ process(state, X_N_Y, X_E_Y, X_W_Y, X_S_Y, X_L_Y, credit) begin
               state_in <= South;
           else
               state_in <= IDLE;
-          end if; 
+          end if;
     end case;
 
 end process;

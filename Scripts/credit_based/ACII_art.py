@@ -18,7 +18,7 @@ def generate_ascii_art(noc_file, network_dime):
         for i in range(0, network_dime):
             if i != network_dime-1:
                 link = "---"
-                 
+
                 if (i+network_dime*j) >= 10:
                     noc_file.write(" | "+str(i+network_dime*j)+" | "+link)
                 else:
@@ -31,7 +31,7 @@ def generate_ascii_art(noc_file, network_dime):
 
         noc_file.write("\n")
         link = "|"
-         
+
         if j == network_dime-1:
             noc_file.write("--  v  ")
         else:

@@ -1,5 +1,5 @@
 
-module fault_injector_DATA_WIDTH28_ADDRESS_WIDTH5 ( data_in, address, sta_0, 
+module fault_injector_DATA_WIDTH28_ADDRESS_WIDTH5 ( data_in, address, sta_0,
         sta_1, data_out );
   input [27:0] data_in;
   input [4:0] address;
@@ -81,7 +81,7 @@ module fault_injector_DATA_WIDTH28_ADDRESS_WIDTH5 ( data_in, address, sta_0,
 endmodule
 
 
-module shift_register_serial_in_REG_WIDTH35 ( clk, reset, shift, 
+module shift_register_serial_in_REG_WIDTH35 ( clk, reset, shift,
         data_in_serial, data_out_parallel, data_out_serial );
   output [34:0] data_out_parallel;
   input clk, reset, shift, data_in_serial;
@@ -204,16 +204,16 @@ module shift_register_serial_in_REG_WIDTH35 ( clk, reset, shift,
 endmodule
 
 
-module FIFO_control_part_checkers ( DRTS, CTS_out, CTS_in, read_en_N, 
-        read_en_E, read_en_W, read_en_S, read_en_L, read_pointer, 
-        read_pointer_in, write_pointer, write_pointer_in, empty_out, full_out, 
-        read_en_out, write_en_out, err_write_en_write_pointer, 
-        err_not_write_en_write_pointer, 
-        err_read_pointer_write_pointer_not_empty, 
-        err_read_pointer_write_pointer_empty, 
-        err_read_pointer_write_pointer_not_full, 
-        err_read_pointer_write_pointer_full, err_read_pointer_increment, 
-        err_read_pointer_not_increment, err_write_en, err_not_CTS_in, 
+module FIFO_control_part_checkers ( DRTS, CTS_out, CTS_in, read_en_N,
+        read_en_E, read_en_W, read_en_S, read_en_L, read_pointer,
+        read_pointer_in, write_pointer, write_pointer_in, empty_out, full_out,
+        read_en_out, write_en_out, err_write_en_write_pointer,
+        err_not_write_en_write_pointer,
+        err_read_pointer_write_pointer_not_empty,
+        err_read_pointer_write_pointer_empty,
+        err_read_pointer_write_pointer_not_full,
+        err_read_pointer_write_pointer_full, err_read_pointer_increment,
+        err_read_pointer_not_increment, err_write_en, err_not_CTS_in,
         err_read_en_mismatch );
   input [3:0] read_pointer;
   input [3:0] read_pointer_in;
@@ -289,16 +289,16 @@ module FIFO_control_part_checkers ( DRTS, CTS_out, CTS_in, read_en_N,
 endmodule
 
 
-module FIFO_DATA_WIDTH9 ( reset, clk, DRTS, read_en_N, read_en_E, read_en_W, 
-        read_en_S, read_en_L, CTS, empty_out, read_pointer_out, 
-        write_pointer_out, write_en_out, shift, fault_clk, data_in_serial, 
-        data_out_serial, err_write_en_write_pointer, 
-        err_not_write_en_write_pointer, 
-        err_read_pointer_write_pointer_not_empty, 
-        err_read_pointer_write_pointer_empty, 
-        err_read_pointer_write_pointer_not_full, 
-        err_read_pointer_write_pointer_full, err_read_pointer_increment, 
-        err_read_pointer_not_increment, err_write_en, err_not_CTS_in, 
+module FIFO_DATA_WIDTH9 ( reset, clk, DRTS, read_en_N, read_en_E, read_en_W,
+        read_en_S, read_en_L, CTS, empty_out, read_pointer_out,
+        write_pointer_out, write_en_out, shift, fault_clk, data_in_serial,
+        data_out_serial, err_write_en_write_pointer,
+        err_not_write_en_write_pointer,
+        err_read_pointer_write_pointer_not_empty,
+        err_read_pointer_write_pointer_empty,
+        err_read_pointer_write_pointer_not_full,
+        err_read_pointer_write_pointer_full, err_read_pointer_increment,
+        err_read_pointer_not_increment, err_write_en, err_not_CTS_in,
         err_read_en_mismatch );
   output [3:0] read_pointer_out;
   output [3:0] write_pointer_out;
@@ -333,67 +333,67 @@ module FIFO_DATA_WIDTH9 ( reset, clk, DRTS, read_en_N, read_en_E, read_en_W,
   wire   [6:0] FI_add_sta;
   wire   [27:0] faulty_signals;
 
-  fault_injector_DATA_WIDTH28_ADDRESS_WIDTH5 FI ( .data_in({DRTS, read_en_N, 
-        read_en_E, read_en_W, read_en_S, read_en_L, CTS, write_en_out, 
-        read_pointer_out, non_faulty_signals, write_pointer_out, 
-        non_faulty_signals_7, non_faulty_signals_6, non_faulty_signals_5, 
-        non_faulty_signals_4, empty_out, N8, non_faulty_signals_1, 
-        write_en_out}), .address(FI_add_sta[6:2]), .sta_0(FI_add_sta[1]), 
+  fault_injector_DATA_WIDTH28_ADDRESS_WIDTH5 FI ( .data_in({DRTS, read_en_N,
+        read_en_E, read_en_W, read_en_S, read_en_L, CTS, write_en_out,
+        read_pointer_out, non_faulty_signals, write_pointer_out,
+        non_faulty_signals_7, non_faulty_signals_6, non_faulty_signals_5,
+        non_faulty_signals_4, empty_out, N8, non_faulty_signals_1,
+        write_en_out}), .address(FI_add_sta[6:2]), .sta_0(FI_add_sta[1]),
         .sta_1(FI_add_sta[0]), .data_out(faulty_signals) );
-  shift_register_serial_in_REG_WIDTH35 SR ( .clk(fault_clk), .reset(reset), 
+  shift_register_serial_in_REG_WIDTH35 SR ( .clk(fault_clk), .reset(reset),
         .shift(shift), .data_in_serial(data_in_serial), .data_out_parallel({
-        SYNOPSYS_UNCONNECTED_1, SYNOPSYS_UNCONNECTED_2, SYNOPSYS_UNCONNECTED_3, 
-        SYNOPSYS_UNCONNECTED_4, SYNOPSYS_UNCONNECTED_5, SYNOPSYS_UNCONNECTED_6, 
-        SYNOPSYS_UNCONNECTED_7, SYNOPSYS_UNCONNECTED_8, SYNOPSYS_UNCONNECTED_9, 
-        SYNOPSYS_UNCONNECTED_10, SYNOPSYS_UNCONNECTED_11, 
-        SYNOPSYS_UNCONNECTED_12, SYNOPSYS_UNCONNECTED_13, 
-        SYNOPSYS_UNCONNECTED_14, SYNOPSYS_UNCONNECTED_15, 
-        SYNOPSYS_UNCONNECTED_16, SYNOPSYS_UNCONNECTED_17, 
-        SYNOPSYS_UNCONNECTED_18, SYNOPSYS_UNCONNECTED_19, 
-        SYNOPSYS_UNCONNECTED_20, SYNOPSYS_UNCONNECTED_21, 
-        SYNOPSYS_UNCONNECTED_22, SYNOPSYS_UNCONNECTED_23, 
-        SYNOPSYS_UNCONNECTED_24, SYNOPSYS_UNCONNECTED_25, 
-        SYNOPSYS_UNCONNECTED_26, SYNOPSYS_UNCONNECTED_27, 
+        SYNOPSYS_UNCONNECTED_1, SYNOPSYS_UNCONNECTED_2, SYNOPSYS_UNCONNECTED_3,
+        SYNOPSYS_UNCONNECTED_4, SYNOPSYS_UNCONNECTED_5, SYNOPSYS_UNCONNECTED_6,
+        SYNOPSYS_UNCONNECTED_7, SYNOPSYS_UNCONNECTED_8, SYNOPSYS_UNCONNECTED_9,
+        SYNOPSYS_UNCONNECTED_10, SYNOPSYS_UNCONNECTED_11,
+        SYNOPSYS_UNCONNECTED_12, SYNOPSYS_UNCONNECTED_13,
+        SYNOPSYS_UNCONNECTED_14, SYNOPSYS_UNCONNECTED_15,
+        SYNOPSYS_UNCONNECTED_16, SYNOPSYS_UNCONNECTED_17,
+        SYNOPSYS_UNCONNECTED_18, SYNOPSYS_UNCONNECTED_19,
+        SYNOPSYS_UNCONNECTED_20, SYNOPSYS_UNCONNECTED_21,
+        SYNOPSYS_UNCONNECTED_22, SYNOPSYS_UNCONNECTED_23,
+        SYNOPSYS_UNCONNECTED_24, SYNOPSYS_UNCONNECTED_25,
+        SYNOPSYS_UNCONNECTED_26, SYNOPSYS_UNCONNECTED_27,
         SYNOPSYS_UNCONNECTED_28, FI_add_sta}), .data_out_serial(
         data_out_serial) );
   FIFO_control_part_checkers FIFOCONTROLPARTCHECKERS ( .DRTS(DRTS), .CTS_out(
         CTS), .CTS_in(write_en_out), .read_en_N(read_en_N), .read_en_E(
         read_en_E), .read_en_W(read_en_W), .read_en_S(read_en_S), .read_en_L(
         read_en_L), .read_pointer(read_pointer_out), .read_pointer_in(
-        non_faulty_signals), .write_pointer(write_pointer_out), 
-        .write_pointer_in({non_faulty_signals_7, non_faulty_signals_6, 
-        non_faulty_signals_5, non_faulty_signals_4}), .empty_out(empty_out), 
+        non_faulty_signals), .write_pointer(write_pointer_out),
+        .write_pointer_in({non_faulty_signals_7, non_faulty_signals_6,
+        non_faulty_signals_5, non_faulty_signals_4}), .empty_out(empty_out),
         .full_out(N8), .read_en_out(non_faulty_signals_1), .write_en_out(
-        write_en_out), .err_write_en_write_pointer(err_write_en_write_pointer), 
-        .err_not_write_en_write_pointer(err_not_write_en_write_pointer), 
+        write_en_out), .err_write_en_write_pointer(err_write_en_write_pointer),
+        .err_not_write_en_write_pointer(err_not_write_en_write_pointer),
         .err_read_pointer_write_pointer_not_empty(
-        err_read_pointer_write_pointer_not_empty), 
+        err_read_pointer_write_pointer_not_empty),
         .err_read_pointer_write_pointer_empty(
-        err_read_pointer_write_pointer_empty), 
+        err_read_pointer_write_pointer_empty),
         .err_read_pointer_write_pointer_not_full(
-        err_read_pointer_write_pointer_not_full), 
+        err_read_pointer_write_pointer_not_full),
         .err_read_pointer_write_pointer_full(
         err_read_pointer_write_pointer_full), .err_read_pointer_increment(
         err_read_pointer_increment), .err_read_pointer_not_increment(
-        err_read_pointer_not_increment), .err_write_en(err_write_en), 
+        err_read_pointer_not_increment), .err_write_en(err_write_en),
         .err_not_CTS_in(err_not_CTS_in), .err_read_en_mismatch(
         err_read_en_mismatch) );
   DFCX1 CTS_out_reg ( .D(faulty_signals[20]), .CP(clk), .RN(reset), .Q(CTS) );
-  DFPX3 write_pointer_reg_0_ ( .D(faulty_signals[4]), .CP(clk), .SN(reset), 
+  DFPX3 write_pointer_reg_0_ ( .D(faulty_signals[4]), .CP(clk), .SN(reset),
         .Q(write_pointer_out[0]) );
-  DFPX3 read_pointer_reg_0_ ( .D(faulty_signals[12]), .CP(clk), .SN(reset), 
+  DFPX3 read_pointer_reg_0_ ( .D(faulty_signals[12]), .CP(clk), .SN(reset),
         .Q(read_pointer_out[0]) );
-  DFCX1 write_pointer_reg_1_ ( .D(faulty_signals[5]), .CP(clk), .RN(reset), 
+  DFCX1 write_pointer_reg_1_ ( .D(faulty_signals[5]), .CP(clk), .RN(reset),
         .Q(write_pointer_out[1]) );
-  DFCX1 write_pointer_reg_2_ ( .D(faulty_signals[6]), .CP(clk), .RN(reset), 
+  DFCX1 write_pointer_reg_2_ ( .D(faulty_signals[6]), .CP(clk), .RN(reset),
         .Q(write_pointer_out[2]) );
-  DFCX1 write_pointer_reg_3_ ( .D(faulty_signals[7]), .CP(clk), .RN(reset), 
+  DFCX1 write_pointer_reg_3_ ( .D(faulty_signals[7]), .CP(clk), .RN(reset),
         .Q(write_pointer_out[3]) );
-  DFCX1 read_pointer_reg_1_ ( .D(faulty_signals[13]), .CP(clk), .RN(reset), 
+  DFCX1 read_pointer_reg_1_ ( .D(faulty_signals[13]), .CP(clk), .RN(reset),
         .Q(read_pointer_out[1]) );
-  DFCX1 read_pointer_reg_2_ ( .D(faulty_signals[14]), .CP(clk), .RN(reset), 
+  DFCX1 read_pointer_reg_2_ ( .D(faulty_signals[14]), .CP(clk), .RN(reset),
         .Q(read_pointer_out[2]) );
-  DFCX1 read_pointer_reg_3_ ( .D(faulty_signals[15]), .CP(clk), .RN(reset), 
+  DFCX1 read_pointer_reg_3_ ( .D(faulty_signals[15]), .CP(clk), .RN(reset),
         .Q(read_pointer_out[3]) );
   INVXL U3 ( .A(n19), .Q(n3) );
   INVXL U4 ( .A(faulty_signals[0]), .Q(n1) );
@@ -444,7 +444,7 @@ module FIFO_DATA_WIDTH9 ( reset, clk, DRTS, read_en_N, read_en_E, read_en_W,
 endmodule
 
 
-module fault_injector_DATA_WIDTH22_ADDRESS_WIDTH5 ( data_in, address, sta_0, 
+module fault_injector_DATA_WIDTH22_ADDRESS_WIDTH5 ( data_in, address, sta_0,
         sta_1, data_out );
   input [21:0] data_in;
   input [4:0] address;
@@ -513,7 +513,7 @@ module fault_injector_DATA_WIDTH22_ADDRESS_WIDTH5 ( data_in, address, sta_0,
 endmodule
 
 
-module shift_register_serial_in_REG_WIDTH29 ( clk, reset, shift, 
+module shift_register_serial_in_REG_WIDTH29 ( clk, reset, shift,
         data_in_serial, data_out_parallel, data_out_serial );
   output [28:0] data_out_parallel;
   input clk, reset, shift, data_in_serial;
@@ -617,17 +617,17 @@ module shift_register_serial_in_REG_WIDTH29 ( clk, reset, shift,
 endmodule
 
 
-module LBDR_checkers_cur_addr_rst5_NoC_size4 ( empty, flit_type, Req_N_FF, 
-        Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF, Req_N_in, Req_E_in, Req_W_in, 
-        Req_S_in, Req_L_in, N1_out, E1_out, W1_out, S1_out, dst_addr, 
-        err_header_empty_Requests_FF_Requests_in, 
-        err_tail_Requests_in_all_zero, err_header_tail_Requests_FF_Requests_in, 
-        err_dst_addr_cur_addr_N1, err_dst_addr_cur_addr_not_N1, 
-        err_dst_addr_cur_addr_E1, err_dst_addr_cur_addr_not_E1, 
-        err_dst_addr_cur_addr_W1, err_dst_addr_cur_addr_not_W1, 
-        err_dst_addr_cur_addr_S1, err_dst_addr_cur_addr_not_S1, 
-        err_dst_addr_cur_addr_not_Req_L_in, err_dst_addr_cur_addr_Req_L_in, 
-        err_header_not_empty_Req_N_in, err_header_not_empty_Req_E_in, 
+module LBDR_checkers_cur_addr_rst5_NoC_size4 ( empty, flit_type, Req_N_FF,
+        Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF, Req_N_in, Req_E_in, Req_W_in,
+        Req_S_in, Req_L_in, N1_out, E1_out, W1_out, S1_out, dst_addr,
+        err_header_empty_Requests_FF_Requests_in,
+        err_tail_Requests_in_all_zero, err_header_tail_Requests_FF_Requests_in,
+        err_dst_addr_cur_addr_N1, err_dst_addr_cur_addr_not_N1,
+        err_dst_addr_cur_addr_E1, err_dst_addr_cur_addr_not_E1,
+        err_dst_addr_cur_addr_W1, err_dst_addr_cur_addr_not_W1,
+        err_dst_addr_cur_addr_S1, err_dst_addr_cur_addr_not_S1,
+        err_dst_addr_cur_addr_not_Req_L_in, err_dst_addr_cur_addr_Req_L_in,
+        err_header_not_empty_Req_N_in, err_header_not_empty_Req_E_in,
         err_header_not_empty_Req_W_in, err_header_not_empty_Req_S_in );
   input [2:0] flit_type;
   input [3:0] dst_addr;
@@ -704,17 +704,17 @@ module LBDR_checkers_cur_addr_rst5_NoC_size4 ( empty, flit_type, Req_N_FF,
 endmodule
 
 
-module LBDR_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4 ( reset, clk, empty, 
-        flit_type, dst_addr, Req_N, Req_E, Req_W, Req_S, Req_L, shift, 
-        fault_clk, data_in_serial, data_out_serial, 
-        err_header_empty_Requests_FF_Requests_in, 
-        err_tail_Requests_in_all_zero, err_header_tail_Requests_FF_Requests_in, 
-        err_dst_addr_cur_addr_N1, err_dst_addr_cur_addr_not_N1, 
-        err_dst_addr_cur_addr_E1, err_dst_addr_cur_addr_not_E1, 
-        err_dst_addr_cur_addr_W1, err_dst_addr_cur_addr_not_W1, 
-        err_dst_addr_cur_addr_S1, err_dst_addr_cur_addr_not_S1, 
-        err_dst_addr_cur_addr_not_Req_L_in, err_dst_addr_cur_addr_Req_L_in, 
-        err_header_not_empty_Req_N_in, err_header_not_empty_Req_E_in, 
+module LBDR_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4 ( reset, clk, empty,
+        flit_type, dst_addr, Req_N, Req_E, Req_W, Req_S, Req_L, shift,
+        fault_clk, data_in_serial, data_out_serial,
+        err_header_empty_Requests_FF_Requests_in,
+        err_tail_Requests_in_all_zero, err_header_tail_Requests_FF_Requests_in,
+        err_dst_addr_cur_addr_N1, err_dst_addr_cur_addr_not_N1,
+        err_dst_addr_cur_addr_E1, err_dst_addr_cur_addr_not_E1,
+        err_dst_addr_cur_addr_W1, err_dst_addr_cur_addr_not_W1,
+        err_dst_addr_cur_addr_S1, err_dst_addr_cur_addr_not_S1,
+        err_dst_addr_cur_addr_not_Req_L_in, err_dst_addr_cur_addr_Req_L_in,
+        err_header_not_empty_Req_N_in, err_header_not_empty_Req_E_in,
         err_header_not_empty_Req_W_in, err_header_not_empty_Req_S_in );
   input [2:0] flit_type;
   input [3:0] dst_addr;
@@ -746,34 +746,34 @@ module LBDR_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4 ( reset, clk, empty,
   wire   [6:0] FI_add_sta;
   wire   [21:0] faulty_signals;
 
-  fault_injector_DATA_WIDTH22_ADDRESS_WIDTH5 FI ( .data_in({empty, flit_type, 
-        dst_addr, Req_N, Req_E, Req_W, Req_S, Req_L, non_faulty_signals, N3, 
-        N4, N5, N6}), .address(FI_add_sta[6:2]), .sta_0(FI_add_sta[1]), 
-        .sta_1(FI_add_sta[0]), .data_out({faulty_signals[21:18], N6, 
+  fault_injector_DATA_WIDTH22_ADDRESS_WIDTH5 FI ( .data_in({empty, flit_type,
+        dst_addr, Req_N, Req_E, Req_W, Req_S, Req_L, non_faulty_signals, N3,
+        N4, N5, N6}), .address(FI_add_sta[6:2]), .sta_0(FI_add_sta[1]),
+        .sta_1(FI_add_sta[0]), .data_out({faulty_signals[21:18], N6,
         faulty_signals[16], N4, faulty_signals[14:0]}) );
-  shift_register_serial_in_REG_WIDTH29 SR ( .clk(fault_clk), .reset(reset), 
+  shift_register_serial_in_REG_WIDTH29 SR ( .clk(fault_clk), .reset(reset),
         .shift(shift), .data_in_serial(data_in_serial), .data_out_parallel({
-        SYNOPSYS_UNCONNECTED_1, SYNOPSYS_UNCONNECTED_2, SYNOPSYS_UNCONNECTED_3, 
-        SYNOPSYS_UNCONNECTED_4, SYNOPSYS_UNCONNECTED_5, SYNOPSYS_UNCONNECTED_6, 
-        SYNOPSYS_UNCONNECTED_7, SYNOPSYS_UNCONNECTED_8, SYNOPSYS_UNCONNECTED_9, 
-        SYNOPSYS_UNCONNECTED_10, SYNOPSYS_UNCONNECTED_11, 
-        SYNOPSYS_UNCONNECTED_12, SYNOPSYS_UNCONNECTED_13, 
-        SYNOPSYS_UNCONNECTED_14, SYNOPSYS_UNCONNECTED_15, 
-        SYNOPSYS_UNCONNECTED_16, SYNOPSYS_UNCONNECTED_17, 
-        SYNOPSYS_UNCONNECTED_18, SYNOPSYS_UNCONNECTED_19, 
-        SYNOPSYS_UNCONNECTED_20, SYNOPSYS_UNCONNECTED_21, 
+        SYNOPSYS_UNCONNECTED_1, SYNOPSYS_UNCONNECTED_2, SYNOPSYS_UNCONNECTED_3,
+        SYNOPSYS_UNCONNECTED_4, SYNOPSYS_UNCONNECTED_5, SYNOPSYS_UNCONNECTED_6,
+        SYNOPSYS_UNCONNECTED_7, SYNOPSYS_UNCONNECTED_8, SYNOPSYS_UNCONNECTED_9,
+        SYNOPSYS_UNCONNECTED_10, SYNOPSYS_UNCONNECTED_11,
+        SYNOPSYS_UNCONNECTED_12, SYNOPSYS_UNCONNECTED_13,
+        SYNOPSYS_UNCONNECTED_14, SYNOPSYS_UNCONNECTED_15,
+        SYNOPSYS_UNCONNECTED_16, SYNOPSYS_UNCONNECTED_17,
+        SYNOPSYS_UNCONNECTED_18, SYNOPSYS_UNCONNECTED_19,
+        SYNOPSYS_UNCONNECTED_20, SYNOPSYS_UNCONNECTED_21,
         SYNOPSYS_UNCONNECTED_22, FI_add_sta}), .data_out_serial(
         data_out_serial) );
-  LBDR_checkers_cur_addr_rst5_NoC_size4 LBDRCHECKERS ( .empty(empty), 
+  LBDR_checkers_cur_addr_rst5_NoC_size4 LBDRCHECKERS ( .empty(empty),
         .flit_type(flit_type), .Req_N_FF(Req_N), .Req_E_FF(Req_E), .Req_W_FF(
         Req_W), .Req_S_FF(Req_S), .Req_L_FF(Req_L), .Req_N_in(
         non_faulty_signals[8]), .Req_E_in(non_faulty_signals[7]), .Req_W_in(
         non_faulty_signals[6]), .Req_S_in(non_faulty_signals[5]), .Req_L_in(
-        non_faulty_signals[4]), .N1_out(N3), .E1_out(N4), .W1_out(N5), 
-        .S1_out(N6), .dst_addr(dst_addr), 
+        non_faulty_signals[4]), .N1_out(N3), .E1_out(N4), .W1_out(N5),
+        .S1_out(N6), .dst_addr(dst_addr),
         .err_header_empty_Requests_FF_Requests_in(
-        err_header_empty_Requests_FF_Requests_in), 
-        .err_tail_Requests_in_all_zero(err_tail_Requests_in_all_zero), 
+        err_header_empty_Requests_FF_Requests_in),
+        .err_tail_Requests_in_all_zero(err_tail_Requests_in_all_zero),
         .err_header_tail_Requests_FF_Requests_in(
         err_header_tail_Requests_FF_Requests_in), .err_dst_addr_cur_addr_N1(
         err_dst_addr_cur_addr_N1), .err_dst_addr_cur_addr_not_N1(
@@ -808,7 +808,7 @@ module LBDR_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4 ( reset, clk, empty,
   INVXL U7 ( .A(faulty_signals[18]), .Q(n4) );
   NAND3X3 U8 ( .A(faulty_signals[18]), .B(n5), .C(n15), .Q(n14) );
   NOR2XL U9 ( .A(faulty_signals[21]), .B(faulty_signals[20]), .Q(n15) );
-  AO32X3 U10 ( .A1(n2), .A2(n3), .A3(n13), .B1(faulty_signals[9]), .B2(n12), 
+  AO32X3 U10 ( .A1(n2), .A2(n3), .A3(n13), .B1(faulty_signals[9]), .B2(n12),
         .Q(non_faulty_signals[4]) );
   INVXL U11 ( .A(faulty_signals[0]), .Q(n2) );
   INVXL U12 ( .A(faulty_signals[3]), .Q(n3) );
@@ -825,7 +825,7 @@ module LBDR_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4 ( reset, clk, empty,
 endmodule
 
 
-module fault_injector_DATA_WIDTH36_ADDRESS_WIDTH6 ( data_in, address, sta_0, 
+module fault_injector_DATA_WIDTH36_ADDRESS_WIDTH6 ( data_in, address, sta_0,
         sta_1, data_out );
   input [35:0] data_in;
   input [5:0] address;
@@ -930,7 +930,7 @@ module fault_injector_DATA_WIDTH36_ADDRESS_WIDTH6 ( data_in, address, sta_0,
 endmodule
 
 
-module shift_register_serial_in_REG_WIDTH44 ( clk, reset, shift, 
+module shift_register_serial_in_REG_WIDTH44 ( clk, reset, shift,
         data_in_serial, data_out_parallel, data_out_serial );
   output [43:0] data_out_parallel;
   input clk, reset, shift, data_in_serial;
@@ -1082,21 +1082,21 @@ module shift_register_serial_in_REG_WIDTH44 ( clk, reset, shift,
 endmodule
 
 
-module Arbiter_checkers ( Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, Grant_N, 
-        Grant_E, Grant_W, Grant_S, Grant_L, Xbar_sel, state, state_in, 
-        next_state_out, RTS_FF, RTS_FF_in, err_state_IDLE_xbar, 
-        err_state_not_IDLE_xbar, err_state_IDLE_RTS_FF_in, 
-        err_state_not_IDLE_RTS_FF_RTS_FF_in, 
-        err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, 
-        err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
-        err_RTS_FF_not_DCTS_state_state_in, err_not_RTS_FF_state_in_next_state, 
-        err_RTS_FF_DCTS_state_in_next_state, err_not_DCTS_Grants, 
-        err_DCTS_not_RTS_FF_Grants, err_DCTS_RTS_FF_IDLE_Grants, 
-        err_DCTS_RTS_FF_not_IDLE_Grants_onehot, err_Requests_next_state_IDLE, 
-        err_IDLE_Req_L, err_Local_Req_L, err_North_Req_N, err_IDLE_Req_N, 
-        err_Local_Req_N, err_South_Req_L, err_West_Req_L, err_South_Req_N, 
-        err_East_Req_L, err_West_Req_N, err_East_Req_N, err_next_state_onehot, 
-        err_state_in_onehot, err_state_north_xbar_sel, err_state_east_xbar_sel, 
+module Arbiter_checkers ( Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, Grant_N,
+        Grant_E, Grant_W, Grant_S, Grant_L, Xbar_sel, state, state_in,
+        next_state_out, RTS_FF, RTS_FF_in, err_state_IDLE_xbar,
+        err_state_not_IDLE_xbar, err_state_IDLE_RTS_FF_in,
+        err_state_not_IDLE_RTS_FF_RTS_FF_in,
+        err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in,
+        err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in,
+        err_RTS_FF_not_DCTS_state_state_in, err_not_RTS_FF_state_in_next_state,
+        err_RTS_FF_DCTS_state_in_next_state, err_not_DCTS_Grants,
+        err_DCTS_not_RTS_FF_Grants, err_DCTS_RTS_FF_IDLE_Grants,
+        err_DCTS_RTS_FF_not_IDLE_Grants_onehot, err_Requests_next_state_IDLE,
+        err_IDLE_Req_L, err_Local_Req_L, err_North_Req_N, err_IDLE_Req_N,
+        err_Local_Req_N, err_South_Req_L, err_West_Req_L, err_South_Req_N,
+        err_East_Req_L, err_West_Req_N, err_East_Req_N, err_next_state_onehot,
+        err_state_in_onehot, err_state_north_xbar_sel, err_state_east_xbar_sel,
         err_state_west_xbar_sel, err_state_south_xbar_sel );
   input [4:0] Xbar_sel;
   input [5:0] state;
@@ -1268,21 +1268,21 @@ module Arbiter_checkers ( Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, Grant_N,
 endmodule
 
 
-module Arbiter ( reset, clk, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, Grant_N, 
-        Grant_E, Grant_W, Grant_S, Grant_L, Xbar_sel, RTS, shift, fault_clk, 
-        data_in_serial, data_out_serial, err_state_IDLE_xbar, 
-        err_state_not_IDLE_xbar, err_state_IDLE_RTS_FF_in, 
-        err_state_not_IDLE_RTS_FF_RTS_FF_in, 
-        err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, 
-        err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
-        err_RTS_FF_not_DCTS_state_state_in, err_not_RTS_FF_state_in_next_state, 
-        err_RTS_FF_DCTS_state_in_next_state, err_not_DCTS_Grants, 
-        err_DCTS_not_RTS_FF_Grants, err_DCTS_RTS_FF_IDLE_Grants, 
-        err_DCTS_RTS_FF_not_IDLE_Grants_onehot, err_Requests_next_state_IDLE, 
-        err_IDLE_Req_L, err_Local_Req_L, err_North_Req_N, err_IDLE_Req_N, 
-        err_Local_Req_N, err_South_Req_L, err_West_Req_L, err_South_Req_N, 
-        err_East_Req_L, err_West_Req_N, err_East_Req_N, err_next_state_onehot, 
-        err_state_in_onehot, err_state_north_xbar_sel, err_state_east_xbar_sel, 
+module Arbiter ( reset, clk, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, Grant_N,
+        Grant_E, Grant_W, Grant_S, Grant_L, Xbar_sel, RTS, shift, fault_clk,
+        data_in_serial, data_out_serial, err_state_IDLE_xbar,
+        err_state_not_IDLE_xbar, err_state_IDLE_RTS_FF_in,
+        err_state_not_IDLE_RTS_FF_RTS_FF_in,
+        err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in,
+        err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in,
+        err_RTS_FF_not_DCTS_state_state_in, err_not_RTS_FF_state_in_next_state,
+        err_RTS_FF_DCTS_state_in_next_state, err_not_DCTS_Grants,
+        err_DCTS_not_RTS_FF_Grants, err_DCTS_RTS_FF_IDLE_Grants,
+        err_DCTS_RTS_FF_not_IDLE_Grants_onehot, err_Requests_next_state_IDLE,
+        err_IDLE_Req_L, err_Local_Req_L, err_North_Req_N, err_IDLE_Req_N,
+        err_Local_Req_N, err_South_Req_L, err_West_Req_L, err_South_Req_N,
+        err_East_Req_L, err_West_Req_N, err_East_Req_N, err_next_state_onehot,
+        err_state_in_onehot, err_state_north_xbar_sel, err_state_east_xbar_sel,
         err_state_west_xbar_sel, err_state_south_xbar_sel );
   output [4:0] Xbar_sel;
   input reset, clk, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, shift, fault_clk,
@@ -1333,69 +1333,69 @@ module Arbiter ( reset, clk, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, Grant_N,
   wire   [7:0] FI_add_sta;
   wire   [35:10] faulty_signals;
 
-  fault_injector_DATA_WIDTH36_ADDRESS_WIDTH6 FI ( .data_in({Req_N, Req_E, 
-        Req_W, Req_S, Req_L, DCTS, non_faulty_signals, RTS, 
-        non_faulty_signals_10, Grant_N, Grant_E, Grant_W, Grant_S, Grant_L, 
+  fault_injector_DATA_WIDTH36_ADDRESS_WIDTH6 FI ( .data_in({Req_N, Req_E,
+        Req_W, Req_S, Req_L, DCTS, non_faulty_signals, RTS,
+        non_faulty_signals_10, Grant_N, Grant_E, Grant_W, Grant_S, Grant_L,
         Xbar_sel}), .address(FI_add_sta[7:2]), .sta_0(FI_add_sta[1]), .sta_1(
-        FI_add_sta[0]), .data_out({faulty_signals, SYNOPSYS_UNCONNECTED_1, 
-        SYNOPSYS_UNCONNECTED_2, SYNOPSYS_UNCONNECTED_3, SYNOPSYS_UNCONNECTED_4, 
-        SYNOPSYS_UNCONNECTED_5, SYNOPSYS_UNCONNECTED_6, SYNOPSYS_UNCONNECTED_7, 
-        SYNOPSYS_UNCONNECTED_8, SYNOPSYS_UNCONNECTED_9, 
+        FI_add_sta[0]), .data_out({faulty_signals, SYNOPSYS_UNCONNECTED_1,
+        SYNOPSYS_UNCONNECTED_2, SYNOPSYS_UNCONNECTED_3, SYNOPSYS_UNCONNECTED_4,
+        SYNOPSYS_UNCONNECTED_5, SYNOPSYS_UNCONNECTED_6, SYNOPSYS_UNCONNECTED_7,
+        SYNOPSYS_UNCONNECTED_8, SYNOPSYS_UNCONNECTED_9,
         SYNOPSYS_UNCONNECTED_10}) );
-  shift_register_serial_in_REG_WIDTH44 SR ( .clk(fault_clk), .reset(reset), 
+  shift_register_serial_in_REG_WIDTH44 SR ( .clk(fault_clk), .reset(reset),
         .shift(shift), .data_in_serial(data_in_serial), .data_out_parallel({
-        SYNOPSYS_UNCONNECTED_11, SYNOPSYS_UNCONNECTED_12, 
-        SYNOPSYS_UNCONNECTED_13, SYNOPSYS_UNCONNECTED_14, 
-        SYNOPSYS_UNCONNECTED_15, SYNOPSYS_UNCONNECTED_16, 
-        SYNOPSYS_UNCONNECTED_17, SYNOPSYS_UNCONNECTED_18, 
-        SYNOPSYS_UNCONNECTED_19, SYNOPSYS_UNCONNECTED_20, 
-        SYNOPSYS_UNCONNECTED_21, SYNOPSYS_UNCONNECTED_22, 
-        SYNOPSYS_UNCONNECTED_23, SYNOPSYS_UNCONNECTED_24, 
-        SYNOPSYS_UNCONNECTED_25, SYNOPSYS_UNCONNECTED_26, 
-        SYNOPSYS_UNCONNECTED_27, SYNOPSYS_UNCONNECTED_28, 
-        SYNOPSYS_UNCONNECTED_29, SYNOPSYS_UNCONNECTED_30, 
-        SYNOPSYS_UNCONNECTED_31, SYNOPSYS_UNCONNECTED_32, 
-        SYNOPSYS_UNCONNECTED_33, SYNOPSYS_UNCONNECTED_34, 
-        SYNOPSYS_UNCONNECTED_35, SYNOPSYS_UNCONNECTED_36, 
-        SYNOPSYS_UNCONNECTED_37, SYNOPSYS_UNCONNECTED_38, 
-        SYNOPSYS_UNCONNECTED_39, SYNOPSYS_UNCONNECTED_40, 
-        SYNOPSYS_UNCONNECTED_41, SYNOPSYS_UNCONNECTED_42, 
-        SYNOPSYS_UNCONNECTED_43, SYNOPSYS_UNCONNECTED_44, 
-        SYNOPSYS_UNCONNECTED_45, SYNOPSYS_UNCONNECTED_46, FI_add_sta}), 
+        SYNOPSYS_UNCONNECTED_11, SYNOPSYS_UNCONNECTED_12,
+        SYNOPSYS_UNCONNECTED_13, SYNOPSYS_UNCONNECTED_14,
+        SYNOPSYS_UNCONNECTED_15, SYNOPSYS_UNCONNECTED_16,
+        SYNOPSYS_UNCONNECTED_17, SYNOPSYS_UNCONNECTED_18,
+        SYNOPSYS_UNCONNECTED_19, SYNOPSYS_UNCONNECTED_20,
+        SYNOPSYS_UNCONNECTED_21, SYNOPSYS_UNCONNECTED_22,
+        SYNOPSYS_UNCONNECTED_23, SYNOPSYS_UNCONNECTED_24,
+        SYNOPSYS_UNCONNECTED_25, SYNOPSYS_UNCONNECTED_26,
+        SYNOPSYS_UNCONNECTED_27, SYNOPSYS_UNCONNECTED_28,
+        SYNOPSYS_UNCONNECTED_29, SYNOPSYS_UNCONNECTED_30,
+        SYNOPSYS_UNCONNECTED_31, SYNOPSYS_UNCONNECTED_32,
+        SYNOPSYS_UNCONNECTED_33, SYNOPSYS_UNCONNECTED_34,
+        SYNOPSYS_UNCONNECTED_35, SYNOPSYS_UNCONNECTED_36,
+        SYNOPSYS_UNCONNECTED_37, SYNOPSYS_UNCONNECTED_38,
+        SYNOPSYS_UNCONNECTED_39, SYNOPSYS_UNCONNECTED_40,
+        SYNOPSYS_UNCONNECTED_41, SYNOPSYS_UNCONNECTED_42,
+        SYNOPSYS_UNCONNECTED_43, SYNOPSYS_UNCONNECTED_44,
+        SYNOPSYS_UNCONNECTED_45, SYNOPSYS_UNCONNECTED_46, FI_add_sta}),
         .data_out_serial(data_out_serial) );
   Arbiter_checkers ARBITERCHECKERS ( .Req_N(Req_N), .Req_E(Req_E), .Req_W(
-        Req_W), .Req_S(Req_S), .Req_L(Req_L), .DCTS(DCTS), .Grant_N(Grant_N), 
+        Req_W), .Req_S(Req_S), .Req_L(Req_L), .DCTS(DCTS), .Grant_N(Grant_N),
         .Grant_E(Grant_E), .Grant_W(Grant_W), .Grant_S(Grant_S), .Grant_L(
-        Grant_L), .Xbar_sel(Xbar_sel), .state(non_faulty_signals[29:24]), 
+        Grant_L), .Xbar_sel(Xbar_sel), .state(non_faulty_signals[29:24]),
         .state_in(non_faulty_signals[23:18]), .next_state_out(
         non_faulty_signals[17:12]), .RTS_FF(RTS), .RTS_FF_in(
-        non_faulty_signals_10), .err_state_IDLE_xbar(err_state_IDLE_xbar), 
-        .err_state_not_IDLE_xbar(err_state_not_IDLE_xbar), 
-        .err_state_IDLE_RTS_FF_in(err_state_IDLE_RTS_FF_in), 
+        non_faulty_signals_10), .err_state_IDLE_xbar(err_state_IDLE_xbar),
+        .err_state_not_IDLE_xbar(err_state_not_IDLE_xbar),
+        .err_state_IDLE_RTS_FF_in(err_state_IDLE_RTS_FF_in),
         .err_state_not_IDLE_RTS_FF_RTS_FF_in(
-        err_state_not_IDLE_RTS_FF_RTS_FF_in), 
+        err_state_not_IDLE_RTS_FF_RTS_FF_in),
         .err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in(
-        err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in), 
+        err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in),
         .err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in(
-        err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in), 
-        .err_RTS_FF_not_DCTS_state_state_in(err_RTS_FF_not_DCTS_state_state_in), .err_not_RTS_FF_state_in_next_state(err_not_RTS_FF_state_in_next_state), 
+        err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in),
+        .err_RTS_FF_not_DCTS_state_state_in(err_RTS_FF_not_DCTS_state_state_in), .err_not_RTS_FF_state_in_next_state(err_not_RTS_FF_state_in_next_state),
         .err_RTS_FF_DCTS_state_in_next_state(
         err_RTS_FF_DCTS_state_in_next_state), .err_not_DCTS_Grants(
         err_not_DCTS_Grants), .err_DCTS_not_RTS_FF_Grants(
         err_DCTS_not_RTS_FF_Grants), .err_DCTS_RTS_FF_IDLE_Grants(
         err_DCTS_RTS_FF_IDLE_Grants), .err_DCTS_RTS_FF_not_IDLE_Grants_onehot(
-        err_DCTS_RTS_FF_not_IDLE_Grants_onehot), 
-        .err_Requests_next_state_IDLE(err_Requests_next_state_IDLE), 
-        .err_IDLE_Req_L(err_IDLE_Req_L), .err_Local_Req_L(err_Local_Req_L), 
-        .err_North_Req_N(err_North_Req_N), .err_IDLE_Req_N(err_IDLE_Req_N), 
-        .err_Local_Req_N(err_Local_Req_N), .err_South_Req_L(err_South_Req_L), 
-        .err_West_Req_L(err_West_Req_L), .err_South_Req_N(err_South_Req_N), 
-        .err_East_Req_L(err_East_Req_L), .err_West_Req_N(err_West_Req_N), 
+        err_DCTS_RTS_FF_not_IDLE_Grants_onehot),
+        .err_Requests_next_state_IDLE(err_Requests_next_state_IDLE),
+        .err_IDLE_Req_L(err_IDLE_Req_L), .err_Local_Req_L(err_Local_Req_L),
+        .err_North_Req_N(err_North_Req_N), .err_IDLE_Req_N(err_IDLE_Req_N),
+        .err_Local_Req_N(err_Local_Req_N), .err_South_Req_L(err_South_Req_L),
+        .err_West_Req_L(err_West_Req_L), .err_South_Req_N(err_South_Req_N),
+        .err_East_Req_L(err_East_Req_L), .err_West_Req_N(err_West_Req_N),
         .err_East_Req_N(err_East_Req_N), .err_next_state_onehot(
-        err_next_state_onehot), .err_state_in_onehot(err_state_in_onehot), 
-        .err_state_north_xbar_sel(err_state_north_xbar_sel), 
-        .err_state_east_xbar_sel(err_state_east_xbar_sel), 
-        .err_state_west_xbar_sel(err_state_west_xbar_sel), 
+        err_next_state_onehot), .err_state_in_onehot(err_state_in_onehot),
+        .err_state_north_xbar_sel(err_state_north_xbar_sel),
+        .err_state_east_xbar_sel(err_state_east_xbar_sel),
+        .err_state_west_xbar_sel(err_state_west_xbar_sel),
         .err_state_south_xbar_sel(err_state_south_xbar_sel) );
   DFCX1 state_reg_5_ ( .D(faulty_signals[23]), .CP(clk), .RN(reset), .Q(
         non_faulty_signals[29]) );
@@ -1453,15 +1453,15 @@ module Arbiter ( reset, clk, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, Grant_N,
   INVXL U42 ( .A(n33), .Q(n9) );
   AOI21X3 U43 ( .A1(Xbar_sel[1]), .A2(n25), .B1(n27), .Q(n38) );
   NAND3X3 U44 ( .A(faulty_signals[29]), .B(n17), .C(n42), .Q(n40) );
-  AO22X3 U45 ( .A1(faulty_signals[29]), .A2(n18), .B1(faulty_signals[17]), 
+  AO22X3 U45 ( .A1(faulty_signals[29]), .A2(n18), .B1(faulty_signals[17]),
         .B2(n23), .Q(non_faulty_signals[23]) );
-  AO22X3 U46 ( .A1(faulty_signals[25]), .A2(n18), .B1(faulty_signals[13]), 
+  AO22X3 U46 ( .A1(faulty_signals[25]), .A2(n18), .B1(faulty_signals[13]),
         .B2(n23), .Q(non_faulty_signals[19]) );
-  AO22X3 U47 ( .A1(faulty_signals[28]), .A2(n18), .B1(faulty_signals[16]), 
+  AO22X3 U47 ( .A1(faulty_signals[28]), .A2(n18), .B1(faulty_signals[16]),
         .B2(n23), .Q(non_faulty_signals[22]) );
-  AO22X3 U48 ( .A1(faulty_signals[26]), .A2(n18), .B1(faulty_signals[14]), 
+  AO22X3 U48 ( .A1(faulty_signals[26]), .A2(n18), .B1(faulty_signals[14]),
         .B2(n23), .Q(non_faulty_signals[20]) );
-  AO22X3 U49 ( .A1(faulty_signals[27]), .A2(n18), .B1(faulty_signals[15]), 
+  AO22X3 U49 ( .A1(faulty_signals[27]), .A2(n18), .B1(faulty_signals[15]),
         .B2(n23), .Q(non_faulty_signals[21]) );
   NOR3X3 U50 ( .A(faulty_signals[28]), .B(faulty_signals[29]), .C(
         faulty_signals[25]), .Q(n43) );
@@ -1469,7 +1469,7 @@ module Arbiter ( reset, clk, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, Grant_N,
   NAND4X3 U52 ( .A(faulty_signals[27]), .B(n43), .C(n11), .D(n15), .Q(n32) );
   NAND4X3 U53 ( .A(faulty_signals[24]), .B(n43), .C(n15), .D(n16), .Q(n22) );
   INVXL U54 ( .A(faulty_signals[30]), .Q(n19) );
-  AO22X3 U55 ( .A1(n18), .A2(faulty_signals[24]), .B1(faulty_signals[12]), 
+  AO22X3 U55 ( .A1(n18), .A2(faulty_signals[24]), .B1(faulty_signals[12]),
         .B2(n23), .Q(non_faulty_signals[18]) );
   INVXL U56 ( .A(faulty_signals[27]), .Q(n16) );
   INVXL U57 ( .A(faulty_signals[26]), .Q(n15) );
@@ -1484,7 +1484,7 @@ module Arbiter ( reset, clk, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, Grant_N,
 endmodule
 
 
-module shift_register_REG_WIDTH59 ( clk, reset, shift, data_in, 
+module shift_register_REG_WIDTH59 ( clk, reset, shift, data_in,
         data_out_parallel, data_out_serial );
   input [58:0] data_in;
   output [58:0] data_out_parallel;
@@ -1749,14 +1749,14 @@ endmodule
 
 
 
-    module router_channel_DATA_WIDTH9_current_address5_Rxy_rst60_Cx_rst15_NoC_size4 ( 
-        reset, clk, DCTS, DRTS, RTS, CTS, flit_type, destination_address, 
-        Grant_N_in, Grant_E_in, Grant_W_in, Grant_S_in, Grant_L_in, Req_N_in, 
-        Req_E_in, Req_W_in, Req_S_in, Req_L_in, fault_shift, fault_clk, 
-        fault_data_in_serial, fault_data_out_serial, Grant_N_out, Grant_E_out, 
-        Grant_W_out, Grant_S_out, Grant_L_out, Req_N_out, Req_E_out, Req_W_out, 
-        Req_S_out, Req_L_out, read_pointer_out, write_pointer_out, 
-        write_en_out, Xbar_sel, shift, checker_clk, error_signal_sync, 
+    module router_channel_DATA_WIDTH9_current_address5_Rxy_rst60_Cx_rst15_NoC_size4 (
+        reset, clk, DCTS, DRTS, RTS, CTS, flit_type, destination_address,
+        Grant_N_in, Grant_E_in, Grant_W_in, Grant_S_in, Grant_L_in, Req_N_in,
+        Req_E_in, Req_W_in, Req_S_in, Req_L_in, fault_shift, fault_clk,
+        fault_data_in_serial, fault_data_out_serial, Grant_N_out, Grant_E_out,
+        Grant_W_out, Grant_S_out, Grant_L_out, Req_N_out, Req_E_out, Req_W_out,
+        Req_S_out, Req_L_out, read_pointer_out, write_pointer_out,
+        write_en_out, Xbar_sel, shift, checker_clk, error_signal_sync,
         error_signal_async, shift_serial_data );
   input [2:0] flit_type;
   input [3:0] destination_address;
@@ -1777,59 +1777,59 @@ endmodule
   wire   [58:0] shift_parallel_data;
   wire   [58:0] combined_error_signals;
 
-  FIFO_DATA_WIDTH9 FIFO_unit ( .reset(reset), .clk(clk), .DRTS(DRTS), 
-        .read_en_N(Grant_N_in), .read_en_E(Grant_E_in), .read_en_W(Grant_W_in), 
+  FIFO_DATA_WIDTH9 FIFO_unit ( .reset(reset), .clk(clk), .DRTS(DRTS),
+        .read_en_N(Grant_N_in), .read_en_E(Grant_E_in), .read_en_W(Grant_W_in),
         .read_en_S(Grant_S_in), .read_en_L(Grant_L_in), .CTS(CTS), .empty_out(
         empty), .read_pointer_out(read_pointer_out), .write_pointer_out(
-        write_pointer_out), .write_en_out(write_en_out), .shift(fault_shift), 
-        .fault_clk(fault_clk), .data_in_serial(fault_data_in_serial), 
-        .data_out_serial(fault_DO_serial_FIFO_2_LBDR), 
-        .err_write_en_write_pointer(combined_error_signals[10]), 
-        .err_not_write_en_write_pointer(combined_error_signals[9]), 
-        .err_read_pointer_write_pointer_not_empty(combined_error_signals[8]), 
-        .err_read_pointer_write_pointer_empty(combined_error_signals[7]), 
-        .err_read_pointer_write_pointer_not_full(combined_error_signals[6]), 
-        .err_read_pointer_write_pointer_full(combined_error_signals[5]), 
-        .err_read_pointer_increment(combined_error_signals[4]), 
-        .err_read_pointer_not_increment(combined_error_signals[3]), 
+        write_pointer_out), .write_en_out(write_en_out), .shift(fault_shift),
+        .fault_clk(fault_clk), .data_in_serial(fault_data_in_serial),
+        .data_out_serial(fault_DO_serial_FIFO_2_LBDR),
+        .err_write_en_write_pointer(combined_error_signals[10]),
+        .err_not_write_en_write_pointer(combined_error_signals[9]),
+        .err_read_pointer_write_pointer_not_empty(combined_error_signals[8]),
+        .err_read_pointer_write_pointer_empty(combined_error_signals[7]),
+        .err_read_pointer_write_pointer_not_full(combined_error_signals[6]),
+        .err_read_pointer_write_pointer_full(combined_error_signals[5]),
+        .err_read_pointer_increment(combined_error_signals[4]),
+        .err_read_pointer_not_increment(combined_error_signals[3]),
         .err_write_en(combined_error_signals[2]), .err_not_CTS_in(
         combined_error_signals[1]), .err_read_en_mismatch(
         combined_error_signals[0]) );
-  LBDR_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4 LBDR_unit ( .reset(reset), 
+  LBDR_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4 LBDR_unit ( .reset(reset),
         .clk(clk), .empty(empty), .flit_type(flit_type), .dst_addr(
         destination_address), .Req_N(Req_N_out), .Req_E(Req_E_out), .Req_W(
-        Req_W_out), .Req_S(Req_S_out), .Req_L(Req_L_out), .shift(shift), 
-        .fault_clk(fault_clk), .data_in_serial(fault_DO_serial_FIFO_2_LBDR), 
-        .data_out_serial(fault_DO_serial_LBDR_2_Arbiter), 
-        .err_header_empty_Requests_FF_Requests_in(combined_error_signals[58]), 
-        .err_tail_Requests_in_all_zero(combined_error_signals[57]), 
-        .err_header_tail_Requests_FF_Requests_in(combined_error_signals[56]), 
-        .err_dst_addr_cur_addr_N1(combined_error_signals[55]), 
-        .err_dst_addr_cur_addr_not_N1(combined_error_signals[54]), 
-        .err_dst_addr_cur_addr_E1(combined_error_signals[53]), 
-        .err_dst_addr_cur_addr_not_E1(combined_error_signals[52]), 
-        .err_dst_addr_cur_addr_W1(combined_error_signals[51]), 
-        .err_dst_addr_cur_addr_not_W1(combined_error_signals[50]), 
-        .err_dst_addr_cur_addr_S1(combined_error_signals[49]), 
-        .err_dst_addr_cur_addr_not_S1(combined_error_signals[48]), 
-        .err_dst_addr_cur_addr_not_Req_L_in(combined_error_signals[47]), 
-        .err_dst_addr_cur_addr_Req_L_in(combined_error_signals[46]), 
-        .err_header_not_empty_Req_N_in(combined_error_signals[45]), 
-        .err_header_not_empty_Req_E_in(combined_error_signals[44]), 
-        .err_header_not_empty_Req_W_in(combined_error_signals[43]), 
+        Req_W_out), .Req_S(Req_S_out), .Req_L(Req_L_out), .shift(shift),
+        .fault_clk(fault_clk), .data_in_serial(fault_DO_serial_FIFO_2_LBDR),
+        .data_out_serial(fault_DO_serial_LBDR_2_Arbiter),
+        .err_header_empty_Requests_FF_Requests_in(combined_error_signals[58]),
+        .err_tail_Requests_in_all_zero(combined_error_signals[57]),
+        .err_header_tail_Requests_FF_Requests_in(combined_error_signals[56]),
+        .err_dst_addr_cur_addr_N1(combined_error_signals[55]),
+        .err_dst_addr_cur_addr_not_N1(combined_error_signals[54]),
+        .err_dst_addr_cur_addr_E1(combined_error_signals[53]),
+        .err_dst_addr_cur_addr_not_E1(combined_error_signals[52]),
+        .err_dst_addr_cur_addr_W1(combined_error_signals[51]),
+        .err_dst_addr_cur_addr_not_W1(combined_error_signals[50]),
+        .err_dst_addr_cur_addr_S1(combined_error_signals[49]),
+        .err_dst_addr_cur_addr_not_S1(combined_error_signals[48]),
+        .err_dst_addr_cur_addr_not_Req_L_in(combined_error_signals[47]),
+        .err_dst_addr_cur_addr_Req_L_in(combined_error_signals[46]),
+        .err_header_not_empty_Req_N_in(combined_error_signals[45]),
+        .err_header_not_empty_Req_E_in(combined_error_signals[44]),
+        .err_header_not_empty_Req_W_in(combined_error_signals[43]),
         .err_header_not_empty_Req_S_in(combined_error_signals[42]) );
   Arbiter Arbiter_unit ( .reset(reset), .clk(clk), .Req_N(Req_N_in), .Req_E(
-        Req_E_in), .Req_W(Req_W_in), .Req_S(Req_S_in), .Req_L(Req_L_in), 
+        Req_E_in), .Req_W(Req_W_in), .Req_S(Req_S_in), .Req_L(Req_L_in),
         .DCTS(DCTS), .Grant_N(Grant_N_out), .Grant_E(Grant_E_out), .Grant_W(
         Grant_W_out), .Grant_S(Grant_S_out), .Grant_L(Grant_L_out), .Xbar_sel(
-        Xbar_sel), .RTS(RTS), .shift(shift), .fault_clk(fault_clk), 
+        Xbar_sel), .RTS(RTS), .shift(shift), .fault_clk(fault_clk),
         .data_in_serial(fault_DO_serial_LBDR_2_Arbiter), .data_out_serial(
         fault_data_out_serial), .err_state_IDLE_xbar(
         combined_error_signals[41]), .err_state_not_IDLE_xbar(
         combined_error_signals[40]), .err_state_IDLE_RTS_FF_in(
         combined_error_signals[39]), .err_state_not_IDLE_RTS_FF_RTS_FF_in(
-        combined_error_signals[38]), 
-        .err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in(combined_error_signals[37]), 
+        combined_error_signals[38]),
+        .err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in(combined_error_signals[37]),
         .err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in(
         combined_error_signals[36]), .err_RTS_FF_not_DCTS_state_state_in(
         combined_error_signals[35]), .err_not_RTS_FF_state_in_next_state(
@@ -1859,47 +1859,47 @@ endmodule
         combined_error_signals[11]) );
   shift_register_REG_WIDTH59 checker_shifter ( .clk(checker_clk), .reset(reset), .shift(shift), .data_in(combined_error_signals), .data_out_parallel(
         shift_parallel_data), .data_out_serial(shift_serial_data) );
-  NOR4X3 U45 ( .A(combined_error_signals[31]), .B(combined_error_signals[30]), 
+  NOR4X3 U45 ( .A(combined_error_signals[31]), .B(combined_error_signals[30]),
         .C(combined_error_signals[2]), .D(combined_error_signals[29]), .Q(n35)
          );
-  NOR4X3 U46 ( .A(combined_error_signals[15]), .B(combined_error_signals[14]), 
+  NOR4X3 U46 ( .A(combined_error_signals[15]), .B(combined_error_signals[14]),
         .C(combined_error_signals[13]), .D(combined_error_signals[12]), .Q(n30) );
-  NOR4X3 U47 ( .A(combined_error_signals[45]), .B(combined_error_signals[44]), 
+  NOR4X3 U47 ( .A(combined_error_signals[45]), .B(combined_error_signals[44]),
         .C(combined_error_signals[43]), .D(combined_error_signals[42]), .Q(n39) );
-  NOR4X3 U48 ( .A(combined_error_signals[5]), .B(combined_error_signals[58]), 
+  NOR4X3 U48 ( .A(combined_error_signals[5]), .B(combined_error_signals[58]),
         .C(combined_error_signals[57]), .D(combined_error_signals[56]), .Q(n43) );
   INVXL U49 ( .A(n24), .Q(error_signal_async) );
   NOR4X3 U50 ( .A(n25), .B(n26), .C(n27), .D(n28), .Q(n24) );
   NAND4X3 U51 ( .A(n41), .B(n42), .C(n43), .D(n44), .Q(n25) );
   NAND4X3 U52 ( .A(n37), .B(n38), .C(n39), .D(n40), .Q(n26) );
-  NOR4X3 U53 ( .A(combined_error_signals[41]), .B(combined_error_signals[40]), 
+  NOR4X3 U53 ( .A(combined_error_signals[41]), .B(combined_error_signals[40]),
         .C(combined_error_signals[3]), .D(combined_error_signals[39]), .Q(n38)
          );
-  NOR3X3 U54 ( .A(combined_error_signals[36]), .B(combined_error_signals[38]), 
+  NOR3X3 U54 ( .A(combined_error_signals[36]), .B(combined_error_signals[38]),
         .C(combined_error_signals[37]), .Q(n37) );
-  NOR4X3 U55 ( .A(combined_error_signals[49]), .B(combined_error_signals[48]), 
+  NOR4X3 U55 ( .A(combined_error_signals[49]), .B(combined_error_signals[48]),
         .C(combined_error_signals[47]), .D(combined_error_signals[46]), .Q(n40) );
-  NOR4X3 U56 ( .A(combined_error_signals[9]), .B(combined_error_signals[8]), 
+  NOR4X3 U56 ( .A(combined_error_signals[9]), .B(combined_error_signals[8]),
         .C(combined_error_signals[7]), .D(combined_error_signals[6]), .Q(n44)
          );
-  NOR4X3 U57 ( .A(combined_error_signals[55]), .B(combined_error_signals[54]), 
+  NOR4X3 U57 ( .A(combined_error_signals[55]), .B(combined_error_signals[54]),
         .C(combined_error_signals[53]), .D(combined_error_signals[52]), .Q(n42) );
-  NOR3X3 U58 ( .A(combined_error_signals[4]), .B(combined_error_signals[51]), 
+  NOR3X3 U58 ( .A(combined_error_signals[4]), .B(combined_error_signals[51]),
         .C(combined_error_signals[50]), .Q(n41) );
   NAND4X3 U59 ( .A(n29), .B(n30), .C(n31), .D(n32), .Q(n28) );
-  NOR3X3 U60 ( .A(combined_error_signals[0]), .B(combined_error_signals[11]), 
+  NOR3X3 U60 ( .A(combined_error_signals[0]), .B(combined_error_signals[11]),
         .C(combined_error_signals[10]), .Q(n29) );
-  NOR3X3 U61 ( .A(combined_error_signals[16]), .B(combined_error_signals[18]), 
+  NOR3X3 U61 ( .A(combined_error_signals[16]), .B(combined_error_signals[18]),
         .C(combined_error_signals[17]), .Q(n31) );
-  NOR4X3 U62 ( .A(combined_error_signals[21]), .B(combined_error_signals[20]), 
+  NOR4X3 U62 ( .A(combined_error_signals[21]), .B(combined_error_signals[20]),
         .C(combined_error_signals[1]), .D(combined_error_signals[19]), .Q(n32)
          );
   NAND4X3 U63 ( .A(n33), .B(n34), .C(n35), .D(n36), .Q(n27) );
-  NOR4X3 U64 ( .A(combined_error_signals[28]), .B(combined_error_signals[27]), 
+  NOR4X3 U64 ( .A(combined_error_signals[28]), .B(combined_error_signals[27]),
         .C(combined_error_signals[26]), .D(combined_error_signals[25]), .Q(n34) );
-  NOR3X3 U65 ( .A(combined_error_signals[22]), .B(combined_error_signals[24]), 
+  NOR3X3 U65 ( .A(combined_error_signals[22]), .B(combined_error_signals[24]),
         .C(combined_error_signals[23]), .Q(n33) );
-  NOR4X3 U66 ( .A(combined_error_signals[35]), .B(combined_error_signals[34]), 
+  NOR4X3 U66 ( .A(combined_error_signals[35]), .B(combined_error_signals[34]),
         .C(combined_error_signals[33]), .D(combined_error_signals[32]), .Q(n36) );
   INVXL U67 ( .A(n3), .Q(error_signal_sync) );
   NOR4X3 U68 ( .A(n4), .B(n5), .C(n6), .D(n7), .Q(n3) );

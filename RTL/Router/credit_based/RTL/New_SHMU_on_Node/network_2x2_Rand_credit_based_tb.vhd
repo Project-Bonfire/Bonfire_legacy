@@ -12,12 +12,12 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.TB_Package.all;
 
-USE ieee.numeric_std.ALL; 
+USE ieee.numeric_std.ALL;
 use IEEE.math_real."ceil";
 use IEEE.math_real."log2";
 
 entity tb_network_2x2 is
-end tb_network_2x2; 
+end tb_network_2x2;
 
 
 architecture behavior of tb_network_2x2 is
@@ -25,8 +25,8 @@ architecture behavior of tb_network_2x2 is
 -- Declaring network component
 component network_2x2 is
  generic (DATA_WIDTH: integer := 32; DATA_WIDTH_LV: integer := 11);
-port (reset: in  std_logic; 
-	clk: in  std_logic; 
+port (reset: in  std_logic;
+	clk: in  std_logic;
 	Rxy_reconf: in  std_logic_vector(7 downto 0);
 	Reconfig : in std_logic;
 	--------------
@@ -50,8 +50,8 @@ port (reset: in  std_logic;
 	credit_in_L_3, valid_in_L_3: in std_logic;
 	TX_L_3: out std_logic_vector (DATA_WIDTH-1 downto 0)
 
-            ); 
-end component; 
+            );
+end component;
 component flit_tracker is
     generic (
         DATA_WIDTH: integer := 32;
@@ -59,8 +59,8 @@ component flit_tracker is
     );
     port (
         clk: in std_logic;
-        RX: in std_logic_vector (DATA_WIDTH-1 downto 0); 
-        valid_in : in std_logic 
+        RX: in std_logic_vector (DATA_WIDTH-1 downto 0);
+        valid_in : in std_logic
     );
 end component;
 
@@ -89,54 +89,54 @@ begin
    clk_process :process
    begin
         clk <= '0';
-        wait for clk_period/2;   
+        wait for clk_period/2;
         clk <= '1';
-        wait for clk_period/2; 
+        wait for clk_period/2;
    end process;
 
 reset <= '1' after 1 ns;
 -- instantiating the network
 -- instantiating the flit trackers
 F_T_0_T: flit_tracker  generic map (
-        DATA_WIDTH => 32, 
+        DATA_WIDTH => 32,
         tracker_file =>"traces/track0_T.txt"
     )
     port map (
-        clk => clk, RX => TX_L_0, 
+        clk => clk, RX => TX_L_0,
         valid_in => valid_out_L_0
     );
 F_T_1_T: flit_tracker  generic map (
-        DATA_WIDTH => 32, 
+        DATA_WIDTH => 32,
         tracker_file =>"traces/track1_T.txt"
     )
     port map (
-        clk => clk, RX => TX_L_1, 
+        clk => clk, RX => TX_L_1,
         valid_in => valid_out_L_1
     );
 F_T_2_T: flit_tracker  generic map (
-        DATA_WIDTH => 32, 
+        DATA_WIDTH => 32,
         tracker_file =>"traces/track2_T.txt"
     )
     port map (
-        clk => clk, RX => TX_L_2, 
+        clk => clk, RX => TX_L_2,
         valid_in => valid_out_L_2
     );
 F_T_3_T: flit_tracker  generic map (
-        DATA_WIDTH => 32, 
+        DATA_WIDTH => 32,
         tracker_file =>"traces/track3_T.txt"
     )
     port map (
-        clk => clk, RX => TX_L_3, 
+        clk => clk, RX => TX_L_3,
         valid_in => valid_out_L_3
     );
 NoC: network_2x2 generic map (DATA_WIDTH  => 32, DATA_WIDTH_LV => 11)
-port map (reset, clk, Rxy_reconf, Reconfig, 
-	RX_L_0, credit_out_L_0, valid_out_L_0, credit_in_L_0, valid_in_L_0,  TX_L_0, 
-	RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1,  TX_L_1, 
-	RX_L_2, credit_out_L_2, valid_out_L_2, credit_in_L_2, valid_in_L_2,  TX_L_2, 
+port map (reset, clk, Rxy_reconf, Reconfig,
+	RX_L_0, credit_out_L_0, valid_out_L_0, credit_in_L_0, valid_in_L_0,  TX_L_0,
+	RX_L_1, credit_out_L_1, valid_out_L_1, credit_in_L_1, valid_in_L_1,  TX_L_1,
+	RX_L_2, credit_out_L_2, valid_out_L_2, credit_in_L_2, valid_in_L_2,  TX_L_2,
 	RX_L_3, credit_out_L_3, valid_out_L_3, credit_in_L_3, valid_in_L_3,  TX_L_3
-            ); 
-not_reset <= not reset; 
+            );
+not_reset <= not reset;
 
 -- connecting the packet generators
 credit_counter_control(clk, credit_out_L_0, valid_in_L_0, credit_counter_out_0);

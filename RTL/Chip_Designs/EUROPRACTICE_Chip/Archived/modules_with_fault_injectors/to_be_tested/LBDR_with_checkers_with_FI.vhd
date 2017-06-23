@@ -19,17 +19,17 @@ entity LBDR is
             empty: in  std_logic;
             flit_type: in std_logic_vector(2 downto 0);
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
-            Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic; 
+            Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic;
             -- fault injector signals
             shift: in std_logic;
             fault_clk: in std_logic;
             data_in_serial: in std_logic;
             data_out_serial: out std_logic;
             -- Checker outputs
-            --err_header_not_empty_Requests_in_onehot, 
-            err_header_empty_Requests_FF_Requests_in, 
-            err_tail_Requests_in_all_zero, 
-            err_header_tail_Requests_FF_Requests_in, 
+            --err_header_not_empty_Requests_in_onehot,
+            err_header_empty_Requests_FF_Requests_in,
+            err_tail_Requests_in_all_zero,
+            err_header_tail_Requests_FF_Requests_in,
             err_dst_addr_cur_addr_N1,
             err_dst_addr_cur_addr_not_N1,
             err_dst_addr_cur_addr_E1,
@@ -37,9 +37,9 @@ entity LBDR is
             err_dst_addr_cur_addr_W1,
             err_dst_addr_cur_addr_not_W1,
             err_dst_addr_cur_addr_S1,
-            err_dst_addr_cur_addr_not_S1, 
-            err_dst_addr_cur_addr_not_Req_L_in, 
-            err_dst_addr_cur_addr_Req_L_in, 
+            err_dst_addr_cur_addr_not_S1,
+            err_dst_addr_cur_addr_not_Req_L_in,
+            err_dst_addr_cur_addr_Req_L_in,
             err_header_not_empty_Req_N_in,
             err_header_not_empty_Req_E_in,
             err_header_not_empty_Req_W_in,
@@ -51,15 +51,15 @@ architecture behavior of LBDR is
 
   signal Cx:  std_logic_vector(3 downto 0);
   signal Rxy:  std_logic_vector(7 downto 0);
-  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  
-  signal N1, E1, W1, S1  :std_logic := '0';  
+  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);
+  signal N1, E1, W1, S1  :std_logic := '0';
   signal Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: std_logic;
   signal Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: std_logic;
   -- New signals used for integration of FI(s) in LBDR module
   signal empty_faulty: std_logic;
   signal flit_type_faulty: std_logic_vector (2 downto 0);
   signal dst_addr_faulty: std_logic_vector (NoC_size-1 downto 0);
-  signal N1_faulty, E1_faulty, W1_faulty, S1_faulty  :std_logic;  
+  signal N1_faulty, E1_faulty, W1_faulty, S1_faulty  :std_logic;
   signal Req_N_in_faulty, Req_E_in_faulty, Req_W_in_faulty, Req_S_in_faulty, Req_L_in_faulty: std_logic;
   signal Req_N_FF_faulty, Req_E_FF_faulty, Req_W_FF_faulty, Req_S_FF_faulty, Req_L_FF_faulty: std_logic;
 
@@ -76,10 +76,10 @@ component LBDR_checkers is
             dst_addr: in std_logic_vector(NoC_size-1 downto 0);
 
             -- Checker outputs
-            --err_header_not_empty_Requests_in_onehot, 
-            err_header_empty_Requests_FF_Requests_in, 
-            err_tail_Requests_in_all_zero, 
-            err_header_tail_Requests_FF_Requests_in, 
+            --err_header_not_empty_Requests_in_onehot,
+            err_header_empty_Requests_FF_Requests_in,
+            err_tail_Requests_in_all_zero,
+            err_header_tail_Requests_FF_Requests_in,
             err_dst_addr_cur_addr_N1,
             err_dst_addr_cur_addr_not_N1,
             err_dst_addr_cur_addr_E1,
@@ -87,9 +87,9 @@ component LBDR_checkers is
             err_dst_addr_cur_addr_W1,
             err_dst_addr_cur_addr_not_W1,
             err_dst_addr_cur_addr_S1,
-            err_dst_addr_cur_addr_not_S1, 
-            err_dst_addr_cur_addr_not_Req_L_in, 
-            err_dst_addr_cur_addr_Req_L_in, 
+            err_dst_addr_cur_addr_not_S1,
+            err_dst_addr_cur_addr_not_Req_L_in,
+            err_dst_addr_cur_addr_Req_L_in,
             err_header_not_empty_Req_N_in,
             err_header_not_empty_Req_E_in,
             err_header_not_empty_Req_W_in,
@@ -97,8 +97,8 @@ component LBDR_checkers is
             );
 end component;
 
-component fault_injector is 
-  generic(DATA_WIDTH : integer := 32; 
+component fault_injector is
+  generic(DATA_WIDTH : integer := 32;
     ADDRESS_WIDTH : integer := 5);
   port(
     data_in: in std_logic_vector (DATA_WIDTH-1 downto 0);
@@ -125,17 +125,17 @@ end component;
 signal FI_add_sta: std_logic_vector(28 downto 0); -- 22 bits for inputs and internal signals
                                                   -- 5 bits for fault injection location address (ceil of log2(22) = 5)
                                                   -- 2 bits for type of fault (SA0 or SA1)
-signal non_faulty_signals: std_logic_vector (21 downto 0);                                                
+signal non_faulty_signals: std_logic_vector (21 downto 0);
 signal faulty_signals: std_logic_vector(21 downto 0); -- 22 bits for inputs and internal signals (with one fault injected in one of them)
 
-begin 
+begin
 
-non_faulty_signals <= empty & flit_type & dst_addr & 
+non_faulty_signals <= empty & flit_type & dst_addr &
                       Req_N_FF & Req_E_FF & Req_W_FF & Req_S_FF & Req_L_FF &
                       Req_N_in & Req_E_in & Req_W_in & Req_S_in & Req_L_in &
                       N1 & E1 & W1 & S1;
 
-FI: fault_injector generic map(DATA_WIDTH => 22, ADDRESS_WIDTH => 5) 
+FI: fault_injector generic map(DATA_WIDTH => 22, ADDRESS_WIDTH => 5)
            port map (data_in=> non_faulty_signals , address=> FI_add_sta(6 downto 2), sta_0=> FI_add_sta(1), sta_1=> FI_add_sta(0), data_out => faulty_signals
             );
 
@@ -159,7 +159,7 @@ W1_faulty        <= faulty_signals(1);
 S1_faulty        <= faulty_signals(0);
 
 SR: shift_register_serial_in generic map(REG_WIDTH => 29)
-          port map( clk=> fault_clk, reset=>reset, shift=> shift,data_in_serial=> data_in_serial, 
+          port map( clk=> fault_clk, reset=>reset, shift=> shift,data_in_serial=> data_in_serial,
                 data_out_parallel=> FI_add_sta, data_out_serial=> data_out_serial
               );
 
@@ -176,19 +176,19 @@ SR: shift_register_serial_in generic map(REG_WIDTH => 29)
 LBDRCHECKERS: LBDR_checkers generic map (cur_addr_rst => cur_addr_rst, NoC_size => NoC_size)
                             port map (
                                       -- the non-faulty values of inputs go to checkers (according to the ReCoSoC, Euromicro DSD and NOCS papers ??)
-                                      empty => empty, 
-                                      flit_type => flit_type, 
-                                      Req_N_FF  => Req_N_FF, 
-                                      Req_E_FF  => Req_E_FF, 
-                                      Req_W_FF  => Req_W_FF, 
+                                      empty => empty,
+                                      flit_type => flit_type,
+                                      Req_N_FF  => Req_N_FF,
+                                      Req_E_FF  => Req_E_FF,
+                                      Req_W_FF  => Req_W_FF,
                                       Req_S_FF  => Req_S_FF,
                                       Req_L_FF  => Req_L_FF,
-                                      Req_N_in  => Req_N_in, 
-                                      Req_E_in  => Req_E_in, 
-                                      Req_W_in  => Req_W_in, 
-                                      Req_S_in  => Req_S_in, 
-                                      Req_L_in  => Req_L_in, 
-                                      N1_out    => N1, 
+                                      Req_N_in  => Req_N_in,
+                                      Req_E_in  => Req_E_in,
+                                      Req_W_in  => Req_W_in,
+                                      Req_S_in  => Req_S_in,
+                                      Req_L_in  => Req_L_in,
+                                      N1_out    => N1,
                                       E1_out    => E1,
                                       W1_out    => W1,
                                       S1_out    => S1,
@@ -215,14 +215,14 @@ LBDRCHECKERS: LBDR_checkers generic map (cur_addr_rst => cur_addr_rst, NoC_size 
 
 process(clk, reset)
 begin
-if reset = '0' then 
+if reset = '0' then
   Req_N_FF <= '0';
   Req_E_FF <= '0';
   Req_W_FF <= '0';
   Req_S_FF <= '0';
   Req_L_FF <= '0';
 
-elsif clk'event and clk = '1' then 
+elsif clk'event and clk = '1' then
   Req_N_FF <= Req_N_in_faulty;
   Req_E_FF <= Req_E_in_faulty;
   Req_W_FF <= Req_W_in_faulty;
@@ -230,7 +230,7 @@ elsif clk'event and clk = '1' then
   Req_L_FF <= Req_L_in_faulty;
 end if;
 end process;
- 
+
 -- The combionational part
 
 Req_N <= Req_N_FF;
@@ -262,5 +262,5 @@ process(N1_faulty, E1_faulty, W1_faulty, S1_faulty, Rxy, Cx, flit_type_faulty, e
         Req_L_in <= Req_L_FF_faulty;
   end if;
 end process;
-   
+
 END;

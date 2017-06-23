@@ -27,7 +27,7 @@ entity mem_ctrl is
         data_write   : in std_logic_vector(31 downto 0);
         data_read    : out std_logic_vector(31 downto 0);
         pause_out    : out std_logic;
-        
+
         address_next : out std_logic_vector(31 downto 2);
         byte_we_next : out std_logic_vector(3 downto 0);
 
@@ -51,8 +51,8 @@ architecture logic of mem_ctrl is
 
 begin
 
-mem_proc: process(clk, reset_in, pause_in, nullify_op, 
-                  address_pc, address_in, mem_source, data_write, 
+mem_proc: process(clk, reset_in, pause_in, nullify_op,
+                  address_pc, address_in, mem_source, data_write,
                   data_r, opcode_reg, next_opcode_reg, mem_state_reg,
                   address_reg, byte_we_reg)
    variable address_var    : std_logic_vector(31 downto 2);
@@ -119,13 +119,13 @@ begin
       bits := address_in(1 downto 0) xor ENDIAN_MODE;
       case bits is
       when "00" =>
-         byte_we_var := "1000"; 
-      when "01" => 
-         byte_we_var := "0100"; 
+         byte_we_var := "1000";
+      when "01" =>
+         byte_we_var := "0100";
       when "10" =>
-         byte_we_var := "0010"; 
+         byte_we_var := "0010";
       when others =>
-         byte_we_var := "0001"; 
+         byte_we_var := "0001";
       end case;
 
    when others =>

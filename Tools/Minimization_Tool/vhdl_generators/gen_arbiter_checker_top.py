@@ -337,7 +337,7 @@ def gen_arbiter_checker_top(checker_id):
     arbiter_checker_top.write("RTS_FF_in <= RTS_FF_in_sig; \n")
     arbiter_checker_top.write("next_state_out <= next_state_out_sig; \n")
     arbiter_checker_top.write(" \n")
-    
+
     arbiter_checker_top.write("-- Arbiter instantiation \n")
     arbiter_checker_top.write("ARBITER: Arbiter_pseudo port map   ( \n")
     arbiter_checker_top.write("                                    Req_N=>Req_N,  \n")

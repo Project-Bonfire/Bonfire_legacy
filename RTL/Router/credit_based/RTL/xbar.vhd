@@ -22,7 +22,7 @@ architecture behavior of XBAR is
 begin
 process(sel, North_in, East_in, West_in, South_in, Local_in) begin
     case(sel) is
-    
+
     	when "00001" =>
     		Data_out <= Local_in;
     	when "00010" =>
@@ -32,7 +32,7 @@ process(sel, North_in, East_in, West_in, South_in, Local_in) begin
     	when "01000" =>
     		Data_out <= East_in;
     	when others =>
-    		Data_out <= North_in;	
+    		Data_out <= North_in;
     end case;
    end process;
 end;

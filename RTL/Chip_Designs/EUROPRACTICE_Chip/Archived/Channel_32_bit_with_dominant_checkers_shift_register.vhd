@@ -33,50 +33,50 @@ entity router_channel is
         write_en_out :out std_logic;
         Xbar_sel: out std_logic_vector(4 downto 0);
         error_signal_sync: out std_logic;     -- this is the or of all outputs of the shift register
-        error_signal_async: out std_logic;    -- this is the or of all outputs of the checkers 
+        error_signal_async: out std_logic;    -- this is the or of all outputs of the checkers
         shift_serial_data: out std_logic
-    ); 
-end router_channel; 
+    );
+end router_channel;
 
 architecture behavior of router_channel is
-  
- 
+
+
   COMPONENT FIFO is
     generic (
         DATA_WIDTH: integer := 32
     );
     port (  reset: in  std_logic;
             clk: in  std_logic;
-            DRTS: in std_logic;  
+            DRTS: in std_logic;
             read_en_N : in std_logic;
             read_en_E : in std_logic;
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
-            CTS: out std_logic; 
-            empty_out: out std_logic; 
+            CTS: out std_logic;
+            empty_out: out std_logic;
             read_pointer_out, write_pointer_out: out std_logic_vector(3 downto 0);
             write_en_out :out std_logic;
             -- Checker outputs
-            err_write_en_write_pointer, 
-            err_not_write_en_write_pointer, 
-            err_read_pointer_write_pointer_not_empty, 
-            err_read_pointer_write_pointer_empty, 
-            err_read_pointer_write_pointer_not_full, 
-            err_read_pointer_write_pointer_full, 
-            err_read_pointer_increment, 
-            err_read_pointer_not_increment, 
-            --err_CTS_in, 
-            err_write_en, 
-            err_not_CTS_in, 
-            --err_not_write_en, 
+            err_write_en_write_pointer,
+            err_not_write_en_write_pointer,
+            err_read_pointer_write_pointer_not_empty,
+            err_read_pointer_write_pointer_empty,
+            err_read_pointer_write_pointer_not_full,
+            err_read_pointer_write_pointer_full,
+            err_read_pointer_increment,
+            err_read_pointer_not_increment,
+            --err_CTS_in,
+            err_write_en,
+            err_not_CTS_in,
+            --err_not_write_en,
             err_read_en_mismatch : out std_logic
         );
     end COMPONENT;
 
 
-    COMPONENT Arbiter   
- 	 
+    COMPONENT Arbiter
+
     port (reset: in  std_logic;
           clk: in  std_logic;
           Req_N, Req_E, Req_W, Req_S, Req_L:in std_logic; -- From LBDR modules
@@ -89,35 +89,35 @@ architecture behavior of router_channel is
           -- Checker outputs
           err_state_IDLE_xbar,
           err_state_not_IDLE_xbar,
-          err_state_IDLE_RTS_FF_in, 
+          err_state_IDLE_RTS_FF_in,
           err_state_not_IDLE_RTS_FF_RTS_FF_in,
-          err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, 
-          err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
-          err_RTS_FF_not_DCTS_state_state_in, 
-          err_not_RTS_FF_state_in_next_state, 
-          err_RTS_FF_DCTS_state_in_next_state, 
-          err_not_DCTS_Grants, 
-          err_DCTS_not_RTS_FF_Grants, 
-          err_DCTS_RTS_FF_IDLE_Grants, 
-          err_DCTS_RTS_FF_not_IDLE_Grants_onehot, 
-          err_Requests_next_state_IDLE, 
-          err_IDLE_Req_L, 
+          err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in,
+          err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in,
+          err_RTS_FF_not_DCTS_state_state_in,
+          err_not_RTS_FF_state_in_next_state,
+          err_RTS_FF_DCTS_state_in_next_state,
+          err_not_DCTS_Grants,
+          err_DCTS_not_RTS_FF_Grants,
+          err_DCTS_RTS_FF_IDLE_Grants,
+          err_DCTS_RTS_FF_not_IDLE_Grants_onehot,
+          err_Requests_next_state_IDLE,
+          err_IDLE_Req_L,
           err_Local_Req_L,
-          err_North_Req_N, 
-          err_IDLE_Req_N, 
-          err_Local_Req_N,      
-          err_South_Req_L, 
+          err_North_Req_N,
+          err_IDLE_Req_N,
+          err_Local_Req_N,
+          err_South_Req_L,
           err_West_Req_L,
           err_South_Req_N,
           err_East_Req_L,
           err_West_Req_N,
           err_East_Req_N,
-          err_next_state_onehot, 
-          err_state_in_onehot, 
-          err_state_north_xbar_sel, 
-          err_state_east_xbar_sel, 
-          err_state_west_xbar_sel, 
-          err_state_south_xbar_sel : out std_logic 
+          err_next_state_onehot,
+          err_state_in_onehot,
+          err_state_north_xbar_sel,
+          err_state_east_xbar_sel,
+          err_state_west_xbar_sel,
+          err_state_south_xbar_sel : out std_logic
           );
 	end COMPONENT;
 
@@ -136,10 +136,10 @@ architecture behavior of router_channel is
           Req_N, Req_E, Req_W, Req_S, Req_L:out std_logic;
 
           -- Checker outputs
-          --err_header_not_empty_Requests_in_onehot, 
-          err_header_empty_Requests_FF_Requests_in, 
-          err_tail_Requests_in_all_zero, 
-          err_header_tail_Requests_FF_Requests_in, 
+          --err_header_not_empty_Requests_in_onehot,
+          err_header_empty_Requests_FF_Requests_in,
+          err_tail_Requests_in_all_zero,
+          err_header_tail_Requests_FF_Requests_in,
           err_dst_addr_cur_addr_N1,
           err_dst_addr_cur_addr_not_N1,
           err_dst_addr_cur_addr_E1,
@@ -147,9 +147,9 @@ architecture behavior of router_channel is
           err_dst_addr_cur_addr_W1,
           err_dst_addr_cur_addr_not_W1,
           err_dst_addr_cur_addr_S1,
-          err_dst_addr_cur_addr_not_S1, 
-          err_dst_addr_cur_addr_not_Req_L_in, 
-          err_dst_addr_cur_addr_Req_L_in, 
+          err_dst_addr_cur_addr_not_S1,
+          err_dst_addr_cur_addr_not_Req_L_in,
+          err_dst_addr_cur_addr_Req_L_in,
           err_header_not_empty_Req_N_in,
           err_header_not_empty_Req_E_in,
           err_header_not_empty_Req_W_in,
@@ -169,25 +169,25 @@ architecture behavior of router_channel is
         data_out_serial: out std_logic
     );
 	end COMPONENT;
- 	
 
- 
+
+
     -- Grant_XY : Grant signal generated from Arbiter for output X connected to FIFO of input Y
 
- 	 
-  signal empty: std_logic; 
-   
+
+  signal empty: std_logic;
+
   signal combined_error_signals: std_logic_vector(58 downto 0);
   signal shift_parallel_data: std_logic_vector(58 downto 0);
- 
+
   -- Signals related to Checkers
   -- LBDR Checkers signals
-  signal err_header_empty_Requests_FF_Requests_in, err_tail_Requests_in_all_zero, 
+  signal err_header_empty_Requests_FF_Requests_in, err_tail_Requests_in_all_zero,
          err_header_tail_Requests_FF_Requests_in, err_dst_addr_cur_addr_N1,
          err_dst_addr_cur_addr_not_N1, err_dst_addr_cur_addr_E1,
          err_dst_addr_cur_addr_not_E1, err_dst_addr_cur_addr_W1,
          err_dst_addr_cur_addr_not_W1, err_dst_addr_cur_addr_S1,
-         err_dst_addr_cur_addr_not_S1, err_dst_addr_cur_addr_not_Req_L_in, 
+         err_dst_addr_cur_addr_not_S1, err_dst_addr_cur_addr_not_Req_L_in,
          err_dst_addr_cur_addr_Req_L_in, err_header_not_empty_Req_N_in,
          err_header_not_empty_Req_E_in, err_header_not_empty_Req_W_in,
          err_header_not_empty_Req_S_in : std_logic;
@@ -195,22 +195,22 @@ architecture behavior of router_channel is
   -- Arbiter Checkers signals
   signal err_state_IDLE_xbar, err_state_not_IDLE_xbar,
          err_state_IDLE_RTS_FF_in, err_state_not_IDLE_RTS_FF_RTS_FF_in,
-         err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
-         err_RTS_FF_not_DCTS_state_state_in, err_not_RTS_FF_state_in_next_state, 
-         err_RTS_FF_DCTS_state_in_next_state, err_not_DCTS_Grants, 
-         err_DCTS_not_RTS_FF_Grants, err_DCTS_RTS_FF_IDLE_Grants, 
-         err_DCTS_RTS_FF_not_IDLE_Grants_onehot, err_Requests_next_state_IDLE, 
-         err_IDLE_Req_L, err_Local_Req_L, err_North_Req_N, err_IDLE_Req_N, err_Local_Req_N,      
+         err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in,
+         err_RTS_FF_not_DCTS_state_state_in, err_not_RTS_FF_state_in_next_state,
+         err_RTS_FF_DCTS_state_in_next_state, err_not_DCTS_Grants,
+         err_DCTS_not_RTS_FF_Grants, err_DCTS_RTS_FF_IDLE_Grants,
+         err_DCTS_RTS_FF_not_IDLE_Grants_onehot, err_Requests_next_state_IDLE,
+         err_IDLE_Req_L, err_Local_Req_L, err_North_Req_N, err_IDLE_Req_N, err_Local_Req_N,
          err_South_Req_L, err_West_Req_L, err_South_Req_N, err_East_Req_L,
-         err_West_Req_N, err_East_Req_N, err_next_state_onehot, err_state_in_onehot, 
-         err_state_north_xbar_sel, err_state_east_xbar_sel, 
-         err_state_west_xbar_sel, err_state_south_xbar_sel : std_logic; 
- 
+         err_West_Req_N, err_East_Req_N, err_next_state_onehot, err_state_in_onehot,
+         err_state_north_xbar_sel, err_state_east_xbar_sel,
+         err_state_west_xbar_sel, err_state_south_xbar_sel : std_logic;
+
   -- FIFO Control Part Checkers signals
-  signal err_write_en_write_pointer, err_not_write_en_write_pointer, 
-         err_read_pointer_write_pointer_not_empty, err_read_pointer_write_pointer_empty, 
-         err_read_pointer_write_pointer_not_full, err_read_pointer_write_pointer_full, 
-         err_read_pointer_increment, err_read_pointer_not_increment, 
+  signal err_write_en_write_pointer, err_not_write_en_write_pointer,
+         err_read_pointer_write_pointer_not_empty, err_read_pointer_write_pointer_empty,
+         err_read_pointer_write_pointer_not_full, err_read_pointer_write_pointer_full,
+         err_read_pointer_increment, err_read_pointer_not_increment,
          err_write_en, err_not_CTS_in, err_read_en_mismatch : std_logic;
 
 
@@ -244,7 +244,7 @@ begin
                             err_state_IDLE_RTS_FF_in &
                             err_state_not_IDLE_RTS_FF_RTS_FF_in &
                             err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in &
-                            err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in & 
+                            err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in &
                             err_RTS_FF_not_DCTS_state_state_in &
                             err_not_RTS_FF_state_in_next_state &
                             err_RTS_FF_DCTS_state_in_next_state &
@@ -270,7 +270,7 @@ begin
                             err_state_east_xbar_sel &
                             err_state_west_xbar_sel &
                             err_state_south_xbar_sel &
-                            err_write_en_write_pointer & 
+                            err_write_en_write_pointer &
                             err_not_write_en_write_pointer &
                             err_read_pointer_write_pointer_not_empty &
                             err_read_pointer_write_pointer_empty &
@@ -284,12 +284,12 @@ begin
 ---------------------------------------------------------------------------------------------------------------------------
 
  FIFO_unit: FIFO generic map (DATA_WIDTH  => DATA_WIDTH)
-   PORT MAP (reset => reset, clk => clk, DRTS => DRTS, 
-   			read_en_N => Grant_N_in, read_en_E =>Grant_E_in, read_en_W =>Grant_W_in, read_en_S =>Grant_S_in, read_en_L =>Grant_L_in, 
-   			CTS => CTS, empty_out => empty,  
+   PORT MAP (reset => reset, clk => clk, DRTS => DRTS,
+   			read_en_N => Grant_N_in, read_en_E =>Grant_E_in, read_en_W =>Grant_W_in, read_en_S =>Grant_S_in, read_en_L =>Grant_L_in,
+   			CTS => CTS, empty_out => empty,
 
             read_pointer_out => read_pointer_out, write_pointer_out => write_pointer_out,
-            write_en_out => write_en_out, 
+            write_en_out => write_en_out,
 
         err_write_en_write_pointer => err_write_en_write_pointer,
         err_not_write_en_write_pointer => err_not_write_en_write_pointer,
@@ -302,14 +302,14 @@ begin
         err_write_en => err_write_en,
         err_not_CTS_in => err_not_CTS_in,
         err_read_en_mismatch => err_read_en_mismatch
-        );      
+        );
 
-  
+
 ------------------------------------------------------------------------------------------------------------------------------
 
 LBDR_unit: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst, Cx_rst => Cx_rst, NoC_size => NoC_size)
 	   PORT MAP (reset => reset, clk => clk, empty => empty, flit_type => flit_type, dst_addr=> destination_address,
-   		 	 Req_N=> Req_N_out, Req_E=>Req_E_out, Req_W=>Req_W_out, Req_S=>Req_S_out, Req_L=>Req_L_out, 
+   		 	 Req_N=> Req_N_out, Req_E=>Req_E_out, Req_W=>Req_W_out, Req_S=>Req_S_out, Req_L=>Req_L_out,
 
          err_header_empty_Requests_FF_Requests_in => err_header_empty_Requests_FF_Requests_in,
          err_tail_Requests_in_all_zero => err_tail_Requests_in_all_zero,
@@ -330,16 +330,16 @@ LBDR_unit: LBDR generic map (cur_addr_rst => current_address, Rxy_rst => Rxy_rst
          err_header_not_empty_Req_S_in => err_header_not_empty_Req_S_in
          );
 
- 
+
 
 ------------------------------------------------------------------------------------------------------------------------------
 
-Arbiter_unit: Arbiter 
+Arbiter_unit: Arbiter
    PORT MAP (reset => reset, clk => clk,
           Req_N => Req_N_in , Req_E => Req_E_in, Req_W => Req_W_in, Req_S => Req_S_in, Req_L => Req_L_in,
           DCTS => DCTS, Grant_N => Grant_N_out, Grant_E => Grant_E_out, Grant_W => Grant_W_out, Grant_S => Grant_S_out, Grant_L => Grant_L_out,
-          Xbar_sel => Xbar_sel, 
-          RTS =>  RTS, 
+          Xbar_sel => Xbar_sel,
+          RTS =>  RTS,
 
           err_state_IDLE_xbar => err_state_IDLE_xbar ,
           err_state_not_IDLE_xbar => err_state_not_IDLE_xbar ,
@@ -372,13 +372,13 @@ Arbiter_unit: Arbiter
           err_state_east_xbar_sel => err_state_east_xbar_sel ,
           err_state_west_xbar_sel => err_state_west_xbar_sel ,
           err_state_south_xbar_sel => err_state_south_xbar_sel
-        );     
+        );
 
  checker_shifter: shift_register generic map (REG_WIDTH => 59)
     port map (
         clk => clk, reset => reset,
         shift => shift,
-        data_in => combined_error_signals, 
+        data_in => combined_error_signals,
         data_out_parallel => shift_parallel_data,
         data_out_serial => shift_serial_data
     );

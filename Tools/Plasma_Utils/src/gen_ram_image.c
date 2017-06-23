@@ -1,12 +1,12 @@
-/* ram_image.c by Steve Rhoads 11/7/05 
+/* ram_image.c by Steve Rhoads 11/7/05
  * This program take the ram_xilinx.vhd file as input
  * and the code.txt file as input.
  * It then creates ram_image.vhd as output with the
  * initialization vectors set to the contents of code.txt.
- 
+
  UPDATED: 09/07/10 Olivier Rinaudo (orinaudo@gmail.com)
  new behaviour: 8KB expandable to 64KB of internal RAM
- to be used with new ram_image.vhd enabling expandable 
+ to be used with new ram_image.vhd enabling expandable
  internal ram.
  */
 #include <stdio.h>
@@ -62,16 +62,16 @@ int main(int argc, char *argv[])
    for(count = 0; count < RAM_ROWS_TOTAL*RAM_DWORDPERROW; ++count)
    {
       if(feof(file))
-      {  
+      {
          count--;
          break;
-      }   
+      }
       fscanf(file, "%x", &code[count]);
    }
    fclose(file);
 
    //Find 'INIT_00 => X"'
-   
+
    //start at buf, then seek next occurence
    ptr = buf;
    for(i = 0; i < RAM_ROWS_TOTAL; ++i)
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
    for(i = 0; i < count; ++i)
    {
       sprintf(text, "%8.8x", code[i]);
-      index = iblock*RAM_ROWS*RAM_SPLIT+irowinsplit; 
+      index = iblock*RAM_ROWS*RAM_SPLIT+irowinsplit;
 
       ptr_list[index][iposinrow]              = text[0];
       ptr_list[index][iposinrow+1]            = text[1];
@@ -107,15 +107,15 @@ int main(int argc, char *argv[])
       ptr_list[index+RAM_ROWS*3][iposinrow+1] = text[7];
       iposinrow -= 2;
       if(iposinrow < 0)
-      { 
+      {
         iposinrow = RAM_DWORDPERROW*8-2; //reset row
         irowinsplit++;
         if (irowinsplit>RAM_ROWS-1)
-        { 
+        {
           irowinsplit = 0;
           iblock++;
         }
-      } 
+      }
    }
 
    //Write ram_image.vhd

@@ -18,7 +18,7 @@ elaborate FIFO_credit_based -architecture behavior -library DEFAULT -parameters 
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/FIFO_one_hot_credit_based_packet_drop_classifier_support_area.txt
@@ -31,7 +31,7 @@ elaborate counter_threshold_classifier -architecture behavior -library DEFAULT -
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/counter_threshold_area.txt
@@ -44,7 +44,7 @@ elaborate router_credit_based_parity_lv -architecture behavior -library DEFAULT 
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/Router_32_bit_credit_based_packet_drop_LV_compatible_area.txt

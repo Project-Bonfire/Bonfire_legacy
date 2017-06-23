@@ -10,12 +10,12 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-USE ieee.numeric_std.ALL; 
+USE ieee.numeric_std.ALL;
 
 entity network_2x2 is
  generic (DATA_WIDTH: integer := 32);
-port (reset: in  std_logic; 
-	clk: in  std_logic; 
+port (reset: in  std_logic;
+	clk: in  std_logic;
 	--------------
 	RX_L_0: in std_logic_vector (DATA_WIDTH-1 downto 0);
 	RTS_L_0, CTS_L_0: out std_logic;
@@ -36,8 +36,8 @@ port (reset: in  std_logic;
 	RTS_L_3, CTS_L_3: out std_logic;
 	DRTS_L_3, DCTS_L_3: in std_logic;
 	TX_L_3: out std_logic_vector (DATA_WIDTH-1 downto 0)
-            ); 
-end network_2x2; 
+            );
+end network_2x2;
 
 
 architecture behavior of network_2x2 is
@@ -59,7 +59,7 @@ component router is
     RTS_N, RTS_E, RTS_W, RTS_S, RTS_L: out std_logic;
     CTS_N, CTS_E, CTS_w, CTS_S, CTS_L: out std_logic;
     TX_N, TX_E, TX_W, TX_S, TX_L: out std_logic_vector (DATA_WIDTH-1 downto 0));
-end component; 
+end component;
 
 
 -- generating bulk signals. not all of them are used in the design...
@@ -106,44 +106,44 @@ begin
 --  |         ----       ----
 --  |        | 2  | --- | 3  |
 --  v         ----       ----
---                         
+--
 
 -- instantiating the routers
 R_0: router generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>0, Rxy_rst => 60, Cx_rst => 10, NoC_size=>2)
-PORT MAP (reset, clk, 
+PORT MAP (reset, clk,
 	DCTS_N_0, DCTS_E_0, DCTS_W_0, DCTS_S_0, DCTS_L_0,
 	DRTS_N_0, DRTS_E_0, DRTS_W_0, DRTS_S_0, DRTS_L_0,
 	RX_N_0, RX_E_0, RX_W_0, RX_S_0, RX_L_0,
 	RTS_N_0, RTS_E_0, RTS_W_0, RTS_S_0, RTS_L_0,
 	CTS_N_0, CTS_E_0, CTS_w_0, CTS_S_0, CTS_L_0,
-	TX_N_0, TX_E_0, TX_W_0, TX_S_0, TX_L_0); 
+	TX_N_0, TX_E_0, TX_W_0, TX_S_0, TX_L_0);
 
 R_1: router generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>1, Rxy_rst => 60, Cx_rst => 12, NoC_size=>2)
-PORT MAP (reset, clk, 
+PORT MAP (reset, clk,
 	DCTS_N_1, DCTS_E_1, DCTS_W_1, DCTS_S_1, DCTS_L_1,
 	DRTS_N_1, DRTS_E_1, DRTS_W_1, DRTS_S_1, DRTS_L_1,
 	RX_N_1, RX_E_1, RX_W_1, RX_S_1, RX_L_1,
 	RTS_N_1, RTS_E_1, RTS_W_1, RTS_S_1, RTS_L_1,
 	CTS_N_1, CTS_E_1, CTS_w_1, CTS_S_1, CTS_L_1,
-	TX_N_1, TX_E_1, TX_W_1, TX_S_1, TX_L_1); 
+	TX_N_1, TX_E_1, TX_W_1, TX_S_1, TX_L_1);
 
 R_2: router generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>2, Rxy_rst => 60, Cx_rst => 3, NoC_size=>2)
-PORT MAP (reset, clk, 
+PORT MAP (reset, clk,
 	DCTS_N_2, DCTS_E_2, DCTS_W_2, DCTS_S_2, DCTS_L_2,
 	DRTS_N_2, DRTS_E_2, DRTS_W_2, DRTS_S_2, DRTS_L_2,
 	RX_N_2, RX_E_2, RX_W_2, RX_S_2, RX_L_2,
 	RTS_N_2, RTS_E_2, RTS_W_2, RTS_S_2, RTS_L_2,
 	CTS_N_2, CTS_E_2, CTS_w_2, CTS_S_2, CTS_L_2,
-	TX_N_2, TX_E_2, TX_W_2, TX_S_2, TX_L_2); 
+	TX_N_2, TX_E_2, TX_W_2, TX_S_2, TX_L_2);
 
 R_3: router generic map (DATA_WIDTH  => DATA_WIDTH, current_address=>3, Rxy_rst => 60, Cx_rst => 5, NoC_size=>2)
-PORT MAP (reset, clk, 
+PORT MAP (reset, clk,
 	DCTS_N_3, DCTS_E_3, DCTS_W_3, DCTS_S_3, DCTS_L_3,
 	DRTS_N_3, DRTS_E_3, DRTS_W_3, DRTS_S_3, DRTS_L_3,
 	RX_N_3, RX_E_3, RX_W_3, RX_S_3, RX_L_3,
 	RTS_N_3, RTS_E_3, RTS_W_3, RTS_S_3, RTS_L_3,
 	CTS_N_3, CTS_E_3, CTS_w_3, CTS_S_3, CTS_L_3,
-	TX_N_3, TX_E_3, TX_W_3, TX_S_3, TX_L_3); 
+	TX_N_3, TX_E_3, TX_W_3, TX_S_3, TX_L_3);
 
 
 ---------------------------------------------------------------

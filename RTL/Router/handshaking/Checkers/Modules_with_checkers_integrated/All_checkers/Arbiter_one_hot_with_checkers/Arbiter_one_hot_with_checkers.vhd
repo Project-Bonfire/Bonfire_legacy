@@ -18,32 +18,32 @@ entity Arbiter is
             -- Checker outputs
             err_state_IDLE_xbar,
             err_state_not_IDLE_xbar,
-            err_state_IDLE_RTS_FF_in, 
+            err_state_IDLE_RTS_FF_in,
             err_state_not_IDLE_RTS_FF_RTS_FF_in,
-            err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, 
-            err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
-            err_RTS_FF_not_DCTS_state_state_in, 
-            err_not_RTS_FF_state_in_next_state, 
-            err_RTS_FF_DCTS_state_in_next_state, 
-            err_not_DCTS_Grants, 
-            err_DCTS_not_RTS_FF_Grants, 
-            err_DCTS_RTS_FF_IDLE_Grants, 
-            err_DCTS_RTS_FF_not_IDLE_Grants_onehot, 
-            err_Requests_next_state_IDLE, 
-            err_IDLE_Req_L, 
+            err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in,
+            err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in,
+            err_RTS_FF_not_DCTS_state_state_in,
+            err_not_RTS_FF_state_in_next_state,
+            err_RTS_FF_DCTS_state_in_next_state,
+            err_not_DCTS_Grants,
+            err_DCTS_not_RTS_FF_Grants,
+            err_DCTS_RTS_FF_IDLE_Grants,
+            err_DCTS_RTS_FF_not_IDLE_Grants_onehot,
+            err_Requests_next_state_IDLE,
+            err_IDLE_Req_L,
             err_Local_Req_L,
-            err_North_Req_N, 
-            err_East_Req_E, 
-            err_West_Req_W, 
-            err_South_Req_S, 
-            err_IDLE_Req_N, 
-            err_Local_Req_N,      
-            err_North_Req_E, 
-            err_East_Req_W, 
-            err_West_Req_S, 
-            err_South_Req_L, 
+            err_North_Req_N,
+            err_East_Req_E,
+            err_West_Req_W,
+            err_South_Req_S,
+            err_IDLE_Req_N,
+            err_Local_Req_N,
+            err_North_Req_E,
+            err_East_Req_W,
+            err_West_Req_S,
+            err_South_Req_L,
             err_IDLE_Req_E,
-            err_Local_Req_E,      
+            err_Local_Req_E,
             err_North_Req_W,
             err_East_Req_S,
             err_West_Req_L,
@@ -55,22 +55,22 @@ entity Arbiter is
             err_West_Req_N,
             err_South_Req_E,
             err_IDLE_Req_S,
-            err_Local_Req_S,      
+            err_Local_Req_S,
             err_North_Req_L,
             err_East_Req_N,
             err_West_Req_E,
             err_South_Req_W,
-            err_next_state_onehot, 
-            err_state_in_onehot, 
+            err_next_state_onehot,
+            err_state_in_onehot,
             err_DCTS_RTS_FF_state_Grant_L,
             err_DCTS_RTS_FF_state_Grant_N,
             err_DCTS_RTS_FF_state_Grant_E,
             err_DCTS_RTS_FF_state_Grant_W,
-            err_DCTS_RTS_FF_state_Grant_S, 
-            err_state_north_xbar_sel, 
-            err_state_east_xbar_sel, 
-            err_state_west_xbar_sel, 
-            err_state_south_xbar_sel, 
+            err_DCTS_RTS_FF_state_Grant_S,
+            err_state_north_xbar_sel,
+            err_state_east_xbar_sel,
+            err_state_west_xbar_sel,
+            err_state_south_xbar_sel,
             err_state_local_xbar_sel : out std_logic
             );
 end;
@@ -81,7 +81,7 @@ architecture behavior of Arbiter is
 --                     -------------------------------------          ----
 --   from LBDR  --->  |Req(s)                           RTS | -----> |DRTS
 --    To FIFO   <---  |Grant(s)                         DCTS| <----- |CTS
---    to XBAR   <---  |Xbar_sel                             |        | 
+--    to XBAR   <---  |Xbar_sel                             |        |
 --                     -------------------------------------          ----
 
  --------------------------------------------------------------------------------------------
@@ -120,9 +120,9 @@ signal Grant_N_sig, Grant_E_sig, Grant_W_sig, Grant_S_sig, Grant_L_sig: std_logi
 signal Xbar_sel_sig: std_logic_vector(4 downto 0);
 
 component Arbiter_checkers is
-    port (  
+    port (
             Req_N, Req_E, Req_W, Req_S, Req_L:in std_logic;
-            DCTS: in std_logic; 
+            DCTS: in std_logic;
             Grant_N, Grant_E, Grant_W, Grant_S, Grant_L: in  std_logic;
             Xbar_sel : in std_logic_vector(4 downto 0);
             state: in std_logic_vector (5 downto 0);
@@ -134,32 +134,32 @@ component Arbiter_checkers is
             -- Checker outputs
             err_state_IDLE_xbar,
             err_state_not_IDLE_xbar,
-            err_state_IDLE_RTS_FF_in, 
+            err_state_IDLE_RTS_FF_in,
             err_state_not_IDLE_RTS_FF_RTS_FF_in,
-            err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in, 
-            err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in, 
-            err_RTS_FF_not_DCTS_state_state_in, 
-            err_not_RTS_FF_state_in_next_state, 
-            err_RTS_FF_DCTS_state_in_next_state, 
-            err_not_DCTS_Grants, 
-            err_DCTS_not_RTS_FF_Grants, 
-            err_DCTS_RTS_FF_IDLE_Grants, 
-            err_DCTS_RTS_FF_not_IDLE_Grants_onehot, 
-            err_Requests_next_state_IDLE, 
-            err_IDLE_Req_L, 
+            err_state_not_IDLE_DCTS_RTS_FF_RTS_FF_in,
+            err_state_not_IDLE_not_DCTS_RTS_FF_RTS_FF_in,
+            err_RTS_FF_not_DCTS_state_state_in,
+            err_not_RTS_FF_state_in_next_state,
+            err_RTS_FF_DCTS_state_in_next_state,
+            err_not_DCTS_Grants,
+            err_DCTS_not_RTS_FF_Grants,
+            err_DCTS_RTS_FF_IDLE_Grants,
+            err_DCTS_RTS_FF_not_IDLE_Grants_onehot,
+            err_Requests_next_state_IDLE,
+            err_IDLE_Req_L,
             err_Local_Req_L,
-            err_North_Req_N, 
-            err_East_Req_E, 
-            err_West_Req_W, 
-            err_South_Req_S, 
-            err_IDLE_Req_N, 
-            err_Local_Req_N,      
-            err_North_Req_E, 
-            err_East_Req_W, 
-            err_West_Req_S, 
-            err_South_Req_L, 
+            err_North_Req_N,
+            err_East_Req_E,
+            err_West_Req_W,
+            err_South_Req_S,
+            err_IDLE_Req_N,
+            err_Local_Req_N,
+            err_North_Req_E,
+            err_East_Req_W,
+            err_West_Req_S,
+            err_South_Req_L,
             err_IDLE_Req_E,
-            err_Local_Req_E,      
+            err_Local_Req_E,
             err_North_Req_W,
             err_East_Req_S,
             err_West_Req_L,
@@ -171,22 +171,22 @@ component Arbiter_checkers is
             err_West_Req_N,
             err_South_Req_E,
             err_IDLE_Req_S,
-            err_Local_Req_S,      
+            err_Local_Req_S,
             err_North_Req_L,
             err_East_Req_N,
             err_West_Req_E,
             err_South_Req_W,
-            err_next_state_onehot, 
-            err_state_in_onehot, 
+            err_next_state_onehot,
+            err_state_in_onehot,
             err_DCTS_RTS_FF_state_Grant_L,
             err_DCTS_RTS_FF_state_Grant_N,
             err_DCTS_RTS_FF_state_Grant_E,
             err_DCTS_RTS_FF_state_Grant_W,
-            err_DCTS_RTS_FF_state_Grant_S, 
-            err_state_north_xbar_sel, 
-            err_state_east_xbar_sel, 
-            err_state_west_xbar_sel, 
-            err_state_south_xbar_sel, 
+            err_DCTS_RTS_FF_state_Grant_S,
+            err_state_north_xbar_sel,
+            err_state_east_xbar_sel,
+            err_state_west_xbar_sel,
+            err_state_south_xbar_sel,
             err_state_local_xbar_sel : out std_logic
             );
 end component;
@@ -196,23 +196,23 @@ begin
 
 -- Arbiter checkers instantiation
 ARBITERCHECKERS: Arbiter_checkers port map (
-    Req_N => Req_N, 
-    Req_E => Req_E, 
-    Req_W => Req_W, 
-    Req_S => Req_S, 
+    Req_N => Req_N,
+    Req_E => Req_E,
+    Req_W => Req_W,
+    Req_S => Req_S,
     Req_L => Req_L,
-    DCTS  => DCTS,                                       
-    Grant_N => Grant_N_sig, 
-    Grant_E => Grant_E_sig, 
-    Grant_W => Grant_W_sig, 
-    Grant_S => Grant_S_sig, 
-    Grant_L => Grant_L_sig, 
+    DCTS  => DCTS,
+    Grant_N => Grant_N_sig,
+    Grant_E => Grant_E_sig,
+    Grant_W => Grant_W_sig,
+    Grant_S => Grant_S_sig,
+    Grant_L => Grant_L_sig,
     Xbar_sel=>Xbar_sel_sig,
-    state => state, 
+    state => state,
     state_in => state_in,
     next_state_out => next_state,
     RTS_FF => RTS_FF,
-    RTS_FF_in => RTS_FF_in, 
+    RTS_FF_in => RTS_FF_in,
 
     err_state_IDLE_xbar =>                            err_state_IDLE_xbar,
     err_state_not_IDLE_xbar =>                        err_state_not_IDLE_xbar,
@@ -278,10 +278,10 @@ ARBITERCHECKERS: Arbiter_checkers port map (
                  state<=IDLE;
                  RTS_FF <= '0';
              elsif clk'event and clk = '1' then
-                -- no grant given yet, it might be that there is no request to 
+                -- no grant given yet, it might be that there is no request to
                 -- arbiter or request is there, but the next router's/NI's FIFO is full
                 state <= state_in;
-                RTS_FF <= RTS_FF_in;   
+                RTS_FF <= RTS_FF_in;
               end if;
      end process;
 
@@ -298,29 +298,29 @@ Grant_L <= Grant_L_sig;
 Xbar_sel <= Xbar_sel_sig;
 
 process(RTS_FF, DCTS, state, next_state)begin
-    if RTS_FF = '1' and DCTS = '0' then 
+    if RTS_FF = '1' and DCTS = '0' then
         state_in <= state;
     else
         state_in <= next_state;
-    end if;    
+    end if;
 end process;
 
 
 process(state, RTS_FF, DCTS)begin
-    if state = IDLE then 
+    if state = IDLE then
         RTS_FF_in <= '0';
-        -- if there was a grant given to one of the inputs, 
+        -- if there was a grant given to one of the inputs,
         -- tell the next router/NI that the output data is valid
-    else 
+    else
         if RTS_FF = '1' and DCTS = '1' then
             RTS_FF_in <= '0';
-        else 
+        else
             RTS_FF_in <= '1';
         end if;
     end if ;
-end process; 
+end process;
 
--- sets the grants using round robin 
+-- sets the grants using round robin
 -- the order is   L --> N --> E --> W --> S  and then back to L
 process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
     Grant_N_sig <= '0';
@@ -328,15 +328,15 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
     Grant_W_sig <= '0';
     Grant_S_sig <= '0';
     Grant_L_sig <= '0';
-    Xbar_sel_sig <= "00000"; 
+    Xbar_sel_sig <= "00000";
     case(state) is
         when IDLE =>
-            Xbar_sel_sig <= "00000"; 
-            
+            Xbar_sel_sig <= "00000";
+
             If Req_L = '1' then
                 next_state <= Local;
             elsif Req_N = '1' then
-                next_state <= North;         
+                next_state <= North;
             elsif Req_E = '1' then
                 next_state <= East;
             elsif Req_W = '1' then
@@ -345,14 +345,14 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
                 next_state <= South;
             else
                 next_state <= IDLE;
-            end if;    
-            
+            end if;
+
         when North =>
             Grant_N_sig <= DCTS and RTS_FF ;
             Xbar_sel_sig <= "00001";
-            
-            If Req_N = '1' then 
-                next_state <= North; 
+
+            If Req_N = '1' then
+                next_state <= North;
             elsif Req_E = '1' then
                 next_state <= East;
             elsif Req_W = '1' then
@@ -362,15 +362,15 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             elsif Req_L = '1' then
                 next_state <= Local;
             else
-                next_state <= IDLE; 
+                next_state <= IDLE;
             end if;
-                    
+
         when East =>
             Grant_E_sig <= DCTS and RTS_FF;
             Xbar_sel_sig <= "00010";
-            
-            If Req_E = '1' then 
-                next_state <= East; 
+
+            If Req_E = '1' then
+                next_state <= East;
             elsif Req_W = '1' then
                 next_state <= West;
             elsif Req_S = '1' then
@@ -380,15 +380,15 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             elsif Req_N = '1' then
                 next_state <= North;
             else
-                next_state <= IDLE; 
+                next_state <= IDLE;
             end if;
-            
+
         when West =>
             Grant_W_sig <= DCTS and RTS_FF;
             Xbar_sel_sig <= "00100";
-            
+
             If Req_W = '1' then
-                next_state <= West; 
+                next_state <= West;
             elsif Req_S = '1' then
                 next_state <= South;
             elsif Req_L = '1' then
@@ -398,15 +398,15 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             elsif Req_E = '1' then
                 next_state <= East;
             else
-                next_state <= IDLE; 
+                next_state <= IDLE;
             end if;
-            
+
         when South =>
             Grant_S_sig <= DCTS and RTS_FF;
             Xbar_sel_sig <= "01000";
-            
-            If Req_S = '1' then 
-                next_state <= South; 
+
+            If Req_S = '1' then
+                next_state <= South;
             elsif Req_L = '1' then
                 next_state <= Local;
             elsif Req_N = '1' then
@@ -416,17 +416,17 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             elsif Req_W = '1' then
                 next_state <= West;
             else
-                next_state <= IDLE; 
+                next_state <= IDLE;
             end if;
-            
+
         when others => -- Local
             Grant_L_sig <= DCTS and RTS_FF;
             Xbar_sel_sig <= "10000";
-            
+
             If Req_L = '1' then
-                next_state <= Local; 
+                next_state <= Local;
             elsif Req_N = '1' then
-                next_state <= North;         
+                next_state <= North;
             elsif Req_E = '1' then
                 next_state <= East;
             elsif Req_W = '1' then
@@ -434,7 +434,7 @@ process(state, Req_N, Req_E, Req_W, Req_S, Req_L, DCTS, RTS_FF)begin
             elsif Req_S = '1' then
                 next_state <= South;
             else
-                next_state <= IDLE; 
+                next_state <= IDLE;
             end if;
     end case ;
 end process;

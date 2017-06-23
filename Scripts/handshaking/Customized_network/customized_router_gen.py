@@ -72,7 +72,7 @@ def gen_customized_router(router_type, router_file):
       else:
         router_file.write("CTS_"+str(port)+",")
   router_file.write(": out std_logic;\n")
- 
+
   router_file.write("\t\t")
   for port in ["N", "E", "W", "S", "L"]:
     if port not in router_type:
@@ -161,7 +161,7 @@ def gen_customized_router(router_type, router_file):
   for port in ["N", "E", "W", "S", "L"]:
     if port not in router_type:
       if port == "L":
-        router_file.write("FIFO_D_out_"+str(port)) 
+        router_file.write("FIFO_D_out_"+str(port))
       else:
         router_file.write("FIFO_D_out_"+str(port)+", ")
   router_file.write(": std_logic_vector(DATA_WIDTH-1 downto 0);\n")
@@ -172,35 +172,35 @@ def gen_customized_router(router_type, router_file):
     if port not in router_type:
         router_file.write("\tsignal Grant_"+str(port)+"N, Grant_"+str(port)+"E, Grant_"+str(port)+"W, Grant_"+str(port)+"S, Grant_"+str(port)+"L: std_logic;\n")
 
-  router_file.write("\n")   
+  router_file.write("\n")
   router_file.write("  -- Req_XY : Request signal generated from LBDR of input X connected to Arbiter of output Y\n")
   for port in ["N", "E", "W", "S", "L"]:
     if port not in router_type:
-        router_file.write("\tsignal Req_"+str(port)+"N, Req_"+str(port)+"E, Req_"+str(port)+"W, Req_"+str(port)+"S, Req_"+str(port)+"L: std_logic;\n")  
+        router_file.write("\tsignal Req_"+str(port)+"N, Req_"+str(port)+"E, Req_"+str(port)+"W, Req_"+str(port)+"S, Req_"+str(port)+"L: std_logic;\n")
 
-  router_file.write("\n") 
+  router_file.write("\n")
 
   router_file.write("\tsignal ")
   for port in ["N", "E", "W", "S", "L"]:
     if port not in router_type:
       if port == "L":
-        router_file.write("empty_"+str(port)) 
+        router_file.write("empty_"+str(port))
       else:
         router_file.write("empty_"+str(port)+", ")
   router_file.write(": std_logic;\n")
 
 
-  router_file.write("\n") 
+  router_file.write("\n")
   router_file.write("\tsignal ")
   for port in ["N", "E", "W", "S", "L"]:
     if port not in router_type:
       if port == "L":
-        router_file.write("Xbar_sel_"+str(port)) 
+        router_file.write("Xbar_sel_"+str(port))
       else:
         router_file.write("Xbar_sel_"+str(port)+", ")
   router_file.write(": std_logic_vector(4 downto 0);\n")
 
-  
+
   router_file.write("\n")
   router_file.write("begin\n")
   router_file.write("	\n")
@@ -233,14 +233,14 @@ def gen_customized_router(router_type, router_file):
       router_file.write("   PORT MAP (reset => reset, clk => clk, RX => RX_"+str(port)+", DRTS => DRTS_"+str(port)+", \n")
       router_file.write("\t\t\t\t")
       for source_port in ["N", "E", "W", "S", "L"]:
-        if port != source_port: 
+        if port != source_port:
           if source_port not in router_type:
             router_file.write("read_en_"+str(source_port)+" => Grant_"+str(source_port)+str(port)+", ")
           else:
             router_file.write("read_en_"+str(source_port)+" => '0', ")
         else:
           router_file.write("read_en_"+str(source_port)+" => '0', ")
-      router_file.write("\n")    
+      router_file.write("\n")
       router_file.write("   			CTS => CTS_"+str(port)+", empty_out => empty_"+str(port)+", Data_out => FIFO_D_out_"+str(port)+");      \n")
 
   router_file.write("------------------------------------------------------------------------------------------------------------------------------\n")
@@ -254,7 +254,7 @@ def gen_customized_router(router_type, router_file):
       router_file.write("	   PORT MAP (reset => reset, clk => clk, empty => empty_"+str(port)+", flit_type => FIFO_D_out_"+str(port)+"(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_"+str(port)+"(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,\n")
       router_file.write("   		 	 Req_N=> Req_"+str(port)+"N, Req_E=>Req_"+str(port)+"E, Req_W=>Req_"+str(port)+"W, Req_S=>Req_"+str(port)+"S, Req_L=>Req_"+str(port)+"L);\n")
       router_file.write("\n")
-   
+
   router_file.write("------------------------------------------------------------------------------------------------------------------------------\n")
   router_file.write("------------------------------------------------------------------------------------------------------------------------------\n")
   router_file.write("------------------------------------------------------------------------------------------------------------------------------\n")
@@ -266,7 +266,7 @@ def gen_customized_router(router_type, router_file):
       router_file.write("   PORT MAP (reset => reset, clk => clk,\n")
       router_file.write("\t\t\t\t")
       for source_port in ["N", "E", "W", "S", "L"]:
-        if port != source_port: 
+        if port != source_port:
           if source_port not in router_type:
             router_file.write("Req_"+str(source_port)+" => Req_"+str(source_port)+str(port)+", ")
           else:
@@ -277,13 +277,13 @@ def gen_customized_router(router_type, router_file):
       router_file.write("        DCTS => DCTS_"+str(port)+",\n")
       router_file.write("\t\t\t\t")
       for source_port in ["N", "E", "W", "S", "L"]:
-        router_file.write("Grant_"+str(source_port)+" => Grant_"+str(port)+str(source_port)+", ")  
-      router_file.write("\n")    
+        router_file.write("Grant_"+str(source_port)+" => Grant_"+str(port)+str(source_port)+", ")
+      router_file.write("\n")
       router_file.write("          Xbar_sel => Xbar_sel_"+str(port)+", \n")
       router_file.write("          RTS =>  RTS_"+str(port)+"\n")
       router_file.write("        );     \n")
 
-  
+
   router_file.write("------------------------------------------------------------------------------------------------------------------------------\n")
   router_file.write("------------------------------------------------------------------------------------------------------------------------------\n")
   router_file.write("------------------------------------------------------------------------------------------------------------------------------\n")

@@ -18,7 +18,7 @@ elaborate FIFO_credit_based -architecture behavior -library DEFAULT -parameters 
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/FIFO_one_hot_credit_based_area.txt
@@ -31,7 +31,7 @@ elaborate LBDR -architecture behavior -library DEFAULT -parameters "cur_addr_rst
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/LBDR_area.txt
@@ -44,7 +44,7 @@ elaborate arbiter_in -architecture behavior -library DEFAULT
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/arbiter_in_area.txt
@@ -57,7 +57,7 @@ elaborate arbiter_out -architecture behavior -library DEFAULT
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/arbiter_out_area.txt
@@ -70,7 +70,7 @@ elaborate allocator -architecture behavior -library DEFAULT
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/allocator_area.txt
@@ -86,7 +86,7 @@ elaborate XBAR -architecture behavior -library DEFAULT -parameters "DATA_WIDTH =
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/XBAR_area.txt
@@ -99,7 +99,7 @@ elaborate router_credit_based -architecture behavior -library DEFAULT -parameter
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 # reset signal
 set_dont_touch reset
-# compile 
+# compile
 compile -exact_map
 # report area (save to output file)
 report_area > area/Router_32_bit_credit_based_area.txt

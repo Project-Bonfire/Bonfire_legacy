@@ -7,7 +7,7 @@ class CreditBasedPackage():
     """
     This class handles all the program arguments.
     sort_out_parameters: function for setting up the argument list and also printing the manual if needed!
-    parameters_sanity_check: TODO 
+    parameters_sanity_check: TODO
     generate_file_name: handles generating the file name for output file
     """
 
@@ -25,7 +25,7 @@ class CreditBasedPackage():
         self.add_tracker = False
 
     def sort_out_parameters(self, arguments_list):
- 
+
         if '--help' in arguments_list:
             print "\t-D [network size]: it makes a network of [size]X[size]. Size can be only multiples of two. " \
                   "default value is 4."
@@ -54,7 +54,7 @@ class CreditBasedPackage():
 
         if '-PD' in arguments_list:
             self.add_packet_drop = True
-        
+
         if '-FC' in arguments_list:
             self.add_FC = True
 
@@ -66,7 +66,7 @@ class CreditBasedPackage():
         return 0
 
     def parameters_sanity_check(self):
-        
+
         pass
 
     def generate_file_name(self, arguments_list):

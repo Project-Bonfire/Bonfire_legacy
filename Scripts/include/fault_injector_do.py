@@ -5,7 +5,7 @@ from Scripts.include.package import *
 
 #----------------------------------------------------------------------------------------------
 #
-#											Fault Class 
+#											Fault Class
 #
 #----------------------------------------------------------------------------------------------
 
@@ -14,11 +14,11 @@ class fault:
 	bitwidth = None
 	Type = None
 	mean_time = None
-	std_dev = None 
+	std_dev = None
 	shut_down_time = None
 
 	def __init__(self, loc, width, fault_type, mean_time, std_dev, shut_down_time):
-		
+
 		if width > 1:
 			random_position = random.randint(0, width-1)
 			self.location = loc+"("+str(random_position)+")"
@@ -40,7 +40,7 @@ class fault:
 
 #----------------------------------------------------------------------------------------------
 #
-#											Other functions 
+#											Other functions
 #
 #----------------------------------------------------------------------------------------------
 def report_faults(fault_list):
@@ -54,9 +54,9 @@ def report_faults(fault_list):
 	print "---------------------------------------"
 
 #----------------------------------------------------------------------------------------------
-# Generating signals for different modules                           
-# for this purpose we only consider fault injection points marked with X:                              
-#	
+# Generating signals for different modules
+# for this purpose we only consider fault injection points marked with X:
+#
 #                       .-------------.
 #                .----> |  Checkers   | <---.
 #                |      |   Module    |     |
@@ -194,7 +194,7 @@ def list_all_the_lbdr_signals(network_size):
 def list_all_the_arbiter_signals(network_size):
 	"""
 	takes the network size and returns a list of all the relevant arbiter signals in the network
-	"""	
+	"""
 	list_of_ports = []
 	list_of_widths = []
 
@@ -212,7 +212,7 @@ def list_all_the_arbiter_signals(network_size):
 		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_L_in")
 		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_L_out")
 		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_L")
-		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_N_L") 
+		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_N_L")
 		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_E_L") # Input E requesting Output L ?!
 		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_W_L")
 		list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_S_L")
@@ -240,7 +240,7 @@ def list_all_the_arbiter_signals(network_size):
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_N_in")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_N_out")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_N")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_N_N") 
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_N_N")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_E_N") # Input E requesting Output N ?!
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_W_N")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_S_N")
@@ -266,7 +266,7 @@ def list_all_the_arbiter_signals(network_size):
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_S_in")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_S_out")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_N")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_N_S") 
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_N_S")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_E_S") # Input E requesting Output S ?!
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_W_S")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_S_S")
@@ -292,7 +292,7 @@ def list_all_the_arbiter_signals(network_size):
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_W_in")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_W_out")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_W")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_N_W") 
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_N_W")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_E_W") # Input E requesting Output W ?!
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_W_W")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_S_W")
@@ -318,8 +318,8 @@ def list_all_the_arbiter_signals(network_size):
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_E_in")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:credit_counter_E_out")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:grant_E")
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_N_E") 
-			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_E_E") 
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_N_E")
+			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_E_E")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_W_E") # Input W requesting Output E ?!
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_S_E")
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":allocator_unit:X_L_E")
@@ -461,7 +461,7 @@ def list_all_the_fifo_signals(network_size):
 			list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_W:write_fake_flit")
 
 			list_of_widths += [4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 2, 2, 5, 5, 1, 1, 1, 1, 1]
-			
+
 		if i%network_size != network_size-1: # has port E
 			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:FIFO_MEM_1")
 			# list_of_ports.append("tb_network_"+str(network_size)+"x"+str(network_size)+":NoC:R_"+str(i)+":FIFO_E:FIFO_MEM_2")
@@ -525,7 +525,7 @@ def generate_links_dictionary(network_size, sim_time):
 		width = list_of_widths[item_index]
 		# fault_type = random.choice(["T", "P", "I", "T->P", "T->I"])
 		fault_type = random.choice(["T"])
-		
+
 		shut_down_time = None
 		std_dev = None
 		if fault_type == "T":		# Transient fault
@@ -538,7 +538,7 @@ def generate_links_dictionary(network_size, sim_time):
 				mean_time = int((1000000000/Fault_Per_Second)/MEDIUM_FAULT_RATE)
 			std_dev = int(mean_time*0.1+1)
 
-		elif fault_type == "I" or fault_type == "T->I": 	# Intermittent fault or transient to intermittent 
+		elif fault_type == "I" or fault_type == "T->I": 	# Intermittent fault or transient to intermittent
 			mean_time = int(MTB_INTERMITTENT_BURST)
 			std_dev = int(mean_time*0.1+1)
 
@@ -565,7 +565,7 @@ def parse_fault_info_file(file_path):
 
 	fault_location:	signal_width  fault_type  MTBF  std_deviation  shutdown_time
 
-	fault_location: the signal bit that you want to inject the fault on. 
+	fault_location: the signal bit that you want to inject the fault on.
 	signal_width: 	The width of the signal that you intend to inject the bit-flip in
 	fault_type: 	should be chosen from the follwoing list:
 							* T : Transient
@@ -575,18 +575,18 @@ def parse_fault_info_file(file_path):
 							* T->I : Transient to Intermittent
 	MTBF: 			Mean time between the faults
 	std_deviation:	Standard deviation used for generating faults
-	shutdown_time:	Time in ns when the signal would be permanently faulty only used when 
+	shutdown_time:	Time in ns when the signal would be permanently faulty only used when
 					you need permanent fault. otherwise "None".
 
 	Example:
-			tb_network_2x2:NoC:R_0:RX_L(21) 	32 	I 	1000 	101		None	
+			tb_network_2x2:NoC:R_0:RX_L(21) 	32 	I 	1000 	101		None
 	"""
 
 	fault_list = []
 	fault_info_file = open(file_path, 'r')
 	line = fault_info_file.readline()
 	while line != "":
-		split_line =  line.split()	
+		split_line =  line.split()
 		fault_location = split_line[0]
 		signal_width = int(split_line[1])
 		fault_type = split_line[2]
@@ -598,10 +598,10 @@ def parse_fault_info_file(file_path):
 		fault_list.append(new_fault)
 		line = fault_info_file.readline()
 
-	return fault_list 
+	return fault_list
 
 #----------------------------------------------------------------------------------------------
-# 
+#
 #									 Generating the actual do file.
 #
 #----------------------------------------------------------------------------------------------
@@ -617,13 +617,13 @@ def generate_fault_injection_do(file_path, sim_time, sim_end, fault_list):
 	the generated faults would look like these:
 	*T: 	___|____________|____________|____________|____________|____________|____________|____________|
 
-		Transient faults happen periodically with a normal distribution with mean time between faults and a 
-		standard deviation  
+		Transient faults happen periodically with a normal distribution with mean time between faults and a
+		standard deviation
 
 	*I:     ____________________________||||||||||______________________________________||||||||||_________
 
-		Intermittent faults happen in bursts periodically with a normal distribution with mean time between 
-		faults and a standard deviation. each burst injects 10 stuck at faults. 
+		Intermittent faults happen in bursts periodically with a normal distribution with mean time between
+		faults and a standard deviation. each burst injects 10 stuck at faults.
 
 	*P:     __________________________________________________|''''''''''''''''''''''''''''''''''''''''''''
 
@@ -632,14 +632,14 @@ def generate_fault_injection_do(file_path, sim_time, sim_end, fault_list):
 	*T->I:  ___|____________|____________|____________||||||||||____________________________||||||||||_____
 
 		first it behaves as Transient, then becomes intermittent. For transient MTBF and Std_Dev it uses the
-		specified values in the fault object. for intermittent faults it uses the values specified in package 
+		specified values in the fault object. for intermittent faults it uses the values specified in package
 		file.
 
 	*T->P:  ___|____________|____________|____________||||||||||______________________|''''''''''''''''''''
 
-		First it behaves as transient, then turns into intermittent and then permanent. For transient MTBF and 
-		Std_Dev it uses the specified values in the fault object. for intermittent faults it uses the values 
-		specified in package file. for becomming permanent, it uses the shutdown time specified in the fault 
+		First it behaves as transient, then turns into intermittent and then permanent. For transient MTBF and
+		Std_Dev it uses the specified values in the fault object. for intermittent faults it uses the values
+		specified in package file. for becomming permanent, it uses the shutdown time specified in the fault
 		object.
 	"""
 	list_of_links = fault_list
@@ -652,7 +652,7 @@ def generate_fault_injection_do(file_path, sim_time, sim_end, fault_list):
 	permanently_faulty_locations = []
 	temp_dict = {}
 	for item in list_of_links:
-		if item.Type == "T": 
+		if item.Type == "T":
 			fault_time = 0
 			time_until_next_fault = numpy.random.normal(item.mean_time, item.std_dev)
 			fault_time += time_until_next_fault
@@ -663,8 +663,8 @@ def generate_fault_injection_do(file_path, sim_time, sim_end, fault_list):
 					temp_dict[int(fault_time)] = [item]
 				time_until_next_fault = numpy.random.normal(item.mean_time, item.std_dev)
 				fault_time += time_until_next_fault
-		
-		if item.Type == "I": 
+
+		if item.Type == "I":
 			fault_time = 0
 			time_until_next_fault = numpy.random.normal(item.mean_time, item.std_dev)
 			fault_time += time_until_next_fault
@@ -730,7 +730,7 @@ def generate_fault_injection_do(file_path, sim_time, sim_end, fault_list):
 				time_until_next_fault = numpy.random.normal(int(MTB_INTERMITTENT_BURST), \
 															int(MTB_INTERMITTENT_BURST*0.1+1))
 				fault_time += time_until_next_fault
-			
+
 
 	fault_inject_file.write("#################################\n")
 	current_time = 0
@@ -745,18 +745,18 @@ def generate_fault_injection_do(file_path, sim_time, sim_end, fault_list):
 		if i in temp_dict.keys():
 			last_time = current_time
 			current_time = i
-			fault_inject_file.write("run "+str(current_time-last_time)+"ns\n") 
+			fault_inject_file.write("run "+str(current_time-last_time)+"ns\n")
 			for item in temp_dict[i]:
 				location = item.location
 				if item.Type == "I" or item.Type == "T->I" or item.Type == "T->P":
-					string = "force -drive sim/:"+location+" " + str(random.choice(["0", "1"])) 
+					string = "force -drive sim/:"+location+" " + str(random.choice(["0", "1"]))
 					string +=  " 0 ns -cancel 1ns"
 				else:
-					string = "force -drive sim/:"+location+" " + str(random.choice(["0", "1"])) 
+					string = "force -drive sim/:"+location+" " + str(random.choice(["0", "1"]))
 					random_start = random.randint(0, deviation)
 					string +=  " "+str(random_start)+"ns -cancel "+str(random_start+1)+"ns"
 				fault_inject_file.write(string+"\n")
-	
-	fault_inject_file.write("run "+str(sim_end-sim_time)+"ns\n") 
+
+	fault_inject_file.write("run "+str(sim_end-sim_time)+"ns\n")
 	fault_inject_file.write("stop")
 	fault_inject_file.close()

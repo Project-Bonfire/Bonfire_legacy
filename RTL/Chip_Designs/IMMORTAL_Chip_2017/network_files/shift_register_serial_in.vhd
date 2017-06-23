@@ -8,8 +8,8 @@ entity shift_register_serial_in is
         REG_WIDTH: integer := 32
     );
     port (
-        TCK, reset : in std_logic;  
-        SE: in std_logic;       -- shift enable 
+        TCK, reset : in std_logic;
+        SE: in std_logic;       -- shift enable
         UE: in std_logic;       -- update enable
         SI: in std_logic;       -- serial Input
         SO: out std_logic;      -- serial output
@@ -18,15 +18,15 @@ entity shift_register_serial_in is
 end;
 
 architecture behavior of shift_register_serial_in is
-signal shift_register_mem_out : std_logic_vector(REG_WIDTH-1 downto 0); 
+signal shift_register_mem_out : std_logic_vector(REG_WIDTH-1 downto 0);
 signal output_strobe : std_logic;
 
 begin
 process (TCK, reset)
-begin 
+begin
     if reset = '0'  then
         shift_register_mem_out <= (others => '0');
-    elsif TCK'event and TCK = '1' then 
+    elsif TCK'event and TCK = '1' then
         if SE = '1' then
             shift_register_mem_out <=  shift_register_mem_out (REG_WIDTH-2 downto 0) & SI;
         end if;

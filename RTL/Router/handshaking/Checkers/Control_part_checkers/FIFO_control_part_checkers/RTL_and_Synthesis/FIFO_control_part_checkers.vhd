@@ -10,32 +10,32 @@ entity FIFO_control_part_checkers is
     		CTS_out: in std_logic;
             CTS_in: in std_logic;
             read_en_N : in std_logic;
-            read_en_E : in std_logic;            
+            read_en_E : in std_logic;
             read_en_W : in std_logic;
             read_en_S : in std_logic;
             read_en_L : in std_logic;
             read_pointer: in std_logic_vector(3 downto 0);
             read_pointer_in: in std_logic_vector(3 downto 0);
-            write_pointer: in std_logic_vector(3 downto 0); 
-            write_pointer_in: in std_logic_vector(3 downto 0); 
+            write_pointer: in std_logic_vector(3 downto 0);
+            write_pointer_in: in std_logic_vector(3 downto 0);
             empty_out: in std_logic;
             full_out: in std_logic;
             read_en_out: in std_logic;
-            write_en_out: in std_logic; 
- 
+            write_en_out: in std_logic;
+
             -- Checker outputs
-			err_write_en_write_pointer, 
-			err_not_write_en_write_pointer, 
-			err_read_pointer_write_pointer_not_empty, 
-			err_read_pointer_write_pointer_empty, 
-			err_read_pointer_write_pointer_not_full, 
-			err_read_pointer_write_pointer_full, 
-			err_read_pointer_increment, 
-			err_read_pointer_not_increment, 
-			err_CTS_in, 
-			err_write_en, 
-			err_not_CTS_in, 
-			err_not_write_en, 
+			err_write_en_write_pointer,
+			err_not_write_en_write_pointer,
+			err_read_pointer_write_pointer_not_empty,
+			err_read_pointer_write_pointer_empty,
+			err_read_pointer_write_pointer_not_full,
+			err_read_pointer_write_pointer_full,
+			err_read_pointer_increment,
+			err_read_pointer_not_increment,
+			err_CTS_in,
+			err_write_en,
+			err_not_CTS_in,
+			err_not_write_en,
 			err_read_en_mismatch : out std_logic
             );
 
@@ -45,7 +45,7 @@ architecture behavior of FIFO_control_part_checkers is
 
 signal read_en_signal: std_logic;
 
-begin 
+begin
 
 read_en_signal <= (read_en_N or read_en_E or read_en_W or read_en_S or read_en_L) and not empty_out;
 

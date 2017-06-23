@@ -4,7 +4,7 @@ from misc import name_string_generator
 
 def gen_fifo_checker_top(checker_id):
     name_string = name_string_generator(checker_id)
-    
+
     fifo_checker_top = open("checker_vhdl/fifo_control_part_checker"+name_string+"_top.vhd", 'w')
 
     fifo_checker_top.write("library ieee;\n")
@@ -215,5 +215,5 @@ def gen_fifo_checker_top(checker_id):
     fifo_checker_top.write("                       );\n")
     fifo_checker_top.write("\n")
     fifo_checker_top.write("end behavior;\n")
- 
+
     fifo_checker_top.close()

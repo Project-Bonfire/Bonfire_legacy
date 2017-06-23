@@ -9,7 +9,7 @@ entity Arbiter_pseudo_TMR is
     generic (
         DATA_WIDTH: integer := 23 -- number of Arbiter outputs (pseudo-combinational circuit)
     );
-    port   (  
+    port   (
             Req_N, Req_E, Req_W,Req_S, Req_L:in std_logic; -- From LBDR modules
             DCTS: in std_logic; -- Getting the CTS signal from the input FIFO of the next router/NI (for hand-shaking)
             RTS_FF: in std_logic;
@@ -26,7 +26,7 @@ end;
 architecture behavior of Arbiter_pseudo_TMR is
 
 component Arbiter_pseudo is
-    port   (  
+    port   (
             Req_N, Req_E, Req_W,Req_S, Req_L:in std_logic; -- From LBDR modules
             DCTS: in std_logic; -- Getting the CTS signal from the input FIFO of the next router/NI (for hand-shaking)
             RTS_FF: in std_logic;
@@ -56,18 +56,18 @@ end component;
 signal Voter_input_0_sig, Voter_input_1_sig, Voter_input_2_sig: std_logic_vector(DATA_WIDTH-1 downto 0);
 signal final_voted_output_sig: std_logic_vector(DATA_WIDTH-1 downto 0);
 
-begin 
+begin
 
 -- Arbiter instantiation (For TMR logic)
 ARBITER0: Arbiter_pseudo port map (
-                             Req_N =>  Req_N, 
-                             Req_E =>  Req_E, 
-                             Req_W =>  Req_W, 
-                             Req_S =>  Req_S, 
-                             Req_L =>  Req_L, 
-                             DCTS =>   DCTS, 
-                             RTS_FF => RTS_FF, 
-                             state =>  state, 
+                             Req_N =>  Req_N,
+                             Req_E =>  Req_E,
+                             Req_W =>  Req_W,
+                             Req_S =>  Req_S,
+                             Req_L =>  Req_L,
+                             DCTS =>   DCTS,
+                             RTS_FF => RTS_FF,
+                             state =>  state,
 
                              Grant_N => Voter_input_0_sig(0),
                              Grant_E => Voter_input_0_sig(1),
@@ -81,14 +81,14 @@ ARBITER0: Arbiter_pseudo port map (
                             );
 
 ARBITER1: Arbiter_pseudo port map (
-                             Req_N =>  Req_N, 
-                             Req_E =>  Req_E, 
-                             Req_W =>  Req_W, 
-                             Req_S =>  Req_S, 
-                             Req_L =>  Req_L, 
-                             DCTS =>   DCTS, 
-                             RTS_FF => RTS_FF, 
-                             state =>  state, 
+                             Req_N =>  Req_N,
+                             Req_E =>  Req_E,
+                             Req_W =>  Req_W,
+                             Req_S =>  Req_S,
+                             Req_L =>  Req_L,
+                             DCTS =>   DCTS,
+                             RTS_FF => RTS_FF,
+                             state =>  state,
 
                              Grant_N => Voter_input_1_sig(0),
                              Grant_E => Voter_input_1_sig(1),
@@ -102,14 +102,14 @@ ARBITER1: Arbiter_pseudo port map (
                             );
 
 ARBITER2: Arbiter_pseudo port map (
-                             Req_N =>  Req_N, 
-                             Req_E =>  Req_E, 
-                             Req_W =>  Req_W, 
-                             Req_S =>  Req_S, 
-                             Req_L =>  Req_L, 
-                             DCTS =>   DCTS, 
-                             RTS_FF => RTS_FF, 
-                             state =>  state, 
+                             Req_N =>  Req_N,
+                             Req_E =>  Req_E,
+                             Req_W =>  Req_W,
+                             Req_S =>  Req_S,
+                             Req_L =>  Req_L,
+                             DCTS =>   DCTS,
+                             RTS_FF => RTS_FF,
+                             state =>  state,
 
                              Grant_N => Voter_input_2_sig(0),
                              Grant_E => Voter_input_2_sig(1),
@@ -129,7 +129,7 @@ TMR_voter: voter  generic map (DATA_WIDTH => DATA_WIDTH)
                               input0 => Voter_input_0_sig,
                               input1 => Voter_input_1_sig,
                               input2 => Voter_input_2_sig,
- 
+
                               voted_output => final_voted_output_sig
                            );
 

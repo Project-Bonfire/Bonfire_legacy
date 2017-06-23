@@ -12,7 +12,7 @@ def return_node_location(node_number):
 def draw_ag(ag, file_name):
 
     position = {}
-    
+
 
     number_of_layers = 1
     largest_number = 15
@@ -30,7 +30,7 @@ def draw_ag(ag, file_name):
     for Node in ag.nodes():
         x, y, z = return_node_location(Node)
         position[Node] = [(x*node_distance_x)+(z*offset_x), (y*node_distance_y)+(z*offset_y)]
-  
+
     # POS = networkx.spring_layout(AG)
 
     networkx.draw(ag, pos=position, with_labels=True, node_size=node_size, arrows=False,

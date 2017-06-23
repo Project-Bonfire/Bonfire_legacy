@@ -8,11 +8,11 @@
 --    Software 'as is' without warranty.  Author liable for nothing.
 -- DESCRIPTION:
 --    Implements the UART.
--- modified by: Siavoosh Payandeh Azad 
--- Change logs:  
+-- modified by: Siavoosh Payandeh Azad
+-- Change logs:
 --            * added a memory mapped register for counter value
 --            * added necessary signals for the above mentioned register to the interface!
---            * COUNT_VALUE is replaced with count_value_sig which comes from the above mentioned register 
+--            * COUNT_VALUE is replaced with count_value_sig which comes from the above mentioned register
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -127,7 +127,7 @@ begin
       bits_read_reg   <= "0000";
       delay_read_reg  <= ZERO(9 downto 0);
       data_save_reg   <= ZERO(17 downto 0);
-      
+
    elsif rising_edge(clk) then
 
       --Write UART
@@ -147,7 +147,7 @@ begin
             data_write_reg <= '1' & data_write_reg(8 downto 1);
          end if;
       end if;
- 
+
 
       --Read UART
       if delay_read_reg = ZERO(9 downto 0) then     --done delay for read?

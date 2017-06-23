@@ -1,6 +1,6 @@
 --Copyright (C) 2016 Siavoosh Payandeh Azad, Behrad Niazmand
 -- This design is based on the proposed method, discussed in the following publication:
--- "A Fault Prediction Module for a Fault Tolerant NoC Operation" 
+-- "A Fault Prediction Module for a Fault Tolerant NoC Operation"
 -- by Silveira, J.; Bodin, M.; Ferreira, J.M.; Cadore Pinheiro, A.; Webber, T.; Marcon, C.
 
 library ieee;
@@ -34,7 +34,7 @@ signal reset_counters: std_logic; -- reset signal generated when a threshold is 
  TYPE STATE_TYPE IS (Healthy_state, Intermittent_state, Faulty_state);
 SIGNAL state, next_state   : STATE_TYPE := Healthy_state;
 
-begin 
+begin
 
 -- clock block
  process(clk, reset)begin
@@ -42,7 +42,7 @@ begin
     faulty_counter_out <=  (others => '0');
     healthy_counter_out <=  (others => '0');
     state <= Healthy_state;   -- It is assumed that the link is always healthy in the beginning
-  elsif clk'event and clk = '1' then 
+  elsif clk'event and clk = '1' then
     faulty_counter_out <= faulty_counter_in;
     healthy_counter_out <= healthy_counter_in;
     state <= next_state;
@@ -53,9 +53,9 @@ begin
 
 -- updating the faulty counter
 process(faulty_packet, reset_counters, faulty_counter_out)begin
-  if reset_counters  = '1' then 
+  if reset_counters  = '1' then
       faulty_counter_in <=  (others => '0');
-  elsif faulty_packet = '1' then 
+  elsif faulty_packet = '1' then
       faulty_counter_in <= faulty_counter_out + 1;
   else
       faulty_counter_in <= faulty_counter_out;
@@ -64,14 +64,14 @@ end process;
 
 -- updating the healthy counter
 process(Healthy_packet, reset_counters, healthy_counter_out)begin
-  if reset_counters  = '1' then 
+  if reset_counters  = '1' then
       healthy_counter_in <=  (others => '0');
-  elsif Healthy_packet = '1' then 
+  elsif Healthy_packet = '1' then
       healthy_counter_in <= healthy_counter_out + 1;
   else
       healthy_counter_in <= healthy_counter_out;
   end if;
- 
+
 end process;
 
 -- checking the counters against threshold values!
@@ -80,56 +80,56 @@ process(healthy_counter_out, faulty_counter_out) begin
   reset_counters <= '0';
   DET <= '0';
   NET <= '0';
-  
-  if healthy_counter_out = std_logic_vector(to_unsigned(healthy_counter_threshold, healthy_counter_out'length)) then 
+
+  if healthy_counter_out = std_logic_vector(to_unsigned(healthy_counter_threshold, healthy_counter_out'length)) then
       NET <= '1';
       reset_counters <= '1';
   end if;
 
- if faulty_counter_out = std_logic_vector(to_unsigned(faulty_counter_threshold, faulty_counter_out'length)) then 
+ if faulty_counter_out = std_logic_vector(to_unsigned(faulty_counter_threshold, faulty_counter_out'length)) then
       DET <= '1';
       reset_counters <= '1';
   end if;
-end process;  
+end process;
 
--- Counter threshold FSM 
+-- Counter threshold FSM
 --      .__________.   DET/Intermittent .---------------.    DET/Faulty  .---------------.
---      |  HEALTHY | -----------------> |  INTERMITTENT | -------------->|     FAULTY    | 
+--      |  HEALTHY | -----------------> |  INTERMITTENT | -------------->|     FAULTY    |
 --      |   STATE  | <----------------- |     STATE     |                |     STATE     |
 --      '----------'   NET/healthy      '---------------'                '---------------'
 --
 
 process (NET, DET, state)begin
   -- Default values
-  Healthy <= '0'; 
-  Intermittent <= '0'; 
+  Healthy <= '0';
+  Intermittent <= '0';
   Faulty <= '0';
 
-  case state is 
-      when Healthy_state => 
-            if NET = '1' then 
+  case state is
+      when Healthy_state =>
+            if NET = '1' then
               next_state <= Healthy_state;
             elsif DET = '1' then
               next_state <= Intermittent_state;
-              Intermittent <= '1'; 
+              Intermittent <= '1';
             else
               next_state <= Healthy_state;
             end if;
-      when Intermittent_state => 
-            if NET = '1' then 
+      when Intermittent_state =>
+            if NET = '1' then
               next_state <= Healthy_state;
-              Healthy <= '1'; 
+              Healthy <= '1';
             elsif DET = '1' then
               next_state <= Faulty_state;
               Faulty <= '1';
             else
-              next_state <= Intermittent_state; 
+              next_state <= Intermittent_state;
             end if;
-      when Faulty_state => 
+      when Faulty_state =>
             next_state <= Faulty_state;
       when others =>  -- just for sysnthesis tools
             next_state <= Healthy_state;
-            Healthy <= '1'; 
+            Healthy <= '1';
   end case;
 end process;
 

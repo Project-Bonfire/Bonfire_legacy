@@ -6,8 +6,8 @@
 -- PROJECT: Plasma CPU core
 -- COPYRIGHT: Software placed into the public domain by the author.
 --    Software 'as is' without warranty.  Author liable for nothing.
--- NOTE:  MIPS(tm) and MIPS I(tm) are registered trademarks of MIPS 
---    Technologies.  MIPS Technologies does not endorse and is not 
+-- NOTE:  MIPS(tm) and MIPS I(tm) are registered trademarks of MIPS
+--    Technologies.  MIPS Technologies does not endorse and is not
 --    associated with this project.
 -- DESCRIPTION:
 --    Top level VHDL document that ties the nine other entities together.
@@ -20,7 +20,7 @@
 -- The CPU is implemented as a two or three stage pipeline.
 -- An add instruction would take the following steps (see cpu.gif):
 -- Stage #0:
---    1.  The "pc_next" entity passes the program counter (PC) to the 
+--    1.  The "pc_next" entity passes the program counter (PC) to the
 --        "mem_ctrl" entity which fetches the opcode from memory.
 -- Stage #1:
 --    2.  The memory returns the opcode.
@@ -28,7 +28,7 @@
 --    3.  "Mem_ctrl" passes the opcode to the "control" entity.
 --    4.  "Control" converts the 32-bit opcode to a 60-bit VLWI opcode
 --        and sends control signals to the other entities.
---    5.  Based on the rs_index and rt_index control signals, "reg_bank" 
+--    5.  Based on the rs_index and rt_index control signals, "reg_bank"
 --        sends the 32-bit reg_source and reg_target to "bus_mux".
 --    6.  Based on the a_source and b_source control signals, "bus_mux"
 --        multiplexes reg_source onto a_bus and reg_target onto b_bus.
@@ -42,12 +42,12 @@
 -- Stage #3b:
 --   10.  Read or write memory if needed.
 --
--- All signals are active high. 
+-- All signals are active high.
 -- Here are the signals for writing a character to address 0xffff
 -- when using a two stage pipeline:
 --
 -- Program:
--- addr     value  opcode 
+-- addr     value  opcode
 -- =============================
 --   3c: 00000000  nop
 --   40: 34040041  li $a0,0x41
@@ -56,21 +56,21 @@
 --   4c: 00000000  nop
 --   50: 00000000  nop
 --
---      intr_in                             mem_pause 
+--      intr_in                             mem_pause
 --  reset_in                               byte_we     Stages
 --     ns         address     data_w     data_r        40 44 48 4c 50
---   3600  0  0  00000040   00000000   34040041  0  0   1  
---   3700  0  0  00000044   00000000   3405FFFF  0  0   2  1  
---   3800  0  0  00000048   00000000   A0A40000  0  0      2  1  
+--   3600  0  0  00000040   00000000   34040041  0  0   1
+--   3700  0  0  00000044   00000000   3405FFFF  0  0   2  1
+--   3800  0  0  00000048   00000000   A0A40000  0  0      2  1
 --   3900  0  0  0000004C   41414141   00000000  0  0         2  1
---   4000  0  0  0000FFFC   41414141   XXXXXX41  1  0         3  2  
+--   4000  0  0  0000FFFC   41414141   XXXXXX41  1  0         3  2
 --   4100  0  0  00000050   00000000   00000000  0  0               1
 
--- modified by: Siavoosh Payandeh Azad 
--- Change logs:  
+-- modified by: Siavoosh Payandeh Azad
+-- Change logs:
 --            * An NI has been Instantiated
 --            * some changes has been applied to the ports of the older modules
---              to facilitate the new module!  
+--              to facilitate the new module!
 --            * A specific memory address in external ram has been blocked to be used by the NI
 --            * IRQ return address register have been changed! It used to be saved in R0, now it is R26
 ---------------------------------------------------------------------
@@ -93,7 +93,7 @@ entity mlite_cpu is
         --NI_write_flag      : in  std_logic;
 
         address_next : out std_logic_vector(31 downto 2); --for synch ram
-        byte_we_next : out std_logic_vector(3 downto 0); 
+        byte_we_next : out std_logic_vector(3 downto 0);
 
         address      : out std_logic_vector(31 downto 2);
         byte_we      : out std_logic_vector(3 downto 0);
@@ -165,7 +165,7 @@ begin  --architecture
    reset <= '1' when reset_in = '1' or reset_reg /= "1111" else '0';
 
    --synchronize reset and interrupt pins
-   intr_proc: process(clk, reset_in, reset_reg, intr_in, intr_enable, 
+   intr_proc: process(clk, reset_in, reset_reg, intr_in, intr_enable,
       pc_source, pc_current, pause_any)
    begin
       if reset_in = '1' then
@@ -201,7 +201,7 @@ begin  --architecture
         pc_current   => pc_current,
         pc_plus4     => pc_plus4);
 
-   u2_mem_ctrl: mem_ctrl 
+   u2_mem_ctrl: mem_ctrl
       PORT MAP (
         clk          => clk,
         reset_in     => reset,
@@ -215,7 +215,7 @@ begin  --architecture
         data_write   => reg_target,
         data_read    => c_memory,
         pause_out    => pause_ctrl,
-        
+
         address_next => address_next,
         byte_we_next => byte_we_next,
 
@@ -244,7 +244,7 @@ begin  --architecture
         mem_source_out=> mem_source,
         exception_out=> exception_sig);
 
-   u4_reg_bank: reg_bank 
+   u4_reg_bank: reg_bank
       generic map(memory_type => memory_type)
       port map (
         clk            => clk,
@@ -279,7 +279,7 @@ begin  --architecture
         branch_func  => branch_func,
         take_branch  => take_branch);
 
-   u6_alu: alu 
+   u6_alu: alu
       generic map (alu_type => alu_type)
       port map (
         a_in         => a_busD,
@@ -295,7 +295,7 @@ begin  --architecture
         shift_func   => shift_funcD,
         c_shift      => c_shift);
 
-   u8_mult: mult 
+   u8_mult: mult
       generic map (mult_type => mult_type)
       port map (
         clk       => clk,

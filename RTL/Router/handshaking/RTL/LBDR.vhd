@@ -27,12 +27,12 @@ architecture behavior of LBDR is
 
   signal Cx:  std_logic_vector(3 downto 0);
   signal Rxy:  std_logic_vector(7 downto 0);
-  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);  
-  signal N1, E1, W1, S1  :std_logic :='0';  
+  signal cur_addr:  std_logic_vector(NoC_size-1 downto 0);
+  signal N1, E1, W1, S1  :std_logic :='0';
   signal Req_N_in, Req_E_in, Req_W_in, Req_S_in, Req_L_in: std_logic;
   signal Req_N_FF, Req_E_FF, Req_W_FF, Req_S_FF, Req_L_FF: std_logic;
 
-begin 
+begin
   Cx       <=  std_logic_vector(to_unsigned(Cx_rst, Cx'length));
   Rxy      <= std_logic_vector(to_unsigned(Rxy_rst, Rxy'length));
   cur_addr <= std_logic_vector(to_unsigned(cur_addr_rst, cur_addr'length));
@@ -45,13 +45,13 @@ begin
 
 process(clk, reset)
 begin
-if reset = '0' then 
+if reset = '0' then
   Req_N_FF <= '0';
   Req_E_FF <= '0';
   Req_W_FF <= '0';
   Req_S_FF <= '0';
   Req_L_FF <= '0';
-elsif clk'event and clk = '1' then 
+elsif clk'event and clk = '1' then
   Req_N_FF <= Req_N_in;
   Req_E_FF <= Req_E_in;
   Req_W_FF <= Req_W_in;
@@ -59,7 +59,7 @@ elsif clk'event and clk = '1' then
   Req_L_FF <= Req_L_in;
 end if;
 end process;
- 
+
 
 -- The combionational part
 
@@ -90,5 +90,5 @@ process(N1, E1, W1, S1, Rxy, Cx, flit_type, empty, Req_N_FF, Req_E_FF, Req_W_FF,
         Req_L_in <= Req_L_FF;
   end if;
 end process;
-   
+
 END;

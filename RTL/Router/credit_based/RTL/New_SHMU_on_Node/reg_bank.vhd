@@ -101,7 +101,7 @@ begin
       --   intr_enable_reg <= '1';
       --end if;
       -- Added by Behrad
-      
+
    end if;
 
    intr_enable <= intr_enable_reg;

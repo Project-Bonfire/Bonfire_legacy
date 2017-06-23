@@ -12,12 +12,12 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.TB_Package.all;
 
-USE ieee.numeric_std.ALL; 
+USE ieee.numeric_std.ALL;
 use IEEE.math_real."ceil";
 use IEEE.math_real."log2";
 
 entity tb_network_2x2 is
-end tb_network_2x2; 
+end tb_network_2x2;
 
 
 architecture behavior of tb_network_2x2 is
@@ -25,8 +25,8 @@ architecture behavior of tb_network_2x2 is
 -- Declaring network component
 component network_2x2 is
  generic (DATA_WIDTH: integer := 32);
-port (reset: in  std_logic; 
-	clk: in  std_logic; 
+port (reset: in  std_logic;
+	clk: in  std_logic;
 	--------------
 	RX_L_0: in std_logic_vector (DATA_WIDTH-1 downto 0);
 	RTS_L_0, CTS_L_0: out std_logic;
@@ -59,8 +59,8 @@ port (reset: in  std_logic;
 
 	FI_Add_3_2, FI_Add_2_3: in std_logic_vector(integer(ceil(log2(real(DATA_WIDTH))))-1 downto 0);
 	sta0_2_3, sta1_2_3, sta0_3_2, sta1_3_2: in std_logic
-            ); 
-end component; 
+            );
+end component;
 
 -- generating bulk signals...
 	signal RX_L_0, TX_L_0:  std_logic_vector (31 downto 0);
@@ -97,24 +97,24 @@ begin
    clk_process :process
    begin
         clk <= '0';
-        wait for clk_period/2;   
+        wait for clk_period/2;
         clk <= '1';
-        wait for clk_period/2; 
+        wait for clk_period/2;
    end process;
 
 reset <= '1' after 1 ns;
 -- instantiating the network
 NoC: network_2x2 generic map (DATA_WIDTH  => 32)
-PORT MAP (reset, clk, 
+PORT MAP (reset, clk,
 	RX_L_0, RTS_L_0, CTS_L_0, DRTS_L_0, DCTS_L_0, TX_L_0,
 	RX_L_1, RTS_L_1, CTS_L_1, DRTS_L_1, DCTS_L_1, TX_L_1,
 	RX_L_2, RTS_L_2, CTS_L_2, DRTS_L_2, DCTS_L_2, TX_L_2,
 	RX_L_3, RTS_L_3, CTS_L_3, DRTS_L_3, DCTS_L_3, TX_L_3,
 	--fault injector signals
-	FI_Add_2_0, FI_Add_0_2, 
+	FI_Add_2_0, FI_Add_0_2,
 	sta0_0_2, sta1_0_2, sta0_2_0, sta1_2_0,
 
-	FI_Add_3_1, FI_Add_1_3, 
+	FI_Add_3_1, FI_Add_1_3,
 	sta0_1_3, sta1_1_3, sta0_3_1, sta1_3_1,
 
 	FI_Add_1_0, FI_Add_0_1,

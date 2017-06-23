@@ -19,13 +19,13 @@ entity tbench is
 end; --entity tbench
 
 architecture logic of tbench is
-   constant memory_type : string := 
-   "TRI_PORT_X";   
+   constant memory_type : string :=
+   "TRI_PORT_X";
 --   "DUAL_PORT_";
 --   "ALTERA_LPM";
 --   "XILINX_16X";
 
-   constant log_file  : string := 
+   constant log_file  : string :=
 --   "UNUSED";
    "output.txt";
 
@@ -58,8 +58,8 @@ begin  --architecture
    --interrupt <= '1' after 20 us when interrupt = '0' else '0' after 445 ns;
    -- Added by Behrad
    --interrupt <= '1' after 500 ns when interrupt = '0' else '0' after 100 us;
-   
- 
+
+
 
    clk   <= not clk after 50 ns;
    reset <= '0' after 500 ns;
@@ -75,14 +75,14 @@ begin  --architecture
       generic map (memory_type => memory_type,
                    ethernet    => '0',
                    use_cache   => '0',
-                   log_file    => log_file, 
+                   log_file    => log_file,
                    current_address => 10)
       PORT MAP (
          clk               => clk,
          reset             => reset,
          uart_read         => uart_write,
          uart_write        => uart_write,
- 
+
          address           => address,
          byte_we           => byte_we,
          data_write        => data_write,
@@ -90,14 +90,14 @@ begin  --architecture
          mem_pause_in      => pause,
          no_ddr_start      => no_ddr_start,
          no_ddr_stop       => no_ddr_stop,
-         
+
          gpio0_out         => open,
          gpioA_in          => gpioA_in,
 
          credit_in         => credit_in,
          valid_out         => valid_out,
          TX                => TX,
-         
+
          credit_out        => credit_out,
          valid_in          => valid_in,
          RX                => RX
@@ -106,10 +106,10 @@ begin  --architecture
    dram_proc: process(clk, address, byte_we, data_write, pause)
       constant ADDRESS_WIDTH : natural := 16;
       type storage_array is
-         array(natural range 0 to (2 ** ADDRESS_WIDTH) / 4 - 1) of 
+         array(natural range 0 to (2 ** ADDRESS_WIDTH) / 4 - 1) of
          std_logic_vector(31 downto 0);
       variable storage : storage_array;
-      variable data    : std_logic_vector(31 downto 0); 
+      variable data    : std_logic_vector(31 downto 0);
       variable index   : natural := 0;
    begin
       index := conv_integer(address(ADDRESS_WIDTH-1 downto 2));
@@ -127,7 +127,7 @@ begin  --architecture
       if byte_we(3) = '1' then
          data(31 downto 24) := data_write(31 downto 24);
       end if;
-      
+
       if rising_edge(clk) then
          if address(30 downto 28) = "001" and byte_we /= "0000" then
             storage(index) := data;

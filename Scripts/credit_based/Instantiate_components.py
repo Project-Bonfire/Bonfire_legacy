@@ -1,10 +1,10 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 from CB_functions import rxy_rst_calculator, cx_rst_calculator
- 
- 
 
 
-def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add_FC, add_SHMU, 
+
+
+def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add_FC, add_SHMU,
                         healthy_counter_threshold, faulty_counter_threshold, counter_depth):
     """
     Instantiates the different routers based on the specified configuration!
@@ -47,14 +47,14 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add
             string_to_print += "Faulty_N_in"+str(i)+","
             string_to_print += "Faulty_E_in"+str(i)+","
             string_to_print += "Faulty_W_in"+str(i)+","
-            string_to_print += "Faulty_S_in"+str(i)+"," 
-            string_to_print += "\n"    
-            
+            string_to_print += "Faulty_S_in"+str(i)+","
+            string_to_print += "\n"
+
             string_to_print += "\t"
             string_to_print += "Faulty_N_out"+str(i)+","
             string_to_print += "Faulty_E_out"+str(i)+","
             string_to_print += "Faulty_W_out"+str(i)+","
-            string_to_print += "Faulty_S_out"+str(i) 
+            string_to_print += "Faulty_S_out"+str(i)
             string_to_print += " ); \n"
             noc_file.write(string_to_print)
 
@@ -85,14 +85,14 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add
             string_to_print += "Faulty_N_in"+str(i)+","
             string_to_print += "Faulty_E_in"+str(i)+","
             string_to_print += "Faulty_W_in"+str(i)+","
-            string_to_print += "Faulty_S_in"+str(i)+"," 
-            string_to_print += "\n"    
-            
+            string_to_print += "Faulty_S_in"+str(i)+","
+            string_to_print += "\n"
+
             string_to_print += "\t"
             string_to_print += "Faulty_N_out"+str(i)+","
             string_to_print += "Faulty_E_out"+str(i)+","
             string_to_print += "Faulty_W_out"+str(i)+","
-            string_to_print += "Faulty_S_out"+str(i)+"," 
+            string_to_print += "Faulty_S_out"+str(i)+","
             string_to_print += "\n"
 
             string_to_print += "\t-- should be connected to NI\n"
