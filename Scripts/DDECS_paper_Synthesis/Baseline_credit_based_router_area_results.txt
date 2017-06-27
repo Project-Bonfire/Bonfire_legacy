@@ -1,0 +1,69 @@
+ 
+****************************************
+Report : area
+Design : router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+Version: J-2014.09-SP2
+Date   : Tue Jun 27 18:26:57 2017
+****************************************
+
+Library(s) Used:
+
+    c18_CORELIB_TYP (File: /cad/dk/c/v4.11/synopsys/c18_1.8V/c18_CORELIB_TYP.db)
+
+Number of ports:                          351
+Number of nets:                           557
+Number of cells:                           17
+Number of combinational cells:              1
+Number of sequential cells:                 0
+Number of macros/black boxes:               0
+Number of buf/inv:                          0
+Number of references:                      17
+
+Combinational area:              48962.995551
+Buf/Inv area:                     7078.579433
+Noncombinational area:           52059.167595
+Macro/Black Box area:                0.000000
+Net Interconnect area:           58627.119762
+
+Total cell area:                101022.163146
+Total area:                     159649.282908
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area             Local cell area
+                                  --------------------  ------------------------------ 
+Hierarchical cell                 Absolute     Percent  Combi-      Noncombi-   Black-
+                                  Total        Total    national    national    boxes   Design
+--------------------------------  -----------  -------  ----------  ----------  ------  ---------------------------------------
+router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4 101022.1631   100.0    14.1120     0.0000 0.0000 router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+FIFO_E                             14255.9423     14.1   5362.5600   8893.3823  0.0000  FIFO_credit_based_DATA_WIDTH32_4
+FIFO_L                             14255.9423     14.1   5362.5600   8893.3823  0.0000  FIFO_credit_based_DATA_WIDTH32_1
+FIFO_N                             14255.9423     14.1   5362.5600   8893.3823  0.0000  FIFO_credit_based_DATA_WIDTH32_0
+FIFO_S                             14267.2319     14.1   5373.8496   8893.3823  0.0000  FIFO_credit_based_DATA_WIDTH32_2
+FIFO_W                             14255.9423     14.1   5362.5600   8893.3823  0.0000  FIFO_credit_based_DATA_WIDTH32_3
+LBDR_E                              1755.5328      1.7    756.4032    999.1296  0.0000  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_4
+LBDR_L                              1755.5328      1.7    756.4032    999.1296  0.0000  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_1
+LBDR_N                              1755.5328      1.7    756.4032    999.1296  0.0000  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_0
+LBDR_S                              1755.5328      1.7    756.4032    999.1296  0.0000  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_2
+LBDR_W                              1755.5328      1.7    756.4032    999.1296  0.0000  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3
+XBAR_E                              2334.1248      2.3   2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_4
+XBAR_L                              2334.1248      2.3   2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_1
+XBAR_N                              2334.1248      2.3   2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_0
+XBAR_S                              2334.1248      2.3   2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_2
+XBAR_W                              2334.1248      2.3   2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_3
+allocator_unit                      9268.7617      9.2   1140.2496    649.1520  0.0000  allocator
+allocator_unit/arb_E_X               793.0944      0.8    598.3488    194.7456  0.0000  arbiter_in_4
+allocator_unit/arb_L_X               793.0944      0.8    598.3488    194.7456  0.0000  arbiter_in_1
+allocator_unit/arb_N_X               793.0944      0.8    598.3488    194.7456  0.0000  arbiter_in_0
+allocator_unit/arb_S_X               793.0944      0.8    598.3488    194.7456  0.0000  arbiter_in_2
+allocator_unit/arb_W_X               793.0944      0.8    598.3488    194.7456  0.0000  arbiter_in_3
+allocator_unit/arb_X_E               702.7776      0.7    508.0320    194.7456  0.0000  arbiter_out_4
+allocator_unit/arb_X_L               702.7776      0.7    508.0320    194.7456  0.0000  arbiter_out_1
+allocator_unit/arb_X_N               702.7776      0.7    508.0320    194.7456  0.0000  arbiter_out_0
+allocator_unit/arb_X_S               702.7776      0.7    508.0320    194.7456  0.0000  arbiter_out_2
+allocator_unit/arb_X_W               702.7776      0.7    508.0320    194.7456  0.0000  arbiter_out_3
+--------------------------------  -----------  -------  ----------  ----------  ------  ---------------------------------------
+Total                                                   48962.9956  52059.1676  0.0000
+
+1
