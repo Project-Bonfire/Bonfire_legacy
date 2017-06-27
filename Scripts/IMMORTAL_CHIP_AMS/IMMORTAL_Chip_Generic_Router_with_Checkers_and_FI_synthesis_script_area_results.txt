@@ -1,0 +1,175 @@
+Warning: Design 'router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+ 
+****************************************
+Report : area
+Design : router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+Version: J-2014.09-SP2
+Date   : Tue Jun 27 20:49:38 2017
+****************************************
+
+Information: Updating design information... (UID-85)
+Library(s) Used:
+
+    c18_CORELIB_TYP (File: /cad/dk/c/v4.11/synopsys/c18_1.8V/c18_CORELIB_TYP.db)
+
+Number of ports:                          418
+Number of nets:                          2555
+Number of cells:                          665
+Number of combinational cells:            619
+Number of sequential cells:                 5
+Number of macros/black boxes:               0
+Number of buf/inv:                         19
+Number of references:                      54
+
+Combinational area:             109173.256879
+Buf/Inv area:                     8772.019489
+Noncombinational area:           40106.303535
+Macro/Black Box area:                0.000000
+Net Interconnect area:          111540.474674
+
+Total cell area:                149279.560414
+Total area:                     260820.035088
+
+Information: This design contains black box (unknown) components. (RPT-8)
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area              Local cell area
+                                  --------------------  ------------------------------- 
+Hierarchical cell                 Absolute     Percent  Combi-       Noncombi-   Black-
+                                  Total        Total    national     national    boxes   Design
+--------------------------------  -----------  -------  -----------  ----------  ------  ----------------------------------------------------------------------------------------------------
+router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                                  149279.5604    100.0    9333.6769      0.0000  0.0000  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+CHK_CT_E2L_fault                    1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_3
+CHK_CT_E2N_turn_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_18
+CHK_CT_E2S_turn_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_17
+CHK_CT_E2W_path_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_10
+CHK_CT_L2E_fault                    1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_7
+CHK_CT_L2N_fault                    1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_8
+CHK_CT_L2S_fault                    1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_5
+CHK_CT_L2W_fault                    1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_6
+CHK_CT_N2E_turn_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_20
+CHK_CT_N2L_fault                    1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_4
+CHK_CT_N2S_path_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_12
+CHK_CT_N2W_turn_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_19
+CHK_CT_S2E_turn_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_14
+CHK_CT_S2L_fault                    1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_1
+CHK_CT_S2N_path_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_11
+CHK_CT_S2W_turn_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_13
+CHK_CT_W2E_path_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_9
+CHK_CT_W2L_fault                    1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_2
+CHK_CT_W2N_turn_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_16
+CHK_CT_W2S_turn_fault               1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_15
+CT_E                                1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_24
+CT_L                                1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_21
+CT_N                                1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_0
+CT_S                                1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_22
+CT_W                                1089.4464      0.7     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_23
+LBDR_E                              9974.3618      6.7    1382.9760   2094.2208  0.0000  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_4
+LBDR_E/Cx_Reconf_checkers            826.9632      0.6     826.9632      0.0000  0.0000  Cx_Reconf_pseudo_checkers_4
+LBDR_E/FI                           2520.4033      1.7    2520.4033      0.0000  0.0000  fault_injector_DATA_WIDTH70_ADDRESS_WIDTH7_4
+LBDR_E/LBDR_packet_drop_routing_part_checkers
+                                    1174.1184      0.8    1174.1184      0.0000  0.0000  LBDR_packet_drop_routing_part_pseudo_checkers_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_4
+LBDR_E/Rxy_Reconf_checkers          1055.5776      0.7    1055.5776      0.0000  0.0000  Rxy_Reconf_pseudo_checkers_4
+LBDR_E/SR                            920.1024      0.6     282.2400    637.8624  0.0000  shift_register_serial_in_REG_WIDTH9_5
+LBDR_L                              9968.7170      6.7    1382.9760   2088.5760  0.0000  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_1
+LBDR_L/Cx_Reconf_checkers            826.9632      0.6     826.9632      0.0000  0.0000  Cx_Reconf_pseudo_checkers_1
+LBDR_L/FI                           2520.4033      1.7    2520.4033      0.0000  0.0000  fault_injector_DATA_WIDTH70_ADDRESS_WIDTH7_1
+LBDR_L/LBDR_packet_drop_routing_part_checkers
+                                    1174.1184      0.8    1174.1184      0.0000  0.0000  LBDR_packet_drop_routing_part_pseudo_checkers_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_1
+LBDR_L/Rxy_Reconf_checkers          1055.5776      0.7    1055.5776      0.0000  0.0000  Rxy_Reconf_pseudo_checkers_1
+LBDR_L/SR                            920.1024      0.6     282.2400    637.8624  0.0000  shift_register_serial_in_REG_WIDTH9_2
+LBDR_N                              9963.0722      6.7    1382.9760   2088.5760  0.0000  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+LBDR_N/Cx_Reconf_checkers            821.3184      0.6     821.3184      0.0000  0.0000  Cx_Reconf_pseudo_checkers_0
+LBDR_N/FI                           2520.4033      1.7    2520.4033      0.0000  0.0000  fault_injector_DATA_WIDTH70_ADDRESS_WIDTH7_0
+LBDR_N/LBDR_packet_drop_routing_part_checkers
+                                    1174.1184      0.8    1174.1184      0.0000  0.0000  LBDR_packet_drop_routing_part_pseudo_checkers_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+LBDR_N/Rxy_Reconf_checkers          1055.5776      0.7    1055.5776      0.0000  0.0000  Rxy_Reconf_pseudo_checkers_0
+LBDR_N/SR                            920.1024      0.6     282.2400    637.8624  0.0000  shift_register_serial_in_REG_WIDTH9_0
+LBDR_S                              9954.6050      6.7    1385.7984   2077.2864  0.0000  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_2
+LBDR_S/Cx_Reconf_checkers            821.3184      0.6     821.3184      0.0000  0.0000  Cx_Reconf_pseudo_checkers_2
+LBDR_S/FI                           2520.4033      1.7    2520.4033      0.0000  0.0000  fault_injector_DATA_WIDTH70_ADDRESS_WIDTH7_2
+LBDR_S/LBDR_packet_drop_routing_part_checkers
+                                    1174.1184      0.8    1174.1184      0.0000  0.0000  LBDR_packet_drop_routing_part_pseudo_checkers_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_2
+LBDR_S/Rxy_Reconf_checkers          1055.5776      0.7    1055.5776      0.0000  0.0000  Rxy_Reconf_pseudo_checkers_2
+LBDR_S/SR                            920.1024      0.6     282.2400    637.8624  0.0000  shift_register_serial_in_REG_WIDTH9_3
+LBDR_W                              9954.6050      6.7    1385.7984   2077.2864  0.0000  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_3
+LBDR_W/Cx_Reconf_checkers            821.3184      0.6     821.3184      0.0000  0.0000  Cx_Reconf_pseudo_checkers_3
+LBDR_W/FI                           2520.4033      1.7    2520.4033      0.0000  0.0000  fault_injector_DATA_WIDTH70_ADDRESS_WIDTH7_3
+LBDR_W/LBDR_packet_drop_routing_part_checkers
+                                    1174.1184      0.8    1174.1184      0.0000  0.0000  LBDR_packet_drop_routing_part_pseudo_checkers_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_3
+LBDR_W/Rxy_Reconf_checkers          1055.5776      0.7    1055.5776      0.0000  0.0000  Rxy_Reconf_pseudo_checkers_3
+LBDR_W/SR                            920.1024      0.6     282.2400    637.8624  0.0000  shift_register_serial_in_REG_WIDTH9_4
+XBAR_E                              2334.1248      1.6    2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_4
+XBAR_L                              2334.1248      1.6    2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_1
+XBAR_N                              2334.1248      1.6    2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_0
+XBAR_S                              2334.1248      1.6    2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_2
+XBAR_W                              2334.1248      1.6    2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_3
+allocator_unit                     47935.6425     32.1    1207.9872    649.1520  0.0000  allocator
+allocator_unit/ALLOCATOR_CREDIT_COUNTER_LOGIC_CHECKERS
+                                    1241.8560      0.8    1241.8560      0.0000  0.0000  allocator_credit_counter_logic_pseudo_checkers
+allocator_unit/ALLOCATOR_LOGIC_CHECKERS
+                                    1456.3584      1.0    1456.3584      0.0000  0.0000  allocator_logic_pseudo_checkers
+allocator_unit/FI                   2816.7553      1.9    2816.7553      0.0000  0.0000  fault_injector_DATA_WIDTH80_ADDRESS_WIDTH7
+allocator_unit/SR                    920.1024      0.6     282.2400    637.8624  0.0000  shift_register_serial_in_REG_WIDTH9_1
+allocator_unit/arb_E_X              4047.3217      2.7     567.3024    389.4912  0.0000  Arbiter_in_4
+allocator_unit/arb_E_X/ARBITER_IN_CHECKERS
+                                    1580.5440      1.1    1580.5440      0.0000  0.0000  Arbiter_in_one_hot_checkers_4
+allocator_unit/arb_E_X/FI            776.1600      0.5     776.1600      0.0000  0.0000  fault_injector_DATA_WIDTH17_ADDRESS_WIDTH5_9
+allocator_unit/arb_E_X/SR            733.8240      0.5     225.7920    508.0320  0.0000  shift_register_serial_in_REG_WIDTH7_9
+allocator_unit/arb_L_X              4047.3217      2.7     567.3024    389.4912  0.0000  Arbiter_in_1
+allocator_unit/arb_L_X/ARBITER_IN_CHECKERS
+                                    1580.5440      1.1    1580.5440      0.0000  0.0000  Arbiter_in_one_hot_checkers_1
+allocator_unit/arb_L_X/FI            776.1600      0.5     776.1600      0.0000  0.0000  fault_injector_DATA_WIDTH17_ADDRESS_WIDTH5_6
+allocator_unit/arb_L_X/SR            733.8240      0.5     225.7920    508.0320  0.0000  shift_register_serial_in_REG_WIDTH7_6
+allocator_unit/arb_N_X              4010.6305      2.7     530.6112    389.4912  0.0000  Arbiter_in_0
+allocator_unit/arb_N_X/ARBITER_IN_CHECKERS
+                                    1580.5440      1.1    1580.5440      0.0000  0.0000  Arbiter_in_one_hot_checkers_0
+allocator_unit/arb_N_X/FI            776.1600      0.5     776.1600      0.0000  0.0000  fault_injector_DATA_WIDTH17_ADDRESS_WIDTH5_0
+allocator_unit/arb_N_X/SR            733.8240      0.5     225.7920    508.0320  0.0000  shift_register_serial_in_REG_WIDTH7_0
+allocator_unit/arb_S_X              4072.7233      2.7     592.7040    389.4912  0.0000  Arbiter_in_2
+allocator_unit/arb_S_X/ARBITER_IN_CHECKERS
+                                    1580.5440      1.1    1580.5440      0.0000  0.0000  Arbiter_in_one_hot_checkers_2
+allocator_unit/arb_S_X/FI            776.1600      0.5     776.1600      0.0000  0.0000  fault_injector_DATA_WIDTH17_ADDRESS_WIDTH5_7
+allocator_unit/arb_S_X/SR            733.8240      0.5     225.7920    508.0320  0.0000  shift_register_serial_in_REG_WIDTH7_7
+allocator_unit/arb_W_X              4052.9665      2.7     572.9472    389.4912  0.0000  Arbiter_in_3
+allocator_unit/arb_W_X/ARBITER_IN_CHECKERS
+                                    1580.5440      1.1    1580.5440      0.0000  0.0000  Arbiter_in_one_hot_checkers_3
+allocator_unit/arb_W_X/FI            776.1600      0.5     776.1600      0.0000  0.0000  fault_injector_DATA_WIDTH17_ADDRESS_WIDTH5_8
+allocator_unit/arb_W_X/SR            733.8240      0.5     225.7920    508.0320  0.0000  shift_register_serial_in_REG_WIDTH7_8
+allocator_unit/arb_X_E              3900.5569      2.6     595.5264    389.4912  0.0000  arbiter_out_4
+allocator_unit/arb_X_E/ARBITER_OUT_ONE_HOT_CHECKERS
+                                    1405.5552      0.9    1405.5552      0.0000  0.0000  Arbiter_out_one_hot_pseudo_checkers_4
+allocator_unit/arb_X_E/FI            776.1600      0.5     776.1600      0.0000  0.0000  fault_injector_DATA_WIDTH17_ADDRESS_WIDTH5_4
+allocator_unit/arb_X_E/SR            733.8240      0.5     225.7920    508.0320  0.0000  shift_register_serial_in_REG_WIDTH7_4
+allocator_unit/arb_X_L              3869.5105      2.6     564.4800    389.4912  0.0000  arbiter_out_1
+allocator_unit/arb_X_L/ARBITER_OUT_ONE_HOT_CHECKERS
+                                    1405.5552      0.9    1405.5552      0.0000  0.0000  Arbiter_out_one_hot_pseudo_checkers_1
+allocator_unit/arb_X_L/FI            776.1600      0.5     776.1600      0.0000  0.0000  fault_injector_DATA_WIDTH17_ADDRESS_WIDTH5_1
+allocator_unit/arb_X_L/SR            733.8240      0.5     225.7920    508.0320  0.0000  shift_register_serial_in_REG_WIDTH7_1
+allocator_unit/arb_X_N              3892.0897      2.6     587.0592    389.4912  0.0000  arbiter_out_0
+allocator_unit/arb_X_N/ARBITER_OUT_ONE_HOT_CHECKERS
+                                    1405.5552      0.9    1405.5552      0.0000  0.0000  Arbiter_out_one_hot_pseudo_checkers_0
+allocator_unit/arb_X_N/FI            776.1600      0.5     776.1600      0.0000  0.0000  fault_injector_DATA_WIDTH17_ADDRESS_WIDTH5_5
+allocator_unit/arb_X_N/SR            733.8240      0.5     225.7920    508.0320  0.0000  shift_register_serial_in_REG_WIDTH7_5
+allocator_unit/arb_X_S              3869.5105      2.6     564.4800    389.4912  0.0000  arbiter_out_2
+allocator_unit/arb_X_S/ARBITER_OUT_ONE_HOT_CHECKERS
+                                    1405.5552      0.9    1405.5552      0.0000  0.0000  Arbiter_out_one_hot_pseudo_checkers_2
+allocator_unit/arb_X_S/FI            776.1600      0.5     776.1600      0.0000  0.0000  fault_injector_DATA_WIDTH17_ADDRESS_WIDTH5_2
+allocator_unit/arb_X_S/SR            733.8240      0.5     225.7920    508.0320  0.0000  shift_register_serial_in_REG_WIDTH7_2
+allocator_unit/arb_X_W              3880.8001      2.6     575.7696    389.4912  0.0000  arbiter_out_3
+allocator_unit/arb_X_W/ARBITER_OUT_ONE_HOT_CHECKERS
+                                    1405.5552      0.9    1405.5552      0.0000  0.0000  Arbiter_out_one_hot_pseudo_checkers_3
+allocator_unit/arb_X_W/FI            776.1600      0.5     776.1600      0.0000  0.0000  fault_injector_DATA_WIDTH17_ADDRESS_WIDTH5_3
+allocator_unit/arb_X_W/SR            733.8240      0.5     225.7920    508.0320  0.0000  shift_register_serial_in_REG_WIDTH7_3
+parity_LBDR_E                        657.6192      0.4     657.6192      0.0000  0.0000  parity_checker_for_LBDR_DATA_WIDTH32_4
+parity_LBDR_L                        657.6192      0.4     657.6192      0.0000  0.0000  parity_checker_for_LBDR_DATA_WIDTH32_1
+parity_LBDR_N                        657.6192      0.4     657.6192      0.0000  0.0000  parity_checker_for_LBDR_DATA_WIDTH32_0
+parity_LBDR_S                        657.6192      0.4     657.6192      0.0000  0.0000  parity_checker_for_LBDR_DATA_WIDTH32_2
+parity_LBDR_W                        657.6192      0.4     657.6192      0.0000  0.0000  parity_checker_for_LBDR_DATA_WIDTH32_3
+--------------------------------  -----------  -------  -----------  ----------  ------  ----------------------------------------------------------------------------------------------------
+Total                                                   109173.2569  40106.3035  0.0000
+
+1
