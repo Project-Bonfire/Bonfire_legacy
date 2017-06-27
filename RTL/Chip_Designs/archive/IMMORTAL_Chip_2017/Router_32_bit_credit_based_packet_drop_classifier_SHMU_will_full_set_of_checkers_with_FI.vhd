@@ -3851,7 +3851,7 @@ CHK_CT_L2W_fault:   counter_threshold_classifier  generic map(counter_depth => c
     port map(reset => reset, clk => clk, faulty_packet => L2W_fault, Healthy_packet => not_L2W_fault, 
              Intermittent => intermittent_L2W_fault, Faulty => faulty_L2W_fault);
 
-CHK_CT_L2S_fault:   counter_threshold_classifiercounter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
+CHK_CT_L2S_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
     port map(reset => reset, clk => clk, faulty_packet => L2S_fault, Healthy_packet => not_L2S_fault, 
              Intermittent => intermittent_L2S_fault, Faulty => faulty_L2S_fault);
 
