@@ -1,0 +1,151 @@
+ 
+****************************************
+Report : area
+Design : router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+Version: J-2014.09-SP2
+Date   : Tue Jun 27 16:48:10 2017
+****************************************
+
+Information: Updating design information... (UID-85)
+Warning: Design 'router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+Library(s) Used:
+
+    c18_CORELIB_TYP (File: /cad/dk/c/v4.11/synopsys/c18_1.8V/c18_CORELIB_TYP.db)
+
+Number of ports:                          388
+Number of nets:                          2485
+Number of cells:                          633
+Number of combinational cells:            587
+Number of sequential cells:                 0
+Number of macros/black boxes:               0
+Number of buf/inv:                          1
+Number of references:                      56
+
+Combinational area:             148294.543624
+Buf/Inv area:                    14157.158867
+Noncombinational area:           78547.391129
+Macro/Black Box area:                0.000000
+Net Interconnect area:          150159.183012
+
+Total cell area:                226841.934752
+Total area:                     377001.117764
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area              Local cell area
+                                  --------------------  ------------------------------- 
+Hierarchical cell                 Absolute     Percent  Combi-       Noncombi-   Black-
+                                  Total        Total    national     national    boxes   Design
+--------------------------------  -----------  -------  -----------  ----------  ------  -------------------------------------------------------------------------------------------------------------
+router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                                  226841.9348    100.0    9336.4993      0.0000  0.0000  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+CHK_CT_E2L_fault                    1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_3
+CHK_CT_E2N_turn_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_18
+CHK_CT_E2S_turn_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_17
+CHK_CT_E2W_path_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_10
+CHK_CT_L2E_fault                    1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_7
+CHK_CT_L2N_fault                    1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_8
+CHK_CT_L2S_fault                    1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_5
+CHK_CT_L2W_fault                    1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_6
+CHK_CT_N2E_turn_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_0
+CHK_CT_N2L_fault                    1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_4
+CHK_CT_N2S_path_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_12
+CHK_CT_N2W_turn_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_19
+CHK_CT_S2E_turn_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_14
+CHK_CT_S2L_fault                    1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_1
+CHK_CT_S2N_path_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_11
+CHK_CT_S2W_turn_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_13
+CHK_CT_W2E_path_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_9
+CHK_CT_W2L_fault                    1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_2
+CHK_CT_W2N_turn_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_16
+CHK_CT_W2S_turn_fault               1095.0912      0.5     445.9392    649.1520  0.0000  checkers_counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_15
+CT_E                                1089.4464      0.5     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_4
+CT_L                                1089.4464      0.5     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_1
+CT_N                                1089.4464      0.5     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_0
+CT_S                                1089.4464      0.5     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_2
+CT_W                                1089.4464      0.5     440.2944    649.1520  0.0000  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_3
+FIFO_E                             22703.3857     10.0   10036.4545   9477.6191  0.0000  FIFO_credit_based_DATA_WIDTH32_4
+FIFO_E/FIFO_control_part_checkers   3189.3121      1.4    3189.3121      0.0000  0.0000  FIFO_credit_based_control_part_checkers_4
+FIFO_L                             22706.2081     10.0   10039.2769   9477.6191  0.0000  FIFO_credit_based_DATA_WIDTH32_1
+FIFO_L/FIFO_control_part_checkers   3189.3121      1.4    3189.3121      0.0000  0.0000  FIFO_credit_based_control_part_checkers_1
+FIFO_N                             22706.2081     10.0   10039.2769   9477.6191  0.0000  FIFO_credit_based_DATA_WIDTH32_0
+FIFO_N/FIFO_control_part_checkers   3189.3121      1.4    3189.3121      0.0000  0.0000  FIFO_credit_based_control_part_checkers_0
+FIFO_S                             22706.2081     10.0   10039.2769   9477.6191  0.0000  FIFO_credit_based_DATA_WIDTH32_2
+FIFO_S/FIFO_control_part_checkers   3189.3121      1.4    3189.3121      0.0000  0.0000  FIFO_credit_based_control_part_checkers_2
+FIFO_W                             22706.2081     10.0   10039.2769   9477.6191  0.0000  FIFO_credit_based_DATA_WIDTH32_3
+FIFO_W/FIFO_control_part_checkers   3189.3121      1.4    3189.3121      0.0000  0.0000  FIFO_credit_based_control_part_checkers_3
+LBDR_E                              6584.6593      2.9    1445.0688   2077.2864  0.0000  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_4
+LBDR_E/Cx_Reconf_checkers            821.3184      0.4     821.3184      0.0000  0.0000  Cx_Reconf_pseudo_checkers_4
+LBDR_E/LBDR_packet_drop_routing_part_checkers
+                                    1185.4080      0.5    1185.4080      0.0000  0.0000  LBDR_packet_drop_routing_part_pseudo_checkers_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_4
+LBDR_E/Rxy_Reconf_checkers          1055.5776      0.5    1055.5776      0.0000  0.0000  Rxy_Reconf_pseudo_checkers_4
+LBDR_L                              6573.3697      2.9    1445.0688   2077.2864  0.0000  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_1
+LBDR_L/Cx_Reconf_checkers            821.3184      0.4     821.3184      0.0000  0.0000  Cx_Reconf_pseudo_checkers_1
+LBDR_L/LBDR_packet_drop_routing_part_checkers
+                                    1174.1184      0.5    1174.1184      0.0000  0.0000  LBDR_packet_drop_routing_part_pseudo_checkers_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_1
+LBDR_L/Rxy_Reconf_checkers          1055.5776      0.5    1055.5776      0.0000  0.0000  Rxy_Reconf_pseudo_checkers_1
+LBDR_N                              6573.3697      2.9    1445.0688   2077.2864  0.0000  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+LBDR_N/Cx_Reconf_checkers            821.3184      0.4     821.3184      0.0000  0.0000  Cx_Reconf_pseudo_checkers_0
+LBDR_N/LBDR_packet_drop_routing_part_checkers
+                                    1174.1184      0.5    1174.1184      0.0000  0.0000  LBDR_packet_drop_routing_part_pseudo_checkers_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+LBDR_N/Rxy_Reconf_checkers          1055.5776      0.5    1055.5776      0.0000  0.0000  Rxy_Reconf_pseudo_checkers_0
+LBDR_S                              6573.3697      2.9    1445.0688   2077.2864  0.0000  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_2
+LBDR_S/Cx_Reconf_checkers            821.3184      0.4     821.3184      0.0000  0.0000  Cx_Reconf_pseudo_checkers_2
+LBDR_S/LBDR_packet_drop_routing_part_checkers
+                                    1174.1184      0.5    1174.1184      0.0000  0.0000  LBDR_packet_drop_routing_part_pseudo_checkers_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_2
+LBDR_S/Rxy_Reconf_checkers          1055.5776      0.5    1055.5776      0.0000  0.0000  Rxy_Reconf_pseudo_checkers_2
+LBDR_W                              6573.3697      2.9    1445.0688   2077.2864  0.0000  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_3
+LBDR_W/Cx_Reconf_checkers            821.3184      0.4     821.3184      0.0000  0.0000  Cx_Reconf_pseudo_checkers_3
+LBDR_W/LBDR_packet_drop_routing_part_checkers
+                                    1174.1184      0.5    1174.1184      0.0000  0.0000  LBDR_packet_drop_routing_part_pseudo_checkers_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_3
+LBDR_W/Rxy_Reconf_checkers          1055.5776      0.5    1055.5776      0.0000  0.0000  Rxy_Reconf_pseudo_checkers_3
+XBAR_E                              2334.1248      1.0    2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_4
+XBAR_L                              2334.1248      1.0    2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_1
+XBAR_N                              2334.1248      1.0    2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_0
+XBAR_S                              2334.1248      1.0    2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_2
+XBAR_W                              2334.1248      1.0    2334.1248      0.0000  0.0000  XBAR_DATA_WIDTH32_3
+allocator_unit                     28791.3030     12.7    1196.6976    649.1520  0.0000  allocator
+allocator_unit/ALLOCATOR_CREDIT_COUNTER_LOGIC_CHECKERS
+                                    1241.8560      0.5    1241.8560      0.0000  0.0000  allocator_credit_counter_logic_pseudo_checkers
+allocator_unit/ALLOCATOR_LOGIC_CHECKERS
+                                    1456.3584      0.6    1456.3584      0.0000  0.0000  allocator_logic_pseudo_checkers
+allocator_unit/arb_E_X              2503.4688      1.1     533.4336    389.4912  0.0000  Arbiter_in_4
+allocator_unit/arb_E_X/ARBITER_IN_CHECKERS
+                                    1580.5440      0.7    1580.5440      0.0000  0.0000  Arbiter_in_one_hot_checkers_4
+allocator_unit/arb_L_X              2503.4688      1.1     533.4336    389.4912  0.0000  Arbiter_in_1
+allocator_unit/arb_L_X/ARBITER_IN_CHECKERS
+                                    1580.5440      0.7    1580.5440      0.0000  0.0000  Arbiter_in_one_hot_checkers_1
+allocator_unit/arb_N_X              2495.0016      1.1     524.9664    389.4912  0.0000  Arbiter_in_0
+allocator_unit/arb_N_X/ARBITER_IN_CHECKERS
+                                    1580.5440      0.7    1580.5440      0.0000  0.0000  Arbiter_in_one_hot_checkers_0
+allocator_unit/arb_S_X              2500.6464      1.1     530.6112    389.4912  0.0000  Arbiter_in_2
+allocator_unit/arb_S_X/ARBITER_IN_CHECKERS
+                                    1580.5440      0.7    1580.5440      0.0000  0.0000  Arbiter_in_one_hot_checkers_2
+allocator_unit/arb_W_X              2503.4688      1.1     533.4336    389.4912  0.0000  Arbiter_in_3
+allocator_unit/arb_W_X/ARBITER_IN_CHECKERS
+                                    1580.5440      0.7    1580.5440      0.0000  0.0000  Arbiter_in_one_hot_checkers_3
+allocator_unit/arb_X_E              2348.2368      1.0     553.1904    389.4912  0.0000  arbiter_out_4
+allocator_unit/arb_X_E/ARBITER_OUT_ONE_HOT_CHECKERS
+                                    1405.5552      0.6    1405.5552      0.0000  0.0000  Arbiter_out_one_hot_pseudo_checkers_4
+allocator_unit/arb_X_L              2348.2368      1.0     553.1904    389.4912  0.0000  arbiter_out_1
+allocator_unit/arb_X_L/ARBITER_OUT_ONE_HOT_CHECKERS
+                                    1405.5552      0.6    1405.5552      0.0000  0.0000  Arbiter_out_one_hot_pseudo_checkers_1
+allocator_unit/arb_X_N              2348.2368      1.0     553.1904    389.4912  0.0000  arbiter_out_0
+allocator_unit/arb_X_N/ARBITER_OUT_ONE_HOT_CHECKERS
+                                    1405.5552      0.6    1405.5552      0.0000  0.0000  Arbiter_out_one_hot_pseudo_checkers_0
+allocator_unit/arb_X_S              2348.2368      1.0     553.1904    389.4912  0.0000  arbiter_out_2
+allocator_unit/arb_X_S/ARBITER_OUT_ONE_HOT_CHECKERS
+                                    1405.5552      0.6    1405.5552      0.0000  0.0000  Arbiter_out_one_hot_pseudo_checkers_2
+allocator_unit/arb_X_W              2348.2368      1.0     553.1904    389.4912  0.0000  arbiter_out_3
+allocator_unit/arb_X_W/ARBITER_OUT_ONE_HOT_CHECKERS
+                                    1405.5552      0.6    1405.5552      0.0000  0.0000  Arbiter_out_one_hot_pseudo_checkers_3
+parity_LBDR_E                        657.6192      0.3     657.6192      0.0000  0.0000  parity_checker_for_LBDR_DATA_WIDTH32_4
+parity_LBDR_L                        657.6192      0.3     657.6192      0.0000  0.0000  parity_checker_for_LBDR_DATA_WIDTH32_1
+parity_LBDR_N                        657.6192      0.3     657.6192      0.0000  0.0000  parity_checker_for_LBDR_DATA_WIDTH32_0
+parity_LBDR_S                        657.6192      0.3     657.6192      0.0000  0.0000  parity_checker_for_LBDR_DATA_WIDTH32_2
+parity_LBDR_W                        657.6192      0.3     657.6192      0.0000  0.0000  parity_checker_for_LBDR_DATA_WIDTH32_3
+--------------------------------  -----------  -------  -----------  ----------  ------  -------------------------------------------------------------------------------------------------------------
+Total                                                   148294.5436  78547.3911  0.0000
+
+1

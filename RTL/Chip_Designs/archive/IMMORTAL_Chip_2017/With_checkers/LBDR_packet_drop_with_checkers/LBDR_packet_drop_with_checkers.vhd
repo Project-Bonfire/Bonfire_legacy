@@ -394,8 +394,9 @@ end process;
 
 -- The combionational part
  
-process(Reconfig_command, Rxy_reconf_PE, Rxy_tmp, ReConf_FF_out, Rxy, flit_type, grants, empty)begin
+process(Reconfig_command, Rxy_reconf_PE, Rxy_tmp, ReConf_FF_out, Rxy, flit_type, grants, empty) begin
   if ReConf_FF_out= '1' and flit_type = "100" and empty = '0' and grants = '1' then
+        Rxy_tmp_in <= Rxy_tmp;
 	  	Rxy_in <= Rxy_tmp;
 	  	ReConf_FF_in <= '0';
   else
