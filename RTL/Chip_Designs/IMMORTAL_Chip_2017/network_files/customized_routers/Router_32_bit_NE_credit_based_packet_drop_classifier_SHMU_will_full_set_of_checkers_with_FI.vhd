@@ -879,7 +879,7 @@ signal      fault_DO_serial_W_LBDR_to_S_LBDR, fault_DO_serial_S_LBDR_to_Allocato
 begin
 
 not_W2S_turn_fault <= not W2S_turn_fault; 
-not_S2W_turn_fault <= not not_W2S_turn_fault; 
+not_S2W_turn_fault <= not S2W_turn_fault; 
 not_L2W_fault <= not L2W_fault; 
 not_L2S_fault <= not L2S_fault; 
 not_W2L_fault <= not W2L_fault; 
