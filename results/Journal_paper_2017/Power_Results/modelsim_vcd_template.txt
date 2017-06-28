@@ -1,0 +1,12 @@
+first run this:
+python simulate.py -D 4 -credit_based_FC -packet_drop -FC -NI_Test -SHMU -Rand 0.03 -PS 8 8 -sim 20000 -end 21000 -checkers
+
+then in modelsim run these:
+vcd_FT_gen.do
+
+then run this:
+python simulate.py -D 4 -credit_based_FC -Rand 0.03 -PS 8 8 -sim 20000 -end 21000
+
+
+then in modelsim run these:
+vcd_Baseline_gen.do
