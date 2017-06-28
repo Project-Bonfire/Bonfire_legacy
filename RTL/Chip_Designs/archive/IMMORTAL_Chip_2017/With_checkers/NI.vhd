@@ -1,17 +1,18 @@
 ---------------------------------------------------------------------
 -- Copyright (C) 2016 Siavoosh Payandeh Azad
 --
--- 	Network interface: Its an interrupt based memory mapped I/O for sending and recieving packets.
+-- 	Network interface: Its a memory mapped I/O for sending and receiving packets.
 --	the data that is sent to NI should be of the following form:
--- 	FIRST write:  4bit source(31-28), 4 bit destination(27-14), 8bit packet length(23-16)
--- 	Body write:  28 bit data(27-0)
--- 	Last write:  28 bit data(27-0)
-
+-- 	  * FIRST write (HEADER INFO):  4bit source(31-28), 4 bit destination(27-14), 8bit packet length(23-16)
+-- 	  * Body write:  28 bit data(27-0)
+-- 	  * Last write (Tail):  28 bit data(27-0)
+--  The NI also collects fault information from its node router and generates diagnostic packets and sends
+--  them through the actual NoC to SHMU that is assumed to be mapped on Node 0.
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
-use ieee.std_logic_arith.all;
+--use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 use IEEE.NUMERIC_STD.all;
 use ieee.std_logic_textio.all;
@@ -22,12 +23,7 @@ use ieee.std_logic_misc.all;
 
 entity NI is
    generic(current_address : integer := 10; 	-- the current node's address
-           SHMU_address : integer := 0;
-   		     reserved_address : std_logic_vector(29 downto 0) := "000000000000000001111111111111"; -- Behrad: NI's reserved address ?
-           flag_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000000";	-- reserved address for the memory mapped I/O
-           counter_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000001";
-           reconfiguration_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000010";  -- reserved address for reconfiguration register
-           self_diagnosis_address : std_logic_vector(29 downto 0) :=     "000000000000000010000000000011");	-- reserved address for self diagnosis register
+           SHMU_address : integer := 0);	-- reserved address for self diagnosis register
    port(clk               : in std_logic;
         reset             : in std_logic;
         enable            : in std_logic;
@@ -37,10 +33,10 @@ entity NI is
         data_read         : out std_logic_vector(31 downto 0);
 
         -- Flags used by JNIFR and JNIFW instructions
-        --NI_read_flag      : out  std_logic; 	-- One if the N2P fifo is empty. No read should be performed if one.
-        --NI_write_flag      : out  std_logic;	-- One if P2N fifo is full. no write should be performed if one.
+        --NI_read_flag      : out  std_logic; 	-- One if the N2P FIFO is empty. No read should be performed if one.
+        --NI_write_flag      : out  std_logic;	-- One if P2N FIFO is full. no write should be performed if one.
 
-        -- interrupt signal: generated evertime a packet is recieved!
+        -- interrupt signal: generated every-time a packet is received! Disabled for the time being
         irq_out           : out std_logic;
 
         -- signals for sending packets to network
@@ -48,10 +44,10 @@ entity NI is
         valid_out: out std_logic;
         TX: out std_logic_vector(31 downto 0);	-- data sent to the NoC
 
-        -- signals for reciving packets from the network
+        -- signals for receiving packets from the network
         credit_out : out std_logic;
         valid_in: in std_logic;
-        RX: in std_logic_vector(31 downto 0);	-- data recieved form the NoC
+        RX: in std_logic_vector(31 downto 0);	-- data received form the NoC
 
         -- fault information signals from the router
         link_faults: in std_logic_vector(4 downto 0);
@@ -84,7 +80,7 @@ architecture logic of NI is
   signal packet_length_counter_in, packet_length_counter_out: std_logic_vector(11 downto 0);
   signal grant : std_logic;
 
-  type STATE_TYPE IS (IDLE, HEADER_FLIT, BODY_FLIT, TAIL_FLIT, DIAGNOSIS_HEADER, DIAGNOSIS_BODY, DIAGNOSIS_TAIL);
+  type STATE_TYPE IS (IDLE, HEADER_FLIT, BODY_FLIT, TAIL_FLIT, DIAGNOSIS_HEADER, DIAGNOSIS_BODY, DIAGNOSIS_TAIL, RESET_STATE);
   signal state, state_in   : STATE_TYPE := IDLE;
   signal FIFO_Data_out : std_logic_vector(31 downto 0);
   signal flag_register, flag_register_in : std_logic_vector(31 downto 0);
@@ -109,6 +105,11 @@ architecture logic of NI is
   signal sent_info, fault_info_ready, fault_info_ready_in: std_logic;
   signal self_diagnosis_reg_out, self_diagnosis_reg_in: std_logic_vector(31 downto 0);
   signal self_diagnosis_flag, self_diagnosis_flag_in: std_logic;
+
+  signal Rxy_reconf_PE_in :   std_logic_vector(7 downto 0);   
+  signal Cx_reconf_PE_in :   std_logic_vector(3 downto 0);    
+  signal Reconfig_command_in :  std_logic;
+
 begin 
 
 process(clk, enable, write_byte_enable) begin
@@ -123,7 +124,7 @@ process(clk, enable, write_byte_enable) begin
       P2N_FIFO_MEM_4 <= (others=>'0');
       credit_counter_out <= "11";
       packet_length_counter_out <= "000000000000";
-      state <= IDLE;
+      state <= RESET_STATE;
       packet_counter_out <= "00000000";
       ------------------------------------------------
       N2P_FIFO_MEM_1 <= (others=>'0');
@@ -144,7 +145,16 @@ process(clk, enable, write_byte_enable) begin
       self_diagnosis_reg_out <= (others => '0');
       self_diagnosis_flag <= '0';
 
+      Reconfig_command <= '0';
+      Cx_reconf_PE <= (others => '0');
+      Rxy_reconf_PE <= (others => '0');
+
    elsif clk'event and clk = '1'  then
+   
+      Reconfig_command <= Reconfig_command_in;
+      Cx_reconf_PE <= Cx_reconf_PE_in;
+      Rxy_reconf_PE <= Rxy_reconf_PE_in;
+
       old_address <= address;
       P2N_FIFO_write_pointer <= P2N_FIFO_write_pointer_in;
       P2N_FIFO_read_pointer  <=  P2N_FIFO_read_pointer_in;
@@ -199,17 +209,17 @@ end process;
 
 process(enable, address, write_byte_enable) begin
   -- Some initializations
-  Reconfig_command <= '0'; 
-  Rxy_reconf_PE <= (others =>'0');
-  Cx_reconf_PE <= (others =>'0');
+  Reconfig_command_in <= '0'; 
+  Rxy_reconf_PE_in <= (others =>'0');
+  Cx_reconf_PE_in <= (others =>'0');
 
-  if address = reconfiguration_address and enable = '1' then
+  if address = NI_reconfiguration_address and enable = '1' then
     if write_byte_enable /= "0000" then
       -- In this case, data_write definitely includes the connectivity bits and routing bits for 
       -- reconfiguring LBDR logic.
-      Rxy_reconf_PE <= data_write(7 downto 0); -- Rxy is 8 bits long 
-      Cx_reconf_PE <= data_write(4 downto 8); -- Cx is 4 bits long
-      Reconfig_command <= '1';
+      Rxy_reconf_PE_in <= data_write(7 downto 0); -- Rxy is 8 bits long 
+      Cx_reconf_PE_in <= data_write(11 downto 8); -- Cx is 4 bits long
+      Reconfig_command_in <= '1';
     end if;
   end if;
 end process;
@@ -220,7 +230,7 @@ process(write_byte_enable, enable, address, storage, data_write, valid_data, P2N
    valid_data_in <= valid_data;
 
    -- If PE wants to send data to NoC via NI (data is valid)
-   if enable = '1' and address = reserved_address then
+   if enable = '1' and address = NI_reserved_data_address then
       if write_byte_enable /= "0000" then
         valid_data_in <= '1';
       end if;
@@ -273,10 +283,9 @@ process(P2N_FIFO_read_pointer, P2N_FIFO_MEM_1, P2N_FIFO_MEM_2, P2N_FIFO_MEM_3, P
 
 -- Write pointer update process (after each write operation, write pointer is rotated one bit to the left)
 process(P2N_write_en, P2N_FIFO_write_pointer)begin
+    P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer;
     if P2N_write_en = '1' then
        P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer(2 downto 0) & P2N_FIFO_write_pointer(3);
-    else
-       P2N_FIFO_write_pointer_in <= P2N_FIFO_write_pointer;
     end if;
   end process;
 
@@ -289,10 +298,9 @@ process(P2N_write_en, P2N_FIFO_write_pointer)begin
 end process;
 
 process(P2N_full, valid_data) begin
+    P2N_write_en <= '0';
      if valid_data = '1' and P2N_full ='0' then
          P2N_write_en <= '1';
-     else
-         P2N_write_en <= '0';
      end if;
   end process;
 
@@ -322,9 +330,9 @@ end process;
 
 -- flag setting and clearing for self diagnosis 
 process(link_faults, turn_faults, self_diagnosis_flag, old_address)begin
-  if (link_faults  /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address = current_address then
+  if (link_faults /= "00000" or turn_faults /= "00000000000000000000") and SHMU_address = current_address then
     self_diagnosis_flag_in <= '1';
-  elsif old_address = self_diagnosis_address then
+  elsif old_address = NI_self_diagnosis_address then
     self_diagnosis_flag_in <= '0';
   else
     self_diagnosis_flag_in <= self_diagnosis_flag;
@@ -332,9 +340,10 @@ process(link_faults, turn_faults, self_diagnosis_flag, old_address)begin
 end process;
 
 -- handling fault information!
-process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
- 
+process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info, self_diagnosis_reg_out)begin
   self_diagnosis_reg_in <= self_diagnosis_reg_out;
+  fault_info_in <= fault_info;
+  fault_info_ready_in <= fault_info_ready;
 
   -- If current node is not SHMU, we need to send fault information to SHMU
   if (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address /= current_address then
@@ -342,10 +351,7 @@ process(link_faults, turn_faults, sent_info, fault_info_ready, fault_info)begin
     fault_info_ready_in <= '1';
   -- If current node is SHMU, we handle it locally
   elsif (link_faults  /= "00000" or turn_faults /= "00000000") and SHMU_address = current_address then
-      self_diagnosis_reg_in <= "0000000" & turn_faults & link_faults;
-  else
-    fault_info_in <= fault_info;
-    fault_info_ready_in <= fault_info_ready;
+    self_diagnosis_reg_in <= "0000000" & turn_faults & link_faults;
   end if;
 
   if sent_info = '1' then 
@@ -358,6 +364,7 @@ end process;
 process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_counter_out, FIFO_Data_out, fault_info_ready)
 
     begin
+
         -- Some initializations
     	  sent_info <= '0';
         TX <= (others => '0');
@@ -376,6 +383,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                 end if;
 
             when HEADER_FLIT =>
+                state_in <= HEADER_FLIT;
                 if credit_counter_out /= "00" and P2N_empty = '0' then
                     
                     packet_length_counter_in <=   ("0000" & FIFO_Data_out(23 downto 16))-1;
@@ -385,14 +393,13 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                            std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out & XOR_REDUCE("001" &  "0000" &
                             FIFO_Data_out(23 downto 16) &  FIFO_Data_out(31 downto 28) &
                            std_logic_vector(to_unsigned(current_address, 4))  & packet_counter_out);
-
+                    -- for synthesis comment out the next line   
+                    report "Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(to_integer(unsigned(FIFO_Data_out(31 downto 28)))) & " with length: "& integer'image(to_integer(unsigned(FIFO_Data_out(23 downto 16))))  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
                     state_in <= BODY_FLIT;
-                    
-                else
-                    state_in <= HEADER_FLIT;
                 end if;
 
             when BODY_FLIT =>
+                state_in <= BODY_FLIT;
                 if credit_counter_out /= "00" and P2N_empty = '0'then
                     grant <= '1';
                     TX <= "010" & FIFO_Data_out(27 downto 0) & XOR_REDUCE("010" & FIFO_Data_out(27 downto 0));
@@ -403,57 +410,53 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                     else
                       state_in <= TAIL_FLIT;
                     end if;
-                else
-                    state_in <= BODY_FLIT;
                 end if;
 
             when TAIL_FLIT =>
+                state_in <= TAIL_FLIT;
                 if credit_counter_out /= "00" and P2N_empty = '0' then
                     grant <= '1';
                     packet_length_counter_in <= packet_length_counter_out - 1;
                     TX <= "100" & FIFO_Data_out(27 downto 0) & XOR_REDUCE("100" & FIFO_Data_out(27 downto 0));
                     packet_counter_in <= packet_counter_out +1;
                     state_in <= IDLE;
-                else
-                    state_in <= TAIL_FLIT;
                 end if;
 
 
             -- SHMU stuff ----------------------------------------------------------------------------------------
             ------------------------------------------------------------------------------------------------------
             when DIAGNOSIS_HEADER =>
-
+                state_in <= DIAGNOSIS_HEADER;
                 if credit_counter_out /= "00" then
                     grant <= '1';
                     TX <= "001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out & XOR_REDUCE("001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out);
+                    -- for synthesis comment out the next 2 line   
+                    report "Packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)))& "      Diagnostic";
+                    --report "Diagnostic packet generated at " & time'image(now) & " From " & integer'image(current_address) & " to " & integer'image(0) & " with length: "& integer'image(3)  & " id: " & integer'image(to_integer(unsigned(packet_counter_out)));
                     state_in <= DIAGNOSIS_BODY;
-                else
-                    state_in <= DIAGNOSIS_HEADER;
                 end if; 
 
             when DIAGNOSIS_BODY => 
+                state_in <= DIAGNOSIS_BODY;
                 if credit_counter_out /= "00" then
                     grant <= '1';
                     --FD (Fault Diagnosis) : 01000110 01000100
                     -- fault info is 13 bits 
                     TX <= "010" & "0100011001000100" & fault_info(11 downto 0) & XOR_REDUCE("010" & "0100011001000100" & fault_info(11 downto 0));
                     state_in <= DIAGNOSIS_TAIL;
-                else
-                    state_in <= DIAGNOSIS_BODY;
                 end if; 
 
             when DIAGNOSIS_TAIL =>
+                state_in <= DIAGNOSIS_TAIL;
                 if credit_counter_out /= "00" then
                     grant <= '1';
                     TX <= "100" & fault_info(24 downto 12) & "000000000000000" & XOR_REDUCE("100" & fault_info(24 downto 12) & "000000000000000");
                     state_in <= IDLE;
                     sent_info <= '1';
                     packet_counter_in <= packet_counter_out +1;
-                else
-                    state_in <= DIAGNOSIS_TAIL;
                 end if; 
 
-            when others =>
+            when RESET_STATE =>
                 state_in <= IDLE;
         end case ;
 
@@ -487,61 +490,54 @@ valid_out <= grant;
   end process;
 
   process(address, write_byte_enable, N2P_empty)begin
-    if address = reserved_address and write_byte_enable = "0000" and N2P_empty = '0' then
+    N2P_read_en_in <= '0';
+    if address = NI_reserved_data_address and write_byte_enable = "0000" and N2P_empty = '0' then
       N2P_read_en_in <= '1';
-    else
-      N2P_read_en_in <= '0';
     end if;
   end process;
 
 
   process(N2P_write_en, N2P_FIFO_write_pointer)begin
+    N2P_FIFO_write_pointer_in <= N2P_FIFO_write_pointer;
     if N2P_write_en = '1'then
        N2P_FIFO_write_pointer_in <= N2P_FIFO_write_pointer(2 downto 0)&N2P_FIFO_write_pointer(3);
-    else
-       N2P_FIFO_write_pointer_in <= N2P_FIFO_write_pointer;
     end if;
   end process;
 
   process(N2P_read_en, N2P_empty, N2P_FIFO_read_pointer)begin
-       if (N2P_read_en = '1' and N2P_empty = '0') then
-           N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer(2 downto 0)&N2P_FIFO_read_pointer(3);
-       else
-           N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer;
-       end if;
+      N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer;
+      if (N2P_read_en = '1' and N2P_empty = '0') then
+        N2P_FIFO_read_pointer_in <= N2P_FIFO_read_pointer(2 downto 0)&N2P_FIFO_read_pointer(3);
+      end if;
   end process;
 
   process(N2P_full, valid_in) begin
-     if (valid_in = '1' and N2P_full ='0') then
-         N2P_write_en <= '1';
-     else
-         N2P_write_en <= '0';
+    N2P_write_en <= '0';
+    if (valid_in = '1' and N2P_full ='0') then
+      N2P_write_en <= '1';
      end if;
   end process;
 
   process(N2P_FIFO_write_pointer, N2P_FIFO_read_pointer) begin
+      N2P_empty <= '0';
+      N2P_full <= '0';
       if N2P_FIFO_read_pointer = N2P_FIFO_write_pointer  then
-              N2P_empty <= '1';
-      else
-              N2P_empty <= '0';
+              N2P_empty <= '1';             
       end if;
-
       if N2P_FIFO_write_pointer = N2P_FIFO_read_pointer(0)&N2P_FIFO_read_pointer(3 downto 1) then
-              N2P_full <= '1';
-      else
-              N2P_full <= '0';
+              N2P_full <= '1';              
       end if;
   end process;
 
 
 process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
-  if old_address = reserved_address and N2P_read_en = '1' then
+  if old_address = NI_reserved_data_address and N2P_read_en = '1' then
     data_read <= N2P_Data_out;
-  elsif old_address = flag_address then
+  elsif old_address = NI_flag_address then
     data_read <= flag_register;
-  elsif old_address = counter_address then
+  elsif old_address = NI_counter_address then
   	data_read <= "000000000000000000000000000000" & counter_register;
-  elsif old_address = self_diagnosis_address then
+  elsif old_address = NI_self_diagnosis_address then
     data_read <= self_diagnosis_reg_out;
   else
     data_read <= (others => 'U');
@@ -549,7 +545,14 @@ process(N2P_read_en, N2P_Data_out, old_address, flag_register) begin
 end process;
 
 
-process(N2P_write_en, N2P_read_en, RX, N2P_Data_out)begin
+process(N2P_write_en, N2P_read_en, RX, N2P_Data_out,counter_register)
+  -- for synthesis comment the following 4 lines
+  variable destination_node : std_logic_vector(3 downto 0);
+  variable source_node : std_logic_vector(3 downto 0);
+  variable id : std_logic_vector(7 downto 0);
+  variable length : std_logic_vector(11 downto 0);
+  -- end of unnecessary block
+begin
   counter_register_in <= counter_register;
   if N2P_write_en = '1' and RX(31 downto 29) = "001" and N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "100" then
   	counter_register_in <= counter_register;
@@ -558,6 +561,18 @@ process(N2P_write_en, N2P_read_en, RX, N2P_Data_out)begin
   elsif N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "100" then
   	counter_register_in <= counter_register -1;
   end if;
+
+  -- for synthesis comment the following 9 lines
+    if N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "001" then 
+      source_node := N2P_Data_out(16 downto 13);
+      destination_node := N2P_Data_out(12 downto 9);
+      id := N2P_Data_out(8 downto 1);
+      length := N2P_Data_out(28 downto 17);
+    end if;
+    if N2P_read_en = '1' and N2P_Data_out(31 downto 29) = "100" then
+      report "Packet received at " & time'image(now) & " From: " & integer'image(to_integer(unsigned(destination_node))) & " to: " & integer'image(to_integer(unsigned(source_node))) & " length: "& integer'image(to_integer(unsigned(length)))  & " id: "& integer'image(to_integer(unsigned(id)));
+    end if;
+  -- end of unnecessary block
 end process;
 
 flag_register_in <= N2P_empty & P2N_full & self_diagnosis_flag & "00000000000000000000000000000";

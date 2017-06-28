@@ -47,6 +47,9 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 do_file.write("vcom \"" + IMMORTAL_CHIP_DIR \
                         + "/mlite_pack.vhd"+"\"\n")
 
+                do_file.write("vcom \"" + IMMORTAL_CHIP_DIR \
+                        + "/component_pack.vhd"+"\"\n")
+
                 for file in file_lists.CB_Allocator_with_checkers_files:
                     do_file.write("vcom \"" + IMMORTAL_CHIP_DIR \
                         + "/Allocator_with_checkers/"+file+"\"\n")
@@ -64,9 +67,6 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
                 do_file.write("vcom \"" + IMMORTAL_CHIP_DIR \
                         + "/counter_threshold.vhd"+"\"\n")
-
-                do_file.write("vcom \"" + IMMORTAL_CHIP_DIR \
-                        + "/checkers_counter_threshold.vhd"+"\"\n")
 
                 do_file.write("vcom \"" + IMMORTAL_CHIP_DIR \
                         + "/NI.vhd"+"\"\n")
