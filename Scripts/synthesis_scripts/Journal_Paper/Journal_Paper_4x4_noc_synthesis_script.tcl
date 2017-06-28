@@ -11,9 +11,9 @@ set_dont_touch reset
 
 saif_map -start
 # compile -exact_map
-# compile_ultra -no_autoungroup
+compile_ultra -no_autoungroup
 
-# sh vcd2saif -64 -input ../tmp/simul_temp/network_full_vcd.vcd -output network_FT_activity.saif
-# read_saif -input network_FT_activity.saif -instance_name tb_network_4x4/NoC
-# report_power -analysis_effort high -hierarchy -levels 2 > noc_full_activity_power_results.txt
-# report_area -hierarchy > area.txt
+sh vcd2saif -64 -input ../../tmp/simul_temp/network_full_vcd.vcd -output network_FT_activity.saif
+read_saif -input network_FT_activity.saif -instance_name tb_network_4x4/NoC
+report_power -analysis_effort high -hierarchy -levels 2 > noc_full_FT_activity_power_results.txt
+report_area -hierarchy > noc_full_FT_activity_power_area_results.txt

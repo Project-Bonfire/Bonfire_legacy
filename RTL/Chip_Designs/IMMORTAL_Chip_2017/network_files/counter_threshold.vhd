@@ -61,10 +61,10 @@ process(faulty_packet, reset_counters, faulty_counter_out)begin
 end process;
 
 
-process(Healthy_packet, reset_counters, healthy_counter_out)begin
+process(Healthy_packet, reset_counters, healthy_counter_out,faulty_counter_out)begin
   if reset_counters  = '1' then 
       healthy_counter_in <=  (others => '0');
-  elsif Healthy_packet = '1' then 
+  elsif Healthy_packet = '1' and faulty_counter_out /= std_logic_vector(to_unsigned(0, faulty_counter_out'length)) then 
       healthy_counter_in <= healthy_counter_out + 1;
   else
       healthy_counter_in <= healthy_counter_out;

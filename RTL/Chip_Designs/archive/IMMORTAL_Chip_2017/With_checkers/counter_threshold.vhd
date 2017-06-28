@@ -30,7 +30,8 @@ architecture behavior of counter_threshold_classifier is
  signal DET: std_logic; --detected error threshold
  signal reset_counters: std_logic;
 
- TYPE STATE_TYPE IS (Healthy_state, Intermittent_state, Faulty_state);
+ TYPE STATE_TYPE IS (Healthy_state, Intermittent_state, Faulty_state, Reset_state);
+
 SIGNAL state, next_state   : STATE_TYPE := Healthy_state;
 
 begin 
@@ -40,7 +41,7 @@ begin
   if reset = '0' then
     faulty_counter_out <=  (others => '0');
     healthy_counter_out <=  (others => '0');
-    state <= Healthy_state;
+    state <= Reset_state;
   elsif clk'event and clk = '1' then 
     faulty_counter_out <= faulty_counter_in;
     healthy_counter_out <= healthy_counter_in;
@@ -60,10 +61,10 @@ process(faulty_packet, reset_counters, faulty_counter_out)begin
 end process;
 
 
-process(Healthy_packet, reset_counters, healthy_counter_out)begin
+process(Healthy_packet, reset_counters, healthy_counter_out,faulty_counter_out)begin
   if reset_counters  = '1' then 
       healthy_counter_in <=  (others => '0');
-  elsif Healthy_packet = '1' then 
+  elsif Healthy_packet = '1' and faulty_counter_out /= std_logic_vector(to_unsigned(0, faulty_counter_out'length)) then 
       healthy_counter_in <= healthy_counter_out + 1;
   else
       healthy_counter_in <= healthy_counter_out;
@@ -114,7 +115,7 @@ process (NET, DET, state)begin
             end if;
       when Faulty_state => 
             next_state <= Faulty_state;
-      when others => 
+      when Reset_state => 
             next_state <= Healthy_state;
             Healthy <= '1'; 
   end case;
