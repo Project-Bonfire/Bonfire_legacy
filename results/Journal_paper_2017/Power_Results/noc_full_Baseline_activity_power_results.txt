@@ -1,0 +1,61 @@
+Information: Updating design information... (UID-85)
+Information: Propagating switching activity (high effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated primary inputs. (PWR-414)
+Warning: Design has unannotated black box outputs. (PWR-428)
+ 
+****************************************
+Report : power
+        -hier
+        -analysis_effort high
+Design : network_4x4_DATA_WIDTH32_DATA_WIDTH_LV11
+Version: J-2014.09-SP2
+Date   : Wed Jun 28 17:39:30 2017
+****************************************
+
+
+Library(s) Used:
+
+    c18_CORELIB_TYP (File: /cad/dk/c/v4.11/synopsys/c18_1.8V/c18_CORELIB_TYP.db)
+
+
+Operating Conditions: typical   Library: c18_CORELIB_TYP
+Wire Load Model Mode: enclosed
+
+Design        Wire Load Model            Library
+------------------------------------------------
+network_4x4_DATA_WIDTH32_DATA_WIDTH_LV11
+                       c18_wl_30k        c18_CORELIB_TYP
+
+
+Global Operating Voltage = 1.8  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+--------------------------------------------------------------------------------
+                                       Switch   Int      Leak     Total
+Hierarchy                              Power    Power    Power    Power    %
+--------------------------------------------------------------------------------
+network_4x4_DATA_WIDTH32_DATA_WIDTH_LV11
+                                          0.231    0.000    0.000    0.231 100.0
+  R_15 (router_credit_based_PD_C_SHMU) 1.14e-02    0.000    0.000 1.14e-02   4.9
+  R_14 (router_credit_based_PD_C_SHMU) 1.44e-02    0.000    0.000 1.44e-02   6.3
+  R_13 (router_credit_based_PD_C_SHMU) 1.44e-02    0.000    0.000 1.44e-02   6.3
+  R_12 (router_credit_based_PD_C_SHMU) 1.14e-02    0.000    0.000 1.14e-02   4.9
+  R_11 (router_credit_based_PD_C_SHMU) 1.44e-02    0.000    0.000 1.44e-02   6.3
+  R_10 (router_credit_based_PD_C_SHMU) 1.75e-02    0.000    0.000 1.75e-02   7.6
+  R_9 (router_credit_based_PD_C_SHMU)  1.75e-02    0.000    0.000 1.75e-02   7.6
+  R_8 (router_credit_based_PD_C_SHMU)  1.44e-02    0.000    0.000 1.44e-02   6.3
+  R_7 (router_credit_based_PD_C_SHMU)  1.44e-02    0.000    0.000 1.44e-02   6.3
+  R_6 (router_credit_based_PD_C_SHMU)  1.75e-02    0.000    0.000 1.75e-02   7.6
+  R_5 (router_credit_based_PD_C_SHMU)  1.75e-02    0.000    0.000 1.75e-02   7.6
+  R_4 (router_credit_based_PD_C_SHMU)  1.44e-02    0.000    0.000 1.44e-02   6.3
+  R_3 (router_credit_based_PD_C_SHMU)  1.14e-02    0.000    0.000 1.14e-02   4.9
+  R_2 (router_credit_based_PD_C_SHMU)  1.44e-02    0.000    0.000 1.44e-02   6.3
+  R_1 (router_credit_based_PD_C_SHMU)  1.44e-02    0.000    0.000 1.44e-02   6.3
+  R_0 (router_credit_based_PD_C_SHMU)  1.14e-02    0.000    0.000 1.14e-02   4.9
+1
