@@ -1,0 +1,616 @@
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 10
+Design : router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+Version: J-2014.09-SP2
+Date   : Thu Jun 29 09:36:14 2017
+****************************************
+
+Operating Conditions: typical   Library: c18_CORELIB_TYP
+Wire Load Model Mode: enclosed
+
+  Startpoint: allocator_unit/arb_W_X/state_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: LBDR_W/Rxy_reg[7]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  arbiter_in_3       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  allocator_unit/arb_W_X/state_reg[1]/CP (DFCX1)       0.00000    0.00000 r
+  allocator_unit/arb_W_X/state_reg[1]/Q (DFCX1)        0.36380    0.36380 r
+  allocator_unit/arb_W_X/U38/Q (NOR2XL)                0.16735    0.53116 f
+  allocator_unit/arb_W_X/U34/Q (NOR2XL)                0.52074    1.05190 r
+  allocator_unit/arb_W_X/U12/Q (INVXL)                 0.39433    1.44623 f
+  allocator_unit/arb_W_X/U28/Q (OAI21X3)               0.20945    1.65568 r
+  allocator_unit/arb_W_X/U32/Q (AOI21X3)               0.06005    1.71573 f
+  allocator_unit/arb_W_X/U31/Q (OAI21X3)               0.15317    1.86890 r
+  allocator_unit/arb_W_X/U11/Q (AOI31X2)               0.07106    1.93996 f
+  allocator_unit/arb_W_X/U10/Q (NOR2XL)                0.86576    2.80572 r
+  allocator_unit/arb_W_X/X_E (arbiter_in_3)            0.00000    2.80572 r
+  allocator_unit/arb_X_E/X_W_Y (arbiter_out_4)         0.00000    2.80572 r
+  allocator_unit/arb_X_E/U6/Q (INVXL)                  0.45242    3.25813 f
+  allocator_unit/arb_X_E/U15/Q (NOR3X3)                0.24388    3.50202 r
+  allocator_unit/arb_X_E/grant_Y_W (arbiter_out_4)     0.00000    3.50202 r
+  allocator_unit/U46/Q (INVXL)                         0.10096    3.60297 f
+  allocator_unit/U9/Q (NOR2XL)                         1.25837    4.86134 r
+  allocator_unit/grant_E_W (allocator)                 0.00000    4.86134 r
+  LBDR_W/grant_E (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3)
+                                                       0.00000    4.86134 r
+  LBDR_W/U58/Q (OAI311X1)                              0.32467    5.18601 f
+  LBDR_W/U33/Q (NOR2X3)                                0.54263    5.72864 r
+  LBDR_W/U36/Q (INVXL)                                 0.49820    6.22685 f
+  LBDR_W/U34/Q (OAI22X1)                               0.40010    6.62695 r
+  LBDR_W/Rxy_reg[7]/D (DFCPX1)                         0.00005    6.62699 r
+  data arrival time                                               6.62699
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  LBDR_W/Rxy_reg[7]/CP (DFCPX1)                        0.00000   10.00000 r
+  library setup time                                  -0.19782    9.80218
+  data required time                                              9.80218
+  --------------------------------------------------------------------------
+  data required time                                              9.80218
+  data arrival time                                              -6.62699
+  --------------------------------------------------------------------------
+  slack (MET)                                                     3.17519
+
+
+  Startpoint: allocator_unit/arb_W_X/state_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: LBDR_W/Rxy_reg[6]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  arbiter_in_3       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  allocator_unit/arb_W_X/state_reg[1]/CP (DFCX1)       0.00000    0.00000 r
+  allocator_unit/arb_W_X/state_reg[1]/Q (DFCX1)        0.36380    0.36380 r
+  allocator_unit/arb_W_X/U38/Q (NOR2XL)                0.16735    0.53116 f
+  allocator_unit/arb_W_X/U34/Q (NOR2XL)                0.52074    1.05190 r
+  allocator_unit/arb_W_X/U12/Q (INVXL)                 0.39433    1.44623 f
+  allocator_unit/arb_W_X/U28/Q (OAI21X3)               0.20945    1.65568 r
+  allocator_unit/arb_W_X/U32/Q (AOI21X3)               0.06005    1.71573 f
+  allocator_unit/arb_W_X/U31/Q (OAI21X3)               0.15317    1.86890 r
+  allocator_unit/arb_W_X/U11/Q (AOI31X2)               0.07106    1.93996 f
+  allocator_unit/arb_W_X/U10/Q (NOR2XL)                0.86576    2.80572 r
+  allocator_unit/arb_W_X/X_E (arbiter_in_3)            0.00000    2.80572 r
+  allocator_unit/arb_X_E/X_W_Y (arbiter_out_4)         0.00000    2.80572 r
+  allocator_unit/arb_X_E/U6/Q (INVXL)                  0.45242    3.25813 f
+  allocator_unit/arb_X_E/U15/Q (NOR3X3)                0.24388    3.50202 r
+  allocator_unit/arb_X_E/grant_Y_W (arbiter_out_4)     0.00000    3.50202 r
+  allocator_unit/U46/Q (INVXL)                         0.10096    3.60297 f
+  allocator_unit/U9/Q (NOR2XL)                         1.25837    4.86134 r
+  allocator_unit/grant_E_W (allocator)                 0.00000    4.86134 r
+  LBDR_W/grant_E (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3)
+                                                       0.00000    4.86134 r
+  LBDR_W/U58/Q (OAI311X1)                              0.32467    5.18601 f
+  LBDR_W/U33/Q (NOR2X3)                                0.54263    5.72864 r
+  LBDR_W/U36/Q (INVXL)                                 0.49820    6.22685 f
+  LBDR_W/U29/Q (OAI22X1)                               0.40010    6.62695 r
+  LBDR_W/Rxy_reg[6]/D (DFCPX1)                         0.00005    6.62699 r
+  data arrival time                                               6.62699
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  LBDR_W/Rxy_reg[6]/CP (DFCPX1)                        0.00000   10.00000 r
+  library setup time                                  -0.19782    9.80218
+  data required time                                              9.80218
+  --------------------------------------------------------------------------
+  data required time                                              9.80218
+  data arrival time                                              -6.62699
+  --------------------------------------------------------------------------
+  slack (MET)                                                     3.17519
+
+
+  Startpoint: allocator_unit/arb_W_X/state_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: LBDR_W/Rxy_reg[5]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  arbiter_in_3       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  allocator_unit/arb_W_X/state_reg[1]/CP (DFCX1)       0.00000    0.00000 r
+  allocator_unit/arb_W_X/state_reg[1]/Q (DFCX1)        0.36380    0.36380 r
+  allocator_unit/arb_W_X/U38/Q (NOR2XL)                0.16735    0.53116 f
+  allocator_unit/arb_W_X/U34/Q (NOR2XL)                0.52074    1.05190 r
+  allocator_unit/arb_W_X/U12/Q (INVXL)                 0.39433    1.44623 f
+  allocator_unit/arb_W_X/U28/Q (OAI21X3)               0.20945    1.65568 r
+  allocator_unit/arb_W_X/U32/Q (AOI21X3)               0.06005    1.71573 f
+  allocator_unit/arb_W_X/U31/Q (OAI21X3)               0.15317    1.86890 r
+  allocator_unit/arb_W_X/U11/Q (AOI31X2)               0.07106    1.93996 f
+  allocator_unit/arb_W_X/U10/Q (NOR2XL)                0.86576    2.80572 r
+  allocator_unit/arb_W_X/X_E (arbiter_in_3)            0.00000    2.80572 r
+  allocator_unit/arb_X_E/X_W_Y (arbiter_out_4)         0.00000    2.80572 r
+  allocator_unit/arb_X_E/U6/Q (INVXL)                  0.45242    3.25813 f
+  allocator_unit/arb_X_E/U15/Q (NOR3X3)                0.24388    3.50202 r
+  allocator_unit/arb_X_E/grant_Y_W (arbiter_out_4)     0.00000    3.50202 r
+  allocator_unit/U46/Q (INVXL)                         0.10096    3.60297 f
+  allocator_unit/U9/Q (NOR2XL)                         1.25837    4.86134 r
+  allocator_unit/grant_E_W (allocator)                 0.00000    4.86134 r
+  LBDR_W/grant_E (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3)
+                                                       0.00000    4.86134 r
+  LBDR_W/U58/Q (OAI311X1)                              0.32467    5.18601 f
+  LBDR_W/U33/Q (NOR2X3)                                0.54263    5.72864 r
+  LBDR_W/U36/Q (INVXL)                                 0.49820    6.22685 f
+  LBDR_W/U25/Q (OAI22X1)                               0.40010    6.62695 r
+  LBDR_W/Rxy_reg[5]/D (DFCPX1)                         0.00005    6.62699 r
+  data arrival time                                               6.62699
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  LBDR_W/Rxy_reg[5]/CP (DFCPX1)                        0.00000   10.00000 r
+  library setup time                                  -0.19782    9.80218
+  data required time                                              9.80218
+  --------------------------------------------------------------------------
+  data required time                                              9.80218
+  data arrival time                                              -6.62699
+  --------------------------------------------------------------------------
+  slack (MET)                                                     3.17519
+
+
+  Startpoint: allocator_unit/arb_W_X/state_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: LBDR_W/Rxy_reg[4]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  arbiter_in_3       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  allocator_unit/arb_W_X/state_reg[1]/CP (DFCX1)       0.00000    0.00000 r
+  allocator_unit/arb_W_X/state_reg[1]/Q (DFCX1)        0.36380    0.36380 r
+  allocator_unit/arb_W_X/U38/Q (NOR2XL)                0.16735    0.53116 f
+  allocator_unit/arb_W_X/U34/Q (NOR2XL)                0.52074    1.05190 r
+  allocator_unit/arb_W_X/U12/Q (INVXL)                 0.39433    1.44623 f
+  allocator_unit/arb_W_X/U28/Q (OAI21X3)               0.20945    1.65568 r
+  allocator_unit/arb_W_X/U32/Q (AOI21X3)               0.06005    1.71573 f
+  allocator_unit/arb_W_X/U31/Q (OAI21X3)               0.15317    1.86890 r
+  allocator_unit/arb_W_X/U11/Q (AOI31X2)               0.07106    1.93996 f
+  allocator_unit/arb_W_X/U10/Q (NOR2XL)                0.86576    2.80572 r
+  allocator_unit/arb_W_X/X_E (arbiter_in_3)            0.00000    2.80572 r
+  allocator_unit/arb_X_E/X_W_Y (arbiter_out_4)         0.00000    2.80572 r
+  allocator_unit/arb_X_E/U6/Q (INVXL)                  0.45242    3.25813 f
+  allocator_unit/arb_X_E/U15/Q (NOR3X3)                0.24388    3.50202 r
+  allocator_unit/arb_X_E/grant_Y_W (arbiter_out_4)     0.00000    3.50202 r
+  allocator_unit/U46/Q (INVXL)                         0.10096    3.60297 f
+  allocator_unit/U9/Q (NOR2XL)                         1.25837    4.86134 r
+  allocator_unit/grant_E_W (allocator)                 0.00000    4.86134 r
+  LBDR_W/grant_E (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3)
+                                                       0.00000    4.86134 r
+  LBDR_W/U58/Q (OAI311X1)                              0.32467    5.18601 f
+  LBDR_W/U33/Q (NOR2X3)                                0.54263    5.72864 r
+  LBDR_W/U36/Q (INVXL)                                 0.49820    6.22685 f
+  LBDR_W/U21/Q (OAI22X1)                               0.40010    6.62695 r
+  LBDR_W/Rxy_reg[4]/D (DFCPX1)                         0.00005    6.62699 r
+  data arrival time                                               6.62699
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  LBDR_W/Rxy_reg[4]/CP (DFCPX1)                        0.00000   10.00000 r
+  library setup time                                  -0.19782    9.80218
+  data required time                                              9.80218
+  --------------------------------------------------------------------------
+  data required time                                              9.80218
+  data arrival time                                              -6.62699
+  --------------------------------------------------------------------------
+  slack (MET)                                                     3.17519
+
+
+  Startpoint: allocator_unit/arb_W_X/state_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: LBDR_W/Rxy_reg[3]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  arbiter_in_3       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  allocator_unit/arb_W_X/state_reg[1]/CP (DFCX1)       0.00000    0.00000 r
+  allocator_unit/arb_W_X/state_reg[1]/Q (DFCX1)        0.36380    0.36380 r
+  allocator_unit/arb_W_X/U38/Q (NOR2XL)                0.16735    0.53116 f
+  allocator_unit/arb_W_X/U34/Q (NOR2XL)                0.52074    1.05190 r
+  allocator_unit/arb_W_X/U12/Q (INVXL)                 0.39433    1.44623 f
+  allocator_unit/arb_W_X/U28/Q (OAI21X3)               0.20945    1.65568 r
+  allocator_unit/arb_W_X/U32/Q (AOI21X3)               0.06005    1.71573 f
+  allocator_unit/arb_W_X/U31/Q (OAI21X3)               0.15317    1.86890 r
+  allocator_unit/arb_W_X/U11/Q (AOI31X2)               0.07106    1.93996 f
+  allocator_unit/arb_W_X/U10/Q (NOR2XL)                0.86576    2.80572 r
+  allocator_unit/arb_W_X/X_E (arbiter_in_3)            0.00000    2.80572 r
+  allocator_unit/arb_X_E/X_W_Y (arbiter_out_4)         0.00000    2.80572 r
+  allocator_unit/arb_X_E/U6/Q (INVXL)                  0.45242    3.25813 f
+  allocator_unit/arb_X_E/U15/Q (NOR3X3)                0.24388    3.50202 r
+  allocator_unit/arb_X_E/grant_Y_W (arbiter_out_4)     0.00000    3.50202 r
+  allocator_unit/U46/Q (INVXL)                         0.10096    3.60297 f
+  allocator_unit/U9/Q (NOR2XL)                         1.25837    4.86134 r
+  allocator_unit/grant_E_W (allocator)                 0.00000    4.86134 r
+  LBDR_W/grant_E (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3)
+                                                       0.00000    4.86134 r
+  LBDR_W/U58/Q (OAI311X1)                              0.32467    5.18601 f
+  LBDR_W/U33/Q (NOR2X3)                                0.54263    5.72864 r
+  LBDR_W/U36/Q (INVXL)                                 0.49820    6.22685 f
+  LBDR_W/U17/Q (OAI22X1)                               0.40010    6.62695 r
+  LBDR_W/Rxy_reg[3]/D (DFCPX1)                         0.00005    6.62699 r
+  data arrival time                                               6.62699
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  LBDR_W/Rxy_reg[3]/CP (DFCPX1)                        0.00000   10.00000 r
+  library setup time                                  -0.19782    9.80218
+  data required time                                              9.80218
+  --------------------------------------------------------------------------
+  data required time                                              9.80218
+  data arrival time                                              -6.62699
+  --------------------------------------------------------------------------
+  slack (MET)                                                     3.17519
+
+
+  Startpoint: allocator_unit/arb_W_X/state_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: LBDR_W/Rxy_reg[2]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  arbiter_in_3       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  allocator_unit/arb_W_X/state_reg[1]/CP (DFCX1)       0.00000    0.00000 r
+  allocator_unit/arb_W_X/state_reg[1]/Q (DFCX1)        0.36380    0.36380 r
+  allocator_unit/arb_W_X/U38/Q (NOR2XL)                0.16735    0.53116 f
+  allocator_unit/arb_W_X/U34/Q (NOR2XL)                0.52074    1.05190 r
+  allocator_unit/arb_W_X/U12/Q (INVXL)                 0.39433    1.44623 f
+  allocator_unit/arb_W_X/U28/Q (OAI21X3)               0.20945    1.65568 r
+  allocator_unit/arb_W_X/U32/Q (AOI21X3)               0.06005    1.71573 f
+  allocator_unit/arb_W_X/U31/Q (OAI21X3)               0.15317    1.86890 r
+  allocator_unit/arb_W_X/U11/Q (AOI31X2)               0.07106    1.93996 f
+  allocator_unit/arb_W_X/U10/Q (NOR2XL)                0.86576    2.80572 r
+  allocator_unit/arb_W_X/X_E (arbiter_in_3)            0.00000    2.80572 r
+  allocator_unit/arb_X_E/X_W_Y (arbiter_out_4)         0.00000    2.80572 r
+  allocator_unit/arb_X_E/U6/Q (INVXL)                  0.45242    3.25813 f
+  allocator_unit/arb_X_E/U15/Q (NOR3X3)                0.24388    3.50202 r
+  allocator_unit/arb_X_E/grant_Y_W (arbiter_out_4)     0.00000    3.50202 r
+  allocator_unit/U46/Q (INVXL)                         0.10096    3.60297 f
+  allocator_unit/U9/Q (NOR2XL)                         1.25837    4.86134 r
+  allocator_unit/grant_E_W (allocator)                 0.00000    4.86134 r
+  LBDR_W/grant_E (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3)
+                                                       0.00000    4.86134 r
+  LBDR_W/U58/Q (OAI311X1)                              0.32467    5.18601 f
+  LBDR_W/U33/Q (NOR2X3)                                0.54263    5.72864 r
+  LBDR_W/U36/Q (INVXL)                                 0.49820    6.22685 f
+  LBDR_W/U13/Q (OAI22X1)                               0.40010    6.62695 r
+  LBDR_W/Rxy_reg[2]/D (DFCPX1)                         0.00005    6.62699 r
+  data arrival time                                               6.62699
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  LBDR_W/Rxy_reg[2]/CP (DFCPX1)                        0.00000   10.00000 r
+  library setup time                                  -0.19782    9.80218
+  data required time                                              9.80218
+  --------------------------------------------------------------------------
+  data required time                                              9.80218
+  data arrival time                                              -6.62699
+  --------------------------------------------------------------------------
+  slack (MET)                                                     3.17519
+
+
+  Startpoint: allocator_unit/arb_W_X/state_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: LBDR_W/Rxy_reg[1]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  arbiter_in_3       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  allocator_unit/arb_W_X/state_reg[1]/CP (DFCX1)       0.00000    0.00000 r
+  allocator_unit/arb_W_X/state_reg[1]/Q (DFCX1)        0.36380    0.36380 r
+  allocator_unit/arb_W_X/U38/Q (NOR2XL)                0.16735    0.53116 f
+  allocator_unit/arb_W_X/U34/Q (NOR2XL)                0.52074    1.05190 r
+  allocator_unit/arb_W_X/U12/Q (INVXL)                 0.39433    1.44623 f
+  allocator_unit/arb_W_X/U28/Q (OAI21X3)               0.20945    1.65568 r
+  allocator_unit/arb_W_X/U32/Q (AOI21X3)               0.06005    1.71573 f
+  allocator_unit/arb_W_X/U31/Q (OAI21X3)               0.15317    1.86890 r
+  allocator_unit/arb_W_X/U11/Q (AOI31X2)               0.07106    1.93996 f
+  allocator_unit/arb_W_X/U10/Q (NOR2XL)                0.86576    2.80572 r
+  allocator_unit/arb_W_X/X_E (arbiter_in_3)            0.00000    2.80572 r
+  allocator_unit/arb_X_E/X_W_Y (arbiter_out_4)         0.00000    2.80572 r
+  allocator_unit/arb_X_E/U6/Q (INVXL)                  0.45242    3.25813 f
+  allocator_unit/arb_X_E/U15/Q (NOR3X3)                0.24388    3.50202 r
+  allocator_unit/arb_X_E/grant_Y_W (arbiter_out_4)     0.00000    3.50202 r
+  allocator_unit/U46/Q (INVXL)                         0.10096    3.60297 f
+  allocator_unit/U9/Q (NOR2XL)                         1.25837    4.86134 r
+  allocator_unit/grant_E_W (allocator)                 0.00000    4.86134 r
+  LBDR_W/grant_E (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3)
+                                                       0.00000    4.86134 r
+  LBDR_W/U58/Q (OAI311X1)                              0.32467    5.18601 f
+  LBDR_W/U33/Q (NOR2X3)                                0.54263    5.72864 r
+  LBDR_W/U36/Q (INVXL)                                 0.49820    6.22685 f
+  LBDR_W/U9/Q (OAI22X1)                                0.40010    6.62695 r
+  LBDR_W/Rxy_reg[1]/D (DFCPX1)                         0.00005    6.62699 r
+  data arrival time                                               6.62699
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  LBDR_W/Rxy_reg[1]/CP (DFCPX1)                        0.00000   10.00000 r
+  library setup time                                  -0.19782    9.80218
+  data required time                                              9.80218
+  --------------------------------------------------------------------------
+  data required time                                              9.80218
+  data arrival time                                              -6.62699
+  --------------------------------------------------------------------------
+  slack (MET)                                                     3.17519
+
+
+  Startpoint: allocator_unit/arb_W_X/state_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: LBDR_W/Rxy_reg[0]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  arbiter_in_3       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  allocator_unit/arb_W_X/state_reg[1]/CP (DFCX1)       0.00000    0.00000 r
+  allocator_unit/arb_W_X/state_reg[1]/Q (DFCX1)        0.36380    0.36380 r
+  allocator_unit/arb_W_X/U38/Q (NOR2XL)                0.16735    0.53116 f
+  allocator_unit/arb_W_X/U34/Q (NOR2XL)                0.52074    1.05190 r
+  allocator_unit/arb_W_X/U12/Q (INVXL)                 0.39433    1.44623 f
+  allocator_unit/arb_W_X/U28/Q (OAI21X3)               0.20945    1.65568 r
+  allocator_unit/arb_W_X/U32/Q (AOI21X3)               0.06005    1.71573 f
+  allocator_unit/arb_W_X/U31/Q (OAI21X3)               0.15317    1.86890 r
+  allocator_unit/arb_W_X/U11/Q (AOI31X2)               0.07106    1.93996 f
+  allocator_unit/arb_W_X/U10/Q (NOR2XL)                0.86576    2.80572 r
+  allocator_unit/arb_W_X/X_E (arbiter_in_3)            0.00000    2.80572 r
+  allocator_unit/arb_X_E/X_W_Y (arbiter_out_4)         0.00000    2.80572 r
+  allocator_unit/arb_X_E/U6/Q (INVXL)                  0.45242    3.25813 f
+  allocator_unit/arb_X_E/U15/Q (NOR3X3)                0.24388    3.50202 r
+  allocator_unit/arb_X_E/grant_Y_W (arbiter_out_4)     0.00000    3.50202 r
+  allocator_unit/U46/Q (INVXL)                         0.10096    3.60297 f
+  allocator_unit/U9/Q (NOR2XL)                         1.25837    4.86134 r
+  allocator_unit/grant_E_W (allocator)                 0.00000    4.86134 r
+  LBDR_W/grant_E (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3)
+                                                       0.00000    4.86134 r
+  LBDR_W/U58/Q (OAI311X1)                              0.32467    5.18601 f
+  LBDR_W/U33/Q (NOR2X3)                                0.54263    5.72864 r
+  LBDR_W/U36/Q (INVXL)                                 0.49820    6.22685 f
+  LBDR_W/U5/Q (OAI22X1)                                0.36746    6.59430 r
+  LBDR_W/Rxy_reg[0]/D (DFCPX1)                         0.00005    6.59435 r
+  data arrival time                                               6.59435
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  LBDR_W/Rxy_reg[0]/CP (DFCPX1)                        0.00000   10.00000 r
+  library setup time                                  -0.19726    9.80274
+  data required time                                              9.80274
+  --------------------------------------------------------------------------
+  data required time                                              9.80274
+  data arrival time                                              -6.59435
+  --------------------------------------------------------------------------
+  slack (MET)                                                     3.20839
+
+
+  Startpoint: allocator_unit/arb_L_X/state_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: LBDR_L/Rxy_reg[2]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  arbiter_in_1       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_1
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  allocator_unit/arb_L_X/state_reg[1]/CP (DFCX1)       0.00000    0.00000 r
+  allocator_unit/arb_L_X/state_reg[1]/Q (DFCX1)        0.36380    0.36380 r
+  allocator_unit/arb_L_X/U39/Q (NOR2XL)                0.16735    0.53116 f
+  allocator_unit/arb_L_X/U36/Q (NOR2XL)                0.52074    1.05190 r
+  allocator_unit/arb_L_X/U12/Q (INVXL)                 0.39433    1.44623 f
+  allocator_unit/arb_L_X/U28/Q (OAI21X3)               0.20945    1.65568 r
+  allocator_unit/arb_L_X/U33/Q (AOI21X3)               0.06005    1.71573 f
+  allocator_unit/arb_L_X/U32/Q (OAI21X3)               0.14545    1.86118 r
+  allocator_unit/arb_L_X/U11/Q (AOI31X2)               0.07446    1.93564 f
+  allocator_unit/arb_L_X/U3/Q (NOR2XL)                 1.07343    3.00908 r
+  allocator_unit/arb_L_X/X_E (arbiter_in_1)            0.00000    3.00908 r
+  allocator_unit/arb_X_E/X_L_Y (arbiter_out_4)         0.00000    3.00908 r
+  allocator_unit/arb_X_E/U8/Q (INVXL)                  0.27989    3.28897 f
+  allocator_unit/arb_X_E/U17/Q (NOR3X3)                0.22512    3.51409 r
+  allocator_unit/arb_X_E/grant_Y_L (arbiter_out_4)     0.00000    3.51409 r
+  allocator_unit/U55/Q (NAND2XL)                       0.15697    3.67106 f
+  allocator_unit/U15/Q (INVXL)                         0.86030    4.53136 r
+  allocator_unit/grant_E_L (allocator)                 0.00000    4.53136 r
+  LBDR_L/grant_E (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_1)
+                                                       0.00000    4.53136 r
+  LBDR_L/U58/Q (OAI311X1)                              0.31199    4.84335 f
+  LBDR_L/U33/Q (NOR2X3)                                0.50509    5.34845 r
+  LBDR_L/U36/Q (INVXL)                                 0.49467    5.84312 f
+  LBDR_L/U13/Q (OAI22X1)                               0.39916    6.24228 r
+  LBDR_L/Rxy_reg[2]/D (DFCPX1)                         0.00005    6.24233 r
+  data arrival time                                               6.24233
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  LBDR_L/Rxy_reg[2]/CP (DFCPX1)                        0.00000   10.00000 r
+  library setup time                                  -0.19779    9.80221
+  data required time                                              9.80221
+  --------------------------------------------------------------------------
+  data required time                                              9.80221
+  data arrival time                                              -6.24233
+  --------------------------------------------------------------------------
+  slack (MET)                                                     3.55988
+
+
+  Startpoint: allocator_unit/arb_L_X/state_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: LBDR_L/Rxy_reg[1]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  arbiter_in_1       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_1
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  allocator_unit/arb_L_X/state_reg[1]/CP (DFCX1)       0.00000    0.00000 r
+  allocator_unit/arb_L_X/state_reg[1]/Q (DFCX1)        0.36380    0.36380 r
+  allocator_unit/arb_L_X/U39/Q (NOR2XL)                0.16735    0.53116 f
+  allocator_unit/arb_L_X/U36/Q (NOR2XL)                0.52074    1.05190 r
+  allocator_unit/arb_L_X/U12/Q (INVXL)                 0.39433    1.44623 f
+  allocator_unit/arb_L_X/U28/Q (OAI21X3)               0.20945    1.65568 r
+  allocator_unit/arb_L_X/U33/Q (AOI21X3)               0.06005    1.71573 f
+  allocator_unit/arb_L_X/U32/Q (OAI21X3)               0.14545    1.86118 r
+  allocator_unit/arb_L_X/U11/Q (AOI31X2)               0.07446    1.93564 f
+  allocator_unit/arb_L_X/U3/Q (NOR2XL)                 1.07343    3.00908 r
+  allocator_unit/arb_L_X/X_E (arbiter_in_1)            0.00000    3.00908 r
+  allocator_unit/arb_X_E/X_L_Y (arbiter_out_4)         0.00000    3.00908 r
+  allocator_unit/arb_X_E/U8/Q (INVXL)                  0.27989    3.28897 f
+  allocator_unit/arb_X_E/U17/Q (NOR3X3)                0.22512    3.51409 r
+  allocator_unit/arb_X_E/grant_Y_L (arbiter_out_4)     0.00000    3.51409 r
+  allocator_unit/U55/Q (NAND2XL)                       0.15697    3.67106 f
+  allocator_unit/U15/Q (INVXL)                         0.86030    4.53136 r
+  allocator_unit/grant_E_L (allocator)                 0.00000    4.53136 r
+  LBDR_L/grant_E (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_1)
+                                                       0.00000    4.53136 r
+  LBDR_L/U58/Q (OAI311X1)                              0.31199    4.84335 f
+  LBDR_L/U33/Q (NOR2X3)                                0.50509    5.34845 r
+  LBDR_L/U36/Q (INVXL)                                 0.49467    5.84312 f
+  LBDR_L/U9/Q (OAI22X1)                                0.39916    6.24228 r
+  LBDR_L/Rxy_reg[1]/D (DFCPX1)                         0.00005    6.24233 r
+  data arrival time                                               6.24233
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  LBDR_L/Rxy_reg[1]/CP (DFCPX1)                        0.00000   10.00000 r
+  library setup time                                  -0.19779    9.80221
+  data required time                                              9.80221
+  --------------------------------------------------------------------------
+  data required time                                              9.80221
+  data arrival time                                              -6.24233
+  --------------------------------------------------------------------------
+  slack (MET)                                                     3.55988
+
+
+1

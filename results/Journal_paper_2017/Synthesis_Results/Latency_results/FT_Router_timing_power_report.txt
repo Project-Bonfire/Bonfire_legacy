@@ -1,0 +1,972 @@
+Information: Updating design information... (UID-85)
+Warning: Design 'router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 10
+Design : router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+Version: J-2014.09-SP2
+Date   : Thu Jun 29 09:43:53 2017
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: typical   Library: c18_CORELIB_TYP
+Wire Load Model Mode: enclosed
+
+  Startpoint: LBDR_N/Req_S_FF_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: CHK_CT_N2S_path_fault/healthy_counter_out_reg[2]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  Arbiter_in_0       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  Cx_Reconf_pseudo_checkers_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_12
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  LBDR_N/Req_S_FF_reg/CP (DFCX3)                       0.00000 #  0.00000 r
+  LBDR_N/Req_S_FF_reg/Q (DFCX3)                        0.35110    0.35110 f
+  LBDR_N/Req_S (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    0.35110 f
+  allocator_unit/req_N_S (allocator)                   0.00000    0.35110 f
+  allocator_unit/arb_N_X/Req_X_S (Arbiter_in_0)        0.00000    0.35110 f
+  allocator_unit/arb_N_X/U17/Q (NOR2XL)                0.44942    0.80052 r
+  allocator_unit/arb_N_X/U11/Q (NAND2XL)               0.38819    1.18871 f
+  allocator_unit/arb_N_X/U26/Q (AOI21X3)               0.22198    1.41069 r
+  allocator_unit/arb_N_X/U24/Q (OAI21X3)               0.07330    1.48399 f
+  allocator_unit/arb_N_X/U3/Q (INVXL)                  0.93793    2.42192 r
+  allocator_unit/arb_N_X/X_E (Arbiter_in_0)            0.00000    2.42192 r
+  allocator_unit/arb_X_E/X_N_Y (arbiter_out_4)         0.00000    2.42192 r
+  allocator_unit/arb_X_E/U9/Q (INVXL)                  0.29081    2.71273 f
+  allocator_unit/arb_X_E/U24/Q (NOR3X3)                0.51310    3.22583 r
+  allocator_unit/arb_X_E/grant_Y_N (arbiter_out_4)     0.00000    3.22583 r
+  allocator_unit/U44/Q (INVXL)                         0.15546    3.38129 f
+  allocator_unit/U43/Q (NOR2X3)                        0.46000    3.84129 r
+  allocator_unit/grant_E_N (allocator)                 0.00000    3.84129 r
+  LBDR_N/grant_E (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    3.84129 r
+  LBDR_N/U41/Q (NOR2XL)                                0.15231    3.99360 f
+  LBDR_N/U3/Q (NAND2XL)                                0.48671    4.48031 r
+  LBDR_N/U18/Q (AND3X2)                                0.24302    4.72334 r
+  LBDR_N/U74/Q (NAND2X3)                               0.15709    4.88043 f
+  LBDR_N/U26/Q (INVXL)                                 0.67818    5.55861 r
+  LBDR_N/U9/Q (NOR2XL)                                 0.44918    6.00779 f
+  LBDR_N/U81/Q (AOI32X3)                               0.26612    6.27391 r
+  LBDR_N/U80/Q (OAI21X3)                               0.12853    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/Temp_Cx_in[0] (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/U26/Q (INVXL)              0.27483    6.67726 r
+  LBDR_N/Cx_Reconf_checkers/U15/Q (XNOR2X2)            0.05440    6.73166 f
+  LBDR_N/Cx_Reconf_checkers/U25/Q (NOR2XL)             0.34237    7.07403 r
+  LBDR_N/Cx_Reconf_checkers/U13/Q (AOI311X3)           0.06944    7.14348 f
+  LBDR_N/Cx_Reconf_checkers/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    7.14348 f
+  LBDR_N/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    7.14348 f
+  U1057/Q (NOR3X3)                                     0.18187    7.32535 r
+  U841/Q (NAND3X3)                                     0.06763    7.39298 f
+  U840/Q (NOR4X3)                                      0.18581    7.57878 r
+  U629/Q (NAND4X3)                                     0.17309    7.75187 f
+  U861/Q (NOR3X3)                                      0.18671    7.93859 r
+  U890/Q (NAND4X3)                                     0.07388    8.01246 f
+  U888/Q (NOR2XL)                                      0.43798    8.45044 r
+  CHK_CT_N2S_path_fault/Healthy_packet (counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_12)
+                                                       0.00000    8.45044 r
+  CHK_CT_N2S_path_fault/U3/Q (NAND2XL)                 0.22795    8.67840 f
+  CHK_CT_N2S_path_fault/U18/Q (NOR2XL)                 0.62958    9.30797 r
+  CHK_CT_N2S_path_fault/U28/Q (AND2X3)                 0.16243    9.47041 r
+  CHK_CT_N2S_path_fault/U8/Q (XNOR2X2)                 0.04814    9.51855 f
+  CHK_CT_N2S_path_fault/U24/Q (NOR2XL)                 0.29657    9.81512 r
+  CHK_CT_N2S_path_fault/healthy_counter_out_reg[2]/D (DFCX1)
+                                                       0.00005    9.81516 r
+  data arrival time                                               9.81516
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  CHK_CT_N2S_path_fault/healthy_counter_out_reg[2]/CP (DFCX1)
+                                                       0.00000   10.00000 r
+  library setup time                                  -0.17909    9.82091
+  data required time                                              9.82091
+  --------------------------------------------------------------------------
+  data required time                                              9.82091
+  data arrival time                                              -9.81516
+  --------------------------------------------------------------------------
+  slack (MET)                                                     0.00575
+
+
+  Startpoint: LBDR_N/Req_S_FF_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: CHK_CT_N2E_turn_fault/healthy_counter_out_reg[2]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  Arbiter_in_0       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  Cx_Reconf_pseudo_checkers_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_20
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  LBDR_N/Req_S_FF_reg/CP (DFCX3)                       0.00000 #  0.00000 r
+  LBDR_N/Req_S_FF_reg/Q (DFCX3)                        0.35110    0.35110 f
+  LBDR_N/Req_S (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    0.35110 f
+  allocator_unit/req_N_S (allocator)                   0.00000    0.35110 f
+  allocator_unit/arb_N_X/Req_X_S (Arbiter_in_0)        0.00000    0.35110 f
+  allocator_unit/arb_N_X/U17/Q (NOR2XL)                0.44942    0.80052 r
+  allocator_unit/arb_N_X/U11/Q (NAND2XL)               0.38819    1.18871 f
+  allocator_unit/arb_N_X/U26/Q (AOI21X3)               0.22198    1.41069 r
+  allocator_unit/arb_N_X/U24/Q (OAI21X3)               0.07330    1.48399 f
+  allocator_unit/arb_N_X/U3/Q (INVXL)                  0.93793    2.42192 r
+  allocator_unit/arb_N_X/X_E (Arbiter_in_0)            0.00000    2.42192 r
+  allocator_unit/arb_X_E/X_N_Y (arbiter_out_4)         0.00000    2.42192 r
+  allocator_unit/arb_X_E/U9/Q (INVXL)                  0.29081    2.71273 f
+  allocator_unit/arb_X_E/U24/Q (NOR3X3)                0.51310    3.22583 r
+  allocator_unit/arb_X_E/grant_Y_N (arbiter_out_4)     0.00000    3.22583 r
+  allocator_unit/U44/Q (INVXL)                         0.15546    3.38129 f
+  allocator_unit/U43/Q (NOR2X3)                        0.46000    3.84129 r
+  allocator_unit/grant_E_N (allocator)                 0.00000    3.84129 r
+  LBDR_N/grant_E (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    3.84129 r
+  LBDR_N/U41/Q (NOR2XL)                                0.15231    3.99360 f
+  LBDR_N/U3/Q (NAND2XL)                                0.48671    4.48031 r
+  LBDR_N/U18/Q (AND3X2)                                0.24302    4.72334 r
+  LBDR_N/U74/Q (NAND2X3)                               0.15709    4.88043 f
+  LBDR_N/U26/Q (INVXL)                                 0.67818    5.55861 r
+  LBDR_N/U9/Q (NOR2XL)                                 0.44918    6.00779 f
+  LBDR_N/U81/Q (AOI32X3)                               0.26612    6.27391 r
+  LBDR_N/U80/Q (OAI21X3)                               0.12853    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/Temp_Cx_in[0] (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/U26/Q (INVXL)              0.27483    6.67726 r
+  LBDR_N/Cx_Reconf_checkers/U15/Q (XNOR2X2)            0.05440    6.73166 f
+  LBDR_N/Cx_Reconf_checkers/U25/Q (NOR2XL)             0.34237    7.07403 r
+  LBDR_N/Cx_Reconf_checkers/U13/Q (AOI311X3)           0.06944    7.14348 f
+  LBDR_N/Cx_Reconf_checkers/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    7.14348 f
+  LBDR_N/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    7.14348 f
+  U1057/Q (NOR3X3)                                     0.18187    7.32535 r
+  U841/Q (NAND3X3)                                     0.06763    7.39298 f
+  U840/Q (NOR4X3)                                      0.18581    7.57878 r
+  U629/Q (NAND4X3)                                     0.17309    7.75187 f
+  U666/Q (NOR3X3)                                      0.18671    7.93859 r
+  U870/Q (NAND4X3)                                     0.07370    8.01229 f
+  U868/Q (NOR2XL)                                      0.43795    8.45023 r
+  CHK_CT_N2E_turn_fault/Healthy_packet (counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_20)
+                                                       0.00000    8.45023 r
+  CHK_CT_N2E_turn_fault/U3/Q (NAND2XL)                 0.22795    8.67819 f
+  CHK_CT_N2E_turn_fault/U18/Q (NOR2XL)                 0.62958    9.30777 r
+  CHK_CT_N2E_turn_fault/U28/Q (AND2X3)                 0.16243    9.47020 r
+  CHK_CT_N2E_turn_fault/U8/Q (XNOR2X2)                 0.04814    9.51834 f
+  CHK_CT_N2E_turn_fault/U24/Q (NOR2XL)                 0.29657    9.81491 r
+  CHK_CT_N2E_turn_fault/healthy_counter_out_reg[2]/D (DFCX1)
+                                                       0.00005    9.81496 r
+  data arrival time                                               9.81496
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  CHK_CT_N2E_turn_fault/healthy_counter_out_reg[2]/CP (DFCX1)
+                                                       0.00000   10.00000 r
+  library setup time                                  -0.17909    9.82091
+  data required time                                              9.82091
+  --------------------------------------------------------------------------
+  data required time                                              9.82091
+  data arrival time                                              -9.81496
+  --------------------------------------------------------------------------
+  slack (MET)                                                     0.00595
+
+
+  Startpoint: LBDR_N/Req_S_FF_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: CHK_CT_N2L_fault/healthy_counter_out_reg[2]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  Arbiter_in_0       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  Cx_Reconf_pseudo_checkers_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_4
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  LBDR_N/Req_S_FF_reg/CP (DFCX3)                       0.00000 #  0.00000 r
+  LBDR_N/Req_S_FF_reg/Q (DFCX3)                        0.35110    0.35110 f
+  LBDR_N/Req_S (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    0.35110 f
+  allocator_unit/req_N_S (allocator)                   0.00000    0.35110 f
+  allocator_unit/arb_N_X/Req_X_S (Arbiter_in_0)        0.00000    0.35110 f
+  allocator_unit/arb_N_X/U17/Q (NOR2XL)                0.44942    0.80052 r
+  allocator_unit/arb_N_X/U11/Q (NAND2XL)               0.38819    1.18871 f
+  allocator_unit/arb_N_X/U26/Q (AOI21X3)               0.22198    1.41069 r
+  allocator_unit/arb_N_X/U24/Q (OAI21X3)               0.07330    1.48399 f
+  allocator_unit/arb_N_X/U3/Q (INVXL)                  0.93793    2.42192 r
+  allocator_unit/arb_N_X/X_E (Arbiter_in_0)            0.00000    2.42192 r
+  allocator_unit/arb_X_E/X_N_Y (arbiter_out_4)         0.00000    2.42192 r
+  allocator_unit/arb_X_E/U9/Q (INVXL)                  0.29081    2.71273 f
+  allocator_unit/arb_X_E/U24/Q (NOR3X3)                0.51310    3.22583 r
+  allocator_unit/arb_X_E/grant_Y_N (arbiter_out_4)     0.00000    3.22583 r
+  allocator_unit/U44/Q (INVXL)                         0.15546    3.38129 f
+  allocator_unit/U43/Q (NOR2X3)                        0.46000    3.84129 r
+  allocator_unit/grant_E_N (allocator)                 0.00000    3.84129 r
+  LBDR_N/grant_E (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    3.84129 r
+  LBDR_N/U41/Q (NOR2XL)                                0.15231    3.99360 f
+  LBDR_N/U3/Q (NAND2XL)                                0.48671    4.48031 r
+  LBDR_N/U18/Q (AND3X2)                                0.24302    4.72334 r
+  LBDR_N/U74/Q (NAND2X3)                               0.15709    4.88043 f
+  LBDR_N/U26/Q (INVXL)                                 0.67818    5.55861 r
+  LBDR_N/U9/Q (NOR2XL)                                 0.44918    6.00779 f
+  LBDR_N/U81/Q (AOI32X3)                               0.26612    6.27391 r
+  LBDR_N/U80/Q (OAI21X3)                               0.12853    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/Temp_Cx_in[0] (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/U26/Q (INVXL)              0.27483    6.67726 r
+  LBDR_N/Cx_Reconf_checkers/U15/Q (XNOR2X2)            0.05440    6.73166 f
+  LBDR_N/Cx_Reconf_checkers/U25/Q (NOR2XL)             0.34237    7.07403 r
+  LBDR_N/Cx_Reconf_checkers/U13/Q (AOI311X3)           0.06944    7.14348 f
+  LBDR_N/Cx_Reconf_checkers/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    7.14348 f
+  LBDR_N/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    7.14348 f
+  U1057/Q (NOR3X3)                                     0.18187    7.32535 r
+  U841/Q (NAND3X3)                                     0.06763    7.39298 f
+  U840/Q (NOR4X3)                                      0.18581    7.57878 r
+  U629/Q (NAND4X3)                                     0.17309    7.75187 f
+  U665/Q (NOR3X3)                                      0.18241    7.93429 r
+  U922/Q (NAND4X3)                                     0.07375    8.00803 f
+  U920/Q (NOR2XL)                                      0.43795    8.44598 r
+  CHK_CT_N2L_fault/Healthy_packet (counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_4)
+                                                       0.00000    8.44598 r
+  CHK_CT_N2L_fault/U3/Q (NAND2XL)                      0.22795    8.67393 f
+  CHK_CT_N2L_fault/U18/Q (NOR2XL)                      0.62958    9.30351 r
+  CHK_CT_N2L_fault/U28/Q (AND2X3)                      0.16243    9.46595 r
+  CHK_CT_N2L_fault/U8/Q (XNOR2X2)                      0.04814    9.51408 f
+  CHK_CT_N2L_fault/U24/Q (NOR2XL)                      0.29657    9.81066 r
+  CHK_CT_N2L_fault/healthy_counter_out_reg[2]/D (DFCX1)
+                                                       0.00005    9.81070 r
+  data arrival time                                               9.81070
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  CHK_CT_N2L_fault/healthy_counter_out_reg[2]/CP (DFCX1)
+                                                       0.00000   10.00000 r
+  library setup time                                  -0.17909    9.82091
+  data required time                                              9.82091
+  --------------------------------------------------------------------------
+  data required time                                              9.82091
+  data arrival time                                              -9.81070
+  --------------------------------------------------------------------------
+  slack (MET)                                                     0.01021
+
+
+  Startpoint: LBDR_N/Req_S_FF_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: CHK_CT_N2S_path_fault/faulty_counter_out_reg[3]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  Arbiter_in_0       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  Cx_Reconf_pseudo_checkers_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_12
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  LBDR_N/Req_S_FF_reg/CP (DFCX3)                       0.00000 #  0.00000 r
+  LBDR_N/Req_S_FF_reg/Q (DFCX3)                        0.35110    0.35110 f
+  LBDR_N/Req_S (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    0.35110 f
+  allocator_unit/req_N_S (allocator)                   0.00000    0.35110 f
+  allocator_unit/arb_N_X/Req_X_S (Arbiter_in_0)        0.00000    0.35110 f
+  allocator_unit/arb_N_X/U17/Q (NOR2XL)                0.44942    0.80052 r
+  allocator_unit/arb_N_X/U11/Q (NAND2XL)               0.38819    1.18871 f
+  allocator_unit/arb_N_X/U26/Q (AOI21X3)               0.22198    1.41069 r
+  allocator_unit/arb_N_X/U24/Q (OAI21X3)               0.07330    1.48399 f
+  allocator_unit/arb_N_X/U3/Q (INVXL)                  0.93793    2.42192 r
+  allocator_unit/arb_N_X/X_E (Arbiter_in_0)            0.00000    2.42192 r
+  allocator_unit/arb_X_E/X_N_Y (arbiter_out_4)         0.00000    2.42192 r
+  allocator_unit/arb_X_E/U9/Q (INVXL)                  0.29081    2.71273 f
+  allocator_unit/arb_X_E/U24/Q (NOR3X3)                0.51310    3.22583 r
+  allocator_unit/arb_X_E/grant_Y_N (arbiter_out_4)     0.00000    3.22583 r
+  allocator_unit/U44/Q (INVXL)                         0.15546    3.38129 f
+  allocator_unit/U43/Q (NOR2X3)                        0.46000    3.84129 r
+  allocator_unit/grant_E_N (allocator)                 0.00000    3.84129 r
+  LBDR_N/grant_E (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    3.84129 r
+  LBDR_N/U41/Q (NOR2XL)                                0.15231    3.99360 f
+  LBDR_N/U3/Q (NAND2XL)                                0.48671    4.48031 r
+  LBDR_N/U18/Q (AND3X2)                                0.24302    4.72334 r
+  LBDR_N/U74/Q (NAND2X3)                               0.15709    4.88043 f
+  LBDR_N/U26/Q (INVXL)                                 0.67818    5.55861 r
+  LBDR_N/U9/Q (NOR2XL)                                 0.44918    6.00779 f
+  LBDR_N/U81/Q (AOI32X3)                               0.26612    6.27391 r
+  LBDR_N/U80/Q (OAI21X3)                               0.12853    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/Temp_Cx_in[0] (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/U26/Q (INVXL)              0.27483    6.67726 r
+  LBDR_N/Cx_Reconf_checkers/U15/Q (XNOR2X2)            0.05440    6.73166 f
+  LBDR_N/Cx_Reconf_checkers/U25/Q (NOR2XL)             0.34237    7.07403 r
+  LBDR_N/Cx_Reconf_checkers/U13/Q (AOI311X3)           0.06944    7.14348 f
+  LBDR_N/Cx_Reconf_checkers/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    7.14348 f
+  LBDR_N/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    7.14348 f
+  U1057/Q (NOR3X3)                                     0.18187    7.32535 r
+  U841/Q (NAND3X3)                                     0.06763    7.39298 f
+  U840/Q (NOR4X3)                                      0.18581    7.57878 r
+  U629/Q (NAND4X3)                                     0.17309    7.75187 f
+  U861/Q (NOR3X3)                                      0.18671    7.93859 r
+  U890/Q (NAND4X3)                                     0.07388    8.01246 f
+  U888/Q (NOR2XL)                                      0.43798    8.45044 r
+  U682/Q (INVXL)                                       0.24826    8.69870 f
+  CHK_CT_N2S_path_fault/faulty_packet (counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_12)
+                                                       0.00000    8.69870 f
+  CHK_CT_N2S_path_fault/U20/Q (NAND2XL)                0.29035    8.98905 r
+  CHK_CT_N2S_path_fault/U17/Q (NOR2XL)                 0.21971    9.20876 f
+  CHK_CT_N2S_path_fault/U12/Q (NAND2XL)                0.19942    9.40818 r
+  CHK_CT_N2S_path_fault/U39/Q (XOR2X1)                 0.06114    9.46932 f
+  CHK_CT_N2S_path_fault/U10/Q (NOR2XL)                 0.29263    9.76195 r
+  CHK_CT_N2S_path_fault/faulty_counter_out_reg[3]/D (DFCX1)
+                                                       0.00005    9.76200 r
+  data arrival time                                               9.76200
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  CHK_CT_N2S_path_fault/faulty_counter_out_reg[3]/CP (DFCX1)
+                                                       0.00000   10.00000 r
+  library setup time                                  -0.17909    9.82091
+  data required time                                              9.82091
+  --------------------------------------------------------------------------
+  data required time                                              9.82091
+  data arrival time                                              -9.76200
+  --------------------------------------------------------------------------
+  slack (MET)                                                     0.05891
+
+
+  Startpoint: LBDR_N/Req_S_FF_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: CHK_CT_N2E_turn_fault/faulty_counter_out_reg[3]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  Arbiter_in_0       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  Cx_Reconf_pseudo_checkers_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_20
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  LBDR_N/Req_S_FF_reg/CP (DFCX3)                       0.00000 #  0.00000 r
+  LBDR_N/Req_S_FF_reg/Q (DFCX3)                        0.35110    0.35110 f
+  LBDR_N/Req_S (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    0.35110 f
+  allocator_unit/req_N_S (allocator)                   0.00000    0.35110 f
+  allocator_unit/arb_N_X/Req_X_S (Arbiter_in_0)        0.00000    0.35110 f
+  allocator_unit/arb_N_X/U17/Q (NOR2XL)                0.44942    0.80052 r
+  allocator_unit/arb_N_X/U11/Q (NAND2XL)               0.38819    1.18871 f
+  allocator_unit/arb_N_X/U26/Q (AOI21X3)               0.22198    1.41069 r
+  allocator_unit/arb_N_X/U24/Q (OAI21X3)               0.07330    1.48399 f
+  allocator_unit/arb_N_X/U3/Q (INVXL)                  0.93793    2.42192 r
+  allocator_unit/arb_N_X/X_E (Arbiter_in_0)            0.00000    2.42192 r
+  allocator_unit/arb_X_E/X_N_Y (arbiter_out_4)         0.00000    2.42192 r
+  allocator_unit/arb_X_E/U9/Q (INVXL)                  0.29081    2.71273 f
+  allocator_unit/arb_X_E/U24/Q (NOR3X3)                0.51310    3.22583 r
+  allocator_unit/arb_X_E/grant_Y_N (arbiter_out_4)     0.00000    3.22583 r
+  allocator_unit/U44/Q (INVXL)                         0.15546    3.38129 f
+  allocator_unit/U43/Q (NOR2X3)                        0.46000    3.84129 r
+  allocator_unit/grant_E_N (allocator)                 0.00000    3.84129 r
+  LBDR_N/grant_E (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    3.84129 r
+  LBDR_N/U41/Q (NOR2XL)                                0.15231    3.99360 f
+  LBDR_N/U3/Q (NAND2XL)                                0.48671    4.48031 r
+  LBDR_N/U18/Q (AND3X2)                                0.24302    4.72334 r
+  LBDR_N/U74/Q (NAND2X3)                               0.15709    4.88043 f
+  LBDR_N/U26/Q (INVXL)                                 0.67818    5.55861 r
+  LBDR_N/U9/Q (NOR2XL)                                 0.44918    6.00779 f
+  LBDR_N/U81/Q (AOI32X3)                               0.26612    6.27391 r
+  LBDR_N/U80/Q (OAI21X3)                               0.12853    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/Temp_Cx_in[0] (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/U26/Q (INVXL)              0.27483    6.67726 r
+  LBDR_N/Cx_Reconf_checkers/U15/Q (XNOR2X2)            0.05440    6.73166 f
+  LBDR_N/Cx_Reconf_checkers/U25/Q (NOR2XL)             0.34237    7.07403 r
+  LBDR_N/Cx_Reconf_checkers/U13/Q (AOI311X3)           0.06944    7.14348 f
+  LBDR_N/Cx_Reconf_checkers/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    7.14348 f
+  LBDR_N/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    7.14348 f
+  U1057/Q (NOR3X3)                                     0.18187    7.32535 r
+  U841/Q (NAND3X3)                                     0.06763    7.39298 f
+  U840/Q (NOR4X3)                                      0.18581    7.57878 r
+  U629/Q (NAND4X3)                                     0.17309    7.75187 f
+  U666/Q (NOR3X3)                                      0.18671    7.93859 r
+  U870/Q (NAND4X3)                                     0.07370    8.01229 f
+  U868/Q (NOR2XL)                                      0.43795    8.45023 r
+  U677/Q (INVXL)                                       0.24826    8.69850 f
+  CHK_CT_N2E_turn_fault/faulty_packet (counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_20)
+                                                       0.00000    8.69850 f
+  CHK_CT_N2E_turn_fault/U20/Q (NAND2XL)                0.29035    8.98884 r
+  CHK_CT_N2E_turn_fault/U17/Q (NOR2XL)                 0.21971    9.20856 f
+  CHK_CT_N2E_turn_fault/U12/Q (NAND2XL)                0.19942    9.40797 r
+  CHK_CT_N2E_turn_fault/U39/Q (XOR2X1)                 0.06114    9.46911 f
+  CHK_CT_N2E_turn_fault/U10/Q (NOR2XL)                 0.29263    9.76174 r
+  CHK_CT_N2E_turn_fault/faulty_counter_out_reg[3]/D (DFCX1)
+                                                       0.00005    9.76179 r
+  data arrival time                                               9.76179
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  CHK_CT_N2E_turn_fault/faulty_counter_out_reg[3]/CP (DFCX1)
+                                                       0.00000   10.00000 r
+  library setup time                                  -0.17909    9.82091
+  data required time                                              9.82091
+  --------------------------------------------------------------------------
+  data required time                                              9.82091
+  data arrival time                                              -9.76179
+  --------------------------------------------------------------------------
+  slack (MET)                                                     0.05912
+
+
+  Startpoint: LBDR_N/Req_S_FF_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: CHK_CT_N2L_fault/faulty_counter_out_reg[3]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  Arbiter_in_0       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  Cx_Reconf_pseudo_checkers_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_4
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  LBDR_N/Req_S_FF_reg/CP (DFCX3)                       0.00000 #  0.00000 r
+  LBDR_N/Req_S_FF_reg/Q (DFCX3)                        0.35110    0.35110 f
+  LBDR_N/Req_S (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    0.35110 f
+  allocator_unit/req_N_S (allocator)                   0.00000    0.35110 f
+  allocator_unit/arb_N_X/Req_X_S (Arbiter_in_0)        0.00000    0.35110 f
+  allocator_unit/arb_N_X/U17/Q (NOR2XL)                0.44942    0.80052 r
+  allocator_unit/arb_N_X/U11/Q (NAND2XL)               0.38819    1.18871 f
+  allocator_unit/arb_N_X/U26/Q (AOI21X3)               0.22198    1.41069 r
+  allocator_unit/arb_N_X/U24/Q (OAI21X3)               0.07330    1.48399 f
+  allocator_unit/arb_N_X/U3/Q (INVXL)                  0.93793    2.42192 r
+  allocator_unit/arb_N_X/X_E (Arbiter_in_0)            0.00000    2.42192 r
+  allocator_unit/arb_X_E/X_N_Y (arbiter_out_4)         0.00000    2.42192 r
+  allocator_unit/arb_X_E/U9/Q (INVXL)                  0.29081    2.71273 f
+  allocator_unit/arb_X_E/U24/Q (NOR3X3)                0.51310    3.22583 r
+  allocator_unit/arb_X_E/grant_Y_N (arbiter_out_4)     0.00000    3.22583 r
+  allocator_unit/U44/Q (INVXL)                         0.15546    3.38129 f
+  allocator_unit/U43/Q (NOR2X3)                        0.46000    3.84129 r
+  allocator_unit/grant_E_N (allocator)                 0.00000    3.84129 r
+  LBDR_N/grant_E (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    3.84129 r
+  LBDR_N/U41/Q (NOR2XL)                                0.15231    3.99360 f
+  LBDR_N/U3/Q (NAND2XL)                                0.48671    4.48031 r
+  LBDR_N/U18/Q (AND3X2)                                0.24302    4.72334 r
+  LBDR_N/U74/Q (NAND2X3)                               0.15709    4.88043 f
+  LBDR_N/U26/Q (INVXL)                                 0.67818    5.55861 r
+  LBDR_N/U9/Q (NOR2XL)                                 0.44918    6.00779 f
+  LBDR_N/U81/Q (AOI32X3)                               0.26612    6.27391 r
+  LBDR_N/U80/Q (OAI21X3)                               0.12853    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/Temp_Cx_in[0] (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/U26/Q (INVXL)              0.27483    6.67726 r
+  LBDR_N/Cx_Reconf_checkers/U15/Q (XNOR2X2)            0.05440    6.73166 f
+  LBDR_N/Cx_Reconf_checkers/U25/Q (NOR2XL)             0.34237    7.07403 r
+  LBDR_N/Cx_Reconf_checkers/U13/Q (AOI311X3)           0.06944    7.14348 f
+  LBDR_N/Cx_Reconf_checkers/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    7.14348 f
+  LBDR_N/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    7.14348 f
+  U1057/Q (NOR3X3)                                     0.18187    7.32535 r
+  U841/Q (NAND3X3)                                     0.06763    7.39298 f
+  U840/Q (NOR4X3)                                      0.18581    7.57878 r
+  U629/Q (NAND4X3)                                     0.17309    7.75187 f
+  U665/Q (NOR3X3)                                      0.18241    7.93429 r
+  U922/Q (NAND4X3)                                     0.07375    8.00803 f
+  U920/Q (NOR2XL)                                      0.43795    8.44598 r
+  U690/Q (INVXL)                                       0.24826    8.69424 f
+  CHK_CT_N2L_fault/faulty_packet (counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_4)
+                                                       0.00000    8.69424 f
+  CHK_CT_N2L_fault/U20/Q (NAND2XL)                     0.29035    8.98459 r
+  CHK_CT_N2L_fault/U17/Q (NOR2XL)                      0.21971    9.20430 f
+  CHK_CT_N2L_fault/U12/Q (NAND2XL)                     0.19942    9.40372 r
+  CHK_CT_N2L_fault/U39/Q (XOR2X1)                      0.06114    9.46486 f
+  CHK_CT_N2L_fault/U10/Q (NOR2XL)                      0.29263    9.75749 r
+  CHK_CT_N2L_fault/faulty_counter_out_reg[3]/D (DFCX1)
+                                                       0.00005    9.75754 r
+  data arrival time                                               9.75754
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  CHK_CT_N2L_fault/faulty_counter_out_reg[3]/CP (DFCX1)
+                                                       0.00000   10.00000 r
+  library setup time                                  -0.17909    9.82091
+  data required time                                              9.82091
+  --------------------------------------------------------------------------
+  data required time                                              9.82091
+  data arrival time                                              -9.75754
+  --------------------------------------------------------------------------
+  slack (MET)                                                     0.06337
+
+
+  Startpoint: LBDR_N/Req_S_FF_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: CHK_CT_N2S_path_fault/faulty_counter_out_reg[2]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  Arbiter_in_0       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  Cx_Reconf_pseudo_checkers_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_12
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  LBDR_N/Req_S_FF_reg/CP (DFCX3)                       0.00000 #  0.00000 r
+  LBDR_N/Req_S_FF_reg/Q (DFCX3)                        0.35110    0.35110 f
+  LBDR_N/Req_S (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    0.35110 f
+  allocator_unit/req_N_S (allocator)                   0.00000    0.35110 f
+  allocator_unit/arb_N_X/Req_X_S (Arbiter_in_0)        0.00000    0.35110 f
+  allocator_unit/arb_N_X/U17/Q (NOR2XL)                0.44942    0.80052 r
+  allocator_unit/arb_N_X/U11/Q (NAND2XL)               0.38819    1.18871 f
+  allocator_unit/arb_N_X/U26/Q (AOI21X3)               0.22198    1.41069 r
+  allocator_unit/arb_N_X/U24/Q (OAI21X3)               0.07330    1.48399 f
+  allocator_unit/arb_N_X/U3/Q (INVXL)                  0.93793    2.42192 r
+  allocator_unit/arb_N_X/X_E (Arbiter_in_0)            0.00000    2.42192 r
+  allocator_unit/arb_X_E/X_N_Y (arbiter_out_4)         0.00000    2.42192 r
+  allocator_unit/arb_X_E/U9/Q (INVXL)                  0.29081    2.71273 f
+  allocator_unit/arb_X_E/U24/Q (NOR3X3)                0.51310    3.22583 r
+  allocator_unit/arb_X_E/grant_Y_N (arbiter_out_4)     0.00000    3.22583 r
+  allocator_unit/U44/Q (INVXL)                         0.15546    3.38129 f
+  allocator_unit/U43/Q (NOR2X3)                        0.46000    3.84129 r
+  allocator_unit/grant_E_N (allocator)                 0.00000    3.84129 r
+  LBDR_N/grant_E (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    3.84129 r
+  LBDR_N/U41/Q (NOR2XL)                                0.15231    3.99360 f
+  LBDR_N/U3/Q (NAND2XL)                                0.48671    4.48031 r
+  LBDR_N/U18/Q (AND3X2)                                0.24302    4.72334 r
+  LBDR_N/U74/Q (NAND2X3)                               0.15709    4.88043 f
+  LBDR_N/U26/Q (INVXL)                                 0.67818    5.55861 r
+  LBDR_N/U9/Q (NOR2XL)                                 0.44918    6.00779 f
+  LBDR_N/U81/Q (AOI32X3)                               0.26612    6.27391 r
+  LBDR_N/U80/Q (OAI21X3)                               0.12853    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/Temp_Cx_in[0] (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/U26/Q (INVXL)              0.27483    6.67726 r
+  LBDR_N/Cx_Reconf_checkers/U15/Q (XNOR2X2)            0.05440    6.73166 f
+  LBDR_N/Cx_Reconf_checkers/U25/Q (NOR2XL)             0.34237    7.07403 r
+  LBDR_N/Cx_Reconf_checkers/U13/Q (AOI311X3)           0.06944    7.14348 f
+  LBDR_N/Cx_Reconf_checkers/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    7.14348 f
+  LBDR_N/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    7.14348 f
+  U1057/Q (NOR3X3)                                     0.18187    7.32535 r
+  U841/Q (NAND3X3)                                     0.06763    7.39298 f
+  U840/Q (NOR4X3)                                      0.18581    7.57878 r
+  U629/Q (NAND4X3)                                     0.17309    7.75187 f
+  U861/Q (NOR3X3)                                      0.18671    7.93859 r
+  U890/Q (NAND4X3)                                     0.07388    8.01246 f
+  U888/Q (NOR2XL)                                      0.43798    8.45044 r
+  U682/Q (INVXL)                                       0.24826    8.69870 f
+  CHK_CT_N2S_path_fault/faulty_packet (counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_12)
+                                                       0.00000    8.69870 f
+  CHK_CT_N2S_path_fault/U20/Q (NAND2XL)                0.29035    8.98905 r
+  CHK_CT_N2S_path_fault/U17/Q (NOR2XL)                 0.21971    9.20876 f
+  CHK_CT_N2S_path_fault/U19/Q (XNOR2X2)                0.15261    9.36137 f
+  CHK_CT_N2S_path_fault/U25/Q (NOR2XL)                 0.32052    9.68189 r
+  CHK_CT_N2S_path_fault/faulty_counter_out_reg[2]/D (DFCX1)
+                                                       0.00005    9.68194 r
+  data arrival time                                               9.68194
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  CHK_CT_N2S_path_fault/faulty_counter_out_reg[2]/CP (DFCX1)
+                                                       0.00000   10.00000 r
+  library setup time                                  -0.17909    9.82091
+  data required time                                              9.82091
+  --------------------------------------------------------------------------
+  data required time                                              9.82091
+  data arrival time                                              -9.68194
+  --------------------------------------------------------------------------
+  slack (MET)                                                     0.13897
+
+
+  Startpoint: LBDR_N/Req_S_FF_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: CHK_CT_N2E_turn_fault/faulty_counter_out_reg[2]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  Arbiter_in_0       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  Cx_Reconf_pseudo_checkers_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_20
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  LBDR_N/Req_S_FF_reg/CP (DFCX3)                       0.00000 #  0.00000 r
+  LBDR_N/Req_S_FF_reg/Q (DFCX3)                        0.35110    0.35110 f
+  LBDR_N/Req_S (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    0.35110 f
+  allocator_unit/req_N_S (allocator)                   0.00000    0.35110 f
+  allocator_unit/arb_N_X/Req_X_S (Arbiter_in_0)        0.00000    0.35110 f
+  allocator_unit/arb_N_X/U17/Q (NOR2XL)                0.44942    0.80052 r
+  allocator_unit/arb_N_X/U11/Q (NAND2XL)               0.38819    1.18871 f
+  allocator_unit/arb_N_X/U26/Q (AOI21X3)               0.22198    1.41069 r
+  allocator_unit/arb_N_X/U24/Q (OAI21X3)               0.07330    1.48399 f
+  allocator_unit/arb_N_X/U3/Q (INVXL)                  0.93793    2.42192 r
+  allocator_unit/arb_N_X/X_E (Arbiter_in_0)            0.00000    2.42192 r
+  allocator_unit/arb_X_E/X_N_Y (arbiter_out_4)         0.00000    2.42192 r
+  allocator_unit/arb_X_E/U9/Q (INVXL)                  0.29081    2.71273 f
+  allocator_unit/arb_X_E/U24/Q (NOR3X3)                0.51310    3.22583 r
+  allocator_unit/arb_X_E/grant_Y_N (arbiter_out_4)     0.00000    3.22583 r
+  allocator_unit/U44/Q (INVXL)                         0.15546    3.38129 f
+  allocator_unit/U43/Q (NOR2X3)                        0.46000    3.84129 r
+  allocator_unit/grant_E_N (allocator)                 0.00000    3.84129 r
+  LBDR_N/grant_E (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    3.84129 r
+  LBDR_N/U41/Q (NOR2XL)                                0.15231    3.99360 f
+  LBDR_N/U3/Q (NAND2XL)                                0.48671    4.48031 r
+  LBDR_N/U18/Q (AND3X2)                                0.24302    4.72334 r
+  LBDR_N/U74/Q (NAND2X3)                               0.15709    4.88043 f
+  LBDR_N/U26/Q (INVXL)                                 0.67818    5.55861 r
+  LBDR_N/U9/Q (NOR2XL)                                 0.44918    6.00779 f
+  LBDR_N/U81/Q (AOI32X3)                               0.26612    6.27391 r
+  LBDR_N/U80/Q (OAI21X3)                               0.12853    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/Temp_Cx_in[0] (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/U26/Q (INVXL)              0.27483    6.67726 r
+  LBDR_N/Cx_Reconf_checkers/U15/Q (XNOR2X2)            0.05440    6.73166 f
+  LBDR_N/Cx_Reconf_checkers/U25/Q (NOR2XL)             0.34237    7.07403 r
+  LBDR_N/Cx_Reconf_checkers/U13/Q (AOI311X3)           0.06944    7.14348 f
+  LBDR_N/Cx_Reconf_checkers/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    7.14348 f
+  LBDR_N/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    7.14348 f
+  U1057/Q (NOR3X3)                                     0.18187    7.32535 r
+  U841/Q (NAND3X3)                                     0.06763    7.39298 f
+  U840/Q (NOR4X3)                                      0.18581    7.57878 r
+  U629/Q (NAND4X3)                                     0.17309    7.75187 f
+  U666/Q (NOR3X3)                                      0.18671    7.93859 r
+  U870/Q (NAND4X3)                                     0.07370    8.01229 f
+  U868/Q (NOR2XL)                                      0.43795    8.45023 r
+  U677/Q (INVXL)                                       0.24826    8.69850 f
+  CHK_CT_N2E_turn_fault/faulty_packet (counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_20)
+                                                       0.00000    8.69850 f
+  CHK_CT_N2E_turn_fault/U20/Q (NAND2XL)                0.29035    8.98884 r
+  CHK_CT_N2E_turn_fault/U17/Q (NOR2XL)                 0.21971    9.20856 f
+  CHK_CT_N2E_turn_fault/U19/Q (XNOR2X2)                0.15261    9.36117 f
+  CHK_CT_N2E_turn_fault/U25/Q (NOR2XL)                 0.32052    9.68168 r
+  CHK_CT_N2E_turn_fault/faulty_counter_out_reg[2]/D (DFCX1)
+                                                       0.00005    9.68173 r
+  data arrival time                                               9.68173
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  CHK_CT_N2E_turn_fault/faulty_counter_out_reg[2]/CP (DFCX1)
+                                                       0.00000   10.00000 r
+  library setup time                                  -0.17909    9.82091
+  data required time                                              9.82091
+  --------------------------------------------------------------------------
+  data required time                                              9.82091
+  data arrival time                                              -9.68173
+  --------------------------------------------------------------------------
+  slack (MET)                                                     0.13918
+
+
+  Startpoint: LBDR_N/Req_S_FF_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: CHK_CT_N2L_fault/faulty_counter_out_reg[2]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  Arbiter_in_0       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  Cx_Reconf_pseudo_checkers_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_4
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  LBDR_N/Req_S_FF_reg/CP (DFCX3)                       0.00000 #  0.00000 r
+  LBDR_N/Req_S_FF_reg/Q (DFCX3)                        0.35110    0.35110 f
+  LBDR_N/Req_S (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    0.35110 f
+  allocator_unit/req_N_S (allocator)                   0.00000    0.35110 f
+  allocator_unit/arb_N_X/Req_X_S (Arbiter_in_0)        0.00000    0.35110 f
+  allocator_unit/arb_N_X/U17/Q (NOR2XL)                0.44942    0.80052 r
+  allocator_unit/arb_N_X/U11/Q (NAND2XL)               0.38819    1.18871 f
+  allocator_unit/arb_N_X/U26/Q (AOI21X3)               0.22198    1.41069 r
+  allocator_unit/arb_N_X/U24/Q (OAI21X3)               0.07330    1.48399 f
+  allocator_unit/arb_N_X/U3/Q (INVXL)                  0.93793    2.42192 r
+  allocator_unit/arb_N_X/X_E (Arbiter_in_0)            0.00000    2.42192 r
+  allocator_unit/arb_X_E/X_N_Y (arbiter_out_4)         0.00000    2.42192 r
+  allocator_unit/arb_X_E/U9/Q (INVXL)                  0.29081    2.71273 f
+  allocator_unit/arb_X_E/U24/Q (NOR3X3)                0.51310    3.22583 r
+  allocator_unit/arb_X_E/grant_Y_N (arbiter_out_4)     0.00000    3.22583 r
+  allocator_unit/U44/Q (INVXL)                         0.15546    3.38129 f
+  allocator_unit/U43/Q (NOR2X3)                        0.46000    3.84129 r
+  allocator_unit/grant_E_N (allocator)                 0.00000    3.84129 r
+  LBDR_N/grant_E (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    3.84129 r
+  LBDR_N/U41/Q (NOR2XL)                                0.15231    3.99360 f
+  LBDR_N/U3/Q (NAND2XL)                                0.48671    4.48031 r
+  LBDR_N/U18/Q (AND3X2)                                0.24302    4.72334 r
+  LBDR_N/U74/Q (NAND2X3)                               0.15709    4.88043 f
+  LBDR_N/U26/Q (INVXL)                                 0.67818    5.55861 r
+  LBDR_N/U9/Q (NOR2XL)                                 0.44918    6.00779 f
+  LBDR_N/U81/Q (AOI32X3)                               0.26612    6.27391 r
+  LBDR_N/U80/Q (OAI21X3)                               0.12853    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/Temp_Cx_in[0] (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/U26/Q (INVXL)              0.27483    6.67726 r
+  LBDR_N/Cx_Reconf_checkers/U15/Q (XNOR2X2)            0.05440    6.73166 f
+  LBDR_N/Cx_Reconf_checkers/U25/Q (NOR2XL)             0.34237    7.07403 r
+  LBDR_N/Cx_Reconf_checkers/U13/Q (AOI311X3)           0.06944    7.14348 f
+  LBDR_N/Cx_Reconf_checkers/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    7.14348 f
+  LBDR_N/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    7.14348 f
+  U1057/Q (NOR3X3)                                     0.18187    7.32535 r
+  U841/Q (NAND3X3)                                     0.06763    7.39298 f
+  U840/Q (NOR4X3)                                      0.18581    7.57878 r
+  U629/Q (NAND4X3)                                     0.17309    7.75187 f
+  U665/Q (NOR3X3)                                      0.18241    7.93429 r
+  U922/Q (NAND4X3)                                     0.07375    8.00803 f
+  U920/Q (NOR2XL)                                      0.43795    8.44598 r
+  U690/Q (INVXL)                                       0.24826    8.69424 f
+  CHK_CT_N2L_fault/faulty_packet (counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_4)
+                                                       0.00000    8.69424 f
+  CHK_CT_N2L_fault/U20/Q (NAND2XL)                     0.29035    8.98459 r
+  CHK_CT_N2L_fault/U17/Q (NOR2XL)                      0.21971    9.20430 f
+  CHK_CT_N2L_fault/U19/Q (XNOR2X2)                     0.15261    9.35691 f
+  CHK_CT_N2L_fault/U25/Q (NOR2XL)                      0.32052    9.67743 r
+  CHK_CT_N2L_fault/faulty_counter_out_reg[2]/D (DFCX1)
+                                                       0.00005    9.67748 r
+  data arrival time                                               9.67748
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  CHK_CT_N2L_fault/faulty_counter_out_reg[2]/CP (DFCX1)
+                                                       0.00000   10.00000 r
+  library setup time                                  -0.17909    9.82091
+  data required time                                              9.82091
+  --------------------------------------------------------------------------
+  data required time                                              9.82091
+  data arrival time                                              -9.67748
+  --------------------------------------------------------------------------
+  slack (MET)                                                     0.14343
+
+
+  Startpoint: LBDR_N/Req_S_FF_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: CHK_CT_N2S_path_fault/healthy_counter_out_reg[3]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  router_credit_based_PD_C_SHMU_DATA_WIDTH32_current_address5_Rxy_rst60_Cx_rst15_healthy_counter_threshold15_faulty_counter_threshold4_counter_depth4_NoC_size4
+                     c18_wl_30k            c18_CORELIB_TYP
+  Arbiter_in_0       c18_wl_30k            c18_CORELIB_TYP
+  allocator          c18_wl_30k            c18_CORELIB_TYP
+  arbiter_out_4      c18_wl_30k            c18_CORELIB_TYP
+  LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  Cx_Reconf_pseudo_checkers_0
+                     c18_wl_30k            c18_CORELIB_TYP
+  counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_12
+                     c18_wl_30k            c18_CORELIB_TYP
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  LBDR_N/Req_S_FF_reg/CP (DFCX3)                       0.00000 #  0.00000 r
+  LBDR_N/Req_S_FF_reg/Q (DFCX3)                        0.35110    0.35110 f
+  LBDR_N/Req_S (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    0.35110 f
+  allocator_unit/req_N_S (allocator)                   0.00000    0.35110 f
+  allocator_unit/arb_N_X/Req_X_S (Arbiter_in_0)        0.00000    0.35110 f
+  allocator_unit/arb_N_X/U17/Q (NOR2XL)                0.44942    0.80052 r
+  allocator_unit/arb_N_X/U11/Q (NAND2XL)               0.38819    1.18871 f
+  allocator_unit/arb_N_X/U26/Q (AOI21X3)               0.22198    1.41069 r
+  allocator_unit/arb_N_X/U24/Q (OAI21X3)               0.07330    1.48399 f
+  allocator_unit/arb_N_X/U3/Q (INVXL)                  0.93793    2.42192 r
+  allocator_unit/arb_N_X/X_E (Arbiter_in_0)            0.00000    2.42192 r
+  allocator_unit/arb_X_E/X_N_Y (arbiter_out_4)         0.00000    2.42192 r
+  allocator_unit/arb_X_E/U9/Q (INVXL)                  0.29081    2.71273 f
+  allocator_unit/arb_X_E/U24/Q (NOR3X3)                0.51310    3.22583 r
+  allocator_unit/arb_X_E/grant_Y_N (arbiter_out_4)     0.00000    3.22583 r
+  allocator_unit/U44/Q (INVXL)                         0.15546    3.38129 f
+  allocator_unit/U43/Q (NOR2X3)                        0.46000    3.84129 r
+  allocator_unit/grant_E_N (allocator)                 0.00000    3.84129 r
+  LBDR_N/grant_E (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    3.84129 r
+  LBDR_N/U41/Q (NOR2XL)                                0.15231    3.99360 f
+  LBDR_N/U3/Q (NAND2XL)                                0.48671    4.48031 r
+  LBDR_N/U18/Q (AND3X2)                                0.24302    4.72334 r
+  LBDR_N/U74/Q (NAND2X3)                               0.15709    4.88043 f
+  LBDR_N/U26/Q (INVXL)                                 0.67818    5.55861 r
+  LBDR_N/U9/Q (NOR2XL)                                 0.44918    6.00779 f
+  LBDR_N/U81/Q (AOI32X3)                               0.26612    6.27391 r
+  LBDR_N/U80/Q (OAI21X3)                               0.12853    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/Temp_Cx_in[0] (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    6.40243 f
+  LBDR_N/Cx_Reconf_checkers/U26/Q (INVXL)              0.27483    6.67726 r
+  LBDR_N/Cx_Reconf_checkers/U15/Q (XNOR2X2)            0.05440    6.73166 f
+  LBDR_N/Cx_Reconf_checkers/U25/Q (NOR2XL)             0.34237    7.07403 r
+  LBDR_N/Cx_Reconf_checkers/U13/Q (AOI311X3)           0.06944    7.14348 f
+  LBDR_N/Cx_Reconf_checkers/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (Cx_Reconf_pseudo_checkers_0)
+                                                       0.00000    7.14348 f
+  LBDR_N/err_not_reconfig_cx_flit_type_not_Tail_empty_not_grants_not_Faulty_C_Temp_Cx_in_Cx_reconf_PE_equal (LBDR_packet_drop_cur_addr_rst5_Rxy_rst60_Cx_rst15_NoC_size4_0)
+                                                       0.00000    7.14348 f
+  U1057/Q (NOR3X3)                                     0.18187    7.32535 r
+  U841/Q (NAND3X3)                                     0.06763    7.39298 f
+  U840/Q (NOR4X3)                                      0.18581    7.57878 r
+  U629/Q (NAND4X3)                                     0.17309    7.75187 f
+  U861/Q (NOR3X3)                                      0.18671    7.93859 r
+  U890/Q (NAND4X3)                                     0.07388    8.01246 f
+  U888/Q (NOR2XL)                                      0.43798    8.45044 r
+  CHK_CT_N2S_path_fault/Healthy_packet (counter_threshold_classifier_counter_depth4_healthy_counter_threshold15_faulty_counter_threshold4_12)
+                                                       0.00000    8.45044 r
+  CHK_CT_N2S_path_fault/U3/Q (NAND2XL)                 0.22795    8.67840 f
+  CHK_CT_N2S_path_fault/U18/Q (NOR2XL)                 0.62958    9.30797 r
+  CHK_CT_N2S_path_fault/U28/Q (AND2X3)                 0.16243    9.47041 r
+  CHK_CT_N2S_path_fault/U23/Q (NAND2XL)                0.10091    9.57132 f
+  CHK_CT_N2S_path_fault/U21/Q (AOI21X3)                0.11814    9.68946 r
+  CHK_CT_N2S_path_fault/healthy_counter_out_reg[3]/D (DFCX1)
+                                                       0.00005    9.68951 r
+  data arrival time                                               9.68951
+
+  clock clk (rise edge)                               10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  CHK_CT_N2S_path_fault/healthy_counter_out_reg[3]/CP (DFCX1)
+                                                       0.00000   10.00000 r
+  library setup time                                  -0.15788    9.84212
+  data required time                                              9.84212
+  --------------------------------------------------------------------------
+  data required time                                              9.84212
+  data arrival time                                              -9.68951
+  --------------------------------------------------------------------------
+  slack (MET)                                                     0.15261
+
+
+1

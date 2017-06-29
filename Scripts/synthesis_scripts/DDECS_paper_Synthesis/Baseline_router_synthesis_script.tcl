@@ -3,6 +3,7 @@ analyze -library WORK -format vhdl {/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL
 elaborate ROUTER_CREDIT_BASED -architecture BEHAVIOR -library DEFAULT -parameters "DATA_WIDTH = 32, current_address = 5, Cx_rst = 15, NoC_size = 4" -update
 create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
 set_dont_touch reset
+link
 # compile -exact_map -area_effort none 
 #compile -exact_map -area_effort low
 # compile -exact_map -area_effort medium

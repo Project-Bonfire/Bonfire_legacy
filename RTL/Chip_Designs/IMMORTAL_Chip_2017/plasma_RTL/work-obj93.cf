@@ -1,0 +1,4 @@
+v 4
+file / "/var/folders/tm/fh684lf54z38tw2pwqmw7txw0000gn/T/SublimeLinter3-bniazmand/mlite_pack.vhd" "4f5687ea87162c2d517280bdc5fc03692582a25d" "20170628101600.359":
+  package mlite_pack at 19( 826) + 0 on 11 body;
+  package body mlite_pack at 594( 26045) + 0 on 12;
