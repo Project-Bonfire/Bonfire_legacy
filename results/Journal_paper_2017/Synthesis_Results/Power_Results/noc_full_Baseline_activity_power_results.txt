@@ -1,0 +1,913 @@
+Information: Updating design information... (UID-85)
+Warning: Design 'network_4x4_DATA_WIDTH32_DATA_WIDTH_LV11' contains 2 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+Warning: There are 16 switching activity information conflicts. (PWR-19)
+Information: Propagating switching activity (high effort zero delay simulation). (PWR-6)
+Warning: Invalid switching activity annotation on constant net(s) is being ignored. (PWR-421)
+Warning: The derived toggle rate value (0.400000) for the clock net 'clk' conflicts with the annotated value (2.000000). Using the annotated value. (PWR-12)
+Warning: Design has unannotated primary inputs. (PWR-414)
+Warning: Design has unannotated sequential cell outputs. (PWR-415)
+ 
+****************************************
+Report : power
+        -hier
+        -analysis_effort high
+Design : network_4x4_DATA_WIDTH32_DATA_WIDTH_LV11
+Version: J-2014.09-SP2
+Date   : Fri Jun 30 16:26:37 2017
+****************************************
+
+
+Library(s) Used:
+
+    c18_CORELIB_TYP (File: /cad/dk/c/v4.11/synopsys/c18_1.8V/c18_CORELIB_TYP.db)
+
+
+Operating Conditions: typical   Library: c18_CORELIB_TYP
+Wire Load Model Mode: enclosed
+
+Design        Wire Load Model            Library
+------------------------------------------------
+network_4x4_DATA_WIDTH32_DATA_WIDTH_LV11
+                       c18_wl_100k       c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address0_Cx_rst10_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address1_Cx_rst14_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address2_Cx_rst14_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address3_Cx_rst12_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address4_Cx_rst11_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address6_Cx_rst15_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address7_Cx_rst13_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address8_Cx_rst11_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address9_Cx_rst15_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address10_Cx_rst15_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address11_Cx_rst13_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address12_Cx_rst3_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address13_Cx_rst7_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address14_Cx_rst7_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+router_credit_based_DATA_WIDTH32_current_address15_Cx_rst5_NoC_size4
+                       c18_wl_30k        c18_CORELIB_TYP
+allocator_0            c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst4_Cx_rst11_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst6_Cx_rst15_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst7_Cx_rst13_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst8_Cx_rst11_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst9_Cx_rst15_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst10_Cx_rst15_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst11_Cx_rst13_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst12_Cx_rst3_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst13_Cx_rst7_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst14_Cx_rst7_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst15_Cx_rst5_NoC_size4_0
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_1
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_3
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_5
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_6
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_8
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_9
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_10
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_11
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_13
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_14
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_15
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_16
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_19
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_20
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_21
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_22
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_23
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_25
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_26
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_27
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_28
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_29
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_30
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_31
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_32
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_33
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_34
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_35
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_36
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_37
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_39
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_40
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_41
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_42
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_43
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_45
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_46
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_47
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_48
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_49
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_50
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_51
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_52
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_53
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_54
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_55
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_56
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_57
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_59
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_60
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_61
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_62
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_63
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_66
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_67
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_68
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_69
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_71
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_72
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_73
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_74
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_76
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_77
+                       c18_wl_30k        c18_CORELIB_TYP
+FIFO_credit_based_DATA_WIDTH32_79
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst13_Cx_rst7_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst13_Cx_rst7_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst13_Cx_rst7_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst4_Cx_rst11_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst4_Cx_rst11_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst4_Cx_rst11_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+allocator_1            c18_wl_30k        c18_CORELIB_TYP
+allocator_2            c18_wl_30k        c18_CORELIB_TYP
+allocator_3            c18_wl_30k        c18_CORELIB_TYP
+allocator_4            c18_wl_30k        c18_CORELIB_TYP
+allocator_5            c18_wl_30k        c18_CORELIB_TYP
+allocator_6            c18_wl_30k        c18_CORELIB_TYP
+allocator_7            c18_wl_30k        c18_CORELIB_TYP
+allocator_8            c18_wl_30k        c18_CORELIB_TYP
+allocator_9            c18_wl_30k        c18_CORELIB_TYP
+allocator_10           c18_wl_30k        c18_CORELIB_TYP
+allocator_11           c18_wl_30k        c18_CORELIB_TYP
+allocator_12           c18_wl_30k        c18_CORELIB_TYP
+allocator_13           c18_wl_30k        c18_CORELIB_TYP
+allocator_14           c18_wl_30k        c18_CORELIB_TYP
+allocator_15           c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_1          c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_3          c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_5          c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_6          c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_8          c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_9          c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_10         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_11         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_13         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_14         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_15         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_16         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_19         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_20         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_21         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_22         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_23         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_25         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_26         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_27         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_28         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_29         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_30         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_31         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_32         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_33         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_34         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_35         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_36         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_37         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_39         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_40         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_41         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_42         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_43         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_45         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_46         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_47         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_48         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_49         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_50         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_51         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_52         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_53         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_54         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_55         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_56         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_57         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_59         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_60         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_61         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_62         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_63         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_66         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_67         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_68         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_69         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_71         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_72         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_73         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_74         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_76         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_77         c18_wl_30k        c18_CORELIB_TYP
+arbiter_out_79         c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_1           c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_3           c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_5           c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_6           c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_8           c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_9           c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_10          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_11          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_13          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_14          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_15          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_16          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_19          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_20          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_21          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_22          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_23          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_25          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_26          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_27          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_28          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_29          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_30          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_31          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_32          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_33          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_34          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_35          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_36          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_37          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_39          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_40          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_41          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_42          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_43          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_45          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_46          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_47          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_48          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_49          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_50          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_51          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_52          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_53          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_54          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_55          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_56          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_57          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_59          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_60          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_61          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_62          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_63          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_66          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_67          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_68          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_69          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_71          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_72          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_73          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_74          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_76          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_77          c18_wl_30k        c18_CORELIB_TYP
+arbiter_in_79          c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst9_Cx_rst15_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst9_Cx_rst15_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst9_Cx_rst15_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst9_Cx_rst15_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst14_Cx_rst7_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst14_Cx_rst7_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst14_Cx_rst7_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst7_Cx_rst13_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst7_Cx_rst13_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst7_Cx_rst13_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst0_Cx_rst10_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst0_Cx_rst10_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst0_Cx_rst10_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst15_Cx_rst5_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst15_Cx_rst5_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst12_Cx_rst3_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst12_Cx_rst3_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst3_Cx_rst12_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst3_Cx_rst12_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst3_Cx_rst12_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst8_Cx_rst11_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst8_Cx_rst11_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst8_Cx_rst11_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst1_Cx_rst14_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst1_Cx_rst14_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst1_Cx_rst14_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst1_Cx_rst14_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_1    c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_3    c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_5    c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_6    c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_8    c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_9    c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_10   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_11   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_13   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_14   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_15   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_16   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_19   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_20   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_21   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_22   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_23   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_25   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_26   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_27   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_28   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_29   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_30   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_31   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_32   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_33   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_34   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_35   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_36   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_37   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_39   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_40   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_41   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_42   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_43   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_45   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_46   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_47   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_48   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_49   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_50   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_51   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_52   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_53   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_54   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_55   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_56   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_57   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_59   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_60   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_61   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_62   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_63   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_66   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_67   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_68   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_69   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_71   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_72   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_73   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_74   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_76   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_77   c18_wl_30k        c18_CORELIB_TYP
+XBAR_DATA_WIDTH32_79   c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst10_Cx_rst15_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst10_Cx_rst15_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst10_Cx_rst15_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst10_Cx_rst15_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst6_Cx_rst15_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst6_Cx_rst15_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst6_Cx_rst15_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst6_Cx_rst15_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst11_Cx_rst13_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst11_Cx_rst13_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst11_Cx_rst13_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst2_Cx_rst14_NoC_size4_1
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst2_Cx_rst14_NoC_size4_2
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst2_Cx_rst14_NoC_size4_3
+                       c18_wl_30k        c18_CORELIB_TYP
+LBDR_cur_addr_rst2_Cx_rst14_NoC_size4_4
+                       c18_wl_30k        c18_CORELIB_TYP
+
+
+Global Operating Voltage = 1.8  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+--------------------------------------------------------------------------------
+                                       Switch   Int      Leak     Total
+Hierarchy                              Power    Power    Power    Power    %
+--------------------------------------------------------------------------------
+network_4x4_DATA_WIDTH32_DATA_WIDTH_LV11
+                                         16.359  435.106 3.27e+06  451.469 100.0
+  R_15 (router_credit_based_DATA_WIDTH32_current_address15_Cx_rst5_NoC_size4)
+                                          0.591   19.799 1.42e+05   20.390   4.5
+    XBAR_L (XBAR_DATA_WIDTH32_1)       7.57e-03 4.24e-03 1.68e+03 1.18e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_3)       8.22e-02 2.48e-02 2.17e+03    0.107   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_5)       8.19e-02 2.25e-02 2.89e+03    0.104   0.0
+    allocator_unit (allocator_1)       6.30e-02    0.714 5.82e+03    0.777   0.2
+    LBDR_L (LBDR_cur_addr_rst15_Cx_rst5_NoC_size4_1)
+                                       1.53e-03    0.229 1.92e+03    0.230   0.1
+    LBDR_W (LBDR_cur_addr_rst15_Cx_rst5_NoC_size4_3)
+                                       1.17e-03    0.192 1.33e+03    0.194   0.0
+    LBDR_N (LBDR_cur_addr_rst15_Cx_rst5_NoC_size4_0)
+                                       6.97e-04    0.198 1.39e+03    0.199   0.0
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_1)
+                                          0.211    6.086 4.15e+04    6.297   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_3)
+                                       9.82e-02    6.101 4.15e+04    6.199   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_5)
+                                       4.39e-02    6.226 4.16e+04    6.270   1.4
+  R_14 (router_credit_based_DATA_WIDTH32_current_address14_Cx_rst7_NoC_size4)
+                                          1.057   26.903 2.02e+05   27.960   6.2
+    XBAR_L (XBAR_DATA_WIDTH32_6)       2.97e-02 1.31e-02 2.99e+03 4.28e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_8)          0.113 2.83e-02 3.00e+03    0.141   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_9)       7.24e-02 1.81e-02 3.02e+03 9.05e-02   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_10)      9.92e-02 2.29e-02 3.28e+03    0.122   0.0
+    allocator_unit (allocator_2)          0.139    1.245 1.27e+04    1.384   0.3
+    LBDR_L (LBDR_cur_addr_rst14_Cx_rst7_NoC_size4_1)
+                                       1.67e-03    0.341 2.83e+03    0.342   0.1
+    LBDR_W (LBDR_cur_addr_rst14_Cx_rst7_NoC_size4_3)
+                                       2.45e-03    0.319 2.59e+03    0.321   0.1
+    LBDR_E (LBDR_cur_addr_rst14_Cx_rst7_NoC_size4_4)
+                                       2.71e-03    0.320 2.52e+03    0.323   0.1
+    LBDR_N (LBDR_cur_addr_rst14_Cx_rst7_NoC_size4_0)
+                                       1.79e-03    0.274 2.03e+03    0.276   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_6)
+                                          0.160    6.041 4.15e+04    6.201   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_8)
+                                          0.147    6.042 4.17e+04    6.188   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_9)
+                                          0.149    6.073 4.16e+04    6.221   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_10)
+                                          0.140    6.166 4.18e+04    6.306   1.4
+  R_13 (router_credit_based_DATA_WIDTH32_current_address13_Cx_rst7_NoC_size4)
+                                          1.075   26.953 2.02e+05   28.028   6.2
+    XBAR_L (XBAR_DATA_WIDTH32_11)      2.11e-02 9.60e-03 2.95e+03 3.07e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_13)      8.36e-02 2.09e-02 3.00e+03    0.104   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_14)      9.89e-02 2.46e-02 3.01e+03    0.123   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_15)         0.102 2.52e-02 3.28e+03    0.127   0.0
+    allocator_unit (allocator_3)          0.132    1.256 1.27e+04    1.388   0.3
+    LBDR_L (LBDR_cur_addr_rst13_Cx_rst7_NoC_size4_1)
+                                       1.98e-03    0.353 2.85e+03    0.355   0.1
+    LBDR_W (LBDR_cur_addr_rst13_Cx_rst7_NoC_size4_3)
+                                       1.81e-03    0.315 2.58e+03    0.317   0.1
+    LBDR_E (LBDR_cur_addr_rst13_Cx_rst7_NoC_size4_4)
+                                       2.82e-03    0.311 2.76e+03    0.314   0.1
+    LBDR_N (LBDR_cur_addr_rst13_Cx_rst7_NoC_size4_0)
+                                       1.66e-03    0.281 2.17e+03    0.283   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_11)
+                                          0.177    6.056 4.19e+04    6.234   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_13)
+                                          0.158    6.060 4.19e+04    6.218   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_14)
+                                          0.174    6.063 4.18e+04    6.237   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_15)
+                                          0.120    6.177 4.16e+04    6.297   1.4
+  R_12 (router_credit_based_DATA_WIDTH32_current_address12_Cx_rst3_NoC_size4)
+                                          0.721   19.816 1.43e+05   20.537   4.5
+    XBAR_L (XBAR_DATA_WIDTH32_16)      2.56e-02 1.47e-02 1.69e+03 4.03e-02   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_19)      6.92e-02 2.38e-02 2.22e+03 9.30e-02   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_20)      8.17e-02 2.06e-02 2.89e+03    0.102   0.0
+    allocator_unit (allocator_4)       9.01e-02    0.864 6.57e+03    0.954   0.2
+    LBDR_L (LBDR_cur_addr_rst12_Cx_rst3_NoC_size4_1)
+                                       1.70e-03    0.231 1.88e+03    0.233   0.1
+    LBDR_E (LBDR_cur_addr_rst12_Cx_rst3_NoC_size4_4)
+                                       1.42e-03    0.188 1.41e+03    0.190   0.0
+    LBDR_N (LBDR_cur_addr_rst12_Cx_rst3_NoC_size4_0)
+                                       2.33e-03    0.178 1.49e+03    0.180   0.0
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_16)
+                                          0.152    6.049 4.17e+04    6.201   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_19)
+                                          0.118    6.095 4.16e+04    6.213   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_20)
+                                          0.179    6.151 4.16e+04    6.330   1.4
+  R_11 (router_credit_based_DATA_WIDTH32_current_address11_Cx_rst13_NoC_size4)
+                                          0.897   27.142 2.02e+05   28.039   6.2
+    XBAR_L (XBAR_DATA_WIDTH32_21)      4.07e-02 1.75e-02 2.98e+03 5.81e-02   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_22)      2.08e-02 5.14e-03 3.04e+03 2.59e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_23)      9.21e-02 2.52e-02 3.00e+03    0.117   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_25)         0.119 2.68e-02 3.24e+03    0.146   0.0
+    allocator_unit (allocator_5)          0.118    1.318 1.26e+04    1.436   0.3
+    LBDR_L (LBDR_cur_addr_rst11_Cx_rst13_NoC_size4_1)
+                                       1.69e-03    0.370 2.87e+03    0.371   0.1
+    LBDR_S (LBDR_cur_addr_rst11_Cx_rst13_NoC_size4_2)
+                                       1.93e-03    0.324 2.54e+03    0.326   0.1
+    LBDR_W (LBDR_cur_addr_rst11_Cx_rst13_NoC_size4_3)
+                                       1.43e-03    0.290 2.01e+03    0.291   0.1
+    LBDR_N (LBDR_cur_addr_rst11_Cx_rst13_NoC_size4_0)
+                                       1.38e-03    0.336 2.56e+03    0.338   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_21)
+                                          0.191    6.093 4.15e+04    6.284   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_22)
+                                          0.119    6.064 4.18e+04    6.184   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_23)
+                                          0.100    6.097 4.20e+04    6.197   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_25)
+                                       8.95e-02    6.176 4.18e+04    6.266   1.4
+  R_10 (router_credit_based_DATA_WIDTH32_current_address10_Cx_rst15_NoC_size4)
+                                          1.470   34.786 2.73e+05   36.256   8.0
+    XBAR_L (XBAR_DATA_WIDTH32_26)      5.67e-02 2.74e-02 3.27e+03 8.41e-02   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_27)      5.14e-02 1.48e-02 3.34e+03 6.61e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_28)         0.115 2.99e-02 3.61e+03    0.145   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_29)      7.85e-02 2.21e-02 3.48e+03    0.101   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_30)         0.141 4.19e-02 4.61e+03    0.183   0.0
+    allocator_unit (allocator_6)          0.219    1.740 2.26e+04    1.959   0.4
+    LBDR_L (LBDR_cur_addr_rst10_Cx_rst15_NoC_size4_1)
+                                       3.49e-03    0.590 4.74e+03    0.593   0.1
+    LBDR_S (LBDR_cur_addr_rst10_Cx_rst15_NoC_size4_2)
+                                       3.04e-03    0.497 4.12e+03    0.500   0.1
+    LBDR_W (LBDR_cur_addr_rst10_Cx_rst15_NoC_size4_3)
+                                       3.46e-03    0.498 4.03e+03    0.501   0.1
+    LBDR_E (LBDR_cur_addr_rst10_Cx_rst15_NoC_size4_4)
+                                       2.73e-03    0.510 4.05e+03    0.513   0.1
+    LBDR_N (LBDR_cur_addr_rst10_Cx_rst15_NoC_size4_0)
+                                       4.35e-03    0.479 4.14e+03    0.483   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_26)
+                                          0.172    6.065 4.18e+04    6.237   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_27)
+                                          0.145    6.073 4.24e+04    6.218   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_28)
+                                          0.154    6.053 4.25e+04    6.207   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_29)
+                                          0.138    6.086 4.24e+04    6.224   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_30)
+                                          0.182    6.059 4.24e+04    6.241   1.4
+  R_9 (router_credit_based_DATA_WIDTH32_current_address9_Cx_rst15_NoC_size4)
+                                          1.487   34.906 2.74e+05   36.392   8.1
+    XBAR_L (XBAR_DATA_WIDTH32_31)      5.01e-02 2.33e-02 3.26e+03 7.34e-02   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_32)      4.12e-02 1.27e-02 3.42e+03 5.39e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_33)      8.86e-02 2.56e-02 3.48e+03    0.114   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_34)         0.104 2.83e-02 3.51e+03    0.133   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_35)         0.145 4.11e-02 4.83e+03    0.186   0.0
+    allocator_unit (allocator_7)          0.211    1.769 2.31e+04    1.980   0.4
+    LBDR_L (LBDR_cur_addr_rst9_Cx_rst15_NoC_size4_1)
+                                       4.22e-03    0.591 4.84e+03    0.595   0.1
+    LBDR_S (LBDR_cur_addr_rst9_Cx_rst15_NoC_size4_2)
+                                       3.77e-03    0.487 4.24e+03    0.491   0.1
+    LBDR_W (LBDR_cur_addr_rst9_Cx_rst15_NoC_size4_3)
+                                       3.01e-03    0.513 4.08e+03    0.516   0.1
+    LBDR_E (LBDR_cur_addr_rst9_Cx_rst15_NoC_size4_4)
+                                       4.02e-03    0.491 4.28e+03    0.495   0.1
+    LBDR_N (LBDR_cur_addr_rst9_Cx_rst15_NoC_size4_0)
+                                       4.61e-03    0.507 4.25e+03    0.512   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_31)
+                                          0.180    6.051 4.17e+04    6.231   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_32)
+                                          0.215    6.104 4.25e+04    6.319   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_33)
+                                          0.121    6.038 4.21e+04    6.159   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_34)
+                                          0.166    6.084 4.20e+04    6.249   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_35)
+                                          0.145    6.140 4.20e+04    6.285   1.4
+  R_8 (router_credit_based_DATA_WIDTH32_current_address8_Cx_rst11_NoC_size4)
+                                          1.034   27.162 2.03e+05   28.197   6.2
+    XBAR_L (XBAR_DATA_WIDTH32_36)      4.91e-02 2.05e-02 2.90e+03 6.96e-02   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_37)      6.12e-02 1.50e-02 3.00e+03 7.62e-02   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_39)      8.79e-02 2.32e-02 2.99e+03    0.111   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_40)      9.76e-02 2.18e-02 3.26e+03    0.119   0.0
+    allocator_unit (allocator_8)          0.143    1.370 1.36e+04    1.513   0.3
+    LBDR_L (LBDR_cur_addr_rst8_Cx_rst11_NoC_size4_1)
+                                       2.64e-03    0.368 2.80e+03    0.370   0.1
+    LBDR_S (LBDR_cur_addr_rst8_Cx_rst11_NoC_size4_2)
+                                       1.96e-03    0.319 2.49e+03    0.321   0.1
+    LBDR_E (LBDR_cur_addr_rst8_Cx_rst11_NoC_size4_4)
+                                       1.62e-03    0.283 2.03e+03    0.285   0.1
+    LBDR_N (LBDR_cur_addr_rst8_Cx_rst11_NoC_size4_0)
+                                       2.60e-03    0.307 2.45e+03    0.310   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_36)
+                                          0.178    6.075 4.19e+04    6.253   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_37)
+                                          0.107    6.116 4.17e+04    6.224   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_39)
+                                          0.124    6.108 4.18e+04    6.232   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_40)
+                                          0.178    6.135 4.18e+04    6.313   1.4
+  R_7 (router_credit_based_DATA_WIDTH32_current_address7_Cx_rst13_NoC_size4)
+                                          0.985   27.062 2.02e+05   28.047   6.2
+    XBAR_L (XBAR_DATA_WIDTH32_41)      8.10e-02 3.41e-02 2.91e+03    0.115   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_42)      3.66e-02 9.00e-03 3.03e+03 4.56e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_43)      8.29e-02 2.26e-02 3.01e+03    0.106   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_45)      9.72e-02 2.11e-02 3.28e+03    0.118   0.0
+    allocator_unit (allocator_9)          0.133    1.280 1.28e+04    1.413   0.3
+    LBDR_L (LBDR_cur_addr_rst7_Cx_rst13_NoC_size4_1)
+                                       2.06e-03    0.356 2.89e+03    0.358   0.1
+    LBDR_S (LBDR_cur_addr_rst7_Cx_rst13_NoC_size4_2)
+                                       2.79e-03    0.315 2.64e+03    0.317   0.1
+    LBDR_W (LBDR_cur_addr_rst7_Cx_rst13_NoC_size4_3)
+                                       1.65e-03    0.284 2.10e+03    0.286   0.1
+    LBDR_N (LBDR_cur_addr_rst7_Cx_rst13_NoC_size4_0)
+                                       1.48e-03    0.334 2.53e+03    0.336   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_41)
+                                          0.175    6.084 4.15e+04    6.259   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_42)
+                                          0.179    6.091 4.21e+04    6.270   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_43)
+                                          0.100    6.103 4.19e+04    6.203   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_45)
+                                       9.13e-02    6.129 4.15e+04    6.220   1.4
+  R_6 (router_credit_based_DATA_WIDTH32_current_address6_Cx_rst15_NoC_size4)
+                                          1.486   34.679 2.73e+05   36.166   8.0
+    XBAR_L (XBAR_DATA_WIDTH32_46)      7.50e-02 3.50e-02 3.23e+03    0.110   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_47)      6.76e-02 1.96e-02 3.36e+03 8.72e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_48)         0.108 2.91e-02 3.36e+03    0.137   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_49)      7.49e-02 2.04e-02 3.57e+03 9.53e-02   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_50)         0.135 3.80e-02 4.78e+03    0.173   0.0
+    allocator_unit (allocator_10)         0.224    1.736 2.29e+04    1.960   0.4
+    LBDR_L (LBDR_cur_addr_rst6_Cx_rst15_NoC_size4_1)
+                                       4.31e-03    0.582 4.85e+03    0.586   0.1
+    LBDR_S (LBDR_cur_addr_rst6_Cx_rst15_NoC_size4_2)
+                                       4.75e-03    0.450 4.22e+03    0.455   0.1
+    LBDR_W (LBDR_cur_addr_rst6_Cx_rst15_NoC_size4_3)
+                                       5.18e-03    0.467 4.09e+03    0.472   0.1
+    LBDR_E (LBDR_cur_addr_rst6_Cx_rst15_NoC_size4_4)
+                                       3.54e-03    0.515 4.10e+03    0.518   0.1
+    LBDR_N (LBDR_cur_addr_rst6_Cx_rst15_NoC_size4_0)
+                                       3.96e-03    0.479 4.11e+03    0.483   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_46)
+                                          0.169    6.068 4.17e+04    6.238   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_47)
+                                          0.196    6.111 4.20e+04    6.308   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_48)
+                                          0.151    6.017 4.25e+04    6.168   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_49)
+                                          0.124    6.079 4.26e+04    6.203   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_50)
+                                          0.140    6.033 4.17e+04    6.173   1.4
+  R_5 (router_credit_based_DATA_WIDTH32_current_address5_Cx_rst15_NoC_size4)
+                                          1.438   34.793 2.74e+05   36.231   8.0
+    XBAR_L (XBAR_DATA_WIDTH32_51)      9.39e-02 4.23e-02 3.24e+03    0.136   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_52)      5.63e-02 1.65e-02 3.34e+03 7.28e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_53)      7.64e-02 2.17e-02 3.40e+03 9.81e-02   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_54)         0.102 2.76e-02 3.32e+03    0.130   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_55)         0.109 2.93e-02 4.66e+03    0.138   0.0
+    allocator_unit (allocator_11)         0.217    1.756 2.31e+04    1.974   0.4
+    LBDR_L (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_1)
+                                       4.54e-03    0.590 4.96e+03    0.594   0.1
+    LBDR_S (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_2)
+                                       5.96e-03    0.440 4.22e+03    0.446   0.1
+    LBDR_W (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_3)
+                                       3.69e-03    0.514 4.20e+03    0.518   0.1
+    LBDR_E (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_4)
+                                       4.84e-03    0.482 4.34e+03    0.486   0.1
+    LBDR_N (LBDR_cur_addr_rst5_Cx_rst15_NoC_size4_0)
+                                       3.78e-03    0.515 4.30e+03    0.519   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_51)
+                                          0.153    6.028 4.20e+04    6.181   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_52)
+                                          0.209    6.101 4.26e+04    6.310   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_53)
+                                          0.119    6.027 4.22e+04    6.146   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_54)
+                                          0.161    6.078 4.21e+04    6.240   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_55)
+                                          0.118    6.124 4.18e+04    6.242   1.4
+  R_4 (router_credit_based_DATA_WIDTH32_current_address4_Cx_rst11_NoC_size4)
+                                          0.975   27.189 2.03e+05   28.165   6.2
+    XBAR_L (XBAR_DATA_WIDTH32_56)      7.81e-02 3.19e-02 2.90e+03    0.110   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_57)      6.50e-02 1.61e-02 3.00e+03 8.11e-02   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_59)      8.12e-02 2.18e-02 3.00e+03    0.103   0.0
+    XBAR_N (XBAR_DATA_WIDTH32_60)      5.95e-02 1.34e-02 3.28e+03 7.29e-02   0.0
+    allocator_unit (allocator_12)         0.132    1.383 1.34e+04    1.515   0.3
+    LBDR_L (LBDR_cur_addr_rst4_Cx_rst11_NoC_size4_1)
+                                       2.81e-03    0.362 3.04e+03    0.365   0.1
+    LBDR_S (LBDR_cur_addr_rst4_Cx_rst11_NoC_size4_2)
+                                       2.33e-03    0.324 2.64e+03    0.327   0.1
+    LBDR_E (LBDR_cur_addr_rst4_Cx_rst11_NoC_size4_4)
+                                       1.81e-03    0.286 2.19e+03    0.287   0.1
+    LBDR_N (LBDR_cur_addr_rst4_Cx_rst11_NoC_size4_0)
+                                       2.21e-03    0.317 2.55e+03    0.319   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_56)
+                                          0.178    6.071 4.16e+04    6.248   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_57)
+                                          0.136    6.134 4.18e+04    6.270   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_59)
+                                          0.107    6.109 4.18e+04    6.216   1.4
+    FIFO_N (FIFO_credit_based_DATA_WIDTH32_60)
+                                          0.130    6.121 4.15e+04    6.250   1.4
+  R_3 (router_credit_based_DATA_WIDTH32_current_address3_Cx_rst12_NoC_size4)
+                                          0.629   19.836 1.41e+05   20.465   4.5
+    XBAR_L (XBAR_DATA_WIDTH32_61)      5.30e-02 3.44e-02 1.40e+03 8.74e-02   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_62)      3.54e-02 1.39e-02 1.79e+03 4.93e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_63)      4.51e-02 1.54e-02 1.84e+03 6.05e-02   0.0
+    allocator_unit (allocator_13)      8.41e-02    0.874 6.88e+03    0.958   0.2
+    LBDR_L (LBDR_cur_addr_rst3_Cx_rst12_NoC_size4_1)
+                                       2.00e-03    0.217 1.88e+03    0.219   0.0
+    LBDR_S (LBDR_cur_addr_rst3_Cx_rst12_NoC_size4_2)
+                                       1.57e-03    0.188 1.47e+03    0.189   0.0
+    LBDR_W (LBDR_cur_addr_rst3_Cx_rst12_NoC_size4_3)
+                                       1.67e-03    0.191 1.43e+03    0.193   0.0
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_61)
+                                          0.166    6.063 4.16e+04    6.229   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_62)
+                                          0.140    6.145 4.16e+04    6.284   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_63)
+                                          0.101    6.095 4.15e+04    6.195   1.4
+  R_2 (router_credit_based_DATA_WIDTH32_current_address2_Cx_rst14_NoC_size4)
+                                          1.001   26.988 1.99e+05   27.990   6.2
+    XBAR_L (XBAR_DATA_WIDTH32_66)      7.33e-02 3.06e-02 2.27e+03    0.104   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_67)      5.86e-02 1.47e-02 2.25e+03 7.33e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_68)      5.99e-02 1.66e-02 2.22e+03 7.64e-02   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_69)      4.37e-02 1.25e-02 2.24e+03 5.62e-02   0.0
+    allocator_unit (allocator_14)         0.148    1.394 1.41e+04    1.541   0.3
+    LBDR_L (LBDR_cur_addr_rst2_Cx_rst14_NoC_size4_1)
+                                       2.50e-03    0.355 2.86e+03    0.357   0.1
+    LBDR_S (LBDR_cur_addr_rst2_Cx_rst14_NoC_size4_2)
+                                       2.23e-03    0.275 2.11e+03    0.277   0.1
+    LBDR_W (LBDR_cur_addr_rst2_Cx_rst14_NoC_size4_3)
+                                       3.36e-03    0.308 2.55e+03    0.311   0.1
+    LBDR_E (LBDR_cur_addr_rst2_Cx_rst14_NoC_size4_4)
+                                       3.19e-03    0.308 2.55e+03    0.311   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_66)
+                                          0.145    6.040 4.14e+04    6.185   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_67)
+                                          0.176    6.143 4.16e+04    6.319   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_68)
+                                          0.161    6.044 4.16e+04    6.206   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_69)
+                                          0.124    6.047 4.14e+04    6.172   1.4
+  R_1 (router_credit_based_DATA_WIDTH32_current_address1_Cx_rst14_NoC_size4)
+                                          0.941   27.159 2.00e+05   28.100   6.2
+    XBAR_L (XBAR_DATA_WIDTH32_71)      5.89e-02 2.44e-02 2.24e+03 8.33e-02   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_72)      4.93e-02 1.33e-02 2.20e+03 6.26e-02   0.0
+    XBAR_W (XBAR_DATA_WIDTH32_73)      4.55e-02 1.29e-02 2.19e+03 5.84e-02   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_74)      6.74e-02 1.84e-02 2.22e+03 8.58e-02   0.0
+    allocator_unit (allocator_15)         0.136    1.407 1.39e+04    1.544   0.3
+    LBDR_L (LBDR_cur_addr_rst1_Cx_rst14_NoC_size4_1)
+                                       2.85e-03    0.358 2.98e+03    0.361   0.1
+    LBDR_S (LBDR_cur_addr_rst1_Cx_rst14_NoC_size4_2)
+                                       1.86e-03    0.283 2.17e+03    0.285   0.1
+    LBDR_W (LBDR_cur_addr_rst1_Cx_rst14_NoC_size4_3)
+                                       2.77e-03    0.324 2.53e+03    0.327   0.1
+    LBDR_E (LBDR_cur_addr_rst1_Cx_rst14_NoC_size4_4)
+                                       3.07e-03    0.325 2.61e+03    0.328   0.1
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_71)
+                                          0.162    6.070 4.14e+04    6.231   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_72)
+                                          0.143    6.198 4.20e+04    6.341   1.4
+    FIFO_W (FIFO_credit_based_DATA_WIDTH32_73)
+                                          0.125    6.041 4.18e+04    6.166   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_74)
+                                          0.143    6.083 4.15e+04    6.226   1.4
+  R_0 (router_credit_based_DATA_WIDTH32_current_address0_Cx_rst10_NoC_size4)
+                                          0.573   19.935 1.42e+05   20.508   4.5
+    XBAR_L (XBAR_DATA_WIDTH32_76)      2.92e-02 1.82e-02 1.33e+03 4.74e-02   0.0
+    XBAR_S (XBAR_DATA_WIDTH32_77)      4.92e-02 1.87e-02 1.82e+03 6.79e-02   0.0
+    XBAR_E (XBAR_DATA_WIDTH32_79)      4.63e-02 2.08e-02 2.53e+03 6.71e-02   0.0
+    allocator_unit (allocator_0)       7.37e-02    0.918 6.96e+03    0.992   0.2
+    LBDR_L (LBDR_cur_addr_rst0_Cx_rst10_NoC_size4_1)
+                                       3.85e-03    0.230 1.85e+03    0.233   0.1
+    LBDR_S (LBDR_cur_addr_rst0_Cx_rst10_NoC_size4_2)
+                                       1.15e-03    0.196 1.60e+03    0.197   0.0
+    LBDR_E (LBDR_cur_addr_rst0_Cx_rst10_NoC_size4_4)
+                                       1.79e-03    0.190 1.57e+03    0.191   0.0
+    FIFO_L (FIFO_credit_based_DATA_WIDTH32_76)
+                                          0.187    6.091 4.18e+04    6.278   1.4
+    FIFO_S (FIFO_credit_based_DATA_WIDTH32_77)
+                                       7.49e-02    6.150 4.15e+04    6.225   1.4
+    FIFO_E (FIFO_credit_based_DATA_WIDTH32_79)
+                                          0.106    6.103 4.14e+04    6.209   1.4
+1
