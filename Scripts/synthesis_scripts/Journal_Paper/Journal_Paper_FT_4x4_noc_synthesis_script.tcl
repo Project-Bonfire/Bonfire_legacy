@@ -4,7 +4,7 @@ analyze -library WORK -format vhdl {/home/bniazmand/pc/clean_Bonfire/Bonfire/RTL
 
 elaborate network_4x4 -architecture behavior -library DEFAULT -parameters "DATA_WIDTH = 32, DATA_WIDTH_LV = 11"
 
-create_clock -name "clk" -period 10 -waveform { 0 5  }  { clk  }
+create_clock -name "clk" -period 5 -waveform { 0 2.5  }  { clk  }
 link
 
 set_dont_touch reset
@@ -13,7 +13,7 @@ saif_map -start
 # compile -exact_map
 compile_ultra -no_autoungroup
 
-sh vcd2saif -64 -input ../../tmp/simul_temp/network_full_vcd.vcd -output network_FT_activity.saif
+# sh vcd2saif -64 -input ../../tmp/simul_temp/network_full_vcd.vcd -output network_FT_activity.saif
 read_saif -input network_FT_activity.saif -instance_name tb_network_4x4/NoC
 report_power -analysis_effort high -hierarchy -levels 2 > noc_full_FT_activity_power_results.txt
-report_area -hierarchy > noc_full_FT_activity_power_area_results.txt
+# report_area -hierarchy > noc_full_FT_activity_power_area_results.txt
