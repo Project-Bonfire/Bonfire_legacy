@@ -1,5 +1,0 @@
-	Packets sent:		96	flits sent:	768
-	Packets received:	75	flits recieved:	492
-	Packets lost: 		21	flits lost:	276
-	Packet loss:	21.88%
-	Flit loss:	35.94%
