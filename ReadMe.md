@@ -30,7 +30,7 @@ Bonfire
 &nbsp; &nbsp; &nbsp; |  
 &nbsp; &nbsp; &nbsp; +- RTL - VHDL RTL files for the components  
 &nbsp; &nbsp; &nbsp; |  
-&nbsp; &nbsp; &nbsp; +- Scripts - Includes scripts for simulation  
+&nbsp; &nbsp; &nbsp; +- Scripts - Includes scripts for simulation and synthesis 
 &nbsp; &nbsp; &nbsp; |  
 &nbsp; &nbsp; &nbsp; +- Test - Testing-related files (VHDL testbenches etc.)  
 &nbsp; &nbsp; &nbsp; |  
