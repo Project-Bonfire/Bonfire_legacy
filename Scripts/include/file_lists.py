@@ -2,13 +2,6 @@
 #    The idea here is to make some lists of the necessary files for each scenario
 #    in order to make the code a little more organized!
 
-#---------------------------------------------------------
-#
-#        Hand shaking related files
-#
-#---------------------------------------------------------
-# Files for the base-line hand shaking router!
-handshaking_files = ["Arbiter.vhd", "FIFO_one_hot_handshaking.vhd", "LBDR.vhd", "xbar.vhd"]
 
 #---------------------------------------------------------
 #

@@ -17,8 +17,6 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
     logging.info("Generating simulation.do")
     if program_argv['credit_based_FC']:
         flow_control_type = CREDIT_BASED_SUFFIX
-    else:
-        flow_control_type = HANDSHAKING_SUFFIX
 
     do_file = open(SIMUL_DIR + "/" + SIMUL_DO_SCRIPT, 'w')
 
@@ -188,55 +186,6 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
         # End of credit based flow control
 
-    # Handshaking based flow control
-    else:
-        # With checkers
-        if program_argv['add_checkers']:
-            for file in file_lists.HS_Arbiter_one_hot_with_checkers:
-                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type + CHECKERS_DIR \
-                    + "/Arbiter_one_hot_with_checkers/"+file+"\"\n")
-
-            for file in file_lists.HS_Arbiter_one_hot_with_checkers:
-                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type + CHECKERS_DIR \
-                    + "/FIFO_one_hot_with_checkers/"+file+"\"\n")
-
-            for file in file_lists.HS_LBDR_with_checkers:
-                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type + CHECKERS_DIR \
-                    + "/LBDR_with_checkers/"+file+"\"\n")
-
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/xbar.vhd\"\n")
-
-        else:
-            # No checkers
-            for file in file_lists.handshaking_files:
-                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/"+file+"\"\n")
-
-
-        # Add a network interface
-        if program_argv['add_NI'] != -1:
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/NI.vhd\"\n")
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/NI_channel.vhd\"\n")
-
-        # Add parity checking
-        if program_argv['add_parity']:
-            do_file.write("vcom \"" + FAULT_MANAGEMENT_RTL_DIR \
-                + "/Error_Detection_Correction/ParityChecker.vhd\"\n")
-
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/Router_32_bit_handshaking_parity.vhd\"\n")
-        else:
-            if program_argv['add_checkers']:
-                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/Router_32_bit_handshaking_with_full_set_of_checkers.vhd\"\n")
-            else:
-                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                    + "/RTL/Router_32_bit_handshaking.vhd\"\n")
-
-    # End of handshaking based flow control
 
     # Include file for the testbench
     if program_argv['NI_Test']:

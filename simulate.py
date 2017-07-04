@@ -67,8 +67,6 @@ def main(argv):
 
     if package.program_argv['credit_based_FC']:
         flow_control_type = package.CREDIT_BASED_SUFFIX
-    else:
-        flow_control_type = package.HANDSHAKING_SUFFIX
 
     net_file_name, net_tb_file_name = gen_network_and_tb(package.program_argv, flow_control_type)
 

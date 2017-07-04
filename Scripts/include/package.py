@@ -28,7 +28,6 @@ CHECKERS_DIR = "/Checkers/Modules_with_checkers_integrated/All_checkers"
 
 
 # Flow control suffixes
-HANDSHAKING_SUFFIX = "handshaking"
 CREDIT_BASED_SUFFIX = "credit_based"
 
 # Script names

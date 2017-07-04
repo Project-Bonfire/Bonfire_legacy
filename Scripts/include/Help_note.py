@@ -7,9 +7,6 @@ def print_help(argv, program_argv):
     print BOLD + "Usage:" + ENDC
     print
     print BOLD + OKBLUE + "  Network parameters:" + ENDC
-    print BOLD + "  -credit_based_FC:" + ENDC
-    print "\tChoose flow control mechanism (Handshaking or Credit-based). " \
-        + "Default value is " + str(program_argv['credit_based_FC']) + "."
     print
     print BOLD + "  -plasma_with_fpu:" + ENDC
     print "\tUse Plasma with FPU, instead of normal Plasma "# + str(program_argv['plasma_with_fpu']) + "."
@@ -23,7 +20,7 @@ def print_help(argv, program_argv):
         + "Default is " + str(program_argv['add_parity']) + "."
     print
     print BOLD + "  -checkers:" + ENDC
-    print "\tAdd control part checkers to the Handshaking-based flow control router (for FIFO, Arbiter and LBDR). Checker outputs are not taken to the output interface. " \
+    print "\tAdd control part checkers to the router (for FIFO, Arbiter and LBDR). Checker outputs are not taken to the output interface. " \
         + "Default is " + str(program_argv['add_checkers']) + "."
     print
     print BOLD + "  -NI [depth]:" + ENDC
@@ -85,26 +82,13 @@ def print_help(argv, program_argv):
     print
     print BOLD + OKBLUE + "  Examples:" + ENDC
     print BOLD + "  Example 1:" + ENDC
-    print "\t " + argv[0] + " -D 2 -NI -P -FI"
-    print "\t\tSimulates a 2X2 network that has network interface and parity checker and fault injectors included."
-    print "\t\tBy default the flow control mechanism is handshaking-based."
-    print "\t\tAlso generates a tesbench that uses non-random traffic patterns with random stop time."
-    print
-    print BOLD + "  Example 2:" + ENDC
-    print "\t " + argv[0] + " -D 4 -NI -P -FI -Rand 0.005 -PS 3 3 -sim 10000"
-    print "\t\tSimulates a 4X4 network that has network interface and parity checker and fault injectors included."
-    print "\t\tBy default the flow control mechanism is handshaking-based."
-    print "\t\talso generates a testbench which uses random traffic pattern generator with PIR of 0.005"
-    print "\t\tand fixed packet size of 3 and sends packets until 10000 ns."
-    print
-    print BOLD + "  Example 3:" + ENDC
     print "\t " + argv[0] + " -D 4 -credit_based_FC -FC -FI -Rand 0.1 -PS 8 8 -sim 10000 -end 11000"
     print "\t\tSimulates a 4X4 network "
     print "\t\tflow control mechanism is credit-based with fault classfiers support"
     print "\t\twith Fault Injection(40-60 clock cycle injection, i.e approx. 16 million faults per second) "
     print "\t\talso generates a testbench which uses random traffic pattern generator with Packet Injection Rate of 0.1"
     print "\t\tand fixed packet size of 8 and sends packets until 10000 ns and ends simulation at 11000 ns"
-    print BOLD + "  Example 3:" + ENDC
+    print BOLD + "  Example 2:" + ENDC
     print "\t " + argv[0] + " -D 2 -credit_based_FC -packet_drop -FC -NI_Test -SHMU -Rand 0.01 -PS 8 8 -sim 10000 -end 11000"
     print "\t\tSimulates a 2X2 network "
     print "\t\tflow control mechanism is credit-based with packet_drop based FIFO and LBDR and fault classfiers support"

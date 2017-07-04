@@ -20,7 +20,7 @@ def arg_parser(argv, program_argv, logging):
         logging.info("exiting the program!")
         sys.exit()
 
-    program_argv['credit_based_FC'] = False
+    program_argv['credit_based_FC'] = True
     program_argv['network_dime'] = 4
     program_argv['add_parity'] = False
     program_argv['add_checkers'] = False
@@ -32,9 +32,6 @@ def arg_parser(argv, program_argv, logging):
     program_argv['lat'] = False
     program_argv['debug'] = False
     program_argv['trace'] = False
-
-    if '-credit_based_FC' in argv[1:]:
-        program_argv['credit_based_FC'] = True
 
     if '-D'	in argv[1:]:
         program_argv['network_dime'] = int(argv[argv.index('-D')+1])
