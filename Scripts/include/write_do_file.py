@@ -4,6 +4,11 @@ from Scripts.include.package import *
 from math import ceil
 from fault_injector_do import generate_links_dictionary, generate_fault_injection_do
 
+def include_cmd(path):
+    if path.endswith(('.vhd', '.vhdl')):
+        return 'vcom'
+    return 'vlog'
+
 def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_name, logging):
     """
     Generates a simulate.do file for running Modelsim.
@@ -140,12 +145,14 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                     List_of_files = file_lists.credit_based_files_PD
                 elif program_argv['packet_saving']:
                     List_of_files = file_lists.credit_based_files_PS
+                elif program_argv['verilog']:
+                    List_of_files = file_lists.credit_based_files_verilog
                 else:
                     List_of_files = file_lists.credit_based_files
 
                 for file in List_of_files:
-                    do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                        + "/RTL/"+file+"\"\n")
+                    do_file.write(include_cmd(file) + " \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                                  + "/RTL/"+file+"\"\n")
 
         # Add a network interface and Plasma
         if (program_argv['add_NI'] != -1):
@@ -181,8 +188,12 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
                 + "/Router_32_bit_credit_based_packet_drop_classifier_SHMU_will_full_set_of_checkers_with_FI.vhd\"\n")
 
         else:
-            do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
-                + "/RTL/Router_32_bit_credit_based.vhd\"\n")
+            if program_argv['verilog']:
+                do_file.write("vlog \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                              + "/RTL/Verilog/Router_32_bit_credit_based.sv\"\n")
+            else:
+                do_file.write("vcom \"" + ROUTER_RTL_DIR + "/" + flow_control_type \
+                              + "/RTL/Router_32_bit_credit_based.vhd\"\n")
 
         # End of credit based flow control
 

@@ -59,7 +59,8 @@ program_argv = {
         'end':             -1,
         'lat':             False,
         'debug':           False,
-        'trace':           False
+        'trace':           False,
+        'verilog':         False,
     }
 
 # Debug mode is off by default

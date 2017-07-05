@@ -108,6 +108,9 @@ def arg_parser(argv, program_argv, logging):
     if '--trace' in argv[1:]:
         program_argv['trace'] = True
 
+    if '-verilog' in argv[1:]:
+        program_argv['verilog'] = True
+
     logging.info("Finished parsing program arguments")
     logging.info("Command line parameters:")
     for i in program_argv:

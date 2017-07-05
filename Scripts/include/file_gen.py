@@ -107,9 +107,3 @@ def gen_wave_do(program_argv, flow_control_type):
         print_msg(MSG_ERROR, "Error while running wave configuration generation script")
         sys.exit(1)
     return wave_do_file_name
-
-
-
-
-
-    
