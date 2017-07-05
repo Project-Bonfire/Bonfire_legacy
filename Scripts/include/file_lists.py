@@ -12,6 +12,8 @@
 # Files for the base-line credit based router!
 credit_based_files = ["arbiter_in.vhd", "arbiter_out.vhd", "allocator.vhd", "LBDR.vhd",
                       "xbar.vhd", "FIFO_one_hot_credit_based.vhd"]
+credit_based_files_verilog = ["Verilog/arbiter_in.sv",  "Verilog/arbiter_out.sv", "Verilog/allocator.sv", "Verilog/LBDR.sv",
+                              "Verilog/xbar.sv", "Verilog/FIFO_one_hot_credit_based.sv"]
 
 # Files for the credit based router equipped with packet-drop mechanism and Fault Classifier!
 credit_based_files_PD_FC = ["arbiter_in.vhd", "arbiter_out.vhd", "allocator.vhd", "LBDR_packet_drop.vhd",
