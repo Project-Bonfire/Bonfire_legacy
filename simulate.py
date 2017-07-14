@@ -86,8 +86,9 @@ def main(argv):
     if DEBUG: print_msg(MSG_DEBUG, "Running Modelsim...")
 
     os.chdir(package.SIMUL_DIR)
-    if package.program_argv['lat']:
-        return_value = os.system("vsim -c -do " + package.SIMUL_DO_SCRIPT)
+    if package.program_argv['command-line'] or package.program_argv['lat']:
+        novopt = '-novopt ' if package.program_argv['verilog'] else ''
+        return_value = os.system("vsim -c " + novopt + "-do " + package.SIMUL_DO_SCRIPT)
     else:
         return_value = os.system("vsim -do " + package.SIMUL_DO_SCRIPT)
 
