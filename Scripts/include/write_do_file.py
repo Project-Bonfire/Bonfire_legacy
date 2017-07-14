@@ -224,6 +224,8 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
     do_file.write("do " + wave_do_file_name + "\n")
 
     do_file.write("# Run the simulation\n")
+    do_file.write("vcd file wave.vcd\n")
+    do_file.write("vcd add -r -optcells /*\n")
 
     if program_argv['add_FI']:
 
@@ -242,6 +244,8 @@ def write_do_file(program_argv, net_file_name, net_tb_file_name, wave_do_file_na
 
         else:
             do_file.write("run " + str(program_argv['end']) + " ns\n")
+
+    do_file.write("vcd flush\n")
 
     if program_argv['command-line'] or program_argv['lat']:
         do_file.write("\n# Exit Modelsim after simulation\n")
