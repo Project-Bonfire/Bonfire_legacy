@@ -35,6 +35,6 @@ module xbar #(parameter DATA_WIDTH = 8)
         'b00100: Data_out <= West_in;
         'b01000: Data_out <= East_in;
         default: Data_out <= North_in;
-      endcase;
+      endcase
    end
 endmodule
