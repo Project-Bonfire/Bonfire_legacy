@@ -111,6 +111,9 @@ def arg_parser(argv, program_argv, logging):
     if '-verilog' in argv[1:]:
         program_argv['verilog'] = True
 
+    if '-c' in argv[1:]:
+        program_argv['command-line'] = True
+
     logging.info("Finished parsing program arguments")
     logging.info("Command line parameters:")
     for i in program_argv:

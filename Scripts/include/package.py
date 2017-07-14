@@ -61,6 +61,7 @@ program_argv = {
         'debug':           False,
         'trace':           False,
         'verilog':         False,
+        'command-line':    False,
     }
 
 # Debug mode is off by default
