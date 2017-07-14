@@ -343,7 +343,7 @@ if not add_SHMU:
   noc_file.write("\tsignal Reconfig: std_logic := '0';\n")
 
 noc_file.write("\t--------------\n")
-noc_file.write("\tconstant clk_period : time := 1 ns;\n")
+noc_file.write("\tconstant clk_period : time := 10 ns;\n")
 noc_file.write("\tsignal reset, not_reset, clk: std_logic :='0';\n")
 
 noc_file.write("\n")
