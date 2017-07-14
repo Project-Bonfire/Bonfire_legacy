@@ -32,7 +32,8 @@ module FIFO_credit_based
 
    logic [3:0] read_pointer, read_pointer_in,  write_pointer, write_pointer_in;
    logic       full, empty;
-   logic       read_en, write_en;
+   wire        read_en;
+   logic       write_en;
 
    logic [DATA_WIDTH-1:0] FIFO_MEM_1, FIFO_MEM_1_in;
    logic [DATA_WIDTH-1:0] FIFO_MEM_2, FIFO_MEM_2_in;
