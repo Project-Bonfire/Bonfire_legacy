@@ -8,6 +8,10 @@ Welcome to Bonfire project, a Network on Chip based System on Chip developed in 
   * Stephen Adeboye Oyeniran 
   * Konstantin Shibin
   * Hardi Selg
+  
+Please note that all the designs and tools related to handshaking version of the router are moved to the following repository:
+
+https://github.com/Project-Bonfire/Bonfire_handshake
  
 If you use Bonfire in your research work, we would appreciate the following paper to be cited in any publications to which Bonfire has contributed to:
 
