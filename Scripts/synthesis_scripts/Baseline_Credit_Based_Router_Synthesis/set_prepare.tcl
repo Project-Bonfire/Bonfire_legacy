@@ -4,3 +4,9 @@ elaborate ROUTER_CREDIT_BASED -architecture BEHAVIOR -library DEFAULT -parameter
 
 link
 uniquify
+
+# Please use this to enable power calculation 
+# saif_map -start 
+
+# Please use this in topographical mode of Synopsys Design Compiler
+# set_power_prediction

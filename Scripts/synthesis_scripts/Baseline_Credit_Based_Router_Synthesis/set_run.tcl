@@ -1,3 +1,2 @@
 check_design
-# compile_ultra -no_seq_output_inversion
 compile_ultra -no_seq_output_inversion -no_autoungroup
