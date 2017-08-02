@@ -1,5 +1,3 @@
---Copyright (C) 2017 Dmitri Mihhailov
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 

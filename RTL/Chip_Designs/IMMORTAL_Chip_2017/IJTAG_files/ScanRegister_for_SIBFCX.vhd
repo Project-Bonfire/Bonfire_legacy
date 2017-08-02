@@ -1,7 +1,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity ScanRegister is
+entity ScanRegister_for_SIBFCX is
  Generic (Size : positive;
           BitOrder : string; -- MSBLSB / LSBMSB
           SOSource : natural;
@@ -15,10 +15,11 @@ entity ScanRegister is
            TCK : in STD_LOGIC;
            SO : out STD_LOGIC;
            CaptureSource : in STD_LOGIC_VECTOR (Size-1 downto 0);
-           ScanRegister_out : out STD_LOGIC_VECTOR (Size-1 downto 0));
-end ScanRegister;
+           ScanRegister_out : out STD_LOGIC_VECTOR (Size-1 downto 0);
+           ue_mux_out : out STD_LOGIC_VECTOR (Size-1 downto 0));
+end ScanRegister_for_SIBFCX;
 
-architecture ScanRegister_arch of ScanRegister is
+architecture ScanRegister_arch of ScanRegister_for_SIBFCX is
 
 signal and_ce, and_se, and_ue: std_logic;
 signal internal_si: std_logic_vector(Size downto 0);
@@ -66,5 +67,6 @@ LSBMSB_SO : if BitOrder = "LSBMSB" generate
               SO <= internal_si(Size-1-SOSource);
 				end generate;				
 ScanRegister_out <= u_reg;
+ue_mux_out <= ue_mux;
 
 end ScanRegister_arch;

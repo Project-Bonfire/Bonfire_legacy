@@ -1,9 +1,7 @@
---Copyright (C) 2017 Konstantin Shibin
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity SIB_mux_pre_FCX_SELgate is
+entity SIB_mux_pre_FCX is
     Port ( -- Scan Interface  client --------------
 	         SI : in STD_LOGIC; -- ScanInPort 
            CE : in STD_LOGIC; -- CaptureEnPort
@@ -27,9 +25,9 @@ entity SIB_mux_pre_FCX_SELgate is
            fromF : in STD_LOGIC; -- From an OR of all F flags in the underlying network segment
            fromC : in STD_LOGIC  -- From an AND of all C flags in the underlying network segment
            );
-end SIB_mux_pre_FCX_SELgate;
+end SIB_mux_pre_FCX;
 
-architecture SIB_mux_pre_FCX_arch of SIB_mux_pre_FCX_SELgate is
+architecture SIB_mux_pre_FCX_arch of SIB_mux_pre_FCX is
 
 component ScanRegister_for_SIBFCX is
  Generic (Size : positive;
@@ -69,9 +67,9 @@ signal F_sync_delayed_copy, sticky_f_posedge : STD_LOGIC;
 begin
 
 SO <= SR_so; -- Source SR
-toCE <= SEL and SR_do(3) and CE;
-toSE <= SEL and SR_do(3) and CE;
-toUE <= SEL and SR_do(3) and UE;
+toCE <= CE;
+toSE <= SE;
+toUE <= UE;
 toSEL <= SEL and SR_do(3); -- SEL & S bit
 toRST <= RST;
 toTCK <= TCK;
@@ -126,11 +124,11 @@ SR : ScanRegister_for_SIBFCX
                CaptureSource => SR_ci, -- CaptureSource SR
                ScanRegister_out => SR_do,
                ue_mux_out => sr_update_mux_out);
-         
+			   
 SIBmux : ScanMux
  Generic map ( ControlSize => 1)
     Port map ( ScanMux_in(0) => SI, -- 1'b0 : SI
-             ScanMux_in(1) => fromSO, -- 1'b1 : fromSO
+	           ScanMux_in(1) => fromSO, -- 1'b1 : fromSO
                SelectedBy => SR_do(3 downto 3), --SelectedBy SR
                ScanMux_out => SIBmux_out);
 
