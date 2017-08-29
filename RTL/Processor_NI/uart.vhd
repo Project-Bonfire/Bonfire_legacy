@@ -13,6 +13,9 @@
 --            * added a memory mapped register for counter value
 --            * added necessary signals for the above mentioned register to the interface!
 --            * COUNT_VALUE is replaced with count_value_sig which comes from the above mentioned register
+
+-- NOTICE: Please add the newline character ('\n') to the end of every
+--      line you send over the UART, otherwise it won't save it.
 ---------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
