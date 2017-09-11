@@ -43,7 +43,7 @@ use ieee.std_logic_1164.all;
 use work.mlite_pack.all;
 
 entity plasma is
-   generic(memory_type : string := "XILINX_16X"; --"DUAL_PORT_" "ALTERA_LPM";
+   generic(memory_type : string := "TRI_PORT_X"; --"DUAL_PORT_" "ALTERA_LPM";
            log_file    : string := "UNUSED";
            ethernet    : std_logic := '0';
            use_cache   : std_logic := '0';
@@ -317,7 +317,7 @@ begin  --architecture
       generic map (memory_type => memory_type, stim_file => stim_file)
       port map (
          clk               => clk,
-		 reset             => reset,
+		     reset             => reset,
          enable            => ram_enable,
          write_byte_enable => ram_byte_we,
          address           => ram_address,
@@ -329,61 +329,61 @@ begin  --architecture
 
 
 
-  ramgen_xil: if memory_type = "XILINX_16X" generate
-   node_0: -- node_0:
-   if current_address = 0 generate
-      u2_ram: entity work.ram_0 generic map (memory_type => memory_type)
-      port map (
-         clk               => clk,
-        reset             => reset,
-         enable            => ram_enable,
-         write_byte_enable => ram_byte_we,
-         address           => ram_address,
-         data_write        => ram_data_w,
-         data_read         => ram_data_r);
-  end generate;
-
-   node_1: --  node_1:
-   if current_address = 1 generate
-       u2_ram: entity work.ram_1 generic map (memory_type => memory_type)
-       port map (
-          clk               => clk,
-           reset             => reset,
-          enable            => ram_enable,
-          write_byte_enable => ram_byte_we,
-          address           => ram_address,
-          data_write        => ram_data_w,
-          data_read         => ram_data_r);
-     end generate;
-
-
-    node_2: -- node_2:
-    if current_address = 2 generate
-       u2_ram: entity work.ram_2 generic map (memory_type => memory_type)
-       port map (
-          clk               => clk,
-           reset             => reset,
-          enable            => ram_enable,
-          write_byte_enable => ram_byte_we,
-          address           => ram_address,
-          data_write        => ram_data_w,
-          data_read         => ram_data_r);
-     end generate;
-
-
-   node_3: -- node_3:
-   if current_address = 3 generate
-       u2_ram: entity work.ram_3 generic map (memory_type => memory_type)
-       port map (
-          clk               => clk,
-           reset             => reset,
-          enable            => ram_enable,
-          write_byte_enable => ram_byte_we,
-          address           => ram_address,
-          data_write        => ram_data_w,
-          data_read         => ram_data_r);
-     end generate;
-  end generate;
+--  ramgen_xil: if memory_type = "XILINX_16X" generate
+--   node_0: -- node_0:
+--   if current_address = 0 generate
+--      u2_ram: entity work.ram_0 generic map (memory_type => memory_type)
+--      port map (
+--         clk               => clk,
+--        reset             => reset,
+--         enable            => ram_enable,
+--         write_byte_enable => ram_byte_we,
+--         address           => ram_address,
+--         data_write        => ram_data_w,
+--         data_read         => ram_data_r);
+--  end generate;
+--
+--   node_1: --  node_1:
+--   if current_address = 1 generate
+--       u2_ram: entity work.ram_1 generic map (memory_type => memory_type)
+--       port map (
+--          clk               => clk,
+--           reset             => reset,
+--          enable            => ram_enable,
+--          write_byte_enable => ram_byte_we,
+--          address           => ram_address,
+--          data_write        => ram_data_w,
+--          data_read         => ram_data_r);
+--     end generate;
+--
+--
+--    node_2: -- node_2:
+--    if current_address = 2 generate
+--       u2_ram: entity work.ram_2 generic map (memory_type => memory_type)
+--       port map (
+--          clk               => clk,
+--           reset             => reset,
+--          enable            => ram_enable,
+--          write_byte_enable => ram_byte_we,
+--          address           => ram_address,
+--          data_write        => ram_data_w,
+--          data_read         => ram_data_r);
+--     end generate;
+--
+--
+--   node_3: -- node_3:
+--   if current_address = 3 generate
+--       u2_ram: entity work.ram_3 generic map (memory_type => memory_type)
+--       port map (
+--          clk               => clk,
+--           reset             => reset,
+--          enable            => ram_enable,
+--          write_byte_enable => ram_byte_we,
+--          address           => ram_address,
+--          data_write        => ram_data_w,
+--          data_read         => ram_data_r);
+--     end generate;
+--  end generate;
 
 
 
