@@ -28,14 +28,16 @@ end RAMAccessInstrument;
 
 architecture RAMAccessInstrument_arch of RAMAccessInstrument is
 
-signal RAM_address: STD_LOGIC_VECTOR (AddressSize downto 0);
-signal RAM_address_update: STD_LOGIC_VECTOR (AddressSize downto 0);
+signal RAM_address, RAM_address_update: STD_LOGIC_VECTOR (AddressSize-1 downto 0);
 signal RAM_addr_inc_reg: STD_LOGIC;
+signal RAM_write_enable_internal : STD_LOGIC;
+signal RAM_write_enable_strobe : STD_LOGIC;
 signal RAM_data_write_internal: STD_LOGIC_VECTOR (DataSize-1 downto 0);
 signal sib_addr_update_strobe, sib_data_update_strobe: STD_LOGIC;
 signal sib_addr_toUE_prev, sib_data_toUE_prev: STD_LOGIC;
+signal Addr_service_bits, Addr_service_bits_update: STD_LOGIC_VECTOR (1 downto 0);
 
-signal sib_mem_so, sib_data_so, sib_addr_so, addr_sreg_so: STD_LOGIC;
+signal sib_mem_so, sib_data_so, sib_addr_so, addr_sreg_so, service_sreg_so: STD_LOGIC;
 signal data_sreg_so: STD_LOGIC;
 signal sib_mem_toCE, sib_data_toCE, sib_addr_toCE: STD_LOGIC;
 signal sib_mem_toSE, sib_data_toSE, sib_addr_toSE: STD_LOGIC;
@@ -84,9 +86,9 @@ end component;
 
 begin
 
-RAM_address_out <= RAM_address(AddressSize-1 downto 0);
+RAM_address_out <= RAM_address;
 RAM_data_write <= RAM_data_write_internal;
-RAM_write_enable <= sib_data_update_strobe;
+RAM_write_enable <= RAM_write_enable_strobe and RAM_write_enable_internal;
 
 --          .-------.     
 --  SI -----|sib_mem|-- SO      
@@ -96,10 +98,10 @@ RAM_write_enable <= sib_data_update_strobe;
 --            |  .----------.                      .------------.    |
 --            '--| sib_data |--------------------->| sib_addr   |----' 
 --               '----------'                      '------------'   
---                |      |_____________               |      |_____________           
---                |     _____________  |              |     _____________  |          
---                '--->|   data      |-'              '--->|inc + address|-'              
---                     '-------------'                     '-------------'
+--                |      |_____________               |      |______________           
+--                |     _____________  |              |   ______   _______  |          
+--                '--->|   data      |-'              '->|we,inc|-|address|-'              
+--                     '-------------'                   '------' '-------'
 -- Auto increment bit is MSb in Address shift register
 
 SO <= sib_mem_so;
@@ -180,11 +182,28 @@ sib_addr : SIB_mux_pre
               toTCK => sib_addr_toTCK,
               toSI => sib_addr_toSI);
 
--- Shift register for RAM address and address increment bit
-addr_shiftreg : SReg 
- Generic map ( Size => AddressSize+1)
+-- Shift register for Address increment bit and write enable bit
+service_bits_shiftreg : SReg 
+ Generic map ( Size => 2)
     Port map ( -- Scan Interface scan_client ----------
-              SI => sib_addr_toSI, -- Input Port SI = SI
+               SI => sib_addr_toSI,
+               SO => service_sreg_so,
+               SEL => sib_addr_toSEL,
+               SE => sib_addr_toSE,
+               CE => sib_addr_toCE,
+               UE => sib_addr_toUE,
+               RST => sib_addr_toRST,
+               TCK => sib_addr_toTCK,
+               DI => Addr_service_bits,
+               DO => Addr_service_bits_update);
+               
+Addr_service_bits <= RAM_write_enable_internal & RAM_addr_inc_reg;
+
+-- Shift register for RAM address
+addr_shiftreg : SReg 
+ Generic map ( Size => AddressSize)
+    Port map ( -- Scan Interface scan_client ----------
+               SI => service_sreg_so,
                SO => addr_sreg_so,
                SEL => sib_addr_toSEL,
                SE => sib_addr_toSE,
@@ -206,16 +225,35 @@ begin
   end if;
 end process;
 
+service_bits: process(TCK, RST)
+begin
+  if RST = '1' then
+      RAM_addr_inc_reg <= '0';
+      RAM_write_enable_internal <= '0';
+  elsif TCK'event and TCK = '0' then
+      RAM_addr_inc_reg <= Addr_service_bits_update(0);  -- Auto increment bit
+      RAM_write_enable_internal <= Addr_service_bits_update(1);  -- Write enable bit
+  end if;
+
+end process;
+
+data_write_strobe_delay: process(TCK, RST)
+begin
+  if RST = '1' then
+      RAM_write_enable_strobe <= '0';
+  elsif TCK'event and TCK = '0' then
+      RAM_write_enable_strobe <= sib_data_update_strobe;
+  end if;
+end process;
+
 address_set: process(TCK, RST)
 begin
   if RST = '1' then
       RAM_address <= (others => '0');
-      RAM_addr_inc_reg <= '0';
   elsif TCK'event and TCK = '0' then
     if sib_addr_update_strobe = '1' then
-      RAM_address <= '0' & RAM_address_update(AddressSize-1 downto 0);
-      RAM_addr_inc_reg <= RAM_address_update(AddressSize);  -- Auto increment bit is MSb in Address shift register
-    elsif sib_data_update_strobe = '1' and RAM_addr_inc_reg = '1' then
+      RAM_address <= RAM_address_update;
+    elsif RAM_write_enable_strobe = '1' and RAM_addr_inc_reg = '1' then
       RAM_address <= std_logic_vector(unsigned(RAM_address) + 1);
     end if;
   end if;
