@@ -57,6 +57,9 @@ signal RAM_data_write : STD_LOGIC_VECTOR (RAMDataSize-1 downto 0);
 signal RAM_address_out : STD_LOGIC_VECTOR (RAMAddrSize-1 downto 0);
 signal RAM_write_enable : STD_LOGIC;
 
+
+signal RAM_readout: std_logic_vector(RAMDataSize-1 downto 0);
+
 component RAMAccessInstrument is
  Generic ( DataSize : positive := 8;
           AddressSize : positive := 8);
@@ -97,7 +100,7 @@ RAM_instr : RAMAccessInstrument
                RAM_address_out => RAM_address_out,
                RAM_write_enable => RAM_write_enable);
                
-RAM_data_read <= "00000000000000001111000000000000";
+RAM_data_read <= "00000000000000001111000100000000";
 
 ijtag_shift_proc: process
        -- Generate a number of TCK ticks
@@ -146,6 +149,31 @@ ijtag_shift_proc: process
       UE <= '0';
       tck_halftick_high;
     end procedure shift_data;
+
+     -- Shifts in specified data (Capture -> Shift -> Update)
+    procedure shift_data_with_readout (data : in std_logic_vector; capture_data : out std_logic_vector) is
+    begin
+        --Capture phase
+      CE <= '1';
+      tck_tick(1);
+      CE <= '0';
+         --Shift phase
+      SE <= '1';
+      for i in data'range loop
+         toSI <= data(i);
+         capture_data(i) := fromSO;
+         tck_tick(1);
+      end loop;
+      SE <= '0';
+      -- Update phase
+      --tck_tick(1);
+      tck_halftick_low;
+      UE <= '1';
+      tck_halftick_high;
+      tck_halftick_low;
+      UE <= '0';
+      tck_halftick_high;
+    end procedure shift_data_with_readout;
 
           -- Returns all zeroes std_logic_vector of specified size
     function all_zeroes (number_of_zeroes : in positive) return std_logic_vector is
@@ -198,12 +226,13 @@ ijtag_shift_proc: process
     	shift_data(bitstream_vector);
     end procedure set_ram_address;
 
-    procedure get_set_data (write_data: in std_logic_vector (RAMDataSize-1 downto 0); leave_data_sib_open: in boolean) is
+    procedure get_set_data (write_data: in std_logic_vector (RAMDataSize-1 downto 0); read_data: out std_logic_vector (RAMDataSize-1 downto 0); leave_data_sib_open: in boolean) is
       -- This function should be called in simulation when sib_mem and sib_data is opened, but sib_addr is closed.
       constant open_mem_close_addr_sibs : std_logic_vector := "10";
       variable leavedatasibopen_bit : std_logic;
       variable read_data_vector : std_logic_vector (RAMDataSize-1 downto 0) := (others => '0');
       variable bitstream_vector : std_logic_vector (0 to RAMDataSize+2);
+      variable readout_vector : std_logic_vector (0 to RAMDataSize+2);
     begin
       if leave_data_sib_open then
          leavedatasibopen_bit := '1';
@@ -213,12 +242,14 @@ ijtag_shift_proc: process
 
       bitstream_vector(0 to 1) := open_mem_close_addr_sibs;
       bitstream_vector(2) := leavedatasibopen_bit;
-      bitstream_vector(3 to RAMDataSize+2) := reverse_vector(std_logic_vector(write_data));
+      bitstream_vector(3 to RAMDataSize+2) := reverse_vector(write_data);
 
-      shift_data(bitstream_vector);
+      shift_data_with_readout(bitstream_vector, readout_vector);
 
-      --return read_data_vector;
+      read_data := reverse_vector(readout_vector(3 to RAMDataSize+2));
+
     end procedure get_set_data;
+
 
   variable read_out_data: std_logic_vector(RAMDataSize-1 downto 0);
 
@@ -237,17 +268,19 @@ ijtag_shift_proc: process
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA closed
     set_ram_address(X"00000003", false, false); -- Set address to 0x00000003, autoincrement off, RAM write off
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA open
-    get_set_data(X"0000F0F0", true); -- Shift in some data (no write) and leave SIB_DATA open, possible to read out data from address 0x00000003
+    get_set_data(X"0000F0F0", read_out_data, true); -- Shift in some data (no write) and leave SIB_DATA open, possible to read out data from address 0x00000003
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA open
-    get_set_data(X"0000FF00", false); -- Shift in some data (no write) and close SIB_DATA, possible to read out data from address 0x00000003
+    get_set_data(X"0000FF00", read_out_data, false); -- Shift in some data (no write) and close SIB_DATA, possible to read out data from address 0x00000003
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA closed
 
     set_ram_address(X"00000033", true, true); -- Set address to 0x00000033, autoincrement on, RAM write on
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA open
-    get_set_data(X"0000F0F0", true); -- Shift in data 0x0000F0F0 to write to address 0x00000033, increment address and leave SIB_DATA open
+    get_set_data(X"0000F0F0", read_out_data, true); -- Shift in data 0x0000F0F0 to write to address 0x00000033, increment address and leave SIB_DATA open
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA open
-    get_set_data(X"0000FF00", false); -- Shift in data 0x0000FF00 to write to address 0x00000034, increment address and close SIB_DATA
+    get_set_data(X"0000FF00", read_out_data, false); -- Shift in data 0x0000FF00 to write to address 0x00000034, increment address and close SIB_DATA
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA closed
+
+    RAM_readout <= read_out_data;
 
     tck_tick(4);
     wait;
