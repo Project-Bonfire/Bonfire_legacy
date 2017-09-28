@@ -36,11 +36,12 @@ end ijtag_ram_access_tb;
 
 architecture Behavioral of ijtag_ram_access_tb is
 
+constant ram_clk_period : time := 5 ns;
 constant tck_period : time := 10 ns;
 constant HALF_SEPARATOR : time := 2*tck_period;
 constant FULL_SEPARATOR : time := 8*tck_period;
 constant RAMDataSize : positive := 32;
-constant RAMAddrSize : positive := 32;
+constant RAMAddrSize : positive := 12;
 
 
 signal toSI : STD_LOGIC;
@@ -56,9 +57,22 @@ signal RAM_data_read : STD_LOGIC_VECTOR (RAMDataSize-1 downto 0);
 signal RAM_data_write : STD_LOGIC_VECTOR (RAMDataSize-1 downto 0);
 signal RAM_address_out : STD_LOGIC_VECTOR (RAMAddrSize-1 downto 0);
 signal RAM_write_enable : STD_LOGIC;
-
+signal ram_enable : STD_LOGIC;
+signal wbe_shorted : STD_LOGIC_VECTOR (3 downto 0);
+signal RAM_address_out_padded : STD_LOGIC_VECTOR (31 downto 2);
 
 signal RAM_readout: std_logic_vector(RAMDataSize-1 downto 0);
+signal RAM_clk : STD_LOGIC := '0';
+
+component ram is
+   port(clk               : in std_logic;
+        reset             : in std_logic;
+        enable            : in std_logic;
+        write_byte_enable : in std_logic_vector(3 downto 0);
+        address           : in std_logic_vector(31 downto 2);
+        data_write        : in std_logic_vector(31 downto 0);
+        data_read         : out std_logic_vector(31 downto 0));
+end component;
 
 component RAMAccessInstrument is
  Generic ( DataSize : positive := 8;
@@ -83,6 +97,21 @@ end component;
 
 begin
 
+RAM_tsmc : ram
+port map(clk              => TCK, --also possible with separate RAM_clk
+        reset             => RST,
+        enable            => ram_enable,
+        write_byte_enable => wbe_shorted,
+        address           => RAM_address_out_padded,
+        data_write        => RAM_data_write,
+        data_read         => RAM_data_read
+        );
+        
+RAM_clk <= not RAM_clk after ram_clk_period/2;
+ram_enable <= '1';
+wbe_shorted <= (others => RAM_write_enable);
+RAM_address_out_padded <= "000000000000000000" & RAM_address_out;
+
 RAM_instr : RAMAccessInstrument
  generic map ( DataSize => RAMDataSize,
                AddressSize => RAMAddrSize)
@@ -100,7 +129,7 @@ RAM_instr : RAMAccessInstrument
                RAM_address_out => RAM_address_out,
                RAM_write_enable => RAM_write_enable);
                
-RAM_data_read <= "00000000000000001111000100000000";
+--RAM_data_read <= "00000000000000001111000100000000";
 
 ijtag_shift_proc: process
        -- Generate a number of TCK ticks
@@ -240,6 +269,8 @@ ijtag_shift_proc: process
          leavedatasibopen_bit := '0';
       end if;
 
+      tck_tick(3); --otherwise previous data can be captured
+
       bitstream_vector(0 to 1) := open_mem_close_addr_sibs;
       bitstream_vector(2) := leavedatasibopen_bit;
       bitstream_vector(3 to RAMDataSize+2) := reverse_vector(write_data);
@@ -254,8 +285,7 @@ ijtag_shift_proc: process
   variable read_out_data: std_logic_vector(RAMDataSize-1 downto 0);
 
   begin
-
-            -- Reset iJTAG chain and Instruments
+    -- Reset iJTAG chain and Instruments
     RST <= '1';
     wait for tck_period;
     RST <= '0';
@@ -266,21 +296,31 @@ ijtag_shift_proc: process
     tck_tick(4);
 
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA closed
-    set_ram_address(X"00000003", false, false); -- Set address to 0x00000003, autoincrement off, RAM write off
+    set_ram_address(X"003", true, true); -- Set WORD address to 0x003, autoincrement on, RAM write on
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA open
-    get_set_data(X"0000F0F0", read_out_data, true); -- Shift in some data (no write) and leave SIB_DATA open, possible to read out data from address 0x00000003
+    get_set_data(X"0AA0F0F0", read_out_data, true); -- Shift in some data to write to address 0x003, increment address and leave SIB_DATA open
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA open
-    get_set_data(X"0000FF00", read_out_data, false); -- Shift in some data (no write) and close SIB_DATA, possible to read out data from address 0x00000003
+    get_set_data(X"0BB0FF00", read_out_data, true); -- Shift in some data to write to address 0x004, increment address and leave SIB_DATA open
+    -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA open
+    get_set_data(X"0CC0F00F", read_out_data, false); -- Shift in some data to write to address 0x005, increment address and close SIB_DATA
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA closed
 
-    set_ram_address(X"00000033", true, true); -- Set address to 0x00000033, autoincrement on, RAM write on
+    set_ram_address(X"033", true, true); -- Set WORD address to 0x033, autoincrement on, RAM write on
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA open
-    get_set_data(X"0000F0F0", read_out_data, true); -- Shift in data 0x0000F0F0 to write to address 0x00000033, increment address and leave SIB_DATA open
+    get_set_data(X"0000F0F0", read_out_data, true); -- Shift in some data to write to address 0x033, increment address and leave SIB_DATA open
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA open
-    get_set_data(X"0000FF00", read_out_data, false); -- Shift in data 0x0000FF00 to write to address 0x00000034, increment address and close SIB_DATA
+    get_set_data(X"0000FF00", read_out_data, false); -- Shift in some data to write to address 0x034, increment address and close SIB_DATA
+    -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA closed
+    
+    
+    set_ram_address(X"003", true, false); -- Set WORD address to 0x003, autoincrement off, RAM write off
+    -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA open
+    get_set_data(X"00000000", read_out_data, true); -- Shift in some data (no write) and leave SIB_DATA open, possible to read out data from address 0x003
+    -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA open
+    get_set_data(X"00000000", read_out_data, false); -- Shift in some data (no write) and close SIB_DATA, possible to read out data from address 0x004
     -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA closed
 
-    RAM_readout <= read_out_data;
+    RAM_readout <= read_out_data; -- put data from word address 0x004
 
     tck_tick(4);
     wait;
