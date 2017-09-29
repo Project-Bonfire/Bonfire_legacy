@@ -225,7 +225,7 @@ architecture behavior of router_credit_based_PD_C_SHMU is
             E_err_not_ReConf_FF_out_flit_type_not_Tail_empty_not_grants_not_Reconfig_command_ReConf_FF_in_ReConf_FF_out_equal, 
 
     -- West
-    signal  W_err_header_empty_Requests_FF_Requests_in, 
+            W_err_header_empty_Requests_FF_Requests_in, 
             W_err_tail_Requests_in_all_zero, 
             W_err_tail_empty_Requests_FF_Requests_in, 
             W_err_tail_not_empty_not_grants_Requests_FF_Requests_in,
@@ -603,7 +603,7 @@ signal      N_err_empty_full,
             -- West
 
             -- Functional checkers
- signal     W_err_empty_full, W_err_empty_read_en, W_err_full_write_en, W_err_state_in_onehot, W_err_read_pointer_in_onehot, W_err_write_pointer_in_onehot, 
+            W_err_empty_full, W_err_empty_read_en, W_err_full_write_en, W_err_state_in_onehot, W_err_read_pointer_in_onehot, W_err_write_pointer_in_onehot, 
 
             -- Structural checkers
             W_err_write_en_write_pointer, W_err_not_write_en_write_pointer, W_err_read_pointer_write_pointer_not_empty, W_err_read_pointer_write_pointer_empty, 
@@ -3984,12 +3984,6 @@ S2L_fault <=    S_FIFO_checkers_ORed or
 ------------------------------------------------------------------------------------------------------------------------------
 -- Taking classified fault information to output
 ------------------------------------------------------------------------------------------------------------------------------
---turn_faults  <= '0'     & '0'                   & '0'                   & '0'                    & 
---                '0'     & faulty_W2S_turn_fault & '0'                   & faulty_S2W_turn_fault  & 
---                '0'     & '0'                   & '0'                   & '0'                    & 
---                '0'     & '0'                   & faulty_L2W_fault      & faulty_L2S_fault       & 
---                '0'     & '0'                   & faulty_W2L_fault      & faulty_S2L_fault;      -- 20 bits because of turn/path faults
-
 turn_faults  <= faulty_N2E_turn_fault & faulty_N2W_turn_fault & faulty_E2N_turn_fault & faulty_E2S_turn_fault & 
                 faulty_W2N_turn_fault & faulty_W2S_turn_fault & faulty_S2E_turn_fault & faulty_S2W_turn_fault &
                 faulty_N2S_path_fault & faulty_S2N_path_fault & faulty_E2W_path_fault & faulty_W2E_path_fault &
@@ -4002,20 +3996,14 @@ link_faults  <= sig_Faulty_N_out & sig_Faulty_E_out & sig_Faulty_W_out & sig_Fau
 ------------------------------------------------------------------------------------------------------------------------------
 -- Taking non-classified fault information to output
 ------------------------------------------------------------------------------------------------------------------------------
---turn_faults_async  <= '0'     & '0'            & '0'            & '0'                    & 
---                      '0'     & W2S_turn_fault & '0'            & S2W_turn_fault         & 
---                      '0'     & '0'            & '0'            & '0'                    & 
---                      '0'     & '0'            & L2W_fault      & L2S_fault              & 
---                      '0'     & '0'            & W2L_fault      & S2L_fault;               -- 20 bits because of turn/path faults
-
-turn_faults  <= N2E_turn_fault & N2W_turn_fault & E2N_turn_fault & E2S_turn_fault & 
-                W2N_turn_fault & W2S_turn_fault & S2E_turn_fault & S2W_turn_fault &
-                N2S_path_fault & S2N_path_fault & E2W_path_fault & W2E_path_fault &
-                L2N_fault      & L2E_fault      & L2W_fault      & L2S_fault      &
-                N2L_fault      & E2L_fault      & W2L_fault      & S2L_fault; -- 20 bits because of turn/path faults
+turn_faults_async  <= N2E_turn_fault & N2W_turn_fault & E2N_turn_fault & E2S_turn_fault & 
+                      W2N_turn_fault & W2S_turn_fault & S2E_turn_fault & S2W_turn_fault &
+                      N2S_path_fault & S2N_path_fault & E2W_path_fault & W2E_path_fault &
+                      L2N_fault      & L2E_fault      & L2W_fault      & L2S_fault      &
+                      N2L_fault      & E2L_fault      & W2L_fault      & S2L_fault; -- 20 bits because of turn/path faults
 
 --link_faults_async  <= '0' & '0' & faulty_packet_W & faulty_packet_S & faulty_packet_L;  -- faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L;
-link_faults  <= Faulty_N_out & Faulty_E_out & Faulty_W_out & Faulty_S_out & faulty_packet_L;
+link_faults_async  <= faulty_packet_N & faulty_packet_E & faulty_packet_W & faulty_packet_S & faulty_packet_L;
 
 ------------------------------------------------------------------------------------------------------------------------------
 
@@ -4106,11 +4094,11 @@ CHK_CT_W2E_path_fault:   counter_threshold_classifier  generic map(counter_depth
 
 -- Local port related faults (to/from local port)
 CHK_CT_L2N_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, data_input => L2N_fault, Healthy_packet => not_L2N_fault, 
+    port map(reset => reset, clk => clk, faulty_packet => L2N_fault, Healthy_packet => not_L2N_fault, 
         Healthy => Healthy_L2N_fault, Intermittent => intermittent_L2N_fault, Faulty => faulty_L2N_fault);
 
 CHK_CT_L2E_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, data_input => L2E_fault, Healthy_packet => not_L2E_fault, 
+    port map(reset => reset, clk => clk, faulty_packet => L2E_fault, Healthy_packet => not_L2E_fault, 
         Healthy => Healthy_L2E_fault, Intermittent => intermittent_L2E_fault, Faulty => faulty_L2E_fault);
 
 CHK_CT_L2W_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
@@ -4122,11 +4110,11 @@ CHK_CT_L2S_fault:   counter_threshold_classifier  generic map(counter_depth => c
              Healthy => Healthy_L2S_fault, Intermittent => intermittent_L2S_fault, Faulty => faulty_L2S_fault);
 
 CHK_CT_N2L_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, data_input => N2L_fault, Healthy_packet => not_N2L_fault, 
+    port map(reset => reset, clk => clk, faulty_packet => N2L_fault, Healthy_packet => not_N2L_fault, 
         Healthy => Healthy_N2L_fault, Intermittent => intermittent_N2L_fault, Faulty => faulty_N2L_fault);
 
 CHK_CT_E2L_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
-    port map(reset => reset, clk => clk, data_input => E2L_fault, Healthy_packet => not_E2L_fault, 
+    port map(reset => reset, clk => clk, faulty_packet => E2L_fault, Healthy_packet => not_E2L_fault, 
         Healthy => Healthy_E2L_fault, Intermittent => intermittent_E2L_fault, Faulty => faulty_E2L_fault);
 
 CHK_CT_W2L_fault:   counter_threshold_classifier  generic map(counter_depth => counter_depth, healthy_counter_threshold => healthy_counter_threshold, faulty_counter_threshold => faulty_counter_threshold)
@@ -4145,8 +4133,8 @@ CHK_CT_S2L_fault:   counter_threshold_classifier  generic map(counter_depth => c
 FIFO_N: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_N, valid_in => valid_in_N,  
-            read_en_N => packet_drop_order_N, read_en_E =>Grant_EN, read_en_W =>Grant_WN, read_en_S =>Grant_SN, read_en_L =>Grant_LN, 
-            credit_out => credit_out_N, empty_out => empty_N, Data_out => FIFO_D_out_N, fault_info=> faulty_packet_N, health_info=>healthy_packet_N, 
+               read_en_N => packet_drop_order_N, read_en_E =>Grant_EN, read_en_W =>Grant_WN, read_en_S =>Grant_SN, read_en_L =>Grant_LN, 
+               credit_out => credit_out_N, empty_out => empty_N, Data_out => FIFO_D_out_N, fault_info=> faulty_packet_N, health_info=>healthy_packet_N, 
 
                -- Needs fixing!
                TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_L_FIFO_to_N_FIFO, SO=> fault_DO_serial_N_FIFO_to_E_FIFO,
@@ -4280,8 +4268,8 @@ FIFO_N: FIFO_credit_based
 FIFO_E: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_E, valid_in => valid_in_E,  
-            read_en_N => Grant_NE, read_en_E =>packet_drop_order_E, read_en_W =>Grant_WE, read_en_S =>Grant_SE, read_en_L =>Grant_LE, 
-            credit_out => credit_out_E, empty_out => empty_E, Data_out => FIFO_D_out_E, fault_info=> faulty_packet_E, health_info=>healthy_packet_E, 
+               read_en_N => Grant_NE, read_en_E =>packet_drop_order_E, read_en_W =>Grant_WE, read_en_S =>Grant_SE, read_en_L =>Grant_LE, 
+               credit_out => credit_out_E, empty_out => empty_E, Data_out => FIFO_D_out_E, fault_info=> faulty_packet_E, health_info=>healthy_packet_E, 
 
                -- Needs fixing!
                TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_N_FIFO_to_E_FIFO, SO=> fault_DO_serial_E_FIFO_to_W_FIFO,
@@ -4415,7 +4403,7 @@ FIFO_E: FIFO_credit_based
 FIFO_W: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_W, valid_in => valid_in_W,  
-               read_en_N => '0', read_en_E =>'0', read_en_W =>packet_drop_order_W, read_en_S =>Grant_SW, read_en_L =>Grant_LW, 
+               read_en_N => Grant_NW, read_en_E =>Grant_EW, read_en_W =>packet_drop_order_W, read_en_S =>Grant_SW, read_en_L =>Grant_LW, 
                credit_out => credit_out_W, empty_out => empty_W, Data_out => FIFO_D_out_W, fault_info=> faulty_packet_W, health_info=>healthy_packet_W, 
 
                TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_E_FIFO_to_W_FIFO, SO=> fault_DO_serial_W_FIFO_to_S_FIFO,
@@ -4546,7 +4534,7 @@ FIFO_W: FIFO_credit_based
 FIFO_S: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_S, valid_in => valid_in_S,  
-               read_en_N => '0', read_en_E =>'0', read_en_W =>Grant_WS, read_en_S =>packet_drop_order_S, read_en_L =>Grant_LS,  
+               read_en_N => Grant_NS, read_en_E =>Grant_ES, read_en_W =>Grant_WS, read_en_S =>packet_drop_order_S, read_en_L =>Grant_LS,  
                credit_out => credit_out_S, empty_out => empty_S, Data_out => FIFO_D_out_S, fault_info=> faulty_packet_S, health_info=>healthy_packet_S, 
 
                TCK=> TCK, SE=> SE, UE=> UE, SI=> fault_DO_serial_W_FIFO_to_S_FIFO, SO=> fault_DO_serial_S_FIFO_to_L_LBDR,
@@ -4680,7 +4668,7 @@ FIFO_S: FIFO_credit_based
 FIFO_L: FIFO_credit_based 
     generic map ( DATA_WIDTH => DATA_WIDTH)
     port map ( reset => reset, clk => clk, RX => RX_L, valid_in => valid_in_L,  
-               read_en_N => '0', read_en_E =>'0', read_en_W =>Grant_WL, read_en_S => Grant_SL, read_en_L =>packet_drop_order_L,
+               read_en_N => Grant_NL, read_en_E =>Grant_EL, read_en_W =>Grant_WL, read_en_S => Grant_SL, read_en_L =>packet_drop_order_L,
                credit_out => credit_out_L, empty_out => empty_L, Data_out => FIFO_D_out_L, fault_info=> faulty_packet_L, health_info=>healthy_packet_L, 
 
                TCK=> TCK, SE=> SE, UE=> UE, SI=> SI, SO=> fault_DO_serial_L_FIFO_to_N_FIFO,
@@ -4956,7 +4944,7 @@ LBDR_W: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Faulty_C_N => '0', Faulty_C_E => '0', Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,   
              flit_type => FIFO_D_out_W(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_W(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              faulty => LBDR_Fault_W, packet_drop_order => packet_drop_order_W,
-             grant_N => '0', grant_E =>'0', grant_W =>'0' ,grant_S=>Grant_SW, grant_L =>Grant_LW,
+             grant_N => Grant_NW, grant_E =>Grant_EW, grant_W =>'0' ,grant_S=>Grant_SW, grant_L =>Grant_LW,
              Req_N=> open, Req_E=>open, Req_W=>Req_WW, Req_S=>Req_WS, Req_L=>Req_WL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
 
@@ -5019,7 +5007,7 @@ LBDR_S: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Faulty_C_N => '0', Faulty_C_E => '0', Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,    
              flit_type => FIFO_D_out_S(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_S(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              faulty => LBDR_Fault_S, packet_drop_order => packet_drop_order_S,
-             grant_N => '0', grant_E =>'0', grant_W =>Grant_WS ,grant_S=>'0', grant_L =>Grant_LS,
+             grant_N => Grant_NS, grant_E =>Grant_ES, grant_W =>Grant_WS ,grant_S=>'0', grant_L =>Grant_LS,
              Req_N=> open, Req_E=>open, Req_W=>Req_SW, Req_S=>Req_SS, Req_L=>Req_SL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
 
@@ -5082,7 +5070,7 @@ LBDR_L: LBDR_packet_drop generic map (cur_addr_rst => current_address, Cx_rst =>
              Faulty_C_N => '0', Faulty_C_E => '0', Faulty_C_W => Faulty_W_in, Faulty_C_S => Faulty_S_in,  
              flit_type => FIFO_D_out_L(DATA_WIDTH-1 downto DATA_WIDTH-3), dst_addr=> FIFO_D_out_L(DATA_WIDTH-19+NoC_size-1 downto DATA_WIDTH-19) ,
              faulty => LBDR_Fault_L, packet_drop_order => packet_drop_order_L,
-             grant_N => '0', grant_E =>'0', grant_W => Grant_WL,grant_S=>Grant_SL, grant_L =>'0',
+             grant_N => Grant_NL, grant_E =>Grant_EL, grant_W => Grant_WL,grant_S=>Grant_SL, grant_L =>'0',
              Req_N=> open, Req_E=>open, Req_W=>Req_LW, Req_S=>Req_LS, Req_L=>Req_LL,
              Rxy_reconf_PE => Rxy_reconf_PE, Cx_reconf_PE => Cx_reconf_PE, Reconfig_command=>Reconfig_command, 
 
@@ -5675,11 +5663,6 @@ Xbar_sel_E <= Grant_EN & '0' & Grant_EW & Grant_ES & Grant_EL;
 Xbar_sel_W <= Grant_WN & Grant_WE & '0' & Grant_WS & Grant_WL;
 Xbar_sel_S <= Grant_SN & Grant_SE & Grant_SW & '0' & Grant_SL;
 Xbar_sel_L <= Grant_LN & Grant_LE & Grant_LW & Grant_LS & '0';
-
---Xbar_sel_W <= '0' & '0' & '0' & Grant_WS & Grant_WL;
---Xbar_sel_S <= '0' & '0' & Grant_SW & '0' & Grant_SL;
---Xbar_sel_L <= '0' & '0' & Grant_LW & Grant_LS & '0';
-
 
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
