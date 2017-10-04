@@ -117,10 +117,26 @@ signal SIB_main_toSE,  SIB_temp_toSE,  SIB_iddt_toSE,  SIB_slack_toSE,  SIB_volt
 signal SIB_main_toCE,  SIB_temp_toCE,  SIB_iddt_toCE,  SIB_slack_toCE,  SIB_voltage_toCE  : std_logic;
 
 signal temp_monitor_SO, iddt_monitor_SO, slack_monitor_SO, voltage_monitor_SO : std_logic;
-signal temp_monitor_toF, iddt_monitor_toF, slack_monitor_toF, voltage_monitor_toF : std_logic;
-signal temp_monitor_toC, iddt_monitor_toC, slack_monitor_toC, voltage_monitor_toC : std_logic;
+signal temp_monitor_toF, iddt_monitor_toF, slack_monitor_toF, voltage_monitor_toF, toF_SIB_main : std_logic;
+signal temp_monitor_toC, iddt_monitor_toC, slack_monitor_toC, voltage_monitor_toC, toC_SIB_main : std_logic;
 
 begin
+
+--            .-----------.                                    
+--     SI ----| sib_main  |---------------------------------------------- SO
+--            '-----------'                                    
+--              |       |_____________________________________________. 
+--              |                                                     | 
+--              | .----------. .----------. .----------. .----------. | 
+--              '-| sib_temp |-| sib_iddt |-| sib_slck |-| sib_volt |-' 
+--                '----------' '----------' '----------' '----------'   
+--                                                                      
+--                                                                      
+--                                                                      
+--                                                                      
+--
+--    the order of bits in each sib is: SXCF where S is opening bit!
+   
 
 ------------------------------------------------------------
 -- Main SIB connected to the top interface
@@ -198,9 +214,9 @@ temp_monitor: immortal_temp_iddt_monitor_instrument
       toC  => temp_monitor_toC,
 
       -- Monitor connections
-      control   => temp_control,
-      adc_data  => temp_data(12 downto 1),
-      adc_drdy  => temp_data(0)
+      control   => temperature_control,
+      adc_data  => temperature_data(12 downto 1),
+      adc_drdy  => temperature_data(0)
     );
 
 ------------------------------------------------------------
@@ -293,7 +309,7 @@ slack_monitor : immortal_slack_volt_monitor_instrument
       CE   => SIB_slack_toCE,
       SO   => slack_monitor_SO,
       toF  => slack_monitor_toF,
-      toC  => slack_monitor_toC
+      toC  => slack_monitor_toC,
 
       -- Monitor connections
       control  => slack_control,
@@ -341,7 +357,7 @@ voltage_monitor : immortal_slack_volt_monitor_instrument
       CE   => SIB_voltage_toCE,
       SO   => voltage_monitor_SO,
       toF  => voltage_monitor_toF,
-      toC  => voltage_monitor_toC
+      toC  => voltage_monitor_toC,
 
       -- Monitor connections
       control  => voltage_control,

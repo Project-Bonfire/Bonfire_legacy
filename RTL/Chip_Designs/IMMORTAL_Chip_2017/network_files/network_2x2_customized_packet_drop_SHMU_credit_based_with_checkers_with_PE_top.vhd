@@ -55,7 +55,7 @@ port (reset: in  std_logic;
       uart_read_3   : in std_logic;
 
       -- Monitor connections
-      temperature_control   : out std_logic_vector(3 downto 0);
+      temperature_control   : out std_logic_vector(2 downto 0);
       temperature_data      : in std_logic_vector(12 downto 0);
       iddt_control          : out std_logic_vector(2 downto 0);
       iddt_data             : in std_logic_vector(12 downto 0);
@@ -87,7 +87,7 @@ constant path : string(1 to 12) := "Testbenches/"; --uncomment this if you are S
             toC         : out std_logic;
 
             -- Monitor connections
-            temperature_control   : out std_logic_vector(3 downto 0);
+            temperature_control   : out std_logic_vector(2 downto 0);
             temperature_data      : in std_logic_vector(12 downto 0);
             iddt_control          : out std_logic_vector(2 downto 0);
             iddt_data             : in std_logic_vector(12 downto 0);
@@ -160,7 +160,7 @@ toF <= toF_NoC or toF_sensors;
 toC <= toC_NoC and toC_sensors;
 SO <= SO_sensors;
 
-immortal_sensor_IJTAG_interface: immortal_sensor_IJTAG_interface
+immortal_sensors: immortal_sensor_IJTAG_interface
     port map (
     TCK => TCK,
     RST => RST,
