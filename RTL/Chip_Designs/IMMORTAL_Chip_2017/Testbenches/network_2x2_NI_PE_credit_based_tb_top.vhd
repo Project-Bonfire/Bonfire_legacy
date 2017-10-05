@@ -155,8 +155,9 @@ begin
       end loop;
       SE <= '0';
       -- Update phase
+      tck_halftick_low;
       UE <= '1';
-      tck_tick(1);
+      tck_halftick_high;
       tck_halftick_low;
       UE <= '0';
       tck_halftick_high;
