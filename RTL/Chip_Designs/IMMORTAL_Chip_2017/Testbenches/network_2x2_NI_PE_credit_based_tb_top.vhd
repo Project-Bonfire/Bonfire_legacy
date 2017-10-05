@@ -197,8 +197,8 @@ begin
     --                                                                                      '-------------'                     '-------------'
     --
     --    the order of bits in each sib is: SXCF where S is opening bit!
-    --    to open sib 3 we need to shift the following: "0001"&"0000"&"0000"&"0000"
-    --    to open sib3inj we need to shift "0001"&"0000"&"0001"&"0000"&"0000"&"0000" the chain configuration is following: sib0->sib1->sib2->sib3inj->sib3stat->sib3->
+    --    to open sib 3 we need to shift the following: "0001"&"0000"&"0000"&"0000"&"0000"
+    --    then, to open sib3inj we need to shift "0001"&"0000"&"0001"&"0000"&"0000"&"0000"&"0000" the chain configuration is following: sib_sens->sib0->sib1->sib2->sib3inj->sib3stat->sib3->
     --      * note that the shifting order is oposite!
 
 

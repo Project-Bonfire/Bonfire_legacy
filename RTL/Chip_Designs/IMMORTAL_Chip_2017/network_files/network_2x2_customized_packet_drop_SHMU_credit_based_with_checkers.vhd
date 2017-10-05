@@ -210,8 +210,8 @@ end component;
     signal SIB_0_sta_so,    SIB_1_sta_so,    SIB_2_sta_so,    SIB_3_sta_so    : std_logic;
 
     -- flags from checkers
-    signal F_R0, F_R1, F_R2, F_R3 : std_logic := '0';
-    signal C_R0, C_R1, C_R2, C_R3 : std_logic := '1';
+    signal F_R0, F_R1, F_R2, F_R3 : std_logic;
+    signal C_R0, C_R1, C_R2, C_R3 : std_logic;
     -- flags top level
     signal F_segtop_fromSIB_0, C_segtop_fromSIB_0 : std_logic;
     signal F_segtop_fromSIB_1, C_segtop_fromSIB_1 : std_logic;
@@ -254,7 +254,24 @@ end component;
 --  |         ----       ----
 --  |        | 2  | --- | 3  |
 --  v         ----       ----
---                         
+--
+
+--   Organization of IJTAG network:
+--            .-----------.                               .-------.          .-------.
+--     SI ----| sib_sens  |-------------------------------|  sib0 |-- .... --|  sib3 |-- SO
+--            '-----------'                               '-------'          '-------'
+--              |       |_____________________________________________.        |    |_________________________________________________.
+--              |                                                     |        |                                                      |
+--              | .----------. .----------. .----------. .----------. |        |  .----------.                      .------------.    |
+--              '-| sib_temp |-| sib_iddt |-| sib_slck |-| sib_volt |-'        '--| sib3 inj |--------------------->|sib3 status |----'
+--                '----------' '----------' '----------' '----------'             '----------'                      '------------'
+--                                                                                 |      |_____________               |      |_____________
+--                                                                                 |     _____________  |              |     _____________  |
+--                                                                                 '--->|injection reg|-'              '--->|ijtag adapter|-'
+--                                                                                      '-------------'                     '-------------'
+--
+--    The order of bits in each sib is: SXCF where S is opening bit!
+
 begin
 
 -- IJTAG top level
@@ -667,12 +684,18 @@ R3_status_adapter : AsyncDataRegisterAdapter
     
 R3_aggregated_fault_status <= link_faults_async_3 & turn_faults_async_3;
 
-
--- added by sivaoosh! has to checked!
+-- Fault flags are ORs of all fault signals coming from routers
 F_R0 <= OR_REDUCE(link_faults_async_0&turn_faults_async_0);
-F_R1 <= OR_REDUCE(link_faults_async_0&turn_faults_async_0);
-F_R2 <= OR_REDUCE(link_faults_async_0&turn_faults_async_0);
-F_R3 <= OR_REDUCE(link_faults_async_0&turn_faults_async_0);
+F_R1 <= OR_REDUCE(link_faults_async_1&turn_faults_async_1);
+F_R2 <= OR_REDUCE(link_faults_async_2&turn_faults_async_2);
+F_R3 <= OR_REDUCE(link_faults_async_3&turn_faults_async_3);
+
+-- A fault in a router does not need the whole system to be halted,
+-- so lower priority fault can be used (F = 1, C = 1 in case of fault)
+C_R0 <= '1';
+C_R1 <= '1';
+C_R2 <= '1';
+C_R3 <= '1';
 
 R_0: router_NW_credit_based_PD_C_SHMU 
     generic map (DATA_WIDTH =>DATA_WIDTH,         current_address => 0, Rxy_rst => 60,
