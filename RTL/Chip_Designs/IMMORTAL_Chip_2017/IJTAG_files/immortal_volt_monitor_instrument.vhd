@@ -1,6 +1,6 @@
 --Copyright (C) 2017 Konstantin Shibin
 ------------------------------------------------------------
--- File name: immortal_slack_volt_monitor_instrument.vhd
+-- File name: immortal_volt_monitor_instrument.vhd
 ------------------------------------------------------------
 
 library ieee;
@@ -9,7 +9,7 @@ use ieee.std_logic_1164.all;
 --use IEEE.STD_LOGIC_UNSIGNED.ALL;
 USE ieee.numeric_std.ALL;
 
-entity immortal_slack_volt_monitor_instrument is
+entity immortal_volt_monitor_instrument is
 port (
       -- IJTAG connection
       TCK         : in std_logic;
@@ -28,9 +28,9 @@ port (
       data        : in std_logic_vector(31 downto 0)
     );
 
-end immortal_slack_volt_monitor_instrument;
+end immortal_volt_monitor_instrument;
 
-architecture rtl of immortal_slack_volt_monitor_instrument is
+architecture rtl of immortal_volt_monitor_instrument is
 
 component SReg is
  Generic ( Size : positive := 32);

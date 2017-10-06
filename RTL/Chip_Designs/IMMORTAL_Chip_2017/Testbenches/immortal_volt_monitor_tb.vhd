@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 06/21/2017 05:18:09 PM
 -- Design Name: 
--- Module Name: immortal_slack_volt_monitor_tb - Behavioral
+-- Module Name: immortal_volt_monitor_tb - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -31,10 +31,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity immortal_slack_volt_monitor_tb is
-end immortal_slack_volt_monitor_tb;
+entity immortal_volt_monitor_tb is
+end immortal_volt_monitor_tb;
 
-architecture Behavioral of immortal_slack_volt_monitor_tb is
+architecture Behavioral of immortal_volt_monitor_tb is
 
 constant tck_period : time := 10 ns;
 constant HALF_SEPARATOR : time := 2*tck_period;
@@ -52,10 +52,10 @@ signal SEL : STD_LOGIC;
 signal toF : STD_LOGIC;
 signal toC : STD_LOGIC;
 
-signal slack_control : std_logic_vector (2 downto 0);
-signal slack_data    : std_logic_vector (31 downto 0);
+signal volt_control : std_logic_vector (2 downto 0);
+signal volt_data    : std_logic_vector (31 downto 0);
 
-component immortal_slack_volt_monitor_instrument is
+component immortal_volt_monitor_instrument is
     port (
       -- IJTAG connection
       TCK         : in std_logic;
@@ -78,7 +78,7 @@ end component;
 begin
 
 
-slack_monitor : immortal_slack_volt_monitor_instrument
+volt_monitor : immortal_volt_monitor_instrument
     port map (
       -- IJTAG connection
       TCK  => TCK,
@@ -93,8 +93,8 @@ slack_monitor : immortal_slack_volt_monitor_instrument
       toC  => toC,
 
       -- Monitor connections
-      control  => slack_control,
-      data     => slack_data
+      control  => volt_control,
+      data     => volt_data
     );
                
 ijtag_shift_proc: process
@@ -157,7 +157,7 @@ ijtag_shift_proc: process
 
   begin
 
-    slack_data <= "00000000000000000000000000001111";
+    volt_data <= "00000000000000000000000000001111";
     UE <= '0';
     CE <= '0';
     SE <= '0';
@@ -176,71 +176,71 @@ ijtag_shift_proc: process
     tck_tick(4);
 
 
-    slack_data <= "00000000000000000000000000000000";
+    volt_data <= "00000000000000000000000000000000";
     tck_tick(1);
-    slack_data <= "00000000000000000000000000000001";
+    volt_data <= "00000000000000000000000000000001";
     tck_tick(1);
-    slack_data <= "00000000000000000000000000000011";
+    volt_data <= "00000000000000000000000000000011";
     tck_tick(1);
-    slack_data <= "00000000000000000000000000000111";
+    volt_data <= "00000000000000000000000000000111";
     tck_tick(1);
-    slack_data <= "00000000000000000000000000001111";
+    volt_data <= "00000000000000000000000000001111";
     tck_tick(1);
-    slack_data <= "00000000000000000000000000011111";
+    volt_data <= "00000000000000000000000000011111";
     tck_tick(1);
-    slack_data <= "00000000000000000000000000111111";
+    volt_data <= "00000000000000000000000000111111";
     tck_tick(1);
-    slack_data <= "00000000000000000000000001111111";
+    volt_data <= "00000000000000000000000001111111";
     tck_tick(1);
-    slack_data <= "00000000000000000000000011111111";
+    volt_data <= "00000000000000000000000011111111";
     tck_tick(1);
-    slack_data <= "00000000000000000000000111111111";
+    volt_data <= "00000000000000000000000111111111";
     tck_tick(1);
-    slack_data <= "00000000000000000000001111111111";
+    volt_data <= "00000000000000000000001111111111";
     tck_tick(1);
-    slack_data <= "00000000000000000000011111111111";
+    volt_data <= "00000000000000000000011111111111";
     tck_tick(1);
-    slack_data <= "00000000000000000000111111111111";
+    volt_data <= "00000000000000000000111111111111";
     tck_tick(1);
-    slack_data <= "00000000000000000001111111111111";
+    volt_data <= "00000000000000000001111111111111";
     tck_tick(1);
-    slack_data <= "00000000000000000011111111111111";
+    volt_data <= "00000000000000000011111111111111";
     tck_tick(1);
-    slack_data <= "00000000000000000111111111111111";
+    volt_data <= "00000000000000000111111111111111";
     tck_tick(1);
-    slack_data <= "00000000000000001111111111111111";
+    volt_data <= "00000000000000001111111111111111";
     tck_tick(1);
-    slack_data <= "00000000000000011111111111111111";
+    volt_data <= "00000000000000011111111111111111";
     tck_tick(1);
-    slack_data <= "00000000000000111111111111111111";
+    volt_data <= "00000000000000111111111111111111";
     tck_tick(1);
-    slack_data <= "00000000000001111111111111111111";
+    volt_data <= "00000000000001111111111111111111";
     tck_tick(1);
-    slack_data <= "00000000000011111111111111111111";
+    volt_data <= "00000000000011111111111111111111";
     tck_tick(1);
-    slack_data <= "00000000000111111111111111111111";
+    volt_data <= "00000000000111111111111111111111";
     tck_tick(1);
-    slack_data <= "00000000001111111111111111111111";
+    volt_data <= "00000000001111111111111111111111";
     tck_tick(1);
-    slack_data <= "00000000011111111111111111111111";
+    volt_data <= "00000000011111111111111111111111";
     tck_tick(1);
-    slack_data <= "00000000111111111111111111111111";
+    volt_data <= "00000000111111111111111111111111";
     tck_tick(1);
-    slack_data <= "00000001111111111111111111111111";
+    volt_data <= "00000001111111111111111111111111";
     tck_tick(1);
-    slack_data <= "00000011111111111111111111111111";
+    volt_data <= "00000011111111111111111111111111";
     tck_tick(1);
-    slack_data <= "00000111111111111111111111111111";
+    volt_data <= "00000111111111111111111111111111";
     tck_tick(1);
-    slack_data <= "00001111111111111111111111111111";
+    volt_data <= "00001111111111111111111111111111";
     tck_tick(1);
-    slack_data <= "00011111111111111111111111111111";
+    volt_data <= "00011111111111111111111111111111";
     tck_tick(1);
-    slack_data <= "00111111111111111111111111111111";
+    volt_data <= "00111111111111111111111111111111";
     tck_tick(1);
-    slack_data <= "01111111111111111111111111111111";
+    volt_data <= "01111111111111111111111111111111";
     tck_tick(1);
-    slack_data <= "11111111111111111111111111111111";
+    volt_data <= "11111111111111111111111111111111";
     tck_tick(1);
     wait;
 
