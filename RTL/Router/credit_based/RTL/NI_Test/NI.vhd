@@ -438,7 +438,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
                     grant <= '1';
                     TX <= "001" & std_logic_vector(to_unsigned(current_address, 14)) & FIFO_Data_out(13 downto 0) & XOR_REDUCE("001" & std_logic_vector(to_unsigned(current_address, 14)) & FIFO_Data_out(13 downto 0));
                     --TX <= "001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out & XOR_REDUCE("001" & "000000000011" & "0000" & std_logic_vector(to_unsigned(current_address, 4)) & packet_counter_out);
-                    state_in <= DIAGNOSIS_BODY;
+                    state_in <= DIAGNOSIS_BODY_1;
                 else
                     state_in <= DIAGNOSIS_HEADER;
                 end if;

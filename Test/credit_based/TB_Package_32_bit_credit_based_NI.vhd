@@ -307,6 +307,7 @@ package body TB_Package is
                   -- rest of body flits
                   address <= reserved_address;
                   write_byte_enable <= "1111";
+                  uniform(seed1, seed2, rand);
                   data_write <= "0000" & std_logic_vector(to_unsigned(integer(rand*1000.0), 28));
                   send_counter := send_counter+1;
                   if send_counter = send_packet_length-1 then
@@ -322,6 +323,7 @@ package body TB_Package is
                     data_write <= "0000" & "0000000000000000000000000000";
                     first_packet := False;
                   else
+                    uniform(seed1, seed2, rand);
                     data_write <= "0000" & std_logic_vector(to_unsigned(integer(rand*1000.0), 28));
                   end if;
                   send_counter := 0;
@@ -336,6 +338,7 @@ package body TB_Package is
             frame_counter := frame_counter + 1;
             if frame_counter = frame_length then
                 frame_counter := 0;
+                uniform(seed1, seed2, rand);
                 frame_starting_delay := integer(((integer(rand*100.0)*(frame_length - max_packet_size)))/100);
             end if;
 
