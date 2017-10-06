@@ -1,10 +1,10 @@
 # Copyright (C) 2016 Siavoosh Payandeh Azad
 from CB_functions import rxy_rst_calculator, cx_rst_calculator
- 
- 
+import math
 
 
-def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add_FC, add_SHMU, 
+
+def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add_FC, add_SHMU,
                         healthy_counter_threshold, faulty_counter_threshold, counter_depth):
     """
     Instantiates the different routers based on the specified configuration!
@@ -21,7 +21,7 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add
             string_to_print += "    generic map (DATA_WIDTH =>DATA_WIDTH, "
             string_to_print += "        current_address => "+str(i)+",\n"
             string_to_print += "        Cx_rst =>  "+str(cx_rst_calculator(i, network_dime)) +\
-                               ", NoC_size => "+str(network_dime)+", healthy_counter_threshold => "+str(healthy_counter_threshold) +\
+                               ", NoC_size => "+str(int(math.log(network_dime*network_dime, 2)))+", healthy_counter_threshold => "+str(healthy_counter_threshold) +\
                                ", faulty_counter_threshold => "+str(faulty_counter_threshold) +\
                                ", counter_depth => "+str(counter_depth)+")\n"
             string_to_print += "    port map(\n"
@@ -47,14 +47,14 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add
             string_to_print += "Faulty_N_in"+str(i)+","
             string_to_print += "Faulty_E_in"+str(i)+","
             string_to_print += "Faulty_W_in"+str(i)+","
-            string_to_print += "Faulty_S_in"+str(i)+"," 
-            string_to_print += "\n"    
-            
+            string_to_print += "Faulty_S_in"+str(i)+","
+            string_to_print += "\n"
+
             string_to_print += "\t"
             string_to_print += "Faulty_N_out"+str(i)+","
             string_to_print += "Faulty_E_out"+str(i)+","
             string_to_print += "Faulty_W_out"+str(i)+","
-            string_to_print += "Faulty_S_out"+str(i) 
+            string_to_print += "Faulty_S_out"+str(i)
             string_to_print += " ); \n"
             noc_file.write(string_to_print)
 
@@ -65,7 +65,7 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add
             string_to_print += "    generic map (DATA_WIDTH =>DATA_WIDTH, "
             string_to_print += "        current_address => "+str(i)+", Rxy_rst => " + str(rxy_rst_calculator(i))+",\n"
             string_to_print += "        Cx_rst =>  "+str(cx_rst_calculator(i, network_dime)) +\
-                               ", NoC_size => "+str(network_dime)+", healthy_counter_threshold => "+str(healthy_counter_threshold) +\
+                               ", NoC_size => "+str(int(math.log(network_dime*network_dime, 2)))+", healthy_counter_threshold => "+str(healthy_counter_threshold) +\
                                ", faulty_counter_threshold => "+str(faulty_counter_threshold) +\
                                ", counter_depth => "+str(counter_depth)+")\n"
             string_to_print += "    port map(\n"
@@ -85,14 +85,14 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add
             string_to_print += "Faulty_N_in"+str(i)+","
             string_to_print += "Faulty_E_in"+str(i)+","
             string_to_print += "Faulty_W_in"+str(i)+","
-            string_to_print += "Faulty_S_in"+str(i)+"," 
-            string_to_print += "\n"    
-            
+            string_to_print += "Faulty_S_in"+str(i)+","
+            string_to_print += "\n"
+
             string_to_print += "\t"
             string_to_print += "Faulty_N_out"+str(i)+","
             string_to_print += "Faulty_E_out"+str(i)+","
             string_to_print += "Faulty_W_out"+str(i)+","
-            string_to_print += "Faulty_S_out"+str(i)+"," 
+            string_to_print += "Faulty_S_out"+str(i)+","
             string_to_print += "\n"
 
             string_to_print += "\t-- should be connected to NI\n"
@@ -109,7 +109,7 @@ def instantiate_routers(noc_file, network_dime, add_parity, add_packet_drop, add
                 noc_file.write("R_"+str(i)+": router_credit_based generic map (DATA_WIDTH  => DATA_WIDTH, ")
 
             noc_file.write("current_address=>"+str(i)+", " +
-                           "Cx_rst => "+str(cx_rst_calculator(i, network_dime))+", NoC_size=>"+str(network_dime)+")\n")
+                           "Cx_rst => "+str(cx_rst_calculator(i, network_dime))+", NoC_size=>"+str(int(math.log(network_dime*network_dime, 2)))+")\n")
             noc_file.write("PORT MAP (reset, clk, \n")
             noc_file.write("    Rxy_reconf, Reconfig,\n")
             noc_file.write("\tRX_N_"+str(i)+", RX_E_"+str(i)+", RX_W_"+str(i)+", RX_S_"+str(i)+", RX_L_"+str(i)+",\n")

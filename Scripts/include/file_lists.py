@@ -33,7 +33,7 @@ credit_based_files_SHMU = ["allocator.vhd", "arbiter_in.vhd", "arbiter_out.vhd",
 						   "FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd", "LBDR_packet_drop.vhd", "NI.vhd",
 						   "Router_32_bit_credit_based_packet_drop_classifier_SHMU.vhd", "xbar.vhd"]
 
-credit_based_files_NI_Test = ["mlite_pack.vhd", "allocator.vhd", "arbiter_in.vhd", "arbiter_out.vhd", "counter_threshold.vhd",
+credit_based_files_NI_Test = ["mlite_pack.vhd", "allocator.vhd", "arbiter_in.vhd", "arbiter_out.vhd", "counter_threshold.vhd", "ParityChecker_for_LBDR.vhd",
                               "FIFO_one_hot_credit_based_packet_drop_classifier_support.vhd", "LBDR_packet_drop.vhd",
                               "NI.vhd", "Router_32_bit_credit_based_packet_drop_classifier_SHMU.vhd", "xbar.vhd"]
 #TODO: should add to NI_Test the following file: "TB_Package_32_bit_credit_based_NI.vhd"
