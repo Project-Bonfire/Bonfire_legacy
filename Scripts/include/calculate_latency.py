@@ -5,6 +5,8 @@ import random
 from package import SIMUL_DIR
 import sys
 
+warmup_time = 1000
+
 if '--help' in sys.argv[1:]:
     print "\t-S [path to file]: path to file containing all the sent packets."
     print "\t                                     **note: the sent packet's file format should be as follows:"
@@ -34,16 +36,16 @@ line = received_file.readline()
 while line != '':
     line = line.rstrip()
     received_packet = line.split()
-
     sender = received_packet[received_packet.index('From:')+1]
     receiver = received_packet[received_packet.index('to:')+1]
     packet_id = received_packet[received_packet.index('id:')+1]
-    if int(packet_id) > 256:
+    if int(packet_id) > 16384:
+        print line
         raise ValueError("Something is wrong! An identifier bigger than 256 in received packets file!")
     identifier = sender + "_" + receiver+ "_" + packet_id
     packet_time = received_packet[received_packet.index('at')+1]
     if identifier in received_packets_dict.keys():
-        identifier = sender + "_" + receiver+ "_" + str(int(packet_id)+256)
+        identifier = sender + "_" + receiver+ "_" + str(int(packet_id)+16384)
     received_packets_dict[identifier] = packet_time
     # print identifier, packet_time
     line = received_file.readline()
@@ -59,13 +61,12 @@ while line != '':
     receiver = sent_packet[sent_packet.index('to')+1]
     packet_id = sent_packet[sent_packet.index('id:')+1]
     identifier = sender + "_" + receiver+ "_" + packet_id
-    if int(packet_id) > 256:
+    if int(packet_id) > 16384:
         print line
         raise ValueError("Something is wrong! An identifier bigger than 256 in sent packets file!")
-
     packet_time = sent_packet[sent_packet.index('at')+1]
     if identifier in sent_packets_dict.keys():
-        identifier = sender + "_" + receiver + "_" + str(int(packet_id)+256)
+        identifier = sender + "_" + receiver + "_" + str(int(packet_id)+16384)
     sent_packets_dict[identifier] = packet_time
     # print identifier, packet_time
     line = sent_file.readline()
@@ -82,13 +83,14 @@ else:
     delay_list = []
     for identifier in sent_packets_dict:
         packet_sent_time = float(sent_packets_dict[identifier])
-        if identifier in received_packets_dict.keys():
-            packet_recieved_time    = float(received_packets_dict[identifier])
-            delay = packet_recieved_time - packet_sent_time
-            delay_list.append(delay)
-        else:
-            print identifier
-            raise ValueError("Something is worong! An identifier is missing from the recieved file")
+        if packet_sent_time/1000.0 > warmup_time:
+            if identifier in received_packets_dict.keys():
+                packet_recieved_time    = float(received_packets_dict[identifier])
+                delay = packet_recieved_time - packet_sent_time
+                delay_list.append(delay)
+            else:
+                print identifier
+                raise ValueError("Something is worong! An identifier is missing from the recieved file")
 
     # print "delay_list:", delay_list
     f.write("number of processed packets:"+str(len(delay_list))+"\n")

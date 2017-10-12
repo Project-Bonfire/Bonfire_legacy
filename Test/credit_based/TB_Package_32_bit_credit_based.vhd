@@ -101,8 +101,8 @@ package body TB_Package is
                       finish_time: in time; signal clk: in std_logic;
                       signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic;
                       signal port_in: out std_logic_vector) is
-    variable seed1 :positive ;
-    variable seed2 :positive ;
+    variable seed1 :positive := source+1;
+    variable seed2 :positive := source+1;
     variable LINEVARIABLE : line;
     file VEC_FILE : text is out "sent.txt";
     variable rand : real ;
@@ -139,7 +139,7 @@ package body TB_Package is
 
       -- generating the packet
       id_counter := id_counter + 1;
-      if id_counter = 256 then
+      if id_counter = 16384 then
           id_counter := 0;
       end if;
       --------------------------------------
@@ -219,8 +219,8 @@ procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_de
                       finish_time: in time; signal clk: in std_logic;
                       signal credit_counter_in: in std_logic_vector(1 downto 0); signal valid_out: out std_logic;
                       signal port_in: out std_logic_vector) is
-    variable seed1 :positive ;
-    variable seed2 :positive ;
+    variable seed1 :positive := source+1;
+    variable seed2 :positive := source+1;
     variable LINEVARIABLE : line;
     file VEC_FILE : text is out "sent.txt";
     variable rand : real ;
@@ -258,7 +258,7 @@ procedure gen_bit_reversed_packet(network_size, frame_length, source, initial_de
 
       -- generating the packet
       id_counter := id_counter + 1;
-      if id_counter = 256 then
+      if id_counter = 16384 then
           id_counter := 0;
       end if;
       --------------------------------------

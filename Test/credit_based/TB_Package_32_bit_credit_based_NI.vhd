@@ -80,8 +80,8 @@ package body TB_Package is
                       signal test:                out std_logic_vector(31 downto 0)) is
     -- variables for random functions
     constant DATA_WIDTH : integer := 32;
-    variable seed1 :positive ;
-    variable seed2 :positive ;
+    variable seed1 :positive := current_address+1;
+    variable seed2 :positive := current_address+1;
     variable rand : real ;
     --file handling variables
     variable SEND_LINEVARIABLE : line;
@@ -329,7 +329,7 @@ package body TB_Package is
                   send_counter := 0;
                   state :=  Idle;
                   send_id_counter := send_id_counter + 1;
-                  if send_id_counter = 256 then
+                  if send_id_counter = 16384 then
                     send_id_counter := 0;
                   end if;
               end if;

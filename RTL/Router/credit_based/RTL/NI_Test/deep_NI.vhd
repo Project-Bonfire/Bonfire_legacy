@@ -71,10 +71,10 @@ architecture logic of NI is
 
   signal old_address: std_logic_vector(31 downto 2); -- Behrad: What is old address ?
 
-  signal P2N_FIFO_read_pointer, P2N_FIFO_read_pointer_in,  P2N_FIFO_write_pointer, P2N_FIFO_write_pointer_in: std_logic_vector(4 downto 0);
+  signal P2N_FIFO_read_pointer, P2N_FIFO_read_pointer_in,  P2N_FIFO_write_pointer, P2N_FIFO_write_pointer_in: std_logic_vector(6 downto 0);
   signal P2N_write_en: std_logic;
 
-  type MEM is array (0 to 31) of std_logic_vector(31 downto 0);
+  type MEM is array (0 to 128) of std_logic_vector(31 downto 0);
   signal P2N_FIFO, P2N_FIFO_in : MEM;
 
   --signal P2N_FIFO_MEM_1, P2N_FIFO_MEM_1_in : std_logic_vector(31 downto 0);
@@ -400,7 +400,7 @@ process(P2N_empty, state, credit_counter_out, packet_length_counter_out, packet_
             when HEADER_FLIT =>
                 if credit_counter_out /= "00" and P2N_empty = '0' then
 
-                     
+
                     grant <= '1';
 
                     TX <= "001" & std_logic_vector(to_unsigned(current_address, 14)) & FIFO_Data_out(13 downto 0) & XOR_REDUCE("001" & std_logic_vector(to_unsigned(current_address, 14)) & FIFO_Data_out(13 downto 0));
