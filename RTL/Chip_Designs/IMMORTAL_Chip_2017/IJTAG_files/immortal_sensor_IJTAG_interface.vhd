@@ -297,7 +297,7 @@ SIB_slack : SIB_mux_pre_FCX_SELgate
     fromC  => slack_monitor_toC
 );
 
-slack_monitor : immortal_slack_volt_monitor_instrument
+slack_monitor : immortal_slack_monitor_instrument
     port map (
       -- IJTAG connection
       TCK  => SIB_slack_toTCK,
@@ -345,7 +345,7 @@ SIB_voltage : SIB_mux_pre_FCX_SELgate
     fromC  => voltage_monitor_toC
 );
 
-voltage_monitor : immortal_slack_volt_monitor_instrument
+voltage_monitor : immortal_volt_monitor_instrument
     port map (
       -- IJTAG connection
       TCK  => SIB_voltage_toTCK,
