@@ -61,13 +61,13 @@ vcom -cover bcesfx "plasma_RTL/pc_next.vhd"
 vcom -cover bcesfx "plasma_RTL/pipeline.vhd"
 
 # for normal simulation use this:
-vcom -cover bcesfx "plasma_RTL/ram.vhd"
+# vcom -cover bcesfx "plasma_RTL/ram.vhd"
 # vcom -cover bcesfx "Testbenches/ram_stub_xilinx_for_questa.vhd"
 
 
 # to use the verilog of the memory use the following 2 lines:
-# vlog -reportprogress 300 -work work "plasma_RTL/ts1n40lpb4096x32m4s_210b_tt1p1v25c.v"
-# vcom -cover bcesfx "plasma_RTL/ram_wrapper.vhd"
+vlog -reportprogress 300 -work work "plasma_RTL/ts1n40lpb4096x32m4s_210b_tt1p1v25c.v"
+vcom -cover bcesfx "plasma_RTL/ram_wrapper.vhd"
 
 #vlog -reportprogress 300 -work work "plasma_RTL/SHKA65_4096X32X1CM4.v"
 #vcom -cover bcesfx "plasma_RTL/ram_wrapper_65.vhd"
@@ -94,6 +94,6 @@ vsim -coverage -voptargs="+cover=bcestfx" work.tb_network_2x2
 do do_files/wave_2x2_with_top.do
 # Run the simulation for 4ms
 run 4 ms
-run 36 ms
+#run 36 ms
 # do do_files/fault_inject_links_top_3000ns.do 	#use to inject files in the simulation(not using IJTAG)
 coverage report -file report.txt -byfile -assert -directive -cvg -codeAll

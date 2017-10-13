@@ -20,12 +20,20 @@ entity ram is
         write_byte_enable : in std_logic_vector(3 downto 0);
         address           : in std_logic_vector(31 downto 2);
         data_write        : in std_logic_vector(31 downto 0);
-        data_read         : out std_logic_vector(31 downto 0));
+        data_read         : out std_logic_vector(31 downto 0);
+        IJTAG_select            : in std_logic;
+        IJTAG_clk               : in std_logic;
+     		IJTAG_reset             : in std_logic;
+        IJTAG_enable            : in std_logic;
+        IJTAG_write_byte_enable : in std_logic_vector(3 downto 0);
+        IJTAG_address           : in std_logic_vector(31 downto 2);
+        IJTAG_data_write        : in std_logic_vector(31 downto 0);
+        IJTAG_data_read         : out std_logic_vector(31 downto 0));
 end; --entity ram
 
 architecture logic of ram is
-   component TS1N40LPB4096X32M4S is 
-   generic (cdeFileInit : string);
+   component TS1N40LPB4096X32M4S is
+   --generic (cdeFileInit : string);
    port (
       PD : in std_logic;    --Power down mode
       CLK : in std_logic;   --CLK input
@@ -46,58 +54,91 @@ architecture logic of ram is
       Q: out std_logic_vector(31 downto 0)      --Data output
     );
     end component;
+
+    signal Mem_clk               : std_logic;
+    signal Mem_reset             : std_logic;
+    signal Mem_enable            : std_logic;
+    signal Mem_write_byte_enable : std_logic_vector(3 downto 0);
+    signal Mem_address           : std_logic_vector(31 downto 2);
+    signal Mem_data_write        : std_logic_vector(31 downto 0);
+    signal Mem_data_read         : std_logic_vector(31 downto 0);
+
     signal write_enable: std_logic;
     signal write_BWEB: std_logic_vector(31 downto 0);
     signal not_clock: std_logic;
     signal delayed_data_out, Q: std_logic_vector(31 downto 0);
 begin
-  
-   write_enable <= not(write_byte_enable(0) or write_byte_enable(1) or write_byte_enable(2) or write_byte_enable(3));
-   not_clock <= not clk;
 
-   -- the following process is not actually tested! 
-   process(write_byte_enable)
+    process(IJTAG_select, clk, reset, enable, write_byte_enable, address,
+            data_write, Mem_data_read, IJTAG_clk, IJTAG_reset, IJTAG_enable,
+            IJTAG_write_byte_enable, IJTAG_address, IJTAG_data_write)
+            begin
+        case( IJTAG_select) is
+          when '0' =>
+                Mem_clk               <= clk;
+                Mem_reset             <= reset;
+                Mem_enable            <= enable;
+                Mem_write_byte_enable <= write_byte_enable;
+                Mem_address           <= address;
+                Mem_data_write        <= data_write;
+                data_read             <= Mem_data_read;
+          when others =>
+                Mem_clk               <= IJTAG_clk;
+                Mem_reset             <= IJTAG_reset;
+                Mem_enable            <= IJTAG_enable;
+                Mem_write_byte_enable <= IJTAG_write_byte_enable;
+                Mem_address           <= IJTAG_address;
+                Mem_data_write        <= IJTAG_data_write;
+                IJTAG_data_read       <= Mem_data_read;
+        end case;
+   end process;
+
+   write_enable <= not(Mem_write_byte_enable(0) or Mem_write_byte_enable(1) or Mem_write_byte_enable(2) or Mem_write_byte_enable(3));
+   not_clock <= not Mem_clk;
+
+   -- the following process is not actually tested!
+   process(Mem_write_byte_enable)
    begin
-   write_BWEB <= (others => '1'); 
-   if write_byte_enable(0) = '1' then 
+   write_BWEB <= (others => '1');
+   if Mem_write_byte_enable(0) = '1' then
       write_BWEB(7 downto 0) <= "00000000";
    end if;
 
-   if write_byte_enable(1) = '1' then 
+   if Mem_write_byte_enable(1) = '1' then
       write_BWEB(15 downto 8) <= "00000000";
    end if;
 
-   if write_byte_enable(2) = '1' then 
+   if Mem_write_byte_enable(2) = '1' then
       write_BWEB(23 downto 16) <= "00000000";
    end if;
 
-   if write_byte_enable(3) = '1' then 
+   if Mem_write_byte_enable(3) = '1' then
       write_BWEB(31 downto 24) <= "00000000";
    end if;
    end process;
 
    -- Plasma wants the data in the next clock cycle!
-    process(clk, reset)begin
-      if reset = '1' then
+    process(Mem_clk, Mem_reset)begin
+      if Mem_reset = '1' then
         delayed_data_out <= (others=> '0');
-      elsif rising_edge(clk) then
+      elsif rising_edge(Mem_clk) then
         delayed_data_out <= Q;
       end if;
     end process;
 
 
-   RAM_unit: TS1N40LPB4096X32M4S  
-   generic map (cdeFileInit => stim_file)
+   RAM_unit: TS1N40LPB4096X32M4S
+   --generic map (cdeFileInit => stim_file)
    port map(
       PD  => '0',
       CLK => not_clock,   -- this is the part that we changed. there was some serious timing issues with setup and hold times!
       CEB => '0',
       WEB => write_enable,
-      --CEBM => '0',    
-      --WEBM => '0',  
-      AWT  => '0',  
-      A => address(13 downto 2),
-      D => data_write, 
+      --CEBM => '0',
+      --WEBM => '0',
+      AWT  => '0',
+      A => Mem_address(13 downto 2),
+      D => Mem_data_write,
       BWEB => write_BWEB,
       --AM => (others =>'0'),
       --DM => (others =>'0'),
@@ -108,6 +149,6 @@ begin
       Q => Q
     );
 
-data_read <= delayed_data_out;
+Mem_data_read <= delayed_data_out;
 
 end; --architecture logic

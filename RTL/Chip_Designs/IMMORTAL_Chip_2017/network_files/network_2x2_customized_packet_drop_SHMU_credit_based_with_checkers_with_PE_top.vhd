@@ -140,6 +140,41 @@ constant path : string(1 to 12) := "Testbenches/"; --uncomment this if you are S
     signal toF_NoC, toF_sensors : std_logic;
     signal toC_NoC, toC_sensors : std_logic;
 
+    signal IJTAG_ram_0_select            : std_logic;
+    signal IJTAG_ram_0_clk               : std_logic;
+    signal IJTAG_ram_0_reset             : std_logic;
+    signal IJTAG_ram_0_enable            : std_logic;
+    signal IJTAG_ram_0_write_byte_enable : std_logic_vector(3 downto 0);
+    signal IJTAG_ram_0_address           : std_logic_vector(31 downto 2);
+    signal IJTAG_ram_0_data_write        : std_logic_vector(31 downto 0);
+    signal IJTAG_ram_0_data_read         : std_logic_vector(31 downto 0);
+
+    signal IJTAG_ram_1_select            : std_logic;
+    signal IJTAG_ram_1_clk               : std_logic;
+    signal IJTAG_ram_1_reset             : std_logic;
+    signal IJTAG_ram_1_enable            : std_logic;
+    signal IJTAG_ram_1_write_byte_enable : std_logic_vector(3 downto 0);
+    signal IJTAG_ram_1_address           : std_logic_vector(31 downto 2);
+    signal IJTAG_ram_1_data_write        : std_logic_vector(31 downto 0);
+    signal IJTAG_ram_1_data_read         : std_logic_vector(31 downto 0);
+
+    signal IJTAG_ram_2_select            : std_logic;
+    signal IJTAG_ram_2_clk               : std_logic;
+    signal IJTAG_ram_2_reset             : std_logic;
+    signal IJTAG_ram_2_enable            : std_logic;
+    signal IJTAG_ram_2_write_byte_enable : std_logic_vector(3 downto 0);
+    signal IJTAG_ram_2_address           : std_logic_vector(31 downto 2);
+    signal IJTAG_ram_2_data_write        : std_logic_vector(31 downto 0);
+    signal IJTAG_ram_2_data_read         : std_logic_vector(31 downto 0);
+
+    signal IJTAG_ram_3_select            : std_logic;
+    signal IJTAG_ram_3_clk               : std_logic;
+    signal IJTAG_ram_3_reset             : std_logic;
+    signal IJTAG_ram_3_enable            : std_logic;
+    signal IJTAG_ram_3_write_byte_enable : std_logic_vector(3 downto 0);
+    signal IJTAG_ram_3_address           : std_logic_vector(31 downto 2);
+    signal IJTAG_ram_3_data_write        : std_logic_vector(31 downto 0);
+    signal IJTAG_ram_3_data_read         : std_logic_vector(31 downto 0);
 begin
 
 -- instantiating the network
@@ -155,6 +190,11 @@ port map (reset, clk,
     link_faults_3, turn_faults_3, Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3,
     TCK, RST, SEL, SI, SE, UE, CE, SO_NoC, toF_NoC, toC_NoC
     );
+
+IJTAG_ram_0_select <= '0';
+IJTAG_ram_1_select <= '0';
+IJTAG_ram_2_select <= '0';
+IJTAG_ram_3_select <= '0';
 
 toF <= toF_NoC or toF_sensors;
 toC <= toC_NoC and toC_sensors;
@@ -253,7 +293,15 @@ port map( not_reset, clk,
         Reconfig_command    => Reconfig_command_0,
 
         GPIO_out            => GPIO_out_FF_in,
-        GPIO_in             => GPIO_in
+        GPIO_in             => GPIO_in,
+        IJTAG_select            => IJTAG_ram_0_select,
+        IJTAG_clk               => IJTAG_ram_0_clk,
+        IJTAG_reset             => IJTAG_ram_0_reset,
+        IJTAG_enable            => IJTAG_ram_0_enable,
+        IJTAG_write_byte_enable => IJTAG_ram_0_write_byte_enable,
+        IJTAG_address           => IJTAG_ram_0_address,
+        IJTAG_data_write        => IJTAG_ram_0_data_write,
+        IJTAG_data_read         => IJTAG_ram_0_data_read
    );
 
 PE_1: NoC_Node
@@ -280,7 +328,16 @@ port map( not_reset, clk,
         Reconfig_command    => Reconfig_command_1,
 
         GPIO_out            => open,
-        GPIO_in             => (others => '0')
+        GPIO_in             => (others => '0'),
+
+        IJTAG_select            => IJTAG_ram_1_select,
+        IJTAG_clk               => IJTAG_ram_1_clk,
+        IJTAG_reset             => IJTAG_ram_1_reset,
+        IJTAG_enable            => IJTAG_ram_1_enable,
+        IJTAG_write_byte_enable => IJTAG_ram_1_write_byte_enable,
+        IJTAG_address           => IJTAG_ram_1_address,
+        IJTAG_data_write        => IJTAG_ram_1_data_write,
+        IJTAG_data_read         => IJTAG_ram_1_data_read
    );
 
 PE_2: NoC_Node
@@ -307,7 +364,15 @@ port map( not_reset, clk,
         Reconfig_command    => Reconfig_command_2,
 
         GPIO_out            => open,
-        GPIO_in             => (others => '0')
+        GPIO_in             => (others => '0'),
+        IJTAG_select            => IJTAG_ram_2_select,
+        IJTAG_clk               => IJTAG_ram_2_clk,
+        IJTAG_reset             => IJTAG_ram_2_reset,
+        IJTAG_enable            => IJTAG_ram_2_enable,
+        IJTAG_write_byte_enable => IJTAG_ram_2_write_byte_enable,
+        IJTAG_address           => IJTAG_ram_2_address,
+        IJTAG_data_write        => IJTAG_ram_2_data_write,
+        IJTAG_data_read         => IJTAG_ram_2_data_read
    );
 
 PE_3: NoC_Node
@@ -334,7 +399,15 @@ port map( not_reset, clk,
         Reconfig_command    => Reconfig_command_3,
 
         GPIO_out            => open,
-        GPIO_in             => (others => '0')
+        GPIO_in             => (others => '0'),
+        IJTAG_select            => IJTAG_ram_3_select,
+        IJTAG_clk               => IJTAG_ram_3_clk,
+        IJTAG_reset             => IJTAG_ram_3_reset,
+        IJTAG_enable            => IJTAG_ram_3_enable,
+        IJTAG_write_byte_enable => IJTAG_ram_3_write_byte_enable,
+        IJTAG_address           => IJTAG_ram_3_address,
+        IJTAG_data_write        => IJTAG_ram_3_data_write,
+        IJTAG_data_read         => IJTAG_ram_3_data_read
    );
 
 

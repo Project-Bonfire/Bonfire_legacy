@@ -404,17 +404,38 @@ package mlite_pack is
            cache_miss     : out std_logic);  --cache miss
    end component; --cache
 
-   component ram
+   -- change this if you want to use behavioral ram!
+   --component ram
+  --    generic(memory_type : string := "DEFAULT";
+  --            stim_file: string :="code.txt");
+  --    port(clk               : in std_logic;
+  --         enable            : in std_logic;
+	--	       reset            : in std_logic;
+  --         write_byte_enable : in std_logic_vector(3 downto 0);
+  --         address           : in std_logic_vector(31 downto 2);
+  --         data_write        : in std_logic_vector(31 downto 0);
+  --         data_read         : out std_logic_vector(31 downto 0));
+  -- end component; --ram
+
+   component ram is
       generic(memory_type : string := "DEFAULT";
               stim_file: string :="code.txt");
       port(clk               : in std_logic;
+   		    reset             : in std_logic;
            enable            : in std_logic;
-		       reset            : in std_logic;
            write_byte_enable : in std_logic_vector(3 downto 0);
            address           : in std_logic_vector(31 downto 2);
            data_write        : in std_logic_vector(31 downto 0);
-           data_read         : out std_logic_vector(31 downto 0));
-   end component; --ram
+           data_read         : out std_logic_vector(31 downto 0);
+           IJTAG_select            : in std_logic;
+           IJTAG_clk               : in std_logic;
+        	 IJTAG_reset             : in std_logic;
+           IJTAG_enable            : in std_logic;
+           IJTAG_write_byte_enable : in std_logic_vector(3 downto 0);
+           IJTAG_address           : in std_logic_vector(31 downto 2);
+           IJTAG_data_write        : in std_logic_vector(31 downto 0);
+           IJTAG_data_read         : out std_logic_vector(31 downto 0));
+   end component; -- ram
 
 
   component NI
@@ -540,8 +561,16 @@ package mlite_pack is
 
            Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
            Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
-           Reconfig_command : out std_logic
-
+           Reconfig_command : out std_logic;
+           -- remove this part if you are using behavioral memory
+           IJTAG_select            : in std_logic;
+           IJTAG_clk               : in std_logic;
+           IJTAG_reset             : in std_logic;
+           IJTAG_enable            : in std_logic;
+           IJTAG_write_byte_enable : in std_logic_vector(3 downto 0);
+           IJTAG_address           : in std_logic_vector(31 downto 2);
+           IJTAG_data_write        : in std_logic_vector(31 downto 0);
+           IJTAG_data_read         : out std_logic_vector(31 downto 0)
            );
    end component; --plasma
 
@@ -624,9 +653,9 @@ begin
    A1 := resize(unsigned(a), A1'length);
    B1 := resize(unsigned(b), B1'length);
    if do_add = '1' then
-      S := A1 + B1; 
+      S := A1 + B1;
    else
-      S := A1 - B1; 
+      S := A1 - B1;
    end if;
    return std_logic_vector(S);
 end; --function

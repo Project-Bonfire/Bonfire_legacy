@@ -47,9 +47,9 @@ port(
     Rxy_reconf_PE : out  std_logic_vector(7 downto 0);
     Cx_reconf_PE  : out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
     Reconfig_command : out std_logic;
-    
+
     -- IJTAG RAM instrument related signals
-    --SI  : in std_logic; 
+    --SI  : in std_logic;
     --SO  : out std_logic;
     --SEL : in std_logic;
     --SE  : in std_logic;
@@ -59,7 +59,16 @@ port(
     --TCK : in std_logic;
 
     GPIO_out: out  std_logic_vector(15 downto 0);
-    GPIO_in: in  std_logic_vector(21 downto 0)
+    GPIO_in: in  std_logic_vector(21 downto 0);
+
+    IJTAG_select            : in std_logic;
+    IJTAG_clk               : in std_logic;
+    IJTAG_reset             : in std_logic;
+    IJTAG_enable            : in std_logic;
+    IJTAG_write_byte_enable : in std_logic_vector(3 downto 0);
+    IJTAG_address           : in std_logic_vector(31 downto 2);
+    IJTAG_data_write        : in std_logic_vector(31 downto 0);
+    IJTAG_data_read         : out std_logic_vector(31 downto 0)
    );
 
 end; --entity NoC_Node
@@ -105,10 +114,10 @@ architecture updated of NoC_Node is
     -- Generic ( DataSize : positive := 8;
     --          AddressSize : positive := 8);
     --   Port ( -- Scan Interface scan_client ----------
-    --           SI : in STD_LOGIC; -- ScanInPort 
+    --           SI : in STD_LOGIC; -- ScanInPort
     --          SO : out STD_LOGIC; -- ScanOutPort
     --          SEL : in STD_LOGIC; -- SelectPort
-    --          ----------------------------------------        
+    --          ----------------------------------------
     --          SE : in STD_LOGIC; -- ShiftEnPort
     --          CE : in STD_LOGIC; -- CaptureEnPort
     --          UE : in STD_LOGIC; -- UpdateEnPort
@@ -121,6 +130,7 @@ architecture updated of NoC_Node is
     --          RAM_address_out : out STD_LOGIC_VECTOR (AddressSize-1 downto 0);
     --          RAM_write_enable : out STD_LOGIC);
     --end component;
+
 
 begin  --architecture
 
@@ -177,7 +187,16 @@ begin  --architecture
 
             Rxy_reconf_PE    => Rxy_reconf_PE,
             Cx_reconf_PE     => Cx_reconf_PE ,
-            Reconfig_command => Reconfig_command
+            Reconfig_command => Reconfig_command,
+
+            IJTAG_select            => IJTAG_select,
+            IJTAG_clk               => IJTAG_clk,
+            IJTAG_reset             => IJTAG_reset,
+            IJTAG_enable            => IJTAG_enable,
+            IJTAG_write_byte_enable => IJTAG_write_byte_enable,
+            IJTAG_address           => IJTAG_address,
+            IJTAG_data_write        => IJTAG_data_write,
+            IJTAG_data_read         => IJTAG_data_read
         );
 
         --memory_impl: memory

@@ -55,7 +55,17 @@ port (reset: in  std_logic;
       uart_write_2  : out std_logic;
       uart_read_2   : in std_logic;
       uart_write_3  : out std_logic;
-      uart_read_3   : in std_logic
+      uart_read_3   : in std_logic;
+
+      -- Monitor connections
+      temperature_control   : out std_logic_vector(2 downto 0);
+      temperature_data      : in std_logic_vector(12 downto 0);
+      iddt_control          : out std_logic_vector(2 downto 0);
+      iddt_data             : in std_logic_vector(12 downto 0);
+      slack_control         : out std_logic_vector(2 downto 0);
+      slack_data            : in std_logic_vector(31 downto 0);
+      voltage_control       : out std_logic_vector(2 downto 0);
+      voltage_data          : in std_logic_vector(31 downto 0)
     );
 end component;
 
@@ -105,6 +115,15 @@ end component;
     signal PE_0_GPIO_in : std_logic_vector(21 downto 0) := (others => '1');
     signal uart_write_0,  uart_write_1, uart_write_2, uart_write_3: std_logic;
     signal uart_read_0,   uart_read_1,  uart_read_2,  uart_read_3: std_logic;
+
+    signal temperature_control   :  std_logic_vector(2 downto 0);
+    signal temperature_data      : std_logic_vector(12 downto 0);
+    signal iddt_control          :  std_logic_vector(2 downto 0);
+    signal iddt_data             : std_logic_vector(12 downto 0);
+    signal slack_control         :  std_logic_vector(2 downto 0);
+    signal slack_data            : std_logic_vector(31 downto 0);
+    signal voltage_control       :  std_logic_vector(2 downto 0);
+    signal voltage_data          : std_logic_vector(31 downto 0);
 begin
 
   clk_process :process
@@ -320,7 +339,15 @@ port map (reset, clk,
           uart_write_0, uart_read_0,
           uart_write_1, uart_read_1,
           uart_write_2, uart_read_2,
-          uart_write_3, uart_read_3
+          uart_write_3, uart_read_3,
+          temperature_control,
+          temperature_data,
+          iddt_control,
+          iddt_data,
+          slack_control,
+          slack_data,
+          voltage_control,
+          voltage_data
          );
 
 

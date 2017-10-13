@@ -294,7 +294,16 @@ package component_pack is
             Reconfig_command : out std_logic;
 
             GPIO_out: out  std_logic_vector(15 downto 0);
-            GPIO_in: in  std_logic_vector(21 downto 0)
+            GPIO_in: in  std_logic_vector(21 downto 0);
+            -- remove this part if you are using behavioral ram
+            IJTAG_select            : in std_logic;
+            IJTAG_clk               : in std_logic;
+            IJTAG_reset             : in std_logic;
+            IJTAG_enable            : in std_logic;
+            IJTAG_write_byte_enable : in std_logic_vector(3 downto 0);
+            IJTAG_address           : in std_logic_vector(31 downto 2);
+            IJTAG_data_write        : in std_logic_vector(31 downto 0);
+            IJTAG_data_read         : out std_logic_vector(31 downto 0)
        );
     end component; --entity NoC_Node
 

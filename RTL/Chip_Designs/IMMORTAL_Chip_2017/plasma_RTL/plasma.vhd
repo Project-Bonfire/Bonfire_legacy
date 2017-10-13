@@ -79,8 +79,16 @@ entity plasma is
 
         Rxy_reconf_PE: out  std_logic_vector(7 downto 0);
         Cx_reconf_PE: out  std_logic_vector(3 downto 0);    -- if you are not going to update Cx you should write all ones! (it will be and will the current Cx bits)
-        Reconfig_command : out std_logic
-
+        Reconfig_command : out std_logic;
+        --remove this part if you are using behavioral ram
+        IJTAG_select            : in std_logic;
+        IJTAG_clk               : in std_logic;
+     		IJTAG_reset             : in std_logic;
+        IJTAG_enable            : in std_logic;
+        IJTAG_write_byte_enable : in std_logic_vector(3 downto 0);
+        IJTAG_address           : in std_logic_vector(31 downto 2);
+        IJTAG_data_write        : in std_logic_vector(31 downto 0);
+        IJTAG_data_read         : out std_logic_vector(31 downto 0)
         );
 end; --entity plasma
 
@@ -312,18 +320,42 @@ begin  --architecture
    end process;
 
 
-  ramgen_tri: if memory_type = "TRI_PORT_X" generate
-   u2_ramgen: ram
-      generic map (memory_type => memory_type, stim_file => stim_file)
-      port map (
-         clk               => clk,
-		     reset             => reset,
-         enable            => ram_enable,
-         write_byte_enable => ram_byte_we,
-         address           => ram_address,
-         data_write        => ram_data_w,
-         data_read         => ram_data_r);
-   end generate;
+  --ramgen_tri: if memory_type = "TRI_PORT_X" generate
+  -- u2_ramgen: ram
+  --    generic map (memory_type => memory_type, stim_file => stim_file)
+  --    port map (
+  --       clk               => clk,
+	--	     reset             => reset,
+  --       enable            => ram_enable,
+  --       write_byte_enable => ram_byte_we,
+  --       address           => ram_address,
+  --       data_write        => ram_data_w,
+  --       data_read         => ram_data_r);
+  -- end generate;
+
+   ramgen_tri: if memory_type = "TRI_PORT_X" generate
+    u2_ramgen: ram
+       generic map (memory_type => memory_type, stim_file => stim_file)
+       port map (
+          clk               => clk,
+ 		     reset             => reset,
+          enable            => ram_enable,
+          write_byte_enable => ram_byte_we,
+          address           => ram_address,
+          data_write        => ram_data_w,
+          data_read         => ram_data_r,
+
+          IJTAG_select            => IJTAG_select,
+          IJTAG_clk               => IJTAG_clk,
+          IJTAG_reset             => IJTAG_reset,
+          IJTAG_enable            => IJTAG_enable,
+          IJTAG_write_byte_enable => IJTAG_write_byte_enable,
+          IJTAG_address           => IJTAG_address,
+          IJTAG_data_write        => IJTAG_data_write,
+          IJTAG_data_read         => IJTAG_data_read         );
+    end generate;
+
+
 
 
 
