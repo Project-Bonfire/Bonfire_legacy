@@ -303,7 +303,7 @@ if add_NI_Test:
   noc_file.write("\tsignal counter_address :         std_logic_vector(29 downto 0):= \"000000000000000010000000000001\";\n")
   noc_file.write("\tsignal reconfiguration_address : std_logic_vector(29 downto 0):= \"000000000000000010000000000010\";  -- reserved address for reconfiguration register\n")
   noc_file.write("\tsignal self_diagnosis_address :  std_logic_vector(29 downto 0):= \"000000000000000010000000000011\";\n")
-  
+
   string_to_print = ""
   for i in range(0, network_dime*network_dime):
     string_to_print += "irq_out_"+str(i)+ ", "
@@ -336,7 +336,7 @@ if add_NI_Test:
   noc_file.write("\tsignal "+string_to_print[:-2]+": std_logic_vector(31 downto 0);\n")
 
 
- 
+
 noc_file.write("\t--------------\n")
 if not add_SHMU:
   noc_file.write("\tsignal Rxy_reconf: std_logic_vector (7 downto 0) := \"01111101\";\n")
@@ -382,7 +382,7 @@ if not add_SHMU:
   string_to_print += "port map (reset, clk, Rxy_reconf, Reconfig, \n"
 else:
   string_to_print += "port map (reset, clk, \n"
-  
+
 for i in range(network_dime**2):
     string_to_print += "\tRX_L_"+str(i)+", credit_out_L_"+str(i)+", valid_out_L_"+str(i)+", credit_in_L_"+str(i)+", valid_in_L_"+str(i)+",  TX_L_"+str(i)+", \n"
 
@@ -408,8 +408,8 @@ if add_node and not add_SHMU and not add_NI_Test:
       noc_file.write("PE_" + str(node_number) + ": NoC_Node \n")
 
       noc_file.write("generic map( current_address => " + str(node_number) + ",\n")
-      noc_file.write("\tstim_file => \"code_" + str(node_number) + ".txt\",\n")
-      noc_file.write("\tlog_file  => \"output_" + str(node_number) + ".txt\")\n\n")
+      noc_file.write("\tstim_file => \"code_" + str(node_number).zfill(3) + ".txt\",\n")
+      noc_file.write("\tlog_file  => \"output_" + str(node_number).zfill(3) + ".txt\")\n\n")
 
       noc_file.write("port map( not_reset, clk, \n")
       noc_file.write("\n")
