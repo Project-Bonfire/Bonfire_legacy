@@ -63,7 +63,28 @@ component SIB_mux_pre_FCX_SELgate is
            fromC : in STD_LOGIC);  -- From an AND of all C flags in the underlying network segment
 end component;
 
-component immortal_slack_volt_monitor_instrument is
+component immortal_slack_monitor_instrument is
+    port (
+      -- IJTAG connection
+      TCK         : in std_logic;
+      RST         : in std_logic;
+      SEL         : in std_logic;
+      SI          : in std_logic;
+      SE          : in std_logic;
+      UE          : in std_logic;
+      CE          : in std_logic;
+      SO          : out std_logic;
+      toF         : out std_logic;
+      toC         : out std_logic;
+
+      -- Monitor connections
+      control     : out std_logic_vector(2 downto 0);
+      data        : in std_logic_vector(31 downto 0)
+    );
+end component;
+
+
+component immortal_volt_monitor_instrument is
     port (
       -- IJTAG connection
       TCK         : in std_logic;
