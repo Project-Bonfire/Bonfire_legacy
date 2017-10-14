@@ -70,10 +70,12 @@ end network_2x2_with_PE;
 
 architecture behavior of network_2x2_with_PE is
 
+constant RAMDataSize : positive := 32;
+constant RAMAddrSize : positive := 12;
 constant path : string(1 to 12) := "Testbenches/"; --uncomment this if you are SIMULATING in MODELSIM, or if you're synthesizing.
 -- constant path : string(positive range <>) := "/home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/"; --used only for Vivado similation. Tsotnes PC.
 
-    component immortal_sensor_IJTAG_interface is
+component immortal_sensor_IJTAG_interface is
     Port ( -- Scan Interface  client --------------
             TCK         : in std_logic;
             RST         : in std_logic;
@@ -95,7 +97,53 @@ constant path : string(1 to 12) := "Testbenches/"; --uncomment this if you are S
             slack_data            : in std_logic_vector(31 downto 0);
             voltage_control       : out std_logic_vector(2 downto 0);
             voltage_data          : in std_logic_vector(31 downto 0));
-    end component;
+end component;
+
+component SIB_mux_pre_FCX_SELgate is
+    Port ( -- Scan Interface  client --------------
+           SI : in STD_LOGIC; -- ScanInPort 
+           CE : in STD_LOGIC; -- CaptureEnPort
+           SE : in STD_LOGIC; -- ShiftEnPort
+           UE : in STD_LOGIC; -- UpdateEnPort
+           SEL : in STD_LOGIC; -- SelectPort
+           RST : in STD_LOGIC; -- ResetPort
+           TCK : in STD_LOGIC; -- TCKPort
+           SO : out STD_LOGIC; -- ScanOutPort
+           toF : out STD_LOGIC; -- To F flag of the upper hierarchical level
+           toC : out STD_LOGIC; -- To C flag of the upper hierarchical level
+       -- Scan Interface  host ----------------
+           fromSO : in  STD_LOGIC; -- ScanInPort
+           toCE : out  STD_LOGIC; -- ToCaptureEnPort
+           toSE : out  STD_LOGIC; -- ToShiftEnPort
+           toUE : out  STD_LOGIC; -- ToUpdateEnPort
+           toSEL : out  STD_LOGIC; -- ToSelectPort
+           toRST : out  STD_LOGIC; -- ToResetPort
+           toTCK : out  STD_LOGIC; -- ToTCKPort
+           toSI : out  STD_LOGIC; -- ScanOutPort
+           fromF : in STD_LOGIC; -- From an OR of all F flags in the underlying network segment
+           fromC : in STD_LOGIC);  -- From an AND of all C flags in the underlying network segment
+end component;
+
+component RAMAccessInstrument is
+    Generic ( DataSize : positive := 8;
+            AddressSize : positive := 8);
+    Port ( -- Scan Interface scan_client ----------
+            SI : in std_logic; -- ScanInPort 
+            SO : out std_logic; -- ScanOutPort
+            SEL : in std_logic; -- SelectPort
+            ----------------------------------------        
+            SE : in std_logic; -- ShiftEnPort
+            CE : in std_logic; -- CaptureEnPort
+            UE : in std_logic; -- UpdateEnPort
+            RST : in std_logic; -- ResetPort
+            TCK : in std_logic; -- TCKPort
+            MEM_SIB_SEL : out std_logic;
+               -- RAM interface
+            RAM_data_read : in std_logic_vector (DataSize-1 downto 0);
+            RAM_data_write : out std_logic_vector (DataSize-1 downto 0);
+            RAM_address_out : out std_logic_vector (AddressSize-1 downto 0);
+            RAM_write_enable : out std_logic);
+end component;
 
 -- Declaring network component
 
@@ -136,9 +184,16 @@ constant path : string(1 to 12) := "Testbenches/"; --uncomment this if you are S
     signal UART_2_W_in, UART_2_W_out, UART_2_R_in, UART_2_R_out : std_logic;
     signal UART_3_W_in, UART_3_W_out, UART_3_R_in, UART_3_R_out : std_logic;
 
-    signal SO_NoC , SO_sensors  : std_logic;
-    signal toF_NoC, toF_sensors : std_logic;
-    signal toC_NoC, toC_sensors : std_logic;
+    -- IJTAG-related signals
+
+    signal SO_NoC , SO_sensors , SO_RAM  : std_logic;
+    signal toF_NoC, toF_sensors, toF_RAM : std_logic;
+    signal toC_NoC, toC_sensors, toC_RAM : std_logic;
+
+    signal SIB_RAM_toSI, SIB_RAM_toTCK, SIB_RAM_toRST, SIB_RAM_toSEL, SIB_RAM_toUE, SIB_RAM_toSE, SIB_RAM_toCE : std_logic;
+    signal RAM0_SO,           RAM1_SO,           RAM2_SO,           RAM3_SO           : std_logic;
+    signal RAM0_write_enable, RAM1_write_enable, RAM2_write_enable, RAM3_write_enable : std_logic;
+    signal RAM0_address,      RAM1_address,      RAM2_address,      RAM3_address      : std_logic_vector(RAMAddrSize-1 downto 0);
 
     signal IJTAG_ram_0_select            : std_logic;
     signal IJTAG_ram_0_clk               : std_logic;
@@ -188,41 +243,8 @@ port map (reset, clk,
     link_faults_1, turn_faults_1, Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1,
     link_faults_2, turn_faults_2, Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2,
     link_faults_3, turn_faults_3, Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3,
-    TCK, RST, SEL, SI, SE, UE, CE, SO_NoC, toF_NoC, toC_NoC
+    TCK, RST, SEL, SO_sensors, SE, UE, CE, SO_NoC, toF_NoC, toC_NoC
     );
-
-IJTAG_ram_0_select <= '0';
-IJTAG_ram_1_select <= '0';
-IJTAG_ram_2_select <= '0';
-IJTAG_ram_3_select <= '0';
-
-toF <= toF_NoC or toF_sensors;
-toC <= toC_NoC and toC_sensors;
-SO <= SO_sensors;
-
-immortal_sensors: immortal_sensor_IJTAG_interface
-    port map (
-    TCK => TCK,
-    RST => RST,
-    SEL => SEL,
-    SI  => SO_NoC,
-    SE  => SE,
-    UE  => UE,
-    CE  => CE,
-    SO  => SO_sensors,
-    toF => toF_sensors,
-    toC => toC_sensors,
-
-    temperature_control => temperature_control,
-    temperature_data    => temperature_data,
-    iddt_control        => iddt_control,
-    iddt_data           => iddt_data,
-    slack_control       => slack_control,
-    slack_data          => slack_data,
-    voltage_control     => voltage_control,
-    voltage_data        => voltage_data
-  );
-
 
 process (not_reset, clk)
 begin
@@ -410,6 +432,161 @@ port map( not_reset, clk,
         IJTAG_data_read         => IJTAG_ram_3_data_read
    );
 
+-------------------------------------------
+------- IJTAG stuff -----------------------
+-------------------------------------------
 
+toF <= toF_NoC or toF_sensors;
+toC <= toC_NoC and toC_sensors;
+SO <= SO_NoC;
+
+IJTAG_ram_0_enable <= '1';
+IJTAG_ram_1_enable <= '1';
+IJTAG_ram_2_enable <= '1';
+IJTAG_ram_3_enable <= '1';
+
+IJTAG_ram_0_clk <= TCK;
+IJTAG_ram_1_clk <= TCK;
+IJTAG_ram_2_clk <= TCK;
+IJTAG_ram_3_clk <= TCK;
+
+IJTAG_ram_0_reset <= RST;
+IJTAG_ram_1_reset <= RST;
+IJTAG_ram_2_reset <= RST;
+IJTAG_ram_3_reset <= RST;
+
+-- RAM Access SIB
+
+SIB_RAM : SIB_mux_pre_FCX_SELgate
+    port map ( -- Scan Interface  client --------------
+    SI  => SI,
+    CE  => CE,
+    SE  => SE,
+    UE  => UE,
+    SEL => SEL,
+    RST => RST,
+    TCK => TCK,
+    SO  => SO_RAM,
+    toF => toF_RAM,
+    toC => toC_RAM,
+     -- Scan Interface  host ----------------
+    fromSO => RAM3_SO,
+    toCE   => SIB_RAM_toCE,
+    toSE   => SIB_RAM_toSE,
+    toUE   => SIB_RAM_toUE,
+    toSEL  => SIB_RAM_toSEL,
+    toRST  => SIB_RAM_toRST,
+    toTCK  => SIB_RAM_toTCK,
+    toSI   => SIB_RAM_toSI,
+    fromF  => '0',
+    fromC  => '1'
+);
+
+-- RAM Access instruments
+
+RAM_instr0 : RAMAccessInstrument
+ generic map ( DataSize => RAMDataSize,
+               AddressSize => RAMAddrSize)
+    port map ( SI  => SIB_RAM_toSI,
+               SO  => RAM0_SO,
+               SEL => SIB_RAM_toSEL,
+               SE  => SIB_RAM_toSE,
+               CE  => SIB_RAM_toCE,
+               UE  => SIB_RAM_toUE,
+               RST => SIB_RAM_toRST,
+               TCK => SIB_RAM_toTCK,
+               MEM_SIB_SEL => IJTAG_ram_0_select,
+               RAM_data_read => IJTAG_ram_0_data_read,
+               RAM_data_write => IJTAG_ram_0_data_write,
+               RAM_address_out => RAM0_address,
+               RAM_write_enable => RAM0_write_enable);
+
+IJTAG_ram_0_write_byte_enable <= (others => RAM0_write_enable);
+IJTAG_ram_0_address <= "000000000000000000" & RAM0_address;
+
+RAM_instr1 : RAMAccessInstrument
+ generic map ( DataSize => RAMDataSize,
+               AddressSize => RAMAddrSize)
+    port map ( SI  => RAM0_SO,
+               SO  => RAM1_SO,
+               SEL => SIB_RAM_toSEL,
+               SE  => SIB_RAM_toSE,
+               CE  => SIB_RAM_toCE,
+               UE  => SIB_RAM_toUE,
+               RST => SIB_RAM_toRST,
+               TCK => SIB_RAM_toTCK,
+               MEM_SIB_SEL => IJTAG_ram_1_select,
+               RAM_data_read => IJTAG_ram_1_data_read,
+               RAM_data_write => IJTAG_ram_1_data_write,
+               RAM_address_out => RAM1_address,
+               RAM_write_enable => RAM1_write_enable);
+
+IJTAG_ram_1_write_byte_enable <= (others => RAM1_write_enable);
+IJTAG_ram_1_address <= "000000000000000000" & RAM1_address;
+
+RAM_instr2 : RAMAccessInstrument
+ generic map ( DataSize => RAMDataSize,
+               AddressSize => RAMAddrSize)
+    port map ( SI  => RAM1_SO,
+               SO  => RAM2_SO,
+               SEL => SIB_RAM_toSEL,
+               SE  => SIB_RAM_toSE,
+               CE  => SIB_RAM_toCE,
+               UE  => SIB_RAM_toUE,
+               RST => SIB_RAM_toRST,
+               TCK => SIB_RAM_toTCK,
+               MEM_SIB_SEL => IJTAG_ram_2_select,
+               RAM_data_read => IJTAG_ram_2_data_read,
+               RAM_data_write => IJTAG_ram_2_data_write,
+               RAM_address_out => RAM2_address,
+               RAM_write_enable => RAM2_write_enable);
+
+IJTAG_ram_2_write_byte_enable <= (others => RAM2_write_enable);
+IJTAG_ram_2_address <= "000000000000000000" & RAM2_address;
+
+RAM_instr3 : RAMAccessInstrument
+ generic map ( DataSize => RAMDataSize,
+               AddressSize => RAMAddrSize)
+    port map ( SI  => RAM2_SO,
+               SO  => RAM3_SO,
+               SEL => SIB_RAM_toSEL,
+               SE  => SIB_RAM_toSE,
+               CE  => SIB_RAM_toCE,
+               UE  => SIB_RAM_toUE,
+               RST => SIB_RAM_toRST,
+               TCK => SIB_RAM_toTCK,
+               MEM_SIB_SEL => IJTAG_ram_3_select,
+               RAM_data_read => IJTAG_ram_3_data_read,
+               RAM_data_write => IJTAG_ram_3_data_write,
+               RAM_address_out => RAM3_address,
+               RAM_write_enable => RAM3_write_enable);
+
+IJTAG_ram_3_write_byte_enable <= (others => RAM3_write_enable);
+IJTAG_ram_3_address <= "000000000000000000" & RAM3_address;
+
+-- IMMORTAL sensors interface
+
+immortal_sensors: immortal_sensor_IJTAG_interface
+    port map (
+    TCK => TCK,
+    RST => RST,
+    SEL => SEL,
+    SI  => SO_RAM,
+    SE  => SE,
+    UE  => UE,
+    CE  => CE,
+    SO  => SO_sensors,
+    toF => toF_sensors,
+    toC => toC_sensors,
+
+    temperature_control => temperature_control,
+    temperature_data    => temperature_data,
+    iddt_control        => iddt_control,
+    iddt_data           => iddt_data,
+    slack_control       => slack_control,
+    slack_data          => slack_data,
+    voltage_control     => voltage_control,
+    voltage_data        => voltage_data
+  );
 
 end;
