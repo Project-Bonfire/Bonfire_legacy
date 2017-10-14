@@ -209,6 +209,8 @@ end component;
     signal SIB_0_sta_toCE,  SIB_1_sta_toCE,  SIB_2_sta_toCE,  SIB_3_sta_toCE  : std_logic;
     signal SIB_0_sta_so,    SIB_1_sta_so,    SIB_2_sta_so,    SIB_3_sta_so    : std_logic;
 
+    signal SIB_main_toCE, SIB_main_toSE, SIB_main_toUE, SIB_main_toSEL, SIB_main_toRST, SIB_main_toTCK, SIB_main_toSI, toF_SIB_main, toC_SIB_main : std_logic;
+
     -- flags from checkers
     signal F_R0, F_R1, F_R2, F_R3 : std_logic;
     signal C_R0, C_R1, C_R2, C_R3 : std_logic;
@@ -275,9 +277,34 @@ end component;
 begin
 
 -- IJTAG top level
-toF <= F_segtop_fromSIB_0 or  F_segtop_fromSIB_1 or  F_segtop_fromSIB_2 or  F_segtop_fromSIB_3;
-toC <= C_segtop_fromSIB_0 and C_segtop_fromSIB_1 and C_segtop_fromSIB_2 and C_segtop_fromSIB_3;
-SO <= SIB_3_so;
+
+SIB_main : SIB_mux_pre_FCX_SELgate
+    port map ( -- Scan Interface  client --------------
+    SI  => SI,
+    CE  => CE,
+    SE  => SE,
+    UE  => UE,
+    SEL => SEL,
+    RST => RST,
+    TCK => TCK,
+    SO  => SO,
+    toF => toF,
+    toC => toC,
+     -- Scan Interface  host ----------------
+    fromSO => SIB_3_so,
+    toCE   => SIB_main_toCE,
+    toSE   => SIB_main_toSE,
+    toUE   => SIB_main_toUE,
+    toSEL  => SIB_main_toSEL,
+    toRST  => SIB_main_toRST,
+    toTCK  => SIB_main_toTCK,
+    toSI   => SIB_main_toSI,
+    fromF  => toF_SIB_main,
+    fromC  => toC_SIB_main
+);
+
+toF_SIB_main <= F_segtop_fromSIB_0 or  F_segtop_fromSIB_1 or  F_segtop_fromSIB_2 or  F_segtop_fromSIB_3;
+toC_SIB_main <= C_segtop_fromSIB_0 and C_segtop_fromSIB_1 and C_segtop_fromSIB_2 and C_segtop_fromSIB_3;
 
 -----------------------------------
 ------ ROUTER 0 -------------------
@@ -285,13 +312,13 @@ SO <= SIB_3_so;
 -- Router 0 main SIB
 SIB_0 : SIB_mux_pre_FCX_SELgate
     port map ( -- Scan Interface  client --------------
-    SI => SI,
-    CE => CE,
-    SE => SE,
-    UE => UE,
-    SEL => SEL,
-    RST => RST,
-    TCK => TCK,
+    SI => SIB_main_toSI,
+    CE => SIB_main_toCE,
+    SE => SIB_main_toSE,
+    UE => SIB_main_toUE,
+    SEL => SIB_main_toSEL,
+    RST => SIB_main_toRST,
+    TCK => SIB_main_toTCK,
     SO => SIB_0_so,
     toF => F_segtop_fromSIB_0,
     toC => C_segtop_fromSIB_0,
@@ -387,12 +414,12 @@ R0_aggregated_fault_status <= link_faults_async_0 & turn_faults_async_0;
 SIB_1 : SIB_mux_pre_FCX_SELgate
     port map ( -- Scan Interface  client --------------
     SI => SIB_0_so,
-    CE => CE,
-    SE => SE,
-    UE => UE,
-    SEL => SEL,
-    RST => RST,
-    TCK => TCK,
+    CE => SIB_main_toCE,
+    SE => SIB_main_toSE,
+    UE => SIB_main_toUE,
+    SEL => SIB_main_toSEL,
+    RST => SIB_main_toRST,
+    TCK => SIB_main_toTCK,
     SO => SIB_1_so,
     toF => F_segtop_fromSIB_1,
     toC => C_segtop_fromSIB_1,
@@ -485,15 +512,15 @@ R1_aggregated_fault_status <= link_faults_async_1 & turn_faults_async_1;
 ------ ROUTER 2 -------------------
 -----------------------------------
 -- Router R2 main SIB
-SIB_R2_inj_so : SIB_mux_pre_FCX_SELgate
+SIB_2 : SIB_mux_pre_FCX_SELgate
     port map ( -- Scan Interface  client --------------
     SI => SIB_1_so,
-    CE => CE,
-    SE => SE,
-    UE => UE,
-    SEL => SEL,
-    RST => RST,
-    TCK => TCK,
+    CE => SIB_main_toCE,
+    SE => SIB_main_toSE,
+    UE => SIB_main_toUE,
+    SEL => SIB_main_toSEL,
+    RST => SIB_main_toRST,
+    TCK => SIB_main_toTCK,
     SO => SIB_2_so,
     toF => F_segtop_fromSIB_2,
     toC => C_segtop_fromSIB_2,
@@ -589,12 +616,12 @@ R2_aggregated_fault_status <= link_faults_async_2 & turn_faults_async_2;
 SIB_3 : SIB_mux_pre_FCX_SELgate
     port map ( -- Scan Interface  client --------------
     SI => SIB_2_so,
-    CE => CE,
-    SE => SE,
-    UE => UE,
-    SEL => SEL,
-    RST => RST,
-    TCK => TCK,
+    CE => SIB_main_toCE,
+    SE => SIB_main_toSE,
+    UE => SIB_main_toUE,
+    SEL => SIB_main_toSEL,
+    RST => SIB_main_toRST,
+    TCK => SIB_main_toTCK,
     SO => SIB_3_so,
     toF => F_segtop_fromSIB_3,
     toC => C_segtop_fromSIB_3,
