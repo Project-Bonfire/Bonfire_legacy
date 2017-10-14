@@ -91,7 +91,7 @@ shiftreg : SReg
                UE => UE,
                RST => RST,
                TCK => TCK,
-			         DI => DI_sync,
+			         DI => sticky_flags,
 			         DO => sreg_do);		  
 
 end AsyncDataRegisterAdapter_arch;
