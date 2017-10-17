@@ -70,7 +70,7 @@ begin
 
 SO <= SR_so; -- Source SR
 toCE <= SEL and SR_do(3) and CE;
-toSE <= SEL and SR_do(3) and CE;
+toSE <= SEL and SR_do(3) and SE;
 toUE <= SEL and SR_do(3) and UE;
 toSEL <= SEL and SR_do(3); -- SEL & S bit
 toRST <= RST;
