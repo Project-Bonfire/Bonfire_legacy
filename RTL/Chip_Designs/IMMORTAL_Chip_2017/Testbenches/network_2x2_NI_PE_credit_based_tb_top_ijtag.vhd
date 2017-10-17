@@ -260,6 +260,16 @@ begin
       return zero_array;
     end function all_zeroes;
 
+          -- Returns all ones std_logic_vector of specified size
+    function all_ones (number_of_ones : in positive) return std_logic_vector is
+      variable ones_array : std_logic_vector(0 to number_of_ones-1);
+    begin
+      for i in ones_array'range loop
+       ones_array(i) := '1';
+      end loop;
+      return ones_array;
+    end function all_ones;
+
     function reverse_vector (a: in std_logic_vector) return std_logic_vector is
       variable result: std_logic_vector(a'RANGE);
       alias aa: std_logic_vector(a'REVERSE_RANGE) is a;
@@ -502,13 +512,13 @@ begin
 
 -- Sensors
 
-    temperature_data(12 downto 1) <= "000000000000";
-    temperature_data(0) <= '0';
+    --temperature_data(12 downto 1) <= "000000000000";
+    --temperature_data(0) <= '0';
 
-    current_test <= "open_sib_sens   ";
-    pre_shift_len := 0;
-    post_shift_len := 0;
-    shift_data(fcXN&fcXS&fcXN); -- open sib_sens
+    --current_test <= "open_sib_sens   ";
+    --pre_shift_len := 0;
+    --post_shift_len := 0;
+    --shift_data(fcXN&fcXS&fcXN); -- open sib_sens
 
 -- Temperature monitor test
 
@@ -713,79 +723,79 @@ begin
     --shift_data_with_readout(all_zeroes(32), volt_value_var);
     --volt_value <= reverse_vector(volt_value_var);
 
-    current_test <= "close_sib_sens  ";
-    pre_shift_len := 0;
-    post_shift_len := 0;
-    shift_data(fcXN&fcXN&fcXN&fcXN&fcXN&fcXN&fcXN); -- close all sibs
+    --current_test <= "close_sib_sens  ";
+    --pre_shift_len := 0;
+    --post_shift_len := 0;
+    --shift_data(fcXN&fcXN&fcXN&fcXN&fcXN&fcXN&fcXN); -- close all sibs
 
 -- Router SIBs
 
-    --current_test <= "open_sib_noc    ";
-    --pre_shift_len := 0;
-    --post_shift_len := 0;
-    --shift_data(fcXS&fcXN&fcXN); -- open sib_noc
+    current_test <= "open_sib_noc    ";
+    pre_shift_len := 0;
+    post_shift_len := 0;
+    shift_data(fcXS&fcXN&fcXN); -- open sib_noc
 
-    ----Router 0
-    --current_test <= "open_sib_r0     ";
-    --pre_shift(0 to 19) := fcXS&fcXN&fcXN&fcXN&fcXS; -- (top)noc, r3, r2, r1, r0
-    --pre_shift_len := 20;
-    --post_shift(0 to 7) := fcXN&fcXN; -- (top)sens, (top)mem
-    --post_shift_len := 8;
+    --Router 0
+    current_test <= "open_sib_r0     ";
+    pre_shift(0 to 19) := fcXS&fcXN&fcXN&fcXN&fcXS; -- (top)noc, r3, r2, r1, r0
+    pre_shift_len := 20;
+    post_shift(0 to 7) := fcXN&fcXN; -- (top)sens, (top)mem
+    post_shift_len := 8;
 
-    --shift_data(""); --open sib_r0
+    shift_data(""); --open sib_r0
 
-    ----Router 0 injection
-    --current_test <= "open_sib_r0_inj ";
-    --pre_shift(0 to 27) := fcXS&fcXN&fcXN&fcXN&fcXS&fcXN&fcXS; -- (top)noc, r3, r2, r1, r0, r0_sta, r0_inj
-    --pre_shift_len := 28;
-    --post_shift(0 to 7) := fcXN&fcXN; -- (top)sens, (top)mem
-    --post_shift_len := 8;
+    --Router 0 injection
+    current_test <= "open_sib_r0_inj ";
+    pre_shift(0 to 27) := fcXS&fcXN&fcXN&fcXN&fcXS&fcXN&fcXS; -- (top)noc, r3, r2, r1, r0, r0_sta, r0_inj
+    pre_shift_len := 28;
+    post_shift(0 to 7) := fcXN&fcXN; -- (top)sens, (top)mem
+    post_shift_len := 8;
 
-    --shift_data(""); --open sib_r0_inj
+    shift_data(""); --open sib_r0_inj
 
-    --current_test <= "r0_inj_arb_out  ";
-    ----shift_data(all_zeroes(130));
-    --shift_data("000000000"&   "0000001"&"0000001"&"0000001"&"0000001"&"0000001"&   "0000000"&"0000000"&"0000000"&"0000000"&"0000000"&   "000000000"&"000000000"&"000000000"&   "00000000"&"00000000"&"00000000");
-
-
-    --current_test <= "close_sib_r0_inj";
-    --pre_shift(0 to 27) := fcXS&fcXN&fcXN&fcXN&fcXS&fcXN&fcXN; -- (top)noc, r3, r2, r1, r0, r0_sta, r0_inj
-    --pre_shift_len := 28;
-    --post_shift(0 to 7) := fcXN&fcXN; -- (top)sens, (top)mem
-    --post_shift_len := 8;
-
+    current_test <= "r0_inj_arb_out  ";
     --shift_data(all_zeroes(130));
-
-    ----Router 0 status
-    --current_test <= "open_sib_r0_sta ";
-    --pre_shift(0 to 23) := fcXS&fcXN&fcXN&fcXN&fcXS&fcXS; -- (top)noc, r3, r2, r1, r0, r0_sta
-    --pre_shift_len := 24;
-    --post_shift(0 to 11) := fcXN&fcXN&fcXN; -- r0_inj, (top)sens, (top)mem
-    --post_shift_len := 12;
-
-    --shift_data(""); --open sib_r0_sta
-
-    --current_test <= "r0_sta_readout  ";
-    --shift_data_with_readout(all_zeroes(25), r0_sta_value_var);
-    --r0_sta_value <= reverse_vector(r0_sta_value_var);
-    ----shift_data(all_zeroes(25));
+    shift_data("000000000"&   "0000001"&"0000001"&"0000001"&"0000001"&"0000001"&   "0000000"&"0000000"&"0000000"&"0000000"&"0000000"&   "000000000"&"000000000"&"000000000"&   "00000000"&"00000000"&"00000000");
 
 
-    --current_test <= "close_sib_r0_sta";
-    --pre_shift(0 to 23) := fcXS&fcXN&fcXN&fcXN&fcXS&fcXN; -- (top)noc, r3, r2, r1, r0, r0_sta
-    --pre_shift_len := 24;
-    --post_shift(0 to 11) := fcXN&fcXN&fcXN; -- r0_inj, (top)sens, (top)mem
-    --post_shift_len := 12;
+    current_test <= "close_sib_r0_inj";
+    pre_shift(0 to 27) := fcXS&fcXN&fcXN&fcXN&fcXS&fcXN&fcXN; -- (top)noc, r3, r2, r1, r0, r0_sta, r0_inj
+    pre_shift_len := 28;
+    post_shift(0 to 7) := fcXN&fcXN; -- (top)sens, (top)mem
+    post_shift_len := 8;
 
+    shift_data(all_zeroes(130));
+
+    --Router 0 status
+    current_test <= "open_sib_r0_sta ";
+    pre_shift(0 to 23) := fcXS&fcXN&fcXN&fcXN&fcXS&fcXS; -- (top)noc, r3, r2, r1, r0, r0_sta
+    pre_shift_len := 24;
+    post_shift(0 to 11) := fcXN&fcXN&fcXN; -- r0_inj, (top)sens, (top)mem
+    post_shift_len := 12;
+
+    shift_data(""); --open sib_r0_sta
+
+    current_test <= "r0_sta_readout  ";
+    shift_data_with_readout(all_zeroes(25), r0_sta_value_var);
+    r0_sta_value <= reverse_vector(r0_sta_value_var);
     --shift_data(all_zeroes(25));
 
-    --current_test <= "close_sib_r0    ";
-    --pre_shift(0 to 19) := fcXS&fcXN&fcXN&fcXN&fcXN; -- (top)noc, r3, r2, r1, r0
-    --pre_shift_len := 20;
-    --post_shift(0 to 7) := fcXN&fcXN; -- (top)sens, (top)mem
-    --post_shift_len := 8;
 
-    --shift_data(fcXN&fcXN); -- inj and status sibs of r0
+    current_test <= "close_sib_r0_sta";
+    pre_shift(0 to 23) := fcXS&fcXN&fcXN&fcXN&fcXS&fcXN; -- (top)noc, r3, r2, r1, r0, r0_sta
+    pre_shift_len := 24;
+    post_shift(0 to 11) := fcXN&fcXN&fcXN; -- r0_inj, (top)sens, (top)mem
+    post_shift_len := 12;
+
+    shift_data("11111"&all_zeroes(20));
+
+    current_test <= "close_sib_r0    ";
+    pre_shift(0 to 19) := fcXS&fcXN&fcXN&fcXN&fcXN; -- (top)noc, r3, r2, r1, r0
+    pre_shift_len := 20;
+    post_shift(0 to 7) := fcXN&fcXN; -- (top)sens, (top)mem
+    post_shift_len := 8;
+
+    shift_data(fcXN&fcXN); -- inj and status sibs of r0
 
 
 
@@ -913,10 +923,10 @@ begin
 
 
 
-    --current_test <= "close_sib_noc   ";
-    --pre_shift_len := 0;
-    --post_shift_len := 0;
-    --shift_data(fcXN&fcXN&fcXN&fcXN&fcXN&fcXN&fcXN); -- close all sibs
+    current_test <= "close_sib_noc   ";
+    pre_shift_len := 0;
+    post_shift_len := 0;
+    shift_data(fcXN&fcXN&fcXN&fcXN&fcXN&fcXN&fcXN); -- close all sibs
 
     wait;
 
