@@ -69,27 +69,29 @@ architecture logic of ram is
     signal delayed_data_out, Q: std_logic_vector(31 downto 0);
 begin
 
-    process(IJTAG_select, clk, reset, enable, write_byte_enable, address,
-            data_write, Mem_data_read, IJTAG_clk, IJTAG_reset, IJTAG_enable,
-            IJTAG_write_byte_enable, IJTAG_address, IJTAG_data_write)
-            begin
-        case( IJTAG_select) is
-          when '0' =>
-                Mem_clk               <= clk;
-                Mem_reset             <= reset;
-                Mem_enable            <= enable;
-                Mem_write_byte_enable <= write_byte_enable;
-                Mem_address           <= address;
-                Mem_data_write        <= data_write;
-                data_read             <= Mem_data_read;
-          when others =>
-                Mem_clk               <= IJTAG_clk;
-                Mem_reset             <= IJTAG_reset;
-                Mem_enable            <= IJTAG_enable;
-                Mem_write_byte_enable <= IJTAG_write_byte_enable;
-                Mem_address           <= IJTAG_address;
-                Mem_data_write        <= IJTAG_data_write;
-                IJTAG_data_read       <= Mem_data_read;
+   process(IJTAG_select, clk, reset, enable, write_byte_enable, address,
+          data_write, Mem_data_read, IJTAG_clk, IJTAG_reset, IJTAG_enable,
+          IJTAG_write_byte_enable, IJTAG_address, IJTAG_data_write)
+          begin
+      case( IJTAG_select) is
+        when '0' =>
+              Mem_clk               <= clk;
+              Mem_reset             <= reset;
+              Mem_enable            <= enable;
+              Mem_write_byte_enable <= write_byte_enable;
+              Mem_address           <= address;
+              Mem_data_write        <= data_write;
+              data_read             <= Mem_data_read;
+              IJTAG_data_read       <= (others =>'0');
+        when others =>
+              Mem_clk               <= IJTAG_clk;
+              Mem_reset             <= IJTAG_reset;
+              Mem_enable            <= IJTAG_enable;
+              Mem_write_byte_enable <= IJTAG_write_byte_enable;
+              Mem_address           <= IJTAG_address;
+              Mem_data_write        <= IJTAG_data_write;
+              IJTAG_data_read       <= Mem_data_read;
+              data_read             <= (others =>'0');
         end case;
    end process;
 
