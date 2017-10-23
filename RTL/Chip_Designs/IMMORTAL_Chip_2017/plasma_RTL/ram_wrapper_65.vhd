@@ -46,9 +46,7 @@ architecture logic of ram is
          DI31,CK,WEB,DVSE,DVS0,DVS1,DVS2,CSB: in std_logic);
     end component;
     signal write_enable: std_logic;
-    signal write_BWEB: std_logic_vector(31 downto 0);
     signal not_clock: std_logic;
-    signal delayed_data_out, Q: std_logic_vector(31 downto 0);
 
     signal Mem_clk               : std_logic;
     signal Mem_reset             : std_logic;
@@ -76,6 +74,7 @@ begin
               Mem_address           <= address;
               Mem_data_write        <= data_write;
               data_read             <= Mem_data_read;
+              IJTAG_data_read       <= (others =>'0');
         when others =>
               Mem_clk               <= IJTAG_clk;
               Mem_reset             <= IJTAG_reset;
@@ -84,6 +83,7 @@ begin
               Mem_address           <= IJTAG_address;
               Mem_data_write        <= IJTAG_data_write;
               IJTAG_data_read       <= Mem_data_read;
+              data_read             <= (others =>'0');
       end case;
     end process;
 

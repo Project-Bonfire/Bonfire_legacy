@@ -452,61 +452,61 @@ begin
 
 -- RAM access instrument test
 
-   reset <= '0';
+   --reset <= '0';
 
-   current_test <= "open_sib_ram    ";
-   shift_data(fcXN&fcXN&fcXS); -- open sib_ram
+   --current_test <= "open_sib_ram    ";
+   --shift_data(fcXN&fcXN&fcXS); -- open sib_ram
 
-   -- Test mem0
-   current_test <= "open_sib_ram0   ";
-   pre_shift(0 to 14) := fcXN&fcXN&fcXS&"0"&"0"&"0";
-   pre_shift_len := 15;
-   post_shift_len := 0;
+   ---- Test mem0
+   --current_test <= "open_sib_ram0   ";
+   --pre_shift(0 to 14) := fcXN&fcXN&fcXS&"0"&"0"&"0";
+   --pre_shift_len := 15;
+   --post_shift_len := 0;
 
-   shift_data("1"); -- open sib_ram and sib_ram0: sib_noc & sib_sens & sib_ram & 3xsib_mem
-   tck_tick(4);
-   test_ram_access;
+   --shift_data("1"); -- open sib_ram and sib_ram0: sib_noc & sib_sens & sib_ram & 3xsib_mem
+   --tck_tick(4);
+   --test_ram_access;
 
-   -- Test mem1
-   current_test <= "open_sib_ram1   ";
-   pre_shift(0 to 13) := fcXN&fcXN&fcXS&"0"&"0";
-   pre_shift_len := 14;
-   post_shift(0 to 0) := "0";
-   post_shift_len := 1;
+   ---- Test mem1
+   --current_test <= "open_sib_ram1   ";
+   --pre_shift(0 to 13) := fcXN&fcXN&fcXS&"0"&"0";
+   --pre_shift_len := 14;
+   --post_shift(0 to 0) := "0";
+   --post_shift_len := 1;
 
-   shift_data("1"); -- open sib_ram and sib_ram_1: sib_noc & sib_sens & sib_ram & 4xsib_mem
-   tck_tick(4);
-   test_ram_access;
+   --shift_data("1"); -- open sib_ram and sib_ram_1: sib_noc & sib_sens & sib_ram & 4xsib_mem
+   --tck_tick(4);
+   --test_ram_access;
 
-   -- Test mem2
-   current_test <= "open_sib_ram2   ";
-   pre_shift(0 to 12) := fcXN&fcXN&fcXS&"0";
-   pre_shift_len := 13;
-   post_shift(0 to 1) := "00";
-   post_shift_len := 2;
+   ---- Test mem2
+   --current_test <= "open_sib_ram2   ";
+   --pre_shift(0 to 12) := fcXN&fcXN&fcXS&"0";
+   --pre_shift_len := 13;
+   --post_shift(0 to 1) := "00";
+   --post_shift_len := 2;
 
-   shift_data("1"); -- open sib_ram and sib_ram_2: sib_noc & sib_sens & sib_ram & 4xsib_mem
-   tck_tick(4);
-   test_ram_access;
+   --shift_data("1"); -- open sib_ram and sib_ram_2: sib_noc & sib_sens & sib_ram & 4xsib_mem
+   --tck_tick(4);
+   --test_ram_access;
 
-   -- Test mem2
-   current_test <= "open_sib_ram3   ";
-   pre_shift(0 to 11) := fcXN&fcXN&fcXS;
-   pre_shift_len := 12;
-   post_shift(0 to 2) := "000";
-   post_shift_len := 3;
+   ---- Test mem2
+   --current_test <= "open_sib_ram3   ";
+   --pre_shift(0 to 11) := fcXN&fcXN&fcXS;
+   --pre_shift_len := 12;
+   --post_shift(0 to 2) := "000";
+   --post_shift_len := 3;
 
-   shift_data("1"); -- open sib_ram and sib_ram_3: sib_noc & sib_sens & sib_ram & 4xsib_mem
-   tck_tick(4);
-   test_ram_access;
+   --shift_data("1"); -- open sib_ram and sib_ram_3: sib_noc & sib_sens & sib_ram & 4xsib_mem
+   --tck_tick(4);
+   --test_ram_access;
 
-   current_test <= "close_sib_ram   ";
-   pre_shift_len := 0;
-   post_shift_len := 0;
-   shift_data(fcXN&fcXN&fcXN&"0"&"0"&"0"&"0"); -- close all sibs
+   --current_test <= "close_sib_ram   ";
+   --pre_shift_len := 0;
+   --post_shift_len := 0;
+   --shift_data(fcXN&fcXN&fcXN&"0"&"0"&"0"&"0"); -- close all sibs
 
-   -- Release chip reset
-   reset <= '1';
+   ---- Release chip reset
+   --reset <= '1';
 
    wait for 10us;
 
