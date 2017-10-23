@@ -48,6 +48,13 @@ vcom -cover bcesfx "IJTAG_files/ScanMux.vhd"
 vcom -cover bcesfx "IJTAG_files/ScanRegister.vhd"
 vcom -cover bcesfx "IJTAG_files/SReg.vhd"
 vcom -cover bcesfx "IJTAG_files/AsyncDataRegisterAdapter.vhd"
+vcom -cover bcesfx "IJTAG_files/RAM_access_instrument.vhd"
+vcom -cover bcesfx "IJTAG_files/SIB_mux_pre.vhd"
+vcom -cover bcesfx "IJTAG_files/ScanRegister_for_SIBFCX.vhd"
+vcom -cover bcesfx "IJTAG_files/immortal_sensor_IJTAG_interface.vhd"
+vcom -cover bcesfx "IJTAG_files/immortal_temp_iddt_monitor_instrument.vhd"
+vcom -cover bcesfx "IJTAG_files/immortal_volt_monitor_instrument.vhd"
+vcom -cover bcesfx "IJTAG_files/immortal_slack_monitor_instrument.vhd"
 
 # plasma components
 # vcom -cover bcesfx "plasma_RTL/memory_sim.vhd"
@@ -84,7 +91,8 @@ vcom -cover bcesfx "network_files/network_2x2_customized_packet_drop_SHMU_credit
 vcom -cover bcesfx "network_files/network_2x2_customized_packet_drop_SHMU_credit_based_with_checkers_with_PE_top.vhd"
 
 vcom "Testbenches/sim_uart.vhd"
-vcom "Testbenches/network_2x2_NI_PE_credit_based_tb_top.vhd"
+#vcom "Testbenches/network_2x2_NI_PE_credit_based_tb_top.vhd"
+vcom "Testbenches/network_2x2_NI_PE_credit_based_tb_top_ijtag.vhd"
 
 
 # Start the simulation

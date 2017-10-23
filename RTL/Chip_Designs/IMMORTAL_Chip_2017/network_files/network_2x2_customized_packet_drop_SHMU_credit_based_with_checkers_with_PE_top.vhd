@@ -101,7 +101,7 @@ end component;
 
 component SIB_mux_pre_FCX_SELgate is
     Port ( -- Scan Interface  client --------------
-           SI : in STD_LOGIC; -- ScanInPort 
+           SI : in STD_LOGIC; -- ScanInPort
            CE : in STD_LOGIC; -- CaptureEnPort
            SE : in STD_LOGIC; -- ShiftEnPort
            UE : in STD_LOGIC; -- UpdateEnPort
@@ -128,10 +128,10 @@ component RAMAccessInstrument is
     Generic ( DataSize : positive := 8;
             AddressSize : positive := 8);
     Port ( -- Scan Interface scan_client ----------
-            SI : in std_logic; -- ScanInPort 
+            SI : in std_logic; -- ScanInPort
             SO : out std_logic; -- ScanOutPort
             SEL : in std_logic; -- SelectPort
-            ----------------------------------------        
+            ----------------------------------------
             SE : in std_logic; -- ShiftEnPort
             CE : in std_logic; -- CaptureEnPort
             UE : in std_logic; -- UpdateEnPort
@@ -440,11 +440,11 @@ port map( not_reset, clk,
 --            .----------.   .-----------.   .----------.
 --     SI ----| sib_ram  |---| sib_sens  |---| sib_noc  |-- SO
 --            '----------'   '-----------'   '----------'
---              |       |_________________________________________________. 
---              |                                                         | 
---              | .-----------. .-----------. .-----------. .-----------. | 
---              '-| sib_ram_0 |-| sib_ram_1 |-| sib_ram_2 |-| sib_ram_3 |-' 
---                '-----------' '-----------' '-----------' '-----------'   
+--              |       |_________________________________________________.
+--              |                                                         |
+--              | .-----------. .-----------. .-----------. .-----------. |
+--              '-| sib_ram_0 |-| sib_ram_1 |-| sib_ram_2 |-| sib_ram_3 |-'
+--                '-----------' '-----------' '-----------' '-----------'
 
 toF <= toF_NoC or toF_sensors;
 toC <= toC_NoC and toC_sensors;

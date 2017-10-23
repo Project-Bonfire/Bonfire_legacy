@@ -33,7 +33,7 @@ end; --entity ram
 
 architecture logic of ram is
    component TS1N40LPB4096X32M4S is
-   --generic (cdeFileInit : string);
+   generic (cdeFileInit : string);
    port (
       PD : in std_logic;    --Power down mode
       CLK : in std_logic;   --CLK input
@@ -128,7 +128,7 @@ begin
 
 
    RAM_unit: TS1N40LPB4096X32M4S
-   --generic map (cdeFileInit => stim_file)
+   generic map (cdeFileInit => stim_file)
    port map(
       PD  => '0',
       CLK => not_clock,   -- this is the part that we changed. there was some serious timing issues with setup and hold times!
