@@ -60,7 +60,7 @@ port (reset: in  std_logic;
       uart_read_2   : in std_logic;
       uart_write_3  : out std_logic;
       uart_read_3   : in std_logic;
-      
+
       -- Monitor connections
       temperature_control   : out std_logic_vector(2 downto 0);
       temperature_data      : in std_logic_vector(12 downto 0);
@@ -87,7 +87,7 @@ end component;
     signal PE_0_GPIO_in : std_logic_vector(21 downto 0) := (others => '1');
     signal uart_write_0,  uart_write_1, uart_write_2, uart_write_3: std_logic;
     signal uart_read_0,   uart_read_1,  uart_read_2,  uart_read_3: std_logic;
-    
+
     signal temperature_control   : std_logic_vector(2 downto 0);
     signal temperature_data      : std_logic_vector(12 downto 0);
     signal iddt_control          : std_logic_vector(2 downto 0);
@@ -116,7 +116,7 @@ begin
               uart_write_1, uart_read_1,
               uart_write_2, uart_read_2,
               uart_write_3, uart_read_3,
-              
+
               temperature_control, temperature_data,
               iddt_control, iddt_data,
               slack_control, slack_data,
@@ -124,9 +124,9 @@ begin
              );
 
     -- Added for IJTAG
-    
+
     not_reset <= not reset;
-         
+
   clk_process :process
   begin
       clk <= '0';
@@ -137,7 +137,7 @@ begin
 
   ijtag_shift_proc: process
 
-    
+
   variable read_out_data: std_logic_vector(RAMDataSize-1 downto 0);
 
     variable I, J: integer := 0;
@@ -364,7 +364,7 @@ begin
       current_test <= "ram0_write_to34C";
       get_set_data(X"0000FF00", read_out_data, false); -- Shift in some data to write to address 0x034, increment address and close SIB_DATA
       -- Now SIB_MEM open, SIB_ADDR closed, SIB_DATA closed
-      
+
       RAM_readout <= (others => '0');
       current_test <= "ram0_addr_003   ";
       set_ram_address(X"003", true, false); -- Set WORD address to 0x003, autoincrement off, RAM write off
@@ -397,40 +397,40 @@ begin
 --            .----------.   .-----------.   .----------.
 --     SI ----| sib_ram  |---| sib_sens  |---| sib_noc  |-- SO
 --            '----------'   '-----------'   '----------'
---              |       |_________________________________________________. 
---              |                                                         | 
---              | .-----------. .-----------. .-----------. .-----------. | 
---              '-| sib_ram_0 |-| sib_ram_1 |-| sib_ram_2 |-| sib_ram_3 |-' 
---                '-----------' '-----------' '-----------' '-----------'   
---          .-------.     
---  SI -----|sib_mem|-- SO      
---          '-------'  
+--              |       |_________________________________________________.
+--              |                                                         |
+--              | .-----------. .-----------. .-----------. .-----------. |
+--              '-| sib_ram_0 |-| sib_ram_1 |-| sib_ram_2 |-| sib_ram_3 |-'
+--                '-----------' '-----------' '-----------' '-----------'
+--          .-------.
+--  SI -----|sib_mem|-- SO
+--          '-------'
 --            |    |_________________________________________________.
 --            |                                                      |
 --            |  .----------.                      .------------.    |
---            '--| sib_data |--------------------->| sib_addr   |----' 
---               '----------'                      '------------'   
---                |      |_____________               |      |______________           
---                |     _____________  |              |   ______   _______  |          
---                '--->|   data      |-'              '->|we,inc|-|address|-'              
+--            '--| sib_data |--------------------->| sib_addr   |----'
+--               '----------'                      '------------'
+--                |      |_____________               |      |______________
+--                |     _____________  |              |   ______   _______  |
+--                '--->|   data      |-'              '->|we,inc|-|address|-'
 --                     '-------------'                   '------' '-------'
 -- Auto increment bit is MSb in Address shift register
---            .-----------.                                    
+--            .-----------.
 --     SI ----| sib_sens  |---------------------------------------------- SO
---            '-----------'                                    
---              |       |_____________________________________________. 
---              |                                                     | 
---              | .----------. .----------. .----------. .----------. | 
---              '-| sib_temp |-| sib_iddt |-| sib_slck |-| sib_volt |-' 
---                '----------' '----------' '----------' '----------'   
---            .-----------.                                    
+--            '-----------'
+--              |       |_____________________________________________.
+--              |                                                     |
+--              | .----------. .----------. .----------. .----------. |
+--              '-| sib_temp |-| sib_iddt |-| sib_slck |-| sib_volt |-'
+--                '----------' '----------' '----------' '----------'
+--            .-----------.
 --     SI ----| sib_noc   |---------------------------------------------- SO
---            '-----------'                               
---              |       |_________________________________. 
---              |                                         | 
---              | .-------. .-------. .-------. .-------. | 
---              '-| sib_0 |-| sib_1 |-| sib_2 |-| sib_3 |-' 
---                '-------' '-------' '-------' '-------'   
+--            '-----------'
+--              |       |_________________________________.
+--              |                                         |
+--              | .-------. .-------. .-------. .-------. |
+--              '-| sib_0 |-| sib_1 |-| sib_2 |-| sib_3 |-'
+--                '-------' '-------' '-------' '-------'
 --                                               |    |_________________________________________.
 --                                               |                                              |
 --                                               |  .----------.              .------------.    |
@@ -452,63 +452,63 @@ begin
 
 -- RAM access instrument test
 
---    reset <= '0';
+   reset <= '0';
 
---    current_test <= "open_sib_ram    ";
---    shift_data(fcXN&fcXN&fcXS); -- open sib_ram
+   current_test <= "open_sib_ram    ";
+   shift_data(fcXN&fcXN&fcXS); -- open sib_ram
 
---    -- Test mem0
---    current_test <= "open_sib_ram0   ";
---    pre_shift(0 to 14) := fcXN&fcXN&fcXS&"0"&"0"&"0";
---    pre_shift_len := 15;
---    post_shift_len := 0;
+   -- Test mem0
+   current_test <= "open_sib_ram0   ";
+   pre_shift(0 to 14) := fcXN&fcXN&fcXS&"0"&"0"&"0";
+   pre_shift_len := 15;
+   post_shift_len := 0;
 
---    shift_data("1"); -- open sib_ram and sib_ram0: sib_noc & sib_sens & sib_ram & 3xsib_mem
---    tck_tick(4);
---    test_ram_access;
+   shift_data("1"); -- open sib_ram and sib_ram0: sib_noc & sib_sens & sib_ram & 3xsib_mem
+   tck_tick(4);
+   test_ram_access;
 
---    -- Test mem1
---    current_test <= "open_sib_ram1   ";
---    pre_shift(0 to 13) := fcXN&fcXN&fcXS&"0"&"0";
---    pre_shift_len := 14;
---    post_shift(0 to 0) := "0";
---    post_shift_len := 1;
+   -- Test mem1
+   current_test <= "open_sib_ram1   ";
+   pre_shift(0 to 13) := fcXN&fcXN&fcXS&"0"&"0";
+   pre_shift_len := 14;
+   post_shift(0 to 0) := "0";
+   post_shift_len := 1;
 
---    shift_data("1"); -- open sib_ram and sib_ram_1: sib_noc & sib_sens & sib_ram & 4xsib_mem
---    tck_tick(4);
---    test_ram_access;
+   shift_data("1"); -- open sib_ram and sib_ram_1: sib_noc & sib_sens & sib_ram & 4xsib_mem
+   tck_tick(4);
+   test_ram_access;
 
---    -- Test mem2
---    current_test <= "open_sib_ram2   ";
---    pre_shift(0 to 12) := fcXN&fcXN&fcXS&"0";
---    pre_shift_len := 13;
---    post_shift(0 to 1) := "00";
---    post_shift_len := 2;
+   -- Test mem2
+   current_test <= "open_sib_ram2   ";
+   pre_shift(0 to 12) := fcXN&fcXN&fcXS&"0";
+   pre_shift_len := 13;
+   post_shift(0 to 1) := "00";
+   post_shift_len := 2;
 
---    shift_data("1"); -- open sib_ram and sib_ram_2: sib_noc & sib_sens & sib_ram & 4xsib_mem
---    tck_tick(4);
---    test_ram_access;
+   shift_data("1"); -- open sib_ram and sib_ram_2: sib_noc & sib_sens & sib_ram & 4xsib_mem
+   tck_tick(4);
+   test_ram_access;
 
---    -- Test mem2
---    current_test <= "open_sib_ram3   ";
---    pre_shift(0 to 11) := fcXN&fcXN&fcXS;
---    pre_shift_len := 12;
---    post_shift(0 to 2) := "000";
---    post_shift_len := 3;
+   -- Test mem2
+   current_test <= "open_sib_ram3   ";
+   pre_shift(0 to 11) := fcXN&fcXN&fcXS;
+   pre_shift_len := 12;
+   post_shift(0 to 2) := "000";
+   post_shift_len := 3;
 
---    shift_data("1"); -- open sib_ram and sib_ram_3: sib_noc & sib_sens & sib_ram & 4xsib_mem
---    tck_tick(4);
---    test_ram_access;
+   shift_data("1"); -- open sib_ram and sib_ram_3: sib_noc & sib_sens & sib_ram & 4xsib_mem
+   tck_tick(4);
+   test_ram_access;
 
---    current_test <= "close_sib_ram   ";
---    pre_shift_len := 0;
---    post_shift_len := 0;
---    shift_data(fcXN&fcXN&fcXN&"0"&"0"&"0"&"0"); -- close all sibs
+   current_test <= "close_sib_ram   ";
+   pre_shift_len := 0;
+   post_shift_len := 0;
+   shift_data(fcXN&fcXN&fcXN&"0"&"0"&"0"&"0"); -- close all sibs
 
---    -- Release chip reset
---    reset <= '1';
+   -- Release chip reset
+   reset <= '1';
 
---    wait for 10us;
+   wait for 10us;
 
 -- Sensors
 
@@ -531,7 +531,7 @@ begin
     --shift_data(""); --open sib_temp
 
     --current_test <= "shift_temp_setup";
-    --shift_data("001000000000"&"010000000000"&"0"&"1"&"1"&"01111"); -- shift in threshold H without update 
+    --shift_data("001000000000"&"010000000000"&"0"&"1"&"1"&"01111"); -- shift in threshold H without update
 
     --tck_tick(4);
 
@@ -561,9 +561,9 @@ begin
     --temperature_data(0) <= '0';
 
     --tck_tick(4);
-    
+
     --current_test <= "shift_temp_setup";
-    --shift_data("001000000000"&"010000000000"&"0"&"0"&"1"&"01011"); -- shift in threshold H without update 
+    --shift_data("001000000000"&"010000000000"&"0"&"0"&"1"&"01011"); -- shift in threshold H without update
 
     --tck_tick(10);
 
@@ -607,7 +607,7 @@ begin
     --shift_data(""); --open sib_temp
 
     --current_test <= "Slack           ";
-    --shift_data("11100"&"00000"&"0"&"1"&"1"&"0000000000000001111"); -- shift in threshold H without update 
+    --shift_data("11100"&"00000"&"0"&"1"&"1"&"0000000000000001111"); -- shift in threshold H without update
     --tck_tick(4);
 
     --slack_data <= "00101010101010101010101010101010";
@@ -638,7 +638,7 @@ begin
     --shift_data(""); --open sib_temp
 
     --current_test <= "Voltage         ";
-    --shift_data("00001"&"11100"&"1"&"1"&"1"&"0000000000000001111"); -- shift in threshold H without update 
+    --shift_data("00001"&"11100"&"1"&"1"&"1"&"0000000000000001111"); -- shift in threshold H without update
 
     --voltage_data <= "00000000000000000000000000000000";
     --tck_tick(1);
@@ -707,7 +707,7 @@ begin
     --voltage_data <= "11111111111111111111111111111111";
     --tck_tick(10);
 
-    --shift_data("11100"&"00001"&"0"&"1"&"1"&"0000000000000001111"); -- shift in threshold H without update 
+    --shift_data("11100"&"00001"&"0"&"1"&"1"&"0000000000000001111"); -- shift in threshold H without update
     --tck_tick(10);
 
     --voltage_data <= "00000000000000000000000011111111";

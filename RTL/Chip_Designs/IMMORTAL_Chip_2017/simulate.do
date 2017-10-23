@@ -73,11 +73,11 @@ vcom -cover bcesfx "plasma_RTL/pipeline.vhd"
 
 
 # to use the verilog of the memory use the following 2 lines:
-vlog -reportprogress 300 -work work "plasma_RTL/ts1n40lpb4096x32m4s_210b_tt1p1v25c.v"
-vcom -cover bcesfx "plasma_RTL/ram_wrapper.vhd"
+# vlog -reportprogress 300 -work work "plasma_RTL/ts1n40lpb4096x32m4s_210b_tt1p1v25c.v"
+# vcom -cover bcesfx "plasma_RTL/ram_wrapper.vhd"
 
-#vlog -reportprogress 300 -work work "plasma_RTL/SHKA65_4096X32X1CM4.v"
-#vcom -cover bcesfx "plasma_RTL/ram_wrapper_65.vhd"
+vlog -reportprogress 300 -work work "plasma_RTL/SHKA65_4096X32X1CM4.v"
+vcom -cover bcesfx "plasma_RTL/ram_wrapper_65.vhd"
 
 
 vcom -cover bcesfx "plasma_RTL/reg_bank_tri_port.vhd"
