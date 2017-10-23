@@ -52,17 +52,7 @@ port (reset: in  std_logic;
       uart_write_2  : out std_logic;
       uart_read_2   : in std_logic;
       uart_write_3  : out std_logic;
-      uart_read_3   : in std_logic;
-
-      -- Monitor connections
-      temperature_control   : out std_logic_vector(2 downto 0);
-      temperature_data      : in std_logic_vector(12 downto 0);
-      iddt_control          : out std_logic_vector(2 downto 0);
-      iddt_data             : in std_logic_vector(12 downto 0);
-      slack_control         : out std_logic_vector(2 downto 0);
-      slack_data            : in std_logic_vector(31 downto 0);
-      voltage_control       : out std_logic_vector(2 downto 0);
-      voltage_data          : in std_logic_vector(31 downto 0)
+      uart_read_3   : in std_logic
     );
 
 end network_2x2_with_PE;
@@ -74,30 +64,6 @@ constant RAMDataSize : positive := 32;
 constant RAMAddrSize : positive := 12;
 constant path : string(1 to 12) := "Testbenches/"; --uncomment this if you are SIMULATING in MODELSIM, or if you're synthesizing.
 -- constant path : string(positive range <>) := "/home/tsotne/ownCloud/git/Bonfire_sim/Bonfire/RTL/Chip_Designs/IMMORTAL_Chip_2017/Testbenches/"; --used only for Vivado similation. Tsotnes PC.
-
-component immortal_sensor_IJTAG_interface is
-    Port ( -- Scan Interface  client --------------
-            TCK         : in std_logic;
-            RST         : in std_logic;
-            SEL         : in std_logic;
-            SI          : in std_logic;
-            SE          : in std_logic;
-            UE          : in std_logic;
-            CE          : in std_logic;
-            SO          : out std_logic;
-            toF         : out std_logic;
-            toC         : out std_logic;
-
-            -- Monitor connections
-            temperature_control   : out std_logic_vector(2 downto 0);
-            temperature_data      : in std_logic_vector(12 downto 0);
-            iddt_control          : out std_logic_vector(2 downto 0);
-            iddt_data             : in std_logic_vector(12 downto 0);
-            slack_control         : out std_logic_vector(2 downto 0);
-            slack_data            : in std_logic_vector(31 downto 0);
-            voltage_control       : out std_logic_vector(2 downto 0);
-            voltage_data          : in std_logic_vector(31 downto 0));
-end component;
 
 component SIB_mux_pre_FCX_SELgate is
     Port ( -- Scan Interface  client --------------
@@ -186,9 +152,9 @@ end component;
 
     -- IJTAG-related signals
 
-    signal SO_NoC , SO_sensors , SO_RAM  : std_logic;
-    signal toF_NoC, toF_sensors, toF_RAM : std_logic;
-    signal toC_NoC, toC_sensors, toC_RAM : std_logic;
+    signal SO_NoC , SO_RAM  : std_logic;
+    signal toF_NoC, toF_RAM : std_logic;
+    signal toC_NoC, toC_RAM : std_logic;
 
     signal SIB_RAM_toSI, SIB_RAM_toTCK, SIB_RAM_toRST, SIB_RAM_toSEL, SIB_RAM_toUE, SIB_RAM_toSE, SIB_RAM_toCE : std_logic;
     signal RAM0_SO,           RAM1_SO,           RAM2_SO,           RAM3_SO           : std_logic;
@@ -243,7 +209,7 @@ port map (reset, clk,
     link_faults_1, turn_faults_1, Rxy_reconf_PE_1, Cx_reconf_PE_1, Reconfig_command_1,
     link_faults_2, turn_faults_2, Rxy_reconf_PE_2, Cx_reconf_PE_2, Reconfig_command_2,
     link_faults_3, turn_faults_3, Rxy_reconf_PE_3, Cx_reconf_PE_3, Reconfig_command_3,
-    TCK, RST, SEL, SO_sensors, SE, UE, CE, SO_NoC, toF_NoC, toC_NoC
+    TCK, RST, SEL, SO_RAM, SE, UE, CE, SO_NoC, toF_NoC, toC_NoC
     );
 
 process (not_reset, clk)
@@ -437,17 +403,17 @@ port map( not_reset, clk,
 -------------------------------------------
 
 --   Organization of IJTAG network (top level):
---            .----------.   .-----------.   .----------.
---     SI ----| sib_ram  |---| sib_sens  |---| sib_noc  |-- SO
---            '----------'   '-----------'   '----------'
+--            .----------.                   .----------.
+--     SI ----| sib_ram  |-------------------| sib_noc  |-- SO
+--            '----------'                   '----------'
 --              |       |_________________________________________________.
 --              |                                                         |
 --              | .-----------. .-----------. .-----------. .-----------. |
 --              '-| sib_ram_0 |-| sib_ram_1 |-| sib_ram_2 |-| sib_ram_3 |-'
 --                '-----------' '-----------' '-----------' '-----------'
 
-toF <= toF_NoC or toF_sensors;
-toC <= toC_NoC and toC_sensors;
+toF <= toF_NoC;
+toC <= toC_NoC;
 SO <= SO_NoC;
 
 IJTAG_ram_0_enable <= '1';
@@ -573,30 +539,5 @@ RAM_instr3 : RAMAccessInstrument
 
 IJTAG_ram_3_write_byte_enable <= (others => RAM3_write_enable);
 IJTAG_ram_3_address <= "000000000000000000" & RAM3_address;
-
--- IMMORTAL sensors interface
-
-immortal_sensors: immortal_sensor_IJTAG_interface
-    port map (
-    TCK => TCK,
-    RST => RST,
-    SEL => SEL,
-    SI  => SO_RAM,
-    SE  => SE,
-    UE  => UE,
-    CE  => CE,
-    SO  => SO_sensors,
-    toF => toF_sensors,
-    toC => toC_sensors,
-
-    temperature_control => temperature_control,
-    temperature_data    => temperature_data,
-    iddt_control        => iddt_control,
-    iddt_data           => iddt_data,
-    slack_control       => slack_control,
-    slack_data          => slack_data,
-    voltage_control     => voltage_control,
-    voltage_data        => voltage_data
-  );
 
 end;
