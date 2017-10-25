@@ -56,9 +56,7 @@ port (reset: in  std_logic;
 
       -- Monitor connections
       temperature_control   : out std_logic_vector(2 downto 0);
-      temperature_data      : in std_logic_vector(12 downto 0);
       iddt_control          : out std_logic_vector(2 downto 0);
-      iddt_data             : in std_logic_vector(12 downto 0);
       slack_control         : out std_logic_vector(2 downto 0);
       slack_data            : in std_logic_vector(31 downto 0);
       voltage_control       : out std_logic_vector(2 downto 0);
@@ -598,5 +596,8 @@ immortal_sensors: immortal_sensor_IJTAG_interface
     voltage_control     => voltage_control,
     voltage_data        => voltage_data
   );
+
+temperature_data <= (others => '0');
+iddt_data <= (others => '0');
 
 end;
