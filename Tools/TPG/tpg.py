@@ -24,6 +24,13 @@ if  '--help' in sys.argv[1:]:
 	print "\t---------------------------------------"
 	sys.exit()
 
+
+input_format_name = { 'z' : "Zero",
+					  'oh': "One Hot",
+					  'ao': "All One",
+					  'we': "what ever",
+					  'B' : "binary"
+					}
 if '-o'  in sys.argv[1:]:
   filename = sys.argv[sys.argv.index('-o')+1]
 else:
@@ -81,11 +88,14 @@ test_patern_file = open(str(filename), 'w')
 print "--------------------------------------------------------------------------------"
 list_of_accepted_patterns= []
 print '\033[92m'+"INFO: "+'\033[0m'+"reporting the configuration:\n"
-print "\t.---------------------------------------."
-print "\t|  input size 	|	input format\t|"
+print "        .---------------------------------------."
+print "        |  input size 	|	input format    |"
 print "   .----'---------------------------------------'"
 for i in range(0, len(input_size)):	
-	print '   |{:3d} | {:10d} \t|\t {:10s}'.format(i, input_size[i], input_format [i]) 
+	i_format = input_format [i][0]
+	if "B" in input_format [i][0]:
+		i_format = "B"
+	print '   |{:3d} | {:10d}    |        {:10s}     |'.format(i, input_size[i], input_format_name[i_format]) 
 	print "    ---------------------------------------------"
 
 print 
@@ -102,11 +112,6 @@ for item in input_format:
 
 	if "B" in input_format[item][0]:
 		string.append(input_format[item][0][1:])
-
-	if len(input_format[item])>0:
-		for sub_item in input_format[item]:
-			if "B" in sub_item:
-				string.append(sub_item[1:])
 
 	if "we" in input_format[item]:
 		string = [''.join(map(str,tup)) for tup in itertools.product([0, 1], repeat=input_size[item])]
