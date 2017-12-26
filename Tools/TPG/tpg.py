@@ -97,15 +97,19 @@ test_pattern_file = open(str(filename), 'w')
 
 print "--------------------------------------------------------------------------------"
 print '\033[92m' + "INFO: " + '\033[0m' + "reporting the configuration:\n"
-print "        .---------------------------------------."
-print "        |  input size 	|	input format        |"
-print "   .----'---------------------------------------'"
+print "        .----------------------------------------"
+print "        | input size |	input format"
+print "   .----'----------------------------------------"
 for i in range(0, len(input_size)):
-    i_format = input_format[i][0]
-    if "B" in input_format[i][0]:
-        i_format = "B"
-    print '   |{:3d} | {:10d}    |        {:10s}     |'.format(i, input_size[i], input_format_name[i_format])
-    print "    ---------------------------------------------"
+    format = ""
+    for item in input_format[i]:
+        i_format = item
+        if "B" in item:
+            i_format = "B"
+        format += input_format_name[i_format]+", "
+
+    print '   |{:3d} | {:7d}    |  {:10s}     '.format(i, input_size[i], format[:-2])
+    print "   '---------------------------------------------"
 
 print
 if verbose:
