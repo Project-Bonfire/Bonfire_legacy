@@ -33,6 +33,11 @@ if '--help' in sys.argv[1:]:
     print "\t             generates a 1+3+5 bit pattern in test_patterns.inp where first bit is always zero,"
     print "\t             3 next bits are always \"101\" \033[93m\033[1m\033[4mor\033[0m \"one-hot\" and next " \
           "5 bits will have all the possible combinations "
+    print "\t\033[94m\033[1m* EXAMPLE 4:\033[0m  python tpg.py -IF 1 z 4 oh 4 B0000 B0001 3 B000 B010 B011 B100 B101 B110 B111 -o patterns4.inp -V"
+    print "\t             generates a 1+4+4+3 bit pattern in patterns4.inp where first bit is always zero,"
+    print "\t             4 next bits are onehot, next 4 bits are either always \"0000\" \033[93m\033[1m\033[4mor\033[0m \"0000\" and next 3 bits should not have \"001\" "
+    print "\t             and the output is verbose."
+    print "\t             the result file should contain 56 patterns."
     print "\t---------------------------------------"
     sys.exit()
 
@@ -124,7 +129,8 @@ for item in input_format:
         input_format_list.append('1' * input_size[item])
 
     if "B" in input_format[item][0]:
-        input_format_list.append(input_format[item][0][1:])
+        for element in input_format[item]:
+            input_format_list.append(element[1:])
 
     if "we" in input_format[item]:
         input_format_list = [''.join(map(str, tup)) for tup in itertools.product([0, 1], repeat=input_size[item])]
