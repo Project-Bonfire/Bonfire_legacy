@@ -143,6 +143,11 @@ component RAMAccessInstrument is
             RAM_write_enable : out std_logic);
 end component;
 
+-- Monitor signals
+signal temperature_data      : std_logic_vector(12 downto 0);
+signal iddt_data             : std_logic_vector(12 downto 0);
+
+
 -- Declaring network component
 
 -- Declaring NoC_Node component (with Plasma, RAM, NI and UART)

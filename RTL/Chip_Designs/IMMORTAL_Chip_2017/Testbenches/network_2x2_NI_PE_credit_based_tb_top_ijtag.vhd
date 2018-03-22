@@ -63,9 +63,9 @@ port (reset: in  std_logic;
 
       -- Monitor connections
       temperature_control   : out std_logic_vector(2 downto 0);
-      temperature_data      : in std_logic_vector(12 downto 0);
+      -- temperature_data      : in std_logic_vector(12 downto 0);
       iddt_control          : out std_logic_vector(2 downto 0);
-      iddt_data             : in std_logic_vector(12 downto 0);
+      -- iddt_data             : in std_logic_vector(12 downto 0);
       slack_control         : out std_logic_vector(2 downto 0);
       slack_data            : in std_logic_vector(31 downto 0);
       voltage_control       : out std_logic_vector(2 downto 0);
@@ -117,10 +117,15 @@ begin
               uart_write_2, uart_read_2,
               uart_write_3, uart_read_3,
 
-              temperature_control, temperature_data,
-              iddt_control, iddt_data,
+              temperature_control,
+              iddt_control,
               slack_control, slack_data,
               voltage_control, voltage_data
+
+              -- temperature_control, temperature_data,
+              -- iddt_control, iddt_data,
+              -- slack_control, slack_data,
+              -- voltage_control, voltage_data
              );
 
     -- Added for IJTAG

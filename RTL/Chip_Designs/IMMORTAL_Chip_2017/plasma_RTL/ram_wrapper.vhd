@@ -33,22 +33,22 @@ end; --entity ram
 
 architecture logic of ram is
    component TS1N40LPB4096X32M4S is
-   generic (cdeFileInit : string);
+   --generic (cdeFileInit : string);
    port (
       PD : in std_logic;    --Power down mode
       CLK : in std_logic;   --CLK input
       CEB : in std_logic;   --Chip enable, active low for SRAM operation; active high for fuse data setting
       WEB : in std_logic;   --Write enable, active low
-      --CEBM : in std_logic;  --Chip enable for BIST, active low for SRAM operation; active high for fuse data setting
-      --WEBM : in std_logic;  --Write enable for BIST, active low
+      CEBM : in std_logic;  --Chip enable for BIST, active low for SRAM operation; active high for fuse data setting
+      WEBM : in std_logic;  --Write enable for BIST, active low
       AWT : in std_logic;   --Asynchronous write through
       A: in std_logic_vector(11 downto 0);       --Address input
       D: in std_logic_vector(31 downto 0);      --Data input
       BWEB: in std_logic_vector(31 downto 0);   --Bit write enable, active low
-      --AM: in std_logic_vector(9 downto 0);      --Address input for BIST
-      --DM: in std_logic_vector(31 downto 0);     --Data input for BIST
-      --BWEBM: in std_logic_vector(31 downto 0);  --Bit write enable, active low
-      --<BIST: in std_logic;                       --BIST enable
+      AM: in std_logic_vector(9 downto 0);      --Address input for BIST
+      DM: in std_logic_vector(31 downto 0);     --Data input for BIST
+      BWEBM: in std_logic_vector(31 downto 0);  --Bit write enable, active low
+      BIST: in std_logic;                       --BIST enable
       RTSEL:in std_logic_vector(1 downto 0);    --Read margin setting pins
       WTSEL:in std_logic_vector(1 downto 0);    --Write margin setting pins
       Q: out std_logic_vector(31 downto 0)      --Data output
@@ -69,29 +69,27 @@ architecture logic of ram is
     signal delayed_data_out, Q: std_logic_vector(31 downto 0);
 begin
 
-   process(IJTAG_select, clk, reset, enable, write_byte_enable, address,
-          data_write, Mem_data_read, IJTAG_clk, IJTAG_reset, IJTAG_enable,
-          IJTAG_write_byte_enable, IJTAG_address, IJTAG_data_write)
-          begin
-      case( IJTAG_select) is
-        when '0' =>
-              Mem_clk               <= clk;
-              Mem_reset             <= reset;
-              Mem_enable            <= enable;
-              Mem_write_byte_enable <= write_byte_enable;
-              Mem_address           <= address;
-              Mem_data_write        <= data_write;
-              data_read             <= Mem_data_read;
-              IJTAG_data_read       <= (others =>'0');
-        when others =>
-              Mem_clk               <= IJTAG_clk;
-              Mem_reset             <= IJTAG_reset;
-              Mem_enable            <= IJTAG_enable;
-              Mem_write_byte_enable <= IJTAG_write_byte_enable;
-              Mem_address           <= IJTAG_address;
-              Mem_data_write        <= IJTAG_data_write;
-              IJTAG_data_read       <= Mem_data_read;
-              data_read             <= (others =>'0');
+    process(IJTAG_select, clk, reset, enable, write_byte_enable, address,
+            data_write, Mem_data_read, IJTAG_clk, IJTAG_reset, IJTAG_enable,
+            IJTAG_write_byte_enable, IJTAG_address, IJTAG_data_write)
+            begin
+        case( IJTAG_select) is
+          when '0' =>
+                Mem_clk               <= clk;
+                Mem_reset             <= reset;
+                Mem_enable            <= enable;
+                Mem_write_byte_enable <= write_byte_enable;
+                Mem_address           <= address;
+                Mem_data_write        <= data_write;
+                data_read             <= Mem_data_read;
+          when others =>
+                Mem_clk               <= IJTAG_clk;
+                Mem_reset             <= IJTAG_reset;
+                Mem_enable            <= IJTAG_enable;
+                Mem_write_byte_enable <= IJTAG_write_byte_enable;
+                Mem_address           <= IJTAG_address;
+                Mem_data_write        <= IJTAG_data_write;
+                IJTAG_data_read       <= Mem_data_read;
         end case;
    end process;
 
@@ -136,16 +134,16 @@ begin
       CLK => not_clock,   -- this is the part that we changed. there was some serious timing issues with setup and hold times!
       CEB => '0',
       WEB => write_enable,
-      --CEBM => '0',
-      --WEBM => '0',
+      CEBM => '0',
+      WEBM => '1',
       AWT  => '0',
       A => Mem_address(13 downto 2),
       D => Mem_data_write,
       BWEB => write_BWEB,
-      --AM => (others =>'0'),
-      --DM => (others =>'0'),
-      --BWEBM => write_BWEBM,
-      --BIST => '0',
+      AM => (others =>'0'),
+      DM => (others =>'0'),
+      BWEBM => (others =>'1'),
+      BIST => '0',
       RTSEL => "01",  -- they said and i qoute: "Please use this setting"
       WTSEL => "01",  -- they said and i qoute: "Please use this setting"
       Q => Q
