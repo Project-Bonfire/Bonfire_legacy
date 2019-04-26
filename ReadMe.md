@@ -8,6 +8,7 @@ Welcome to Bonfire project, a Network on Chip based System on Chip developed in 
   * Stephen Adeboye Oyeniran 
   * Konstantin Shibin
   * Hardi Selg
+  * Jaan Raik
   
 Please note that all the designs and tools related to handshaking version of the router are moved to the following repository:
 
@@ -22,7 +23,7 @@ If you use Bonfire in your research work, we would appreciate the following pape
 License:  	GNU GENERAL PUBLIC LICENSE Version 3
 
 ----------------------------------------------------------------------------------------------------------------------------
-	Copyright (C) 2016 as collective work done by Siavoosh Payandeh Azad, Karl Janson, Behrad Niazmand and Tsotne Putkaradze
+	This is collective work done by above-mentioned authors.
 	Parts of this work are re-use or modification of work under different licenses. Please refer to disclaimers in the related folders.
 ----------------------------------------------------------------------------------------------------------------------------
 
